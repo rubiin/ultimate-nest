@@ -28,7 +28,6 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 		}
 
 		for (const key in obj) {
-
 			const value = obj[key];
 
 			// If the value is another nested object we need to recursively

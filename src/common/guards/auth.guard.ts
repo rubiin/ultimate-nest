@@ -30,10 +30,7 @@ export class AuthGuard implements CanActivate {
 		}
 
 		try {
-			const decoded: any = jwt.verify(
-				token.split(' ')[1],
-				config.secret,
-			);
+			const decoded: any = jwt.verify(token.split(' ')[1], config.secret);
 
 			request.idx = decoded.idx;
 
