@@ -1,0 +1,116 @@
+{
+  "name": "nest-typescript-starter",
+  "version": "1.0.0",
+  "description": "Nest TypeScript starter repository",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint '{src,apps,libs,test}/**/*.ts' --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "echo 'No e2e tests implemented yet.'",
+    "orm": "npx mikro-orm",
+    "orm:init": "npm run orm migration:create --initial",
+    "orm:create": "npm run orm migration:create",
+    "orm:up": "npm run orm migration:up",
+    "orm:down": "npm run orm migration:down"
+  },
+  "dependencies": {
+    "@mikro-orm/core": "^4.1.0",
+    "@mikro-orm/nestjs": "^4.2.0",
+    "@mikro-orm/postgresql": "^4.1.1",
+    "@mikro-orm/reflection": "^4.1.0",
+    "@mikro-orm/sql-highlighter": "^1.0.1",
+    "@nestjs/common": "7.4.4",
+    "@nestjs/core": "7.4.4",
+    "@nestjs/graphql": "7.7.0",
+    "@nestjs/passport": "^7.1.5",
+    "@nestjs/platform-express": "7.4.4",
+    "apollo-server": "2.18.2",
+    "apollo-server-express": "2.18.2",
+    "argon2": "^0.27.1",
+    "class-transformer": "^0.3.1",
+    "class-validator": "0.12.2",
+    "date-fns": "^2.16.1",
+    "dotenv": "^8.2.0",
+    "eta": "^1.12.1",
+    "graphql": "15.3.0",
+    "graphql-query-complexity": "0.7.0",
+    "graphql-subscriptions": "1.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "nest-winston": "^1.4.0",
+    "nodemailer": "^6.4.17",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "puppeteer": "^5.5.0",
+    "reflect-metadata": "0.1.13",
+    "rxjs": "6.6.3",
+    "threads": "^1.6.3",
+    "uuid": "^8.3.1",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
+  },
+  "devDependencies": {
+    "@mikro-orm/cli": "^4.1.1",
+    "@nestjs/cli": "7.5.1",
+    "@nestjs/schematics": "7.1.2",
+    "@nestjs/testing": "7.4.4",
+    "@types/express": "4.17.8",
+    "@types/node": "14.11.8",
+    "@types/supertest": "2.0.10",
+    "@typescript-eslint/eslint-plugin": "4.4.1",
+    "@typescript-eslint/parser": "4.4.1",
+    "eslint": "7.11.0",
+    "eslint-config-prettier": "6.12.0",
+    "eslint-plugin-import": "2.22.1",
+    "jest": "26.5.3",
+    "prettier": "2.1.2",
+    "supertest": "5.0.0",
+    "ts-jest": "26.4.1",
+    "ts-loader": "8.0.5",
+    "ts-node": "9.0.0",
+    "tsconfig-paths": "3.9.0",
+    "typescript": "4.0.3"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./src/mikro-orm.config.ts",
+      "./dist/mikro-orm.config.js"
+    ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "moduleNameMapper": {
+      "^@utils/(.*)$": "<rootDir>/utils/$1",
+      "^@common/(.*)$": "<rootDir>/common/$1",
+      "^@modules/(.*)$": "<rootDir>/modules/$1",
+      "^@config/(.*)$": "<rootDir>/config/$1",
+      "^@entities/(.*)$": "<rootDir>/entities/$1",
+      "^@dtos/(.*)$": "<rootDir>/dtos/$1"
+    },
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "coverageReporters": [
+      "text",
+      "html"
+    ]
+  }
+}

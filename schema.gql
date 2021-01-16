@@ -1,0 +1,52 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Book {
+  id: ID!
+  idx: String!
+  title: String!
+  createdAt: Date!
+  updatedAt: Date
+  author: [Author!]!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type Author {
+  id: ID!
+  idx: String!
+  name: String!
+  age: Int!
+  username: String!
+  bio: String
+  books: [Book!]!
+  createdAt: Date!
+  updatedAt: Date
+}
+
+type Query {
+  authors(search: String): [Author!]!
+  author(idx: String!): Author!
+}
+
+type Mutation {
+  addAuthor(author: CreateAuthorInput!): Author!
+  removeAuthor(idx: String!): Boolean!
+  updateAuthor(author: UpdateAuthorInput!, idx: String!): Boolean!
+}
+
+input CreateAuthorInput {
+  name: String!
+  age: Int!
+  username: String!
+  bio: String
+}
+
+input UpdateAuthorInput {
+  name: String
+  age: Int
+  username: String
+  bio: String
+}
