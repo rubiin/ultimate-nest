@@ -6,7 +6,7 @@ import {
 	SerializedPrimaryKey,
 } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
-import { BaseEntity } from './BaseEntity';
+import { BaseEntity } from './BaseEntity.entity';
 
 @Entity()
 export class User extends BaseEntity {

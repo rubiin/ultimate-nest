@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { User } from '@entities/User.entity';
-import { ActivityLog } from '@entities/ActivityLog';
-import { RefreshToken } from '@entities/RefreshToken';
-import { OtpLog } from '@entities/OtpLog';
+import { ActivityLog } from '@entities/ActivityLog.entity';
+import { RefreshToken } from '@entities/RefreshToken.entity';
+import { OtpLog } from '@entities/OtpLog.entity';
 
 
 @Module({

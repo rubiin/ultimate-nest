@@ -6,7 +6,7 @@ import {
 	ManyToOne,
 } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
-import { BaseEntity } from './BaseEntity';
+import { BaseEntity } from './BaseEntity.entity';
 import { User } from './User.entity';
 
 @Entity()
