@@ -1,15 +1,14 @@
 import { Options } from '@mikro-orm/core';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import config from './config/index';
 
 const mikroOrmconfig = {
 	type: 'postgresql',
-	host: config.db.host,
-	port: config.db.port,
-	username: config.db.username,
-	password: config.db.password,
-	dbName: config.db.database,
+	host: process.env.DB_HOST,
+	port: Number(process.env.DB_PORT),
+	username: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	dbName: process.env.DB_DATABASE,
 	entities: ['dist/**/*.entity.js'],
 	entitiesTs: ['src/**/*.entity.ts'],
 	debug: true,

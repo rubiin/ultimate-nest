@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import config from '@config/index';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as compression from 'compression';
@@ -39,10 +38,10 @@ async function bootstrap() {
 
 	SwaggerModule.setup('api', app, document);
 
-	await app.listen(config.port);
+	await app.listen(8000);
 	console.info(
 		'Bootstrap',
-		`Server running on 🚀 http://localhost:${config.port}`,
+		`Server running on 🚀 http://localhost:${config.env.PORT}`,
 	);
 }
 

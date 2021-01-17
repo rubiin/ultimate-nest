@@ -5,14 +5,13 @@ import { ActivityLog } from '@entities/ActivityLog.entity';
 import { RefreshToken } from '@entities/RefreshToken.entity';
 import { OtpLog } from '@entities/OtpLog.entity';
 
-
 @Module({
-  imports: [
-    MikroOrmModule.forRoot(),
-    MikroOrmModule.forFeature({
-      entities: [User,OtpLog,ActivityLog,RefreshToken],
-    }),
-  ],
-  exports: [MikroOrmModule],
+	imports: [
+		MikroOrmModule.forRoot(),
+		MikroOrmModule.forFeature({
+			entities: [User, OtpLog, ActivityLog, RefreshToken],
+		}),
+	],
+	exports: [MikroOrmModule],
 })
-export class OrmModule { }
+export class OrmModule {}

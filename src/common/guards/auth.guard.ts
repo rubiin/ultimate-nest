@@ -6,8 +6,7 @@ import {
 	HttpStatus,
 	Injectable,
 } from '@nestjs/common';
-import * as jwt from 'jsonwebtoken';
-import config from '@config/index';
+import { JwtService } from '@nestjs/jwt';
 
 /**
  *
@@ -17,6 +16,8 @@ import config from '@config/index';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+	constructor(private readonly jwt: JwtService) { }
+
 	canActivate(context: ExecutionContext): boolean {
 		const request = context.switchToHttp().getRequest();
 
@@ -30,7 +31,9 @@ export class AuthGuard implements CanActivate {
 		}
 
 		try {
-			const decoded: any = jwt.verify(token.split(' ')[1], config.secret);
+			const decoded: any = this.jwt.verify(
+				token.split(' ')[1],
+			);
 
 			request.idx = decoded.idx;
 
