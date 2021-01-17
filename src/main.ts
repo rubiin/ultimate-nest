@@ -18,7 +18,7 @@ async function bootstrap() {
 			new ValidationPipe({
 				whitelist: true,
 				transform: true,
-				validationError: { target: false },
+				validationError: { target: false }
 			}),
 		)
 		.useGlobalFilters(new InternalServerExceptionFilter())
