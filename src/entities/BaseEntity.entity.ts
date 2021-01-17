@@ -12,14 +12,14 @@ export abstract class BaseEntity {
 		nullable: false,
 		default: true,
 	})
-	is_active: boolean;
+	isActive: boolean;
 
 	@Exclude({ toPlainOnly: true })
 	@Property({
 		nullable: false,
 		default: false,
 	})
-	is_obsolete: boolean;
+	isObsolete: boolean;
 
 	@Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
 	createdAt: Date = new Date();

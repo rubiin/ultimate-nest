@@ -6,7 +6,6 @@ import {
 	SerializedPrimaryKey,
 	ManyToOne,
 } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
 import { BaseEntity } from './BaseEntity.entity';
 import { User } from './User.entity';
 
@@ -14,7 +13,6 @@ import { User } from './User.entity';
 export class OtpLog extends BaseEntity {
 	@Property({
 		nullable: false,
-		name: 'expires_in',
 	})
 	expiresIn: Date;
 
@@ -22,7 +20,7 @@ export class OtpLog extends BaseEntity {
 		nullable: true,
 		length: 20,
 	})
-	otp_code: string | null;
+	otpCode: string | null;
 
 	@ManyToOne({ entity: () => User, onDelete: 'cascade' })
 	user: User;

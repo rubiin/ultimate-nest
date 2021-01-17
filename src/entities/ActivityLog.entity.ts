@@ -8,25 +8,25 @@ export class ActivityLog extends BaseEntity {
 		nullable: true,
 		length: 50,
 	})
-	activity_type: string | null;
+	activityType: string | null;
 
 	@Property({
 		nullable: true,
 		length: 50,
 	})
-	login_type: string | null;
+	loginType: string | null;
 
 	@Property({
 		nullable: true,
 		length: 50,
 	})
-	ip_address: string | null;
+	ipAddress: string | null;
 
 	@Property({
 		nullable: true,
 		length: 50,
 	})
-	device_id: string | null;
+	deviceId: string | null;
 
 	@Property({
 		nullable: false,
@@ -38,7 +38,7 @@ export class ActivityLog extends BaseEntity {
 		nullable: false,
 		default: true,
 	})
-	login_status: boolean;
+	loginStatus: boolean;
 
 	@ManyToOne({ entity: () => User, onDelete: 'cascade' })
 	user: User;

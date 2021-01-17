@@ -7,6 +7,7 @@ import * as helmet from 'helmet';
 import { InternalServerExceptionFilter } from '@common/filter/InternalServer.filter';
 import { RequestSanitizerInterceptor } from '@common/interceptor/requestSanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -27,6 +28,7 @@ async function bootstrap() {
 
 	app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
+	const configService = app.get(ConfigService);
 	const options = new DocumentBuilder()
 		.setTitle('Employee Api')
 		.setDescription(
@@ -38,11 +40,10 @@ async function bootstrap() {
 
 	SwaggerModule.setup('api', app, document);
 
-	await app.listen(8000);
-	console.info(
-		'Bootstrap',
-		`Server running on 🚀 http://localhost:${config.env.PORT}`,
-	);
+	const port = configService.get<number>('app.port', 3000);
+
+	await app.listen(port);
+	console.info('Bootstrap', `Server running on 🚀 http://localhost:${port}`);
 }
 
 bootstrap();

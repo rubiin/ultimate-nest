@@ -1,10 +1,4 @@
-import {
-	Entity,
-	Property,
-	PrimaryKey,
-	Unique,
-	SerializedPrimaryKey,
-} from '@mikro-orm/core';
+import { Entity, Property, Unique } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 import { BaseEntity } from './BaseEntity.entity';
 
@@ -14,20 +8,20 @@ export class User extends BaseEntity {
 		type: 'string',
 		length: 50,
 	})
-	first_name: string;
+	firstName: string;
 
 	@Property({
 		type: 'string',
 		length: 50,
 		nullable: true,
 	})
-	middle_name?: string;
+	middleName?: string;
 
 	@Property({
 		type: 'string',
 		length: 50,
 	})
-	last_name: string;
+	lastName: string;
 
 	@Unique()
 	@Property({
@@ -35,10 +29,4 @@ export class User extends BaseEntity {
 		length: 50,
 	})
 	username: string;
-
-	@Property({
-		nullable: false,
-		default: true,
-	})
-	is_active: boolean;
 }

@@ -1,18 +1,12 @@
-import {
-	MiddlewareConsumer,
-	Module,
-	NestModule,
-	RequestMethod,
-} from '@nestjs/common';
-import { utilities, WinstonModule } from 'nest-winston';
+import { Module } from '@nestjs/common';
+import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from '@common/interceptor/logger.interceptor';
 import transports from '@utils/winstonTransports';
 import { AuthModule } from '@modules/auth/auth.module';
-import { OrmModule } from '@modules/orm/orm.module';
+import { OrmModule } from '@lib/orm/orm.module';
 import { UserModule } from '@modules/user/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { app, database } from '@lib/config/configuration';
 
 @Module({
 	imports: [
@@ -20,6 +14,13 @@ import { ConfigModule } from '@nestjs/config';
 		AuthModule,
 		UserModule,
 		ConfigModule,
+		ConfigModule.forRoot({
+			envFilePath: ['env/dev.env'],
+			load: [database, app],
+			cache: true,
+			isGlobal: true,
+			expandVariables: true,
+		}),
 		WinstonModule.forRoot({
 			format: winston.format.combine(
 				winston.format.timestamp({
