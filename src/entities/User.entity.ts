@@ -6,16 +6,10 @@ import {
 	SerializedPrimaryKey,
 } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
+import { BaseEntity } from './BaseEntity';
 
 @Entity()
-export class User {
-	@SerializedPrimaryKey()
-	@PrimaryKey()
-	id: number;
-
-	@Property({ defaultRaw: 'uuid_generate_v4()' })
-	idx: string;
-
+export class User extends BaseEntity {
 	@Property({
 		type: 'string',
 		length: 50,
@@ -47,21 +41,4 @@ export class User {
 		default: true,
 	})
 	is_active: boolean;
-
-	@Exclude({ toPlainOnly: true })
-	@Property({
-		nullable: false,
-		default: false,
-	})
-	is_obsolete: boolean;
-
-	@Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
-	createdAt: Date = new Date();
-
-	@Property({
-		defaultRaw: 'CURRENT_TIMESTAMP',
-		nullable: true,
-		onUpdate: () => new Date(),
-	})
-	updatedAt?: Date = new Date();
 }

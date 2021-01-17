@@ -1,23 +1,9 @@
-import {
-	Entity,
-	Property,
-	PrimaryKey,
-	Unique,
-	SerializedPrimaryKey,
-	ManyToOne,
-} from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
+import { Entity, Property, ManyToOne } from '@mikro-orm/core';
+import { BaseEntity } from './BaseEntity';
 import { User } from './User.entity';
 
 @Entity()
-export class OtpLog {
-	@SerializedPrimaryKey()
-	@PrimaryKey()
-	id: number;
-
-	@Property({ defaultRaw: 'uuid_generate_v4()' })
-	idx: string;
-
+export class ActivityLog extends BaseEntity {
 	@Property({
 		nullable: true,
 		length: 50,
@@ -56,28 +42,4 @@ export class OtpLog {
 
 	@ManyToOne({ entity: () => User, onDelete: 'cascade' })
 	user: User;
-
-	@Property({
-		nullable: false,
-		default: true,
-	})
-	is_active: boolean;
-
-	@Exclude({ toPlainOnly: true })
-	@Property({
-		nullable: false,
-		default: false,
-	})
-	is_obsolete: boolean;
-
-	@Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
-	createdAt: Date = new Date();
-
-	@Exclude({ toPlainOnly: true })
-	@Property({
-		defaultRaw: 'CURRENT_TIMESTAMP',
-		nullable: true,
-		onUpdate: () => new Date(),
-	})
-	updatedAt?: Date = new Date();
 }

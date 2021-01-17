@@ -7,17 +7,11 @@ import {
 	ManyToOne,
 } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
+import { BaseEntity } from './BaseEntity';
 import { User } from './User.entity';
 
 @Entity()
-export class OtpLog {
-	@SerializedPrimaryKey()
-	@PrimaryKey()
-	id: number;
-
-	@Property({ defaultRaw: 'uuid_generate_v4()' })
-	idx: string;
-
+export class OtpLog extends BaseEntity {
 	@Property({
 		nullable: false,
 		name: 'expires_in',
@@ -39,28 +33,4 @@ export class OtpLog {
 		type: 'boolean',
 	})
 	isRevoked: boolean;
-
-	@Property({
-		nullable: false,
-		default: true,
-	})
-	is_active: boolean;
-
-	@Exclude({ toPlainOnly: true })
-	@Property({
-		nullable: false,
-		default: false,
-	})
-	is_obsolete: boolean;
-
-	@Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
-	createdAt: Date = new Date();
-
-	@Exclude({ toPlainOnly: true })
-	@Property({
-		defaultRaw: 'CURRENT_TIMESTAMP',
-		nullable: true,
-		onUpdate: () => new Date(),
-	})
-	updatedAt?: Date = new Date();
 }
