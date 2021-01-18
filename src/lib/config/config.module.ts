@@ -14,5 +14,6 @@ import { validationSchema } from './validateConfig';
 			validationSchema: validationSchema,
 		}),
 	],
+	exports: [NestJsConfigModule],
 })
 export class ConfigModule {}

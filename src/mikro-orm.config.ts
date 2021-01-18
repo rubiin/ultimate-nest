@@ -3,12 +3,11 @@ import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import * as dotenv from 'dotenv';
 
 /**
- * 		This is required to run mikro-orm cli
- * 		
+ * This is required to run mikro-orm cli
+ *
  */
 
-
-dotenv.config({ path: `${process.cwd()}/env/${process.env.NODE_ENV}.env`});
+dotenv.config({ path: `${process.cwd()}/env/${process.env.NODE_ENV}.env` });
 
 const config = {
 	dbName: process.env.DB_DATABASE,
