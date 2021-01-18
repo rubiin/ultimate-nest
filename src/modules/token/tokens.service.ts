@@ -142,7 +142,7 @@ export class TokensService {
 	async deleteRefreshTokenForUser(user: User): Promise<IResponse> {
 		await this.tokens.deleteTokensForUser(user);
 
-		return { message: 'Operation Sucessful'};
+		return { message: 'Operation Sucessful' };
 	}
 
 	/**
