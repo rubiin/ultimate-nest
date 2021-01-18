@@ -8,9 +8,14 @@ import { InternalServerExceptionFilter } from '@common/filter/InternalServer.fil
 import { RequestSanitizerInterceptor } from '@common/interceptor/requestSanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+	const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+	// =================================
+	// configureNestGlobals
+	// =================================
 
 	app.use(helmet())
 		.use(compression())
@@ -18,7 +23,7 @@ async function bootstrap() {
 			new ValidationPipe({
 				whitelist: true,
 				transform: true,
-				validationError: { target: false }
+				validationError: { target: false },
 			}),
 		)
 		.useGlobalFilters(new InternalServerExceptionFilter())
@@ -28,14 +33,27 @@ async function bootstrap() {
 
 	app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
+	// =================================
+	// configureExpressSettings
+	// =================================
+
+	app.set('etag', 'strong');
+	app.set('trust proxy', true);
+	app.set('x-powered-by', false);
+
+	// =================================
+	// configureNestSwagger
+	// =================================
+
 	const configService = app.get(ConfigService);
 	const options = new DocumentBuilder()
-		.setTitle('Employee Api')
+		.setTitle('Api')
 		.setDescription(
-			'The Employee API description built using swagger OpenApi. You can find out more about Swagger at http://swagger.io',
+			'The API description built using swagger OpenApi. You can find out more about Swagger at http://swagger.io',
 		)
 		.setVersion('1.0')
 		.build();
+		
 	const document = SwaggerModule.createDocument(app, options);
 
 	SwaggerModule.setup('api', app, document);

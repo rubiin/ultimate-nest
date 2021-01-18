@@ -18,7 +18,7 @@ import { UserLoginDto } from '@dtos/UserLogin.dto';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/core';
 import { TokensService } from '@modules/token/tokens.service';
-import { buildResponsePayload } from '@utils/helpers.utils';
+import { buildResponsePayload } from '@common/utils/helpers.utils';
 
 @Injectable()
 export class AuthService {

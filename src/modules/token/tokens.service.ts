@@ -6,7 +6,7 @@ import { IResponse } from '@common/interface/response.interface';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { User } from '@entities/User.entity';
 import { EntityRepository } from '@mikro-orm/core';
-import { pick } from '@utils/helpers.utils';
+import { pick } from '@common/utils/helpers.utils';
 import { RefreshToken } from '@entities/RefreshToken.entity';
 
 const BASE_OPTIONS: SignOptions = {
@@ -142,7 +142,7 @@ export class TokensService {
 	async deleteRefreshTokenForUser(user: User): Promise<IResponse> {
 		await this.tokens.deleteTokensForUser(user);
 
-		return { message: 'Operation Sucessful', statusCode: 200 };
+		return { message: 'Operation Sucessful'};
 	}
 
 	/**
@@ -164,6 +164,6 @@ export class TokensService {
 		}
 		await this.tokens.deleteToken(user, tokenId);
 
-		return { message: 'Operation Sucessful', statusCode: 200 };
+		return { message: 'Operation Sucessful' };
 	}
 }

@@ -1,9 +1,9 @@
 import { expose } from 'threads/worker';
 import * as eta from 'eta';
-import { pick } from '@utils/helpers.utils';
+import { pick } from '@common/utils/helpers.utils';
 import { format } from 'date-fns';
 import { InternalServerErrorException, Logger } from '@nestjs/common';
-import { getBrowserInstance } from '@utils/puppteer.helper';
+import { getBrowserInstance } from '@common/utils/puppteer.helper';
 
 const logger: Logger = new Logger('CreatePdf');
 

@@ -1,5 +1,5 @@
 {
-  "name": "nest-typescript-starter",
+  "name": "ultimate-nest-template",
   "version": "1.0.0",
   "description": "Nest TypeScript starter repository",
   "license": "MIT",
@@ -45,7 +45,7 @@
     "dotenv": "^8.2.0",
     "eta": "^1.12.1",
     "express": "^4.17.1",
-    "helmet": "^4.3.1",
+    "helmet": "^4.4.0",
     "joi": "^17.3.0",
     "nanoid": "^3.1.20",
     "nest-winston": "^1.4.0",
@@ -122,5 +122,12 @@
       "text",
       "html"
     ]
-  }
+  },
+    "mikro-orm": {
+      "useTsNode": true,
+      "configPaths": [
+        "./src/mikro-orm.config.ts",
+        "./dist/mikro-orm.config.js"
+      ]
+    }
 }

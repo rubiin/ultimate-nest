@@ -1,10 +1,9 @@
 import { AuthenticationPayload } from './authentication.interface';
 
 export interface IResponse {
-	statusCode: number;
 	message: string;
 }
 
-export type loginSignupReponse =
+export type ILoginSignupReponse =
 	| { message: any; statusCode: number }
 	| { message: string; data: AuthenticationPayload };
