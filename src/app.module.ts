@@ -7,6 +7,7 @@ import { OrmModule } from '@lib/orm/orm.module';
 import { UserModule } from '@modules/user/user.module';
 import { ConfigModule } from '@lib/config/config.module';
 import { I18nModule } from '@lib/i18n/i18n.module';
+
 @Module({
 	imports: [
 		OrmModule,

@@ -7,6 +7,7 @@ import {
 	QueryResolver,
 } from 'nestjs-i18n';
 import * as path from 'path';
+
 @Global()
 @Module({
 	exports: [NestI18nModule],

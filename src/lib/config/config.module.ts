@@ -1,7 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule as NestJsConfigModule } from '@nestjs/config';
-import { database, app } from './configuration';
+import { app, database } from './configuration';
 import { validationSchema } from './validateConfig';
+
 @Global()
 @Module({
 	imports: [

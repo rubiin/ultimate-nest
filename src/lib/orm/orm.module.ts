@@ -7,6 +7,7 @@ import { OtpLog } from '@entities/OtpLog.entity';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
 @Module({
 	imports: [
 		MikroOrmModule.forRootAsync({

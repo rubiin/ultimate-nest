@@ -1,19 +1,14 @@
 import {
-	loginSignupReponse,
+	ILoginSignupReponse,
 	IResponse,
 } from '@common/interface/response.interface';
-import { ActivityLog } from '@entities/ActivityLog.entity';
 import { User } from '@entities/User.entity';
 import {
 	BadRequestException,
 	HttpException,
 	HttpStatus,
 	Injectable,
-	UnauthorizedException,
 } from '@nestjs/common';
-import { startOfDay, endOfDay } from 'date-fns';
-import { config } from 'process';
-import * as argon from 'argon2';
 import { UserLoginDto } from '@dtos/UserLogin.dto';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/core';
@@ -28,8 +23,8 @@ export class AuthService {
 		private readonly tokenService: TokensService,
 	) {}
 
-	async loginUser(userDto: UserLoginDto): Promise<loginSignupReponse> {
-		let user = await this.userRepository.findOne({
+	async loginUser(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
+		const user = await this.userRepository.findOne({
 			username: userDto.email,
 		});
 

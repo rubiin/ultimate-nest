@@ -10,6 +10,7 @@ export class RefreshTokensRepository {
 		@InjectRepository(RefreshToken)
 		private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
 	) {}
+
 	public async createRefreshToken(
 		user: User,
 		ttl: number,
@@ -28,6 +29,7 @@ export class RefreshTokensRepository {
 		token.expiresIn = expiration;
 
 		await this.refreshTokenRepository.persistAndFlush(token);
+
 		return token;
 	}
 

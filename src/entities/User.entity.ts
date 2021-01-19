@@ -1,5 +1,4 @@
 import { Entity, Property, Unique } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
 import { BaseEntity } from './BaseEntity.entity';
 
 @Entity()

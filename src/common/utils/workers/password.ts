@@ -1,6 +1,6 @@
 import { expose } from 'threads/worker';
 
-import { hash, argon2d } from 'argon2';
+import { argon2d, hash } from 'argon2';
 
 const password = {
 	hashString(value: string): Promise<string> {

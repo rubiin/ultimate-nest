@@ -1,4 +1,5 @@
 import * as puppeteer from 'puppeteer';
+
 let instance = null;
 
 export async function getBrowserInstance() {

@@ -1,4 +1,4 @@
-import { UnprocessableEntityException, Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SignOptions, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokensRepository } from './refresh-tokens.repository';
@@ -106,32 +106,6 @@ export class TokensService {
 		}
 	}
 
-	private async getUserFromRefreshTokenPayload(
-		payload: RefreshTokenPayload,
-	): Promise<User> {
-		const subId = payload.sub;
-
-		if (!subId) {
-			throw new UnprocessableEntityException('Refresh token malformed');
-		}
-
-		return this.userRepository.findOne({
-			id: subId,
-		});
-	}
-
-	private async getStoredTokenFromRefreshTokenPayload(
-		payload: RefreshTokenPayload,
-	): Promise<RefreshToken | null> {
-		const tokenId = payload.jti;
-
-		if (!tokenId) {
-			throw new UnprocessableEntityException('Refresh token malformed');
-		}
-
-		return this.tokens.findTokenById(tokenId);
-	}
-
 	/**
 	 *
 	 * Remove all the refresh tokens associated to a user
@@ -165,5 +139,31 @@ export class TokensService {
 		await this.tokens.deleteToken(user, tokenId);
 
 		return { message: 'Operation Sucessful' };
+	}
+
+	private async getUserFromRefreshTokenPayload(
+		payload: RefreshTokenPayload,
+	): Promise<User> {
+		const subId = payload.sub;
+
+		if (!subId) {
+			throw new UnprocessableEntityException('Refresh token malformed');
+		}
+
+		return this.userRepository.findOne({
+			id: subId,
+		});
+	}
+
+	private async getStoredTokenFromRefreshTokenPayload(
+		payload: RefreshTokenPayload,
+	): Promise<RefreshToken | null> {
+		const tokenId = payload.jti;
+
+		if (!tokenId) {
+			throw new UnprocessableEntityException('Refresh token malformed');
+		}
+
+		return this.tokens.findTokenById(tokenId);
 	}
 }
