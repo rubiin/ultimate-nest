@@ -17,8 +17,7 @@ services:
             - '4054:4000'
         command: npm run start:prod
         volumes:
-            - .:/usr/src/app
-            - /usr/src/app/node_modules
+            - ./dist:/usr/src/app
         restart: unless-stopped
 
 networks:

@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		});
 	}
 
-	async validate(payload: { idx: string }): Promise<User> {
+	async validate(payload: { idx: string }, done) {
 		const { idx } = payload;
 		const user = await this.usersRepo.findOne({ idx });
 
@@ -26,6 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 			throw new UnprocessableEntityException('User not found');
 		}
 
-		return user;
+		done(null, user);
 	}
 }
