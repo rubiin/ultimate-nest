@@ -13,9 +13,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-	// =================================
+	// ==================================================
 	// configureNestGlobals
-	// =================================
+	// ==================================================
 
 	app.use(helmet())
 		.use(compression())
@@ -33,16 +33,16 @@ async function bootstrap() {
 
 	app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
-	// =================================
+	// ==================================================
 	// configureExpressSettings
-	// =================================
+	// ==================================================
 
 	app.set('etag', 'strong');
 	app.set('trust proxy', true);
 
-	// =================================
+	// ==================================================
 	// configureNestSwagger
-	// =================================
+	// ==================================================
 
 	const configService = app.get(ConfigService);
 
