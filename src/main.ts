@@ -39,13 +39,13 @@ async function bootstrap() {
 
 	app.set('etag', 'strong');
 	app.set('trust proxy', true);
-	app.set('x-powered-by', false);
 
 	// =================================
 	// configureNestSwagger
 	// =================================
 
 	const configService = app.get(ConfigService);
+
 	const options = new DocumentBuilder()
 		.setTitle('Api')
 		.setDescription(
