@@ -2,17 +2,17 @@ version: '3.5'
 
 services:
     #######################################
-    # Some Service
+    # Ultimate-nest Service
     #######################################
-    employee-service:
-        container_name: some-service
+    ultimate-nest-service:
+        container_name: ultimate-nest-service
         env_file: 'env/${ENV}.env'
         build:
             context: '.'
-        image: some-service
+        image: ultimate-nest-service
 
         networks:
-            - ultimate-net
+            - ultimate-nest-net
         ports:
             - '4054:4000'
         command: npm run start:prod
@@ -21,7 +21,7 @@ services:
         restart: unless-stopped
 
 networks:
-    orbis-net:
+    ultimate-nest-net:
         name: ultimate-network
         ipam:
             driver: default

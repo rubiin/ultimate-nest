@@ -14,6 +14,13 @@ async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
 	// ==================================================
+	// configureExpressSettings
+	// ==================================================
+
+	app.set('etag', 'strong');
+	app.set('trust proxy', true);
+
+	// ==================================================
 	// configureNestGlobals
 	// ==================================================
 
@@ -32,13 +39,6 @@ async function bootstrap() {
 		.enableCors();
 
 	app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
-
-	// ==================================================
-	// configureExpressSettings
-	// ==================================================
-
-	app.set('etag', 'strong');
-	app.set('trust proxy', true);
 
 	// ==================================================
 	// configureNestSwagger
