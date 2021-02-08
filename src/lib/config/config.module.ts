@@ -15,6 +15,7 @@ import { validationSchema } from './validateConfig';
 			cache: true,
 			isGlobal: true,
 			expandVariables: true,
+			validationSchema: validationSchema,
 		}),
 	],
 	providers: [ConfigService],
