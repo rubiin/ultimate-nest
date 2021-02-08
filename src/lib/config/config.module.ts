@@ -10,7 +10,7 @@ import { validationSchema } from './validateConfig';
 @Module({
 	imports: [
 		NestJsConfigModule.forRoot({
-			envFilePath: [`dev.env`],
+			envFilePath: ['env/dev.env'],
 			load: [app, jwt, redis, mail, database],
 			cache: true,
 			isGlobal: true,
