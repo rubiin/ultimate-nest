@@ -18,6 +18,6 @@ import { validationSchema } from './validateConfig';
 		}),
 	],
 	providers: [ConfigService],
-	exports: [NestJsConfigModule],
+	exports: [ConfigService],
 })
 export class ConfigModule {}
