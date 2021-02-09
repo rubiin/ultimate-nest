@@ -1,32 +1,56 @@
 import { AuthenticationPayload } from '@common/interface/authentication.interface';
 import { User } from '@entities/User.entity';
+import { pick } from '@rubiin/js-utils';
+import { Pool, spawn } from 'threads';
+import { Password } from './workers/password';
 
-export const isObjectEmpty = (obj: unknown): boolean => {
-	return Object.keys(obj).length === 0;
-};
+const passwordPool = Pool(
+	() => spawn<Password>(new Worker('./workers/password'), { timeout: 30000 }),
+	1 /* optional size */,
+);
 
-export function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
-	const ret: any = {};
+export class UtilService {
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {User} user
+	 * @param {string} accessToken
+	 * @param {string} [refreshToken]
+	 * @returns {AuthenticationPayload}
+	 * @memberof UtilService
+	 */
+	static buildPayloadResponse(
+		user: User,
+		accessToken: string,
+		refreshToken?: string,
+	): AuthenticationPayload {
+		return {
+			user: {
+				...pick(user, ['id', 'idx']),
+			},
+			payload: {
+				access_token: accessToken,
+				...(refreshToken ? { refresh_token: refreshToken } : {}),
+			},
+		};
+	}
 
-	keys.forEach(key => {
-		ret[key] = obj[key];
-	});
+	/**
+	 *
+	 *
+	 * @param {string} str
+	 * @returns {Promise<string>}
+	 * @memberof UtilService
+	 */
 
-	return ret;
-}
+	static async hashString(str: string): Promise<string> {
+		const hashed = passwordPool.queue(async pwd => {
+			return pwd.hashString(str);
+		});
 
-export function buildResponsePayload(
-	user: User,
-	accessToken: string,
-	refreshToken?: string,
-): AuthenticationPayload {
-	return {
-		user: {
-			...pick(user, ['id', 'idx']),
-		},
-		payload: {
-			access_token: accessToken,
-			...(refreshToken ? { refresh_token: refreshToken } : {}),
-		},
-	};
+		await passwordPool.completed();
+
+		return hashed;
+	}
 }
