@@ -9,6 +9,7 @@ services:
         env_file: 'env/${ENV}.env'
         build:
             context: '.'
+            dockerfile: docker
         image: ultimate-nest-service
 
         networks:

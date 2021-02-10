@@ -15,11 +15,8 @@ export class InternalServerExceptionFilter implements ExceptionFilter {
 
 		response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
 			statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-			message: {
-				message: 'Oops! Server Unavailable',
-				sub:
-					'Sorry, the servers are unavailable at the moment. Please try again later.',
-			},
+			message:
+				'Sorry, the servers are unavailable at the moment. Please try again later.',
 		});
 	}
 }

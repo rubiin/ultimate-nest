@@ -54,3 +54,9 @@ export class UtilService {
 		return hashed;
 	}
 }
+
+export function respond(message: string, status = 'success', statusCode = 200) {
+	const response: IResponse = { data: { message }, status, statusCode };
+
+	return response;
+}
