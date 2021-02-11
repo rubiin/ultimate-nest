@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { Max, Min } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, Max, Min } from 'class-validator';
 
 /**
  * Transform input to number. default is 0.
@@ -19,6 +19,12 @@ export class PaginationDto {
 	@Min(1)
 	@TransformToNumber()
 	readonly page: number = 1;
+
+	@ApiPropertyOptional()
+	@IsString()
+	@IsNotEmpty()
+	@IsOptional()
+	readonly q?: string;
 
 	get offset() {
 		return this.limit * (this.page - 1);

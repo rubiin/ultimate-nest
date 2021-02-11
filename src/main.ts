@@ -16,6 +16,8 @@ import { setupSwagger } from 'setup-swagger';
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+	const configService = app.get(ConfigService);
+
 	// ==================================================
 	// configureExpressSettings
 	// ==================================================
@@ -55,9 +57,13 @@ async function bootstrap() {
 	// configureNestSwagger
 	// ==================================================
 
-	setupSwagger(app);
-
-	const configService = app.get(ConfigService);
+	if (
+		['development', 'staging'].includes(
+			configService.get<string>('app.environment'),
+		)
+	) {
+		setupSwagger(app);
+	}
 
 	const port = configService.get<number>('app.port', 3000);
 
