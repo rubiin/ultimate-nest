@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
-import { InternalServerExceptionFilter } from '@common/filter/InternalServer.filter';
+import { AppExceptionFilter } from '@common/filter/InternalServer.filter';
 import { RequestSanitizerInterceptor } from '@common/interceptor/requestSanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
@@ -43,7 +43,7 @@ async function bootstrap() {
 			validationError: { target: false },
 		}),
 	)
-		.useGlobalFilters(new InternalServerExceptionFilter())
+		.useGlobalFilters(new AppExceptionFilter())
 		.useGlobalInterceptors(new RequestSanitizerInterceptor())
 		.setGlobalPrefix('v1')
 		.enableCors();

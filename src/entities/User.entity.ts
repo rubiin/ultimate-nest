@@ -27,5 +27,5 @@ export class User extends BaseEntity {
 		type: 'string',
 		length: 50,
 	})
-	username: string;
+	userName: string;
 }
