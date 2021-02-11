@@ -2,6 +2,12 @@ import puppeteer from 'puppeteer';
 
 let instance = null;
 
+/**
+ *
+ *
+ * @export
+ * @returns
+ */
 export async function getBrowserInstance() {
 	if (!instance) {
 		instance = await puppeteer.launch({

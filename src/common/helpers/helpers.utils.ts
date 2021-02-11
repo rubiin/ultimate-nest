@@ -2,14 +2,15 @@ import { AuthenticationPayload } from '@common/interface/authentication.interfac
 import { User } from '@entities/User.entity';
 import { pick } from '@rubiin/js-utils';
 import { Pool, spawn } from 'threads';
-import { Password } from './workers/password';
+import { Password } from '../misc/workers/password';
+import * as eta from 'eta';
 
 const passwordPool = Pool(
 	() => spawn<Password>(new Worker('./workers/password'), { timeout: 30000 }),
 	1 /* optional size */,
 );
 
-export class UtilService {
+export class HelperService {
 	/**
 	 *
 	 *
@@ -53,10 +54,37 @@ export class UtilService {
 
 		return hashed;
 	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {unknown} data
+	 * @param {string} path
+	 * @returns {(Promise<string | void>)}
+	 * @memberof HelperService
+	 */
+	static async renderTemplate(
+		data: unknown,
+		path: string,
+	): Promise<string | void> {
+		return eta.renderFileAsync(path, { data }, { cache: true });
+	}
 }
 
-export function respond(message: string, status = 'success', statusCode = 200) {
-	const response: IResponse = { data: { message }, status, statusCode };
-
-	return response;
+/**
+ *
+ *
+ * @export
+ * @param {string} message
+ * @param {string} [status='success']
+ * @param {number} [statusCode=200]
+ * @returns {IResponse}
+ */
+export function respond(
+	message: string,
+	status = 'success',
+	statusCode = 200,
+): IResponse {
+	return { data: { message }, status, statusCode } as IResponse;
 }

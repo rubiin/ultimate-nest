@@ -8,7 +8,9 @@ import { InternalServerExceptionFilter } from '@common/filter/InternalServer.fil
 import { RequestSanitizerInterceptor } from '@common/interceptor/requestSanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
+import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import * as rateLimit from 'express-rate-limit';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,22 +19,30 @@ async function bootstrap() {
 	// configureExpressSettings
 	// ==================================================
 
-	app.set('etag', 'strong');
-	app.set('trust proxy', true);
+	app.set('etag', 'strong')
+		.set('trust proxy', true)
+		.use(bodyParser.json({ limit: '50mb' }))
+		.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
+		.use(helmet())
+		.use(compression())
+		.use(
+			rateLimit({
+				windowMs: 15 * 60 * 1000, // 15 minutes
+				max: 100, // limit each IP to 100 requests per windowMs
+			}),
+		);
 
 	// ==================================================
 	// configureNestGlobals
 	// ==================================================
 
-	app.use(helmet())
-		.use(compression())
-		.useGlobalPipes(
-			new ValidationPipe({
-				whitelist: true,
-				transform: true,
-				validationError: { target: false },
-			}),
-		)
+	app.useGlobalPipes(
+		new ValidationPipe({
+			whitelist: true,
+			transform: true,
+			validationError: { target: false },
+		}),
+	)
 		.useGlobalFilters(new InternalServerExceptionFilter())
 		.useGlobalInterceptors(new RequestSanitizerInterceptor())
 		.setGlobalPrefix('v1')

@@ -1,7 +1,7 @@
 import { expose } from 'threads/worker';
-import * as eta from 'eta';
 import { InternalServerErrorException, Logger } from '@nestjs/common';
-import { getBrowserInstance } from '@common/utils/puppteer.helper';
+import { getBrowserInstance } from '@common/helpers/puppteer.helper';
+import { HelperService } from '@common/helpers/helpers.utils';
 
 const logger: Logger = new Logger('CreatePdf');
 
@@ -10,10 +10,9 @@ const pdf = {
 		try {
 			// We can use this to add dyamic data to our eta template at run time from database or API as per need.
 
-			const html = await eta.renderFileAsync(
+			const html = await HelperService.renderTemplate(
+				data,
 				`${process.cwd()}/assets/usage`,
-				{ data },
-				{ cache: true },
 			);
 
 			// we are using headless mode

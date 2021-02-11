@@ -6,7 +6,7 @@ import { IResponse } from '@common/interface/response.interface';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { User } from '@entities/User.entity';
 import { EntityRepository } from '@mikro-orm/core';
-import { pick } from '@common/utils/helpers.utils';
+import { pick } from '@rubiin/js-utils';
 import { RefreshToken } from '@entities/RefreshToken.entity';
 
 const BASE_OPTIONS: SignOptions = {
