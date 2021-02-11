@@ -4,13 +4,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
-import { AppExceptionFilter } from '@common/filter/InternalServer.filter';
+import { AppExceptionFilter } from '@common/filter/AllException';
 import { RequestSanitizerInterceptor } from '@common/interceptor/requestSanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
 import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as rateLimit from 'express-rate-limit';
+import { setupSwagger } from 'setup-swagger';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -40,7 +41,7 @@ async function bootstrap() {
 		new ValidationPipe({
 			whitelist: true,
 			transform: true,
-			validationError: { target: false },
+			errorHttpStatusCode: 422,
 		}),
 	)
 		.useGlobalFilters(new AppExceptionFilter())
@@ -54,19 +55,9 @@ async function bootstrap() {
 	// configureNestSwagger
 	// ==================================================
 
+	setupSwagger(app);
+
 	const configService = app.get(ConfigService);
-
-	const options = new DocumentBuilder()
-		.setTitle('Api')
-		.setDescription(
-			'The API description built using swagger OpenApi. You can find out more about Swagger at http://swagger.io',
-		)
-		.setVersion('1.0')
-		.build();
-
-	const document = SwaggerModule.createDocument(app, options);
-
-	SwaggerModule.setup('api', app, document);
 
 	const port = configService.get<number>('app.port', 3000);
 

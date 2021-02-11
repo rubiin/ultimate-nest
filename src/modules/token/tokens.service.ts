@@ -1,4 +1,4 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SignOptions, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokensRepository } from './refresh-tokens.repository';
@@ -66,17 +66,17 @@ export class TokensService {
 		const token = await this.getStoredTokenFromRefreshTokenPayload(payload);
 
 		if (!token) {
-			throw new UnprocessableEntityException('Refresh token not found');
+			throw new UnauthorizedException('Refresh token not found');
 		}
 
 		if (token.isRevoked) {
-			throw new UnprocessableEntityException('Refresh token revoked');
+			throw new UnauthorizedException('Refresh token revoked');
 		}
 
 		const user = await this.getUserFromRefreshTokenPayload(payload);
 
 		if (!user) {
-			throw new UnprocessableEntityException('Refresh token malformed');
+			throw new UnauthorizedException('Refresh token malformed');
 		}
 
 		return { user, token };
@@ -97,11 +97,9 @@ export class TokensService {
 			return this.jwt.verify(token);
 		} catch (e) {
 			if (e instanceof TokenExpiredError) {
-				throw new UnprocessableEntityException('Refresh token expired');
+				throw new UnauthorizedException('Refresh token expired');
 			} else {
-				throw new UnprocessableEntityException(
-					'Refresh token malformed',
-				);
+				throw new UnauthorizedException('Refresh token malformed');
 			}
 		}
 	}
@@ -134,7 +132,7 @@ export class TokensService {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
-			throw new UnprocessableEntityException('Refresh token malformed');
+			throw new UnauthorizedException('Refresh token malformed');
 		}
 		await this.tokens.deleteToken(user, tokenId);
 
@@ -147,7 +145,7 @@ export class TokensService {
 		const subId = payload.sub;
 
 		if (!subId) {
-			throw new UnprocessableEntityException('Refresh token malformed');
+			throw new UnauthorizedException('Refresh token malformed');
 		}
 
 		return this.userRepository.findOne({
@@ -161,7 +159,7 @@ export class TokensService {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
-			throw new UnprocessableEntityException('Refresh token malformed');
+			throw new UnauthorizedException('Refresh token malformed');
 		}
 
 		return this.tokens.findTokenById(tokenId);

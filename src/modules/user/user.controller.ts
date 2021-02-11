@@ -8,6 +8,7 @@ import {
 	Put,
 	Param,
 	Delete,
+	UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 @Controller('user')

@@ -45,5 +45,5 @@ export function paginate(
 		currentPage,
 	};
 
-	return new Pagination('success', 200, data, meta, routes);
+	return new Pagination(data, meta, routes);
 }

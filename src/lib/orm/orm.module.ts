@@ -7,7 +7,7 @@ import { OtpLog } from '@entities/OtpLog.entity';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import * as Entities from '@entities/index';
 @Module({
 	imports: [
 		MikroOrmModule.forRootAsync({
@@ -28,7 +28,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 			inject: [ConfigService],
 		}),
 		MikroOrmModule.forFeature({
-			entities: [User, OtpLog, ActivityLog, RefreshToken],
+			entities: [...Object.values(Entities)],
 		}),
 	],
 	exports: [MikroOrmModule],

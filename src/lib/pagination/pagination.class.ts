@@ -5,9 +5,6 @@ import { IPaginationLinks, IPaginationMeta } from './pagination.interfaces';
 
 export class Pagination<PaginationObject> {
 	constructor(
-		public readonly status: string,
-
-		public readonly statusCode: number,
 		/**
 		 * a list of items to be returned
 		 */

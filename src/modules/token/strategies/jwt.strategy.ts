@@ -1,7 +1,7 @@
 import { User } from '@entities/User.entity';
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		const user = await this.usersRepo.findOne({ idx });
 
 		if (!user) {
-			throw new UnprocessableEntityException('User not found');
+			throw new UnauthorizedException('User not found');
 		}
 
 		done(null, user);

@@ -25,7 +25,9 @@ export class AuthService {
 
 	async loginUser(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
 		const user = await this.userRepository.findOne({
-			username: userDto.email,
+			userName: userDto.email,
+			isActive: true,
+			isObsolete: false,
 		});
 
 		if (user.isObsolete) {

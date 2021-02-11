@@ -4,7 +4,7 @@ import {
 	HttpException,
 	HttpStatus,
 	Injectable,
-	UnprocessableEntityException,
+	UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
@@ -38,11 +38,11 @@ export class AuthGuard implements CanActivate {
 			return true;
 		} catch (e) {
 			if (e?.name === 'TokenExpiredError') {
-				throw new UnprocessableEntityException(
+				throw new UnauthorizedException(
 					'The session has expired. Please relogin',
 				);
 			} else {
-				throw new UnprocessableEntityException('Token malformed');
+				throw new UnauthorizedException('Token malformed');
 			}
 		}
 	}

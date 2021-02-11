@@ -1,12 +1,15 @@
 import { AuthenticationPayload } from '@common/interface/authentication.interface';
 import { User } from '@entities/User.entity';
 import { pick } from '@rubiin/js-utils';
-import { Pool, spawn } from 'threads';
-import { Password } from '../misc/workers/password';
+import { Pool, spawn, Worker } from 'threads';
 import * as eta from 'eta';
+import { Password } from '../misc/workers/password';
 
 const passwordPool = Pool(
-	() => spawn<Password>(new Worker('./workers/password'), { timeout: 30000 }),
+	() =>
+		spawn<Password>(new Worker('../misc/workers/password'), {
+			timeout: 30000,
+		}),
 	1 /* optional size */,
 );
 
@@ -70,21 +73,4 @@ export class HelperService {
 	): Promise<string | void> {
 		return eta.renderFileAsync(path, { data }, { cache: true });
 	}
-}
-
-/**
- *
- *
- * @export
- * @param {string} message
- * @param {string} [status='success']
- * @param {number} [statusCode=200]
- * @returns {IResponse}
- */
-export function respond(
-	message: string,
-	status = 'success',
-	statusCode = 200,
-): IResponse {
-	return { data: { message }, status, statusCode } as IResponse;
 }
