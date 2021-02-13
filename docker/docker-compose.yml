@@ -8,14 +8,14 @@ services:
         container_name: ultimate-nest-service
         env_file: 'env/${ENV}.env'
         build:
-            context: '.'
+            context: '..'
             dockerfile: ./docker/Dockerfile
         image: ultimate-nest-service
 
         networks:
             - ultimate-nest-net
         ports:
-            - '4054:4000'
+            - 4054:4000
         command: npm run start:prod
         volumes:
             - ./dist:/usr/src/app
