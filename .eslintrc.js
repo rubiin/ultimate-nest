@@ -20,7 +20,6 @@ module.exports = {
 	rules: {
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
-		'@typescript-eslint/camelcase': 2,
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
 		'no-multi-spaces': 'error',
 		'linebreak-style': ['error', 'unix'],

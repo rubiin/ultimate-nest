@@ -3,26 +3,25 @@ import { UpdateUserDto } from '@dtos/update-user.dto';
 import { User } from '@entities/User.entity';
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import {
-	BadRequestException,
-	HttpException,
-	Injectable,
-	InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { I18nRequestScopeService } from 'nestjs-i18n';
 
 @Injectable()
 export class UserService {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: EntityRepository<User>,
+		private readonly i18n: I18nRequestScopeService,
 	) {}
 
 	create(createUserDto: CreateUserDto) {
-		return 'This action adds a new user';
+		return `This action creates a #${createUserDto} user`;
 	}
 
 	async findAll() {
-		return { a: '10000' };
+		return this.i18n.translate('translations.GOODBYE_MESSAGE', {
+			args: { username: 'Toon' },
+		});
 	}
 
 	findOne(id: number): Promise<User> {
@@ -30,7 +29,7 @@ export class UserService {
 	}
 
 	update(id: number, updateUserDto: UpdateUserDto) {
-		return `This action updates a #${id} user`;
+		return `This action updates a #${updateUserDto} user`;
 	}
 
 	remove(id: number) {
