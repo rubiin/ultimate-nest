@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
@@ -11,10 +10,12 @@ import { ConfigService } from '@nestjs/config';
 import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as rateLimit from 'express-rate-limit';
-import { setupSwagger } from 'setup-swagger';
+import { setupSwagger } from 'swagger';
 
 async function bootstrap() {
-	const app = await NestFactory.create<NestExpressApplication>(AppModule);
+	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+		cors: true,
+	});
 
 	const configService = app.get(ConfigService);
 
@@ -48,8 +49,7 @@ async function bootstrap() {
 	)
 		.useGlobalFilters(new AppExceptionFilter())
 		.useGlobalInterceptors(new RequestSanitizerInterceptor())
-		.setGlobalPrefix('v1')
-		.enableCors();
+		.setGlobalPrefix('v1');
 
 	app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
