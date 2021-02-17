@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
-import { AppExceptionFilter } from '@common/filter/AllException';
 import { RequestSanitizerInterceptor } from '@common/interceptor/requestSanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
@@ -47,7 +46,6 @@ async function bootstrap() {
 			errorHttpStatusCode: 422,
 		}),
 	)
-		.useGlobalFilters(new AppExceptionFilter())
 		.useGlobalInterceptors(new RequestSanitizerInterceptor())
 		.setGlobalPrefix('v1');
 

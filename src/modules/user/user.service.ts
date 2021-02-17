@@ -3,7 +3,7 @@ import { UpdateUserDto } from '@dtos/update-user.dto';
 import { User } from '@entities/User.entity';
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { I18nRequestScopeService } from 'nestjs-i18n';
 
 @Injectable()
@@ -19,9 +19,14 @@ export class UserService {
 	}
 
 	async findAll() {
-		return this.i18n.translate('translations.GOODBYE_MESSAGE', {
-			args: { username: 'Toon' },
-		});
+		return this.i18n.translate('operations.SUCCESS_MESSAGE');
+	}
+
+	async itThrows() {
+		throw new HttpException(
+			await this.i18n.translate('operations.USER_NOT_FOUND'),
+			HttpStatus.FORBIDDEN,
+		);
 	}
 
 	findOne(id: number): Promise<User> {

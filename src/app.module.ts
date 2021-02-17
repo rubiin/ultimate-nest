@@ -12,8 +12,16 @@ import {
 	I18nModule,
 } from 'nestjs-i18n';
 import * as path from 'path';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from '@common/filter/AllExceptionTranslatable';
 
 @Module({
+	providers: [
+		{
+			provide: APP_FILTER,
+			useClass: HttpExceptionFilter,
+		},
+	],
 	imports: [
 		AuthModule,
 		UserModule,
