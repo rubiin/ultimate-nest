@@ -7,23 +7,21 @@ import {
 } from 'class-validator';
 
 @ValidatorConstraint({ async: true })
-class IsEqualToConstraint implements ValidatorConstraintInterface {
+class IsPasswordConstraint implements ValidatorConstraintInterface {
 	async validate(value: string, args: ValidationArguments) {
-		const [relatedPropertyName] = args.constraints;
-		const relatedValue = (args.object as any)[relatedPropertyName];
-
-		return value === relatedValue;
+		return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+			value,
+		);
 	}
 
 	defaultMessage(args: ValidationArguments) {
 		const property = args.property;
-		const [relatedPropertyName] = args.constraints;
 
-		return `${property} should be equal to ${relatedPropertyName}`;
+		return `${property} must be fulfill password's criteria`;
 	}
 }
 
-export function IsEqualTo(
+export function IsPassword(
 	property: string,
 	validationOptions?: ValidationOptions,
 ) {
@@ -33,7 +31,7 @@ export function IsEqualTo(
 			propertyName: propertyName,
 			options: validationOptions,
 			constraints: [property],
-			validator: IsEqualToConstraint,
+			validator: IsPasswordConstraint,
 		});
 	};
 }

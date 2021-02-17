@@ -32,7 +32,7 @@ import { HttpExceptionFilter } from '@common/filter/AllExceptionTranslatable';
 			fallbackLanguage: 'en',
 			parser: I18nJsonParser,
 			parserOptions: {
-				path: path.join(__dirname, '/i18n/'),
+				path: path.join(__dirname, '/resources/i18n/'),
 			},
 			resolvers: [
 				{ use: QueryResolver, options: ['lang', 'locale', 'l'] },
