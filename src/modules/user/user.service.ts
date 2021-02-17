@@ -24,7 +24,7 @@ export class UserService {
 
 	async itThrows() {
 		throw new HttpException(
-			await this.i18n.translate('operations.USER_NOT_FOUND'),
+			{ key: 'operations.HELLO', args: { username: 'rubin' } },
 			HttpStatus.FORBIDDEN,
 		);
 	}
