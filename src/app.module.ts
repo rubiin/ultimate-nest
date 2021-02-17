@@ -14,6 +14,7 @@ import {
 import * as path from 'path';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from '@common/filter/AllExceptionTranslatable';
+import { IdeaModule } from '@modules/idea/idea.module';
 
 @Module({
 	providers: [
@@ -35,11 +36,11 @@ import { HttpExceptionFilter } from '@common/filter/AllExceptionTranslatable';
 				path: path.join(__dirname, '/resources/i18n/'),
 			},
 			resolvers: [
-				{ use: QueryResolver, options: ['lang', 'locale', 'l'] },
 				new HeaderResolver(['x-custom-lang']),
 				AcceptLanguageResolver,
 			],
 		}),
+		IdeaModule,
 	],
 })
 export class AppModule {}
