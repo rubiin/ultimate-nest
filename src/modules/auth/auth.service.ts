@@ -2,14 +2,14 @@ import {
 	ILoginSignupReponse,
 	IResponse,
 } from '@common/interface/response.interface';
-import { User } from '@entities/User.entity';
+import { User } from '@entities/user.entity';
 import {
 	BadRequestException,
 	HttpException,
 	HttpStatus,
 	Injectable,
 } from '@nestjs/common';
-import { UserLoginDto } from '@dtos/UserLogin.dto';
+import { UserLoginDto } from '@modules/auth/dtos/user-login';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/core';
 import { TokensService } from '@modules/token/tokens.service';

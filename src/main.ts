@@ -10,6 +10,7 @@ import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as rateLimit from 'express-rate-limit';
 import { setupSwagger } from 'swagger';
+import * as csurf from 'csurf';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -27,6 +28,7 @@ async function bootstrap() {
 		.use(bodyParser.json({ limit: '50mb' }))
 		.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 		.use(helmet())
+		.use(csurf())
 		.use(compression())
 		.use(
 			rateLimit({

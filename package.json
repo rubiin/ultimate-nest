@@ -39,6 +39,7 @@
 		"@nestjs/swagger": "^4.7.13",
 		"@rubiin/js-utils": "^1.9.0",
 		"argon2": "^0.27.1",
+		"cache-manager": "^3.4.0",
 		"cache-manager-redis-store": "^2.0.0",
 		"class-transformer": "^0.4.0",
 		"class-validator": "0.13.1",
@@ -56,6 +57,7 @@
 		"nest-access-control": "^2.0.2",
 		"nest-winston": "^1.4.0",
 		"nestjs-i18n": "^8.0.11",
+		"nestjs-minio": "^2.1.5",
 		"nodemailer": "^6.4.18",
 		"passport": "^0.4.1",
 		"passport-jwt": "^4.0.0",
@@ -74,11 +76,12 @@
 		"@nestjs/cli": "7.5.5",
 		"@nestjs/schematics": "7.2.7",
 		"@nestjs/testing": "7.6.12",
+		"@types/cache-manager": "^3.4.0",
 		"@types/compression": "^1.7.0",
 		"@types/csurf": "^1.11.0",
 		"@types/express": "4.17.11",
 		"@types/express-rate-limit": "^5.1.1",
-		"@types/node": "14.14.28",
+		"@types/node": "^14.14.28",
 		"@types/nodemailer": "^6.4.0",
 		"@types/passport": "^1.0.6",
 		"@types/passport-jwt": "^3.0.4",
@@ -132,8 +135,8 @@
 	"mikro-orm": {
 		"useTsNode": true,
 		"configPaths": [
-			"./src/mikro-orm.config.ts",
-			"./dist/mikro-orm.config.js"
+			"./src/common/database/mikro-orm-cli.config.ts",
+			"./dist/common/database/mikro-orm-cli.config.js"
 		]
 	},
 	"engines": {

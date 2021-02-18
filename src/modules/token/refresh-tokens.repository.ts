@@ -1,5 +1,5 @@
-import { RefreshToken } from '@entities/RefreshToken.entity';
-import { User } from '@entities/User.entity';
+import { RefreshToken } from '@entities/refresh-token.entity';
+import { User } from '@entities/user.entity';
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';

@@ -1,6 +1,7 @@
+import { BaseEntity } from '@common/database/base-entity.entity';
 import { Entity, ManyToOne, Property } from '@mikro-orm/core';
-import { BaseEntity } from './BaseEntity.entity';
-import { User } from './User.entity';
+
+import { User } from './user.entity';
 
 @Entity()
 export class ActivityLog extends BaseEntity {

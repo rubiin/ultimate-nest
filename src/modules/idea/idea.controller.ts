@@ -1,5 +1,4 @@
-import { CreateIdeaDto } from '@dtos/create-idea.dto';
-import { UpdateIdeaDto } from '@dtos/update-idea.dto';
+import { UpdateIdeaDto } from './dtos/update-idea.dto';
 import {
 	Controller,
 	Get,
@@ -10,6 +9,7 @@ import {
 	Delete,
 	ParseIntPipe,
 } from '@nestjs/common';
+import { CreateIdeaDto } from './dtos/create-idea.dto';
 import { IdeaService } from './idea.service';
 
 @Controller('idea')

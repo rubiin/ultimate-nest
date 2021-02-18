@@ -1,8 +1,8 @@
 // all entities should be exported from this barrel file
 
-export { ActivityLog } from './ActivityLog.entity';
-export { OtpLog } from './OtpLog.entity';
-export { RefreshToken } from './RefreshToken.entity';
-export { Protocol } from './Protocol.entity';
-export { User } from './User.entity';
-export { Idea } from './Idea.entity';
+export { ActivityLog } from './activity-log.entity';
+export { OtpLog } from './otp-log.entity';
+export { RefreshToken } from './refresh-token.entity';
+export { Protocol } from './protocol.entity';
+export { User } from './user.entity';
+export { Idea } from './idea.entity';

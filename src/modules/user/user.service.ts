@@ -1,6 +1,6 @@
-import { CreateUserDto } from '@dtos/create-user.dto';
-import { UpdateUserDto } from '@dtos/update-user.dto';
-import { User } from '@entities/User.entity';
+import { CreateUserDto } from '@modules/user/dtos/create-user.dto';
+import { UpdateUserDto } from '@modules/user/dtos/update-user.dto';
+import { User } from '@entities/user.entity';
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';

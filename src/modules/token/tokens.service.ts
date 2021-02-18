@@ -4,10 +4,10 @@ import { SignOptions, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokensRepository } from './refresh-tokens.repository';
 import { IResponse } from '@common/interface/response.interface';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { User } from '@entities/User.entity';
+import { User } from '@entities/user.entity';
 import { EntityRepository } from '@mikro-orm/core';
 import { pick } from '@rubiin/js-utils';
-import { RefreshToken } from '@entities/RefreshToken.entity';
+import { RefreshToken } from '@entities/refresh-token.entity';
 
 const BASE_OPTIONS: SignOptions = {
 	issuer: 'some-app',

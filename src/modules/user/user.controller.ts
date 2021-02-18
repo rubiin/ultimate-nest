@@ -1,5 +1,5 @@
-import { CreateUserDto } from '@dtos/create-user.dto';
-import { UpdateUserDto } from '@dtos/update-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 import {
 	Controller,
 	Get,

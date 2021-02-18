@@ -1,10 +1,9 @@
-import { CreateIdeaDto } from '@dtos/create-idea.dto';
-import { UpdateIdeaDto } from '@dtos/update-idea.dto';
+import { UpdateIdeaDto } from '@modules/idea/dtos/update-idea.dto';
 import { Idea } from '@entities/index';
 import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
+import { CreateIdeaDto } from './dtos/create-idea.dto';
 
 @Injectable()
 export class IdeaService {

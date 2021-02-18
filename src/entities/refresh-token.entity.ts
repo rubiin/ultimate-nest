@@ -1,19 +1,14 @@
+import { BaseEntity } from '@common/database/base-entity.entity';
 import { Entity, ManyToOne, Property } from '@mikro-orm/core';
-import { BaseEntity } from './BaseEntity.entity';
-import { User } from './User.entity';
+import { User } from './user.entity';
 
 @Entity()
-export class OtpLog extends BaseEntity {
+export class RefreshToken extends BaseEntity {
 	@Property({
 		nullable: false,
+		name: 'expires_in',
 	})
 	expiresIn: Date;
-
-	@Property({
-		nullable: true,
-		length: 20,
-	})
-	otpCode: string | null;
 
 	@ManyToOne({ entity: () => User, onDelete: 'cascade' })
 	user: User;
