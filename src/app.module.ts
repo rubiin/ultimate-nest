@@ -6,23 +6,14 @@ import { WinstonModule } from '@lib/winston/winston.module';
 import { OrmModule } from '@lib/orm/orm.module';
 import {
 	I18nJsonParser,
-	QueryResolver,
 	HeaderResolver,
 	AcceptLanguageResolver,
 	I18nModule,
 } from 'nestjs-i18n';
 import * as path from 'path';
-import { APP_FILTER } from '@nestjs/core';
-import { HttpExceptionFilter } from '@common/filter/AllExceptionTranslatable';
 import { IdeaModule } from '@modules/idea/idea.module';
 
 @Module({
-	providers: [
-		{
-			provide: APP_FILTER,
-			useClass: HttpExceptionFilter,
-		},
-	],
 	imports: [
 		AuthModule,
 		UserModule,

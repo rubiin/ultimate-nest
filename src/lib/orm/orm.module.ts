@@ -1,13 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { User } from '@entities/user.entity';
-import { ActivityLog } from '@entities/activity-log.entity';
-import { RefreshToken } from '@entities/refresh-token.entity';
-import { OtpLog } from '@entities/otp-log.entity';
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as Entities from '@entities/index';
+import * as Entities from '@entities';
 @Module({
 	imports: [
 		MikroOrmModule.forRootAsync({

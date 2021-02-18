@@ -45,7 +45,6 @@ async function bootstrap() {
 		new ValidationPipe({
 			whitelist: true,
 			transform: true,
-			errorHttpStatusCode: 422,
 		}),
 	)
 		.useGlobalInterceptors(new RequestSanitizerInterceptor())
