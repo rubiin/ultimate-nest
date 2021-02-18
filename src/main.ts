@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as rateLimit from 'express-rate-limit';
-import { setupSwagger } from 'swagger';
+import setupSwagger from 'swagger';
 import * as csurf from 'csurf';
 
 async function bootstrap() {
