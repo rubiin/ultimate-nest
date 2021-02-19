@@ -1,5 +1,5 @@
 import { UpdateIdeaDto } from '@modules/idea/dtos/update-idea.dto';
-import { Idea } from '@entities/index';
+import { Idea } from '@entities';
 import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';

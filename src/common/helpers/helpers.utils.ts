@@ -1,5 +1,5 @@
 import { AuthenticationPayload } from '@common/interface/authentication.interface';
-import { User } from '@entities/user.entity';
+import { User } from '@entities';
 import { pick } from '@rubiin/js-utils';
 import { Pool, spawn, Worker } from 'threads';
 import * as eta from 'eta';
