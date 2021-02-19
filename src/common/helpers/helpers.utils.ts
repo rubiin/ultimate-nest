@@ -4,6 +4,7 @@ import { pick } from '@rubiin/js-utils';
 import { Pool, spawn, Worker } from 'threads';
 import * as eta from 'eta';
 import { Password } from '../misc/workers/password';
+import { HttpException, InternalServerErrorException } from '@nestjs/common';
 
 const passwordPool = Pool(
 	() =>
@@ -49,13 +50,15 @@ export class HelperService {
 	 */
 
 	static async hashString(str: string): Promise<string> {
-		const hashed = passwordPool.queue(async pwd => {
-			return pwd.hashString(str);
-		});
-
-		await passwordPool.completed();
-
-		return hashed;
+		return passwordPool
+			.queue(async auth => auth.hashString(str))
+			.then(result => {
+				return result;
+			})
+			.catch(_err => {
+				throw new InternalServerErrorException();
+			})
+			.finally(async () => await passwordPool.completed());
 	}
 
 	/**
@@ -71,6 +74,10 @@ export class HelperService {
 		data: unknown,
 		path: string,
 	): Promise<string | void> {
-		return eta.renderFileAsync(path, { data }, { cache: true });
+		try {
+			return eta.renderFileAsync(path, { data }, { cache: true });
+		} catch (e) {
+			throw e;
+		}
 	}
 }
