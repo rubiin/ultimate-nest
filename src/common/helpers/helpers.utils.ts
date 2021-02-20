@@ -5,6 +5,7 @@ import { Pool, spawn, Worker } from 'threads';
 import * as eta from 'eta';
 import { Password } from '../misc/workers/password';
 import { HttpException, InternalServerErrorException } from '@nestjs/common';
+import * as sharp from 'sharp';
 
 const passwordPool = Pool(
 	() =>
@@ -76,6 +77,25 @@ export class HelperService {
 	): Promise<string | void> {
 		try {
 			return eta.renderFileAsync(path, { data }, { cache: true });
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {Buffer} input
+	 * @returns {Promise<Buffer>}
+	 * @memberof HelperService
+	 */
+	static async generateThumb(input: Buffer): Promise<Buffer> {
+		try {
+			return sharp(input)
+				.resize({ height: 200, width: 200 })
+				.toFormat('png')
+				.toBuffer();
 		} catch (e) {
 			throw e;
 		}

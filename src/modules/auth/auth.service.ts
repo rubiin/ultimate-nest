@@ -23,6 +23,13 @@ export class AuthService {
 		private readonly tokenService: TokensService,
 	) {}
 
+	/**
+	 *
+	 *
+	 * @param {UserLoginDto} userDto
+	 * @returns {Promise<ILoginSignupReponse>}
+	 * @memberof AuthService
+	 */
 	async loginUser(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
 		const user = await this.userRepository.findOne({
 			userName: userDto.email,
@@ -57,10 +64,13 @@ export class AuthService {
 	}
 
 	/**
-	 * Logout the user from all the devices by invalidating all his refresh tokens
-	 * @param employee The employee to logout
+	 *
+	 * Logout the user from all the devices by invalidating all his refresh tokens\
+	 *
+	 * @param {User} user
+	 * @returns {Promise<IResponse>}
+	 * @memberof AuthService
 	 */
-
 	async logoutFromAll(user: User): Promise<IResponse> {
 		return this.tokenService.deleteRefreshTokenForUser(user);
 	}
