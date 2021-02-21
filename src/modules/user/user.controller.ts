@@ -14,7 +14,7 @@ import { UserService } from './user.service';
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@Get('test')
+	@Get('error')
 	itThrows() {
 		return this.userService.itThrows();
 	}

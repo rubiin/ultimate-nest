@@ -4,8 +4,8 @@ import { pick } from '@rubiin/js-utils';
 import { Pool, spawn, Worker } from 'threads';
 import * as eta from 'eta';
 import { Password } from '../misc/workers/password';
-import { HttpException, InternalServerErrorException } from '@nestjs/common';
 import * as sharp from 'sharp';
+import puppeteer from 'puppeteer';
 
 const passwordPool = Pool(
 	() =>
@@ -16,6 +16,8 @@ const passwordPool = Pool(
 );
 
 export class HelperService {
+	static puppetterInstance = null;
+
 	/**
 	 *
 	 *
@@ -56,8 +58,9 @@ export class HelperService {
 			.then(result => {
 				return result;
 			})
-			.catch(_err => {
-				throw new InternalServerErrorException();
+			.catch(e => {
+				console.info(e);
+				throw e;
 			})
 			.finally(async () => await passwordPool.completed());
 	}
@@ -75,11 +78,7 @@ export class HelperService {
 		data: unknown,
 		path: string,
 	): Promise<string | void> {
-		try {
-			return eta.renderFileAsync(path, { data }, { cache: true });
-		} catch (e) {
-			throw e;
-		}
+		return eta.renderFileAsync(path, { data }, { cache: true });
 	}
 
 	/**
@@ -91,13 +90,37 @@ export class HelperService {
 	 * @memberof HelperService
 	 */
 	static async generateThumb(input: Buffer): Promise<Buffer> {
-		try {
-			return sharp(input)
-				.resize({ height: 200, width: 200 })
-				.toFormat('png')
-				.toBuffer();
-		} catch (e) {
-			throw e;
+		return sharp(input)
+			.resize({ height: 200, width: 200 })
+			.toFormat('png')
+			.toBuffer();
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @returns
+	 * @memberof HelperService
+	 */
+
+	static async getBrowserInstance() {
+		if (this.puppetterInstance) {
+			this.puppetterInstance = await puppeteer.launch({
+				headless: true,
+				args: [
+					'--no-sandbox',
+					'--disable-setuid-sandbox',
+					'--disable-dev-shm-usage',
+					'--disable-accelerated-2d-canvas',
+					'--no-first-run',
+					'--no-zygote',
+					'--single-process', // <- this one doesn't works in Windows
+					'--disable-gpu',
+				],
+			});
 		}
+
+		return this.puppetterInstance;
 	}
 }

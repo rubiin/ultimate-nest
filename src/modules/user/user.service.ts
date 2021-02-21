@@ -5,6 +5,7 @@ import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { I18nRequestScopeService } from 'nestjs-i18n';
+import { readFileSync } from 'fs';
 
 @Injectable()
 export class UserService {

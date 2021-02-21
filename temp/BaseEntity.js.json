@@ -1,0 +1,37 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"id": { "name": "id", "reference": "scalar", "primary": true, "type": "number" },
+			"idx": { "name": "idx", "reference": "scalar", "defaultRaw": "uuid_generate_v4()", "getter": false, "setter": false, "type": "string" },
+			"isActive": { "name": "isActive", "reference": "scalar", "nullable": false, "default": true, "getter": false, "setter": false, "type": "boolean" },
+			"isObsolete": { "name": "isObsolete", "reference": "scalar", "nullable": false, "default": false, "getter": false, "setter": false, "type": "boolean" },
+			"createdAt": { "name": "createdAt", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "getter": false, "setter": false, "type": "Date" },
+			"updatedAt": { "name": "updatedAt", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "nullable": true, "getter": false, "setter": false, "type": "Date" }
+		},
+		"props": [
+			{ "name": "id", "reference": "scalar", "primary": true, "type": "number" },
+			{ "name": "idx", "reference": "scalar", "defaultRaw": "uuid_generate_v4()", "getter": false, "setter": false, "type": "string" },
+			{ "name": "isActive", "reference": "scalar", "nullable": false, "default": true, "getter": false, "setter": false, "type": "boolean" },
+			{ "name": "isObsolete", "reference": "scalar", "nullable": false, "default": false, "getter": false, "setter": false, "type": "boolean" },
+			{ "name": "createdAt", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "getter": false, "setter": false, "type": "Date" },
+			{ "name": "updatedAt", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "nullable": true, "getter": false, "setter": false, "type": "Date" }
+		],
+		"primaryKeys": ["id"],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"className": "BaseEntity",
+		"path": "./dist/common/database/base-entity.entity.js",
+		"abstract": true,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"useCache": true,
+		"compositePK": false,
+		"relations": []
+	},
+	"origin": "./dist/common/database/base-entity.entity.js",
+	"hash": "da7c67719ef5c5087993105792965ad6",
+	"version": "4.4.3"
+}

@@ -28,7 +28,7 @@ async function bootstrap() {
 		.use(bodyParser.json({ limit: '50mb' }))
 		.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 		.use(helmet())
-		.use(csurf())
+		//	.use(csurf())         // enable only if maintaining session through cookies
 		.use(compression())
 		.use(
 			rateLimit({

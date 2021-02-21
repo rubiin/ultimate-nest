@@ -1,7 +1,7 @@
 import { expose } from 'threads/worker';
 import { InternalServerErrorException, Logger } from '@nestjs/common';
-import { getBrowserInstance } from '@common/helpers/puppteer.helper';
 import { HelperService } from '@common/helpers/helpers.utils';
+import * as path from 'path';
 
 const logger: Logger = new Logger('CreatePdf');
 
@@ -12,13 +12,13 @@ const pdf = {
 
 			const html = await HelperService.renderTemplate(
 				data,
-				`${process.cwd()}/assets/usage`,
+				path.resolve(`${__dirname}../../../usage`),
 			);
 
 			// we are using headless mode
 			// this will reuse single browser
 
-			const browser = await getBrowserInstance();
+			const browser = await HelperService.getBrowserInstance();
 
 			const page = await browser.newPage();
 
