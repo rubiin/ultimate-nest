@@ -1,7 +1,7 @@
 import { ConfigService } from '@lib/config/config.service';
 import * as admin from 'firebase-admin';
 import { existsSync } from 'fs';
-import { resolve } from 'path';
+import path from 'path';
 import { FIREBASE_ADMIN_TOKEN } from './firebase-admin.constant';
 import { FirebaseAdminConfig } from './firebase-admin.dto';
 
@@ -14,16 +14,16 @@ export const FirebaseAdminProvider = {
 			FirebaseAdminConfig,
 		);
 
-		const path = resolve('.', config.FIREBASE_CREDENTIAL_PATH);
+		const filePath = path.resolve('.', config.FIREBASE_CREDENTIAL_PATH);
 
-		if (!existsSync(path)) throw new Error(`Unknown file ${path}`);
+		if (!existsSync(filePath)) throw new Error(`Unknown file ${filePath}`);
 
 		try {
 			return admin.initializeApp({
-				credential: admin.credential.cert(path),
+				credential: admin.credential.cert(filePath),
 				databaseURL: config.FIREBASE_DATABASE_URL,
 			});
-		} catch (error) {
+		} catch {
 			return admin.app(); // This will prevent error when using HMR
 		}
 	},

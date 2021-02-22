@@ -3,14 +3,13 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
-import { RequestSanitizerInterceptor } from '@common/interceptor/requestSanitizer.interceptor';
+import { RequestSanitizerInterceptor } from '@common/interceptor/request-sanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
 import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as rateLimit from 'express-rate-limit';
-import setupSwagger from 'swagger';
-import * as csurf from 'csurf';
+import setupSwagger from './swagger';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {

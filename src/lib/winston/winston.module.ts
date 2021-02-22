@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { WinstonModule as NestWinstonModule } from 'nest-winston';
 import * as winston from 'winston';
-import transports from './winstonTransports';
+import transports from './winston-transports';
 
 @Module({
 	exports: [NestWinstonModule],

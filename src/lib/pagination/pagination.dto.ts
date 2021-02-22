@@ -5,7 +5,7 @@ import { IsNotEmpty, IsOptional, IsString, Max, Min } from 'class-validator';
 /**
  * Transform input to number. default is 0.
  */
-const TransformToNumber = () => Transform(v => (isNaN(+v) ? 0 : +v));
+const TransformToNumber = () => Transform(v => (Number.isNaN(+v) ? 0 : +v));
 
 export class PaginationDto {
 	@ApiPropertyOptional({ default: 10, description: 'Limit query data' })

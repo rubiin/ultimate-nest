@@ -4,7 +4,7 @@ import {
 	ConfigService,
 } from '@nestjs/config';
 import { app, database, jwt, mail, redis } from './configs';
-import { validationSchema } from './validateConfig';
+import { validationSchema } from './validate.config';
 
 @Global()
 @Module({

@@ -18,15 +18,15 @@ const email = {
 				`${process.cwd()}/assets/${mailTemplate}`,
 				replacements,
 				{ cache: true },
-				function (err, html) {
-					if (err) {
-						logger.error('error is ' + err);
+				function (error, html) {
+					if (error) {
+						logger.error('error is ' + error);
 						reject(false);
 					}
 
 					const transporter = createTransport({
 						host: process.env.MAIL_HOST,
-						port: parseInt(process.env.MAIL_PORT),
+						port: Number.parseInt(process.env.MAIL_PORT),
 						secure: false,
 						auth: {
 							user: process.env.MAIL_USER,

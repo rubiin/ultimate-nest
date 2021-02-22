@@ -28,7 +28,7 @@ export class EncryptedType extends Type<string> {
 		throw ValidationError.invalidType(EncryptedType, value, 'database');
 	}
 
-	getColumnType(prop: EntityProperty, _platform: Platform) {
-		return `varchar(${prop.length})`;
+	getColumnType(property: EntityProperty, _platform: Platform) {
+		return `varchar(${property.length})`;
 	}
 }

@@ -1,7 +1,7 @@
-import { expose } from 'threads/worker';
-import { InternalServerErrorException, Logger } from '@nestjs/common';
 import { HelperService } from '@common/helpers/helpers.utils';
-import * as path from 'path';
+import { InternalServerErrorException, Logger } from '@nestjs/common';
+import path from 'path';
+import { expose } from 'threads/worker';
 
 const logger: Logger = new Logger('CreatePdf');
 
@@ -46,8 +46,8 @@ const pdf = {
 			await page.close();
 
 			return pdf;
-		} catch (e) {
-			logger.error(e);
+		} catch (error) {
+			logger.error(error);
 			throw new InternalServerErrorException('File cannot be generated');
 		}
 	},

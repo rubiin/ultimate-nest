@@ -1,5 +1,5 @@
 import { ConfigService } from '@lib/config/config.service';
-import { TwilioLib } from './twilio';
+import { TwilioLibrary } from './twilio';
 import { TWILIO_TOKEN } from './twilio.constant';
 import { TwilioConfig } from './twilio.dto';
 
@@ -9,6 +9,6 @@ export const twilioProvider = {
 	useFactory: (configService: ConfigService) => {
 		const config = configService.validate('TwilioModule', TwilioConfig);
 
-		return new TwilioLib(config);
+		return new TwilioLibrary(config);
 	},
 };

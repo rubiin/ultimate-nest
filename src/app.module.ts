@@ -1,17 +1,17 @@
-import { Module } from '@nestjs/common';
-import { AuthModule } from '@modules/auth/auth.module';
-import { UserModule } from '@modules/user/user.module';
 import { ConfigModule } from '@lib/config/config.module';
-import { WinstonModule } from '@lib/winston/winston.module';
 import { OrmModule } from '@lib/orm/orm.module';
+import { WinstonModule } from '@lib/winston/winston.module';
+import { AuthModule } from '@modules/auth/auth.module';
+import { IdeaModule } from '@modules/idea/idea.module';
+import { UserModule } from '@modules/user/user.module';
+import { Module } from '@nestjs/common';
 import {
-	I18nJsonParser,
-	HeaderResolver,
 	AcceptLanguageResolver,
+	HeaderResolver,
+	I18nJsonParser,
 	I18nModule,
 } from 'nestjs-i18n';
-import * as path from 'path';
-import { IdeaModule } from '@modules/idea/idea.module';
+import path from 'path';
 
 @Module({
 	imports: [

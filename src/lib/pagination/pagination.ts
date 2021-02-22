@@ -18,7 +18,7 @@ export function paginate(
 	const totalPages = Math.ceil(totalItems / limit);
 
 	const hasFirstPage = route;
-	const hasPrevPage = route && currentPage > 1;
+	const hasPreviousPage = route && currentPage > 1;
 	const hasNextPage = route && currentPage < totalPages;
 	const hasLastPage = route;
 
@@ -26,7 +26,7 @@ export function paginate(
 		first: hasFirstPage
 			? `${route}?${stringify({ ...query, page: 1 })}`
 			: '',
-		previous: hasPrevPage
+		previous: hasPreviousPage
 			? `${route}?${stringify({ ...query, page: currentPage - 1 })}`
 			: '',
 		next: hasNextPage

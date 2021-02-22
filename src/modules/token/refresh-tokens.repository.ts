@@ -39,17 +39,21 @@ export class RefreshTokensRepository {
 		});
 	}
 
-	public async deleteTokensForUser(user: User): Promise<any> {
-		return this.refreshTokenRepository.nativeUpdate(
+	public async deleteTokensForUser(user: User): Promise<boolean> {
+		await this.refreshTokenRepository.nativeUpdate(
 			{ user },
 			{ isRevoked: true },
 		);
+
+		return true;
 	}
 
-	public async deleteToken(user: User, tokenId: number): Promise<any> {
-		return this.refreshTokenRepository.nativeUpdate(
+	public async deleteToken(user: User, tokenId: number): Promise<boolean> {
+		await this.refreshTokenRepository.nativeUpdate(
 			{ user, id: tokenId },
 			{ is_revoked: true },
 		);
+
+		return true;
 	}
 }

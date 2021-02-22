@@ -1,5 +1,5 @@
 import { BaseEntity } from '@common/database/base-entity.entity';
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/core';
 
 @Entity()
 export class Idea extends BaseEntity {

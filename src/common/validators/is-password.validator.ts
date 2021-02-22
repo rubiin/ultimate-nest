@@ -8,14 +8,14 @@ import {
 
 @ValidatorConstraint({ async: true })
 class IsPasswordConstraint implements ValidatorConstraintInterface {
-	async validate(value: string, args: ValidationArguments) {
-		return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+	async validate(value: string, _args: ValidationArguments) {
+		return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$%&*?@])[\d!$%&*?@A-Za-z]{8,}$/.test(
 			value,
 		);
 	}
 
-	defaultMessage(args: ValidationArguments) {
-		const property = args.property;
+	defaultMessage(arguments_: ValidationArguments) {
+		const property = arguments_.property;
 
 		return `${property} must be fulfill password's criteria`;
 	}

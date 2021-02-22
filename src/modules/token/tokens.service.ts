@@ -34,12 +34,12 @@ export class TokensService {
 	}
 
 	public async generateAccessToken(user: User): Promise<string> {
-		const opts: SignOptions = {
+		const options: SignOptions = {
 			...BASE_OPTIONS,
 			subject: String(user.id),
 		};
 
-		return this.jwt.signAsync({ ...pick(user, ['id', 'idx']) }, opts);
+		return this.jwt.signAsync({ ...pick(user, ['id', 'idx']) }, options);
 	}
 
 	public async generateRefreshToken(
@@ -48,14 +48,14 @@ export class TokensService {
 	): Promise<string> {
 		const token = await this.tokens.createRefreshToken(user, expiresIn);
 
-		const opts: SignOptions = {
+		const options: SignOptions = {
 			...BASE_OPTIONS,
 			expiresIn,
 			subject: String(user.id),
 			jwtid: String(token.id),
 		};
 
-		return this.jwt.signAsync({}, opts);
+		return this.jwt.signAsync({}, options);
 	}
 
 	public async resolveRefreshToken(
@@ -94,12 +94,13 @@ export class TokensService {
 	async decodeRefreshToken(token: string): Promise<RefreshTokenPayload> {
 		try {
 			return this.jwt.verify(token);
-		} catch (e) {
-			if (e instanceof TokenExpiredError) {
-				throw new UnauthorizedException('Refresh token expired');
-			} else {
-				throw new UnauthorizedException('Refresh token malformed');
-			}
+		} catch (error_) {
+			const error =
+				error_ instanceof TokenExpiredError
+					? new UnauthorizedException('Refresh token expired')
+					: new UnauthorizedException('Refresh token malformed');
+
+			throw error;
 		}
 	}
 

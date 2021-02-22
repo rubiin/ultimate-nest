@@ -36,14 +36,15 @@ export class AuthGuard implements CanActivate {
 			request.idx = decoded.idx;
 
 			return true;
-		} catch (e) {
-			if (e?.name === 'TokenExpiredError') {
-				throw new UnauthorizedException(
-					'The session has expired. Please relogin',
-				);
-			} else {
-				throw new UnauthorizedException('Token malformed');
-			}
+		} catch (error_) {
+			const error =
+				error_?.name === 'TokenExpiredError'
+					? new UnauthorizedException(
+							'The session has expired. Please relogin',
+					  )
+					: new UnauthorizedException('Token malformed');
+
+			throw error;
 		}
 	}
 }

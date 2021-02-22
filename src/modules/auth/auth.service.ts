@@ -27,7 +27,7 @@ export class AuthService {
 	 *
 	 *
 	 * @param {UserLoginDto} userDto
-	 * @returns {Promise<ILoginSignupReponse>}
+	 * @return {Promise<ILoginSignupReponse>}
 	 * @memberof AuthService
 	 */
 	async loginUser(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
@@ -68,7 +68,7 @@ export class AuthService {
 	 * Logout the user from all the devices by invalidating all his refresh tokens\
 	 *
 	 * @param {User} user
-	 * @returns {Promise<IResponse>}
+	 * @return {Promise<IResponse>}
 	 * @memberof AuthService
 	 */
 	async logoutFromAll(user: User): Promise<IResponse> {

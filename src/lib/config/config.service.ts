@@ -15,13 +15,12 @@ export class ConfigService {
 		});
 
 		if (errors.length > 0) {
-			errors.forEach(e =>
+			for (const e of errors)
 				Logger.error(
-					`${e.constraints![Object.keys(e.constraints!)[0]]}`,
+					`${e.constraints[Object.keys(e.constraints)[0]]}`,
 					undefined,
 					module,
-				),
-			);
+				);
 			throw new Error(`${module}: Invalid environment config.`);
 		}
 

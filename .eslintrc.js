@@ -5,7 +5,12 @@ module.exports = {
 		sourceType: 'module',
 	},
 	ignorePatterns: ['/*.*'],
-	plugins: ['@typescript-eslint/eslint-plugin'],
+	plugins: [
+		'@typescript-eslint/eslint-plugin',
+		'prettier',
+		'unicorn',
+		'import',
+	],
 	extends: [
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
@@ -13,21 +18,32 @@ module.exports = {
 		'prettier/@typescript-eslint',
 		'plugin:import/errors',
 		'plugin:import/typescript',
+		'plugin:unicorn/recommended',
+		'plugin:prettier/recommended',
 	],
 	root: true,
 	env: {
 		node: true,
 		jest: true,
+		es6: true,
+		browser: true,
 	},
 	rules: {
+		'import/no-unresolved': [2, { ignore: ['@'] }],
+		'import/prefer-default': 'off',
+		'unicorn/prevent-abbreviations': 'off',
+		'unicorn/no-null': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
+		'@typescript-eslint/no-unused-vars': [
+			'error',
+			{ argsIgnorePattern: '^_' },
+		],
 		'no-multi-spaces': 'error',
 		'linebreak-style': ['error', 'unix'],
 		'newline-before-return': 'error',
 		'no-await-in-loop': 'error',
-		'object-curly-spacing': ['error', 'always'],
 		'padding-line-between-statements': [
 			'error',
 			{
@@ -59,7 +75,7 @@ module.exports = {
 		'no-console': [
 			'error',
 			{
-				allow: ['error', 'info'],
+				allow: ['warn', 'error', 'info'],
 			},
 		],
 	},

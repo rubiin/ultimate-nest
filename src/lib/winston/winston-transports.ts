@@ -2,11 +2,11 @@ import * as winston from 'winston';
 import * as dailyRotateFile from 'winston-daily-rotate-file';
 import { utilities } from 'nest-winston';
 
-const infoAndWarnFilter = winston.format((info, _) => {
+const infoAndWarnFilter = winston.format(info => {
 	return info.level === 'info' || info.level === 'warn' ? info : false;
 });
 
-const errorFilter = winston.format((info, _) => {
+const errorFilter = winston.format(info => {
 	return info.level === 'error' ? info : false;
 });
 

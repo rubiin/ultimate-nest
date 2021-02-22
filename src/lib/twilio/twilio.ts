@@ -3,7 +3,7 @@ import * as Twilio from 'twilio';
 
 import { TwilioConfig } from './twilio.dto';
 
-export class TwilioLib {
+export class TwilioLibrary {
 	client: Twilio.Twilio;
 
 	private logger: Logger = new Logger('TwilioModule');

@@ -25,7 +25,7 @@ export class HelperService {
 	 * @param {User} user
 	 * @param {string} accessToken
 	 * @param {string} [refreshToken]
-	 * @returns {AuthenticationPayload}
+	 * @return {AuthenticationPayload}
 	 * @memberof UtilService
 	 */
 	static buildPayloadResponse(
@@ -52,15 +52,15 @@ export class HelperService {
 	 * @memberof UtilService
 	 */
 
-	static async hashString(str: string): Promise<string> {
+	static async hashString(string: string): Promise<string> {
 		return passwordPool
-			.queue(async auth => auth.hashString(str))
+			.queue(async auth => auth.hashString(string))
 			.then(result => {
 				return result;
 			})
-			.catch(e => {
-				console.info(e);
-				throw e;
+			.catch(error => {
+				console.info(error);
+				throw error;
 			})
 			.finally(async () => await passwordPool.completed());
 	}
@@ -71,7 +71,7 @@ export class HelperService {
 	 * @static
 	 * @param {unknown} data
 	 * @param {string} path
-	 * @returns {(Promise<string | void>)}
+	 * @return {(Promise<string | void>)}
 	 * @memberof HelperService
 	 */
 	static async renderTemplate(
@@ -86,7 +86,7 @@ export class HelperService {
 	 *
 	 * @static
 	 * @param {Buffer} input
-	 * @returns {Promise<Buffer>}
+	 * @return {Promise<Buffer>}
 	 * @memberof HelperService
 	 */
 	static async generateThumb(input: Buffer): Promise<Buffer> {

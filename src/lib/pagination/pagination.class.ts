@@ -20,10 +20,10 @@ export class Pagination<PaginationObject> {
 	) {}
 }
 
-export function PaginateResponse<T>(classRef: Type<T>): any {
+export function PaginateResponse<T>(classReference: Type<T>): any {
 	@ApiResponse({})
 	abstract class Pagination<T> {
-		@ApiResponseProperty({ type: [classRef] })
+		@ApiResponseProperty({ type: [classReference] })
 		data!: T[];
 
 		@ApiResponseProperty({ type: IPaginationMeta })
