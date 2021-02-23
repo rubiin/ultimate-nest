@@ -10,6 +10,7 @@ module.exports = {
 		'prettier',
 		'unicorn',
 		'import',
+		'no-secrets',
 	],
 	extends: [
 		'plugin:@typescript-eslint/eslint-recommended',
@@ -29,6 +30,7 @@ module.exports = {
 	},
 	rules: {
 		'import/no-unresolved': [2, { ignore: ['@'] }],
+		'no-secrets/no-secrets': 'error',
 		'import/prefer-default': 'off',
 		'unicorn/prevent-abbreviations': 'off',
 		'unicorn/no-null': 'off',
