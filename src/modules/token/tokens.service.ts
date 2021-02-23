@@ -18,11 +18,24 @@ export interface RefreshTokenPayload {
 	sub: number;
 }
 
+/**
+ *
+ *
+ * @export
+ * @class TokensService
+ */
 @Injectable()
 export class TokensService {
 	private readonly tokens: RefreshTokensRepository;
 	private readonly jwt: JwtService;
 
+	/**
+	 * Creates an instance of TokensService.
+	 * @param {RefreshTokensRepository} tokens
+	 * @param {JwtService} jwt
+	 * @param {EntityRepository<User>} userRepository
+	 * @memberof TokensService
+	 */
 	public constructor(
 		tokens: RefreshTokensRepository,
 		jwt: JwtService,
@@ -33,6 +46,13 @@ export class TokensService {
 		this.jwt = jwt;
 	}
 
+	/**
+	 *
+	 *
+	 * @param {User} user
+	 * @return {*}  {Promise<string>}
+	 * @memberof TokensService
+	 */
 	public async generateAccessToken(user: User): Promise<string> {
 		const options: SignOptions = {
 			...BASE_OPTIONS,
@@ -42,6 +62,14 @@ export class TokensService {
 		return this.jwt.signAsync({ ...pick(user, ['id', 'idx']) }, options);
 	}
 
+	/**
+	 *
+	 *
+	 * @param {User} user
+	 * @param {number} expiresIn
+	 * @return {*}  {Promise<string>}
+	 * @memberof TokensService
+	 */
 	public async generateRefreshToken(
 		user: User,
 		expiresIn: number,
@@ -58,6 +86,13 @@ export class TokensService {
 		return this.jwt.signAsync({}, options);
 	}
 
+	/**
+	 *
+	 *
+	 * @param {string} encoded
+	 * @return {*}  {Promise<{ user: User; token: RefreshToken }>}
+	 * @memberof TokensService
+	 */
 	public async resolveRefreshToken(
 		encoded: string,
 	): Promise<{ user: User; token: RefreshToken }> {
@@ -81,6 +116,13 @@ export class TokensService {
 		return { user, token };
 	}
 
+	/**
+	 *
+	 *
+	 * @param {string} refresh
+	 * @return {*}  {Promise<{ token: string; user: User }>}
+	 * @memberof TokensService
+	 */
 	public async createAccessTokenFromRefreshToken(
 		refresh: string,
 	): Promise<{ token: string; user: User }> {
@@ -91,6 +133,13 @@ export class TokensService {
 		return { user, token };
 	}
 
+	/**
+	 *
+	 *
+	 * @param {string} token
+	 * @return {*}  {Promise<RefreshTokenPayload>}
+	 * @memberof TokensService
+	 */
 	async decodeRefreshToken(token: string): Promise<RefreshTokenPayload> {
 		try {
 			return this.jwt.verify(token);
@@ -125,6 +174,7 @@ export class TokensService {
 	 * @param {RefreshTokenPayload} payload
 	 * @memberof TokensService
 	 */
+
 	async deleteRefreshToken(
 		user: User,
 		payload: RefreshTokenPayload,
@@ -139,6 +189,14 @@ export class TokensService {
 		return { message: 'Operation Sucessful' };
 	}
 
+	/**
+	 *
+	 *
+	 * @private
+	 * @param {RefreshTokenPayload} payload
+	 * @return {*}  {Promise<User>}
+	 * @memberof TokensService
+	 */
 	private async getUserFromRefreshTokenPayload(
 		payload: RefreshTokenPayload,
 	): Promise<User> {
@@ -153,6 +211,14 @@ export class TokensService {
 		});
 	}
 
+	/**
+	 *
+	 *
+	 * @private
+	 * @param {RefreshTokenPayload} payload
+	 * @return {*}  {(Promise<RefreshToken | null>)}
+	 * @memberof TokensService
+	 */
 	private async getStoredTokenFromRefreshTokenPayload(
 		payload: RefreshTokenPayload,
 	): Promise<RefreshToken | null> {
