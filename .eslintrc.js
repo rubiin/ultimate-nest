@@ -15,11 +15,11 @@ module.exports = {
 	extends: [
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
-		'prettier',
-		'plugin:prettier/recommended',
 		'plugin:import/errors',
 		'plugin:import/typescript',
 		'plugin:unicorn/recommended',
+		'prettier',
+		'plugin:prettier/recommended',
 	],
 	root: true,
 	env: {
@@ -34,6 +34,7 @@ module.exports = {
 		'import/prefer-default': 'off',
 		'unicorn/prevent-abbreviations': 'off',
 		'unicorn/no-null': 'off',
+		'unicorn/import-style': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/explicit-module-boundary-types': 'off',

@@ -8,8 +8,11 @@ import {
 	Put,
 	Param,
 	Delete,
+	Inject,
+	Logger,
 } from '@nestjs/common';
 import { UserService } from './user.service';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 @Controller('user')
 export class UserController {
 	/**
@@ -17,8 +20,10 @@ export class UserController {
 	 * @param {UserService} userService
 	 * @memberof UserController
 	 */
-	constructor(private readonly userService: UserService) {}
-
+	constructor(
+		private readonly userService: UserService,
+		@Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+	) {}
 	/**
 	 *
 	 *
@@ -28,7 +33,12 @@ export class UserController {
 
 	@Get('error')
 	itThrows() {
-		return this.userService.itThrows();
+		this.logger.log({
+			level: 'debug',
+			message: 'Hello distributed log files!',
+		});
+
+		// return this.userService.itThrows();
 	}
 
 	/**

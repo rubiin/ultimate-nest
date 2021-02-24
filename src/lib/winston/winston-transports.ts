@@ -13,6 +13,7 @@ const errorFilter = winston.format(info => {
 // Common Winston transports
 let transports: winston.transport[] = [
 	new winston.transports.Console({
+		level: 'debug',
 		format: winston.format.combine(
 			winston.format.timestamp(),
 			utilities.format.nestLike(),
@@ -22,7 +23,7 @@ let transports: winston.transport[] = [
 
 // Production Winston transports (common + custom)
 
-if (process.env.NODE_ENV === 'prod') {
+if (process.env.NODE_ENV !== 'prod') {
 	transports = [
 		...transports,
 		new winston.transports.File({

@@ -11,7 +11,7 @@ import {
 	I18nJsonParser,
 	I18nModule,
 } from 'nestjs-i18n';
-import path from 'path';
+import * as path from 'path';
 
 @Module({
 	imports: [
