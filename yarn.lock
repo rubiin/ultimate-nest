@@ -3736,10 +3736,10 @@ eslint-config-google@^0.14.0:
   resolved "https://registry.yarnpkg.com/eslint-config-google/-/eslint-config-google-0.14.0.tgz#4f5f8759ba6e11b424294a219dbfa18c508bcc1a"
   integrity sha512-WsbX4WbjuMvTdeVL6+J3rK1RGhCTqjsFjX7UMSMgZiyxxaNLkoJENbrGExzERFeoTpGw3F3FypTiWAP9ZXzkEw==
 
-eslint-config-prettier@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.0.0.tgz#024d661444319686c588c8849c8da33815dbdb1c"
-  integrity sha512-5EaAVPsIHu+grmm5WKjxUia4yHgRrbkd8I0ffqUSwixCPMVBrbS97UnzlEY/Q7OWo584vgixefM0kJnUfo/VjA==
+eslint-config-prettier@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.1.0.tgz#4ef1eaf97afe5176e6a75ddfb57c335121abc5a6"
+  integrity sha512-oKMhGv3ihGbCIimCAjqkdzx2Q+jthoqnXSP+d86M9tptwugycmTFdVR4IpLgq2c4SHifbwO90z2fQ8/Aio73yw==
 
 eslint-import-resolver-node@^0.3.4:
   version "0.3.4"
@@ -6774,10 +6774,10 @@ nestjs-i18n@^8.0.11:
     rxjs "^6.6.3"
     string-format "^2.0.0"
 
-nestjs-minio@^2.1.6:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/nestjs-minio/-/nestjs-minio-2.1.6.tgz#c46014bc362a4ecf5ac7aec46963f3bed80cd152"
-  integrity sha512-EP+fhkcnp/v9Q5Q/vNQAOETxajX4ocQklT91v5Z5ioqWJ1qDUnujYG+i7DqbDZP+9wnoAlK9dze6vUoCnI7shA==
+nestjs-minio@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/nestjs-minio/-/nestjs-minio-2.1.7.tgz#f6cfdb42ff1831b086e664c27be8335145aef9ef"
+  integrity sha512-BvrD4ZhKV6wEB+5H9gT8RUci7cFBWNKaVZdEEJE7rCs9NUQjMm7Wqenq5FfzLVqQEolZ8IODa6lZ8yCJMw+RpA==
   dependencies:
     "@types/minio" "^7.0.7"
     minio "^7.0.18"
@@ -8132,6 +8132,13 @@ rxjs@6.6.3, rxjs@^6.4.0, rxjs@^6.6.0, rxjs@^6.6.3:
   dependencies:
     tslib "^1.9.0"
 
+rxjs@6.6.6:
+  version "6.6.6"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.6.tgz#14d8417aa5a07c5e633995b525e1e3c0dec03b70"
+  integrity sha512-/oTwee4N4iWzAMAL9xdGKjkEHmIwupR3oXbQjCKywF1BeFohswF3vZdogbmEF6pZkOsXTzWkrZszrWpQTByYVg==
+  dependencies:
+    tslib "^1.9.0"
+
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
@@ -9195,10 +9202,10 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
-twilio@^3.56.0:
-  version "3.56.0"
-  resolved "https://registry.yarnpkg.com/twilio/-/twilio-3.56.0.tgz#ea2c6f3b2f8823c506c92d5e2d4e35fd0427e93a"
-  integrity sha512-SXnYInB5P00UP2umFkOow0e++2UoWpabPkcltCzsKdsZQLI+AfLd0xyVP3dF8Z7An8i78GvnFTC/bSYXhrddzA==
+twilio@^3.57.0:
+  version "3.57.0"
+  resolved "https://registry.yarnpkg.com/twilio/-/twilio-3.57.0.tgz#626d212fb86c5d73abf23e7d39cb83f25d477a49"
+  integrity sha512-gt1NtEM647c/+KGcPiBEY2YCCrvm7nKXfd2bOT6PNYUAbBF5n0s3Ed0lYQW5BngpJEjeZROMZjfp9ikwehS/pg==
   dependencies:
     axios "^0.21.1"
     dayjs "^1.8.29"
@@ -9540,10 +9547,10 @@ webpack@5.11.0:
     watchpack "^2.0.0"
     webpack-sources "^2.1.1"
 
-webpack@^5.24.1:
-  version "5.24.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.24.1.tgz#6b7730bfba1ee94b05d05ef7c32743a35105a744"
-  integrity sha512-eg+6OIt6npUSwbhRQY6XffAixEUSARBf+WAWOxrZwOB4jRbbpMXlridFy/Yt7N0U20Ry1vp/nnDbtN7l1rUdIA==
+webpack@^5.24.2:
+  version "5.24.2"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.24.2.tgz#33790dad631e8b639f4246d762e257720875fe54"
+  integrity sha512-uxxKYEY4kMNjP+D2Y+8aw5Vd7ar4pMuKCNemxV26ysr1nk0YDiQTylg9U3VZIdkmI0YHa0uC8ABxL+uGxGWWJg==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.46"
