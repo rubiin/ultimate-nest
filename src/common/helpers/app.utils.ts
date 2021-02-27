@@ -1,6 +1,14 @@
 import { INestApplication } from '@nestjs/common';
 
 export class AppUtils {
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {INestApplication} app
+	 * @memberof AppUtils
+	 */
+
 	public static killAppWithGrace = (app: INestApplication) => {
 		process.on('SIGINT', async () => {
 			setTimeout(() => process.exit(1), 5000);
@@ -9,6 +17,7 @@ export class AppUtils {
 		});
 
 		// kill -15
+
 		process.on('SIGTERM', async () => {
 			setTimeout(() => process.exit(1), 5000);
 			await app.close();

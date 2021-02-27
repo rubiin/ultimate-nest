@@ -7,10 +7,7 @@ import { Password } from '../misc/workers/password';
 import * as sharp from 'sharp';
 import puppeteer from 'puppeteer';
 import { customAlphabet } from 'nanoid/async';
-export enum randomTypes {
-	NUMBER = 'NUMBER',
-	STRING = 'STRING',
-}
+import { randomTypes } from '@common/constants/random-types.enum';
 
 const passwordPool = Pool(
 	() =>
@@ -24,7 +21,7 @@ export class HelperService {
 	static puppetterInstance = null;
 
 	/**
-	 *
+	 * builds response for login
 	 *
 	 * @static
 	 * @param {User} user
@@ -50,13 +47,13 @@ export class HelperService {
 	}
 
 	/**
+	 * hashes string with argon2
 	 *
-	 *
-	 * @param {string} str
-	 * @returns {Promise<string>}
-	 * @memberof UtilService
+	 * @static
+	 * @param {string} string
+	 * @return {*}  {Promise<string>}
+	 * @memberof HelperService
 	 */
-
 	static async hashString(string: string): Promise<string> {
 		return passwordPool
 			.queue(async auth => auth.hashString(string))
@@ -71,7 +68,7 @@ export class HelperService {
 	}
 
 	/**
-	 *
+	 * renders template file with eta
 	 *
 	 * @static
 	 * @param {unknown} data
@@ -83,7 +80,11 @@ export class HelperService {
 		data: unknown,
 		path: string,
 	): Promise<string | void> {
-		return eta.renderFileAsync(path, { data }, { cache: true });
+		return eta.renderFileAsync(
+			path,
+			{ data },
+			{ cache: true, rmWhitespace: true },
+		);
 	}
 
 	/**
