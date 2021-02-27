@@ -23,6 +23,13 @@ export class Migration20210217151529 extends Migration {
 		);
 
 		this.addSql(
+			'create table "product" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "name" varchar(100) not null, "price" int4 not null);',
+		);
+		this.addSql(
+			'alter table "product" add constraint "product_name_unique" unique ("name");',
+		);
+
+		this.addSql(
 			'create table "idea" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "idea" varchar(50) not null, "description" varchar(100) not null);',
 		);
 
