@@ -1,7 +1,5 @@
 import { BaseEntity } from '@common/database/base-entity.entity';
-import { Property } from '@mikro-orm/core';
-import { Entity } from '@mikro-orm/core';
-
+import { Property, Entity } from '@mikro-orm/core';
 @Entity()
 export class Product extends BaseEntity {
 	@Property({

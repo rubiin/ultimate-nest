@@ -1,8 +1,9 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20210217151529 extends Migration {
+export class Migration20210227145341 extends Migration {
 	async up(): Promise<void> {
 		this.addSql(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
+
 		this.addSql(
 			'create table "user" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "first_name" varchar(50) not null, "middle_name" varchar(50) null, "last_name" varchar(50) not null, "user_name" varchar(50) not null);',
 		);
@@ -19,10 +20,6 @@ export class Migration20210217151529 extends Migration {
 		);
 
 		this.addSql(
-			'create table "otp_log" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "expires_in" timestamptz(0) not null, "otp_code" varchar(20) null, "user_id" int4 not null, "is_revoked" bool not null default false);',
-		);
-
-		this.addSql(
 			'create table "product" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "name" varchar(100) not null, "price" int4 not null);',
 		);
 		this.addSql(
@@ -30,7 +27,7 @@ export class Migration20210217151529 extends Migration {
 		);
 
 		this.addSql(
-			'create table "idea" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "idea" varchar(50) not null, "description" varchar(100) not null);',
+			'create table "otp_log" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "expires_in" timestamptz(0) not null, "otp_code" varchar(20) null, "user_id" int4 not null, "is_revoked" bool not null default false);',
 		);
 
 		this.addSql(

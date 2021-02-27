@@ -1,0 +1,41 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"loginAttemptnumbererval": { "name": "loginAttemptnumbererval", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
+			"loginnumberervalUnit": { "name": "loginnumberervalUnit", "reference": "scalar", "nullable": false, "type": "string", "getter": false, "setter": false },
+			"loginMaxRetry": { "name": "loginMaxRetry", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
+			"otpExpiryInMinutes": { "name": "otpExpiryInMinutes", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
+			"mpinAttemptnumbererval": { "name": "mpinAttemptnumbererval", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
+			"mpinnumberervalUnit": { "name": "mpinnumberervalUnit", "reference": "scalar", "nullable": true, "type": "string", "getter": false, "setter": false },
+			"mpinMaxRetry": { "name": "mpinMaxRetry", "reference": "scalar", "nullable": true, "type": "number", "getter": false, "setter": false }
+		},
+		"props": [
+			{ "name": "loginAttemptnumbererval", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
+			{ "name": "loginnumberervalUnit", "reference": "scalar", "nullable": false, "type": "string", "getter": false, "setter": false },
+			{ "name": "loginMaxRetry", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
+			{ "name": "otpExpiryInMinutes", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
+			{ "name": "mpinAttemptnumbererval", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
+			{ "name": "mpinnumberervalUnit", "reference": "scalar", "nullable": true, "type": "string", "getter": false, "setter": false },
+			{ "name": "mpinMaxRetry", "reference": "scalar", "nullable": true, "type": "number", "getter": false, "setter": false }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"className": "Protocol",
+		"path": "./dist/entities/protocol.entity.js",
+		"name": "Protocol",
+		"abstract": false,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [],
+		"collection": "protocol"
+	},
+	"origin": "./dist/entities/protocol.entity.js",
+	"hash": "0fe5c51e481b2614b2d8f9338d98a347",
+	"version": "4.4.4"
+}

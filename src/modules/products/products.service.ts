@@ -26,7 +26,9 @@ export class ProductsService {
 			);
 		}
 
-		return this.productRepository.persistAndFlush(createProductDto);
+		const product = this.productRepository.create(createProductDto);
+
+		return this.productRepository.persistAndFlush(product);
 	}
 
 	findAll() {
