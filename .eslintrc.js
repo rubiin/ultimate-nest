@@ -3,6 +3,7 @@ module.exports = {
 	parserOptions: {
 		project: 'tsconfig.json',
 		sourceType: 'module',
+		createDefaultProgram: true,
 	},
 	ignorePatterns: ['/*.*'],
 	plugins: [
@@ -19,7 +20,6 @@ module.exports = {
 		'plugin:import/typescript',
 		'plugin:unicorn/recommended',
 		'prettier',
-		'plugin:prettier/recommended',
 	],
 	root: true,
 	env: {

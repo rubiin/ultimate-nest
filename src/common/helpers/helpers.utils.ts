@@ -6,6 +6,11 @@ import * as eta from 'eta';
 import { Password } from '../misc/workers/password';
 import * as sharp from 'sharp';
 import puppeteer from 'puppeteer';
+import { customAlphabet } from 'nanoid/async';
+export enum randomTypes {
+	NUMBER = 'NUMBER',
+	STRING = 'STRING',
+}
 
 const passwordPool = Pool(
 	() =>
@@ -122,5 +127,31 @@ export class HelperService {
 		}
 
 		return this.puppetterInstance;
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param {randomTypes} type
+	 * @param {number} length
+	 * @param {string} [alphabet]
+	 * @return {*}  {(Promise<number | string>)}
+	 * @memberof HelperService
+	 */
+	static getRandom(
+		type: randomTypes,
+		length: number,
+		alphabet?: string,
+	): Promise<number | string> {
+		if (type === randomTypes.NUMBER) {
+			return customAlphabet(alphabet ?? '1234567890', length)();
+		}
+
+		return customAlphabet(
+			// eslint-disable-next-line no-secrets/no-secrets
+			alphabet ?? 'abcdefghijklmnopqrstuvwxyz',
+			length,
+		)();
 	}
 }

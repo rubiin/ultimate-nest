@@ -10,11 +10,14 @@ import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import * as rateLimit from 'express-rate-limit';
 import setupSwagger from './swagger';
+import { AppUtils } from '@common/helpers/app.utils';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
 		cors: true,
 	});
+
+	AppUtils.killAppWithGrace(app);
 
 	const configService = app.get(ConfigService);
 
@@ -69,4 +72,4 @@ async function bootstrap() {
 	console.info('Bootstrap', `Server running on 🚀 http://localhost:${port}`);
 }
 
-bootstrap();
+(async () => await bootstrap())();
