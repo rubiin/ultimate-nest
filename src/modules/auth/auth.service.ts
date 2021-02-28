@@ -32,7 +32,7 @@ export class AuthService {
 	 */
 	async loginUser(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
 		const user = await this.userRepository.findOne({
-			userName: userDto.email,
+			email: userDto.email,
 			isActive: true,
 			isObsolete: false,
 		});
@@ -65,7 +65,7 @@ export class AuthService {
 
 	/**
 	 *
-	 * Logout the user from all the devices by invalidating all his refresh tokens\
+	 * Logout the user from all the devices by invalidating all his refresh tokens
 	 *
 	 * @param {User} user
 	 * @return {Promise<IResponse>}

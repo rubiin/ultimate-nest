@@ -17,7 +17,7 @@ const config = {
 	host: process.env.DB_HOST,
 	migrations: {
 		path: 'src/migrations/',
-		tableName: 'nestMigrations',
+		tableName: 'migrations',
 		transactional: true,
 	},
 	password: process.env.DB_PASSWORD,
