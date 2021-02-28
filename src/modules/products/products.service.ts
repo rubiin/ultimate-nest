@@ -33,12 +33,31 @@ export class ProductsService {
 		return product;
 	}
 
-	findAll() {
-		return `This action returns all products`;
+	async findAll(): Promise<Product[]> {
+		const product = await this.productRepository.findAll();
+
+		if (product) {
+			throw new HttpException('No products', HttpStatus.NOT_FOUND);
+		}
+
+		return product;
 	}
 
-	findOne(id: number) {
-		return `This action returns a #${id} product`;
+	async findOne(idx: string): Promise<Product> {
+		const category = await this.productRepository.findOne({
+			idx,
+			isActive: true,
+			isObsolete: false,
+		});
+
+		if (category) {
+			throw new HttpException(
+				'No product with idx',
+				HttpStatus.NOT_FOUND,
+			);
+		}
+
+		return category;
 	}
 
 	update(id: number, _updateProductDto: UpdateProductDto) {

@@ -3,6 +3,8 @@ import { ConfigModule } from '@lib/config/config.module';
 import { OrmModule } from '@lib/orm/orm.module';
 import { WinstonModule } from '@lib/winston/winston.module';
 import { AuthModule } from '@modules/auth/auth.module';
+import { CategoriesModule } from '@modules/categories/categories.module';
+import { OrderModule } from '@modules/order/order.module';
 import { ProductsModule } from '@modules/products/products.module';
 import { UserModule } from '@modules/user/user.module';
 import { Module } from '@nestjs/common';
@@ -34,6 +36,8 @@ import * as path from 'path';
 			],
 		}),
 		ProductsModule,
+		CategoriesModule,
+		OrderModule,
 	],
 	providers: [
 		{
