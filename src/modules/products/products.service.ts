@@ -12,7 +12,7 @@ export class ProductsService {
 		private readonly productRepository: EntityRepository<Product>,
 	) {}
 
-	async create(createProductDto: CreateProductDto) {
+	async create(createProductDto: CreateProductDto): Promise<Product> {
 		const productExists = await this.productRepository.findOne({
 			name: createProductDto.name,
 			isActive: true,
@@ -28,7 +28,9 @@ export class ProductsService {
 
 		const product = this.productRepository.create(createProductDto);
 
-		return this.productRepository.persistAndFlush(product);
+		await this.productRepository.persistAndFlush(product);
+
+		return product;
 	}
 
 	findAll() {
