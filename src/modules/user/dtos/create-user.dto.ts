@@ -1,24 +1,50 @@
 import {
-	IsAlpha,
-	IsAlphanumeric,
 	IsNotEmpty,
-	IsOptional,
+	IsAlpha,
+	IsEmail,
+	IsPhoneNumber,
+	IsBoolean,
+	IsString,
 } from 'class-validator';
 
 export class CreateUserDto {
 	@IsNotEmpty()
-	@IsAlphanumeric()
-	username!: string;
+	@IsAlpha('en-Us')
+	name: string;
 
 	@IsNotEmpty()
-	@IsAlpha()
-	firstName!: string;
-
-	@IsOptional()
-	@IsAlpha()
-	middleName?: string;
+	@IsEmail()
+	email: string;
 
 	@IsNotEmpty()
-	@IsAlpha()
-	lastName!: string;
+	@IsString()
+	password: string;
+
+	@IsNotEmpty()
+	@IsPhoneNumber('US')
+	phone: string;
+
+	@IsNotEmpty()
+	@IsBoolean()
+	isAdmin: boolean;
+
+	@IsNotEmpty()
+	@IsString()
+	street: string;
+
+	@IsNotEmpty()
+	@IsString()
+	apartment: string;
+
+	@IsNotEmpty()
+	@IsString()
+	zip: string;
+
+	@IsNotEmpty()
+	@IsString()
+	city: string;
+
+	@IsNotEmpty()
+	@IsString()
+	country: string;
 }

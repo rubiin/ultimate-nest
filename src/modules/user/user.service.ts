@@ -1,9 +1,9 @@
 import { CreateUserDto } from '@modules/user/dtos/create-user.dto';
 import { UpdateUserDto } from '@modules/user/dtos/update-user.dto';
 import { User } from '@entities';
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { I18nRequestScopeService } from 'nestjs-i18n';
 
 @Injectable()
@@ -14,23 +14,48 @@ export class UserService {
 		private readonly i18n: I18nRequestScopeService,
 	) {}
 
-	create(createUserDto: CreateUserDto) {
-		return `This action creates a #${createUserDto} user`;
+	async create(createuserDto: CreateUserDto) {
+		const user = this.userRepository.create(createuserDto);
+
+		await this.userRepository.persistAndFlush(user);
+
+		return user;
 	}
 
-	async findAll() {
-		return this.i18n.translate('operations.SUCCESS_MESSAGE');
+	async findAll(): Promise<User[]> {
+		const user = await this.userRepository.findAll();
+
+		if (user) {
+			throw new HttpException('No user', HttpStatus.NOT_FOUND);
+		}
+
+		return user;
 	}
 
-	findOne(idx: string): Promise<User> {
-		return this.userRepository.findOne({ idx });
+	async findOne(idx: string): Promise<User> {
+		const user = await this.userRepository.findOne({
+			idx,
+			isActive: true,
+			isObsolete: false,
+		});
+
+		if (user) {
+			throw new HttpException('No user with idx', HttpStatus.NOT_FOUND);
+		}
+
+		return user;
 	}
 
-	update(idx: string, updateUserDto: UpdateUserDto) {
-		return `This action updates a #${updateUserDto} user`;
+	async update(idx: string, updateuserDto: UpdateUserDto) {
+		const user = await this.userRepository.findOne({ idx });
+
+		wrap(user).assign(updateuserDto);
+		await this.userRepository.flush();
+
+		return user;
 	}
 
-	remove(idx: string) {
-		return `This action removes a #${idx} user`;
+	async remove(idx: string) {
+		return this.userRepository.remove({ idx });
 	}
 }
