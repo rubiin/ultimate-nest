@@ -1,7 +1,14 @@
 import { Category } from '@entities';
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { HttpStatus, Injectable, HttpException } from '@nestjs/common';
+import {
+	HttpStatus,
+	Injectable,
+	HttpException,
+	Inject,
+	Logger,
+} from '@nestjs/common';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
@@ -10,10 +17,15 @@ export class CategoriesService {
 	constructor(
 		@InjectRepository(Category)
 		private readonly categoryRepository: EntityRepository<Category>,
+		@Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
 	) {}
 
-	create(_createCategoryDto: CreateCategoryDto) {
-		return 'This action adds a new category';
+	async create(createCategoryDto: CreateCategoryDto) {
+		const category = this.categoryRepository.create(createCategoryDto);
+
+		await this.categoryRepository.persistAndFlush(category);
+
+		return category;
 	}
 
 	async findAll(): Promise<Category[]> {
@@ -43,11 +55,16 @@ export class CategoriesService {
 		return category;
 	}
 
-	async update(idx: string, _updateCategoryDto: UpdateCategoryDto) {
-		return `This action updates a #${idx} category`;
+	async update(idx: string, updateCategoryDto: UpdateCategoryDto) {
+		const category = await this.categoryRepository.findOne({ idx });
+
+		wrap(category).assign(updateCategoryDto);
+		await this.categoryRepository.flush();
+
+		return category;
 	}
 
 	async remove(idx: string) {
-		return `This action removes a #${idx} category`;
+		return this.categoryRepository.remove({ idx });
 	}
 }

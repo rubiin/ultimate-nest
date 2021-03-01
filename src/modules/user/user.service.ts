@@ -22,19 +22,15 @@ export class UserService {
 		return this.i18n.translate('operations.SUCCESS_MESSAGE');
 	}
 
-	async itThrows() {
-		throw new Error('jhasjags');
+	findOne(idx: string): Promise<User> {
+		return this.userRepository.findOne({ idx });
 	}
 
-	findOne(id: number): Promise<User> {
-		return this.userRepository.findOne({ id });
-	}
-
-	update(id: number, updateUserDto: UpdateUserDto) {
+	update(idx: string, updateUserDto: UpdateUserDto) {
 		return `This action updates a #${updateUserDto} user`;
 	}
 
-	remove(id: number) {
-		return `This action removes a #${id} user`;
+	remove(idx: string) {
+		return `This action removes a #${idx} user`;
 	}
 }

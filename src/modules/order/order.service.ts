@@ -1,5 +1,5 @@
 import { Order } from '@entities';
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -12,8 +12,12 @@ export class OrderService {
 		private readonly orderRepository: EntityRepository<Order>,
 	) {}
 
-	create(_createOrderDto: CreateOrderDto) {
-		return 'This action adds a new order';
+	async create(createOrderDto: CreateOrderDto) {
+		const order = this.orderRepository.create(createOrderDto);
+
+		await this.orderRepository.persistAndFlush(order);
+
+		return order;
 	}
 
 	async findAll(): Promise<Order[]> {
@@ -43,11 +47,16 @@ export class OrderService {
 		return order;
 	}
 
-	update(idx: string, _updateOrderDto: UpdateOrderDto) {
-		return `This action updates a #${idx} order`;
+	async update(idx: string, updateOrderDto: UpdateOrderDto) {
+		const order = await this.orderRepository.findOne({ idx });
+
+		wrap(order).assign(updateOrderDto);
+		await this.orderRepository.flush();
+
+		return order;
 	}
 
-	remove(idx: string) {
-		return `This action removes a #${idx} order`;
+	async remove(idx: string) {
+		return this.orderRepository.remove({ idx });
 	}
 }

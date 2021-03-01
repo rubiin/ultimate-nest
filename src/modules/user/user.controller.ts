@@ -10,6 +10,7 @@ import {
 	Delete,
 	Inject,
 	Logger,
+	ParseUUIDPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
@@ -30,16 +31,6 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
-
-	@Get('error')
-	itThrows() {
-		// this.logger.log({
-		// 	level: 'debug',
-		// 	message: 'Hello distributed log files!',
-		// });
-
-		return this.userService.itThrows();
-	}
 
 	/**
 	 *
@@ -65,8 +56,8 @@ export class UserController {
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.userService.findOne(+id);
+	findOne(@Param('id', ParseUUIDPipe) idx: string) {
+		return this.userService.findOne(idx);
 	}
 
 	/**
@@ -78,8 +69,11 @@ export class UserController {
 	 * @memberof UserController
 	 */
 	@Put(':id')
-	update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): any {
-		return this.userService.update(+id, updateUserDto);
+	update(
+		@Param('id', ParseUUIDPipe) idx: string,
+		@Body() updateUserDto: UpdateUserDto,
+	): any {
+		return this.userService.update(idx, updateUserDto);
 	}
 
 	/**
@@ -90,7 +84,7 @@ export class UserController {
 	 * @memberof UserController
 	 */
 	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.userService.remove(+id);
+	remove(@Param('idx', ParseUUIDPipe) idx: string) {
+		return this.userService.remove(idx);
 	}
 }

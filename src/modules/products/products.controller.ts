@@ -31,16 +31,16 @@ export class ProductsController {
 		return this.productsService.findOne(idx);
 	}
 
-	@Put(':id')
+	@Put(':idx')
 	update(
-		@Param('id') id: string,
+		@Param('idx', ParseUUIDPipe) idx: string,
 		@Body() updateProductDto: UpdateProductDto,
 	) {
-		return this.productsService.update(+id, updateProductDto);
+		return this.productsService.update(idx, updateProductDto);
 	}
 
-	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.productsService.remove(+id);
+	@Delete(':idx')
+	remove(@Param('idx', ParseUUIDPipe) idx: string) {
+		return this.productsService.remove(idx);
 	}
 }
