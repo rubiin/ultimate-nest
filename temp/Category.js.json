@@ -1,0 +1,39 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"name": { "name": "name", "reference": "scalar", "length": 100, "unique": true, "getter": false, "setter": false, "type": "string" },
+			"description": { "name": "description", "reference": "scalar", "length": 150, "default": "", "getter": false, "setter": false, "type": "string" },
+			"icon": { "name": "icon", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			"image": { "name": "image", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			"color": { "name": "color", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			"product": { "name": "product", "reference": "1:m", "cascade": ["persist"], "type": "Product" }
+		},
+		"props": [
+			{ "name": "name", "reference": "scalar", "length": 100, "unique": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "description", "reference": "scalar", "length": 150, "default": "", "getter": false, "setter": false, "type": "string" },
+			{ "name": "icon", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			{ "name": "image", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			{ "name": "color", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			{ "name": "product", "reference": "1:m", "cascade": ["persist"], "type": "Product" }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"className": "Category",
+		"path": "./dist/entities/category.entity.js",
+		"name": "Category",
+		"abstract": false,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [{ "name": "product", "reference": "1:m", "cascade": ["persist"], "type": "Product" }],
+		"collection": "category"
+	},
+	"origin": "./dist/entities/category.entity.js",
+	"hash": "7c3e147f7d41afd54c391b80ba45a462",
+	"version": "4.4.4"
+}

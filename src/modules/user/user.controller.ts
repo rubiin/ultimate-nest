@@ -33,12 +33,12 @@ export class UserController {
 
 	@Get('error')
 	itThrows() {
-		this.logger.log({
-			level: 'debug',
-			message: 'Hello distributed log files!',
-		});
+		// this.logger.log({
+		// 	level: 'debug',
+		// 	message: 'Hello distributed log files!',
+		// });
 
-		// return this.userService.itThrows();
+		return this.userService.itThrows();
 	}
 
 	/**

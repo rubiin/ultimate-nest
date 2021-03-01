@@ -3,11 +3,29 @@
 		"propertyOrder": {},
 		"properties": {
 			"name": { "name": "name", "reference": "scalar", "length": 100, "unique": true, "getter": false, "setter": false, "type": "string" },
-			"price": { "name": "price", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
+			"description": { "name": "description", "reference": "scalar", "length": 150, "default": "", "getter": false, "setter": false, "type": "string" },
+			"richDescription": { "name": "richDescription", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string", "columnTypes": ["text"] },
+			"image": { "name": "image", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			"images": { "name": "images", "reference": "scalar", "nullable": true, "getter": false, "setter": false },
+			"brand": { "name": "brand", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			"price": { "name": "price", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			"countInStock": { "name": "countInStock", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			"rating": { "name": "rating", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			"isFeatured": { "name": "isFeatured", "reference": "scalar", "default": false, "getter": false, "setter": false, "type": "boolean" },
+			"category": { "name": "category", "reference": "m:1", "cascade": ["persist"], "type": "Category", "nullable": false }
 		},
 		"props": [
 			{ "name": "name", "reference": "scalar", "length": 100, "unique": true, "getter": false, "setter": false, "type": "string" },
-			{ "name": "price", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
+			{ "name": "description", "reference": "scalar", "length": 150, "default": "", "getter": false, "setter": false, "type": "string" },
+			{ "name": "richDescription", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string", "columnTypes": ["text"] },
+			{ "name": "image", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			{ "name": "images", "reference": "scalar", "nullable": true, "getter": false, "setter": false },
+			{ "name": "brand", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
+			{ "name": "price", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			{ "name": "countInStock", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			{ "name": "rating", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			{ "name": "isFeatured", "reference": "scalar", "default": false, "getter": false, "setter": false, "type": "boolean" },
+			{ "name": "category", "reference": "m:1", "cascade": ["persist"], "type": "Category", "nullable": false }
 		],
 		"primaryKeys": [],
 		"filters": {},
@@ -22,10 +40,10 @@
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
-		"relations": [],
+		"relations": [{ "name": "category", "reference": "m:1", "cascade": ["persist"], "type": "Category", "nullable": false }],
 		"collection": "product"
 	},
 	"origin": "./dist/entities/product.entity.js",
-	"hash": "400cc978accc701880987c6429de491e",
+	"hash": "a4d11be5b9d56fcc5994cce1face7214",
 	"version": "4.4.4"
 }

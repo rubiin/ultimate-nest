@@ -3,7 +3,7 @@ import { UpdateUserDto } from '@modules/user/dtos/update-user.dto';
 import { User } from '@entities';
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { I18nRequestScopeService } from 'nestjs-i18n';
 
 @Injectable()
@@ -23,10 +23,7 @@ export class UserService {
 	}
 
 	async itThrows() {
-		throw new HttpException(
-			{ key: 'operations.HELLO', args: { username: 'rubin' } },
-			HttpStatus.FORBIDDEN,
-		);
+		throw new Error('jhasjags');
 	}
 
 	findOne(id: number): Promise<User> {

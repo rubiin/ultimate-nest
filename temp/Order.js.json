@@ -1,0 +1,31 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"quantity": { "name": "quantity", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			"orderItem": { "name": "orderItem", "reference": "1:1", "cascade": ["persist"], "owner": true, "orphanRemoval": true, "type": "OrderItems", "nullable": false, "unique": true }
+		},
+		"props": [
+			{ "name": "quantity", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			{ "name": "orderItem", "reference": "1:1", "cascade": ["persist"], "owner": true, "orphanRemoval": true, "type": "OrderItems", "nullable": false, "unique": true }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"className": "Order",
+		"path": "./dist/entities/order.entity.js",
+		"name": "Order",
+		"abstract": false,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [{ "name": "orderItem", "reference": "1:1", "cascade": ["persist"], "owner": true, "orphanRemoval": true, "type": "OrderItems", "nullable": false, "unique": true }],
+		"collection": "order"
+	},
+	"origin": "./dist/entities/order.entity.js",
+	"hash": "355f2b2efcecbb9a6e7bd44e5d605721",
+	"version": "4.4.4"
+}
