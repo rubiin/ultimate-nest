@@ -10,10 +10,7 @@ export class RefreshTokensRepository {
 		private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
 	) {}
 
-	public async createRefreshToken(
-		user: User,
-		ttl: number,
-	): Promise<RefreshToken> {
+	async createRefreshToken(user: User, ttl: number): Promise<RefreshToken> {
 		const token = new RefreshToken();
 
 		token.user = user;
@@ -32,14 +29,14 @@ export class RefreshTokensRepository {
 		return token;
 	}
 
-	public async findTokenById(id: number): Promise<RefreshToken | null> {
+	async findTokenById(id: number): Promise<RefreshToken | null> {
 		return this.refreshTokenRepository.findOne({
 			id,
 			isRevoked: false,
 		});
 	}
 
-	public async deleteTokensForUser(user: User): Promise<boolean> {
+	async deleteTokensForUser(user: User): Promise<boolean> {
 		await this.refreshTokenRepository.nativeUpdate(
 			{ user },
 			{ isRevoked: true },
@@ -48,7 +45,7 @@ export class RefreshTokensRepository {
 		return true;
 	}
 
-	public async deleteToken(user: User, tokenId: number): Promise<boolean> {
+	async deleteToken(user: User, tokenId: number): Promise<boolean> {
 		await this.refreshTokenRepository.nativeUpdate(
 			{ user, id: tokenId },
 			{ is_revoked: true },
