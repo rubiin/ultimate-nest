@@ -7,6 +7,7 @@ import {
 	Param,
 	Delete,
 	ParseUUIDPipe,
+	ParseIntPipe,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -24,6 +25,16 @@ export class ProductsController {
 	@Get()
 	findAll() {
 		return this.productsService.findAll();
+	}
+
+	@Get('/count')
+	async productsCount() {
+		return this.productsService.productsCount();
+	}
+
+	@Get('/featured/:count')
+	async featuredProducts(@Param('count', ParseIntPipe) count: number) {
+		return this.productsService.featuredProducts(count);
 	}
 
 	@Get(':idx')

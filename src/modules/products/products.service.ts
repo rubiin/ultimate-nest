@@ -33,8 +33,29 @@ export class ProductsService {
 		return product;
 	}
 
+	async productsCount() {
+		const count = await this.productRepository.count({
+			isActive: true,
+			isObsolete: false,
+		});
+
+		return { count };
+	}
+
 	async findAll(): Promise<Product[]> {
 		const product = await this.productRepository.findAll();
+
+		if (product) {
+			throw new HttpException('No products', HttpStatus.NOT_FOUND);
+		}
+
+		return product;
+	}
+
+	async featuredProducts(count: number): Promise<Product[]> {
+		const product = await this.productRepository.findAll({
+			limit: count ?? 0,
+		});
 
 		if (product) {
 			throw new HttpException('No products', HttpStatus.NOT_FOUND);
