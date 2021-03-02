@@ -15,7 +15,7 @@ export class OtpLog extends BaseEntity {
 	})
 	otpCode: string | null;
 
-	@ManyToOne({ entity: () => User, onDelete: 'cascade' })
+	@ManyToOne(() => User)
 	user: User;
 
 	@Property({

@@ -7,18 +7,23 @@ import {
 	Param,
 	Delete,
 	ParseUUIDPipe,
+	UseGuards,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { JwtAuthGuard } from '@common/guards/jwt.guard';
+import { LoggedInUser } from '@common/decorators/user.decorator';
+import { User } from '@entities';
 
 @Controller('order')
 export class OrderController {
 	constructor(private readonly orderService: OrderService) {}
 
+	@UseGuards(JwtAuthGuard)
 	@Post()
-	create(@Body() createOrderDto: CreateOrderDto) {
-		return this.orderService.create(createOrderDto);
+	create(@Body() createOrderDto: CreateOrderDto, @LoggedInUser() user: User) {
+		return this.orderService.create(createOrderDto, user);
 	}
 
 	@Get()

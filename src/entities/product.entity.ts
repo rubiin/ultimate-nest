@@ -1,6 +1,13 @@
 import { BaseEntity } from '@common/database/base-entity.entity';
-import { Property, Entity, ManyToOne, ArrayType } from '@mikro-orm/core';
+import {
+	Property,
+	Entity,
+	ManyToOne,
+	ArrayType,
+	OneToOne,
+} from '@mikro-orm/core';
 import { Category } from './category.entity';
+import { OrderItem } from './order-items.entity';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -49,6 +56,9 @@ export class Product extends BaseEntity {
 	})
 	isFeatured: boolean;
 
-	@ManyToOne(() => Category) // when you provide correct type hint, ORM will read it for you
+	@OneToOne(() => OrderItem, orderItem => orderItem.product)
+	orderItem!: OrderItem;
+
+	@ManyToOne(() => Category)
 	category: Category;
 }

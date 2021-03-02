@@ -1,4 +1,4 @@
-import { Order } from '@entities';
+import { Order, OrderItem, Product, User } from '@entities';
 import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -10,12 +10,48 @@ export class OrderService {
 	constructor(
 		@InjectRepository(Order)
 		private readonly orderRepository: EntityRepository<Order>,
+		@InjectRepository(OrderItem)
+		private readonly orderItemRepository: EntityRepository<OrderItem>,
+		@InjectRepository(Product)
+		private readonly productRepository: EntityRepository<Product>,
 	) {}
 
-	async create(createOrderDto: CreateOrderDto) {
-		const order = this.orderRepository.create(createOrderDto);
+	async create(createOrderDto: CreateOrderDto, user: User): Promise<Order> {
+		let totalPrice = 0;
 
-		await this.orderRepository.persistAndFlush(order);
+		const orderItems = Promise.all(
+			createOrderDto.orderItems.map(async orderItem => {
+				const product = await this.productRepository.findOne({
+					idx: orderItem.idx,
+					isActive: true,
+					isObsolete: false,
+				});
+
+				const newOrderItem = new OrderItem(orderItem.quantity, product);
+
+				await this.orderItemRepository.persistAndFlush(newOrderItem);
+
+				totalPrice += product.price * orderItem.quantity;
+
+				return newOrderItem.id;
+			}),
+		);
+
+		const orderItemsIdsResolved = await orderItems;
+
+		const order = new Order({
+			orderItems: orderItemsIdsResolved,
+			shippingAddress1: createOrderDto.shippingAddress1,
+			shippingAddress2: createOrderDto.shippingAddress2,
+			city: createOrderDto.city,
+			zip: createOrderDto.zip,
+			country: createOrderDto.country,
+			phone: createOrderDto.phone,
+			totalPrice: totalPrice,
+			user: user,
+		});
+
+		await this.orderRepository.persistAndFlush(Order);
 
 		return order;
 	}

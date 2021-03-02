@@ -41,6 +41,6 @@ export class ActivityLog extends BaseEntity {
 	})
 	loginStatus: boolean;
 
-	@ManyToOne({ entity: () => User, onDelete: 'cascade' })
+	@ManyToOne(() => User)
 	user: User;
 }

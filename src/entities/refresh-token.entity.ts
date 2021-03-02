@@ -10,7 +10,7 @@ export class RefreshToken extends BaseEntity {
 	})
 	expiresIn: Date;
 
-	@ManyToOne({ entity: () => User, onDelete: 'cascade' })
+	@ManyToOne(() => User)
 	user: User;
 
 	@Property({

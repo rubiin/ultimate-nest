@@ -24,6 +24,9 @@ export class Category extends BaseEntity {
 	@Property({ default: '' })
 	color: string;
 
-	@OneToMany(() => Product, product => product.category)
+	@OneToMany(() => Product, product => product.category, {
+		eager: true,
+		orphanRemoval: true,
+	})
 	product = new Collection<Product>(this);
 }
