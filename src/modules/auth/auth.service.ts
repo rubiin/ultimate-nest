@@ -30,7 +30,7 @@ export class AuthService {
 	 * @return {Promise<ILoginSignupReponse>}
 	 * @memberof AuthService
 	 */
-	async loginUser(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
+	async login(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
 		const user = await this.userRepository.findOne({
 			email: userDto.email,
 			isActive: true,
@@ -73,5 +73,13 @@ export class AuthService {
 	 */
 	async logoutFromAll(user: User): Promise<IResponse> {
 		return this.tokenService.deleteRefreshTokenForUser(user);
+	}
+
+	async logout(user: User, refreshToken: string): Promise<IResponse> {
+		const payload = await this.tokenService.decodeRefreshToken(
+			refreshToken,
+		);
+
+		return this.tokenService.deleteRefreshToken(user, payload);
 	}
 }
