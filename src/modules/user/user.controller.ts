@@ -51,12 +51,12 @@ export class UserController {
 	 * @memberof UserController
 	 */
 	@Get()
-	findAll() {
+	async findAll() {
 		return this.userService.findAll();
 	}
 
-	@Get(':id')
-	findOne(@Param('id', ParseUUIDPipe) idx: string) {
+	@Get(':idx')
+	findOne(@Param('idx', ParseUUIDPipe) idx: string) {
 		return this.userService.findOne(idx);
 	}
 
@@ -68,9 +68,9 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
-	@Put(':id')
+	@Put(':idx')
 	update(
-		@Param('id', ParseUUIDPipe) idx: string,
+		@Param('idx', ParseUUIDPipe) idx: string,
 		@Body() updateUserDto: UpdateUserDto,
 	): any {
 		return this.userService.update(idx, updateUserDto);
@@ -83,7 +83,7 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
-	@Delete(':id')
+	@Delete(':idx')
 	remove(@Param('idx', ParseUUIDPipe) idx: string) {
 		return this.userService.remove(idx);
 	}

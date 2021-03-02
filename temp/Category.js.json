@@ -7,7 +7,7 @@
 			"icon": { "name": "icon", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
 			"image": { "name": "image", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
 			"color": { "name": "color", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
-			"product": { "name": "product", "reference": "1:m", "cascade": ["persist"], "type": "Product" }
+			"product": { "name": "product", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Product" }
 		},
 		"props": [
 			{ "name": "name", "reference": "scalar", "length": 100, "unique": true, "getter": false, "setter": false, "type": "string" },
@@ -15,7 +15,7 @@
 			{ "name": "icon", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
 			{ "name": "image", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
 			{ "name": "color", "reference": "scalar", "default": "", "getter": false, "setter": false, "type": "string" },
-			{ "name": "product", "reference": "1:m", "cascade": ["persist"], "type": "Product" }
+			{ "name": "product", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Product" }
 		],
 		"primaryKeys": [],
 		"filters": {},
@@ -30,10 +30,10 @@
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
-		"relations": [{ "name": "product", "reference": "1:m", "cascade": ["persist"], "type": "Product" }],
+		"relations": [{ "name": "product", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Product" }],
 		"collection": "category"
 	},
 	"origin": "./dist/entities/category.entity.js",
-	"hash": "7c3e147f7d41afd54c391b80ba45a462",
+	"hash": "ea93f506efd741a68adcacb83e6e24d5",
 	"version": "4.4.4"
 }

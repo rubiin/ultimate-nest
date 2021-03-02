@@ -5,7 +5,8 @@
 			"firstName": { "name": "firstName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
 			"middleName": { "name": "middleName", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
 			"lastName": { "name": "lastName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			"email": { "name": "email", "reference": "scalar", "length": 50, "unique": true, "getter": false, "setter": false, "type": "string" },
+			"email": { "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
+			"orderItems": { "name": "orderItems", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Order" },
 			"password": { "name": "password", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"street": { "name": "street", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"apartment": { "name": "apartment", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
@@ -19,7 +20,8 @@
 			{ "name": "firstName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
 			{ "name": "middleName", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
 			{ "name": "lastName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			{ "name": "email", "reference": "scalar", "length": 50, "unique": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "orderItems", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Order" },
 			{ "name": "password", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "street", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "apartment", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
@@ -42,10 +44,10 @@
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
-		"relations": [],
+		"relations": [{ "name": "orderItems", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Order" }],
 		"collection": "user"
 	},
 	"origin": "./dist/entities/user.entity.js",
-	"hash": "9ff1ea33d08d0f3d88b24819efce3df3",
+	"hash": "68c4b06feab5e94b6937d7f388297651",
 	"version": "4.4.4"
 }

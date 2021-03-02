@@ -1,6 +1,7 @@
 import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
 import { BaseEntity } from '@common/database/base-entity.entity';
 import { Order } from './order.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User extends BaseEntity {
@@ -32,6 +33,7 @@ export class User extends BaseEntity {
 	})
 	orderItems = new Collection<Order>(this);
 
+	@Exclude({ toPlainOnly: true })
 	@Property()
 	password: string;
 

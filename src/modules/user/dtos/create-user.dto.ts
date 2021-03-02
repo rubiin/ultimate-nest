@@ -5,12 +5,21 @@ import {
 	IsPhoneNumber,
 	IsBoolean,
 	IsString,
+	IsOptional,
 } from 'class-validator';
 
 export class CreateUserDto {
 	@IsNotEmpty()
-	@IsAlpha('en-Us')
-	name: string;
+	@IsAlpha('en-US')
+	firstName: string;
+
+	@IsOptional()
+	@IsAlpha('en-US')
+	middleName: string;
+
+	@IsNotEmpty()
+	@IsAlpha('en-US')
+	lastName: string;
 
 	@IsNotEmpty()
 	@IsEmail()
@@ -21,7 +30,7 @@ export class CreateUserDto {
 	password: string;
 
 	@IsNotEmpty()
-	@IsPhoneNumber('US')
+	@IsPhoneNumber('AU')
 	phone: string;
 
 	@IsNotEmpty()
