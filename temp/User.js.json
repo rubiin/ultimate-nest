@@ -33,7 +33,7 @@
 		],
 		"primaryKeys": [],
 		"filters": {},
-		"hooks": {},
+		"hooks": { "beforeUpdate": ["hashPassword"], "beforeCreate": ["hashPassword"] },
 		"indexes": [],
 		"uniques": [],
 		"className": "User",
@@ -48,6 +48,6 @@
 		"collection": "user"
 	},
 	"origin": "./dist/entities/user.entity.js",
-	"hash": "68c4b06feab5e94b6937d7f388297651",
+	"hash": "2d89ceadff6c80d4cf28061a0d71fce6",
 	"version": "4.4.4"
 }

@@ -1,7 +1,15 @@
-import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
+import {
+	BeforeCreate,
+	BeforeUpdate,
+	Collection,
+	Entity,
+	OneToMany,
+	Property,
+} from '@mikro-orm/core';
 import { BaseEntity } from '@common/database/base-entity.entity';
 import { Order } from './order.entity';
 import { Exclude } from 'class-transformer';
+import { HelperService } from '@common/helpers/helpers.utils';
 
 @Entity()
 export class User extends BaseEntity {
@@ -57,4 +65,10 @@ export class User extends BaseEntity {
 
 	@Property()
 	isAdmin: boolean;
+
+	@BeforeCreate()
+	@BeforeUpdate()
+	async hashPassword() {
+		this.password = await HelperService.hashString(this.password);
+	}
 }
