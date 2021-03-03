@@ -9,7 +9,7 @@ export class AppUtils {
 	 * @memberof AppUtils
 	 */
 
-	public static killAppWithGrace = (app: INestApplication) => {
+	static killAppWithGrace = (app: INestApplication) => {
 		process.on('SIGINT', async () => {
 			setTimeout(() => process.exit(1), 5000);
 			await app.close();

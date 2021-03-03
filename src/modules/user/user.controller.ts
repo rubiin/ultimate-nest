@@ -10,9 +10,12 @@ import {
 	Delete,
 	Inject,
 	Logger,
+	ParseUUIDPipe,
+	UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { JwtAuthGuard } from '@common/guards/jwt.guard';
 @Controller('user')
 export class UserController {
 	/**
@@ -31,16 +34,6 @@ export class UserController {
 	 * @memberof UserController
 	 */
 
-	@Get('error')
-	itThrows() {
-		this.logger.log({
-			level: 'debug',
-			message: 'Hello distributed log files!',
-		});
-
-		// return this.userService.itThrows();
-	}
-
 	/**
 	 *
 	 *
@@ -48,8 +41,9 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
+
 	@Post()
-	create(@Body() createUserDto: CreateUserDto) {
+	async create(@Body() createUserDto: CreateUserDto) {
 		return this.userService.create(createUserDto);
 	}
 
@@ -59,14 +53,17 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
+
+	@UseGuards(JwtAuthGuard)
 	@Get()
-	findAll() {
+	async findAll() {
 		return this.userService.findAll();
 	}
 
-	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.userService.findOne(+id);
+	@UseGuards(JwtAuthGuard)
+	@Get(':idx')
+	findOne(@Param('idx', ParseUUIDPipe) idx: string) {
+		return this.userService.findOne(idx);
 	}
 
 	/**
@@ -77,9 +74,14 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
-	@Put(':id')
-	update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): any {
-		return this.userService.update(+id, updateUserDto);
+
+	@UseGuards(JwtAuthGuard)
+	@Put(':idx')
+	update(
+		@Param('idx', ParseUUIDPipe) idx: string,
+		@Body() updateUserDto: UpdateUserDto,
+	): any {
+		return this.userService.update(idx, updateUserDto);
 	}
 
 	/**
@@ -89,8 +91,9 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
-	@Delete(':id')
-	remove(@Param('id') id: string) {
-		return this.userService.remove(+id);
+	@UseGuards(JwtAuthGuard)
+	@Delete(':idx')
+	remove(@Param('idx', ParseUUIDPipe) idx: string) {
+		return this.userService.remove(idx);
 	}
 }

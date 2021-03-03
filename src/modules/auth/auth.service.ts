@@ -30,9 +30,9 @@ export class AuthService {
 	 * @return {Promise<ILoginSignupReponse>}
 	 * @memberof AuthService
 	 */
-	async loginUser(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
+	async login(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
 		const user = await this.userRepository.findOne({
-			userName: userDto.email,
+			email: userDto.email,
 			isActive: true,
 			isObsolete: false,
 		});
@@ -65,7 +65,7 @@ export class AuthService {
 
 	/**
 	 *
-	 * Logout the user from all the devices by invalidating all his refresh tokens\
+	 * Logout the user from all the devices by invalidating all his refresh tokens
 	 *
 	 * @param {User} user
 	 * @return {Promise<IResponse>}
@@ -73,5 +73,13 @@ export class AuthService {
 	 */
 	async logoutFromAll(user: User): Promise<IResponse> {
 		return this.tokenService.deleteRefreshTokenForUser(user);
+	}
+
+	async logout(user: User, refreshToken: string): Promise<IResponse> {
+		const payload = await this.tokenService.decodeRefreshToken(
+			refreshToken,
+		);
+
+		return this.tokenService.deleteRefreshToken(user, payload);
 	}
 }

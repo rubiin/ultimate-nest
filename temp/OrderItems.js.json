@@ -1,0 +1,31 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"quantity": { "name": "quantity", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			"order": { "name": "order", "reference": "1:1", "cascade": ["persist"], "type": "Order", "nullable": false, "owner": false, "unique": false }
+		},
+		"props": [
+			{ "name": "quantity", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			{ "name": "order", "reference": "1:1", "cascade": ["persist"], "type": "Order", "nullable": false, "owner": false, "unique": false }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"className": "OrderItems",
+		"path": "./dist/entities/order-items.entity.js",
+		"name": "OrderItems",
+		"abstract": false,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [{ "name": "order", "reference": "1:1", "cascade": ["persist"], "type": "Order", "nullable": false, "owner": false, "unique": false }],
+		"collection": "order_items"
+	},
+	"origin": "./dist/entities/order-items.entity.js",
+	"hash": "2d4cdb4c907dcf2c660f298ad3c619c6",
+	"version": "4.4.4"
+}

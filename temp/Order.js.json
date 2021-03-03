@@ -1,0 +1,52 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"shippingAddress1": { "name": "shippingAddress1", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"shippingAddress2": { "name": "shippingAddress2", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"city": { "name": "city", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"zip": { "name": "zip", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"country": { "name": "country", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"phone": { "name": "phone", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"status": { "name": "status", "reference": "scalar", "default": "PENDING", "getter": false, "setter": false, "type": "string" },
+			"totalPrice": { "name": "totalPrice", "reference": "scalar", "nullable": true, "getter": false, "setter": false, "type": "number" },
+			"orderItems": { "name": "orderItems", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "OrderItem" },
+			"user": { "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
+			"dateOrdered": { "name": "dateOrdered", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "getter": false, "setter": false, "type": "Date" }
+		},
+		"props": [
+			{ "name": "shippingAddress1", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "shippingAddress2", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "city", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "zip", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "country", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "phone", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "status", "reference": "scalar", "default": "PENDING", "getter": false, "setter": false, "type": "string" },
+			{ "name": "totalPrice", "reference": "scalar", "nullable": true, "getter": false, "setter": false, "type": "number" },
+			{ "name": "orderItems", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "OrderItem" },
+			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
+			{ "name": "dateOrdered", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "getter": false, "setter": false, "type": "Date" }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"className": "Order",
+		"path": "./dist/entities/order.entity.js",
+		"name": "Order",
+		"abstract": false,
+		"constructorParams": ["data"],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [
+			{ "name": "orderItems", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "OrderItem" },
+			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+		],
+		"collection": "order"
+	},
+	"origin": "./dist/entities/order.entity.js",
+	"hash": "c65cc755bc0e691d947ee8e6da79cd29",
+	"version": "4.4.4"
+}

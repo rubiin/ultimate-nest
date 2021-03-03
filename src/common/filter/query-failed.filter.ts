@@ -8,14 +8,11 @@ import {
 	ExceptionFilter,
 	HttpStatus,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { Response } from 'express';
 import { STATUS_CODES } from 'http';
 
 @Catch(UniqueConstraintViolationException)
 export class QueryFailedFilter implements ExceptionFilter {
-	constructor(public reflector: Reflector) {}
-
 	catch(exception: DriverException, host: ArgumentsHost) {
 		const context = host.switchToHttp();
 		const response = context.getResponse<Response>();

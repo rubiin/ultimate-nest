@@ -1,7 +1,7 @@
 import { CreateUserDto } from '@modules/user/dtos/create-user.dto';
 import { UpdateUserDto } from '@modules/user/dtos/update-user.dto';
 import { User } from '@entities';
-import { EntityRepository } from '@mikro-orm/core';
+import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { I18nRequestScopeService } from 'nestjs-i18n';
@@ -14,30 +14,48 @@ export class UserService {
 		private readonly i18n: I18nRequestScopeService,
 	) {}
 
-	create(createUserDto: CreateUserDto) {
-		return `This action creates a #${createUserDto} user`;
+	async create(createuserDto: CreateUserDto): Promise<User> {
+		const user = this.userRepository.create(createuserDto);
+
+		await this.userRepository.persistAndFlush(user);
+
+		return user;
 	}
 
-	async findAll() {
-		return this.i18n.translate('operations.SUCCESS_MESSAGE');
+	async findAll(): Promise<User[]> {
+		const user = await this.userRepository.findAll();
+
+		if (user) {
+			throw new HttpException('No user', HttpStatus.NOT_FOUND);
+		}
+
+		return user;
 	}
 
-	async itThrows() {
-		throw new HttpException(
-			{ key: 'operations.HELLO', args: { username: 'rubin' } },
-			HttpStatus.FORBIDDEN,
-		);
+	async findOne(idx: string): Promise<User> {
+		const user = await this.userRepository.findOne({
+			idx,
+			isActive: true,
+			isObsolete: false,
+		});
+
+		if (user) {
+			throw new HttpException('No user with idx', HttpStatus.NOT_FOUND);
+		}
+
+		return user;
 	}
 
-	findOne(id: number): Promise<User> {
-		return this.userRepository.findOne({ id });
+	async update(idx: string, updateuserDto: UpdateUserDto): Promise<User> {
+		const user = await this.userRepository.findOne({ idx });
+
+		wrap(user).assign(updateuserDto);
+		await this.userRepository.flush();
+
+		return user;
 	}
 
-	update(id: number, updateUserDto: UpdateUserDto) {
-		return `This action updates a #${updateUserDto} user`;
-	}
-
-	remove(id: number) {
-		return `This action removes a #${id} user`;
+	async remove(idx: string) {
+		return this.userRepository.remove({ idx });
 	}
 }

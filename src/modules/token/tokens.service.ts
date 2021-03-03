@@ -1,12 +1,12 @@
+import { IResponse } from '@common/interface/response.interface';
+import { RefreshToken, User } from '@entities';
+import { EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { pick } from '@rubiin/js-utils';
 import { SignOptions, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokensRepository } from './refresh-tokens.repository';
-import { IResponse } from '@common/interface/response.interface';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/core';
-import { pick } from '@rubiin/js-utils';
-import { RefreshToken, User } from '@entities';
 
 const BASE_OPTIONS: SignOptions = {
 	issuer: 'some-app',
@@ -36,7 +36,7 @@ export class TokensService {
 	 * @param {EntityRepository<User>} userRepository
 	 * @memberof TokensService
 	 */
-	public constructor(
+	constructor(
 		tokens: RefreshTokensRepository,
 		jwt: JwtService,
 		@InjectRepository(User)
@@ -53,7 +53,7 @@ export class TokensService {
 	 * @return {*}  {Promise<string>}
 	 * @memberof TokensService
 	 */
-	public async generateAccessToken(user: User): Promise<string> {
+	async generateAccessToken(user: User): Promise<string> {
 		const options: SignOptions = {
 			...BASE_OPTIONS,
 			subject: String(user.id),
@@ -70,10 +70,7 @@ export class TokensService {
 	 * @return {*}  {Promise<string>}
 	 * @memberof TokensService
 	 */
-	public async generateRefreshToken(
-		user: User,
-		expiresIn: number,
-	): Promise<string> {
+	async generateRefreshToken(user: User, expiresIn: number): Promise<string> {
 		const token = await this.tokens.createRefreshToken(user, expiresIn);
 
 		const options: SignOptions = {
@@ -93,7 +90,7 @@ export class TokensService {
 	 * @return {*}  {Promise<{ user: User; token: RefreshToken }>}
 	 * @memberof TokensService
 	 */
-	public async resolveRefreshToken(
+	async resolveRefreshToken(
 		encoded: string,
 	): Promise<{ user: User; token: RefreshToken }> {
 		const payload = await this.decodeRefreshToken(encoded);
@@ -123,7 +120,7 @@ export class TokensService {
 	 * @return {*}  {Promise<{ token: string; user: User }>}
 	 * @memberof TokensService
 	 */
-	public async createAccessTokenFromRefreshToken(
+	async createAccessTokenFromRefreshToken(
 		refresh: string,
 	): Promise<{ token: string; user: User }> {
 		const { user } = await this.resolveRefreshToken(refresh);

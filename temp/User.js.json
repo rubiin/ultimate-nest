@@ -2,22 +2,40 @@
 	"data": {
 		"propertyOrder": {},
 		"properties": {
-			"firstName": { "name": "firstName", "reference": "scalar", "type": "string", "length": 50, "getter": false, "setter": false },
-			"middleName": { "name": "middleName", "reference": "scalar", "type": "string", "length": 50, "nullable": true, "getter": false, "setter": false },
-			"lastName": { "name": "lastName", "reference": "scalar", "type": "string", "length": 50, "getter": false, "setter": false },
-			"userName": { "name": "userName", "reference": "scalar", "type": "string", "length": 50, "getter": false, "setter": false }
+			"firstName": { "name": "firstName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			"middleName": { "name": "middleName", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"lastName": { "name": "lastName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			"email": { "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
+			"orderItems": { "name": "orderItems", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Order" },
+			"password": { "name": "password", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"street": { "name": "street", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"apartment": { "name": "apartment", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"city": { "name": "city", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"zip": { "name": "zip", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"country": { "name": "country", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"phone": { "name": "phone", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"isAdmin": { "name": "isAdmin", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" }
 		},
 		"props": [
-			{ "name": "firstName", "reference": "scalar", "type": "string", "length": 50, "getter": false, "setter": false },
-			{ "name": "middleName", "reference": "scalar", "type": "string", "length": 50, "nullable": true, "getter": false, "setter": false },
-			{ "name": "lastName", "reference": "scalar", "type": "string", "length": 50, "getter": false, "setter": false },
-			{ "name": "userName", "reference": "scalar", "type": "string", "length": 50, "getter": false, "setter": false }
+			{ "name": "firstName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			{ "name": "middleName", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "lastName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			{ "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "orderItems", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Order" },
+			{ "name": "password", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "street", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "apartment", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "city", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "zip", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "country", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "phone", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "isAdmin", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" }
 		],
 		"primaryKeys": [],
 		"filters": {},
-		"hooks": {},
+		"hooks": { "beforeUpdate": ["hashPassword"], "beforeCreate": ["hashPassword"] },
 		"indexes": [],
-		"uniques": [{ "properties": "userName" }],
+		"uniques": [],
 		"className": "User",
 		"path": "./dist/entities/user.entity.js",
 		"name": "User",
@@ -26,10 +44,10 @@
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
-		"relations": [],
+		"relations": [{ "name": "orderItems", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Order" }],
 		"collection": "user"
 	},
 	"origin": "./dist/entities/user.entity.js",
-	"hash": "5e2625fb14080af87a7202ce0658b62a",
+	"hash": "2d89ceadff6c80d4cf28061a0d71fce6",
 	"version": "4.4.4"
 }

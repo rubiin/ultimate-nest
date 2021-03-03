@@ -1,6 +1,5 @@
 import { Logger } from '@nestjs/common';
 import * as Twilio from 'twilio';
-
 import { TwilioConfig } from './twilio.dto';
 
 export class TwilioLibrary {
@@ -8,7 +7,7 @@ export class TwilioLibrary {
 
 	private logger: Logger = new Logger('TwilioModule');
 
-	constructor(public readonly config: TwilioConfig) {
+	constructor(readonly config: TwilioConfig) {
 		this.client = Twilio(
 			this.config.TWILIO_ACCOUNT_SID,
 			this.config.TWILIO_AUTH_TOKEN,

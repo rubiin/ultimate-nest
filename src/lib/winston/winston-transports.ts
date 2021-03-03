@@ -23,7 +23,7 @@ let transports: winston.transport[] = [
 
 // Production Winston transports (common + custom)
 
-if (process.env.NODE_ENV !== 'prod') {
+if (process.env.NODE_ENV === 'prod') {
 	transports = [
 		...transports,
 		new winston.transports.File({

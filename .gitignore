@@ -1,15 +1,13 @@
-# OS
-.DS_Store
 
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# Created by https://www.toptal.com/developers/gitignore/api/linux,node
+# Edit at https://www.toptal.com/developers/gitignore?templates=linux,node
 
-# IDEs and editors
+# dotenv environment variables file
+env/*
+!env/sample.env
+!env/dev.env
+
 /.idea
 .project
 .classpath
@@ -18,6 +16,28 @@
 .settings/
 *.sublime-workspace
 
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+
+### Linux ###
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
 
 ### Node ###
 # Logs
@@ -75,6 +95,9 @@ typings/
 # Optional eslint cache
 .eslintcache
 
+# Optional stylelint cache
+.stylelintcache
+
 # Microbundle cache
 .rpt2_cache/
 .rts2_cache_cjs/
@@ -91,12 +114,13 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-env/*
-!env/sample.env
-!env/dev.env
+.env
+.env.test
+.env*.local
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
+.parcel-cache
 
 # Next.js build output
 .next
@@ -107,9 +131,9 @@ dist
 
 # Gatsby files
 .cache/
-# Comment in the public line in if your project uses Gatsby and not Next.js
-# https://nextjs.org/blog/next-9-1#public-directory-support
-# public
+# Comment in the  line in if your project uses Gatsby and not Next.js
+# https://nextjs.org/blog/next-9-1#-directory-support
+# 
 
 # vuepress build output
 .vuepress/dist
@@ -128,3 +152,5 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+# End of https://www.toptal.com/developers/gitignore/api/linux,node

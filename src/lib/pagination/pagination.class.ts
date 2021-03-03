@@ -1,6 +1,5 @@
 import { Type } from '@nestjs/common';
 import { ApiResponse, ApiResponseProperty } from '@nestjs/swagger';
-
 import { IPaginationLinks, IPaginationMeta } from './pagination.interfaces';
 
 export class Pagination<PaginationObject> {
@@ -8,15 +7,15 @@ export class Pagination<PaginationObject> {
 		/**
 		 * a list of items to be returned
 		 */
-		public readonly data: PaginationObject[],
+		readonly data: PaginationObject[],
 		/**
 		 * associated meta information (e.g., counts)
 		 */
-		public readonly meta: IPaginationMeta,
+		readonly meta: IPaginationMeta,
 		/**
 		 * associated links
 		 */
-		public readonly links: IPaginationLinks,
+		readonly links: IPaginationLinks,
 	) {}
 }
 

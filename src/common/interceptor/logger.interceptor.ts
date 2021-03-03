@@ -24,7 +24,7 @@ export class LoggingInterceptor implements NestInterceptor {
 	 *  Prefix setter
 	 * ex. [MyPrefix - LoggingInterceptor - 200 - GET - /]
 	 */
-	public setUserPrefix(prefix: string): void {
+	setUserPrefix(prefix: string): void {
 		this.userPrefix = `${prefix} - `;
 	}
 
@@ -33,7 +33,7 @@ export class LoggingInterceptor implements NestInterceptor {
 	 * @param context details about the current request
 	 * @param call$ implements the handle method that returns an Observable
 	 */
-	public intercept(
+	intercept(
 		context: ExecutionContext,
 		call$: CallHandler,
 	): Observable<unknown> {

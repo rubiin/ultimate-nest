@@ -1,10 +1,14 @@
+import { LoggingInterceptor } from '@common/interceptor/logger.interceptor';
 import { ConfigModule } from '@lib/config/config.module';
 import { OrmModule } from '@lib/orm/orm.module';
 import { WinstonModule } from '@lib/winston/winston.module';
 import { AuthModule } from '@modules/auth/auth.module';
-import { IdeaModule } from '@modules/idea/idea.module';
+import { CategoriesModule } from '@modules/categories/categories.module';
+import { OrderModule } from '@modules/order/order.module';
+import { ProductsModule } from '@modules/products/products.module';
 import { UserModule } from '@modules/user/user.module';
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import {
 	AcceptLanguageResolver,
 	HeaderResolver,
@@ -31,7 +35,15 @@ import * as path from 'path';
 				AcceptLanguageResolver,
 			],
 		}),
-		IdeaModule,
+		ProductsModule,
+		CategoriesModule,
+		OrderModule,
+	],
+	providers: [
+		{
+			useClass: LoggingInterceptor,
+			provide: APP_INTERCEPTOR,
+		},
 	],
 })
 export class AppModule {}
