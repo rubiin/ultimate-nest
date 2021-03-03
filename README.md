@@ -22,7 +22,7 @@ Install dependencies
 
 The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres database.
 
-Copy MikroORM config example file for database settings and adjust the connection settings on sample env file
+Copy MikroORM config example file and adjust the connection settings and other settings(jwt,redism,mail,etc) respectively on sample env file
 
 Start local Postgres server and run `yarn orm:up` to apply migrations
 
