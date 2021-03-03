@@ -11,9 +11,11 @@ import {
 	Inject,
 	Logger,
 	ParseUUIDPipe,
+	UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { JwtAuthGuard } from '@common/guards/jwt.guard';
 @Controller('user')
 export class UserController {
 	/**
@@ -39,8 +41,9 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
+
 	@Post()
-	create(@Body() createUserDto: CreateUserDto) {
+	async create(@Body() createUserDto: CreateUserDto) {
 		return this.userService.create(createUserDto);
 	}
 
@@ -50,11 +53,14 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
+
+	@UseGuards(JwtAuthGuard)
 	@Get()
 	async findAll() {
 		return this.userService.findAll();
 	}
 
+	@UseGuards(JwtAuthGuard)
 	@Get(':idx')
 	findOne(@Param('idx', ParseUUIDPipe) idx: string) {
 		return this.userService.findOne(idx);
@@ -68,6 +74,8 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
+
+	@UseGuards(JwtAuthGuard)
 	@Put(':idx')
 	update(
 		@Param('idx', ParseUUIDPipe) idx: string,
@@ -83,6 +91,7 @@ export class UserController {
 	 * @return {*}
 	 * @memberof UserController
 	 */
+	@UseGuards(JwtAuthGuard)
 	@Delete(':idx')
 	remove(@Param('idx', ParseUUIDPipe) idx: string) {
 		return this.userService.remove(idx);

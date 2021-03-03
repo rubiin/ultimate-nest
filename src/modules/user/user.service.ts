@@ -5,7 +5,6 @@ import { EntityRepository, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { I18nRequestScopeService } from 'nestjs-i18n';
-import { HelperService } from '@common/helpers/helpers.utils';
 
 @Injectable()
 export class UserService {
@@ -16,8 +15,7 @@ export class UserService {
 	) {}
 
 	async create(createuserDto: CreateUserDto): Promise<User> {
-		const password = await HelperService.hashString(createuserDto.password);
-		const user = this.userRepository.create({ ...createuserDto, password });
+		const user = this.userRepository.create(createuserDto);
 
 		await this.userRepository.persistAndFlush(user);
 
