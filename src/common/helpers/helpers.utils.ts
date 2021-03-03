@@ -47,14 +47,15 @@ export class HelperService {
 	}
 
 	/**
+	 *
 	 * hashes string with argon2
 	 *
 	 * @static
 	 * @param {string} string
-	 * @return {*}  {Promise<string>}
+	 * @return {*} {(Promise<string>)}
 	 * @memberof HelperService
 	 */
-	static async hashString(string: string) {
+	static async hashString(string: string): Promise<string> {
 		return passwordPool
 			.queue(async auth => await auth.hashString(string))
 			.then(async result => {
@@ -69,11 +70,10 @@ export class HelperService {
 
 	/**
 	 * renders template file with eta
-	 *
 	 * @static
 	 * @param {unknown} data
 	 * @param {string} path
-	 * @return {(Promise<string | void>)}
+	 * @return {*}  {(Promise<string | void>)}
 	 * @memberof HelperService
 	 */
 	static async renderTemplate(
@@ -92,14 +92,15 @@ export class HelperService {
 	 *
 	 * @static
 	 * @param {Buffer} input
-	 * @return {Promise<Buffer>}
+	 * @param {{height: number, width: number}} config
+	 * @return {*}  {Promise<Buffer>}
 	 * @memberof HelperService
 	 */
-	static async generateThumb(input: Buffer): Promise<Buffer> {
-		return sharp(input)
-			.resize({ height: 200, width: 200 })
-			.toFormat('png')
-			.toBuffer();
+	static async generateThumb(
+		input: Buffer,
+		config: { height: number; width: number },
+	): Promise<Buffer> {
+		return sharp(input).resize(config).toFormat('png').toBuffer();
 	}
 
 	/**
