@@ -4,8 +4,6 @@
 
 > ### NestJS + MikroORM codebase containing real world examples (CRUD, auth, advanced patterns, etc)
 
-> Rewrite of https://github.com/lujakob/nestjs-realworld-example-app to MikroORM.
-
 ---
 
 # Getting started
@@ -19,6 +17,10 @@ Install dependencies
 ---
 
 ## Database
+
+<p align="center">
+  <a href="https://raw.githubusercontent.com/mikro-orm/mikro-orm/master/docs/static/img/logo-readme.svg?sanitize=true" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+</p>
 
 The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres database.
 
