@@ -55,18 +55,16 @@ export class HelperService {
 	 * @memberof HelperService
 	 */
 	static async hashString(string: string) {
-		try {
-			let hashed = null;
+		return passwordPool
+			.queue(async auth => await auth.hashString(string))
+			.then(async result => {
+				await passwordPool.completed();
 
-			passwordPool.queue(async pwd => {
-				hashed = await pwd.hashString(string);
+				return result;
+			})
+			.catch(error => {
+				throw error;
 			});
-			await passwordPool.completed();
-
-			return hashed;
-		} catch (error) {
-			throw error;
-		}
 	}
 
 	/**
