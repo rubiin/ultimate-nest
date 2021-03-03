@@ -19,7 +19,7 @@ Install dependencies
 ## Database
 
 <p align="center">
-  <a href="https://raw.githubusercontent.com/mikro-orm/mikro-orm/master/docs/static/img/logo-readme.svg?sanitize=true" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <a href="https://mikro-orm.io/" target="blank"><img src="https://raw.githubusercontent.com/mikro-orm/mikro-orm/master/docs/static/img/logo-readme.svg?sanitize=true" width="320" alt="Mikro Orm" /></a>
 </p>
 
 The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres database.
