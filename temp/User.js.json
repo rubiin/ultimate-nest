@@ -13,7 +13,7 @@
 			"city": { "name": "city", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"zip": { "name": "zip", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"country": { "name": "country", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
-			"phone": { "name": "phone", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"phone": { "name": "phone", "reference": "scalar", "length": 50, "getter": false, "setter": false },
 			"isAdmin": { "name": "isAdmin", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" }
 		},
 		"props": [
@@ -28,7 +28,7 @@
 			{ "name": "city", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "zip", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "country", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
-			{ "name": "phone", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "phone", "reference": "scalar", "length": 50, "getter": false, "setter": false },
 			{ "name": "isAdmin", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" }
 		],
 		"primaryKeys": [],
@@ -48,6 +48,6 @@
 		"collection": "user"
 	},
 	"origin": "./dist/entities/user.entity.js",
-	"hash": "2d89ceadff6c80d4cf28061a0d71fce6",
+	"hash": "9cd67efea0cb33b4d9494331accf5ff9",
 	"version": "4.4.4"
 }

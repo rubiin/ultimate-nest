@@ -4,7 +4,7 @@ export class Migration20210302091751 extends Migration {
 	async up(): Promise<void> {
 		this.addSql(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
 		this.addSql(
-			'create table "user" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "first_name" varchar(50) not null, "middle_name" varchar(50) null, "last_name" varchar(50) not null, "email" varchar(60) not null, "password" varchar(255) not null, "street" varchar(255) not null, "apartment" varchar(255) not null, "city" varchar(255) not null, "zip" varchar(255) not null, "country" varchar(255) not null, "phone" varchar(255) not null, "is_admin" bool not null);',
+			'create table "user" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "first_name" varchar(50) not null, "middle_name" varchar(50) null, "last_name" varchar(50) not null, "email" varchar(60) not null, "password" varchar(255) not null, "street" varchar(255) not null, "apartment" varchar(255) not null, "city" varchar(255) not null, "zip" varchar(255) not null, "country" varchar(255) not null, "phone" varchar(50) not null, "is_admin" bool not null);',
 		);
 		this.addSql(
 			'alter table "user" add constraint "user_email_unique" unique ("email");',

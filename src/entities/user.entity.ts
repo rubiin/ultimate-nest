@@ -10,6 +10,7 @@ import { BaseEntity } from '@common/database/base-entity.entity';
 import { Order } from './order.entity';
 import { Exclude } from 'class-transformer';
 import { HelperService } from '@common/helpers/helpers.utils';
+import { EncryptedType } from '@common/database/mikrorm.encrypted';
 
 @Entity()
 export class User extends BaseEntity {
@@ -60,7 +61,7 @@ export class User extends BaseEntity {
 	@Property()
 	country: string;
 
-	@Property()
+	@Property({ type: EncryptedType, length: 50 })
 	phone: string;
 
 	@Property()
