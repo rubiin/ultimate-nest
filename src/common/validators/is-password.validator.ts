@@ -9,9 +9,11 @@ import {
 @ValidatorConstraint({ async: true })
 class IsPasswordConstraint implements ValidatorConstraintInterface {
 	async validate(value: string, _args: ValidationArguments) {
-		return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$%&*?@])[\d!$%&*?@A-Za-z]{8,}$/.test(
-			value,
+		const passwordRegex = new RegExp(
+			'^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])(?=.{8,})',
 		);
+
+		return passwordRegex.test(value);
 	}
 
 	defaultMessage(arguments_: ValidationArguments) {
