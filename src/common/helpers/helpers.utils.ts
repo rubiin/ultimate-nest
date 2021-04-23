@@ -17,8 +17,8 @@ const passwordPool = Pool(
 	1 /* optional size */,
 );
 
-export class HelperService {
-	static puppetterInstance = null;
+export const HelperService = {
+	puppetterInstance : null,
 
 	/**
 	 * builds response for login
@@ -30,7 +30,7 @@ export class HelperService {
 	 * @return {AuthenticationPayload}
 	 * @memberof UtilService
 	 */
-	static buildPayloadResponse(
+	buildPayloadResponse(
 		user: User,
 		accessToken: string,
 		refreshToken?: string,
@@ -44,7 +44,7 @@ export class HelperService {
 				...(refreshToken ? { refresh_token: refreshToken } : {}),
 			},
 		};
-	}
+	},
 
 	/**
 	 *
@@ -55,7 +55,7 @@ export class HelperService {
 	 * @return {*} {(Promise<string>)}
 	 * @memberof HelperService
 	 */
-	static async hashString(string: string): Promise<string> {
+	async hashString(string: string): Promise<string> {
 		return passwordPool
 			.queue(async auth => await auth.hashString(string))
 			.then(async result => {
@@ -66,7 +66,7 @@ export class HelperService {
 			.catch(error => {
 				throw error;
 			});
-	}
+	},
 
 	/**
 	 * renders template file with eta
@@ -76,7 +76,7 @@ export class HelperService {
 	 * @return {*}  {(Promise<string | void>)}
 	 * @memberof HelperService
 	 */
-	static async renderTemplate(
+	async renderTemplate(
 		data: unknown,
 		path: string,
 	): Promise<string | void> {
@@ -85,7 +85,7 @@ export class HelperService {
 			{ data },
 			{ cache: true, rmWhitespace: true },
 		);
-	}
+	},
 
 	/**
 	 *
@@ -96,12 +96,12 @@ export class HelperService {
 	 * @return {*}  {Promise<Buffer>}
 	 * @memberof HelperService
 	 */
-	static async generateThumb(
+	async generateThumb(
 		input: Buffer,
 		config: { height: number; width: number },
 	): Promise<Buffer> {
 		return sharp(input).resize(config).toFormat('png').toBuffer();
-	}
+	},
 
 	/**
 	 *
@@ -111,7 +111,7 @@ export class HelperService {
 	 * @memberof HelperService
 	 */
 
-	static async getBrowserInstance() {
+	async getBrowserInstance() {
 		if (this.puppetterInstance) {
 			this.puppetterInstance = await puppeteer.launch({
 				headless: true,
@@ -129,7 +129,7 @@ export class HelperService {
 		}
 
 		return this.puppetterInstance;
-	}
+	},
 
 	/**
 	 *
@@ -141,7 +141,7 @@ export class HelperService {
 	 * @return {*}  {(Promise<number | string>)}
 	 * @memberof HelperService
 	 */
-	static getRandom(
+	getRandom(
 		type: randomTypes,
 		length: number,
 		alphabet?: string,
@@ -155,5 +155,5 @@ export class HelperService {
 			alphabet ?? 'abcdefghijklmnopqrstuvwxyz',
 			length,
 		)();
-	}
-}
+	},
+};

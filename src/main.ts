@@ -1,44 +1,34 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import * as compression from 'compression';
-import * as helmet from 'helmet';
 import { RequestSanitizerInterceptor } from '@common/interceptor/request-sanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
-import * as bodyParser from 'body-parser';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import * as rateLimit from 'express-rate-limit';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import fastifyRateLimiter from 'fastify-rate-limit';
+import helmet from 'fastify-helmet';
+import compression from 'fastify-compress';
 import setupSwagger from './swagger';
 import { AppUtils } from '@common/helpers/app.utils';
 
 async function bootstrap() {
-	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-		cors: true,
-	});
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(),);
 
 	AppUtils.killAppWithGrace(app);
 
 	const configService = app.get(ConfigService);
 
 	// ==================================================
-	// configureExpressSettings
+	// configureFastifySettings
 	// ==================================================
 
-	app.set('etag', 'strong')
-		.set('trust proxy', true)
-		.use(bodyParser.json({ limit: '50mb' }))
-		.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
-		.use(helmet())
-		//	.use(csurf())         // enable only if maintaining session through cookies
-		.use(compression())
-		.use(
-			rateLimit({
-				windowMs: 15 * 60 * 1000, // 15 minutes
-				max: 100, // limit each IP to 100 requests per windowMs
-			}),
-		);
-
+  app.enableCors();
+  app.register(helmet);
+  app.register(compression, { encodings: ['gzip', 'deflate'] });
+  app.register(fastifyRateLimiter, {
+    max: 100,
+    timeWindow: '1 minute',
+  });
 	// ==================================================
 	// configureNestGlobals
 	// ==================================================
@@ -68,7 +58,7 @@ async function bootstrap() {
 
 	const port = configService.get<number>('app.port', 3000);
 
-	await app.listen(port);
+  await app.listen(port,'0.0.0.0');
 	console.info('Bootstrap', `Server running on 🚀 http://localhost:${port}`);
 }
 

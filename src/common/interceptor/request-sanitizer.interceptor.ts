@@ -48,7 +48,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 		if (
 			this.isString(value) &&
 			this.isString(key) &&
-			this.except.some(element => element.includes(key))
+			!this.except.some(element => element.includes(key))
 		) {
 			return validator.trim(escape(value));
 		}
