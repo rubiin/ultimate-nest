@@ -4,7 +4,10 @@ import { ValidationPipe } from '@nestjs/common';
 import { RequestSanitizerInterceptor } from '@common/interceptor/request-sanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import {
+	FastifyAdapter,
+	NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 import fastifyRateLimiter from 'fastify-rate-limit';
 import helmet from 'fastify-helmet';
 import compression from 'fastify-compress';
@@ -12,7 +15,10 @@ import setupSwagger from './swagger';
 import { AppUtils } from '@common/helpers/app.utils';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(),);
+	const app = await NestFactory.create<NestFastifyApplication>(
+		AppModule,
+		new FastifyAdapter(),
+	);
 
 	AppUtils.killAppWithGrace(app);
 
@@ -22,13 +28,13 @@ async function bootstrap() {
 	// configureFastifySettings
 	// ==================================================
 
-  app.enableCors();
-  app.register(helmet);
-  app.register(compression, { encodings: ['gzip', 'deflate'] });
-  app.register(fastifyRateLimiter, {
-    max: 100,
-    timeWindow: '1 minute',
-  });
+	app.enableCors();
+	app.register(helmet);
+	app.register(compression, { encodings: ['gzip', 'deflate'] });
+	app.register(fastifyRateLimiter, {
+		max: 100,
+		timeWindow: '1 minute',
+	});
 	// ==================================================
 	// configureNestGlobals
 	// ==================================================
@@ -58,7 +64,7 @@ async function bootstrap() {
 
 	const port = configService.get<number>('app.port', 3000);
 
-  await app.listen(port,'0.0.0.0');
+	await app.listen(port, '0.0.0.0');
 	console.info('Bootstrap', `Server running on 🚀 http://localhost:${port}`);
 }
 

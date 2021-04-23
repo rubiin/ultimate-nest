@@ -18,7 +18,7 @@ const passwordPool = Pool(
 );
 
 export const HelperService = {
-	puppetterInstance : null,
+	puppetterInstance: null,
 
 	/**
 	 * builds response for login
@@ -76,10 +76,7 @@ export const HelperService = {
 	 * @return {*}  {(Promise<string | void>)}
 	 * @memberof HelperService
 	 */
-	async renderTemplate(
-		data: unknown,
-		path: string,
-	): Promise<string | void> {
+	async renderTemplate(data: unknown, path: string): Promise<string | void> {
 		return eta.renderFileAsync(
 			path,
 			{ data },
