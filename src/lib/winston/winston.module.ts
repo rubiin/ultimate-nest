@@ -1,27 +1,12 @@
+import { WinstonConfig } from '@lib/options/winston.option';
 import { Module } from '@nestjs/common';
 import { WinstonModule as NestWinstonModule } from 'nest-winston';
-import * as winston from 'winston';
-import transports from './winston-transports';
 
 @Module({
 	exports: [NestWinstonModule],
 	imports: [
-		NestWinstonModule.forRoot({
-			format: winston.format.combine(
-				winston.format.timestamp({
-					format: 'YYYY-MM-DD HH:mm:ss',
-				}),
-				winston.format.errors({ stack: true }),
-				winston.format.splat(),
-				winston.format.json(),
-			),
-			defaultMeta: { service: 'Ultimate-template' },
-			transports: transports,
-			exceptionHandlers: [
-				new winston.transports.File({
-					filename: 'logs/exceptions.log',
-				}),
-			],
+		NestWinstonModule.forRootAsync({
+			useClass: WinstonConfig,
 		}),
 	],
 })

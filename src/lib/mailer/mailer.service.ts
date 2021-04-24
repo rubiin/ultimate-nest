@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { createTransport, SendMailOptions } from 'nodemailer';
 import { Logger } from '@nestjs/common';
-import { MAIL_MODULE_OPTIONS } from './mail.constants';
-import { MailModuleOptions } from './mail.options';
+import { MAIL_MODULE_OPTIONS } from './mailer.constants';
+import { MailModuleOptions } from './mailer.options';
 
 @Injectable()
 export class MailerService {
