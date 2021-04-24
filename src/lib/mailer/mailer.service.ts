@@ -1,22 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { createTransport, SendMailOptions } from 'nodemailer';
 import { Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { MAIL_MODULE_OPTIONS } from './mail.constants';
+import { MailModuleOptions } from './mail.options';
 
 @Injectable()
 export class MailerService {
-	constructor(private readonly configService: ConfigService) {}
-
+	constructor(
+		@Inject(MAIL_MODULE_OPTIONS)
+		private readonly options: MailModuleOptions,
+	) {}
 	private readonly logger: Logger = new Logger(MailerService.name);
 
 	async sendMail(mailOptions: Partial<SendMailOptions>) {
 		const transporter = createTransport({
-			host: this.configService.get<string>('mail.host'),
-			port: this.configService.get<number>('mail.port'),
+			host: this.options.host,
+			port: this.options.port,
 			secure: false,
 			auth: {
-				user: this.configService.get<string>('mail.username'),
-				pass: this.configService.get<string>('mail.password'),
+				user: this.options.username,
+				pass: this.options.password,
 			},
 			tls: {
 				// do not fail on invalid certs

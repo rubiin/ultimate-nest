@@ -1,9 +1,16 @@
-import { Global, Module } from '@nestjs/common';
-import { MailerService } from './mailer.service';
+import { createConfigurableDynamicRootModule } from '@golevelup/nestjs-modules';
+import { Module } from '@nestjs/common';
+import { MAIL_MODULE_OPTIONS } from './mail.constants'; // the constant string/symbol/token
+import { MailModuleOptions } from './mail.options'; // the options to provide to the service
+import { MailerService } from './mailer.service'; // the service to be provided to the rest of the server
 
-@Global()
 @Module({
 	providers: [MailerService],
 	exports: [MailerService],
 })
-export class MailerModule {}
+export class MailModule extends createConfigurableDynamicRootModule<
+	MailModule,
+	MailModuleOptions
+>(MAIL_MODULE_OPTIONS) {
+	static Deferred = MailModule.externallyConfigured(MailModule, 0);
+}
