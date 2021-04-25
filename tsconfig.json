@@ -1,25 +1,47 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"declaration": true,
-		"removeComments": true,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"allowSyntheticDefaultImports": true,
-		"target": "es2017",
-		"moduleResolution": "node",
-		"sourceMap": false,
-		"outDir": "./dist",
-		"baseUrl": "src",
-		"incremental": true,
-		"skipLibCheck": true,
-		"paths": {
-			"@common/*": ["./common/*"],
-			"@modules/*": ["./modules/*"],
-			"@config/*": ["./config/*"],
-			"@entities": ["./entities/index"],
-			"@lib/*": ["./lib/*"]
-		}
-	},
-	"include": ["test/**/*", "src/**/*"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "outDir": "./dist",
+    "baseUrl": "src",
+    "incremental": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@common/*": [
+        "./common/*"
+      ],
+      "@modules/*": [
+        "./modules/*"
+      ],
+      "@config/*": [
+        "./config/*"
+      ],
+      "@entities": [
+        "./entities/index"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ]
+    }
+  },
+  "include": [
+    "test/**/*",
+    "src/**/*"
+  ],
+  /* Strict Type-Checking Options */
+  "strict": true /* Enable all strict type-checking options. */,
+  /* Additional Checks */
+  "noUnusedLocals": true /* Report errors on unused locals. */,
+  "noUnusedParameters": true /* Report errors on unused parameters. */,
+  "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+  "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
+  "noUncheckedIndexedAccess": true /* Include 'undefined' in index signature results */,
+  "noPropertyAccessFromIndexSignature": true /* Require undeclared properties from index signatures to use element accesses. */
 }
