@@ -26,7 +26,7 @@ import * as path from 'path';
 				resources: [],
 			},
       auth: {
-        authenticate: async (email, password) => Promise.resolve({ email: 'test' }),
+        authenticate: async (_email, _password) => Promise.resolve({ email: 'test' }),
         cookieName: 'test',
         cookiePassword: 'testPass',
       },
