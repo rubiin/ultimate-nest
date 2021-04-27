@@ -32,6 +32,7 @@ module.exports = {
 		'import/no-unresolved': [2, { ignore: ['@'] }],
 		'no-secrets/no-secrets': 'error',
 		'import/prefer-default': 'off',
+		'import/prefer-node-protocol': 'off',
 		'unicorn/prevent-abbreviations': 'off',
 		'unicorn/no-null': 'off',
 		'unicorn/import-style': 'off',
