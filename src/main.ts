@@ -43,8 +43,7 @@ async function bootstrap() {
 			whitelist: true,
 			transform: true,
 		}),
-	)
-		.setGlobalPrefix('v1');
+	).setGlobalPrefix('v1');
 
 	app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 

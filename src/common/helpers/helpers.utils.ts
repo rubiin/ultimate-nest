@@ -1,24 +1,41 @@
 import { AuthenticationPayload } from '@common/interface/authentication.interface';
 import { User } from '@entities';
 import { pick } from '@rubiin/js-utils';
-import { Pool, spawn, Worker } from 'threads';
 import * as eta from 'eta';
-import { Password } from '../misc/workers/password';
 import * as sharp from 'sharp';
 import puppeteer from 'puppeteer';
 import { customAlphabet } from 'nanoid/async';
 import { randomTypes } from '@common/constants/random-types.enum';
+import Piscina from 'piscina';
+import { resolve } from 'path';
 
-const passwordPool = Pool(
-	() =>
-		spawn<Password>(new Worker('../misc/workers/password'), {
-			timeout: 30000,
-		}),
-	1 /* optional size */,
-);
+const pool = new Piscina();
 
 export const HelperService = {
 	puppetterInstance: null,
+
+	/**
+	 *
+	 *
+	 * @param {*} op
+	 * @param {*} args
+	 * @return {*}
+	 */
+	makeTask(op, ...args) {
+		return { op, args };
+	},
+
+	/**
+	 *
+	 *
+	 * @param {Record<string,any>} obj
+	 * @return {*}
+	 */
+	dispatcher(obj: Record<string, any>) {
+		return async ({ op, args }) => {
+			return await obj[op](...args);
+		};
+	},
 
 	/**
 	 * builds response for login
@@ -56,16 +73,14 @@ export const HelperService = {
 	 * @memberof HelperService
 	 */
 	async hashString(string: string): Promise<string> {
-		return passwordPool
-			.queue(async auth => await auth.hashString(string))
-			.then(async result => {
-				await passwordPool.completed();
-
-				return result;
-			})
-			.catch(error => {
-				throw error;
-			});
+		try {
+			return pool.runTask(
+				string,
+				resolve(__dirname, '../misc/', 'password'),
+			);
+		} catch (error) {
+			console.info(error);
+		}
 	},
 
 	/**

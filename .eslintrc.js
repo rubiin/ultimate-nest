@@ -35,6 +35,8 @@ module.exports = {
 		'unicorn/prevent-abbreviations': 'off',
 		'unicorn/no-null': 'off',
 		'unicorn/import-style': 'off',
+		'unicorn/prefer-module': 'off',
+		'unicorn/prefer-node-protocol': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
