@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { RequestSanitizerInterceptor } from '@common/interceptor/request-sanitizer.interceptor';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -45,7 +44,6 @@ async function bootstrap() {
 			transform: true,
 		}),
 	)
-		.useGlobalInterceptors(new RequestSanitizerInterceptor())
 		.setGlobalPrefix('v1');
 
 	app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
