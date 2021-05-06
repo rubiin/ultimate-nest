@@ -1,4 +1,4 @@
-import { AuthenticationPayload } from './authentication.interface';
+import { IAuthenticationPayload } from './authentication.interface';
 
 export interface IResponse {
 	message: string;
@@ -6,4 +6,4 @@ export interface IResponse {
 
 export type ILoginSignupReponse =
 	| { message: any; statusCode: number }
-	| { message: string; data: AuthenticationPayload };
+	| { message: string; data: IAuthenticationPayload };

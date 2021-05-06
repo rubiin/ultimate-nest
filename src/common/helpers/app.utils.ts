@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 
-export class AppUtils {
+export const AppUtils = {
 	/**
 	 *
 	 *
@@ -9,7 +9,7 @@ export class AppUtils {
 	 * @memberof AppUtils
 	 */
 
-	static killAppWithGrace = (app: INestApplication) => {
+	killAppWithGrace: (app: INestApplication) => {
 		process.on('SIGINT', async () => {
 			setTimeout(() => process.exit(1), 5000);
 			await app.close();
@@ -23,5 +23,5 @@ export class AppUtils {
 			await app.close();
 			process.exit(0);
 		});
-	};
-}
+	},
+};

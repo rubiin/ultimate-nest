@@ -1,4 +1,4 @@
-export interface AuthenticationPayload {
+export interface IAuthenticationPayload {
 	user: any;
 	payload: {
 		access_token: string;

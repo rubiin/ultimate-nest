@@ -1,4 +1,4 @@
-import { AuthenticationPayload } from '@common/interface/authentication.interface';
+import { IAuthenticationPayload } from '@common/interface/authentication.interface';
 import { User } from '@entities';
 import { pick } from '@rubiin/js-utils';
 import * as eta from 'eta';
@@ -11,17 +11,17 @@ import { resolve } from 'path';
 
 const pool = new Piscina();
 
-export const HelperService = {
-	puppetterInstance: null,
+let puppetterInstance = null;
 
+export const HelperService = {
 	/**
 	 *
 	 *
 	 * @param {*} op
-	 * @param {*} args
-	 * @return {*}
+	 * @param {...any[]} args
+	 * @return {*}  {*}
 	 */
-	makeTask(op, ...args) {
+	makeTask: (op: any, ...args: any[]): any => {
 		return { op, args };
 	},
 
@@ -31,7 +31,7 @@ export const HelperService = {
 	 * @param {Record<string,any>} obj
 	 * @return {*}
 	 */
-	dispatcher(obj: Record<string, any>) {
+	dispatcher: (obj: Record<string, any>) => {
 		return async ({ op, args }) => {
 			return await obj[op](...args);
 		};
@@ -47,11 +47,11 @@ export const HelperService = {
 	 * @return {AuthenticationPayload}
 	 * @memberof UtilService
 	 */
-	buildPayloadResponse(
+	buildPayloadResponse: (
 		user: User,
 		accessToken: string,
 		refreshToken?: string,
-	): AuthenticationPayload {
+	): IAuthenticationPayload => {
 		return {
 			user: {
 				...pick(user, ['id', 'idx']),
@@ -72,7 +72,7 @@ export const HelperService = {
 	 * @return {*} {(Promise<string>)}
 	 * @memberof HelperService
 	 */
-	async hashString(string: string): Promise<string> {
+	hashString: (string: string): Promise<string> => {
 		try {
 			return pool.runTask(
 				string,
@@ -91,7 +91,7 @@ export const HelperService = {
 	 * @return {*}  {(Promise<string | void>)}
 	 * @memberof HelperService
 	 */
-	async renderTemplate(data: unknown, path: string): Promise<string | void> {
+	renderTemplate: (data: unknown, path: string): void | Promise<string> => {
 		return eta.renderFileAsync(
 			path,
 			{ data },
@@ -108,10 +108,10 @@ export const HelperService = {
 	 * @return {*}  {Promise<Buffer>}
 	 * @memberof HelperService
 	 */
-	async generateThumb(
+	generateThumb: (
 		input: Buffer,
 		config: { height: number; width: number },
-	): Promise<Buffer> {
+	): Promise<Buffer> => {
 		return sharp(input).resize(config).toFormat('png').toBuffer();
 	},
 
@@ -123,9 +123,9 @@ export const HelperService = {
 	 * @memberof HelperService
 	 */
 
-	async getBrowserInstance() {
-		if (this.puppetterInstance) {
-			this.puppetterInstance = await puppeteer.launch({
+	getBrowserInstance: async () => {
+		if (puppetterInstance) {
+			puppetterInstance = await puppeteer.launch({
 				headless: true,
 				args: [
 					'--no-sandbox',
@@ -140,7 +140,7 @@ export const HelperService = {
 			});
 		}
 
-		return this.puppetterInstance;
+		return puppetterInstance;
 	},
 
 	/**
@@ -153,18 +153,20 @@ export const HelperService = {
 	 * @return {*}  {(Promise<number | string>)}
 	 * @memberof HelperService
 	 */
-	getRandom(
+	getRandom: (
 		type: randomTypes,
 		length: number,
 		alphabet?: string,
-	): Promise<number | string> {
-		if (type === randomTypes.NUMBER) {
-			return customAlphabet(alphabet ?? '1234567890', length)();
+	): Promise<number | string> => {
+		if (alphabet) {
+			return customAlphabet(alphabet, length)();
 		}
 
 		return customAlphabet(
-			// eslint-disable-next-line no-secrets/no-secrets
-			alphabet ?? 'abcdefghijklmnopqrstuvwxyz',
+			type === randomTypes.NUMBER
+				? '1234567890'
+				: // eslint-disable-next-line no-secrets/no-secrets
+				  'abcdefghijklmnopqrstuvwxyz',
 			length,
 		)();
 	},

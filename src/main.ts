@@ -31,7 +31,7 @@ async function bootstrap() {
 	app.register(helmet);
 	app.register(compression, { encodings: ['gzip', 'deflate'] });
 	app.register(fastifyRateLimiter, {
-		max: 100,
+		max: 500,
 		timeWindow: '1 minute',
 	});
 	// ==================================================
