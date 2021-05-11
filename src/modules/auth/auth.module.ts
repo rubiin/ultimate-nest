@@ -2,7 +2,7 @@ import { OrmModule } from '@lib/orm/orm.module';
 import { RefreshTokensRepository } from '@modules/token/refresh-tokens.repository';
 import { TokensService } from '@modules/token/tokens.service';
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@lib/jwt';
+import { JwtModule } from '@lib/jwt/jwt.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 

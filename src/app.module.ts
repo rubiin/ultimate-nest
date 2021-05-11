@@ -1,3 +1,4 @@
+import { AdminModule } from '@admin-bro/nestjs';
 import { LoggingInterceptor } from '@common/interceptor/logger.interceptor';
 import { ConfigModule } from '@lib/config/config.module';
 import { OrmModule } from '@lib/orm/orm.module';
@@ -19,6 +20,17 @@ import * as path from 'path';
 
 @Module({
 	imports: [
+		AdminModule.createAdmin({
+			adminBroOptions: {
+				rootPath: '/admin',
+				resources: [],
+			},
+      auth: {
+        authenticate: async (_email, _password) => Promise.resolve({ email: 'test' }),
+        cookieName: 'test',
+        cookiePassword: 'testPass',
+      },
+		}),
 		AuthModule,
 		UserModule,
 		WinstonModule,
