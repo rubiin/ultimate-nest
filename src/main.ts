@@ -5,14 +5,14 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
 import setupSwagger from './swagger';
 import { AppUtils } from '@common/helpers/app.utils';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import * as compression from 'compression';
-import * as helmet from 'helmet';
-import * as rateLimit from 'express-rate-limit';
-import * as bodyParser from 'body-parser';
+import * as helmet from 'fastify-helmet';
+import * as compression from 'fastify-compress';
+import * as fastifyRateLimiter from 'fastify-rate-limit';
+import {NestFastifyApplication} from '@nestjs/platform-fastify';
+
 
 async function bootstrap() {
-	const app = await NestFactory.create<NestExpressApplication>(AppModule);
+	const app = await NestFactory.create<NestFastifyApplication>(AppModule);
 
 	AppUtils.killAppWithGrace(app);
 
