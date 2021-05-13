@@ -1,4 +1,4 @@
-import { IResponse } from '@common/interface/response.interface';
+import { IResponse } from '@common/interfaces/response.interface';
 import { RefreshToken, User } from '@entities';
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';

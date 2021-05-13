@@ -1,7 +1,4 @@
-import {
-	ILoginSignupReponse,
-	IResponse,
-} from '@common/interface/response.interface';
+;
 import {
 	BadRequestException,
 	HttpException,
@@ -14,6 +11,7 @@ import { EntityRepository } from '@mikro-orm/core';
 import { TokensService } from '@modules/token/tokens.service';
 import { HelperService } from '@common/helpers/helpers.utils';
 import { User } from '@entities';
+import { ILoginSignupReponse, IResponse } from '@common/interfaces/response.interface';
 
 @Injectable()
 export class AuthService {

@@ -1,5 +1,5 @@
 import { AdminModule } from '@admin-bro/nestjs';
-import { LoggingInterceptor } from '@common/interceptor/logger.interceptor';
+import { LoggingInterceptor } from '@common/interceptors/logger.interceptor';
 import { ConfigModule } from '@lib/config/config.module';
 import { OrmModule } from '@lib/orm/orm.module';
 import { WinstonModule } from '@lib/winston/winston.module';

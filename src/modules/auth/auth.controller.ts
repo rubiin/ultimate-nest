@@ -1,6 +1,6 @@
 import { LoggedInUser } from '@common/decorators/user.decorator';
 import { JwtAuthGuard } from '@common/guards/jwt.guard';
-import { IResponse } from '@common/interface/response.interface';
+import { IResponse } from '@common/interfaces/response.interface';
 import { User } from '@entities';
 import { TokensService } from '@modules/token/tokens.service';
 import {

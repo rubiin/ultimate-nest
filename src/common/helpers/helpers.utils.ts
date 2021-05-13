@@ -1,13 +1,16 @@
-import { IAuthenticationPayload } from '@common/interface/authentication.interface';
+
 import { User } from '@entities';
-import { pick } from '@rubiin/js-utils';
 import * as eta from 'eta';
 import * as sharp from 'sharp';
+import { resolve } from 'path';
 import puppeteer from 'puppeteer';
+import { pick } from '@rubiin/js-utils';
 import { customAlphabet } from 'nanoid/async';
 import { randomTypes } from '@common/constants/random-types.enum';
-import Piscina from 'piscina';
-import { resolve } from 'path';
+import { IAuthenticationPayload } from '@common/interfaces/authentication.interface';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Piscina = require('piscina');
 
 const pool = new Piscina();
 
