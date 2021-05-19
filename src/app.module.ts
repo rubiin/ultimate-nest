@@ -4,9 +4,7 @@ import { ConfigModule } from '@lib/config/config.module';
 import { OrmModule } from '@lib/orm/orm.module';
 import { WinstonModule } from '@lib/winston/winston.module';
 import { AuthModule } from '@modules/auth/auth.module';
-import { CategoriesModule } from '@modules/categories/categories.module';
-import { OrderModule } from '@modules/order/order.module';
-import { ProductsModule } from '@modules/products/products.module';
+import { PostModule } from '@modules/post/post.module';
 import { UserModule } from '@modules/user/user.module';
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -25,11 +23,12 @@ import * as path from 'path';
 				rootPath: '/admin',
 				resources: [],
 			},
-      auth: {
-        authenticate: async (_email, _password) => Promise.resolve({ email: 'test' }),
-        cookieName: 'test',
-        cookiePassword: 'testPass',
-      },
+			auth: {
+				authenticate: async (_email, _password) =>
+					Promise.resolve({ email: 'test' }),
+				cookieName: 'test',
+				cookiePassword: 'testPass',
+			},
 		}),
 		AuthModule,
 		UserModule,
@@ -47,9 +46,7 @@ import * as path from 'path';
 				AcceptLanguageResolver,
 			],
 		}),
-		ProductsModule,
-		CategoriesModule,
-		OrderModule,
+		PostModule,
 	],
 	providers: [
 		{

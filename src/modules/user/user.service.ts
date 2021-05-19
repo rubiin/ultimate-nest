@@ -1,61 +1,70 @@
-import { CreateUserDto } from '@modules/user/dtos/create-user.dto';
-import { UpdateUserDto } from '@modules/user/dtos/update-user.dto';
-import { User } from '@entities';
-import { EntityRepository, wrap } from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/postgresql';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { I18nRequestScopeService } from 'nestjs-i18n';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+import { User } from '@entities';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { EditUserDto } from './dtos/update-user.dto';
+import { wrap } from '@mikro-orm/core';
+import { omit } from '@rubiin/js-utils';
+
+export interface UserFindOne {
+  id?: number;
+  email?: string;
+}
 
 @Injectable()
 export class UserService {
-	constructor(
-		@InjectRepository(User)
-		private readonly userRepository: EntityRepository<User>,
-		private readonly i18n: I18nRequestScopeService,
-	) {}
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: EntityRepository<User>,
+  ) {}
 
-	async create(createuserDto: CreateUserDto): Promise<User> {
-		const user = this.userRepository.create(createuserDto);
+  async getMany() {
+    return await this.userRepository.findAll();
+  }
 
-		await this.userRepository.persistAndFlush(user);
+  async getOne(id: number, userEntity?: User) {
+    const user = await this.userRepository
+      .findOne(id)
+      .then(u => (!userEntity ? u : !!u && userEntity.id === u.id ? u : null));
 
-		return user;
-	}
+    if (!user)
+      throw new NotFoundException('User does not exists or unauthorized');
 
-	async findAll(): Promise<User[]> {
-		const user = await this.userRepository.findAll();
+    return user;
+  }
 
-		if (user) {
-			throw new HttpException('No user', HttpStatus.NOT_FOUND);
-		}
+  async createOne(dto: CreateUserDto) {
+    const userExist = await this.userRepository.findOne({ email: dto.email });
+    if (userExist)
+      throw new BadRequestException('User already registered with email');
 
-		return user;
-	}
+    const newUser = this.userRepository.create(dto);
+    await this.userRepository.persistAndFlush(newUser);
 
-	async findOne(idx: string): Promise<User> {
-		const user = await this.userRepository.findOne({
-			idx,
-			isActive: true,
-			isObsolete: false,
-		});
+    return omit(newUser,['password'])
+  }
 
-		if (user) {
-			throw new HttpException('No user with idx', HttpStatus.NOT_FOUND);
-		}
+  async editOne(id: number, dto: EditUserDto, userEntity?: User) {
+    const user = await this.getOne(id, userEntity);
+    wrap(user).assign(dto);
+    await this.userRepository.flush();
+    return user
+  }
 
-		return user;
-	}
+  async deleteOne(id: number, userEntity?: User) {
+    const user = await this.getOne(id, userEntity);
+    return this.userRepository.remove(user);
+  }
 
-	async update(idx: string, updateuserDto: UpdateUserDto): Promise<User> {
-		const user = await this.userRepository.findOne({ idx });
-
-		wrap(user).assign(updateuserDto);
-		await this.userRepository.flush();
-
-		return user;
-	}
-
-	async remove(idx: string) {
-		return this.userRepository.remove({ idx });
-	}
+  async findOne(data: UserFindOne) {
+    return await this.userRepository.createQueryBuilder()
+      .where(data)
+      .addSelect('user.password')
+      .getSingleResult()
+  }
 }

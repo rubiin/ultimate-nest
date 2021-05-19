@@ -29,11 +29,10 @@ export class AuthController {
 
 	@Post('token/refresh')
 	public async refresh(@Body() body: RefreshRequest): Promise<any> {
-		const {
-			token,
-		} = await this.tokenService.createAccessTokenFromRefreshToken(
-			body.refreshToken,
-		);
+		const { token } =
+			await this.tokenService.createAccessTokenFromRefreshToken(
+				body.refreshToken,
+			);
 
 		return {
 			message: 'Operation Successful',

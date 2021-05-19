@@ -1,59 +1,40 @@
+import { HelperService } from '@common/helpers/helpers.utils';
+import { AppRoles } from '@common/helpers/roles';
 import {
-	IsNotEmpty,
-	IsAlpha,
-	IsEmail,
-	IsPhoneNumber,
-	IsBoolean,
 	IsString,
+	IsEmail,
+	MinLength,
+	MaxLength,
 	IsOptional,
+	IsArray,
+	IsEnum,
 } from 'class-validator';
 
 export class CreateUserDto {
-	@IsNotEmpty()
-	@IsAlpha('en-US')
-	firstName: string;
+	@IsOptional()
+	@IsString()
+	@MaxLength(255)
+	name: string;
 
 	@IsOptional()
-	@IsAlpha('en-US')
-	middleName: string;
-
-	@IsNotEmpty()
-	@IsAlpha('en-US')
+	@IsString()
+	@MaxLength(255)
 	lastName: string;
 
-	@IsNotEmpty()
 	@IsEmail()
 	email: string;
 
-	@IsNotEmpty()
 	@IsString()
+	@MinLength(8)
+	@MaxLength(128)
 	password: string;
 
-	@IsNotEmpty()
-	@IsPhoneNumber('AU')
-	phone: string;
-
-	@IsNotEmpty()
-	@IsBoolean()
-	isAdmin: boolean;
-
-	@IsNotEmpty()
-	@IsString()
-	street: string;
-
-	@IsNotEmpty()
-	@IsString()
-	apartment: string;
-
-	@IsNotEmpty()
-	@IsString()
-	zip: string;
-
-	@IsNotEmpty()
-	@IsString()
-	city: string;
-
-	@IsNotEmpty()
-	@IsString()
-	country: string;
+	@IsArray()
+	@IsEnum(AppRoles, {
+		each: true,
+		message: `must be a valid role value, ${HelperService.enumToString(
+			AppRoles,
+		)}`,
+	})
+	roles: string[];
 }

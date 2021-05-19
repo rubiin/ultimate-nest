@@ -1,4 +1,3 @@
-
 import { User } from '@entities';
 import * as eta from 'eta';
 import * as sharp from 'sharp';
@@ -8,6 +7,8 @@ import { pick } from '@rubiin/js-utils';
 import { customAlphabet } from 'nanoid/async';
 import { randomTypes } from '@common/constants/random-types.enum';
 import { IAuthenticationPayload } from '@common/interfaces/authentication.interface';
+import slugify from 'slugify'
+
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Piscina = require('piscina');
@@ -16,7 +17,9 @@ const pool = new Piscina();
 
 let puppetterInstance = null;
 
-export const HelperService = {
+export /** @type {*} */
+/** @type {*} */
+const HelperService = {
 	/**
 	 *
 	 *
@@ -173,4 +176,20 @@ export const HelperService = {
 			length,
 		)();
 	},
+
+
+enumToString: (value: Object) : string[]=>{
+  const length = Object.keys(value).length;
+  return Object.keys(value).splice(length/2,length);
+}
+,
+generateSlug:(value: string): string =>{
+return slugify(value, {
+  replacement: '-',  // replace spaces with replacement character, defaults to `-`
+  remove: undefined, // remove characters that match regex, defaults to `undefined`
+  lower: false,      // convert to lower case, defaults to `false`
+  strict: false,     // strip special characters except replacement, defaults to `false`
+})
+}
+
 };

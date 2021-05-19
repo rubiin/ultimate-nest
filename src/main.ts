@@ -5,18 +5,18 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
 import setupSwagger from './swagger';
 import { AppUtils } from '@common/helpers/app.utils';
-import helmet from 'fastify-helmet';
-import compression from 'fastify-compress';
-import fastifyRateLimiter from 'fastify-rate-limit';
-import {FastifyAdapter, NestFastifyApplication} from '@nestjs/platform-fastify';
-
+import * as helmet from 'helmet';
+import * as compression from 'compression';
+import {
+	ExpressAdapter,
+	NestExpressApplication,
+} from '@nestjs/platform-express';
 
 async function bootstrap() {
-	const app = await NestFactory.create<NestFastifyApplication>(
+	const app = await NestFactory.create<NestExpressApplication>(
 		AppModule,
-		new FastifyAdapter(),
+		new ExpressAdapter(),
 	);
-
 
 	AppUtils.killAppWithGrace(app);
 
@@ -27,12 +27,9 @@ async function bootstrap() {
 	// ==================================================
 
 	app.enableCors();
-	app.register(helmet);
-	app.register(compression, { encodings: ['gzip', 'deflate'] });
-	app.register(fastifyRateLimiter, {
-		max: 500,
-		timeWindow: '1 minute',
-	});
+	app.use(helmet);
+	app.use(compression);
+
 	// ==================================================
 	// configureNestGlobals
 	// ==================================================

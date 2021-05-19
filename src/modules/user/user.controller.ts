@@ -1,99 +1,104 @@
-import { CreateUserDto } from './dtos/create-user.dto';
-import { UpdateUserDto } from './dtos/update-user.dto';
 import {
-	Controller,
-	Get,
-	Post,
-	Body,
-	Put,
-	Param,
-	Delete,
-	Inject,
-	Logger,
-	ParseUUIDPipe,
-	UseGuards,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import { JwtAuthGuard } from '@common/guards/jwt.guard';
+import { ApiTags } from '@nestjs/swagger';
+import { RolesBuilder, InjectRolesBuilder } from 'nest-access-control';
+import { UserRegistrationDto } from './dtos/user-registration.dto';
+import { AppResource, AppRoles } from '@common/helpers/roles';
+import { Auth } from '@common/decorators/auth.decorator';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { LoggedInUser } from '@common/decorators/user.decorator';
+import { EditUserDto } from './dtos/update-user.dto';
+import { User } from '@entities';
+
+@ApiTags('Users routes')
 @Controller('user')
 export class UserController {
-	/**
-	 * Creates an instance of UserController.
-	 * @param {UserService} userService
-	 * @memberof UserController
-	 */
-	constructor(
-		private readonly userService: UserService,
-		@Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
-	) {}
-	/**
-	 *
-	 *
-	 * @return {*}
-	 * @memberof UserController
-	 */
+  constructor(
+    private readonly userService: UserService,
+    @InjectRolesBuilder()
+    private readonly rolesBuilder: RolesBuilder,
+  ) {}
 
-	/**
-	 *
-	 *
-	 * @param {CreateUserDto} createUserDto
-	 * @return {*}
-	 * @memberof UserController
-	 */
+  @Get()
+  async getMany() {
+    const data = await this.userService.getMany();
+    return { data };
+  }
 
-	@Post()
-	async create(@Body() createUserDto: CreateUserDto) {
-		return this.userService.create(createUserDto);
-	}
+  @Post('register')
+  async publicRegistration(@Body() dto: UserRegistrationDto) {
+    const data = await this.userService.createOne({
+      ...dto,
+      roles: [AppRoles.AUTHOR],
+    });
+    return { message: 'User registered', data };
+  }
 
-	/**
-	 *
-	 *
-	 * @return {*}
-	 * @memberof UserController
-	 */
+  @Get(':id')
+  async getOne(@Param('id') id: number) {
+    const data = await this.userService.getOne(id);
+    return { data };
+  }
 
-	@UseGuards(JwtAuthGuard)
-	@Get()
-	async findAll() {
-		return this.userService.findAll();
-	}
+  @Auth({
+    possession: 'any',
+    action: 'create',
+    resource: AppResource.USER,
+  })
+  @Post()
+  async createOne(@Body() dto: CreateUserDto) {
+    const data = await this.userService.createOne(dto);
+    return { message: 'User created', data };
+  }
 
-	@UseGuards(JwtAuthGuard)
-	@Get(':idx')
-	findOne(@Param('idx', ParseUUIDPipe) idx: string) {
-		return this.userService.findOne(idx);
-	}
+  @Auth({
+    possession: 'own',
+    action: 'update',
+    resource: AppResource.USER,
+  })
+  @Put(':id')
+  async editOne(
+    @Param('id') id: number,
+    @Body() dto: EditUserDto,
+    @LoggedInUser() user: User,
+  ) {
+    let data;
 
-	/**
-	 *
-	 *
-	 * @param {string} id
-	 * @param {UpdateUserDto} updateUserDto
-	 * @return {*}
-	 * @memberof UserController
-	 */
+    if (this.rolesBuilder.can(user.roles).updateAny(AppResource.USER).granted) {
+      // esto es un admin
+      data = await this.userService.editOne(id, dto);
+    } else {
+      // esto es un author
+      const { roles, ...rest } = dto;
+      data = await this.userService.editOne(id, rest, user);
+    }
+    return { message: 'User edited', data };
+  }
 
-	@UseGuards(JwtAuthGuard)
-	@Put(':idx')
-	update(
-		@Param('idx', ParseUUIDPipe) idx: string,
-		@Body() updateUserDto: UpdateUserDto,
-	): any {
-		return this.userService.update(idx, updateUserDto);
-	}
+  @Auth({
+    action: 'delete',
+    possession: 'own',
+    resource: AppResource.USER,
+  })
+  @Delete(':id')
+  async deleteOne(@Param('id') id: number, @LoggedInUser() user: User) {
+    let data;
 
-	/**
-	 *
-	 *
-	 * @param {string} id
-	 * @return {*}
-	 * @memberof UserController
-	 */
-	@UseGuards(JwtAuthGuard)
-	@Delete(':idx')
-	remove(@Param('idx', ParseUUIDPipe) idx: string) {
-		return this.userService.remove(idx);
-	}
+    if (this.rolesBuilder.can(user.roles).updateAny(AppResource.USER).granted) {
+      // else admin
+      data = await this.userService.deleteOne(id);
+    } else {
+      // else author
+      data = await this.userService.deleteOne(id, user);
+    }
+    return { message: 'User deleted', data };
+  }
 }

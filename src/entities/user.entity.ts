@@ -1,4 +1,5 @@
 import {
+	ArrayType,
 	BeforeCreate,
 	BeforeUpdate,
 	Collection,
@@ -7,10 +8,10 @@ import {
 	Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '@common/database/base-entity.entity';
-import { Order } from './order.entity';
 import { Exclude } from 'class-transformer';
 import { HelperService } from '@common/helpers/helpers.utils';
 import { EncryptedType } from '@common/database/mikrorm.encrypted';
+import { Post } from './post.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -36,11 +37,11 @@ export class User extends BaseEntity {
 	})
 	email: string;
 
-	@OneToMany(() => Order, order => order.user, {
+	@OneToMany(() => Post, post => post.author, {
 		eager: true,
 		orphanRemoval: true,
 	})
-	orderItems = new Collection<Order>(this);
+	posts = new Collection<Post>(this);
 
 	@Exclude({ toPlainOnly: true })
 	@Property()
@@ -66,6 +67,9 @@ export class User extends BaseEntity {
 
 	@Property()
 	isAdmin: boolean;
+
+	@Property({ type: ArrayType })
+	roles: string[];
 
 	@BeforeCreate()
 	@BeforeUpdate()
