@@ -36,5 +36,5 @@ export class CreatePostDto {
 
 	@IsOptional()
 	@IsBoolean()
-	status: boolean;
+	isActive: boolean;
 }

@@ -47,26 +47,7 @@ export class User extends BaseEntity {
 	@Property()
 	password: string;
 
-	@Property()
-	street: string;
 
-	@Property()
-	apartment: string;
-
-	@Property()
-	city: string;
-
-	@Property()
-	zip: string;
-
-	@Property()
-	country: string;
-
-	@Property({ type: EncryptedType, length: 50 })
-	phone: string;
-
-	@Property()
-	isAdmin: boolean;
 
 	@Property({ type: ArrayType })
 	roles: string[];

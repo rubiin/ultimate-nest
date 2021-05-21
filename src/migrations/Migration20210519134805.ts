@@ -1,10 +1,11 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20210519103241 extends Migration {
+export class Migration20210519134805 extends Migration {
 
   async up(): Promise<void> {
     this.addSql(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
-    this.addSql('create table "user" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "first_name" varchar(50) not null, "middle_name" varchar(50) null, "last_name" varchar(50) not null, "email" varchar(60) not null, "password" varchar(255) not null, "street" varchar(255) not null, "apartment" varchar(255) not null, "city" varchar(255) not null, "zip" varchar(255) not null, "country" varchar(255) not null, "phone" varchar(50) not null, "is_admin" bool not null, "roles" text[] not null);');
+   
+    this.addSql('create table "user" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "first_name" varchar(50) not null, "middle_name" varchar(50) null, "last_name" varchar(50) not null, "email" varchar(60) not null, "password" varchar(255) not null, "roles" text[] not null);');
     this.addSql('alter table "user" add constraint "user_email_unique" unique ("email");');
 
     this.addSql('create table "refresh_token" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" bool not null default true, "is_obsolete" bool not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "expires_in" timestamptz(0) not null, "user_id" int4 not null, "is_revoked" bool not null default false);');
