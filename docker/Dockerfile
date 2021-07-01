@@ -1,4 +1,4 @@
-FROM node:12.20.0-alpine3.12
+FROM node:12-alpine3.12
 
 WORKDIR /usr/src/app
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser"
