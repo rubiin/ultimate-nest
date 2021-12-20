@@ -8,7 +8,7 @@ import * as dotenv from 'dotenv';
  */
 
 dotenv.config({ path: `${process.cwd()}/env/${process.env.NODE_ENV}.env` });
-console.info(`Using env ${process.cwd()}/env/${process.env.NODE_ENV}.env`)
+console.info(`Using env ${process.cwd()}/env/${process.env.NODE_ENV}.env`);
 
 const config = {
 	dbName: process.env.DB_DATABASE,

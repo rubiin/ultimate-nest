@@ -25,7 +25,7 @@ export class CreatePostDto {
 	@IsNotEmpty()
 	@IsEnum(PostCategory, {
 		message: `Invalid option. Valids options are ${HelperService.enumToString(
-			PostCategory
+			PostCategory,
 		)}`,
 	})
 	category: string;

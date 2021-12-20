@@ -1,4 +1,11 @@
-import { ArrayType, BeforeCreate, BeforeUpdate, Entity, ManyToOne, Property } from '@mikro-orm/core';
+import {
+	ArrayType,
+	BeforeCreate,
+	BeforeUpdate,
+	Entity,
+	ManyToOne,
+	Property,
+} from '@mikro-orm/core';
 import { BaseEntity } from '@common/database/base-entity.entity';
 import { User } from './user.entity';
 import { HelperService } from '@common/helpers/helpers.utils';
@@ -33,7 +40,7 @@ export class Post extends BaseEntity {
 	@ManyToOne(() => User, { eager: true })
 	author: User;
 
-  @BeforeCreate()
+	@BeforeCreate()
 	@BeforeUpdate()
 	async generateSlug() {
 		this.slug = HelperService.generateSlug(this.slug);

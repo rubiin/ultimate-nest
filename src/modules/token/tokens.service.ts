@@ -3,15 +3,10 @@ import { RefreshToken, User } from '@entities';
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { pick } from '@rubiin/js-utils';
-import { SignOptions, TokenExpiredError } from 'jsonwebtoken';
+import { TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokensRepository } from './refresh-tokens.repository';
-
-const BASE_OPTIONS: SignOptions = {
-	issuer: 'some-app',
-	audience: 'some-app',
-};
 
 export interface RefreshTokenPayload {
 	jti: number;
@@ -28,6 +23,10 @@ export interface RefreshTokenPayload {
 export class TokensService {
 	private readonly tokens: RefreshTokensRepository;
 	private readonly jwt: JwtService;
+	private readonly BASE_OPTIONS: JwtSignOptions = {
+		issuer: 'some-app',
+		audience: 'some-app',
+	};
 
 	/**
 	 * Creates an instance of TokensService.
@@ -54,8 +53,8 @@ export class TokensService {
 	 * @memberof TokensService
 	 */
 	async generateAccessToken(user: User): Promise<string> {
-		const options: SignOptions = {
-			...BASE_OPTIONS,
+		const options: JwtSignOptions = {
+			...this.BASE_OPTIONS,
 			subject: String(user.id),
 		};
 
@@ -73,8 +72,8 @@ export class TokensService {
 	async generateRefreshToken(user: User, expiresIn: number): Promise<string> {
 		const token = await this.tokens.createRefreshToken(user, expiresIn);
 
-		const options: SignOptions = {
-			...BASE_OPTIONS,
+		const options: JwtSignOptions = {
+			...this.BASE_OPTIONS,
 			expiresIn,
 			subject: String(user.id),
 			jwtid: String(token.id),

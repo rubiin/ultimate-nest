@@ -16,7 +16,7 @@ export class CreateUserDto {
 	@MaxLength(255)
 	firstName: string;
 
-  @IsOptional()
+	@IsOptional()
 	@IsString()
 	@MaxLength(255)
 	middleName: string;

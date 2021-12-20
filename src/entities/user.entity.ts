@@ -47,8 +47,6 @@ export class User extends BaseEntity {
 	@Property()
 	password: string;
 
-
-
 	@Property({ type: ArrayType })
 	roles: string[];
 

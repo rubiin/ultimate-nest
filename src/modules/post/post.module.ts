@@ -6,6 +6,6 @@ import { OrmModule } from '@lib/orm/orm.module';
 @Module({
 	controllers: [PostController],
 	providers: [PostService],
-  imports: [OrmModule]
+	imports: [OrmModule],
 })
 export class PostModule {}

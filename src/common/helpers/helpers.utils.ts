@@ -7,8 +7,7 @@ import { pick } from '@rubiin/js-utils';
 import { customAlphabet } from 'nanoid/async';
 import { randomTypes } from '@common/constants/random-types.enum';
 import { IAuthenticationPayload } from '@common/interfaces/authentication.interface';
-import slugify from 'slugify'
-
+import slugify from 'slugify';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Piscina = require('piscina');
@@ -177,19 +176,16 @@ const HelperService = {
 		)();
 	},
 
-
-enumToString: (value: Object) : string[]=>{
-  const length = Object.keys(value).length;
-  return Object.keys(value).splice(length/2,length);
-}
-,
-generateSlug:(value: string): string =>{
-return slugify(value, {
-  replacement: '-',  // replace spaces with replacement character, defaults to `-`
-  remove: undefined, // remove characters that match regex, defaults to `undefined`
-  lower: false,      // convert to lower case, defaults to `false`
-  strict: false,     // strip special characters except replacement, defaults to `false`
-})
-}
-
+	enumToString: (value: Object): string[] => {
+		const length = Object.keys(value).length;
+		return Object.keys(value).splice(length / 2, length);
+	},
+	generateSlug: (value: string): string => {
+		return slugify(value, {
+			replacement: '-', // replace spaces with replacement character, defaults to `-`
+			remove: undefined, // remove characters that match regex, defaults to `undefined`
+			lower: false, // convert to lower case, defaults to `false`
+			strict: false, // strip special characters except replacement, defaults to `false`
+		});
+	},
 };
