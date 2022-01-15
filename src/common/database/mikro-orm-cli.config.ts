@@ -7,8 +7,8 @@ import * as dotenv from 'dotenv';
  *
  */
 
-dotenv.config({ path: `${process.cwd()}/env/${process.env.NODE_ENV}.env` });
-console.info(`Using env ${process.cwd()}/env/${process.env.NODE_ENV}.env`);
+dotenv.config({ path: `${process.cwd()}/env/.env.${process.env.NODE_ENV}` });
+console.info(`Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}`);
 
 const config = {
 	dbName: process.env.DB_DATABASE,
@@ -20,6 +20,10 @@ const config = {
 		path: 'src/migrations/',
 		tableName: 'migrations',
 		transactional: true,
+	},
+	seeder: {
+		path: './src/seeders', // path to the folder with seeders
+		defaultSeeder: 'UserSeeder', // default seeder class name
 	},
 	password: process.env.DB_PASSWORD,
 	port: Number(process.env.DB_PORT),

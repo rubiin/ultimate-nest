@@ -8,6 +8,7 @@ import { customAlphabet } from 'nanoid/async';
 import { randomTypes } from '@common/constants/random-types.enum';
 import { IAuthenticationPayload } from '@common/interfaces/authentication.interface';
 import slugify from 'slugify';
+import { hashString } from '@common/misc/threads';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Piscina = require('piscina');
@@ -17,6 +18,7 @@ const pool = new Piscina();
 let puppetterInstance = null;
 
 export /** @type {*} */
+/** @type {*} */
 /** @type {*} */
 const HelperService = {
 	/**
@@ -78,14 +80,7 @@ const HelperService = {
 	 * @memberof HelperService
 	 */
 	hashString: (string: string): Promise<string> => {
-		try {
-			return pool.runTask(
-				string,
-				resolve(__dirname, '../misc/', 'password'),
-			);
-		} catch (error) {
-			console.info(error);
-		}
+		return hashString(string);
 	},
 
 	/**
@@ -180,6 +175,8 @@ const HelperService = {
 		const length = Object.keys(value).length;
 		return Object.keys(value).splice(length / 2, length);
 	},
+
+
 	generateSlug: (value: string): string => {
 		return slugify(value, {
 			replacement: '-', // replace spaces with replacement character, defaults to `-`

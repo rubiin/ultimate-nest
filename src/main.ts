@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+// import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
 import setupSwagger from './swagger';
 import { AppUtils } from '@common/helpers/app.utils';
@@ -41,7 +41,7 @@ async function bootstrap() {
 		}),
 	).setGlobalPrefix('v1');
 
-	app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+	// app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
 	// ==================================================
 	// configureNestSwagger
@@ -58,7 +58,7 @@ async function bootstrap() {
 	const port = configService.get<number>('app.port', 3000);
 
 	await app.listen(port);
-	console.info('Bootstrap', `Server running on 🚀 ${app.getUrl}`);
+	console.info('Bootstrap', `Server running on 🚀 ${await app.getUrl()}`);
 }
 
 (async () => await bootstrap())();

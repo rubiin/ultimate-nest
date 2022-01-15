@@ -1,5 +1,4 @@
 import { HelperService } from '@common/helpers/helpers.utils';
-import { AppRoles } from '@common/helpers/roles';
 import {
 	IsString,
 	IsEmail,
@@ -34,12 +33,4 @@ export class CreateUserDto {
 	@MaxLength(128)
 	password: string;
 
-	@IsArray()
-	@IsEnum(AppRoles, {
-		each: true,
-		message: `must be a valid role value, ${HelperService.enumToString(
-			AppRoles,
-		)}`,
-	})
-	roles: string[];
 }

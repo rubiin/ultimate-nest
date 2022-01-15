@@ -48,7 +48,7 @@ export class RefreshTokensRepository {
 	async deleteToken(user: User, tokenId: number): Promise<boolean> {
 		await this.refreshTokenRepository.nativeUpdate(
 			{ user, id: tokenId },
-			{ is_revoked: true },
+			{ isRevoked: true },
 		);
 
 		return true;
