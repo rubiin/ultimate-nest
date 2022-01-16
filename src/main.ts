@@ -12,6 +12,9 @@ import {
 	NestExpressApplication,
 } from '@nestjs/platform-express';
 
+
+declare const module: any;
+
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(
 		AppModule,
@@ -58,6 +61,14 @@ async function bootstrap() {
 	const port = configService.get<number>('app.port', 3000);
 
 	await app.listen(port);
+
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
+
+
 	console.info('Bootstrap', `Server running on 🚀 ${await app.getUrl()}`);
 }
 
