@@ -21,7 +21,7 @@
 		"path": "./dist/entities/comment.entity.js",
 		"name": "Comment",
 		"abstract": false,
-		"constructorParams": [],
+		"constructorParams": ["user", "post", "body"],
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
@@ -32,6 +32,6 @@
 		"collection": "comment"
 	},
 	"origin": "./dist/entities/comment.entity.js",
-	"hash": "ef892af710fea909049e8f499cc6650c",
+	"hash": "4bdfbfe359d44e98231a6faf1728b183",
 	"version": "5.0.0-dev.632+fcdb236eb8"
 }

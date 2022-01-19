@@ -48,13 +48,7 @@ async function bootstrap() {
 	// configureNestSwagger
 	// ==================================================
 
-	if (
-		['development', 'staging'].includes(
-			configService.get<string>('app.environment'),
-		)
-	) {
-		setupSwagger(app);
-	}
+	setupSwagger(app);
 
 	const port = configService.get<number>('app.port', 3000);
 

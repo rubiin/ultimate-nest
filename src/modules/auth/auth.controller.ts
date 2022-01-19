@@ -11,10 +11,12 @@ import {
 	Query,
 	UseGuards,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RefreshRequest } from './dtos/refresh-request.dto';
 import { UserLoginDto } from './dtos/user-login';
 
+@ApiTags('Auth routes')
 @Controller('auth')
 export class AuthController {
 	constructor(
@@ -22,11 +24,13 @@ export class AuthController {
 		private readonly tokenService: TokensService,
 	) {}
 
+	@ApiOperation({ summary: 'Login user' })
 	@Post('login')
 	async login(@Body() userLoginDto: UserLoginDto) {
 		return this.authService.login(userLoginDto);
 	}
 
+	@ApiOperation({ summary: 'Refresh token' })
 	@Post('token/refresh')
 	public async refresh(@Body() body: RefreshRequest): Promise<any> {
 		const { token } =
@@ -40,6 +44,7 @@ export class AuthController {
 		};
 	}
 
+	@ApiOperation({ summary: 'Logout user' })
 	@UseGuards(JwtAuthGuard)
 	@Post('logout')
 	async logout(

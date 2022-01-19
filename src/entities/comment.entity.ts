@@ -15,4 +15,11 @@ export class Comment extends BaseEntity {
 
 	@ManyToOne({ entity: () => User })
 	user!: User;
+
+	constructor(user: User, post: Post, body: string) {
+		super();
+		this.user = user;
+		this.post = post;
+		this.text = body;
+	}
 }

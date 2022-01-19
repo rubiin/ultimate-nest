@@ -1,10 +1,11 @@
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Post, User } from '@entities';
+import { Comment, Post, User } from '@entities';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { EditPostDto } from './dtos/update-post.dto';
 import { wrap } from '@mikro-orm/core';
+import { CreateCommentDto } from './dtos/create-comment.dto';
 
 export interface UserFindOne {
 	id?: number;
@@ -16,6 +17,8 @@ export class PostService {
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: EntityRepository<Post>,
+		@InjectRepository(Comment)
+		private readonly commentRepository: EntityRepository<Comment>,
 	) {}
 
 	async getMany() {
@@ -26,7 +29,7 @@ export class PostService {
 		const user = await this.postRepository.findOne(id);
 
 		if (!user)
-			throw new NotFoundException('post does not exists or deleted');
+			throw new NotFoundException('Post does not exists or deleted');
 
 		return user;
 	}
@@ -46,6 +49,27 @@ export class PostService {
 		await this.postRepository.flush();
 
 		return post;
+	}
+
+	async createComment(id: number, dto: CreateCommentDto, user: User) {
+		const post = await this.getOne(id);
+		const comment = new Comment(user, post, dto.comment);
+
+		await this.commentRepository.persistAndFlush(comment);
+
+		return { comment, post };
+	}
+
+	async deleteComment(user: User, id: number, commentId: number) {
+		const post = await this.getOne(id);
+		const comment = this.commentRepository.getReference(commentId);
+
+		if (post.comment.contains(comment)) {
+			post.comment.remove(comment);
+			await this.commentRepository.removeAndFlush(comment);
+		}
+
+		return { post };
 	}
 
 	async deleteOne(id: number) {
