@@ -41,13 +41,26 @@ export class UserService {
 	}
 
 	async createOne(dto: CreateUserDto) {
-		const userExist = await this.userRepository.findOne({
+		const emailUserExist = await this.userRepository.findOne({
 			email: dto.email,
+			isObsolete: false,
 		});
-		if (userExist)
-			throw new BadRequestException('User already registered with email');
+
+		if (emailUserExist)
+			throw new BadRequestException(
+				'Account already registered with email',
+			);
+
+		const usernameExist = await this.userRepository.findOne({
+			username: dto.username,
+			isObsolete: false,
+		});
+
+		if (usernameExist)
+			throw new BadRequestException('Username is already taken');
 
 		const newUser = this.userRepository.create(dto);
+
 		await this.userRepository.persistAndFlush(newUser);
 
 		return omit(newUser, ['password']);
@@ -55,13 +68,16 @@ export class UserService {
 
 	async editOne(id: number, dto: EditUserDto, userEntity?: User) {
 		const user = await this.getOne(id, userEntity);
+
 		wrap(user).assign(dto);
 		await this.userRepository.flush();
+
 		return user;
 	}
 
 	async deleteOne(id: number, userEntity?: User) {
 		const user = await this.getOne(id, userEntity);
+
 		return this.userRepository.remove(user);
 	}
 

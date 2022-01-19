@@ -10,6 +10,9 @@
 
 ## Installation
 
+https://github.com/manikandanraji/instaclone-backend/blob/master/src/models/User.js
+https://github.com/kaplantm/practice-instagram-clone-backend
+
 Install dependencies
 
     yarn

@@ -1,36 +1,44 @@
-import { HelperService } from '@common/helpers/helpers.utils';
 import {
 	IsString,
 	IsEmail,
 	MinLength,
 	MaxLength,
 	IsOptional,
-	IsArray,
-	IsEnum,
+	IsNotEmpty,
 } from 'class-validator';
 
 export class CreateUserDto {
-	@IsOptional()
+	@IsNotEmpty()
 	@IsString()
+	@MinLength(5)
 	@MaxLength(255)
-	firstName: string;
+	fullName: string;
 
 	@IsOptional()
 	@IsString()
+	@MinLength(5)
 	@MaxLength(255)
-	middleName: string;
+	bio: string;
 
 	@IsOptional()
 	@IsString()
-	@MaxLength(255)
-	lastName: string;
+	@MinLength(5)
+	@MaxLength(25)
+	website: string;
 
+	@IsNotEmpty()
+	@IsString()
+	@MinLength(5)
+	@MaxLength(20)
+	username: string;
+
+	@IsNotEmpty()
 	@IsEmail()
 	email: string;
 
+	@IsNotEmpty()
 	@IsString()
 	@MinLength(8)
 	@MaxLength(128)
 	password: string;
-
 }

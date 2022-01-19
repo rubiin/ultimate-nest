@@ -1,7 +1,6 @@
 import { User } from '@entities';
 import * as eta from 'eta';
 import * as sharp from 'sharp';
-import { resolve } from 'path';
 import puppeteer from 'puppeteer';
 import { pick } from '@rubiin/js-utils';
 import { customAlphabet } from 'nanoid/async';
@@ -9,11 +8,6 @@ import { randomTypes } from '@common/constants/random-types.enum';
 import { IAuthenticationPayload } from '@common/interfaces/authentication.interface';
 import slugify from 'slugify';
 import { hashString } from '@common/misc/threads';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Piscina = require('piscina');
-
-const pool = new Piscina();
 
 let puppetterInstance = null;
 
@@ -171,11 +165,11 @@ const HelperService = {
 		)();
 	},
 
-	enumToString: (value: Object): string[] => {
+	enumToString: (value: Record<string, any>): string[] => {
 		const length = Object.keys(value).length;
+
 		return Object.keys(value).splice(length / 2, length);
 	},
-
 
 	generateSlug: (value: string): string => {
 		return slugify(value, {

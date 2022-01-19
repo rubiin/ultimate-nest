@@ -5,13 +5,10 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import setupSwagger from './swagger';
 import { AppUtils } from '@common/helpers/app.utils';
-import * as helmet from 'helmet';
-import * as compression from 'compression';
 import {
 	ExpressAdapter,
 	NestExpressApplication,
 } from '@nestjs/platform-express';
-
 
 declare const module: any;
 
@@ -30,8 +27,8 @@ async function bootstrap() {
 	// ==================================================
 
 	app.enableCors();
-	app.use(helmet);
-	app.use(compression);
+	// app.use(helmet());
+	// app.use(compression);
 
 	// ==================================================
 	// configureNestGlobals
@@ -44,7 +41,8 @@ async function bootstrap() {
 		}),
 	).setGlobalPrefix('v1');
 
-	// app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+	// app.useLogger
+	// (app.get(WINSTON_MODULE_NEST_PROVIDER));
 
 	// ==================================================
 	// configureNestSwagger
@@ -62,12 +60,10 @@ async function bootstrap() {
 
 	await app.listen(port);
 
-
-  if (module.hot) {
-    module.hot.accept();
-    module.hot.dispose(() => app.close());
-  }
-
+	if (module.hot) {
+		module.hot.accept();
+		module.hot.dispose(() => app.close());
+	}
 
 	console.info('Bootstrap', `Server running on 🚀 ${await app.getUrl()}`);
 }

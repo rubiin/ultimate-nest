@@ -5,6 +5,7 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { UserModule } from '@modules/user/user.module';
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import {
 	AcceptLanguageResolver,
 	HeaderResolver,
@@ -12,6 +13,7 @@ import {
 	I18nModule,
 } from 'nestjs-i18n';
 import * as path from 'path';
+import { join } from 'path';
 
 @Module({
 	imports: [
@@ -19,6 +21,9 @@ import * as path from 'path';
 		UserModule,
 		ConfigModule,
 		OrmModule,
+		ServeStaticModule.forRoot({
+			rootPath: join(__dirname, 'resources'),
+		}),
 		I18nModule.forRoot({
 			fallbackLanguage: 'en',
 			parser: I18nJsonParser,
@@ -29,7 +34,7 @@ import * as path from 'path';
 				new HeaderResolver(['x-custom-lang']),
 				AcceptLanguageResolver,
 			],
-		})
+		}),
 	],
 	providers: [
 		{

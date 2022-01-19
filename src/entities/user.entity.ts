@@ -1,30 +1,40 @@
 import {
 	BeforeCreate,
 	BeforeUpdate,
+	Collection,
 	Entity,
+	OneToMany,
 	Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '@common/database/base-entity.entity';
 import { Exclude } from 'class-transformer';
 import { HelperService } from '@common/helpers/helpers.utils';
+import { Post } from './post.entity';
 
 @Entity()
 export class User extends BaseEntity {
 	@Property({
 		length: 50,
 	})
-	firstName: string;
+	fullName: string;
 
 	@Property({
 		length: 50,
 		nullable: true,
 	})
-	middleName?: string;
+	bio?: string;
 
 	@Property({
 		length: 50,
+		nullable: true,
 	})
-	lastName: string;
+	website?: string;
+
+	@Property({
+		length: 50,
+		nullable: true,
+	})
+	avatar?: string;
 
 	@Property({
 		length: 60,
@@ -32,11 +42,17 @@ export class User extends BaseEntity {
 	})
 	email: string;
 
+	@OneToMany(() => Post, post => post.user, { hidden: true })
+	posts = new Collection<Post>(this);
+
+	@Property({
+		length: 50,
+	})
+	username: string;
 
 	@Exclude({ toPlainOnly: true })
 	@Property()
 	password: string;
-
 
 	@BeforeCreate()
 	@BeforeUpdate()

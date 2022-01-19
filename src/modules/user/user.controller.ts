@@ -20,41 +20,41 @@ export class UserController {
 	@Get()
 	async getMany() {
 		const data = await this.userService.getMany();
+
 		return { data };
 	}
 
 	@Post('register')
 	async publicRegistration(@Body() dto: CreateUserDto) {
 		const data = await this.userService.createOne(dto);
+
 		return { message: 'User registered', data };
 	}
 
 	@Get(':id')
 	async getOne(@Param('id') id: number) {
 		const data = await this.userService.getOne(id);
+
 		return { data };
 	}
 
 	@Post()
 	async createOne(@Body() dto: CreateUserDto) {
 		const data = await this.userService.createOne(dto);
+
 		return { message: 'User created', data };
 	}
 
 	@Put(':id')
-	async editOne(
-		@Param('id') id: number,
-		@Body() dto: EditUserDto
-	) {
-		let data = await this.userService.editOne(id, dto);
+	async editOne(@Param('id') id: number, @Body() dto: EditUserDto) {
+		const data = await this.userService.editOne(id, dto);
 
 		return { message: 'User edited', data };
 	}
 
-	
 	@Delete(':id')
 	async deleteOne(@Param('id') id: number) {
-		let data = await this.userService.deleteOne(id);
+		const data = await this.userService.deleteOne(id);
 
 		return { message: 'User deleted', data };
 	}
