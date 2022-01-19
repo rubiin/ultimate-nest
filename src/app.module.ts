@@ -2,6 +2,7 @@ import { LoggingInterceptor } from '@common/interceptors/logger.interceptor';
 import { ConfigModule } from '@lib/config/config.module';
 import { OrmModule } from '@lib/orm/orm.module';
 import { AuthModule } from '@modules/auth/auth.module';
+import { PostModule } from '@modules/post/post.module';
 import { UserModule } from '@modules/user/user.module';
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -19,6 +20,7 @@ import { join } from 'path';
 	imports: [
 		AuthModule,
 		UserModule,
+		PostModule,
 		ConfigModule,
 		OrmModule,
 		ServeStaticModule.forRoot({

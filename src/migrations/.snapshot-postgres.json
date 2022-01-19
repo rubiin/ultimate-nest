@@ -75,12 +75,12 @@
 				},
 				"bio": {
 					"name": "bio",
-					"type": "varchar(50)",
+					"type": "varchar(250)",
 					"unsigned": false,
 					"autoincrement": false,
 					"primary": false,
 					"nullable": true,
-					"length": 50,
+					"length": 250,
 					"mappedType": "string"
 				},
 				"website": {
@@ -466,32 +466,23 @@
 				},
 				"caption": {
 					"name": "caption",
-					"type": "varchar(50)",
+					"type": "varchar(250)",
 					"unsigned": false,
 					"autoincrement": false,
 					"primary": false,
-					"nullable": false,
-					"length": 50,
+					"nullable": true,
+					"length": 250,
 					"mappedType": "string"
 				},
 				"file": {
 					"name": "file",
-					"type": "varchar(50)",
+					"type": "varchar(150)",
 					"unsigned": false,
 					"autoincrement": false,
 					"primary": false,
 					"nullable": false,
-					"length": 50,
+					"length": 150,
 					"mappedType": "string"
-				},
-				"tag_list": {
-					"name": "tag_list",
-					"type": "text[]",
-					"unsigned": false,
-					"autoincrement": false,
-					"primary": false,
-					"nullable": false,
-					"mappedType": "array"
 				},
 				"user_id": {
 					"name": "user_id",
@@ -710,12 +701,12 @@
 				},
 				"text": {
 					"name": "text",
-					"type": "varchar(50)",
+					"type": "varchar(250)",
 					"unsigned": false,
 					"autoincrement": false,
 					"primary": false,
 					"nullable": false,
-					"length": 50,
+					"length": 250,
 					"mappedType": "string"
 				},
 				"post_id": {

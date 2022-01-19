@@ -19,7 +19,7 @@ export class User extends BaseEntity {
 	fullName: string;
 
 	@Property({
-		length: 50,
+		length: 250,
 		nullable: true,
 	})
 	bio?: string;

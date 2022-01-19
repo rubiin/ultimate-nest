@@ -3,7 +3,7 @@
 		"propertyOrder": {},
 		"properties": {
 			"fullName": { "name": "fullName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			"bio": { "name": "bio", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"bio": { "name": "bio", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
 			"website": { "name": "website", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
 			"avatar": { "name": "avatar", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
 			"email": { "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
@@ -13,7 +13,7 @@
 		},
 		"props": [
 			{ "name": "fullName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			{ "name": "bio", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "bio", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
 			{ "name": "website", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
 			{ "name": "avatar", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
 			{ "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
@@ -39,6 +39,6 @@
 		"collection": "user"
 	},
 	"origin": "./dist/entities/user.entity.js",
-	"hash": "dfc4b223da2b7b9b6ab0064c05c1c1e1",
+	"hash": "44d243fc7880ccab773fa0c1aa3fa6c0",
 	"version": "5.0.0-dev.632+fcdb236eb8"
 }

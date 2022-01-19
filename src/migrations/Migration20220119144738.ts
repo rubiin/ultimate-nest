@@ -1,9 +1,11 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20220119050454 extends Migration {
+export class Migration20220119144738 extends Migration {
 	async up(): Promise<void> {
+		this.addSql(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
+
 		this.addSql(
-			'create table "user" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "full_name" varchar(50) not null, "bio" varchar(50) null, "website" varchar(50) null, "avatar" varchar(50) null, "email" varchar(60) not null, "username" varchar(50) not null, "password" varchar(255) not null);',
+			'create table "user" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "full_name" varchar(50) not null, "bio" varchar(250) null, "website" varchar(50) null, "avatar" varchar(50) null, "email" varchar(60) not null, "username" varchar(50) not null, "password" varchar(255) not null);',
 		);
 		this.addSql(
 			'alter table "user" add constraint "user_email_unique" unique ("email");',
@@ -18,7 +20,7 @@ export class Migration20220119050454 extends Migration {
 		);
 
 		this.addSql(
-			'create table "post" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "caption" varchar(50) not null, "file" varchar(50) not null, "tag_list" text[] not null, "user_id" int not null);',
+			'create table "post" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "caption" varchar(250) null, "file" varchar(50) not null, "tag_list" text[] null, "user_id" int not null);',
 		);
 
 		this.addSql(
@@ -26,7 +28,7 @@ export class Migration20220119050454 extends Migration {
 		);
 
 		this.addSql(
-			'create table "comment" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "text" varchar(50) not null, "post_id" int not null, "user_id" int not null);',
+			'create table "comment" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "text" varchar(250) not null, "post_id" int not null, "user_id" int not null);',
 		);
 
 		this.addSql(

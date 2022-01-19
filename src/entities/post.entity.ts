@@ -1,5 +1,4 @@
 import {
-	ArrayType,
 	Collection,
 	Entity,
 	ManyToOne,
@@ -13,17 +12,18 @@ import { Comment } from './comment.entity';
 @Entity()
 export class Post extends BaseEntity {
 	@Property({
-		length: 50,
+		length: 250,
+		nullable: true,
 	})
-	caption: string;
+	caption?: string;
 
 	@Property({
-		length: 50,
+		length: 150,
 	})
 	file: string;
 
-	@Property({ type: ArrayType })
-	tagList: string[] = [];
+	// @Property({ type: ArrayType, nullable: true })
+	// tagList?: string[] = [];
 
 	@ManyToOne({ entity: () => User })
 	user: User;
@@ -32,5 +32,5 @@ export class Post extends BaseEntity {
 		eager: true,
 		orphanRemoval: true,
 	})
-	posts = new Collection<Comment>(this);
+	comment = new Collection<Comment>(this);
 }

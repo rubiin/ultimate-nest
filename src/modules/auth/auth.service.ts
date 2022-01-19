@@ -43,7 +43,7 @@ export class AuthService {
 
 		if (!user.isActive) {
 			throw new HttpException(
-				'Account not found for this email. Please create new account from the Login screen.',
+				'Account not found. Please create new account from the Login screen.',
 				HttpStatus.FORBIDDEN,
 			);
 		}

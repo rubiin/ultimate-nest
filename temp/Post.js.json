@@ -2,18 +2,16 @@
 	"data": {
 		"propertyOrder": {},
 		"properties": {
-			"caption": { "name": "caption", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			"file": { "name": "file", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			"tagList": { "name": "tagList", "reference": "scalar", "getter": false, "setter": false, "array": true },
+			"caption": { "name": "caption", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"file": { "name": "file", "reference": "scalar", "length": 150, "getter": false, "setter": false, "type": "string" },
 			"user": { "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
-			"posts": { "name": "posts", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+			"comment": { "name": "comment", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
 		},
 		"props": [
-			{ "name": "caption", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			{ "name": "file", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			{ "name": "tagList", "reference": "scalar", "getter": false, "setter": false, "array": true },
+			{ "name": "caption", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "file", "reference": "scalar", "length": 150, "getter": false, "setter": false, "type": "string" },
 			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
-			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+			{ "name": "comment", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
 		],
 		"primaryKeys": [],
 		"filters": {},
@@ -31,11 +29,11 @@
 		"useCache": true,
 		"relations": [
 			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
-			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+			{ "name": "comment", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
 		],
 		"collection": "post"
 	},
 	"origin": "./dist/entities/post.entity.js",
-	"hash": "216d598bdd265df695412d523e870ed2",
+	"hash": "2e88f5b4188df7eaa91d2bb0c1e13d83",
 	"version": "5.0.0-dev.632+fcdb236eb8"
 }

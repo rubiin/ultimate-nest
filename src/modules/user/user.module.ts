@@ -7,5 +7,6 @@ import { OrmModule } from '@lib/orm/orm.module';
 	controllers: [UserController],
 	providers: [UserService],
 	imports: [OrmModule],
+	exports: [UserService],
 })
 export class UserModule {}

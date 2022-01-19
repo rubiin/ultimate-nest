@@ -6,13 +6,13 @@ import { User } from './user.entity';
 @Entity()
 export class Comment extends BaseEntity {
 	@Property({
-		length: 50,
+		length: 250,
 	})
-	text: string;
+	text!: string;
 
 	@ManyToOne({ entity: () => Post })
-	post: Post;
+	post!: Post;
 
 	@ManyToOne({ entity: () => User })
-	user: User;
+	user!: User;
 }
