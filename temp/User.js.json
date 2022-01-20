@@ -1,0 +1,46 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"fullName": { "name": "fullName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			"bio": { "name": "bio", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"website": { "name": "website", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"avatar": { "name": "avatar", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"email": { "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
+			"posts": { "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			"username": { "name": "username", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			"password": { "name": "password", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"postCount": { "name": "postCount", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" }
+		},
+		"props": [
+			{ "name": "fullName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			{ "name": "bio", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "website", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "avatar", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			{ "name": "username", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			{ "name": "password", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "postCount", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": { "beforeUpdate": ["hashPassword"], "beforeCreate": ["hashPassword"] },
+		"indexes": [],
+		"uniques": [],
+		"concurrencyCheckKeys": {},
+		"className": "User",
+		"path": "./dist/entities/user.entity.js",
+		"name": "User",
+		"abstract": false,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" }],
+		"collection": "user"
+	},
+	"origin": "./dist/entities/user.entity.js",
+	"hash": "4e27e6509f8bc6cc646695cb325f078f",
+	"version": "5.0.0-dev.632+fcdb236eb8"
+}

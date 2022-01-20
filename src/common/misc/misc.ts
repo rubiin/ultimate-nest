@@ -7,17 +7,23 @@ import { extname } from 'path';
 const allowedExtensions = new Set(['png', 'jpg', 'jpeg']);
 
 export const ImageMulterOption: MulterOptions = {
-	dest: './upload',
 	limits: {
 		fileSize: 5 * 1024 * 1024, // 5 mb
 	},
 	storage: multer.diskStorage({
+		destination: './uploads',
 		filename: (
 			_req: Request,
 			file: { originalname: string },
 			cb: (arg0: any, arg1: string) => void,
 		) => {
-			const name = file.originalname.split('.')[0];
+			let name = file.originalname.split('.')[0];
+
+			// if filename length greater than 10, truncate to 10
+			if (name.length > 8) {
+				name = name.slice(0, 8);
+			}
+
 			const fileExtName = extname(file.originalname);
 			const randomName = Date.now();
 
