@@ -19,7 +19,7 @@ import { ImageMulterOption } from '@common/misc/misc';
 import { JwtAuthGuard } from '@common/guards/jwt.guard';
 import { LoggedInUser } from '@common/decorators/user.decorator';
 import { User } from '@entities';
-import { CreateCommentDto } from './dtos/create-comment.dto';
+import { CreateCommentDto, EditCommentDto } from './dtos/create-comment.dto';
 
 @ApiTags('Posts routes')
 @Controller('post')
@@ -30,7 +30,7 @@ export class PostController {
 	@ApiOperation({ summary: 'Get all user posts' })
 	@Get()
 	async getMany() {
-		const data = await this.postService.getMany();
+		const data = await this.postService.getManyPost();
 
 		return { message: 'Success', data };
 	}
@@ -43,7 +43,7 @@ export class PostController {
 		@UploadedFile() image: Express.Multer.File,
 		@LoggedInUser() user: User,
 	) {
-		const data = await this.postService.createOne(
+		const data = await this.postService.createPost(
 			{
 				...dto,
 				file: image.filename,
@@ -57,7 +57,7 @@ export class PostController {
 	@ApiOperation({ summary: 'Get one user post' })
 	@Get(':id')
 	async getOne(@Param('id') id: number) {
-		const data = await this.postService.getOne(id);
+		const data = await this.postService.getOnePost(id);
 
 		return { data };
 	}
@@ -65,13 +65,13 @@ export class PostController {
 	@ApiOperation({ summary: 'Edit user post' })
 	@Put(':id')
 	async editOne(@Param('id') id: number, @Body() dto: EditPostDto) {
-		const data = await this.postService.editOne(id, dto);
+		const data = await this.postService.editPost(id, dto);
 
 		return { message: 'Post edited', data };
 	}
 
 	@ApiOperation({ summary: 'Create comment' })
-	@Put(':id/comment')
+	@Post(':id/comment')
 	async createComment(
 		@Param('id') id: number,
 		@Body() createComment: CreateCommentDto,
@@ -86,8 +86,20 @@ export class PostController {
 		return { data };
 	}
 
+	@ApiOperation({ summary: 'Edit comment' })
+	@Put(':id/comment/:commentId')
+	async editComment(
+		@LoggedInUser() user: User,
+		@Param() params: Record<string, string>,
+		@Body() dto: EditCommentDto,
+	) {
+		const { id, commentId } = params;
+
+		return this.postService.editComment(+id, +commentId, dto);
+	}
+
 	@ApiOperation({ summary: 'Delete comment' })
-	@Delete(':id/comments/:commentId')
+	@Delete(':id/comment/:commentId')
 	async deleteComment(
 		@LoggedInUser() user: User,
 		@Param() params: Record<string, string>,
@@ -100,7 +112,7 @@ export class PostController {
 	@ApiOperation({ summary: 'Delete user post' })
 	@Delete(':id')
 	async deleteOne(@Param('id') id: number) {
-		const data = await this.postService.deleteOne(id);
+		const data = await this.postService.deletePost(id);
 
 		return { message: 'Post deleted', data };
 	}

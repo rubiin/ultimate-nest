@@ -4,7 +4,7 @@ import * as mime from 'mime-types';
 import * as multer from 'multer';
 import { extname } from 'path';
 
-const allowedExtensions: any = ['png', 'jpg', 'jpeg'];
+const allowedExtensions = new Set(['png', 'jpg', 'jpeg']);
 
 export const ImageMulterOption: MulterOptions = {
 	dest: './upload',

@@ -49,7 +49,10 @@ export class AuthService {
 		}
 
 		const token = await this.tokenService.generateAccessToken(user);
-		const refresh = await this.tokenService.generateRefreshToken(user, 123);
+		const refresh = await this.tokenService.generateRefreshToken(
+			user,
+			+process.env.JWT_REFRESH_EXPIRY,
+		);
 
 		const payload = HelperService.buildPayloadResponse(
 			user,

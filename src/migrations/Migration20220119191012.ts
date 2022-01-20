@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20220119144738 extends Migration {
+export class Migration20220119191012 extends Migration {
 	async up(): Promise<void> {
 		this.addSql(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
 
@@ -20,7 +20,7 @@ export class Migration20220119144738 extends Migration {
 		);
 
 		this.addSql(
-			'create table "post" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "caption" varchar(250) null, "file" varchar(50) not null, "tag_list" text[] null, "user_id" int not null);',
+			'create table "post" ("id" serial primary key, "idx" varchar(255) not null default uuid_generate_v4(), "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "created_at" timestamptz(0) not null default CURRENT_TIMESTAMP, "updated_at" timestamptz(0) null default CURRENT_TIMESTAMP, "caption" varchar(250) null, "file" varchar(150) not null, "user_id" int not null);',
 		);
 
 		this.addSql(

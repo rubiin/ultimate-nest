@@ -5,7 +5,7 @@ import { Comment, Post, User } from '@entities';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { EditPostDto } from './dtos/update-post.dto';
 import { wrap } from '@mikro-orm/core';
-import { CreateCommentDto } from './dtos/create-comment.dto';
+import { CreateCommentDto, EditCommentDto } from './dtos/create-comment.dto';
 
 export interface UserFindOne {
 	id?: number;
@@ -21,20 +21,29 @@ export class PostService {
 		private readonly commentRepository: EntityRepository<Comment>,
 	) {}
 
-	async getMany() {
+	async getManyPost() {
 		return await this.postRepository.findAll();
 	}
 
-	async getOne(id: number) {
-		const user = await this.postRepository.findOne(id);
+	async getOnePost(id: number) {
+		const post = await this.postRepository.findOne(id);
 
-		if (!user)
+		if (!post)
 			throw new NotFoundException('Post does not exists or deleted');
 
-		return user;
+		return post;
 	}
 
-	async createOne(dto: CreatePostDto, user: User) {
+	async getOneComment(id: number) {
+		const comment = await this.commentRepository.findOne(id);
+
+		if (!comment)
+			throw new NotFoundException('Comment does not exists or deleted');
+
+		return comment;
+	}
+
+	async createPost(dto: CreatePostDto, user: User) {
 		const newPost = this.postRepository.create({ ...dto, user });
 
 		await this.postRepository.persistAndFlush(newPost);
@@ -42,8 +51,8 @@ export class PostService {
 		return newPost;
 	}
 
-	async editOne(id: number, dto: EditPostDto) {
-		const post = await this.getOne(id);
+	async editPost(id: number, dto: EditPostDto) {
+		const post = await this.getOnePost(id);
 
 		wrap(post).assign(dto);
 		await this.postRepository.flush();
@@ -52,7 +61,7 @@ export class PostService {
 	}
 
 	async createComment(id: number, dto: CreateCommentDto, user: User) {
-		const post = await this.getOne(id);
+		const post = await this.getOnePost(id);
 		const comment = new Comment(user, post, dto.comment);
 
 		await this.commentRepository.persistAndFlush(comment);
@@ -60,8 +69,18 @@ export class PostService {
 		return { comment, post };
 	}
 
+	async editComment(id: number, commentId: number, dto: EditCommentDto) {
+		const comment = await this.getOneComment(commentId);
+		const post = await this.getOnePost(id);
+
+		comment.text = dto.comment;
+		this.commentRepository.persist(comment);
+
+		return { comment, post };
+	}
+
 	async deleteComment(user: User, id: number, commentId: number) {
-		const post = await this.getOne(id);
+		const post = await this.getOnePost(id);
 		const comment = this.commentRepository.getReference(commentId);
 
 		if (post.comment.contains(comment)) {
@@ -72,8 +91,8 @@ export class PostService {
 		return { post };
 	}
 
-	async deleteOne(id: number) {
-		const post = await this.getOne(id);
+	async deletePost(id: number) {
+		const post = await this.getOnePost(id);
 
 		return this.postRepository.remove(post);
 	}
