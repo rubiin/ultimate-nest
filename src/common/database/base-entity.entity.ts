@@ -2,6 +2,7 @@ import { PrimaryKey, Property } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 
 export abstract class BaseEntity {
+	@Exclude({ toPlainOnly: true })
 	@PrimaryKey()
 	id!: number;
 
@@ -20,6 +21,9 @@ export abstract class BaseEntity {
 		default: false,
 	})
 	isObsolete: boolean;
+
+	@Property({ nullable: true })
+	deletedAt?: Date;
 
 	@Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
 	createdAt: Date = new Date();

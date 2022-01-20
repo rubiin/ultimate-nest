@@ -1,9 +1,4 @@
-import { IAuthenticationPayload } from './authentication.interface';
-
-export interface IResponse {
+export interface IResponse<T> {
 	message: string;
+	data: T | Array<T>;
 }
-
-export type ILoginSignupReponse =
-	| { message: any; statusCode: number }
-	| { message: string; data: IAuthenticationPayload };

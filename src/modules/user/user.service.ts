@@ -27,8 +27,11 @@ export class UserService {
 		return await this.userRepository.findAll();
 	}
 
-	async getOne(id: number) {
-		const user = await this.userRepository.findOne(id);
+	async getOneUser(idx: string) {
+		const user = await this.userRepository.findOne({
+			idx,
+			isObsolete: false,
+		});
 
 		if (!user)
 			throw new NotFoundException('User does not exists or unauthorized');
@@ -62,8 +65,8 @@ export class UserService {
 		return omit(newUser, ['password']);
 	}
 
-	async editOne(id: number, dto: EditUserDto) {
-		const user = await this.getOne(id);
+	async editOne(idx: string, dto: EditUserDto) {
+		const user = await this.getOneUser(idx);
 
 		wrap(user).assign(dto);
 		await this.userRepository.flush();
@@ -71,13 +74,13 @@ export class UserService {
 		return user;
 	}
 
-	async deleteOne(id: number) {
-		const user = await this.getOne(id);
+	async deleteUser(idx: string) {
+		const user = await this.getOneUser(idx);
 
 		return this.userRepository.remove(user);
 	}
 
-	async findOne(data: UserFindOne) {
+	async findUser(data: UserFindOne) {
 		return await this.userRepository
 			.createQueryBuilder()
 			.where(data)

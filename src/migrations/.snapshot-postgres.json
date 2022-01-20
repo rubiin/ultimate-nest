@@ -43,6 +43,15 @@
 					"default": "false",
 					"mappedType": "boolean"
 				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
 				"created_at": {
 					"name": "created_at",
 					"type": "timestamptz(0)",
@@ -131,6 +140,16 @@
 					"primary": false,
 					"nullable": false,
 					"mappedType": "string"
+				},
+				"post_count": {
+					"name": "post_count",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "0",
+					"mappedType": "integer"
 				}
 			},
 			"name": "user",
@@ -193,6 +212,15 @@
 					"nullable": false,
 					"default": "false",
 					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
 				},
 				"created_at": {
 					"name": "created_at",
@@ -305,6 +333,15 @@
 					"nullable": false,
 					"default": "false",
 					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
 				},
 				"created_at": {
 					"name": "created_at",
@@ -444,6 +481,15 @@
 					"default": "false",
 					"mappedType": "boolean"
 				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
 				"created_at": {
 					"name": "created_at",
 					"type": "timestamptz(0)",
@@ -483,6 +529,16 @@
 					"nullable": false,
 					"length": 150,
 					"mappedType": "string"
+				},
+				"favourite_count": {
+					"name": "favourite_count",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "0",
+					"mappedType": "integer"
 				},
 				"user_id": {
 					"name": "user_id",
@@ -556,6 +612,15 @@
 					"nullable": false,
 					"default": "false",
 					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
 				},
 				"created_at": {
 					"name": "created_at",
@@ -679,6 +744,134 @@
 					"default": "false",
 					"mappedType": "boolean"
 				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"post_id": {
+					"name": "post_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				}
+			},
+			"name": "favourite",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "favourite_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"foreignKeys": {
+				"favourite_post_id_foreign": {
+					"constraintName": "favourite_post_id_foreign",
+					"columnNames": ["post_id"],
+					"localTableName": "public.favourite",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.post",
+					"updateRule": "cascade"
+				},
+				"favourite_user_id_foreign": {
+					"constraintName": "favourite_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "public.favourite",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "uuid_generate_v4()",
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
 				"created_at": {
 					"name": "created_at",
 					"type": "timestamptz(0)",
@@ -798,6 +991,15 @@
 					"nullable": false,
 					"default": "false",
 					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
 				},
 				"created_at": {
 					"name": "created_at",

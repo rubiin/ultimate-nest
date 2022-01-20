@@ -8,7 +8,7 @@ export class UserSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
 		const author = em.create(User, {
 			fullName: faker.firstName(),
-			bio: 'I am the author',
+			bio: faker.word({ filter: word => word.length > 5 }),
 			username: faker.username(),
 			website: faker.domainUrl(),
 			avatar: faker.imageUrlFromPlaceholder({ width: 100 }),

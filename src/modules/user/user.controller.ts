@@ -6,6 +6,7 @@ import {
 	Delete,
 	Param,
 	Body,
+	ParseUUIDPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -19,7 +20,7 @@ export class UserController {
 
 	@ApiOperation({ summary: 'Get all users' })
 	@Get()
-	async getMany() {
+	async getManyUsers() {
 		const data = await this.userService.getMany();
 
 		return { message: 'Success', data };
@@ -34,33 +35,36 @@ export class UserController {
 	}
 
 	@ApiOperation({ summary: 'Get a user' })
-	@Get(':id')
-	async getOne(@Param('id') id: number) {
-		const data = await this.userService.getOne(id);
+	@Get(':idx')
+	async getOneUser(@Param('idx', ParseUUIDPipe) idx: string) {
+		const data = await this.userService.getOneUser(idx);
 
 		return { data };
 	}
 
 	@ApiOperation({ summary: 'Create user' })
 	@Post()
-	async createOne(@Body() dto: CreateUserDto) {
+	async createUser(@Body() dto: CreateUserDto) {
 		const data = await this.userService.createOne(dto);
 
 		return { message: 'User created', data };
 	}
 
 	@ApiOperation({ summary: 'Edit user' })
-	@Put(':id')
-	async editOne(@Param('id') id: number, @Body() dto: EditUserDto) {
-		const data = await this.userService.editOne(id, dto);
+	@Put(':idx')
+	async editUser(
+		@Param('idx', ParseUUIDPipe) idx: string,
+		@Body() dto: EditUserDto,
+	) {
+		const data = await this.userService.editOne(idx, dto);
 
 		return { message: 'User edited', data };
 	}
 
 	@ApiOperation({ summary: 'Delete user' })
-	@Delete(':id')
-	async deleteOne(@Param('id') id: number) {
-		const data = await this.userService.deleteOne(id);
+	@Delete(':idx')
+	async deleteUser(@Param('idx', ParseUUIDPipe) idx: string) {
+		const data = await this.userService.deleteUser(idx);
 
 		return { message: 'User deleted', data };
 	}

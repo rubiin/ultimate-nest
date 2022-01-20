@@ -54,6 +54,11 @@ export class User extends BaseEntity {
 	@Property()
 	password: string;
 
+	@Property({
+		default: 0,
+	})
+	postCount: number;
+
 	@BeforeCreate()
 	@BeforeUpdate()
 	async hashPassword() {

@@ -51,7 +51,7 @@ export class AuthController {
 		@LoggedInUser() user: User,
 		@Body() refreshToken?: RefreshRequest,
 		@Query('from_all', ParseBoolPipe) fromAll = false,
-	): Promise<IResponse> {
+	): Promise<IResponse<any>> {
 		return fromAll
 			? this.authService.logoutFromAll(user)
 			: this.authService.logout(user, refreshToken.refreshToken);

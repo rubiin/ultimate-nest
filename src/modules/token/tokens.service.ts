@@ -156,10 +156,10 @@ export class TokensService {
 	 * @param {Customer} user
 	 * @memberof TokensService
 	 */
-	async deleteRefreshTokenForUser(user: User): Promise<IResponse> {
+	async deleteRefreshTokenForUser(user: User): Promise<IResponse<User>> {
 		await this.tokens.deleteTokensForUser(user);
 
-		return { message: 'Operation Sucessful' };
+		return { message: 'Operation Sucessful', data: user };
 	}
 
 	/**
@@ -174,7 +174,7 @@ export class TokensService {
 	async deleteRefreshToken(
 		user: User,
 		payload: RefreshTokenPayload,
-	): Promise<IResponse> {
+	): Promise<IResponse<User>> {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
@@ -182,7 +182,7 @@ export class TokensService {
 		}
 		await this.tokens.deleteToken(user, tokenId);
 
-		return { message: 'Operation Sucessful' };
+		return { message: 'Operation Sucessful', data: user };
 	}
 
 	/**
@@ -224,6 +224,6 @@ export class TokensService {
 			throw new UnauthorizedException('Refresh token malformed');
 		}
 
-		return this.tokens.findTokenById(tokenId);
+		return this.tokens.findTokenByIdx(tokenId);
 	}
 }

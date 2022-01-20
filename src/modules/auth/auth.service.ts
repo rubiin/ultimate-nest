@@ -10,10 +10,7 @@ import { EntityRepository } from '@mikro-orm/core';
 import { TokensService } from '@modules/token/tokens.service';
 import { HelperService } from '@common/helpers/helpers.utils';
 import { User } from '@entities';
-import {
-	ILoginSignupReponse,
-	IResponse,
-} from '@common/interfaces/response.interface';
+import { IResponse } from '@common/interfaces/response.interface';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +27,7 @@ export class AuthService {
 	 * @return {Promise<ILoginSignupReponse>}
 	 * @memberof AuthService
 	 */
-	async login(userDto: UserLoginDto): Promise<ILoginSignupReponse> {
+	async login(userDto: UserLoginDto): Promise<IResponse<any>> {
 		const user = await this.userRepository.findOne({
 			email: userDto.email,
 			isActive: true,
@@ -74,11 +71,11 @@ export class AuthService {
 	 * @return {Promise<IResponse>}
 	 * @memberof AuthService
 	 */
-	async logoutFromAll(user: User): Promise<IResponse> {
+	async logoutFromAll(user: User): Promise<IResponse<any>> {
 		return this.tokenService.deleteRefreshTokenForUser(user);
 	}
 
-	async logout(user: User, refreshToken: string): Promise<IResponse> {
+	async logout(user: User, refreshToken: string): Promise<IResponse<any>> {
 		const payload = await this.tokenService.decodeRefreshToken(
 			refreshToken,
 		);

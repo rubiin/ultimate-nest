@@ -22,6 +22,11 @@ export class Post extends BaseEntity {
 	})
 	file: string;
 
+	@Property({
+		default: 0,
+	})
+	favouriteCount: number;
+
 	// @Property({ type: ArrayType, nullable: true })
 	// tagList?: string[] = [];
 

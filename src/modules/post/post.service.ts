@@ -25,8 +25,11 @@ export class PostService {
 		return await this.postRepository.findAll();
 	}
 
-	async getOnePost(id: number) {
-		const post = await this.postRepository.findOne(id);
+	async getOnePost(idx: string) {
+		const post = await this.postRepository.findOne({
+			idx,
+			isObsolete: false,
+		});
 
 		if (!post)
 			throw new NotFoundException('Post does not exists or deleted');
@@ -34,8 +37,10 @@ export class PostService {
 		return post;
 	}
 
-	async getOneComment(id: number) {
-		const comment = await this.commentRepository.findOne(id);
+	async getOneComment(idx: string) {
+		const comment = await this.commentRepository.findOne({
+			idx,
+		});
 
 		if (!comment)
 			throw new NotFoundException('Comment does not exists or deleted');
@@ -51,8 +56,8 @@ export class PostService {
 		return newPost;
 	}
 
-	async editPost(id: number, dto: EditPostDto) {
-		const post = await this.getOnePost(id);
+	async editPost(idx: string, dto: EditPostDto) {
+		const post = await this.getOnePost(idx);
 
 		wrap(post).assign(dto);
 		await this.postRepository.flush();
@@ -60,8 +65,8 @@ export class PostService {
 		return post;
 	}
 
-	async createComment(id: number, dto: CreateCommentDto, user: User) {
-		const post = await this.getOnePost(id);
+	async createComment(idx: string, dto: CreateCommentDto, user: User) {
+		const post = await this.getOnePost(idx);
 		const comment = new Comment(user, post, dto.comment);
 
 		await this.commentRepository.persistAndFlush(comment);
@@ -69,9 +74,9 @@ export class PostService {
 		return { comment, post };
 	}
 
-	async editComment(id: number, commentId: number, dto: EditCommentDto) {
-		const comment = await this.getOneComment(commentId);
-		const post = await this.getOnePost(id);
+	async editComment(idx: string, commentIdx: string, dto: EditCommentDto) {
+		const comment = await this.getOneComment(commentIdx);
+		const post = await this.getOnePost(idx);
 
 		comment.text = dto.comment;
 		this.commentRepository.persist(comment);
@@ -79,22 +84,27 @@ export class PostService {
 		return { comment, post };
 	}
 
-	async deleteComment(user: User, id: number, commentId: number) {
-		const post = await this.getOnePost(id);
-		const comment = this.commentRepository.getReference(commentId);
+	async deleteComment(idx: string, commentIdx: string) {
+		const post = await this.getOnePost(idx);
 
-		if (post.comment.contains(comment)) {
-			post.comment.remove(comment);
-			await this.commentRepository.removeAndFlush(comment);
+		const comment = await this.getOneComment(commentIdx);
+
+		const commentRef = this.commentRepository.getReference(comment.id);
+
+		if (post.comment.contains(commentRef)) {
+			post.comment.remove(commentRef);
+			await this.commentRepository.removeAndFlush(commentRef);
 		}
 
 		return { post };
 	}
 
-	async deletePost(id: number) {
-		const post = await this.getOnePost(id);
+	async deletePost(idx: string) {
+		const post = await this.getOnePost(idx);
 
-		return this.postRepository.remove(post);
+		await this.postRepository.remove(post);
+
+		return post;
 	}
 
 	async findOne(data: UserFindOne) {

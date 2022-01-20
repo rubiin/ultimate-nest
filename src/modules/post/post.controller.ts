@@ -9,6 +9,7 @@ import {
 	UseInterceptors,
 	UploadedFile,
 	UseGuards,
+	ParseUUIDPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
@@ -18,8 +19,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageMulterOption } from '@common/misc/misc';
 import { JwtAuthGuard } from '@common/guards/jwt.guard';
 import { LoggedInUser } from '@common/decorators/user.decorator';
-import { User } from '@entities';
+import { Post as Posts, User } from '@entities';
 import { CreateCommentDto, EditCommentDto } from './dtos/create-comment.dto';
+import { IResponse } from '@common/interfaces/response.interface';
 
 @ApiTags('Posts routes')
 @Controller('post')
@@ -29,7 +31,7 @@ export class PostController {
 
 	@ApiOperation({ summary: 'Get all user posts' })
 	@Get()
-	async getMany() {
+	async getMany(): Promise<IResponse<Posts>> {
 		const data = await this.postService.getManyPost();
 
 		return { message: 'Success', data };
@@ -42,7 +44,7 @@ export class PostController {
 		@Body() dto: CreatePostDto,
 		@UploadedFile() image: Express.Multer.File,
 		@LoggedInUser() user: User,
-	) {
+	): Promise<IResponse<Posts>> {
 		const data = await this.postService.createPost(
 			{
 				...dto,
@@ -55,64 +57,67 @@ export class PostController {
 	}
 
 	@ApiOperation({ summary: 'Get one user post' })
-	@Get(':id')
-	async getOne(@Param('id') id: number) {
-		const data = await this.postService.getOnePost(id);
+	@Get(':idx')
+	async getOne(
+		@Param('idx', ParseUUIDPipe) idx: string,
+	): Promise<IResponse<Posts>> {
+		const data = await this.postService.getOnePost(idx);
 
-		return { data };
+		return { message: 'success', data };
 	}
 
 	@ApiOperation({ summary: 'Edit user post' })
-	@Put(':id')
-	async editOne(@Param('id') id: number, @Body() dto: EditPostDto) {
-		const data = await this.postService.editPost(id, dto);
+	@Put(':idx')
+	async editOne(
+		@Param('idx', ParseUUIDPipe) idx: string,
+		@Body() dto: EditPostDto,
+	): Promise<IResponse<Posts>> {
+		const data = await this.postService.editPost(idx, dto);
 
 		return { message: 'Post edited', data };
 	}
 
 	@ApiOperation({ summary: 'Create comment' })
-	@Post(':id/comment')
+	@Post(':idx/comment')
 	async createComment(
-		@Param('id') id: number,
+		@Param('idx', ParseUUIDPipe) idx: string,
 		@Body() createComment: CreateCommentDto,
 		@LoggedInUser() user: User,
-	) {
+	): Promise<IResponse<any>> {
 		const data = await this.postService.createComment(
-			id,
+			idx,
 			createComment,
 			user,
 		);
 
-		return { data };
+		return { message: 'Comment created', data };
 	}
 
 	@ApiOperation({ summary: 'Edit comment' })
-	@Put(':id/comment/:commentId')
+	@Put(':idx/comment/:commentIdx')
 	async editComment(
-		@LoggedInUser() user: User,
-		@Param() params: Record<string, string>,
+		@Param('idx', ParseUUIDPipe) idx: string,
+		@Param('commentIdx', ParseUUIDPipe) commentIdx: string,
 		@Body() dto: EditCommentDto,
 	) {
-		const { id, commentId } = params;
-
-		return this.postService.editComment(+id, +commentId, dto);
+		return this.postService.editComment(idx, commentIdx, dto);
 	}
 
 	@ApiOperation({ summary: 'Delete comment' })
-	@Delete(':id/comment/:commentId')
+	@Delete(':idx/comment/:commentIdx')
 	async deleteComment(
-		@LoggedInUser() user: User,
-		@Param() params: Record<string, string>,
+		@Param('idx', ParseUUIDPipe) idx: string,
+		@Param('commentIdx', ParseUUIDPipe) commentIdx: string,
 	) {
-		const { id, commentId } = params;
-
-		return this.postService.deleteComment(user, +id, +commentId);
+		return this.postService.deleteComment(idx, commentIdx);
 	}
 
 	@ApiOperation({ summary: 'Delete user post' })
-	@Delete(':id')
-	async deleteOne(@Param('id') id: number) {
-		const data = await this.postService.deletePost(id);
+	@Delete(':idx')
+	async deleteOne(
+		@Param('idx', ParseUUIDPipe) idx: string,
+	): Promise<IResponse<Posts>> {
+		const data = await this.postService.deletePost(idx);
 
 		return { message: 'Post deleted', data };
 	}
