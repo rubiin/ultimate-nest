@@ -2,20 +2,21 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
 
-> ### NestJS + MikroORM codebase containing real world examples (CRUD, auth, advanced patterns, etc)
+> ### Instagram clone made using Nestjs + Mikro-orm codebase containing real world examples (CRUD, auth, advanced patterns, etc)
 
 ---
 
 # Getting started
 
-## Installation
+Clone this repo. Edit the env file and pass in your credentials
 
-https://github.com/manikandanraji/instaclone-backend/blob/master/src/models/User.js
-https://github.com/kaplantm/practice-instagram-clone-backend
+## Installation
 
 Install dependencies
 
-    yarn
+```sh
+ yarn
+```
 
 ---
 
@@ -29,9 +30,12 @@ The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres data
 
 Copy MikroORM config example file and adjust the connection settings and other settings(jwt,redism,mail,etc) respectively on sample env file
 
-Start local Postgres server and run `yarn orm:up` to apply migrations
+Start local Postgres server and run `NODE_ENV=dev yarn orm:up` to apply migrations
 
-Now you can start the application witt `yarn start`
+Now you can start the application witt `NODE_ENV=dev yarn start.
+
+Note: Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage']. The env file name
+should be of format .env.[environment] Ex. (.env.test). The env to use should be provided while running any script as NODE_ENV=dev npm run dev
 
 ---
 
@@ -47,8 +51,8 @@ Now you can start the application witt `yarn start`
 ## Start application
 
 -   `yarn start`
--   Test api by browsing to `http://localhost:8000/v1/user`
--   View automatically generated swagger api docs by browsing to `http://localhost:3000/docs`
+-   Test api by browsing to `http://localhost:[port]/v1/user`
+-   View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
 
 ---
 
@@ -57,3 +61,5 @@ Now you can start the application witt `yarn start`
 This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and authentication of the token.
 
 Todos
+
+FRONTEND
