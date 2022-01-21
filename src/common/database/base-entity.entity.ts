@@ -2,8 +2,7 @@ import { PrimaryKey, Property } from '@mikro-orm/core';
 import { Exclude } from 'class-transformer';
 
 export abstract class BaseEntity {
-	@Exclude({ toPlainOnly: true })
-	@PrimaryKey()
+	@PrimaryKey({ hidden: true })
 	id!: number;
 
 	@Property({ defaultRaw: 'uuid_generate_v4()' })

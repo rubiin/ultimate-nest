@@ -105,12 +105,12 @@ export class PostController {
 	}
 
 	@ApiOperation({ summary: 'Unlike post' })
-	@Delete(':idx/favourite/:favouriteIdx')
+	@Delete(':idx/favourite/')
 	async unFavouritePost(
 		@Param('idx', ParseUUIDPipe) idx: string,
-		@Param('favouriteIdx', ParseUUIDPipe) favouriteIdx: string,
+		@LoggedInUser() user: User,
 	): Promise<IResponse<any>> {
-		const data = await this.postService.unLikePost(idx, favouriteIdx);
+		const data = await this.postService.unLikePost(idx, user);
 
 		return { message: 'Post unliked', data };
 	}

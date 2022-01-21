@@ -1,7 +1,7 @@
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Comment, Favourite, Post, User } from '@entities';
+import { Comment, Post, User } from '@entities';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { EditPostDto } from './dtos/update-post.dto';
 import { MikroORM, wrap } from '@mikro-orm/core';
@@ -17,8 +17,6 @@ export class PostService {
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: EntityRepository<Post>,
-		@InjectRepository(Favourite)
-		private readonly likeRepository: EntityRepository<Favourite>,
 		@InjectRepository(Comment)
 		private readonly commentRepository: EntityRepository<Comment>,
 		private readonly orm: MikroORM,
@@ -75,31 +73,31 @@ export class PostService {
 
 	async likePost(idx: string, user: User) {
 		const post = await this.getOnePost(idx);
-		const favourite = new Favourite(post, user);
 
 		await this.orm.em.transactional(async em => {
-			post.favouriteCount++;
+			if (!user.favorites.contains(post)) {
+				user.favorites.add(post);
+				post.favoritesCount++;
+			}
 
+			em.persist(user);
 			em.persist(post);
-			await em.persistAndFlush(favourite);
 		});
 
-		return { favourite, post };
+		return post;
 	}
 
-	async unLikePost(idx: string, favouriteIdx: string) {
+	async unLikePost(idx: string, user: User) {
 		const post = await this.getOnePost(idx);
 
-		const favourite = await this.likeRepository.findOneOrFail({
-			idx: favouriteIdx,
+		await this.orm.em.transactional(async em => {
+			if (user.favorites.contains(post)) {
+				user.favorites.remove(post);
+				post.favoritesCount--;
+			}
+			em.persist(user);
+			em.persist(post);
 		});
-
-		const favouriteRef = this.likeRepository.getReference(favourite.id);
-
-		if (post.favourite.contains(favouriteRef)) {
-			post.favourite.remove(favouriteRef);
-			await this.likeRepository.removeAndFlush(favouriteRef);
-		}
 
 		return { post };
 	}
