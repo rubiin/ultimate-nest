@@ -1,10 +1,10 @@
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Comment, Post, User } from '@entities';
+import { Comment, Favourite, Post, User } from '@entities';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { EditPostDto } from './dtos/update-post.dto';
-import { wrap } from '@mikro-orm/core';
+import { MikroORM, wrap } from '@mikro-orm/core';
 import { CreateCommentDto, EditCommentDto } from './dtos/create-comment.dto';
 
 export interface UserFindOne {
@@ -17,8 +17,11 @@ export class PostService {
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: EntityRepository<Post>,
+		@InjectRepository(Favourite)
+		private readonly likeRepository: EntityRepository<Favourite>,
 		@InjectRepository(Comment)
 		private readonly commentRepository: EntityRepository<Comment>,
+		private readonly orm: MikroORM,
 	) {}
 
 	async getManyPost() {
@@ -51,7 +54,12 @@ export class PostService {
 	async createPost(dto: CreatePostDto, user: User) {
 		const newPost = this.postRepository.create({ ...dto, user });
 
-		await this.postRepository.persistAndFlush(newPost);
+		await this.orm.em.transactional(async em => {
+			user.postCount++;
+
+			em.persist(user);
+			await em.persistAndFlush(newPost);
+		});
 
 		return newPost;
 	}
@@ -63,6 +71,37 @@ export class PostService {
 		await this.postRepository.flush();
 
 		return post;
+	}
+
+	async likePost(idx: string, user: User) {
+		const post = await this.getOnePost(idx);
+		const favourite = new Favourite(post, user);
+
+		await this.orm.em.transactional(async em => {
+			post.favouriteCount++;
+
+			em.persist(post);
+			await em.persistAndFlush(favourite);
+		});
+
+		return { favourite, post };
+	}
+
+	async unLikePost(idx: string, favouriteIdx: string) {
+		const post = await this.getOnePost(idx);
+
+		const favourite = await this.likeRepository.findOneOrFail({
+			idx: favouriteIdx,
+		});
+
+		const favouriteRef = this.likeRepository.getReference(favourite.id);
+
+		if (post.favourite.contains(favouriteRef)) {
+			post.favourite.remove(favouriteRef);
+			await this.likeRepository.removeAndFlush(favouriteRef);
+		}
+
+		return { post };
 	}
 
 	async createComment(idx: string, dto: CreateCommentDto, user: User) {
@@ -99,10 +138,15 @@ export class PostService {
 		return { post };
 	}
 
-	async deletePost(idx: string) {
+	async deletePost(idx: string, user: User) {
 		const post = await this.getOnePost(idx);
 
-		await this.postRepository.remove(post);
+		await this.orm.em.transactional(async em => {
+			user.postCount--;
+
+			em.persist(user);
+			await em.remove(post);
+		});
 
 		return post;
 	}

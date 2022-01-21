@@ -93,6 +93,28 @@ export class PostController {
 		return { message: 'Comment created', data };
 	}
 
+	@ApiOperation({ summary: 'Like post' })
+	@Post(':idx/favourite')
+	async favouritePost(
+		@Param('idx', ParseUUIDPipe) idx: string,
+		@LoggedInUser() user: User,
+	): Promise<IResponse<any>> {
+		const data = await this.postService.likePost(idx, user);
+
+		return { message: 'Post liked', data };
+	}
+
+	@ApiOperation({ summary: 'Unlike post' })
+	@Delete(':idx/favourite/:favouriteIdx')
+	async unFavouritePost(
+		@Param('idx', ParseUUIDPipe) idx: string,
+		@Param('favouriteIdx', ParseUUIDPipe) favouriteIdx: string,
+	): Promise<IResponse<any>> {
+		const data = await this.postService.unLikePost(idx, favouriteIdx);
+
+		return { message: 'Post unliked', data };
+	}
+
 	@ApiOperation({ summary: 'Edit comment' })
 	@Put(':idx/comment/:commentIdx')
 	async editComment(
@@ -116,8 +138,9 @@ export class PostController {
 	@Delete(':idx')
 	async deleteOne(
 		@Param('idx', ParseUUIDPipe) idx: string,
+		@LoggedInUser() user: User,
 	): Promise<IResponse<Posts>> {
-		const data = await this.postService.deletePost(idx);
+		const data = await this.postService.deletePost(idx, user);
 
 		return { message: 'Post deleted', data };
 	}

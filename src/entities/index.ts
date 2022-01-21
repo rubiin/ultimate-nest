@@ -6,4 +6,5 @@ export { RefreshToken } from './refresh-token.entity';
 export { Protocol } from './protocol.entity';
 export { User } from './user.entity';
 export { Post } from './post.entity';
+export { Favourite } from './favourite.entity';
 export { Comment } from './comment.entity';

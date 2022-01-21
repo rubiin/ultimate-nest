@@ -8,6 +8,7 @@ import {
 import { BaseEntity } from '@common/database/base-entity.entity';
 import { User } from './user.entity';
 import { Comment } from './comment.entity';
+import { Favourite } from './favourite.entity';
 
 @Entity()
 export class Post extends BaseEntity {
@@ -38,4 +39,10 @@ export class Post extends BaseEntity {
 		orphanRemoval: true,
 	})
 	comment = new Collection<Comment>(this);
+
+	@OneToMany(() => Favourite, favourite => favourite.post, {
+		eager: true,
+		orphanRemoval: true,
+	})
+	favourite = new Collection<Favourite>(this);
 }

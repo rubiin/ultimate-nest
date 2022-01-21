@@ -6,7 +6,7 @@ import { pick } from '@rubiin/js-utils';
 import { customAlphabet } from 'nanoid/async';
 import { randomTypes } from '@common/constants/random-types.enum';
 import { IAuthenticationPayload } from '@common/interfaces/authentication.interface';
-import slugify from 'slugify';
+import { slugify } from '@rubiin/js-utils';
 import { hashString } from '@common/misc/threads';
 
 let puppetterInstance = null;
@@ -172,11 +172,6 @@ const HelperService = {
 	},
 
 	generateSlug: (value: string): string => {
-		return slugify(value, {
-			replacement: '-', // replace spaces with replacement character, defaults to `-`
-			remove: undefined, // remove characters that match regex, defaults to `undefined`
-			lower: false, // convert to lower case, defaults to `false`
-			strict: false, // strip special characters except replacement, defaults to `false`
-		});
+		return slugify(value);
 	},
 };

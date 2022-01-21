@@ -10,4 +10,10 @@ export class Favourite extends BaseEntity {
 
 	@ManyToOne({ entity: () => User })
 	user!: User;
+
+	constructor(post: Post, user: User) {
+		super();
+		this.post = post;
+		this.user = user;
+	}
 }
