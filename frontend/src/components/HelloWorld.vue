@@ -1,42 +1,62 @@
-<script setup>
-import { ref } from 'vue'
-
-defineProps({
-  msg: String
-})
-
-const count = ref(0)
-</script>
-
 <template>
-<div>
-  <h1>{{ msg }}</h1>
+  <div class="text-center text-md">
+    <h1 class="font-serif font-bold font-bold text-4xl mb-8">{{ msg }}</h1>
 
-  <p>
-    Recommended IDE setup:
-    <a href="https://code.visualstudio.com/" target="_blank">VSCode</a>
-    +
-    <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
-  </p>
+    <p>
+      {{ t('recomended-ide') }}
+      <a href="https://code.visualstudio.com/" target="_blank">VSCode</a>
+      +
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=octref.vetur"
+        target="_blank"
+      >
+        Vetur
+      </a>
+      or
+      <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
+      ({{ t('if-using') }}
+      <code
+        class="text-xs font-mono bg-yellow-200 text-yellow-700 rounded px-0.5 py-0.5"
+        >&lt;script setup&gt;</code
+      >)
+    </p>
 
-  <p>
-    <a href="https://vitejs.dev/guide/features.html" target="_blank">
-      Vite Documentation
-    </a>
-    |
-    <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Documentation</a>
-  </p>
-
-  <button type="button" @click="count++">count is: {{ count }}</button>
-  <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
-  </p>
-</div>
+    <p>
+      {{ t('See') }}
+      <code
+        class="text-xs font-mono bg-yellow-200 text-yellow-700 rounded px-0.5 py-0.5"
+        >README.md</code
+      >
+      {{ t('more-info') }}
+    </p>
+    <p class="mb-10">
+      <a href="https://vitejs.dev/guide/features.html" target="_blank">
+        Vite Docs
+      </a>
+      |
+      <a href="https://v3.vuejs.org/" target="_blank">Vue 3 Docs</a>
+    </p>
+  </div>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  msg: {
+    type: string;
+    required: true;
+  };
+}>();
+
+const { t } = useI18n();
+</script>
 
 <style scoped>
 a {
-  color: #42b983;
+  transition: all 5s ease-out;
+}
+
+label {
+  margin: 0 0.5em;
+  font-weight: bold;
 }
 </style>
