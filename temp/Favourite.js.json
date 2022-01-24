@@ -2,12 +2,12 @@
 	"data": {
 		"propertyOrder": {},
 		"properties": {
-			"post": { "name": "post", "reference": "m:1", "cascade": ["persist"], "type": "Post", "nullable": false },
-			"user": { "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+			"post": { "name": "post", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "Post", "nullable": false },
+			"user": { "name": "user", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false }
 		},
 		"props": [
-			{ "name": "post", "reference": "m:1", "cascade": ["persist"], "type": "Post", "nullable": false },
-			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+			{ "name": "post", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "Post", "nullable": false },
+			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false }
 		],
 		"primaryKeys": [],
 		"filters": {},
@@ -19,17 +19,17 @@
 		"path": "./dist/entities/favourite.entity.js",
 		"name": "Favourite",
 		"abstract": false,
-		"constructorParams": [],
+		"constructorParams": ["post", "user"],
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
 		"relations": [
-			{ "name": "post", "reference": "m:1", "cascade": ["persist"], "type": "Post", "nullable": false },
-			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+			{ "name": "post", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "Post", "nullable": false },
+			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false }
 		],
 		"collection": "favourite"
 	},
 	"origin": "./dist/entities/favourite.entity.js",
-	"hash": "05bc7ae0b3f462aa7eed21af62f65a59",
+	"hash": "84081f41af393c4e2a8cbe23fe64fc7c",
 	"version": "5.0.0-dev.632+fcdb236eb8"
 }

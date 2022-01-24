@@ -5,6 +5,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import setupSwagger from './swagger';
 import { AppUtils } from '@common/helpers/app.utils';
+import helmet from 'helmet';
+import * as compression from 'compression';
 import {
 	ExpressAdapter,
 	NestExpressApplication,
@@ -25,8 +27,8 @@ async function bootstrap() {
 	// ==================================================
 
 	app.enableCors();
-	// app.use(helmet());
-	// app.use(compression);
+	app.use(helmet());
+	app.use(compression());
 
 	// ==================================================
 	// configureNestGlobals
@@ -39,8 +41,8 @@ async function bootstrap() {
 		}),
 	).setGlobalPrefix('v1');
 
-	// app.useLogger
-	// (app.get(WINSTON_MODULE_NEST_PROVIDER));
+	// app.useLogger(app.get
+	// (WINSTON_MODULE_NEST_PROVIDER));
 
 	// ==================================================
 	// configureNestSwagger

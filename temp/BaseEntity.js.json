@@ -2,7 +2,7 @@
 	"data": {
 		"propertyOrder": {},
 		"properties": {
-			"id": { "name": "id", "reference": "scalar", "primary": true, "type": "number" },
+			"id": { "name": "id", "reference": "scalar", "primary": true, "hidden": true, "type": "number" },
 			"idx": { "name": "idx", "reference": "scalar", "defaultRaw": "uuid_generate_v4()", "getter": false, "setter": false, "type": "string" },
 			"isActive": { "name": "isActive", "reference": "scalar", "nullable": false, "default": true, "getter": false, "setter": false, "type": "boolean" },
 			"isObsolete": { "name": "isObsolete", "reference": "scalar", "nullable": false, "default": false, "getter": false, "setter": false, "type": "boolean" },
@@ -11,7 +11,7 @@
 			"updatedAt": { "name": "updatedAt", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "nullable": true, "getter": false, "setter": false, "type": "Date" }
 		},
 		"props": [
-			{ "name": "id", "reference": "scalar", "primary": true, "type": "number" },
+			{ "name": "id", "reference": "scalar", "primary": true, "hidden": true, "type": "number" },
 			{ "name": "idx", "reference": "scalar", "defaultRaw": "uuid_generate_v4()", "getter": false, "setter": false, "type": "string" },
 			{ "name": "isActive", "reference": "scalar", "nullable": false, "default": true, "getter": false, "setter": false, "type": "boolean" },
 			{ "name": "isObsolete", "reference": "scalar", "nullable": false, "default": false, "getter": false, "setter": false, "type": "boolean" },
@@ -35,6 +35,6 @@
 		"relations": []
 	},
 	"origin": "./dist/common/database/base-entity.entity.js",
-	"hash": "57e0ff7aefc1f8c8f5ad954a57c0d362",
+	"hash": "1326161118dc8fb882eff55c9eed2108",
 	"version": "5.0.0-dev.632+fcdb236eb8"
 }
