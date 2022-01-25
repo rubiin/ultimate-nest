@@ -7,11 +7,13 @@ import {
 	Param,
 	Body,
 	ParseUUIDPipe,
+	Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { EditUserDto } from './dtos/update-user.dto';
+import { GetPaginationQuery } from '@common/classes/pagnation';
 
 @ApiTags('Users routes')
 @Controller('user')
@@ -20,8 +22,8 @@ export class UserController {
 
 	@ApiOperation({ summary: 'Get all users' })
 	@Get()
-	async getManyUsers() {
-		const data = await this.userService.getMany();
+	async getManyUsers(@Query() params: GetPaginationQuery) {
+		const data = await this.userService.getMany(params.limit, params.page);
 
 		return { message: 'Success', data };
 	}

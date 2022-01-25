@@ -75,6 +75,14 @@ export class AuthService {
 		return this.tokenService.deleteRefreshTokenForUser(user);
 	}
 
+	/**
+	 *
+	 *
+	 * @param {User} user
+	 * @param {string} refreshToken
+	 * @return {*}  {Promise<IResponse<any>>}
+	 * @memberof AuthService
+	 */
 	async logout(user: User, refreshToken: string): Promise<IResponse<any>> {
 		const payload = await this.tokenService.decodeRefreshToken(
 			refreshToken,

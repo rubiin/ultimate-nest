@@ -10,6 +10,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { EditUserDto } from './dtos/update-user.dto';
 import { wrap } from '@mikro-orm/core';
 import { omit } from '@rubiin/js-utils';
+import { paginate, Pagination } from '@lib/pagination';
 
 export interface UserFindOne {
 	id?: number;
@@ -23,8 +24,23 @@ export class UserService {
 		private readonly userRepository: EntityRepository<User>,
 	) {}
 
-	async getMany() {
-		return await this.userRepository.findAll();
+	async getMany(limit: number, page: number): Promise<Pagination<User>> {
+		const qb = this.userRepository.createQueryBuilder('user');
+
+		const offset = (page - 1) * limit;
+
+		qb.select('*')
+			.limit(limit)
+			.offset(offset)
+			.orderBy({ createdAt: 'desc' });
+
+		const users = await qb.getResult();
+
+		return paginate<User>(users, {
+			limit,
+			page,
+			route: 'http:localhost:8000/',
+		});
 	}
 
 	async getOneUser(idx: string) {

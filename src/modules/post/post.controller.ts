@@ -10,6 +10,7 @@ import {
 	UploadedFile,
 	UseGuards,
 	ParseUUIDPipe,
+	Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
@@ -22,6 +23,7 @@ import { LoggedInUser } from '@common/decorators/user.decorator';
 import { Post as Posts, User } from '@entities';
 import { CreateCommentDto, EditCommentDto } from './dtos/create-comment.dto';
 import { IResponse } from '@common/interfaces/response.interface';
+import { GetPaginationQuery } from '@common/classes/pagnation';
 
 @ApiTags('Posts routes')
 @Controller('post')
@@ -31,8 +33,11 @@ export class PostController {
 
 	@ApiOperation({ summary: 'Get all user posts' })
 	@Get()
-	async getMany(): Promise<IResponse<Posts>> {
-		const data = await this.postService.getManyPost();
+	async getMany(@Query() params: GetPaginationQuery) {
+		const data = await this.postService.getManyPost(
+			params.limit,
+			params.page,
+		);
 
 		return { message: 'Success', data };
 	}

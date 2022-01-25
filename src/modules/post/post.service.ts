@@ -6,6 +6,7 @@ import { CreatePostDto } from './dtos/create-post.dto';
 import { EditPostDto } from './dtos/update-post.dto';
 import { MikroORM, wrap } from '@mikro-orm/core';
 import { CreateCommentDto, EditCommentDto } from './dtos/create-comment.dto';
+import { paginate } from '@lib/pagination';
 
 export interface UserFindOne {
 	id?: number;
@@ -22,8 +23,23 @@ export class PostService {
 		private readonly orm: MikroORM,
 	) {}
 
-	async getManyPost() {
-		return await this.postRepository.findAll();
+	async getManyPost(page: number, limit: number) {
+		const qb = this.postRepository.createQueryBuilder('post');
+
+		const offset = (page - 1) * limit;
+
+		qb.select('*')
+			.limit(limit)
+			.offset(offset)
+			.orderBy({ createdAt: 'desc' });
+
+		const posts = await qb.getResult();
+
+		return paginate<Post>(posts, {
+			limit,
+			page,
+			route: 'http:localhost:8000/',
+		});
 	}
 
 	async getOnePost(idx: string) {

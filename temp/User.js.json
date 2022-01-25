@@ -9,7 +9,7 @@
 			"email": { "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
 			"posts": { "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
 			"username": { "name": "username", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			"password": { "name": "password", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"password": { "name": "password", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "string" },
 			"favorites": { "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
 			"followers": {
 				"name": "followers",
@@ -34,7 +34,7 @@
 			{ "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
 			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
 			{ "name": "username", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
-			{ "name": "password", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "password", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "string" },
 			{ "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
 			{
 				"name": "followers",
@@ -62,7 +62,7 @@
 		"name": "User",
 		"abstract": false,
 		"constructorParams": [],
-		"toJsonParams": ["user"],
+		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
 		"relations": [
@@ -85,6 +85,6 @@
 		"collection": "user"
 	},
 	"origin": "./dist/entities/user.entity.js",
-	"hash": "4ff3c5bc32ebf59a8f6394317fe1ae82",
+	"hash": "4906d8b44603d7ff9bb8d30bb4e1004d",
 	"version": "5.0.0-dev.632+fcdb236eb8"
 }

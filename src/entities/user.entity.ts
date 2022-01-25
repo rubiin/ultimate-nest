@@ -10,7 +10,6 @@ import {
 	wrap,
 } from '@mikro-orm/core';
 import { BaseEntity } from '@common/database/base-entity.entity';
-import { Exclude } from 'class-transformer';
 import { HelperService } from '@common/helpers/helpers.utils';
 import { Post } from './post.entity';
 
@@ -53,8 +52,7 @@ export class User extends BaseEntity {
 	})
 	username: string;
 
-	@Exclude({ toPlainOnly: true })
-	@Property()
+	@Property({ hidden: true })
 	password: string;
 
 	@ManyToMany({ hidden: true })
@@ -85,16 +83,12 @@ export class User extends BaseEntity {
 		this.password = await HelperService.hashString(this.password);
 	}
 
-	toJSON(user?: User) {
+	toJSON() {
 		const o = wrap<User>(this).toObject() as UserDTO;
 
 		o.avatar =
 			this.avatar ||
 			'https://static.productionready.io/images/smiley-cyrus.jpg';
-		o.following =
-			user && user.followers.isInitialized()
-				? user.followers.contains(this)
-				: false; // TODO or followed?
 
 		return o;
 	}
