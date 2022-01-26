@@ -23,16 +23,13 @@ class IsPasswordConstraint implements ValidatorConstraintInterface {
 	}
 }
 
-export function IsPassword(
-	property: string,
-	validationOptions?: ValidationOptions,
-) {
+export function IsPassword(validationOptions?: ValidationOptions) {
 	return function (object: Record<string, any>, propertyName: string): void {
 		registerDecorator({
 			target: object.constructor,
 			propertyName: propertyName,
 			options: validationOptions,
-			constraints: [property],
+			constraints: [],
 			validator: IsPasswordConstraint,
 		});
 	};

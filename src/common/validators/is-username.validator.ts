@@ -37,16 +37,13 @@ class IsUsernameConstraint implements ValidatorConstraintInterface {
 	}
 }
 
-export function IsUsername(
-	property: string,
-	validationOptions?: ValidationOptions,
-) {
+export function IsUsername(validationOptions?: ValidationOptions) {
 	return function (object: Record<string, any>, propertyName: string): void {
 		registerDecorator({
 			target: object.constructor,
 			propertyName: propertyName,
 			options: validationOptions,
-			constraints: [property],
+			constraints: [],
 			validator: IsUsernameConstraint,
 		});
 	};

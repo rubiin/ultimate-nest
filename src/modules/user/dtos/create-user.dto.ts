@@ -1,3 +1,5 @@
+import { IsPassword } from '@common/validators/is-password.validator';
+import { IsUsername } from '@common/validators/is-username.validator';
 import {
 	IsString,
 	IsEmail,
@@ -27,18 +29,13 @@ export class CreateUserDto {
 	website: string;
 
 	@IsNotEmpty()
-	@IsString()
-	@MinLength(5)
-	@MaxLength(20)
+	@IsUsername()
 	username: string;
 
 	@IsNotEmpty()
 	@IsEmail()
 	email: string;
 
-	@IsNotEmpty()
-	@IsString()
-	@MinLength(8)
-	@MaxLength(128)
+	@IsPassword()
 	password: string;
 }
