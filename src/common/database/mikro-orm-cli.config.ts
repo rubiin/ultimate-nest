@@ -17,7 +17,8 @@ const config = {
 	entitiesTs: ['src/**/*.entity.ts'],
 	host: process.env.DB_HOST,
 	migrations: {
-		path: 'src/migrations/',
+		path: 'dist/migrations/',
+		pathTs: 'src/migrations/',
 		tableName: 'migrations',
 		transactional: true,
 	},
@@ -26,7 +27,7 @@ const config = {
 		defaultSeeder: 'UserSeeder', // default seeder class name
 	},
 	password: process.env.DB_PASSWORD,
-	port: Number(process.env.DB_PORT),
+	port: +process.env.DB_PORT,
 	type: 'postgresql',
 	highlighter: new SqlHighlighter(),
 	user: process.env.DB_USERNAME,

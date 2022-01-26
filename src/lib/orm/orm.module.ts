@@ -4,6 +4,7 @@ import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Entities from '@entities';
+import { LoadStrategy } from '@mikro-orm/core';
 @Module({
 	imports: [
 		MikroOrmModule.forRootAsync({
@@ -18,7 +19,9 @@ import * as Entities from '@entities';
 				entities: ['dist/**/*.entity.js'],
 				entitiesTs: ['src/**/*.entity.ts'],
 				debug: true,
+				loadStrategy: LoadStrategy.JOINED,
 				highlighter: new SqlHighlighter(),
+				registerRequestContext: false,
 				metadataProvider: TsMorphMetadataProvider,
 			}),
 			inject: [ConfigService],
