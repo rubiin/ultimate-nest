@@ -18,6 +18,12 @@ export class Post extends BaseEntity {
 	caption?: string;
 
 	@Property({
+		length: 80,
+		nullable: true,
+	})
+	location?: string;
+
+	@Property({
 		length: 150,
 	})
 	file: string;
