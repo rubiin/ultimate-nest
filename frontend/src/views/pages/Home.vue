@@ -29,9 +29,20 @@
           <q-separator />
           <q-img :src="post.file" basic> </q-img>
           <q-card-section>
+            <div class="flex w-full mb-5">
+              <q-icon name="eva-heart-outline" size="sm" />
+              <q-icon
+                name="eva-message-circle-outline"
+                size="sm"
+                class="pl-5"
+              />
+            </div>
             <div>{{ post.caption }}</div>
             <div class="text-caption text-grey">Tuesday</div>
           </q-card-section>
+          <q-card-section>
+            <q-input borderless v-model="text" />
+             </q-card-section>
         </q-card>
       </div>
       <div class="col-4 large-screen-only">
@@ -60,6 +71,8 @@ import { usePostStore } from '/@/stores/posts';
 const user = usePostStore();
 
 const posts = computed(() => user.postsGetter);
+
+const text = ref('');
 
 async function getAll() {
   try {
