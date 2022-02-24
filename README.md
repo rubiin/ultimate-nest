@@ -3,11 +3,8 @@
 </p>
 
 > ### Instagram clone made using Nestjs + Mikro-orm codebase(backend) containing real world examples (CRUD, auth, advanced patterns, etc)
-> ### Frontend uses blazing fast tools like vite with vu3 and unocss
-
 
 [![CI](https://github.com/rubiin/ultimate-nest/actions/workflows/github-ci.yml/badge.svg)](https://github.com/rubiin/ultimate-nest/actions/workflows/github-ci.yml)
-
 
 # Getting started
 
