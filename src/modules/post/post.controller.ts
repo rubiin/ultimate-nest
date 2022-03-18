@@ -23,7 +23,7 @@ import { LoggedInUser } from '@common/decorators/user.decorator';
 import { Post as Posts, User } from '@entities';
 import { CreateCommentDto, EditCommentDto } from './dtos/create-comment.dto';
 import { IResponse } from '@common/interfaces/response.interface';
-import { GetPaginationQuery } from '@common/classes/pagnation';
+import { GetPaginationQuery } from '@common/classes/pagination';
 
 @ApiTags('Posts routes')
 @Controller('post')

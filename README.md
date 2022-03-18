@@ -57,7 +57,3 @@ should be of format .env.[environment] Ex. (.env.test). The env to use should be
 # Authentication
 
 This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and authentication of the token.
-
-Todos
-
-FRONTEND

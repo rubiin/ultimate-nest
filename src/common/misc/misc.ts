@@ -2,6 +2,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import { Request } from 'express';
 import * as mime from 'mime-types';
 import * as multer from 'multer';
+import * as fs from 'fs';
 import { extname } from 'path';
 
 const allowedExtensions = new Set(['png', 'jpg', 'jpeg']);
@@ -11,7 +12,17 @@ export const ImageMulterOption: MulterOptions = {
 		fileSize: 5 * 1024 * 1024, // 5 mb
 	},
 	storage: multer.diskStorage({
-		destination: './uploads',
+		destination: (req, file, cb) => {
+			const path = './uploads';
+
+			// check if the folder exists
+			if (!fs.existsSync(path)) {
+				// create the folder
+				fs.mkdirSync(path, { recursive: true });
+			}
+
+			return cb(null, path);
+		},
 		filename: (
 			_req: Request,
 			file: { originalname: string },
