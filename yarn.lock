@@ -843,10 +843,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@faker-js/faker@6.0.0-beta.0":
-  version "6.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-6.0.0-beta.0.tgz#8d772b0c37ebc450e3a95114be549e8fd245f16f"
-  integrity sha512-7QdsX5ZqUEz87twuoKEJe7NHn6OHQsVYQpJcK0disnR0XuVb9FEgQUcsViard9OTNN/fG/nZT63V35vieOwZ4Q==
+"@faker-js/faker@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-6.0.0.tgz#b613ebf5f5ebb2ab987afb567d8b7fe860199c13"
+  integrity sha512-10zLCKhp3YEmBuko71ivcMoIZcCLXgQVck6aNswX+AWwaek/L8S3yz9i8m3tHigRkcF6F2vI+qtdtyySHK+bGA==
 
 "@firebase/app-compat@0.x":
   version "0.1.15"
@@ -1341,12 +1341,12 @@
     knex "1.0.4"
     umzug "3.0.0"
 
-"@mikro-orm/mysql@^5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/mysql/-/mysql-5.1.0.tgz#931bae778d6021b635b9733e719801d906402944"
-  integrity sha512-cnpNeUy56eCiGO2SoC4TuLjYs+VOOHEdqHgHAeeOtVPgv1bOl5im2HBagO9PFKQDueqdIDtCTTGdGlWhw1Ga6A==
+"@mikro-orm/mysql@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/mysql/-/mysql-5.1.1.tgz#e46a686476ba55155bc6b322fcd9b9153cf7df2c"
+  integrity sha512-DEcfACLrmVK70H9fvA0zRFnPwEMpNmlhFZlygR0cI7O5zjis6IniO2HBfdowYP5e5gHgMWXwkeayDTlet+Q+Mg==
   dependencies:
-    "@mikro-orm/knex" "^5.1.0"
+    "@mikro-orm/knex" "^5.1.1"
     mysql2 "2.3.3"
 
 "@mikro-orm/nestjs@^5.0.1":
@@ -1362,20 +1362,20 @@
     "@mikro-orm/knex" "^5.1.0"
     pg "8.7.3"
 
-"@mikro-orm/reflection@^5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/reflection/-/reflection-5.1.0.tgz#8837873e04086b966e19311bf315897a85fc0184"
-  integrity sha512-QAYY6up9H+x2sf/8BzORTDY279e0rCSezI5RXiKSiGZ0RVgRFLhCxK3ZdhSeCNoVo0GfLZeaVigkJBYZuK7y8w==
+"@mikro-orm/reflection@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/reflection/-/reflection-5.1.1.tgz#da020e2c59e63806071ebb15fbc98d810f6e48d2"
+  integrity sha512-93rKMm5gy1Pvx51RJ0IMFhhXs4/K65gUWxrHJGEpXNgLMjnO/shdrZMfS1KjHdOVobmwxs5yq23rjttOFyszQA==
   dependencies:
     globby "11.0.4"
     ts-morph "14.0.0"
 
-"@mikro-orm/seeder@^5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/seeder/-/seeder-5.1.0.tgz#4942e4b1d18220ca0aa4ce016de6523c999ef54b"
-  integrity sha512-TRPWyd9OGZuxnkVYYCgSmW/3pTfS5bCORfbFMBTTzgBTLZQgajJ7gWvWurcByk+B1iva2yvhqKceswNl/twfKg==
+"@mikro-orm/seeder@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/seeder/-/seeder-5.1.1.tgz#5330f6de2fcba2fc6b553f94663d0890fa72fc63"
+  integrity sha512-/UU6fiBbJHvIxE9zfoSWMVx13tvzA+rIhVDZt5zFo3CQdBX5AH6852RizSQi271w6J+JMmZEk9pJqDvCFgwE2Q==
   dependencies:
-    "@faker-js/faker" "6.0.0-beta.0"
+    "@faker-js/faker" "6.0.0"
     globby "11.0.4"
 
 "@mikro-orm/sql-highlighter@^1.0.1":
@@ -6748,6 +6748,25 @@ knex@1.0.4:
     tarn "^3.0.2"
     tildify "2.0.0"
 
+knex@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/knex/-/knex-1.0.4.tgz#b9db3c60d0e3a4af37239bb879244e50eb748124"
+  integrity sha512-cMQ81fpkVmr4ia20BtyrD3oPere/ir/Q6IGLAgcREKOzRVhMsasQ4nx1VQuDRJjqq6oK5kfcxmvWoYkHKrnuMA==
+  dependencies:
+    colorette "2.0.16"
+    commander "^8.3.0"
+    debug "4.3.3"
+    escalade "^3.1.1"
+    esm "^3.2.25"
+    getopts "2.3.0"
+    interpret "^2.2.0"
+    lodash "^4.17.21"
+    pg-connection-string "2.5.0"
+    rechoir "^0.8.0"
+    resolve-from "^5.0.0"
+    tarn "^3.0.2"
+    tildify "2.0.0"
+
 kuler@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/kuler/-/kuler-2.0.0.tgz"
@@ -9651,15 +9670,10 @@ type-fest@^0.8.1:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.8.1.tgz"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-type-fest@^2.0.0:
-  version "2.9.0"
-  resolved "https://registry.npmjs.org/type-fest/-/type-fest-2.9.0.tgz"
-  integrity sha512-uC0hJKi7eAGXUJ/YKk53RhnKxMwzHWgzf4t92oz8Qez28EBgVTfpDTB59y9hMYLzc/Wl85cD7Tv1hLZZoEJtrg==
-
-type-fest@^2.12.0:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.12.0.tgz#ce342f58cab9114912f54b493d60ab39c3fc82b6"
-  integrity sha512-Qe5GRT+n/4GoqCNGGVp5Snapg1Omq3V7irBJB3EaKsp7HWDo5Gv2d/67gfNyV+d5EXD+x/RF5l1h4yJ7qNkcGA==
+type-fest@^2.0.0, type-fest@^2.12.1:
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.12.1.tgz#d2be8f50bf5f8f0a5fd916d29bf3e98c17e960be"
+  integrity sha512-AiknQSEqKVGDDjtZqeKrUoTlcj7FKhupmnVUgz6KoOKtvMwRGE6hUNJ/nVear+h7fnUPO1q/htSkYKb1pyntkQ==
 
 type-is@^1.6.12, type-is@^1.6.4, type-is@~1.6.18:
   version "1.6.18"
