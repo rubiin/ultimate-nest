@@ -38,10 +38,7 @@ export class AuthController {
 				body.refreshToken,
 			);
 
-		return {
-			message: 'Operation Successful',
-			accessToken: token,
-		};
+		return token;
 	}
 
 	@ApiOperation({ summary: 'Logout user' })

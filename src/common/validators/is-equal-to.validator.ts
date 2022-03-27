@@ -4,7 +4,7 @@ import {
 	ValidationArguments,
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
-} from 'class-validator';
+} from '@nestjs/class-validator';
 
 @ValidatorConstraint({ async: true })
 class IsEqualToConstraint implements ValidatorConstraintInterface {

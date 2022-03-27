@@ -1,4 +1,9 @@
-import { IsString, MinLength, MaxLength, IsNotEmpty } from 'class-validator';
+import {
+	IsString,
+	MinLength,
+	MaxLength,
+	IsNotEmpty,
+} from '@nestjs/class-validator';
 
 export class CreateCommentDto {
 	@IsNotEmpty()

@@ -4,7 +4,7 @@ import {
 	ValidationArguments,
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
-} from 'class-validator';
+} from '@nestjs/class-validator';
 import { isValid, lightFormat } from 'date-fns';
 
 @ValidatorConstraint({ async: true })

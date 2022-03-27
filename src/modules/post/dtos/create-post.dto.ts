@@ -1,4 +1,9 @@
-import { IsString, MinLength, MaxLength, IsOptional } from 'class-validator';
+import {
+	IsString,
+	MinLength,
+	MaxLength,
+	IsOptional,
+} from '@nestjs/class-validator';
 
 export class CreatePostDto {
 	@IsOptional()

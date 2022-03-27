@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import * as twilio from 'twilio';
-import { Logger } from '@nestjs/common';
 import { TwilioModuleOptions } from '@lib/twilio/twilio.options';
 import { TWILIO_MODULE_OPTIONS } from '@lib/twilio/twilio.constant';
 
@@ -10,6 +9,7 @@ export class TwilioService {
 		@Inject(TWILIO_MODULE_OPTIONS)
 		private readonly options: TwilioModuleOptions,
 	) {}
+
 	private readonly logger: Logger = new Logger(TwilioService.name);
 
 	async sendSms(content: string, phone: string) {

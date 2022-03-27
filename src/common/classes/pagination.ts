@@ -1,5 +1,5 @@
-import { Transform } from 'class-transformer';
-import { IsNumber, IsOptional } from 'class-validator';
+import { Transform } from '@nestjs/class-transformer';
+import { IsNumber, IsOptional } from '@nestjs/class-validator';
 
 export class GetPaginationQuery {
 	@IsOptional()

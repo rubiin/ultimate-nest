@@ -7,7 +7,7 @@ import {
 	MaxLength,
 	IsOptional,
 	IsNotEmpty,
-} from 'class-validator';
+} from '@nestjs/class-validator';
 
 export class CreateUserDto {
 	@IsNotEmpty()

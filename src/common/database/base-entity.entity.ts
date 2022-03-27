@@ -1,5 +1,5 @@
 import { PrimaryKey, Property } from '@mikro-orm/core';
-import { Exclude } from 'class-transformer';
+import { Exclude } from '@nestjs/class-transformer';
 
 export abstract class BaseEntity {
 	@PrimaryKey({ hidden: true })
