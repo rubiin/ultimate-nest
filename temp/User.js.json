@@ -1,0 +1,90 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"fullName": { "name": "fullName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			"bio": { "name": "bio", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"website": { "name": "website", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"avatar": { "name": "avatar", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"email": { "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
+			"posts": { "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			"username": { "name": "username", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			"password": { "name": "password", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "string" },
+			"favorites": { "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
+			"followers": {
+				"name": "followers",
+				"reference": "m:n",
+				"cascade": ["persist"],
+				"owner": true,
+				"pivotTable": "user_to_follower",
+				"hidden": true,
+				"type": "User",
+				"fixedOrder": false,
+				"joinColumns": ["follower"],
+				"inverseJoinColumns": ["following"]
+			},
+			"followed": { "name": "followed", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "User", "fixedOrder": false },
+			"postCount": { "name": "postCount", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" }
+		},
+		"props": [
+			{ "name": "fullName", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			{ "name": "bio", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "website", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "avatar", "reference": "scalar", "length": 50, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "email", "reference": "scalar", "length": 60, "unique": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			{ "name": "username", "reference": "scalar", "length": 50, "getter": false, "setter": false, "type": "string" },
+			{ "name": "password", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
+			{
+				"name": "followers",
+				"reference": "m:n",
+				"cascade": ["persist"],
+				"owner": true,
+				"pivotTable": "user_to_follower",
+				"hidden": true,
+				"type": "User",
+				"fixedOrder": false,
+				"joinColumns": ["follower"],
+				"inverseJoinColumns": ["following"]
+			},
+			{ "name": "followed", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "User", "fixedOrder": false },
+			{ "name": "postCount", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": { "beforeUpdate": ["hashPassword"], "beforeCreate": ["hashPassword"] },
+		"indexes": [],
+		"uniques": [],
+		"concurrencyCheckKeys": {},
+		"className": "User",
+		"path": "./dist/entities/user.entity.js",
+		"name": "User",
+		"abstract": false,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [
+			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			{ "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
+			{
+				"name": "followers",
+				"reference": "m:n",
+				"cascade": ["persist"],
+				"owner": true,
+				"pivotTable": "user_to_follower",
+				"hidden": true,
+				"type": "User",
+				"fixedOrder": false,
+				"joinColumns": ["follower"],
+				"inverseJoinColumns": ["following"]
+			},
+			{ "name": "followed", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "User", "fixedOrder": false }
+		],
+		"collection": "user"
+	},
+	"origin": "./dist/entities/user.entity.js",
+	"hash": "4906d8b44603d7ff9bb8d30bb4e1004d",
+	"version": "5.0.0-dev.632+fcdb236eb8"
+}

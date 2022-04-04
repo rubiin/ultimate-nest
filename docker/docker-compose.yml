@@ -1,0 +1,31 @@
+version: '3.5'
+
+services:
+    #######################################
+    # Ultimate-nest Service
+    #######################################
+    ultimate-nest-service:
+        container_name: ultimate-nest-service
+        env_file: 'env/${ENV}.env'
+        build:
+            context: '..'
+            dockerfile: ./docker/Dockerfile
+        image: ultimate-nest-service
+
+        networks:
+            - ultimate-nest-net
+        ports:
+            - 4054:4000
+        command: npm run start:prod
+        volumes:
+            - ./dist:/usr/src/app
+        restart: unless-stopped
+
+networks:
+    ultimate-nest-net:
+        name: ultimate-network
+        ipam:
+            driver: default
+            config:
+                - subnet: '172.16.238.0/24'
+                - subnet: '2001:3984:3989::/64'

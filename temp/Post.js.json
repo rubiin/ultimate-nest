@@ -1,0 +1,41 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"caption": { "name": "caption", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			"file": { "name": "file", "reference": "scalar", "length": 150, "getter": false, "setter": false, "type": "string" },
+			"favoritesCount": { "name": "favoritesCount", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			"user": { "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
+			"comment": { "name": "comment", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+		},
+		"props": [
+			{ "name": "caption", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
+			{ "name": "file", "reference": "scalar", "length": 150, "getter": false, "setter": false, "type": "string" },
+			{ "name": "favoritesCount", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
+			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
+			{ "name": "comment", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"concurrencyCheckKeys": {},
+		"className": "Post",
+		"path": "./dist/entities/post.entity.js",
+		"name": "Post",
+		"abstract": false,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [
+			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
+			{ "name": "comment", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+		],
+		"collection": "post"
+	},
+	"origin": "./dist/entities/post.entity.js",
+	"hash": "7c2c744aa2ba154b8e56b3915c66aa18",
+	"version": "5.0.0-dev.632+fcdb236eb8"
+}

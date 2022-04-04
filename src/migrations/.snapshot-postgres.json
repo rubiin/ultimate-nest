@@ -1,0 +1,1117 @@
+{
+	"namespaces": ["public"],
+	"name": "public",
+	"tables": [
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "uuid_generate_v4()",
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"full_name": {
+					"name": "full_name",
+					"type": "varchar(50)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"length": 50,
+					"mappedType": "string"
+				},
+				"bio": {
+					"name": "bio",
+					"type": "varchar(250)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 250,
+					"mappedType": "string"
+				},
+				"website": {
+					"name": "website",
+					"type": "varchar(50)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 50,
+					"mappedType": "string"
+				},
+				"avatar": {
+					"name": "avatar",
+					"type": "varchar(50)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 50,
+					"mappedType": "string"
+				},
+				"email": {
+					"name": "email",
+					"type": "varchar(60)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"length": 60,
+					"mappedType": "string"
+				},
+				"username": {
+					"name": "username",
+					"type": "varchar(50)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"length": 50,
+					"mappedType": "string"
+				},
+				"password": {
+					"name": "password",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "string"
+				},
+				"post_count": {
+					"name": "post_count",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "0",
+					"mappedType": "integer"
+				}
+			},
+			"name": "user",
+			"schema": "public",
+			"indexes": [
+				{
+					"columnNames": ["email"],
+					"composite": false,
+					"keyName": "user_email_unique",
+					"primary": false,
+					"unique": true
+				},
+				{
+					"keyName": "user_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"foreignKeys": {}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "uuid_generate_v4()",
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"expires_in": {
+					"name": "expires_in",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "datetime"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"is_revoked": {
+					"name": "is_revoked",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				}
+			},
+			"name": "refresh_token",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "refresh_token_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"foreignKeys": {
+				"refresh_token_user_id_foreign": {
+					"constraintName": "refresh_token_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "public.refresh_token",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "uuid_generate_v4()",
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"login_attemptnumbererval": {
+					"name": "login_attemptnumbererval",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"loginnumbererval_unit": {
+					"name": "loginnumbererval_unit",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "string"
+				},
+				"login_max_retry": {
+					"name": "login_max_retry",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"otp_expiry_in_minutes": {
+					"name": "otp_expiry_in_minutes",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"mpin_attemptnumbererval": {
+					"name": "mpin_attemptnumbererval",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"mpinnumbererval_unit": {
+					"name": "mpinnumbererval_unit",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "string"
+				},
+				"mpin_max_retry": {
+					"name": "mpin_max_retry",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "integer"
+				}
+			},
+			"name": "protocol",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "protocol_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"foreignKeys": {}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "uuid_generate_v4()",
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"caption": {
+					"name": "caption",
+					"type": "varchar(250)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 250,
+					"mappedType": "string"
+				},
+				"file": {
+					"name": "file",
+					"type": "varchar(150)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"length": 150,
+					"mappedType": "string"
+				},
+				"favourite_count": {
+					"name": "favourite_count",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "0",
+					"mappedType": "integer"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				}
+			},
+			"name": "post",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "post_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"foreignKeys": {
+				"post_user_id_foreign": {
+					"constraintName": "post_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "public.post",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "uuid_generate_v4()",
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"expires_in": {
+					"name": "expires_in",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "datetime"
+				},
+				"otp_code": {
+					"name": "otp_code",
+					"type": "varchar(20)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 20,
+					"mappedType": "string"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"is_revoked": {
+					"name": "is_revoked",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				}
+			},
+			"name": "otp_log",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "otp_log_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"foreignKeys": {
+				"otp_log_user_id_foreign": {
+					"constraintName": "otp_log_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "public.otp_log",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "uuid_generate_v4()",
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"post_id": {
+					"name": "post_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				}
+			},
+			"name": "favourite",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "favourite_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"foreignKeys": {
+				"favourite_post_id_foreign": {
+					"constraintName": "favourite_post_id_foreign",
+					"columnNames": ["post_id"],
+					"localTableName": "public.favourite",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.post",
+					"updateRule": "cascade"
+				},
+				"favourite_user_id_foreign": {
+					"constraintName": "favourite_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "public.favourite",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "uuid_generate_v4()",
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"text": {
+					"name": "text",
+					"type": "varchar(250)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"length": 250,
+					"mappedType": "string"
+				},
+				"post_id": {
+					"name": "post_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				}
+			},
+			"name": "comment",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "comment_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"foreignKeys": {
+				"comment_post_id_foreign": {
+					"constraintName": "comment_post_id_foreign",
+					"columnNames": ["post_id"],
+					"localTableName": "public.comment",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.post",
+					"updateRule": "cascade"
+				},
+				"comment_user_id_foreign": {
+					"constraintName": "comment_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "public.comment",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "uuid_generate_v4()",
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"default": "CURRENT_TIMESTAMP",
+					"mappedType": "datetime"
+				},
+				"activity_type": {
+					"name": "activity_type",
+					"type": "varchar(50)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 50,
+					"mappedType": "string"
+				},
+				"login_type": {
+					"name": "login_type",
+					"type": "varchar(50)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 50,
+					"mappedType": "string"
+				},
+				"ip_address": {
+					"name": "ip_address",
+					"type": "varchar(50)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 50,
+					"mappedType": "string"
+				},
+				"device_id": {
+					"name": "device_id",
+					"type": "varchar(50)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 50,
+					"mappedType": "string"
+				},
+				"status": {
+					"name": "status",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"login_status": {
+					"name": "login_status",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "boolean"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				}
+			},
+			"name": "activity_log",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "activity_log_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"foreignKeys": {
+				"activity_log_user_id_foreign": {
+					"constraintName": "activity_log_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "public.activity_log",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"updateRule": "cascade"
+				}
+			}
+		}
+	]
+}

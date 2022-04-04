@@ -1,0 +1,40 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"id": { "name": "id", "reference": "scalar", "primary": true, "hidden": true, "type": "number" },
+			"idx": { "name": "idx", "reference": "scalar", "defaultRaw": "uuid_generate_v4()", "getter": false, "setter": false, "type": "string" },
+			"isActive": { "name": "isActive", "reference": "scalar", "nullable": false, "default": true, "getter": false, "setter": false, "type": "boolean" },
+			"isObsolete": { "name": "isObsolete", "reference": "scalar", "nullable": false, "default": false, "getter": false, "setter": false, "type": "boolean" },
+			"deletedAt": { "name": "deletedAt", "reference": "scalar", "nullable": true, "getter": false, "setter": false, "type": "Date" },
+			"createdAt": { "name": "createdAt", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "getter": false, "setter": false, "type": "Date" },
+			"updatedAt": { "name": "updatedAt", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "nullable": true, "getter": false, "setter": false, "type": "Date" }
+		},
+		"props": [
+			{ "name": "id", "reference": "scalar", "primary": true, "hidden": true, "type": "number" },
+			{ "name": "idx", "reference": "scalar", "defaultRaw": "uuid_generate_v4()", "getter": false, "setter": false, "type": "string" },
+			{ "name": "isActive", "reference": "scalar", "nullable": false, "default": true, "getter": false, "setter": false, "type": "boolean" },
+			{ "name": "isObsolete", "reference": "scalar", "nullable": false, "default": false, "getter": false, "setter": false, "type": "boolean" },
+			{ "name": "deletedAt", "reference": "scalar", "nullable": true, "getter": false, "setter": false, "type": "Date" },
+			{ "name": "createdAt", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "getter": false, "setter": false, "type": "Date" },
+			{ "name": "updatedAt", "reference": "scalar", "defaultRaw": "CURRENT_TIMESTAMP", "nullable": true, "getter": false, "setter": false, "type": "Date" }
+		],
+		"primaryKeys": ["id"],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"concurrencyCheckKeys": {},
+		"className": "BaseEntity",
+		"path": "./dist/common/database/base-entity.entity.js",
+		"abstract": true,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"useCache": true,
+		"compositePK": false,
+		"relations": []
+	},
+	"origin": "./dist/common/database/base-entity.entity.js",
+	"hash": "1326161118dc8fb882eff55c9eed2108",
+	"version": "5.0.0-dev.632+fcdb236eb8"
+}

@@ -1,0 +1,32 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.19.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-GLOBPARENT-1016905:
+    - nestjs-i18n > chokidar > glob-parent:
+        reason: None given
+        expires: '2021-04-02T14:57:21.304Z'
+    - '@mikro-orm/core > globby > fast-glob > glob-parent':
+        reason: None given
+        expires: '2021-04-02T14:57:21.304Z'
+    - '@mikro-orm/reflection > globby > fast-glob > glob-parent':
+        reason: None given
+        expires: '2021-04-02T14:57:21.304Z'
+    - '@mikro-orm/reflection > ts-morph > @ts-morph/common > fast-glob > glob-parent':
+        reason: None given
+        expires: '2021-04-02T14:57:21.305Z'
+  SNYK-JS-LODASH-1018905:
+    - '@nestjs/swagger > lodash':
+        reason: None given
+        expires: '2021-04-02T14:57:21.305Z'
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - '@nestjs/swagger > lodash':
+        patched: '2020-05-01T03:07:51.903Z'
+    - '@nestjs/cli > inquirer > lodash':
+        patched: '2020-05-01T03:07:51.903Z'
+    - nestjs-minio > minio > lodash:
+        patched: '2020-05-01T03:07:51.903Z'
+    - '@nestjs/cli > @angular-devkit/schematics-cli > inquirer > lodash':
+        patched: '2020-05-01T03:07:51.903Z'
