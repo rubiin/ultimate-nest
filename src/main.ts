@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-// import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { ConfigService } from '@nestjs/config';
 import setupSwagger from './swagger';
 import { AppUtils } from '@common/helpers/app.utils';
@@ -11,11 +10,13 @@ import {
 	ExpressAdapter,
 	NestExpressApplication,
 } from '@nestjs/platform-express';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(
 		AppModule,
 		new ExpressAdapter(),
+		{ bufferLogs: true },
 	);
 
 	AppUtils.killAppWithGrace(app);
@@ -41,14 +42,17 @@ async function bootstrap() {
 		}),
 	).setGlobalPrefix('v1');
 
-	// app.useLogger(app.get
-	// (WINSTON_MODULE_NEST_PROVIDER));
-
 	// ==================================================
 	// configureNestSwagger
 	// ==================================================
 
 	setupSwagger(app);
+
+	// ==================================================
+	// configurePinoLogger
+	// ==================================================
+
+	app.useLogger(app.get(Logger));
 
 	const port = configService.get<number>('app.port', 3000);
 
