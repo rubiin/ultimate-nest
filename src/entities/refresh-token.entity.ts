@@ -1,22 +1,15 @@
-import { BaseEntity } from '@common/database/base-entity.entity';
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
-import { User } from './user.entity';
+import { BaseEntity } from "@common/database/base-entity.entity";
+import { Entity, ManyToOne, Property } from "@mikro-orm/core";
+import { User } from "./user.entity";
 
 @Entity()
 export class RefreshToken extends BaseEntity {
-	@Property({
-		nullable: false,
-		name: 'expires_in',
-	})
-	expiresIn: Date;
+	@Property()
+	expiresIn!: Date;
 
-	@ManyToOne(() => User)
+	@ManyToOne()
 	user: User;
 
-	@Property({
-		nullable: false,
-		default: false,
-		type: 'boolean',
-	})
-	isRevoked: boolean;
+	@Property()
+	isRevoked = false;
 }

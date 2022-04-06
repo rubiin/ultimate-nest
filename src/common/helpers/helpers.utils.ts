@@ -1,13 +1,13 @@
-import { User } from '@entities';
-import * as eta from 'eta';
-import * as sharp from 'sharp';
-import puppeteer from 'puppeteer';
-import { pick } from '@rubiin/js-utils';
-import { customAlphabet } from 'nanoid/async';
-import { randomTypes } from '@common/constants/random-types.enum';
-import { IAuthenticationPayload } from '@common/interfaces/authentication.interface';
-import { slugify } from '@rubiin/js-utils';
-import { hashString } from '@common/misc/threads';
+import { User } from "@entities";
+import * as eta from "eta";
+import * as sharp from "sharp";
+import puppeteer from "puppeteer";
+import { pick } from "@rubiin/js-utils";
+import { customAlphabet } from "nanoid/async";
+import { randomTypes } from "@common/constants/random-types.enum";
+import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
+import { slugify } from "@rubiin/js-utils";
+import { hashString } from "@common/misc/threads";
 
 let puppetterInstance = null;
 
@@ -55,13 +55,19 @@ const HelperService = {
 	): IAuthenticationPayload => {
 		return {
 			user: {
-				...pick(user, ['id', 'idx']),
+				...pick(user, ["id", "idx"]),
 			},
 			payload: {
 				access_token: accessToken,
 				...(refreshToken ? { refresh_token: refreshToken } : {}),
 			},
 		};
+	},
+
+	EnumToString: (_enum: object) => {
+		Object.keys(_enum)
+			.map(key => _enum[key])
+			.filter(value => typeof value === "string") as string[];
 	},
 
 	/**
@@ -106,7 +112,7 @@ const HelperService = {
 		input: Buffer,
 		config: { height: number; width: number },
 	): Promise<Buffer> => {
-		return sharp(input).resize(config).toFormat('png').toBuffer();
+		return sharp(input).resize(config).toFormat("png").toBuffer();
 	},
 
 	/**
@@ -122,14 +128,14 @@ const HelperService = {
 			puppetterInstance = await puppeteer.launch({
 				headless: true,
 				args: [
-					'--no-sandbox',
-					'--disable-setuid-sandbox',
-					'--disable-dev-shm-usage',
-					'--disable-accelerated-2d-canvas',
-					'--no-first-run',
-					'--no-zygote',
-					'--single-process', // <- this one doesn't works in Windows
-					'--disable-gpu',
+					"--no-sandbox",
+					"--disable-setuid-sandbox",
+					"--disable-dev-shm-usage",
+					"--disable-accelerated-2d-canvas",
+					"--no-first-run",
+					"--no-zygote",
+					"--single-process", // <- this one doesn't works in Windows
+					"--disable-gpu",
 				],
 			});
 		}
@@ -158,9 +164,9 @@ const HelperService = {
 
 		return customAlphabet(
 			type === randomTypes.NUMBER
-				? '1234567890'
+				? "1234567890"
 				: // eslint-disable-next-line no-secrets/no-secrets
-				  'abcdefghijklmnopqrstuvwxyz',
+				  "abcdefghijklmnopqrstuvwxyz",
 			length,
 		)();
 	},

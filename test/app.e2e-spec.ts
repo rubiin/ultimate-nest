@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import * as request from 'supertest';
-import { AppModule } from '../src/app.module';
+import { Test, TestingModule } from "@nestjs/testing";
+import * as request from "supertest";
+import { AppModule } from "../src/app.module";
 
-describe('AppController (e2e)', () => {
+describe("AppController (e2e)", () => {
 	let app;
 
 	beforeEach(async () => {
@@ -14,15 +14,15 @@ describe('AppController (e2e)', () => {
 		await app.init();
 	});
 
-	it('/ (GET)', () => {
-		return request(app.getHttpServer()).get('/v1/users').expect(200);
+	it("/ (GET)", () => {
+		return request(app.getHttpServer()).get("/v1/users").expect(200);
 	});
 
-	it('/ (GET)', () => {
-		return request(app.getHttpServer()).get('/v1/roles').expect(200);
+	it("/ (GET)", () => {
+		return request(app.getHttpServer()).get("/v1/roles").expect(200);
 	});
 
-	it('/ (GET)', () => {
-		return request(app.getHttpServer()).get('/v1/permissions').expect(200);
+	it("/ (GET)", () => {
+		return request(app.getHttpServer()).get("/v1/permissions").expect(200);
 	});
 });

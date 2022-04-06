@@ -1,12 +1,12 @@
-import { IResponse } from '@common/interfaces/response.interface';
-import { RefreshToken, User } from '@entities';
-import { EntityRepository } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { pick } from '@rubiin/js-utils';
-import { TokenExpiredError } from 'jsonwebtoken';
-import { RefreshTokensRepository } from './refresh-tokens.repository';
+import { IResponse } from "@common/interfaces/response.interface";
+import { RefreshToken, User } from "@entities";
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService, JwtSignOptions } from "@nestjs/jwt";
+import { pick } from "@rubiin/js-utils";
+import { TokenExpiredError } from "jsonwebtoken";
+import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 export interface RefreshTokenPayload {
 	jti: number;
@@ -24,8 +24,8 @@ export class TokensService {
 	private readonly tokens: RefreshTokensRepository;
 	private readonly jwt: JwtService;
 	private readonly BASE_OPTIONS: JwtSignOptions = {
-		issuer: 'some-app',
-		audience: 'some-app',
+		issuer: "some-app",
+		audience: "some-app",
 	};
 
 	/**
@@ -58,7 +58,7 @@ export class TokensService {
 			subject: String(user.id),
 		};
 
-		return this.jwt.signAsync({ ...pick(user, ['id', 'idx']) }, options);
+		return this.jwt.signAsync({ ...pick(user, ["id", "idx"]) }, options);
 	}
 
 	/**
@@ -96,17 +96,17 @@ export class TokensService {
 		const token = await this.getStoredTokenFromRefreshTokenPayload(payload);
 
 		if (!token) {
-			throw new UnauthorizedException('Refresh token not found');
+			throw new UnauthorizedException("Refresh token not found");
 		}
 
 		if (token.isRevoked) {
-			throw new UnauthorizedException('Refresh token revoked');
+			throw new UnauthorizedException("Refresh token revoked");
 		}
 
 		const user = await this.getUserFromRefreshTokenPayload(payload);
 
 		if (!user) {
-			throw new UnauthorizedException('Refresh token malformed');
+			throw new UnauthorizedException("Refresh token malformed");
 		}
 
 		return { user, token };
@@ -142,8 +142,8 @@ export class TokensService {
 		} catch (error_) {
 			const error =
 				error_ instanceof TokenExpiredError
-					? new UnauthorizedException('Refresh token expired')
-					: new UnauthorizedException('Refresh token malformed');
+					? new UnauthorizedException("Refresh token expired")
+					: new UnauthorizedException("Refresh token malformed");
 
 			throw error;
 		}
@@ -159,7 +159,7 @@ export class TokensService {
 	async deleteRefreshTokenForUser(user: User): Promise<IResponse<User>> {
 		await this.tokens.deleteTokensForUser(user);
 
-		return { message: 'Operation Sucessful', data: user };
+		return { message: "Operation Sucessful", data: user };
 	}
 
 	/**
@@ -178,11 +178,11 @@ export class TokensService {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
-			throw new UnauthorizedException('Refresh token malformed');
+			throw new UnauthorizedException("Refresh token malformed");
 		}
 		await this.tokens.deleteToken(user, tokenId);
 
-		return { message: 'Operation Sucessful', data: user };
+		return { message: "Operation Sucessful", data: user };
 	}
 
 	/**
@@ -199,7 +199,7 @@ export class TokensService {
 		const subId = payload.sub;
 
 		if (!subId) {
-			throw new UnauthorizedException('Refresh token malformed');
+			throw new UnauthorizedException("Refresh token malformed");
 		}
 
 		return this.userRepository.findOne({
@@ -221,7 +221,7 @@ export class TokensService {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
-			throw new UnauthorizedException('Refresh token malformed');
+			throw new UnauthorizedException("Refresh token malformed");
 		}
 
 		return this.tokens.findTokenByIdx(tokenId);

@@ -1,8 +1,8 @@
 import {
 	IPaginationLinks,
 	IPaginationMeta,
-} from './pagination-option.interface';
-import { Pagination } from './pagination';
+} from "./pagination-option.interface";
+import { Pagination } from "./pagination";
 
 export function createPaginationObject<T>(
 	items: T[],
@@ -18,19 +18,19 @@ export function createPaginationObject<T>(
 	const hasNextPage = route && currentPage < totalPages;
 	const hasLastPage = route && totalPages > 0;
 
-	const symbol = route && new RegExp(/\?/).test(route) ? '&' : '?';
+	const symbol = route && new RegExp(/\?/).test(route) ? "&" : "?";
 
 	const routes: IPaginationLinks = {
-		first: hasFirstPage ? `${route}${symbol}limit=${limit}` : '',
+		first: hasFirstPage ? `${route}${symbol}limit=${limit}` : "",
 		previous: hasPreviousPage
 			? `${route}${symbol}page=${currentPage - 1}&limit=${limit}`
-			: '',
+			: "",
 		next: hasNextPage
 			? `${route}${symbol}page=${currentPage + 1}&limit=${limit}`
-			: '',
+			: "",
 		last: hasLastPage
 			? `${route}${symbol}page=${totalPages}&limit=${limit}`
-			: '',
+			: "",
 	};
 
 	const meta: IPaginationMeta = {

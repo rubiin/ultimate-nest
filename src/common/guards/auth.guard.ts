@@ -1,12 +1,10 @@
 import {
 	CanActivate,
 	ExecutionContext,
-	HttpException,
-	HttpStatus,
 	Injectable,
 	UnauthorizedException,
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+} from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 
 /**
  *
@@ -24,25 +22,22 @@ export class AuthGuard implements CanActivate {
 		const token = request.headers.authorization;
 
 		if (!token) {
-			throw new HttpException(
-				'Token not found in request',
-				HttpStatus.UNAUTHORIZED,
-			);
+			throw new UnauthorizedException("Token not found in request");
 		}
 
 		try {
-			const decoded: any = this.jwt.verify(token.split(' ')[1]);
+			const decoded: any = this.jwt.verify(token.split(" ")[1]);
 
 			request.idx = decoded.idx;
 
 			return true;
 		} catch (error_) {
 			const error =
-				error_?.name === 'TokenExpiredError'
+				error_?.name === "TokenExpiredError"
 					? new UnauthorizedException(
-							'The session has expired. Please relogin',
+							"The session has expired. Please re-login",
 					  )
-					: new UnauthorizedException('Token malformed');
+					: new UnauthorizedException("Token malformed");
 
 			throw error;
 		}

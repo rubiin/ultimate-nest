@@ -1,11 +1,11 @@
-import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
-import { Request } from 'express';
-import * as mime from 'mime-types';
-import * as multer from 'multer';
-import * as fs from 'fs';
-import { extname } from 'path';
+import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
+import { Request } from "express";
+import * as mime from "mime-types";
+import * as multer from "multer";
+import * as fs from "fs";
+import { extname } from "path";
 
-const allowedExtensions = new Set(['png', 'jpg', 'jpeg']);
+const allowedExtensions = new Set(["png", "jpg", "jpeg"]);
 
 export const ImageMulterOption: MulterOptions = {
 	limits: {
@@ -13,7 +13,7 @@ export const ImageMulterOption: MulterOptions = {
 	},
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
-			const path = './uploads';
+			const path = "./uploads";
 
 			// check if the folder exists
 			if (!fs.existsSync(path)) {
@@ -28,7 +28,7 @@ export const ImageMulterOption: MulterOptions = {
 			file: { originalname: string },
 			cb: (arg0: any, arg1: string) => void,
 		) => {
-			let name = file.originalname.split('.')[0];
+			let name = file.originalname.split(".")[0];
 
 			// if filename length greater than 10, truncate to 10
 			if (name.length > 8) {
@@ -43,7 +43,7 @@ export const ImageMulterOption: MulterOptions = {
 	}),
 	fileFilter: (_req: Request, file, cb) => {
 		if (!allowedExtensions.has(mime.extension(file.mimetype))) {
-			return cb(new Error('Only image files are allowed!'), false);
+			return cb(new Error("Only image files are allowed!"), false);
 		}
 
 		return cb(null, true);

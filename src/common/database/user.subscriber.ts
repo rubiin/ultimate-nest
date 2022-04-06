@@ -1,11 +1,11 @@
-import { HelperService } from '@common/helpers/helpers.utils';
+import { HelperService } from "@common/helpers/helpers.utils";
 import {
 	EntityName,
 	EventArgs,
 	EventSubscriber,
 	Subscriber,
-} from '@mikro-orm/core';
-import { User } from '../../entities/user.entity';
+} from "@mikro-orm/core";
+import { User } from "../../entities/user.entity";
 
 @Subscriber()
 export class UserSubscriber implements EventSubscriber<User> {

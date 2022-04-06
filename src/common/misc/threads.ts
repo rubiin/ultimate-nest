@@ -1,4 +1,4 @@
-import { argon2d, hash } from 'argon2';
+import { argon2d, hash } from "argon2";
 
 export const hashString = (value: string): Promise<string> =>
 	hash(value, {

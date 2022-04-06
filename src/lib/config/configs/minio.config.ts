@@ -1,6 +1,6 @@
-import { registerAs } from '@nestjs/config';
+import { registerAs } from "@nestjs/config";
 
-export const minio = registerAs('minio', () => ({
+export const minio = registerAs("minio", () => ({
 	host: process.env.MINIO_HOST,
 	port: +process.env.MINIO_PORT,
 	accessKey: process.env.MINIO_ACCESS_KEY,

@@ -1,0 +1,45 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"slug": { "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"title": { "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"excerpt": { "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
+			"content": { "name": "content", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"category": { "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"tags": { "name": "tags", "reference": "scalar", "type": "simple-array", "getter": false, "setter": false, "array": true },
+			"status": { "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
+			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+		},
+		"props": [
+			{ "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
+			{ "name": "content", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "tags", "reference": "scalar", "type": "simple-array", "getter": false, "setter": false, "array": true },
+			{ "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "Post",
+		"path": "./src/entities/post.entity.ts",
+		"name": "Post",
+		"abstract": false,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [{ "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }],
+		"collection": "post"
+	},
+	"origin": "./src/entities/post.entity.ts",
+	"hash": "877c9c6efe09b3cdfb5fddd19e30d2fa",
+	"version": "5.1.1"
+}

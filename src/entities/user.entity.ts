@@ -1,81 +1,39 @@
+import { BaseEntity } from "@common/database/base-entity.entity";
+import { HelperService } from "@common/helpers/helpers.utils";
 import {
+	ArrayType,
 	BeforeCreate,
 	BeforeUpdate,
 	Collection,
 	Entity,
-	EntityDTO,
-	ManyToMany,
 	OneToMany,
 	Property,
 	wrap,
-} from '@mikro-orm/core';
-import { BaseEntity } from '@common/database/base-entity.entity';
-import { HelperService } from '@common/helpers/helpers.utils';
-import { Post } from './post.entity';
+} from "@mikro-orm/core";
+import { Post } from "./post.entity";
 
 @Entity()
 export class User extends BaseEntity {
-	@Property({
-		length: 50,
-	})
-	fullName: string;
+	@Property({ length: 255 })
+	firstName = "";
 
-	@Property({
-		length: 250,
-		nullable: true,
-	})
-	bio?: string;
+	@Property({ length: 255 })
+	lastName = "";
 
-	@Property({
-		length: 50,
-		nullable: true,
-	})
-	website?: string;
+	@Property({ length: 255 })
+	email!: string;
 
-	@Property({
-		length: 50,
-		nullable: true,
-	})
-	avatar?: string;
-
-	@Property({
-		length: 60,
-		unique: true,
-	})
-	email: string;
-
-	@OneToMany(() => Post, post => post.user, { hidden: true })
-	posts = new Collection<Post>(this);
-
-	@Property({
-		length: 50,
-	})
-	username: string;
+	@Property({ length: 255 })
+	avatar!: string;
 
 	@Property({ hidden: true })
-	password: string;
+	password!: string;
 
-	@ManyToMany({ hidden: true })
-	favorites = new Collection<Post>(this);
+	@Property({ type: ArrayType })
+	roles: string[] = [];
 
-	@ManyToMany({
-		entity: () => User,
-		inversedBy: u => u.followed,
-		owner: true,
-		pivotTable: 'user_to_follower',
-		joinColumn: 'follower',
-		inverseJoinColumn: 'following',
-		hidden: true,
-	})
-	followers = new Collection<User>(this);
-
-	@ManyToMany(() => User, u => u.followers, { hidden: true })
-	followed = new Collection<User>(this);
-
-	@Property({
-		default: 0,
-	})
-	postCount: number;
+	@Property()
+	status = true;
 
 	@BeforeCreate()
 	@BeforeUpdate()
@@ -83,17 +41,16 @@ export class User extends BaseEntity {
 		this.password = await HelperService.hashString(this.password);
 	}
 
+	@OneToMany(() => Post, post => post.author, { hidden: true })
+	articles = new Collection<Post>(this);
+
 	toJSON() {
-		const o = wrap<User>(this).toObject() as UserDTO;
+		const o = wrap<User>(this).toObject();
 
 		o.avatar =
 			this.avatar ||
-			'https://static.productionready.io/images/smiley-cyrus.jpg';
+			"https://static.productionready.io/images/smiley-cyrus.jpg";
 
 		return o;
 	}
-}
-
-interface UserDTO extends EntityDTO<User> {
-	following?: boolean;
 }

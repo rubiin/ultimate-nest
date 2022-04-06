@@ -1,46 +1,36 @@
-import { BaseEntity } from '@common/database/base-entity.entity';
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { BaseEntity } from "@common/database/base-entity.entity";
+import { Entity, ManyToOne, Property } from "@mikro-orm/core";
 
-import { User } from './user.entity';
+import { User } from "./user.entity";
 
 @Entity()
 export class ActivityLog extends BaseEntity {
 	@Property({
-		nullable: true,
 		length: 50,
 	})
-	activityType: string | null;
+	activityType?: string;
 
 	@Property({
-		nullable: true,
 		length: 50,
 	})
-	loginType: string | null;
+	loginType?: string;
 
 	@Property({
-		nullable: true,
 		length: 50,
 	})
-	ipAddress: string | null;
+	ipAddress?: string;
 
 	@Property({
-		nullable: true,
 		length: 50,
 	})
-	deviceId: string | null;
+	deviceId?: string;
 
-	@Property({
-		nullable: false,
-		default: true,
-	})
-	status: boolean;
+	@Property()
+	status = true;
 
-	@Property({
-		nullable: false,
-		default: true,
-	})
-	loginStatus: boolean;
+	@Property()
+	loginStatus = true;
 
-	@ManyToOne(() => User)
+	@ManyToOne()
 	user: User;
 }

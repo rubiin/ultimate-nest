@@ -2,24 +2,31 @@
 	"data": {
 		"propertyOrder": {},
 		"properties": {
-			"caption": { "name": "caption", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
-			"file": { "name": "file", "reference": "scalar", "length": 150, "getter": false, "setter": false, "type": "string" },
-			"favoritesCount": { "name": "favoritesCount", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
-			"user": { "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
-			"comment": { "name": "comment", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+			"slug": { "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"title": { "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"excerpt": { "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
+			"content": { "name": "content", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"category": { "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"tags": { "name": "tags", "reference": "scalar", "type": "simple-array", "getter": false, "setter": false, "array": true },
+			"status": { "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
+			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
 		},
 		"props": [
-			{ "name": "caption", "reference": "scalar", "length": 250, "nullable": true, "getter": false, "setter": false, "type": "string" },
-			{ "name": "file", "reference": "scalar", "length": 150, "getter": false, "setter": false, "type": "string" },
-			{ "name": "favoritesCount", "reference": "scalar", "default": 0, "getter": false, "setter": false, "type": "number" },
-			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
-			{ "name": "comment", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+			{ "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
+			{ "name": "content", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "tags", "reference": "scalar", "type": "simple-array", "getter": false, "setter": false, "array": true },
+			{ "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
 		],
 		"primaryKeys": [],
 		"filters": {},
 		"hooks": {},
 		"indexes": [],
 		"uniques": [],
+		"checks": [],
 		"concurrencyCheckKeys": {},
 		"className": "Post",
 		"path": "./dist/entities/post.entity.js",
@@ -29,13 +36,10 @@
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
-		"relations": [
-			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
-			{ "name": "comment", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
-		],
+		"relations": [{ "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }],
 		"collection": "post"
 	},
 	"origin": "./dist/entities/post.entity.js",
-	"hash": "7c2c744aa2ba154b8e56b3915c66aa18",
-	"version": "5.0.0-dev.632+fcdb236eb8"
+	"hash": "8111ed90ab32847831b9cb1a18dd8820",
+	"version": "5.1.1"
 }

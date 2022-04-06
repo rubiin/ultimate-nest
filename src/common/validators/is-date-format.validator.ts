@@ -4,8 +4,8 @@ import {
 	ValidationArguments,
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
-} from '@nestjs/class-validator';
-import { isValid, lightFormat } from 'date-fns';
+} from "class-validator";
+import { isValid, lightFormat } from "date-fns";
 
 @ValidatorConstraint({ async: true })
 class IsDateInFormatConstraint implements ValidatorConstraintInterface {

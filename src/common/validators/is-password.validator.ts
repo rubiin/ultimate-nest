@@ -4,13 +4,13 @@ import {
 	ValidationArguments,
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
-} from '@nestjs/class-validator';
+} from "class-validator";
 
 @ValidatorConstraint({ async: true })
 class IsPasswordConstraint implements ValidatorConstraintInterface {
 	async validate(value: string, _args: ValidationArguments) {
 		const passwordRegex = new RegExp(
-			'^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])(?=.{8,})',
+			"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])(?=.{8,})",
 		);
 
 		return passwordRegex.test(value);

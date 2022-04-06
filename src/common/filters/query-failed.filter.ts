@@ -1,15 +1,15 @@
 import {
 	DriverException,
 	UniqueConstraintViolationException,
-} from '@mikro-orm/core';
+} from "@mikro-orm/core";
 import {
 	ArgumentsHost,
 	Catch,
 	ExceptionFilter,
 	HttpStatus,
-} from '@nestjs/common';
-import { Response } from 'express';
-import { STATUS_CODES } from 'http';
+} from "@nestjs/common";
+import { Response } from "express";
+import { STATUS_CODES } from "http";
 
 @Catch(UniqueConstraintViolationException)
 export class QueryFailedFilter implements ExceptionFilter {
@@ -18,7 +18,7 @@ export class QueryFailedFilter implements ExceptionFilter {
 		const response = context.getResponse<Response>();
 
 		const status =
-			exception.name && exception.name.startsWith('UQ')
+			exception.name && exception.name.startsWith("UQ")
 				? HttpStatus.CONFLICT
 				: HttpStatus.INTERNAL_SERVER_ERROR;
 

@@ -3,9 +3,9 @@ import {
 	ExecutionContext,
 	Injectable,
 	NestInterceptor,
-} from '@nestjs/common';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+} from "@nestjs/common";
+import { Observable, throwError } from "rxjs";
+import { catchError, map } from "rxjs/operators";
 
 @Injectable()
 export class ExitInterceptor implements NestInterceptor {

@@ -1,5 +1,5 @@
-import { Module } from '@nestjs/common';
-import { LoggerModule } from 'nestjs-pino';
+import { Module } from "@nestjs/common";
+import { LoggerModule } from "nestjs-pino";
 
 @Module({
 	exports: [LoggerModule],
@@ -7,16 +7,35 @@ import { LoggerModule } from 'nestjs-pino';
 		LoggerModule.forRootAsync({
 			useFactory: () => {
 				return {
-					pinoHttp:
-						process.env.NODE_ENV !== 'production'
-							? {
-									prettyPrint: {
-										colorize: true,
-										levelFirst: true,
-										translateTime: 'yyyy-mm-dd HH:MM:ss',
+					pinoHttp: {
+						level: "info",
+
+						redact: {
+							paths: ["req.headers.authorization"],
+							remove: true,
+						},
+						transport: {
+							targets: [
+								{
+									target: "pino/file",
+									level: "info",
+									options: {
+										destination: "logs/info.log",
+										mkdir: true,
 									},
-							  }
-							: {},
+								},
+								{
+									target: "pino-pretty",
+									level: "info",
+									options: {
+										colorize: true,
+										prettyPrint: true,
+										translateTime: true,
+									},
+								},
+							],
+						},
+					},
 				};
 			},
 		}),

@@ -1,20 +1,20 @@
-import { ConfigService } from '@lib/config/config.service';
-import * as admin from 'firebase-admin';
-import { existsSync } from 'fs';
-import path from 'path';
-import { FIREBASE_ADMIN_TOKEN } from './firebase-admin.constant';
-import { FirebaseAdminConfig } from './firebase-admin.dto';
+import { ConfigService } from "@lib/config/config.service";
+import * as admin from "firebase-admin";
+import { existsSync } from "fs";
+import path from "path";
+import { FIREBASE_ADMIN_TOKEN } from "./firebase-admin.constant";
+import { FirebaseAdminConfig } from "./firebase-admin.dto";
 
 export const FirebaseAdminProvider = {
 	inject: [ConfigService],
 	provide: FIREBASE_ADMIN_TOKEN,
 	useFactory: (configService: ConfigService) => {
 		const config = configService.validate(
-			'FirebaseAdminModule',
+			"FirebaseAdminModule",
 			FirebaseAdminConfig,
 		);
 
-		const filePath = path.resolve('.', config.FIREBASE_CREDENTIAL_PATH);
+		const filePath = path.resolve(".", config.FIREBASE_CREDENTIAL_PATH);
 
 		if (!existsSync(filePath)) throw new Error(`Unknown file ${filePath}`);
 
