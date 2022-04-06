@@ -2,28 +2,29 @@
 	"data": {
 		"propertyOrder": {},
 		"properties": {
-			"loginAttemptnumbererval": { "name": "loginAttemptnumbererval", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
-			"loginnumberervalUnit": { "name": "loginnumberervalUnit", "reference": "scalar", "nullable": false, "type": "string", "getter": false, "setter": false },
-			"loginMaxRetry": { "name": "loginMaxRetry", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
-			"otpExpiryInMinutes": { "name": "otpExpiryInMinutes", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
-			"mpinAttemptnumbererval": { "name": "mpinAttemptnumbererval", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
-			"mpinnumberervalUnit": { "name": "mpinnumberervalUnit", "reference": "scalar", "nullable": true, "type": "string", "getter": false, "setter": false },
-			"mpinMaxRetry": { "name": "mpinMaxRetry", "reference": "scalar", "nullable": true, "type": "number", "getter": false, "setter": false }
+			"loginAttemptnumbererval": { "name": "loginAttemptnumbererval", "reference": "scalar", "getter": false, "setter": false, "type": "number" },
+			"loginnumberervalUnit": { "name": "loginnumberervalUnit", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"loginMaxRetry": { "name": "loginMaxRetry", "reference": "scalar", "getter": false, "setter": false, "type": "number" },
+			"otpExpiryInMinutes": { "name": "otpExpiryInMinutes", "reference": "scalar", "getter": false, "setter": false, "type": "number" },
+			"mpinAttemptInterval": { "name": "mpinAttemptInterval", "reference": "scalar", "getter": false, "setter": false, "type": "number" },
+			"mpinIntervalUnit": { "name": "mpinIntervalUnit", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"mpinMaxRetry": { "name": "mpinMaxRetry", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
 		},
 		"props": [
-			{ "name": "loginAttemptnumbererval", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
-			{ "name": "loginnumberervalUnit", "reference": "scalar", "nullable": false, "type": "string", "getter": false, "setter": false },
-			{ "name": "loginMaxRetry", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
-			{ "name": "otpExpiryInMinutes", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
-			{ "name": "mpinAttemptnumbererval", "reference": "scalar", "nullable": false, "type": "number", "getter": false, "setter": false },
-			{ "name": "mpinnumberervalUnit", "reference": "scalar", "nullable": true, "type": "string", "getter": false, "setter": false },
-			{ "name": "mpinMaxRetry", "reference": "scalar", "nullable": true, "type": "number", "getter": false, "setter": false }
+			{ "name": "loginAttemptnumbererval", "reference": "scalar", "getter": false, "setter": false, "type": "number" },
+			{ "name": "loginnumberervalUnit", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "loginMaxRetry", "reference": "scalar", "getter": false, "setter": false, "type": "number" },
+			{ "name": "otpExpiryInMinutes", "reference": "scalar", "getter": false, "setter": false, "type": "number" },
+			{ "name": "mpinAttemptInterval", "reference": "scalar", "getter": false, "setter": false, "type": "number" },
+			{ "name": "mpinIntervalUnit", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "mpinMaxRetry", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
 		],
 		"primaryKeys": [],
 		"filters": {},
 		"hooks": {},
 		"indexes": [],
 		"uniques": [],
+		"checks": [],
 		"concurrencyCheckKeys": {},
 		"className": "Protocol",
 		"path": "./dist/entities/protocol.entity.js",
@@ -37,6 +38,6 @@
 		"collection": "protocol"
 	},
 	"origin": "./dist/entities/protocol.entity.js",
-	"hash": "44d28dfae37451384443fb2409fac470",
-	"version": "5.0.0-dev.632+fcdb236eb8"
+	"hash": "5fc42ec43a628e31042b6ea8133e357c",
+	"version": "5.1.1"
 }

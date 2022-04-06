@@ -1,6 +1,6 @@
-import { createPaginationObject } from './create-pagination';
-import { Pagination } from './pagination';
-import { IPaginationOptions } from './pagination-option.interface';
+import { createPaginationObject } from "./create-pagination";
+import { Pagination } from "./pagination";
+import { IPaginationOptions } from "./pagination-option.interface";
 
 const DEFAULT_LIMIT = 10;
 const DEFAULT_PAGE = 1;
@@ -19,8 +19,8 @@ export async function paginate<T>(
 }
 
 function resolveOptions(options: IPaginationOptions): [number, number, string] {
-	const page = resolveNumericOption(options, 'page', DEFAULT_PAGE);
-	const limit = resolveNumericOption(options, 'limit', DEFAULT_LIMIT);
+	const page = resolveNumericOption(options, "page", DEFAULT_PAGE);
+	const limit = resolveNumericOption(options, "limit", DEFAULT_LIMIT);
 	const route = options.route;
 
 	return [page, limit, route];
@@ -28,7 +28,7 @@ function resolveOptions(options: IPaginationOptions): [number, number, string] {
 
 function resolveNumericOption(
 	options: IPaginationOptions,
-	key: 'page' | 'limit',
+	key: "page" | "limit",
 	defaultValue: number,
 ): number {
 	const value = options[key];

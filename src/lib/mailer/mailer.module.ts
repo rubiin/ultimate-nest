@@ -1,8 +1,8 @@
-import { createConfigurableDynamicRootModule } from '@golevelup/nestjs-modules';
-import { Global, Module } from '@nestjs/common';
-import { MAIL_MODULE_OPTIONS } from './mailer.constants'; // the constant string/symbol/token
-import { MailModuleOptions } from './mailer.options'; // the options to provide to the service
-import { MailerService } from './mailer.service'; // the service to be provided to the rest of the server
+import { createConfigurableDynamicRootModule } from "@golevelup/nestjs-modules";
+import { Global, Module } from "@nestjs/common";
+import { MAIL_MODULE_OPTIONS } from "./mailer.constants"; // the constant string/symbol/token
+import { MailModuleOptions } from "./mailer.options"; // the options to provide to the service
+import { MailerService } from "./mailer.service"; // the service to be provided to the rest of the server
 
 @Global()
 @Module({

@@ -1,37 +1,30 @@
-import { PrimaryKey, Property } from '@mikro-orm/core';
-import { Exclude } from '@nestjs/class-transformer';
+import { PrimaryKey, Property } from "@mikro-orm/core";
+import { Exclude } from "class-transformer";
+import { randomUUID } from "crypto";
 
 export abstract class BaseEntity {
 	@PrimaryKey({ hidden: true })
 	id!: number;
 
-	@Property({ defaultRaw: 'uuid_generate_v4()' })
-	idx: string;
+	@Property()
+	idx: string = randomUUID();
 
-	@Property({
-		nullable: false,
-		default: true,
-	})
-	isActive: boolean;
+	@Property()
+	isActive = true;
 
 	@Exclude({ toPlainOnly: true })
-	@Property({
-		nullable: false,
-		default: false,
-	})
-	isObsolete: boolean;
+	@Property()
+	isObsolete = false; // deleted status
 
-	@Property({ nullable: true })
+	@Property()
 	deletedAt?: Date;
 
-	@Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
-	createdAt: Date = new Date();
+	@Property()
+	createdAt = new Date();
 
 	@Exclude({ toPlainOnly: true })
 	@Property({
-		defaultRaw: 'CURRENT_TIMESTAMP',
-		nullable: true,
 		onUpdate: () => new Date(),
 	})
-	updatedAt?: Date = new Date();
+	updatedAt? = new Date();
 }

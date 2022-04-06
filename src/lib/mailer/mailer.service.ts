@@ -1,9 +1,9 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { createTransport, SendMailOptions } from 'nodemailer';
-import { MAIL_MODULE_OPTIONS } from './mailer.constants';
-import { MailModuleOptions } from './mailer.options';
-import * as eta from 'eta';
-import * as previewEmail from 'preview-email';
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import { createTransport, SendMailOptions } from "nodemailer";
+import { MAIL_MODULE_OPTIONS } from "./mailer.constants";
+import { MailModuleOptions } from "./mailer.options";
+import * as eta from "eta";
+import * as previewEmail from "preview-email";
 
 interface IMailOptions extends Partial<SendMailOptions> {
 	template: string;
@@ -36,7 +36,7 @@ export class MailerService {
 
 		return new Promise<boolean>((resolve, reject) =>
 			eta.renderFile(
-				this.options.template.dir + '/' + mailOptions.template + '.eta',
+				this.options.template.dir + "/" + mailOptions.template + ".eta",
 				mailOptions.replacements,
 				this.options.template.etaOptions,
 				function (err, html) {
@@ -54,12 +54,12 @@ export class MailerService {
 
 					transporter.sendMail(mailOptions, async (error, info) => {
 						if (error) {
-							console.error('error is ' + error);
+							console.error("error is " + error);
 							reject(false);
 						} else {
 							console.info(
-								'info',
-								'Email sent: ' + info.response,
+								"info",
+								"Email sent: " + info.response,
 							);
 							resolve(true);
 						}

@@ -1,21 +1,21 @@
-import { Global, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtModule as NestJwtModule } from '@nestjs/jwt';
+import { Global, Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
 
 @Global()
 @Module({
-	exports: [NestJwtModule],
+	exports: [JwtModule],
 	imports: [
-		NestJwtModule.registerAsync({
+		JwtModule.registerAsync({
 			imports: [ConfigModule],
 			useFactory: async (configService: ConfigService) => ({
-				secret: configService.get<string>('jwt.secret'),
+				secret: configService.get("jwt.secret"),
 				signOptions: {
-					expiresIn: configService.get<number>('jwt.accessExpiry'),
+					expiresIn: configService.get<number>("jwt.accessExpiry"),
 				},
 			}),
 			inject: [ConfigService],
 		}),
 	],
 })
-export class JwtModule {}
+export class NestJwtModule {}

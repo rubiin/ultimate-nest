@@ -1,7 +1,7 @@
-import { RefreshToken, User } from '@entities';
-import { EntityRepository } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
+import { RefreshToken, User } from "@entities";
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class RefreshTokensRepository {

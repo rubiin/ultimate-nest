@@ -1,4 +1,4 @@
-import { config } from 'eta';
+import { config } from "eta";
 
 export interface MailModuleOptions {
 	host: string;

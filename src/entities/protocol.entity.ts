@@ -1,47 +1,26 @@
-import { Entity, Property } from '@mikro-orm/core';
-import { BaseEntity } from '@common/database/base-entity.entity';
+import { Entity, Property } from "@mikro-orm/core";
+import { BaseEntity } from "@common/database/base-entity.entity";
 
 @Entity()
 export class Protocol extends BaseEntity {
-	@Property({
-		nullable: false,
-		type: 'number',
-	})
-	loginAttemptnumbererval: number;
+	@Property()
+	loginAttemptnumbererval!: number;
 
-	@Property({
-		nullable: false,
-		type: 'string',
-	})
-	loginnumberervalUnit: string;
+	@Property()
+	loginnumberervalUnit!: string;
 
-	@Property({
-		nullable: false,
-		type: 'number',
-	})
-	loginMaxRetry: number;
+	@Property()
+	loginMaxRetry!: number;
 
-	@Property({
-		nullable: false,
-		type: 'number',
-	})
-	otpExpiryInMinutes: number;
+	@Property()
+	otpExpiryInMinutes!: number;
 
-	@Property({
-		nullable: false,
-		type: 'number',
-	})
-	mpinAttemptnumbererval: number;
+	@Property()
+	mpinAttemptInterval!: number;
 
-	@Property({
-		nullable: true,
-		type: 'string',
-	})
-	mpinnumberervalUnit: string;
+	@Property()
+	mpinIntervalUnit!: string;
 
-	@Property({
-		nullable: true,
-		type: 'number',
-	})
-	mpinMaxRetry: number;
+	@Property()
+	mpinMaxRetry!: number;
 }

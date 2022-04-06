@@ -1,16 +1,13 @@
-import { EntityRepository } from '@mikro-orm/postgresql';
-import { InjectRepository } from '@mikro-orm/nestjs';
+import { User } from "@entities";
+import { wrap } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityRepository } from "@mikro-orm/postgresql";
 import {
 	Injectable,
 	NotFoundException,
 	BadRequestException,
-} from '@nestjs/common';
-import { User } from '@entities';
-import { CreateUserDto } from './dtos/create-user.dto';
-import { EditUserDto } from './dtos/update-user.dto';
-import { wrap } from '@mikro-orm/core';
-import { omit } from '@rubiin/js-utils';
-import { paginate, Pagination } from '@lib/pagination';
+} from "@nestjs/common";
+import { CreateUserDto, EditUserDto } from "./dtos";
 
 export interface UserFindOne {
 	id?: number;
@@ -24,81 +21,59 @@ export class UserService {
 		private readonly userRepository: EntityRepository<User>,
 	) {}
 
-	async getMany(limit: number, page: number): Promise<Pagination<User>> {
-		const qb = this.userRepository.createQueryBuilder('user');
-
-		const offset = (page - 1) * limit;
-
-		qb.select('*')
-			.limit(limit)
-			.offset(offset)
-			.orderBy({ createdAt: 'desc' });
-
-		const users = await qb.getResult();
-
-		return paginate<User>(users, {
-			limit,
-			page,
-			route: 'http:localhost:8000/',
-		});
+	async getMany() {
+		return await this.userRepository.find({});
 	}
 
-	async getOneUser(idx: string) {
-		const user = await this.userRepository.findOne({
-			idx,
-			isObsolete: false,
-		});
+	async getOne(id: number, userEntity?: User) {
+		const user = await this.userRepository
+			.findOne(id)
+			.then(u =>
+				!userEntity ? u : !!u && userEntity.id === u.id ? u : null,
+			);
 
 		if (!user)
-			throw new NotFoundException('User does not exists or unauthorized');
+			throw new NotFoundException("User does not exists or unauthorized");
 
 		return user;
 	}
 
 	async createOne(dto: CreateUserDto) {
-		const emailUserExist = await this.userRepository.findOne({
+		const userExist = await this.userRepository.findOne({
 			email: dto.email,
-			isObsolete: false,
 		});
 
-		if (emailUserExist)
-			throw new BadRequestException(
-				'Account already registered with email',
-			);
-
-		const usernameExist = await this.userRepository.findOne({
-			username: dto.username,
-			isObsolete: false,
-		});
-
-		if (usernameExist)
-			throw new BadRequestException('Username is already taken');
+		if (userExist)
+			throw new BadRequestException("User already registered with email");
 
 		const newUser = this.userRepository.create(dto);
 
 		await this.userRepository.persistAndFlush(newUser);
 
-		return omit(newUser, ['password']);
+		return newUser;
 	}
 
-	async editOne(idx: string, dto: EditUserDto) {
-		const user = await this.getOneUser(idx);
+	async editOne(id: number, dto: EditUserDto, userEntity?: User) {
+		const user = await this.getOne(id, userEntity);
 
 		wrap(user).assign(dto);
+
 		await this.userRepository.flush();
 
 		return user;
 	}
 
-	async deleteUser(idx: string) {
-		const user = await this.getOneUser(idx);
+	async deleteOne(id: number, userEntity?: User) {
+		const user = await this.getOne(id, userEntity);
 
-		return this.userRepository.remove(user);
+		await this.userRepository.remove(user);
+
+		return user;
 	}
 
-	async findUser(data: UserFindOne) {
+	async findOne(data: UserFindOne) {
 		return await this.userRepository
-			.createQueryBuilder()
+			.createQueryBuilder("user")
 			.where(data)
 			.getSingleResult();
 	}

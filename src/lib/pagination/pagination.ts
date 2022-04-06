@@ -1,7 +1,7 @@
 import {
 	IPaginationLinks,
 	IPaginationMeta,
-} from './pagination-option.interface';
+} from "./pagination-option.interface";
 
 export class Pagination<PaginationObject> {
 	constructor(

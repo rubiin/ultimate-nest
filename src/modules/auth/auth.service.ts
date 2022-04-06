@@ -1,16 +1,17 @@
 import {
 	BadRequestException,
-	HttpException,
-	HttpStatus,
+	ForbiddenException,
 	Injectable,
-} from '@nestjs/common';
-import { UserLoginDto } from '@modules/auth/dtos/user-login';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/core';
-import { TokensService } from '@modules/token/tokens.service';
-import { HelperService } from '@common/helpers/helpers.utils';
-import { User } from '@entities';
-import { IResponse } from '@common/interfaces/response.interface';
+} from "@nestjs/common";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityRepository } from "@mikro-orm/core";
+import { TokensService } from "@modules/token/tokens.service";
+import { HelperService } from "@common/helpers/helpers.utils";
+import { User } from "@entities";
+import { IResponse } from "@common/interfaces/response.interface";
+import * as argon from "argon2";
+import { omit } from "@rubiin/js-utils";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class AuthService {
@@ -18,37 +19,41 @@ export class AuthService {
 		@InjectRepository(User)
 		private readonly userRepository: EntityRepository<User>,
 		private readonly tokenService: TokensService,
+		private readonly configService: ConfigService,
 	) {}
+
+	async validateUser(email: string, pass: string): Promise<any> {
+		const user = await this.userRepository.findOne({ email });
+
+		if (user.isObsolete) {
+			throw new BadRequestException("Invalid credentials");
+		}
+
+		if (!user.isActive) {
+			throw new ForbiddenException(
+				"Account not found. Please create new account from the Login screen.",
+			);
+		}
+
+		if (user && (await argon.verify(pass, user.password))) {
+			return omit(user, ["password"]);
+		}
+
+		return null;
+	}
 
 	/**
 	 *
 	 *
 	 * @param {UserLoginDto} userDto
-	 * @return {Promise<ILoginSignupReponse>}
+	 * @return {Promise<IResponse<any>>}
 	 * @memberof AuthService
 	 */
-	async login(userDto: UserLoginDto): Promise<IResponse<any>> {
-		const user = await this.userRepository.findOne({
-			email: userDto.email,
-			isActive: true,
-			isObsolete: false,
-		});
-
-		if (user.isObsolete) {
-			throw new BadRequestException('Invalid credentials');
-		}
-
-		if (!user.isActive) {
-			throw new HttpException(
-				'Account not found. Please create new account from the Login screen.',
-				HttpStatus.FORBIDDEN,
-			);
-		}
-
+	async login(user: User): Promise<any> {
 		const token = await this.tokenService.generateAccessToken(user);
 		const refresh = await this.tokenService.generateRefreshToken(
 			user,
-			+process.env.JWT_REFRESH_EXPIRY,
+			this.configService.get<number>("jwt.refreshExpiry"),
 		);
 
 		const payload = HelperService.buildPayloadResponse(
@@ -57,10 +62,7 @@ export class AuthService {
 			refresh,
 		);
 
-		return {
-			message: 'Successfully signed in',
-			data: payload,
-		};
+		return payload;
 	}
 
 	/**

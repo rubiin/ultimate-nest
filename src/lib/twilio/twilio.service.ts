@@ -1,7 +1,7 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import * as twilio from 'twilio';
-import { TwilioModuleOptions } from '@lib/twilio/twilio.options';
-import { TWILIO_MODULE_OPTIONS } from '@lib/twilio/twilio.constant';
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import * as twilio from "twilio";
+import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
+import { TWILIO_MODULE_OPTIONS } from "@lib/twilio/twilio.constant";
 
 @Injectable()
 export class TwilioService {

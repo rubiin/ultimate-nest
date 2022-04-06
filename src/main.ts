@@ -1,16 +1,16 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import setupSwagger from './swagger';
-import { AppUtils } from '@common/helpers/app.utils';
-import helmet from 'helmet';
-import * as compression from 'compression';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { ValidationPipe } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { setupSwagger } from "./swagger";
+import { AppUtils } from "@common/helpers/app.utils";
+import helmet from "helmet";
+import * as compression from "compression";
 import {
 	ExpressAdapter,
 	NestExpressApplication,
-} from '@nestjs/platform-express';
-import { Logger } from 'nestjs-pino';
+} from "@nestjs/platform-express";
+import { Logger } from "nestjs-pino";
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(
@@ -35,12 +35,14 @@ async function bootstrap() {
 	// configureNestGlobals
 	// ==================================================
 
+	const globalPrefix = "v1";
+
 	app.useGlobalPipes(
 		new ValidationPipe({
 			whitelist: true,
 			transform: true,
 		}),
-	).setGlobalPrefix('v1');
+	).setGlobalPrefix(globalPrefix);
 
 	// ==================================================
 	// configureNestSwagger
@@ -54,11 +56,13 @@ async function bootstrap() {
 
 	app.useLogger(app.get(Logger));
 
-	const port = configService.get<number>('app.port', 3000);
+	const port = configService.get<number>("app.port", 3000);
 
 	await app.listen(port);
 
-	console.info('Bootstrap', `Server running on 🚀 ${await app.getUrl()}`);
+	console.info(
+		`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
+	);
 }
 
 (async () => await bootstrap())();

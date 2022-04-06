@@ -1,41 +1,40 @@
-import { IsPassword } from '@common/validators/is-password.validator';
-import { IsUsername } from '@common/validators/is-username.validator';
+import { AppRoles } from "@common/constants/app.roles";
+import { HelperService } from "@common/helpers/helpers.utils";
 import {
 	IsString,
 	IsEmail,
 	MinLength,
 	MaxLength,
 	IsOptional,
-	IsNotEmpty,
-} from '@nestjs/class-validator';
+	IsArray,
+	IsEnum,
+} from "class-validator";
 
 export class CreateUserDto {
-	@IsNotEmpty()
+	@IsOptional()
 	@IsString()
-	@MinLength(5)
 	@MaxLength(255)
-	fullName: string;
+	firstName: string;
 
 	@IsOptional()
 	@IsString()
-	@MinLength(5)
 	@MaxLength(255)
-	bio: string;
+	lastName: string;
 
-	@IsOptional()
-	@IsString()
-	@MinLength(5)
-	@MaxLength(25)
-	website: string;
-
-	@IsNotEmpty()
-	@IsUsername()
-	username: string;
-
-	@IsNotEmpty()
 	@IsEmail()
 	email: string;
 
-	@IsPassword()
+	@IsString()
+	@MinLength(8)
+	@MaxLength(128)
 	password: string;
+
+	@IsArray()
+	@IsEnum(AppRoles, {
+		each: true,
+		message: `must be a valid role value,${HelperService.EnumToString(
+			AppRoles,
+		)}`,
+	})
+	roles: string[];
 }

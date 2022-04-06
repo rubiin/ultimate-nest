@@ -1,0 +1,37 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"expiresIn": { "name": "expiresIn", "reference": "scalar", "getter": false, "setter": false, "type": "Date" },
+			"otpCode": { "name": "otpCode", "reference": "scalar", "length": 20, "getter": false, "setter": false, "type": "string", "nullable": true },
+			"user": { "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
+			"isRevoked": { "name": "isRevoked", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" }
+		},
+		"props": [
+			{ "name": "expiresIn", "reference": "scalar", "getter": false, "setter": false, "type": "Date" },
+			{ "name": "otpCode", "reference": "scalar", "length": 20, "getter": false, "setter": false, "type": "string", "nullable": true },
+			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false },
+			{ "name": "isRevoked", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "OtpLog",
+		"path": "./src/entities/otp-log.entity.ts",
+		"name": "OtpLog",
+		"abstract": false,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }],
+		"collection": "otp_log"
+	},
+	"origin": "./src/entities/otp-log.entity.ts",
+	"hash": "bc95f32c84231ca276826b83c24a5f8d",
+	"version": "5.1.1"
+}

@@ -1,9 +1,9 @@
-import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import validator from 'validator';
+import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
+import { Observable } from "rxjs";
+import validator from "validator";
 
 export class RequestSanitizerInterceptor implements NestInterceptor {
-	private except = ['password', 'captcha'];
+	private except = ["password", "captcha"];
 
 	intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
 		this.cleanRequest(context.switchToHttp().getRequest());
@@ -17,7 +17,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 
 		// we wont be sending body on GET and POST
 
-		if (request.method !== 'GET' || request.method !== 'DELETE') {
+		if (request.method !== "GET" || request.method !== "DELETE") {
 			request.body = this.cleanObject(request.body);
 		}
 	}
@@ -32,7 +32,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 
 			// If the value is another nested object we need to recursively
 			// clean it too. This will work for both array and object.
-			if (typeof value === 'object') {
+			if (typeof value === "object") {
 				this.cleanObject(value);
 			} else {
 				// If the value is not an object then it's a scalar
@@ -57,6 +57,6 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 	}
 
 	isString(value: any): value is string {
-		return typeof value === 'string' || value instanceof String;
+		return typeof value === "string" || value instanceof String;
 	}
 }

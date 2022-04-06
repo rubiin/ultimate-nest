@@ -1,22 +1,40 @@
+import { HelperService } from "@common/helpers/helpers.utils";
 import {
+	IsNotEmpty,
 	IsString,
-	MinLength,
-	MaxLength,
+	IsBoolean,
+	IsEnum,
+	IsArray,
 	IsOptional,
-} from '@nestjs/class-validator';
+} from "class-validator";
+import { PostCategory } from "../enums";
 
 export class CreatePostDto {
-	@IsOptional()
 	@IsString()
-	@MinLength(5)
-	@MaxLength(255)
-	caption: string;
+	title: string;
 
-	// @IsOptional()
-	// @IsString()
-	// @MinLength(5)
-	// @MaxLength(25)
-	// tags: string[];
+	@IsString()
+	slug: string;
 
-	file: string;
+	@IsString()
+	excerpt: string;
+
+	@IsString()
+	content: string;
+
+	@IsNotEmpty()
+	@IsEnum(PostCategory, {
+		message: `Invalid option. Valids options are ${HelperService.EnumToString(
+			PostCategory,
+		)}`,
+	})
+	category: string;
+
+	@IsString({ each: true })
+	@IsArray()
+	tags: string[];
+
+	@IsOptional()
+	@IsBoolean()
+	status: boolean;
 }

@@ -1,7 +1,7 @@
-import * as Joi from 'joi';
+import * as Joi from "joi";
 
 export const validationSchema = Joi.object({
-	NODE_ENV: Joi.string().valid('dev', 'prod', 'stage', 'test').required(),
+	NODE_ENV: Joi.string().valid("dev", "prod", "stage", "test").required(),
 	APP_PORT: Joi.number().required(),
 	DB_HOST: Joi.string().required(),
 	DB_PORT: Joi.number().required(),
@@ -12,6 +12,7 @@ export const validationSchema = Joi.object({
 	JWT_SECRET: Joi.string().required().min(8),
 	JWT_REFRESH_EXPIRY: Joi.number().required(),
 	JWT_ACCESS_EXPIRY: Joi.string().required(),
+	// SENTRY_DSN: Joi.string().required(),
 	// REDIS_HOST: Joi.string().required(),
 	// REDIS_PORT: Joi.number().required(),
 	// MAIL_HOST: Joi.string().required(),

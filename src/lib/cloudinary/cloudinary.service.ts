@@ -1,8 +1,8 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
-import { Readable } from 'stream';
-import { CLOUDINARY_MODULE_OPTIONS } from './cloudinary.constant';
-import { CloudinaryModuleOptions } from './cloudinary.options';
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import { UploadApiErrorResponse, UploadApiResponse, v2 } from "cloudinary";
+import { Readable } from "stream";
+import { CLOUDINARY_MODULE_OPTIONS } from "./cloudinary.constant";
+import { CloudinaryModuleOptions } from "./cloudinary.options";
 
 @Injectable()
 export class CLoudinaryService {

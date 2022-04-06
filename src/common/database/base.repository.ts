@@ -1,5 +1,5 @@
-import { EntityManager, EntityRepository } from '@mikro-orm/core';
-import { BaseEntity } from './base-entity.entity';
+import { EntityManager, EntityRepository } from "@mikro-orm/core";
+import { BaseEntity } from "./base-entity.entity";
 
 export class BaseRepositroy<T extends BaseEntity> extends EntityRepository<T> {
 	softRemove(entity: T): EntityManager {
