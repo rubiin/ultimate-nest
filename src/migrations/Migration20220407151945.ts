@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations";
 
-export class Migration20220407112454 extends Migration {
+export class Migration20220407151945 extends Migration {
 	async up(): Promise<void> {
 		this.addSql(
 			'create table "user" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "first_name" varchar(255) not null, "last_name" varchar(255) not null, "email" varchar(255) not null, "avatar" varchar(255) not null, "password" varchar(255) not null, "roles" text[] not null, "status" boolean not null);',
@@ -15,7 +15,7 @@ export class Migration20220407112454 extends Migration {
 		);
 
 		this.addSql(
-			'create table "post" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "slug" varchar(255) not null, "title" varchar(255) not null, "excerpt" varchar(255) null, "content" varchar(255) not null, "category" varchar(255) not null, "tags" varchar(255) not null, "status" boolean not null, "author_id" int not null);',
+			'create table "post" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "slug" varchar(255) not null, "title" varchar(255) not null, "excerpt" varchar(255) null, "content" varchar(255) not null, "category" varchar(255) not null, "tags" text[] not null, "status" boolean not null, "author_id" int not null);',
 		);
 
 		this.addSql(
@@ -44,22 +44,6 @@ export class Migration20220407112454 extends Migration {
 	}
 
 	async down(): Promise<void> {
-		this.addSql(
-			'alter table "refresh_token" drop constraint "refresh_token_user_id_foreign";',
-		);
-
-		this.addSql(
-			'alter table "post" drop constraint "post_author_id_foreign";',
-		);
-
-		this.addSql(
-			'alter table "otp_log" drop constraint "otp_log_user_id_foreign";',
-		);
-
-		this.addSql(
-			'alter table "activity_log" drop constraint "activity_log_user_id_foreign";',
-		);
-
 		this.addSql('drop table if exists "user" cascade;');
 
 		this.addSql('drop table if exists "refresh_token" cascade;');

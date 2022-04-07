@@ -70,7 +70,7 @@ export class AuthController {
 	@Get("profile")
 	profile(@LoggedInUser() user: UserEntity) {
 		return {
-			message: "Petición correcta",
+			message: "Fetched user profile",
 			user,
 		};
 	}

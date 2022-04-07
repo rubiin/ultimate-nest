@@ -8,9 +8,9 @@ export class UserFactory extends Factory<User> {
 		return {
 			firstName: faker.name.firstName(),
 			lastName: faker.name.firstName(),
-			avatar: faker.image.imageUrl(),
+			avatar: faker.image.avatar(),
 			email: faker.internet.email(),
-			roles: ["USER"],
+			roles: ["AUTHOR"],
 			password: faker.internet.password(
 				9,
 				false,
