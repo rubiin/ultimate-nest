@@ -35,7 +35,7 @@ export class AuthService {
 			);
 		}
 
-		if (user && (await argon.verify(pass, user.password))) {
+		if (user && (await argon.verify(user.password, pass))) {
 			return omit(user, ["password"]);
 		}
 

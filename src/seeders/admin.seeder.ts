@@ -9,9 +9,9 @@ export class AdminSeeder extends Seeder {
 		const admin = em.create(User, {
 			firstName: "Rubin",
 			lastName: "Bhandari",
-			email: "roobin.handari@gmail.com",
+			email: "roobin.bhandari@gmail.com",
 			password: "Test@1234",
-			avatar: faker.image.imageUrl(),
+			avatar: faker.image.avatar(),
 			roles: ["ADMIN"],
 		});
 

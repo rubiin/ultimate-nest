@@ -25,7 +25,7 @@ const config = {
 	},
 	seeder: {
 		path: "./src/seeders", // path to the folder with seeders
-		defaultSeeder: "AdminSeeder", // default seeder class name
+		defaultSeeder: "DatabaseSeeder", // default seeder class name
 	},
 	password: process.env.DB_PASSWORD,
 	port: +process.env.DB_PORT,

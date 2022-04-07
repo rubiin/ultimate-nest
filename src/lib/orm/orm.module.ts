@@ -1,10 +1,10 @@
-import { Module, Scope } from "@nestjs/common";
-import { MikroOrmModule } from "@mikro-orm/nestjs";
-import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
-import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
-import { ConfigModule, ConfigService } from "@nestjs/config";
 import * as Entities from "@entities";
 import { LoadStrategy } from "@mikro-orm/core";
+import { MikroOrmModule } from "@mikro-orm/nestjs";
+import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
+import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 @Module({
 	imports: [
 		MikroOrmModule.forRootAsync({
@@ -24,12 +24,12 @@ import { LoadStrategy } from "@mikro-orm/core";
 				metadataProvider: TsMorphMetadataProvider,
 				registerRequestContext: false,
 				pool: { min: 2, max: 10 },
+				allowGlobalContext: true,
 				migrations: {
 					path: "dist/migrations",
 					pathTs: "src/migrations",
 				},
 			}),
-			scope: Scope.REQUEST,
 			inject: [ConfigService],
 		}),
 		MikroOrmModule.forFeature({

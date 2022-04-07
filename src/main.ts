@@ -10,6 +10,7 @@ import {
 	ExpressAdapter,
 	NestExpressApplication,
 } from "@nestjs/platform-express";
+import { Logger } from "nestjs-pino";
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(
@@ -53,7 +54,7 @@ async function bootstrap() {
 	// configurePinoLogger
 	// ==================================================
 
-	// app.useLogger(app.get(Logger));
+	app.useLogger(app.get(Logger));
 
 	const port = configService.get<number>("app.port", 3000);
 

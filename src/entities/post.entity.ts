@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
-import { Entity, ManyToOne, Property } from "@mikro-orm/core";
+import { ArrayType, Entity, ManyToOne, Property } from "@mikro-orm/core";
 
 import { User } from "./user.entity";
 @Entity()
@@ -19,7 +19,7 @@ export class Post extends BaseEntity {
 	@Property()
 	category: string;
 
-	@Property({ type: "simple-array" })
+	@Property({ type: ArrayType })
 	tags: string[];
 
 	@Property()
