@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, Scope } from "@nestjs/common";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
@@ -21,14 +21,15 @@ import { LoadStrategy } from "@mikro-orm/core";
 				debug: true,
 				loadStrategy: LoadStrategy.JOINED,
 				highlighter: new SqlHighlighter(),
-				registerRequestContext: false,
 				metadataProvider: TsMorphMetadataProvider,
+				registerRequestContext: false,
 				pool: { min: 2, max: 10 },
 				migrations: {
 					path: "dist/migrations",
 					pathTs: "src/migrations",
 				},
 			}),
+			scope: Scope.REQUEST,
 			inject: [ConfigService],
 		}),
 		MikroOrmModule.forFeature({

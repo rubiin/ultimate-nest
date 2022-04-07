@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { RolesBuilder, InjectRolesBuilder } from "nest-access-control";
 import { User as UserEntity } from "@entities";
 import { Auth } from "@common/decorators/auth.decorator";
@@ -33,6 +33,7 @@ export class UserController {
 		return { data };
 	}
 
+	@ApiOperation({ summary: "public registration" })
 	@Post("register")
 	async publicRegistration(@Body() dto: UserRegistrationDto) {
 		const data = await this.userService.createOne({
@@ -50,6 +51,7 @@ export class UserController {
 		return { data };
 	}
 
+	@ApiOperation({ summary: "Admin create user" })
 	@Auth({
 		possession: "any",
 		action: "create",
