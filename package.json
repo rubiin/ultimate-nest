@@ -24,7 +24,7 @@
 		"orm:create": "npm run orm migration:create",
 		"orm:up": "npm run orm migration:up",
 		"orm:down": "npm run orm migration:down",
-		"seed": "npm run orm seeder:run -- --class=AdminSeeder && npm run orm seeder:run -- --class=UserSeeder"
+		"seed": "npm run orm seeder:run -- --class=AdminSeeder && npm run orm seeder:run -- --class=DatabaseSeeder"
 	},
 	"dependencies": {
 		"@golevelup/nestjs-modules": "^0.5.0",
@@ -45,12 +45,12 @@
 		"@nestjs/swagger": "^5.2.1",
 		"@nestjs/throttler": "^2.0.1",
 		"@ntegral/nestjs-sentry": "^3.0.7",
-		"@rubiin/js-utils": "^2.1.6",
+		"@rubiin/js-utils": "^2.1.7",
 		"@sentry/node": "^6.19.6",
 		"@sentry/types": "^6.19.6",
 		"@types/passport-local": "^1.0.34",
 		"argon2": "^0.28.5",
-		"cache-manager": "^3.6.0",
+		"cache-manager": "^3.6.1",
 		"cache-manager-redis-store": "^2.0.0",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.13.2",
