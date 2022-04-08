@@ -1,11 +1,12 @@
+import { AppRoles } from "@common/constants/app.roles";
 import { BaseEntity } from "@common/database/base-entity.entity";
 import { HelperService } from "@common/helpers/helpers.utils";
 import {
-	ArrayType,
 	BeforeCreate,
 	BeforeUpdate,
 	Collection,
 	Entity,
+	Enum,
 	OneToMany,
 	Property,
 	wrap,
@@ -29,8 +30,8 @@ export class User extends BaseEntity {
 	@Property({ hidden: true })
 	password!: string;
 
-	@Property({ type: ArrayType })
-	roles: string[] = [];
+	@Enum({ items: () => AppRoles, array: true, default: [AppRoles.AUTHOR] })
+	roles: AppRoles[] = [AppRoles.AUTHOR];
 
 	@Property()
 	status = true;

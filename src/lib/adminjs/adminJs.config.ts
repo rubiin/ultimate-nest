@@ -8,6 +8,17 @@ export const adminjsConfig: AdminModuleFactory & CustomLoader = {
 		return {
 			adminJsOptions: {
 				rootPath: "/admin",
+				branding: {
+					companyName: "NestJS Admin",
+				},
+				auth: {
+					authenticate: async (email, password) => ({
+						email,
+						password,
+					}),
+					cookieName: "test",
+					cookiePassword: "testPass",
+				},
 				resources: [
 					{
 						model: User,

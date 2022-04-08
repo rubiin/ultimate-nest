@@ -7,7 +7,7 @@
 			"email": { "name": "email", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			"avatar": { "name": "avatar", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			"password": { "name": "password", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "string" },
-			"roles": { "name": "roles", "reference": "scalar", "getter": false, "setter": false, "array": true },
+			"roles": { "name": "roles", "reference": "scalar", "enum": false, "items": ["AUTHOR", "ADMIN"], "array": true, "default": ["AUTHOR"], "type": "AppRoles", "customType": "customType" },
 			"status": { "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
 			"articles": { "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" }
 		},
@@ -17,7 +17,7 @@
 			{ "name": "email", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			{ "name": "avatar", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			{ "name": "password", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "string" },
-			{ "name": "roles", "reference": "scalar", "getter": false, "setter": false, "array": true },
+			{ "name": "roles", "reference": "scalar", "enum": false, "items": ["AUTHOR", "ADMIN"], "array": true, "default": ["AUTHOR"], "type": "AppRoles", "customType": "customType" },
 			{ "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
 			{ "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" }
 		],
@@ -40,6 +40,6 @@
 		"collection": "user"
 	},
 	"origin": "./src/entities/user.entity.ts",
-	"hash": "40db17cfa4c803a88df150803cb0420c",
+	"hash": "52b2eb5fef653c35fbec48ebdd539d6f",
 	"version": "5.1.1"
 }
