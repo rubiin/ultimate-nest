@@ -2,6 +2,7 @@ import type { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
 import { User } from "../entities/user.entity";
 import { Faker } from "@mikro-orm/seeder";
+import { AppRoles } from "@common/constants/app.roles";
 
 export class AdminSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
@@ -12,7 +13,7 @@ export class AdminSeeder extends Seeder {
 			email: "roobin.bhandari@gmail.com",
 			password: "Test@1234",
 			avatar: faker.image.avatar(),
-			roles: ["ADMIN"],
+			roles: [AppRoles.ADMIN],
 		});
 
 		em.persist(admin);

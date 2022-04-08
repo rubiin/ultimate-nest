@@ -41,5 +41,5 @@ export class CreateUserDto {
 			AppRoles,
 		)}`,
 	})
-	roles: string[];
+	roles: [AppRoles];
 }

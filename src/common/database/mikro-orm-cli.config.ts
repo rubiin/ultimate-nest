@@ -2,14 +2,23 @@ import { Options } from "@mikro-orm/core";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import * as dotenv from "dotenv";
+import * as dotEnvExpand from "dotenv-expand";
+import * as chalk from "chalk";
 
 /**
  * This is required to run mikro-orm cli
  *
  */
 
-dotenv.config({ path: `${process.cwd()}/env/.env.${process.env.NODE_ENV}` });
-console.info(`Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}`);
+const myEnv = dotenv.config({
+	path: `${process.cwd()}/env/.env.${process.env.NODE_ENV}`,
+});
+
+dotEnvExpand.expand(myEnv);
+
+console.info(
+	chalk.green(`Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}`),
+);
 
 const config = {
 	dbName: process.env.DB_DATABASE,
