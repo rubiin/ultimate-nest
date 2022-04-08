@@ -1,6 +1,7 @@
 import { RefreshToken, User } from "@entities";
-import { EntityRepository } from "@mikro-orm/core";
+import { MikroORM } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
@@ -8,6 +9,7 @@ export class RefreshTokensRepository {
 	constructor(
 		@InjectRepository(RefreshToken)
 		private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
+		private readonly orm: MikroORM,
 	) {}
 
 	async createRefreshToken(user: User, ttl: number): Promise<RefreshToken> {

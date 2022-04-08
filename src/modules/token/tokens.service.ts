@@ -159,7 +159,7 @@ export class TokensService {
 	async deleteRefreshTokenForUser(user: User): Promise<IResponse<User>> {
 		await this.tokens.deleteTokensForUser(user);
 
-		return { message: "Operation Sucessful", data: user };
+		return { message: "Operation Successful", data: user };
 	}
 
 	/**
@@ -182,7 +182,7 @@ export class TokensService {
 		}
 		await this.tokens.deleteToken(user, tokenId);
 
-		return { message: "Operation Sucessful", data: user };
+		return { message: "Operation Successful", data: user };
 	}
 
 	/**
