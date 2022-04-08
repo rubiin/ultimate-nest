@@ -1,5 +1,5 @@
 import { AdminModuleFactory, CustomLoader } from "@adminjs/nestjs";
-import { User } from "@entities";
+import { User, Post } from "@entities";
 import { MikroORM } from "@mikro-orm/core";
 
 const defaultPropertyList = {
@@ -54,13 +54,13 @@ export const adminjsConfig: AdminModuleFactory & CustomLoader = {
 					cookiePassword: "testPass",
 				},
 				resources: [
-					CreateCarResource(orm, User, {
-						roles: {
-							isVisible: {
-								show: false,
-								edit: false,
-							},
-						},
+					CreateOrmResource(orm, User, {
+						roles: { type: "string", isArray: true },
+					}),
+					CreateOrmResource(orm, Post, {
+						tags: { type: "string", isArray: true },
+						content: { type: "richtext" },
+						excerpt: { type: "richtext" },
 					}),
 				],
 			},
@@ -68,7 +68,7 @@ export const adminjsConfig: AdminModuleFactory & CustomLoader = {
 	},
 };
 
-export const CreateCarResource = (
+export const CreateOrmResource = (
 	orm: MikroORM,
 	model: any,
 	fieldOptions: any = {},
