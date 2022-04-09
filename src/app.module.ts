@@ -2,6 +2,7 @@ import { roles } from "@common/constants/app.roles";
 import { NestAdminModule } from "@lib/adminjs/admin.module";
 import { NestConfigModule } from "@lib/config/config.module";
 import { NestI18nModule } from "@lib/i18n/i18n.module";
+import { NestMailModule } from "@lib/mailer";
 import { OrmModule } from "@lib/orm/orm.module";
 import { NestPinoModule } from "@lib/pino/pino.module";
 import { AuthModule } from "@modules/auth/auth.module";
@@ -17,8 +18,9 @@ import { join } from "path";
 		AuthModule,
 		UserModule,
 		PostModule,
-		OrmModule,
 		NestConfigModule,
+		OrmModule,
+		NestMailModule,
 		NestPinoModule,
 		NestI18nModule,
 		NestAdminModule,
