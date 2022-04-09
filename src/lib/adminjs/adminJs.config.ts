@@ -1,6 +1,7 @@
 import { AdminModuleFactory, CustomLoader } from "@adminjs/nestjs";
-import { User, Post } from "@entities";
-import { MikroORM } from "@mikro-orm/core";
+import { Post, User } from "@entities";
+import { AnyEntity, EntityClass, MikroORM } from "@mikro-orm/core";
+import * as argon from "argon2";
 
 const defaultPropertyList = {
 	createdAt: {
@@ -46,16 +47,27 @@ export const adminjsConfig: AdminModuleFactory & CustomLoader = {
 					logo: "https://rb.gy/p8apxe",
 				},
 				auth: {
-					authenticate: async (email: any, password: any) => ({
-						email,
-						password,
-					}),
+					authenticate: async (email: string, password: string) => {
+						const user = await orm.em
+							.getRepository(User)
+							.findOne({ email });
+
+						if (
+							user &&
+							(await argon.verify(user.password, password))
+						) {
+							return user;
+						}
+
+						return null;
+					},
 					cookieName: "test",
 					cookiePassword: "testPass",
 				},
 				resources: [
 					CreateOrmResource(orm, User, {
 						roles: { type: "string", isArray: true },
+						password: { type: "password" },
 					}),
 					CreateOrmResource(orm, Post, {
 						tags: { type: "string", isArray: true },
@@ -70,7 +82,7 @@ export const adminjsConfig: AdminModuleFactory & CustomLoader = {
 
 export const CreateOrmResource = (
 	orm: MikroORM,
-	model: any,
+	model: EntityClass<AnyEntity>,
 	fieldOptions: any = {},
 ) => {
 	return {
@@ -85,4 +97,20 @@ export const CreateOrmResource = (
 			},
 		},
 	};
+};
+export const theme = {
+	colors: {
+		bck: "#20273E",
+		defaultText: "#FFFFFF",
+		lightText: "#A9AABC",
+		border: "#2E324A",
+		borderOnDark: "#2E324A",
+		innerBck: "#192035",
+		darkBck: "#20273E",
+		lightBck: "#485899",
+		superLightBack: "#303B62",
+		inputBck: "#192035",
+		lightSuccess: "#008340",
+		lightError: "#660040",
+	},
 };
