@@ -242,8 +242,9 @@
 																style="color: #ffffff; line-height: 160%; text-align: center; word-wrap: break-word;">
 																<p style="font-size: 14px; line-height: 160%;">Welcome
 																	aboard, </p>
-																<p style="font-size: 14px; line-height: 160%;">&lt;%=
-																	it.firstName %&gt;</p>
+																<p style="font-size: 14px; line-height: 160%;">
+																	<%= it.firstName %>
+																	</p>
 															</div>
 
 														</td>
@@ -259,7 +260,7 @@
 															align="left">
 
 															<div class="v-text-align" align="center">
-																<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;font-family:arial,helvetica,sans-serif;"><tr><td class="v-text-align" style="font-family:arial,helvetica,sans-serif;" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="&lt;%= it.link %&gt;" style="height:41px; v-text-anchor:middle; width:132px;" arcsize="2.5%" stroke="f" fillcolor="#00d09c"><w:anchorlock/><center style="color:#FFFFFF;font-family:arial,helvetica,sans-serif;"><![endif]-->
+																<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;font-family:arial,helvetica,sans-serif;"><tr><td class="v-text-align" style="font-family:arial,helvetica,sans-serif;" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="<%= it.link %>" style="height:41px; v-text-anchor:middle; width:132px;" arcsize="2.5%" stroke="f" fillcolor="#00d09c"><w:anchorlock/><center style="color:#FFFFFF;font-family:arial,helvetica,sans-serif;"><![endif]-->
 																<a href="&lt;%= it.link %&gt;" target="_blank"
 																	style="box-sizing: border-box;display: inline-block;font-family:arial,helvetica,sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #00d09c; border-radius: 1px;-webkit-border-radius: 1px; -moz-border-radius: 1px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
 																	<span style="display:block;padding:12px 30px;line-height:120%;">Get Started</span>

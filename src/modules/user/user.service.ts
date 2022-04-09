@@ -8,6 +8,7 @@ import {
 	NotFoundException,
 	BadRequestException,
 } from "@nestjs/common";
+import { I18nService } from "nestjs-i18n";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 export interface UserFindOne {
@@ -23,6 +24,7 @@ export class UserService {
 		private readonly mailService: MailerService,
 		private readonly orm: MikroORM,
 		private readonly em: EntityManager,
+		private readonly i18nService: I18nService,
 	) {}
 
 	async getMany() {
@@ -37,7 +39,9 @@ export class UserService {
 			);
 
 		if (!user)
-			throw new NotFoundException("User does not exists or unauthorized");
+			throw new NotFoundException(
+				this.i18nService.t("status.USER_DOESNT_EXIST"),
+			);
 
 		return user;
 	}
@@ -48,7 +52,9 @@ export class UserService {
 		});
 
 		if (userExist) {
-			throw new BadRequestException("User already registered with email");
+			throw new BadRequestException(
+				this.i18nService.t("status.USER_EMAIL_EXISTS"),
+			);
 		}
 
 		const newUser = this.userRepository.create(dto);
@@ -82,7 +88,7 @@ export class UserService {
 	async deleteOne(id: number, userEntity?: User) {
 		const user = await this.getOne(id, userEntity);
 
-		await this.userRepository.remove(user);
+		this.userRepository.remove(user);
 
 		return user;
 	}

@@ -51,6 +51,7 @@ module.exports = {
 			'error',
 			{ argsIgnorePattern: '^_' },
 		],
+		"no-secrets/no-secrets":["error",{"ignoreContent":"^(operations.|status.)"}],
 		'no-multi-spaces': 'error',
 		'linebreak-style': ['error', 'unix'],
 		'newline-before-return': 'error',
