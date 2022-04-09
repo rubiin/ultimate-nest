@@ -15,7 +15,7 @@ import { MailModule } from "./mailer.module";
 				password: configService.get("mail.password"),
 				previewEmail: configService.get<boolean>("mail.previewEmail"),
 				template: {
-					dir: configService.get("mail.template.dir"),
+					dir: configService.get("mail.templateDir"),
 					etaOptions: {
 						cache: true,
 					},
