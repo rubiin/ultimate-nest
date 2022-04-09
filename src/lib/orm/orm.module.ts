@@ -3,8 +3,11 @@ import { LoadStrategy } from "@mikro-orm/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
-import { Module } from "@nestjs/common";
+import { Logger, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+
+const logger = new Logger("MikroORM");
+
 @Module({
 	imports: [
 		MikroOrmModule.forRootAsync({
@@ -25,6 +28,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 				registerRequestContext: false,
 				pool: { min: 2, max: 10 },
 				allowGlobalContext: true,
+				logger: msg => logger.log(msg),
 				migrations: {
 					path: "dist/migrations",
 					pathTs: "src/migrations",
