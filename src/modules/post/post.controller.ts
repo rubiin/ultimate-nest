@@ -16,6 +16,7 @@ import { Auth } from "@common/decorators/auth.decorator";
 import { User as UserEntity } from "@entities";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { AppResource } from "@common/constants/app.roles";
+import { I18n, I18nContext } from "nestjs-i18n";
 
 @ApiTags("Posts")
 @Controller("post")
@@ -49,10 +50,11 @@ export class PostController {
 	async createPost(
 		@Body() dto: CreatePostDto,
 		@LoggedInUser() author: UserEntity,
+		@I18n() i18n: I18nContext,
 	) {
 		const data = await this.postService.createOne(dto, author);
 
-		return { message: "Post created", data };
+		return { message: i18n.t("operations.POST_CREATED"), data };
 	}
 
 	@Auth({
@@ -65,6 +67,7 @@ export class PostController {
 		@Param("id") id: number,
 		@Body() dto: EditPostDto,
 		@LoggedInUser() author: UserEntity,
+		@I18n() i18n: I18nContext,
 	) {
 		const data = await (this.roleBuilder
 			.can(author.roles)
@@ -72,7 +75,7 @@ export class PostController {
 			? this.postService.editOne(id, dto)
 			: this.postService.editOne(id, dto, author));
 
-		return { message: "Post edited", data };
+		return { message: i18n.t("operations.POST_EDITED"), data };
 	}
 
 	@Auth({
@@ -84,6 +87,7 @@ export class PostController {
 	async deleteOne(
 		@Param("id") id: number,
 		@LoggedInUser() author: UserEntity,
+		@I18n() i18n: I18nContext,
 	) {
 		const data = await (this.roleBuilder
 			.can(author.roles)
@@ -91,6 +95,6 @@ export class PostController {
 			? this.postService.deleteOne(id)
 			: this.postService.deleteOne(id, author));
 
-		return { message: "Post deleted", data };
+		return { message: i18n.t("operations.POST_DELETED"), data };
 	}
 }

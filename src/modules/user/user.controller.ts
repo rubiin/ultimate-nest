@@ -16,6 +16,7 @@ import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { AppResource, AppRoles } from "@common/constants/app.roles";
 import { omit } from "@rubiin/js-utils";
+import { I18n, I18nContext } from "nestjs-i18n";
 
 @ApiTags("Users routes")
 @Controller("user")
@@ -35,13 +36,16 @@ export class UserController {
 
 	@ApiOperation({ summary: "public registration" })
 	@Post("register")
-	async publicRegistration(@Body() dto: UserRegistrationDto) {
+	async publicRegistration(
+		@Body() dto: UserRegistrationDto,
+		@I18n() i18n: I18nContext,
+	) {
 		const data = await this.userService.createOne({
 			...dto,
 			roles: [AppRoles.AUTHOR],
 		});
 
-		return { message: "User registered", data };
+		return { message: i18n.t("operations.USER_REGISTERED"), data };
 	}
 
 	@Get(":id")
@@ -58,10 +62,10 @@ export class UserController {
 		resource: AppResource.USER,
 	})
 	@Post()
-	async createOne(@Body() dto: CreateUserDto) {
+	async createOne(@Body() dto: CreateUserDto, @I18n() i18n: I18nContext) {
 		const data = await this.userService.createOne(dto);
 
-		return { message: "User created", data };
+		return { message: i18n.t("operations.USER_CREATED"), data };
 	}
 
 	@Auth({
@@ -74,6 +78,7 @@ export class UserController {
 		@Param("id") id: number,
 		@Body() dto: EditUserDto,
 		@LoggedInUser() user: UserEntity,
+		@I18n() i18n: I18nContext,
 	) {
 		let data: any;
 
@@ -88,7 +93,7 @@ export class UserController {
 			data = await this.userService.editOne(id, rest, user);
 		}
 
-		return { message: "User edited", data };
+		return { message: i18n.t("operations.USER_EDITED"), data };
 	}
 
 	@Auth({
@@ -97,13 +102,17 @@ export class UserController {
 		resource: AppResource.USER,
 	})
 	@Delete(":id")
-	async deleteOne(@Param("id") id: number, @LoggedInUser() user: UserEntity) {
+	async deleteOne(
+		@Param("id") id: number,
+		@LoggedInUser() user: UserEntity,
+		@I18n() i18n: I18nContext,
+	) {
 		const data = await (this.rolesBuilder
 			.can(user.roles)
 			.updateAny(AppResource.USER).granted
 			? this.userService.deleteOne(id)
 			: this.userService.deleteOne(id, user));
 
-		return { message: "User deleted", data };
+		return { message: i18n.t("operations.USER_DELETED"), data };
 	}
 }
