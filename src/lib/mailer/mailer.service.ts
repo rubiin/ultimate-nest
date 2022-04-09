@@ -23,7 +23,7 @@ export class MailerService {
 		const transporter = createTransport({
 			host: this.options.host,
 			port: this.options.port,
-			secure: false,
+			secure: true,
 			auth: {
 				user: this.options.username,
 				pass: this.options.password,
@@ -36,17 +36,17 @@ export class MailerService {
 
 		return new Promise<boolean>((resolve, reject) =>
 			eta.renderFile(
-				this.options.template.dir + "/" + mailOptions.template + ".eta",
+				`${__dirname}/../../${this.options.template.dir}/${mailOptions.template}.eta`,
 				mailOptions.replacements,
 				this.options.template.etaOptions,
-				function (err, html) {
+				(err, html) => {
 					if (err) {
 						reject(err);
 					}
 
 					mailOptions.html = html;
 
-					if (this.mailOptions.previewEmail) {
+					if (this.options.previewEmail) {
 						previewEmail(mailOptions)
 							.then(console.info)
 							.catch(console.error);
@@ -54,10 +54,10 @@ export class MailerService {
 
 					transporter.sendMail(mailOptions, async (error, info) => {
 						if (error) {
-							console.error("error is " + error);
+							this.logger.error("error is " + error);
 							reject(false);
 						} else {
-							console.info(
+							this.logger.debug(
 								"info",
 								"Email sent: " + info.response,
 							);

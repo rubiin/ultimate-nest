@@ -1,5 +1,6 @@
 import { User } from "@entities";
-import { wrap } from "@mikro-orm/core";
+import { MailerService } from "@lib/mailer/mailer.service";
+import { EntityManager, MikroORM, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityRepository } from "@mikro-orm/postgresql";
 import {
@@ -19,6 +20,9 @@ export class UserService {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: EntityRepository<User>,
+		private readonly mailService: MailerService,
+		private readonly orm: MikroORM,
+		private readonly em: EntityManager,
 	) {}
 
 	async getMany() {
@@ -43,12 +47,24 @@ export class UserService {
 			email: dto.email,
 		});
 
-		if (userExist)
+		if (userExist) {
 			throw new BadRequestException("User already registered with email");
+		}
 
 		const newUser = this.userRepository.create(dto);
 
-		await this.userRepository.persistAndFlush(newUser);
+		await this.orm.em.transactional(async em => {
+			await em.persistAndFlush(newUser);
+
+			await this.mailService.sendMail({
+				template: "welcome",
+				replacements: {
+					firstName: newUser.firstName,
+					link: "example.com",
+				},
+				to: newUser.email,
+			});
+		});
 
 		return newUser;
 	}
