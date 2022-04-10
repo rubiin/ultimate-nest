@@ -1,6 +1,8 @@
 import { registerAs } from "@nestjs/config";
 
 export const redis = registerAs("redis", () => ({
-	url: process.env.REDIS_URL,
+	host: process.env.REDIS_HOST,
+	port: +process.env.REDIS_PORT,
+	password: process.env.REDIS_PASSWORD,
 	ttl: +process.env.REDIS_TTL,
 }));
