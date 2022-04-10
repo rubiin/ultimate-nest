@@ -138,6 +138,15 @@
 					"primary": false,
 					"nullable": true,
 					"mappedType": "string"
+				},
+				"is_verified": {
+					"name": "is_verified",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "boolean"
 				}
 			},
 			"name": "user",
@@ -531,12 +540,12 @@
 				},
 				"content": {
 					"name": "content",
-					"type": "varchar(255)",
+					"type": "text",
 					"unsigned": false,
 					"autoincrement": false,
 					"primary": false,
 					"nullable": false,
-					"mappedType": "string"
+					"mappedType": "text"
 				},
 				"category": {
 					"name": "category",
@@ -695,8 +704,8 @@
 					"nullable": false,
 					"mappedType": "integer"
 				},
-				"is_revoked": {
-					"name": "is_revoked",
+				"is_used": {
+					"name": "is_used",
 					"type": "boolean",
 					"unsigned": false,
 					"autoincrement": false,

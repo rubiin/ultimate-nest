@@ -18,6 +18,7 @@
 				"customType": "customType"
 			},
 			"mobileNumber": { "name": "mobileNumber", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
+			"isVerified": { "name": "isVerified", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
 			"articles": { "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" }
 		},
 		"props": [
@@ -28,6 +29,7 @@
 			{ "name": "password", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "string" },
 			{ "name": "roles", "reference": "scalar", "enum": false, "items": ["AUTHOR", "ADMIN", "READER"], "array": true, "default": ["AUTHOR"], "type": "AppRoles", "customType": "customType" },
 			{ "name": "mobileNumber", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
+			{ "name": "isVerified", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
 			{ "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" }
 		],
 		"primaryKeys": [],
@@ -49,6 +51,6 @@
 		"collection": "user"
 	},
 	"origin": "./src/entities/user.entity.ts",
-	"hash": "8f2bd16b8516220a9700ce1c964a3b5b",
+	"hash": "21b55c07d32d6487f316308e0c3ce4e8",
 	"version": "5.1.1"
 }
