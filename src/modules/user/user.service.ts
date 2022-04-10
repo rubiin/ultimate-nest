@@ -1,4 +1,5 @@
 import { PageOptionsDto } from "@common/classes/pagination";
+import { EmailTemplateEnum } from "@common/constants/template.enum";
 import { BaseRepository } from "@common/database/base.repository";
 import { User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
@@ -10,6 +11,8 @@ import {
 	Injectable,
 	NotFoundException,
 } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { capitalize } from "@rubiin/js-utils";
 import { I18nService } from "nestjs-i18n";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
@@ -21,6 +24,7 @@ export class UserService {
 		private readonly mailService: MailerService,
 		private readonly orm: MikroORM,
 		private readonly i18nService: I18nService,
+		private readonly configService: ConfigService,
 	) {}
 
 	async getMany({ limit, offset, order, page }: PageOptionsDto) {
@@ -66,14 +70,15 @@ export class UserService {
 
 		await this.orm.em.transactional(async em => {
 			await em.persistAndFlush(newUser);
-
 			await this.mailService.sendMail({
-				template: "welcome",
+				template: EmailTemplateEnum.WELCOME_TEMPLATE,
 				replacements: {
-					firstName: newUser.firstName,
+					firstName: capitalize(newUser.firstName),
 					link: "example.com",
 				},
 				to: newUser.email,
+				subject: "Welcome onboard",
+				from: this.configService.get("mail.senderEmail"),
 			});
 		});
 

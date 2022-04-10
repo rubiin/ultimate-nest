@@ -1,4 +1,5 @@
 import { randomTypes } from "@common/constants/random-types.enum";
+import { EmailTemplateEnum } from "@common/constants/template.enum";
 import { BaseRepository } from "@common/database/base.repository";
 import { HelperService } from "@common/helpers/helpers.utils";
 import { IResponse } from "@common/interfaces/response.interface";
@@ -134,19 +135,22 @@ export class AuthService {
 			user: userExists,
 			otpCode: otpNumber,
 			expiresIn: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
+			isUsed: false,
 		});
 
 		await this.orm.em.transactional(async em => {
 			await em.persistAndFlush(otp);
 
 			await this.mailService.sendMail({
-				template: "otp",
+				template: EmailTemplateEnum.RESET_PASSWORD_TEMPLATE,
 				replacements: {
 					firstName: capitalize(userExists.firstName),
 					lastName: capitalize(userExists.lastName),
 					otp: otpNumber,
 				},
 				to: userExists.email,
+				subject: "Reset Password",
+				from: this.configService.get("mail.senderEmail"),
 			});
 		});
 
