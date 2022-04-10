@@ -28,6 +28,7 @@ export class AuthService {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: BaseRepository<User>,
+		@InjectRepository(OtpLog)
 		private readonly otpRepository: BaseRepository<OtpLog>,
 		private readonly tokenService: TokensService,
 		private readonly configService: ConfigService,

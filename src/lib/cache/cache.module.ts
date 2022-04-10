@@ -10,9 +10,8 @@ import { CacheService } from "./cache.service";
 			imports: [NestConfigModule],
 			useFactory: async (configService: ConfigService) => ({
 				store: redisStore,
-				host: configService.get<string>("redis.host"),
-				port: configService.get<string>("redis.port"),
-				ttl: configService.get<number>("redis.ttl"),
+				url: configService.get("redis.url"),
+				db: 0,
 			}),
 			inject: [ConfigService],
 		}),

@@ -5,6 +5,6 @@ export const mail = registerAs("mail", () => ({
 	password: process.env.MAIL_PASSWORD,
 	host: process.env.MAIL_HOST,
 	port: +process.env.MAIL_PORT,
-	previewEmail: process.env.MAIL_PREVIEW_EMAIL,
+	previewEmail: JSON.parse(process.env.MAIL_PREVIEW_EMAIL),
 	templateDir: process.env.MAIL_TEMPLATE_DIR,
 }));
