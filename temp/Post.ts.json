@@ -5,7 +5,7 @@
 			"slug": { "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"title": { "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"excerpt": { "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
-			"content": { "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
+			"content": { "name": "content", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"category": { "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"tags": { "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
 			"status": { "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
@@ -15,7 +15,7 @@
 			{ "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
-			{ "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
+			{ "name": "content", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
 			{ "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
@@ -40,6 +40,6 @@
 		"collection": "post"
 	},
 	"origin": "./src/entities/post.entity.ts",
-	"hash": "fe55f8981f64859b6ff0d74825de5273",
+	"hash": "54c60d3b4c48f41e2d0ce309686e624f",
 	"version": "5.1.1"
 }

@@ -9,6 +9,7 @@ import {
 	Enum,
 	OneToMany,
 	Property,
+	Unique,
 	wrap,
 } from "@mikro-orm/core";
 import { Post } from "./post.entity";
@@ -21,6 +22,7 @@ export class User extends BaseEntity {
 	@Property({ length: 255 })
 	lastName = "";
 
+	@Unique()
 	@Property({ length: 255 })
 	email!: string;
 
@@ -33,8 +35,12 @@ export class User extends BaseEntity {
 	@Enum({ items: () => AppRoles, array: true, default: [AppRoles.AUTHOR] })
 	roles: AppRoles[] = [AppRoles.AUTHOR];
 
+	@Unique()
 	@Property()
-	status = true;
+	mobileNumber?: string;
+
+	@Property()
+	isVerified = false;
 
 	@BeforeCreate()
 	@BeforeUpdate()

@@ -1,6 +1,7 @@
 import { AdminModuleFactory, CustomLoader } from "@adminjs/nestjs";
 import { Post, User } from "@entities";
 import { AnyEntity, EntityClass, MikroORM } from "@mikro-orm/core";
+import AdminJS from "adminjs";
 import * as argon from "argon2";
 
 const defaultPropertyList = {
@@ -10,6 +11,25 @@ const defaultPropertyList = {
 			edit: false,
 		},
 	},
+	isObsolete: {
+		isVisible: {
+			show: false,
+			edit: false,
+		},
+		components: {
+			show: AdminJS.bundle("./components/NotCreatableInput"),
+		},
+	},
+	isActive: {
+		isVisible: {
+			show: false,
+			edit: false,
+		},
+		components: {
+			show: AdminJS.bundle("./components/NotCreatableInput"),
+		},
+	},
+
 	deletedAt: {
 		isVisible: {
 			show: false,
@@ -66,7 +86,10 @@ export const adminjsConfig: AdminModuleFactory & CustomLoader = {
 				},
 				resources: [
 					CreateOrmResource(orm, User, {
-						roles: { type: "string", isArray: true },
+						roles: {
+							availableValues: ["admin", "user"],
+							type: "string",
+						},
 						password: { type: "password" },
 					}),
 					CreateOrmResource(orm, Post, {

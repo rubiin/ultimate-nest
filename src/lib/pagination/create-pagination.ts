@@ -42,5 +42,5 @@ export function createPaginationObject<T>(
 		currentPage: currentPage,
 	};
 
-	return new Pagination(items, meta, route && routes);
+	return new Pagination(meta, items, route && routes);
 }

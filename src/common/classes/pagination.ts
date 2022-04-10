@@ -1,28 +1,37 @@
-import { Transform } from "class-transformer";
-import { IsNumber, IsOptional } from "class-validator";
+import { Order } from "@common/constants/order.enum";
+import { ApiPropertyOptional } from "@nestjs/swagger";
+import { Type } from "class-transformer";
+import { IsEnum, IsOptional, IsInt, Min, Max } from "class-validator";
 
-export class GetPaginationQuery {
+export class PageOptionsDto {
+	@ApiPropertyOptional({ enum: Order, default: Order.ASC })
+	@IsEnum(Order)
 	@IsOptional()
-	@Transform(({ value }) => Number(value), { toClassOnly: true })
-	@IsNumber(
-		{
-			maxDecimalPlaces: 0,
-			allowInfinity: false,
-			allowNaN: false,
-		},
-		{ message: "Page must be an integer" },
-	)
-	page = 1;
+	readonly order?: Order = Order.ASC;
 
+	@ApiPropertyOptional({
+		minimum: 1,
+		default: 1,
+	})
+	@Type(() => Number)
+	@IsInt()
+	@Min(1)
 	@IsOptional()
-	@Transform(({ value }) => Number(value), { toClassOnly: true })
-	@IsNumber(
-		{
-			maxDecimalPlaces: 0,
-			allowInfinity: false,
-			allowNaN: false,
-		},
-		{ message: "Limit must be an integer" },
-	)
-	limit = 10;
+	readonly page?: number = 1;
+
+	@ApiPropertyOptional({
+		minimum: 1,
+		maximum: 50,
+		default: 10,
+	})
+	@Type(() => Number)
+	@IsInt()
+	@Min(1)
+	@Max(50)
+	@IsOptional()
+	readonly limit?: number = 10;
+
+	get offset(): number {
+		return (this.page - 1) * this.limit;
+	}
 }

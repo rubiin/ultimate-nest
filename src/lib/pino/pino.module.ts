@@ -29,8 +29,9 @@ import { LoggerModule } from "nestjs-pino";
 									level: "info",
 									options: {
 										colorize: true,
-										prettyPrint: true,
+										prettyPrint: false,
 										translateTime: true,
+										ignore: "pid,hostname",
 									},
 								},
 							],

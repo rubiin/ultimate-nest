@@ -4,10 +4,11 @@
 	"compilerOptions": {
 		"plugins": [
 			{
-				"name": "@nestjs/swagger",
+				"name": "@nestjs/swagger/plugin",
 				"options": {
-					"introspectComments": true,
-					"classValidatorShim": true
+					"classValidatorShim": true,
+					"dtoFileNameSuffix": [".entity.ts", ".dto.ts"],
+					"controllerFileNameSuffix": [".controller.ts"]
 				}
 			}
 		],

@@ -127,22 +127,36 @@
 					"primary": false,
 					"nullable": false,
 					"default": "'{AUTHOR}'",
-					"enumItems": ["AUTHOR", "ADMIN"],
+					"enumItems": ["AUTHOR", "ADMIN", "READER"],
 					"mappedType": "array"
 				},
-				"status": {
-					"name": "status",
-					"type": "boolean",
+				"mobile_number": {
+					"name": "mobile_number",
+					"type": "varchar(255)",
 					"unsigned": false,
 					"autoincrement": false,
 					"primary": false,
-					"nullable": false,
-					"mappedType": "boolean"
+					"nullable": true,
+					"mappedType": "string"
 				}
 			},
 			"name": "user",
 			"schema": "public",
 			"indexes": [
+				{
+					"columnNames": ["email"],
+					"composite": false,
+					"keyName": "user_email_unique",
+					"primary": false,
+					"unique": true
+				},
+				{
+					"columnNames": ["mobile_number"],
+					"composite": false,
+					"keyName": "user_mobile_number_unique",
+					"primary": false,
+					"unique": true
+				},
 				{
 					"keyName": "user_pkey",
 					"columnNames": ["id"],
@@ -517,12 +531,12 @@
 				},
 				"content": {
 					"name": "content",
-					"type": "text",
+					"type": "varchar(255)",
 					"unsigned": false,
 					"autoincrement": false,
 					"primary": false,
 					"nullable": false,
-					"mappedType": "text"
+					"mappedType": "string"
 				},
 				"category": {
 					"name": "category",
