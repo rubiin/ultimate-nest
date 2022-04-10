@@ -13,7 +13,7 @@ export class Post extends BaseEntity {
 	@Property()
 	excerpt?: string;
 
-	@Property()
+	@Property({ type: "text" })
 	content!: string;
 
 	@Property()

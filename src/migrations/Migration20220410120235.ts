@@ -1,9 +1,15 @@
 import { Migration } from "@mikro-orm/migrations";
 
-export class Migration20220408113241 extends Migration {
+export class Migration20220410120235 extends Migration {
 	async up(): Promise<void> {
 		this.addSql(
-			'create table "user" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "first_name" varchar(255) not null, "last_name" varchar(255) not null, "email" varchar(255) not null, "avatar" varchar(255) not null, "password" varchar(255) not null, "roles" text[] not null default \'{AUTHOR}\', "status" boolean not null);',
+			'create table "user" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "first_name" varchar(255) not null, "last_name" varchar(255) not null, "email" varchar(255) not null, "avatar" varchar(255) not null, "password" varchar(255) not null, "roles" text[] not null default \'{AUTHOR}\', "mobile_number" varchar(255) null, "is_verified" boolean not null);',
+		);
+		this.addSql(
+			'alter table "user" add constraint "user_email_unique" unique ("email");',
+		);
+		this.addSql(
+			'alter table "user" add constraint "user_mobile_number_unique" unique ("mobile_number");',
 		);
 
 		this.addSql(
@@ -19,7 +25,7 @@ export class Migration20220408113241 extends Migration {
 		);
 
 		this.addSql(
-			'create table "otp_log" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "expires_in" timestamptz(0) not null, "otp_code" varchar(20) null, "user_id" int not null, "is_revoked" boolean not null);',
+			'create table "otp_log" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "expires_in" timestamptz(0) not null, "otp_code" varchar(20) null, "user_id" int not null, "is_used" boolean not null);',
 		);
 
 		this.addSql(

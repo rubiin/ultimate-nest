@@ -19,12 +19,7 @@
 		"test:cov": "jest --coverage",
 		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
 		"test:e2e": "echo 'No e2e tests implemented yet.'",
-		"orm": "npx mikro-orm",
-		"orm:init": "npm run orm migration:create --initial",
-		"orm:create": "npm run orm migration:create",
-		"orm:up": "npm run orm migration:up",
-		"orm:down": "npm run orm migration:down",
-		"seed": "npm run orm seeder:run -- --class=AdminSeeder && npm run orm seeder:run -- --class=DatabaseSeeder"
+		"orm": "npx mikro-orm"
 	},
 	"dependencies": {
 		"@adminjs/express": "^4.1.0",

@@ -13,11 +13,6 @@ import {
 import { I18nService } from "nestjs-i18n";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
-export interface UserFindOne {
-	id?: number;
-	email?: string;
-}
-
 @Injectable()
 export class UserService {
 	constructor(

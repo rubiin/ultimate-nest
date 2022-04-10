@@ -3,7 +3,7 @@ import { BaseRepository } from "@common/database/base.repository";
 import { HelperService } from "@common/helpers/helpers.utils";
 import { IResponse } from "@common/interfaces/response.interface";
 import { OtpLog, User } from "@entities";
-import { TwilioService } from "@lib/twilio/twilio.service";
+import { MailerService } from "@lib/mailer/mailer.service";
 import { MikroORM, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { TokensService } from "@modules/token/tokens.service";
@@ -16,7 +16,7 @@ import {
 	NotFoundException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { omit } from "@rubiin/js-utils";
+import { capitalize, omit } from "@rubiin/js-utils";
 import * as argon from "argon2";
 import { isAfter } from "date-fns";
 import { I18nRequestScopeService } from "nestjs-i18n";
@@ -31,15 +31,18 @@ export class AuthService {
 		private readonly otpRepository: BaseRepository<OtpLog>,
 		private readonly tokenService: TokensService,
 		private readonly configService: ConfigService,
-		private readonly twilioService: TwilioService,
+		private readonly mailService: MailerService,
 		private readonly i18n: I18nRequestScopeService,
 		private readonly orm: MikroORM,
 	) {}
 
 	async validateUser(email: string, pass: string): Promise<any> {
-		const user = await this.userRepository.findOne({ email });
+		const user = await this.userRepository.findOne({
+			email,
+			isObsolete: false,
+		});
 
-		if (user.isObsolete) {
+		if (!user) {
 			throw new BadRequestException("Invalid credentials");
 		}
 
@@ -108,8 +111,11 @@ export class AuthService {
 	}
 
 	async forgotPassword(sendOtp: SendOtpDto) {
-		const { mobileNumber } = sendOtp;
-		const userExists = await this.userRepository.findOne({ mobileNumber });
+		const { email } = sendOtp;
+		const userExists = await this.userRepository.findOne({
+			email,
+			isObsolete: false,
+		});
 
 		if (!userExists) {
 			throw new HttpException(
@@ -122,9 +128,6 @@ export class AuthService {
 			randomTypes.NUMBER,
 			6,
 		)) as string; // random six digit otp
-		const content = `Your OTP code for password reset is ${otpNumber}`;
-
-		await this.twilioService.sendSms(mobileNumber, content);
 
 		const otp = this.otpRepository.create({
 			user: userExists,
@@ -132,7 +135,21 @@ export class AuthService {
 			expiresIn: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
 		});
 
-		return this.otpRepository.persistAndFlush(otp);
+		await this.orm.em.transactional(async em => {
+			await em.persistAndFlush(otp);
+
+			await this.mailService.sendMail({
+				template: "otp",
+				replacements: {
+					firstName: capitalize(userExists.firstName),
+					lastName: capitalize(userExists.lastName),
+					otp: otpNumber,
+				},
+				to: userExists.email,
+			});
+		});
+
+		return otp;
 	}
 
 	async resetPassword(resetPassword: ResetPasswordDto) {
