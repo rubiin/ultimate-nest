@@ -27,9 +27,9 @@ export class PostService {
 		return createPaginationObject<Post>(results, total, page, limit);
 	}
 
-	async getById(id: number, author?: User) {
+	async getById(idx: string, author?: User) {
 		const post = await this.postRepository
-			.findOne(id)
+			.findOne({ idx })
 			.then(p =>
 				!author ? p : !!p && author.id === p.author.id ? p : null,
 			);
@@ -48,8 +48,8 @@ export class PostService {
 		return post;
 	}
 
-	async editOne(id: number, dto: EditPostDto, author?: User) {
-		const post = await this.getById(id, author);
+	async editOne(idx: string, dto: EditPostDto, author?: User) {
+		const post = await this.getById(idx, author);
 
 		wrap(post).assign(dto);
 		await this.postRepository.flush();
@@ -57,8 +57,8 @@ export class PostService {
 		return post;
 	}
 
-	async deleteOne(id: number, author?: User) {
-		const post = await this.getById(id, author);
+	async deleteOne(idx: string, author?: User) {
+		const post = await this.getById(idx, author);
 
 		await this.postRepository.remove(post);
 

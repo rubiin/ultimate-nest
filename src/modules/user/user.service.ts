@@ -36,9 +36,9 @@ export class UserService {
 		return createPaginationObject<User>(results, total, page, limit);
 	}
 
-	async getOne(id: number, userEntity?: User) {
+	async getOne(idx: string, userEntity?: User) {
 		const user = await this.userRepository
-			.findOne(id)
+			.findOne({ idx })
 			.then(u =>
 				!userEntity ? u : !!u && userEntity.id === u.id ? u : null,
 			);
@@ -80,8 +80,8 @@ export class UserService {
 		return newUser;
 	}
 
-	async editOne(id: number, dto: EditUserDto, userEntity?: User) {
-		const user = await this.getOne(id, userEntity);
+	async editOne(idx: string, dto: EditUserDto, userEntity?: User) {
+		const user = await this.getOne(idx, userEntity);
 
 		wrap(user).assign(dto);
 
@@ -90,8 +90,8 @@ export class UserService {
 		return user;
 	}
 
-	async deleteOne(id: number, userEntity?: User) {
-		const user = await this.getOne(id, userEntity);
+	async deleteOne(idx: string, userEntity?: User) {
+		const user = await this.getOne(idx, userEntity);
 
 		this.userRepository.remove(user);
 

@@ -10,6 +10,7 @@ import {
 	Get,
 	Param,
 	ParseIntPipe,
+	ParseUUIDPipe,
 	Post,
 	Put,
 	Query,
@@ -38,9 +39,9 @@ export class PostController {
 		return this.postService.getMany(pageOptionsDto);
 	}
 
-	@Get(":id")
-	async getById(@Param("id", ParseIntPipe) id: number) {
-		return await this.postService.getById(id);
+	@Get(":idx")
+	async getById(@Param("idx", ParseIntPipe) idx: string) {
+		return await this.postService.getById(idx);
 	}
 
 	@Auth({
@@ -63,14 +64,14 @@ export class PostController {
 	})
 	@Put(":id")
 	async editOne(
-		@Param("id") id: number,
+		@Param("idx", ParseUUIDPipe) idx: string,
 		@Body() dto: EditPostDto,
 		@LoggedInUser() author: UserEntity,
 	) {
 		return this.roleBuilder.can(author.roles).updateAny(AppResource.POST)
 			.granted
-			? this.postService.editOne(id, dto)
-			: this.postService.editOne(id, dto, author);
+			? this.postService.editOne(idx, dto)
+			: this.postService.editOne(idx, dto, author);
 	}
 
 	@Auth({
@@ -80,12 +81,12 @@ export class PostController {
 	})
 	@Delete(":id")
 	async deleteOne(
-		@Param("id") id: number,
+		@Param("idx", ParseUUIDPipe) idx: string,
 		@LoggedInUser() author: UserEntity,
 	) {
 		return this.roleBuilder.can(author.roles).deleteAny(AppResource.POST)
 			.granted
-			? this.postService.deleteOne(id)
-			: this.postService.deleteOne(id, author);
+			? this.postService.deleteOne(idx)
+			: this.postService.deleteOne(idx, author);
 	}
 }
