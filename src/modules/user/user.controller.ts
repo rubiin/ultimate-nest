@@ -10,6 +10,7 @@ import {
 	Delete,
 	Get,
 	Param,
+	ParseUUIDPipe,
 	Post,
 	Put,
 	Query,
@@ -49,9 +50,9 @@ export class UserController {
 	}
 
 	@ApiOperation({ summary: "User fetch" })
-	@Get(":id")
-	async getOne(@Param("id") id: number) {
-		return this.userService.getOne(id);
+	@Get(":idx")
+	async getOne(@Param("idx", ParseUUIDPipe) idx: string) {
+		return this.userService.getOne(idx);
 	}
 
 	@ApiOperation({ summary: "Admin create user" })
@@ -71,9 +72,9 @@ export class UserController {
 		action: "update",
 		resource: AppResource.USER,
 	})
-	@Put(":id")
+	@Put(":idx")
 	async editOne(
-		@Param("id") id: number,
+		@Param("idx", ParseUUIDPipe) idx: string,
 		@Body() dto: EditUserDto,
 		@LoggedInUser() user: UserEntity,
 	) {
@@ -83,11 +84,11 @@ export class UserController {
 			this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
 				.granted
 		) {
-			data = await this.userService.editOne(id, dto);
+			data = await this.userService.editOne(idx, dto);
 		} else {
 			const rest = omit(dto, ["roles"]);
 
-			data = await this.userService.editOne(id, rest, user);
+			data = await this.userService.editOne(idx, rest, user);
 		}
 
 		return data;
@@ -99,11 +100,14 @@ export class UserController {
 		possession: "own",
 		resource: AppResource.USER,
 	})
-	@Delete(":id")
-	async deleteOne(@Param("id") id: number, @LoggedInUser() user: UserEntity) {
+	@Delete(":idx")
+	async deleteOne(
+		@Param("idx", ParseUUIDPipe) idx: string,
+		@LoggedInUser() user: UserEntity,
+	) {
 		return this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
 			.granted
-			? this.userService.deleteOne(id)
-			: this.userService.deleteOne(id, user);
+			? this.userService.deleteOne(idx)
+			: this.userService.deleteOne(idx, user);
 	}
 }
