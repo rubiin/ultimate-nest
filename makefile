@@ -15,6 +15,8 @@ migrate:
 
 unmigrate:
 	@NODE_ENV=$(env) npm run orm migration:down
+seed:
+	@NODE_ENV=$(env) npm run orm seeder:run
 
 build:
 	nest build

@@ -1,21 +1,14 @@
+import { AppRoles } from "@common/constants/app.roles";
 import type { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
-import { User } from "../entities/user.entity";
-import { Faker } from "@mikro-orm/seeder";
-import { AppRoles } from "@common/constants/app.roles";
+import { UserFactory } from "../factories/user.factory";
 
 export class AdminSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
-		const faker = new Faker();
-		const admin = em.create(User, {
-			firstName: "Rubin",
-			lastName: "Bhandari",
+		await new UserFactory(em).createOne({
 			email: "roobin.bhandari@gmail.com",
 			password: "Test@1234",
-			avatar: faker.image.avatar(),
 			roles: [AppRoles.ADMIN],
 		});
-
-		em.persist(admin);
 	}
 }
