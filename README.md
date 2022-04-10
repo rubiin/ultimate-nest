@@ -37,6 +37,17 @@ should be of format .env.[environment] Ex. (.env.test). The env to use should be
 
 ---
 
+Faetures covered:
+1. i18n
+2. seeding and factories for fake data
+3. roles
+4. threads for cpu extensive tasks
+5. refresh tokens support
+6. email templates with `eta`
+7. adminjs support
+8. twillio
+
+
 ## NPM scripts
 
 -   `yarn start` - Start application
