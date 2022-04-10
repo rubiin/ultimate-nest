@@ -5,6 +5,7 @@ import { LoggedInUser } from "@common/decorators/user.decorator";
 import { User as UserEntity } from "@entities";
 import {
 	Body,
+	CacheInterceptor,
 	Controller,
 	Delete,
 	Get,
@@ -12,6 +13,7 @@ import {
 	Post,
 	Put,
 	Query,
+	UseInterceptors,
 } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { omit } from "@rubiin/js-utils";
@@ -20,6 +22,7 @@ import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
 @ApiTags("Users routes")
+@UseInterceptors(CacheInterceptor)
 @Controller("user")
 export class UserController {
 	constructor(
