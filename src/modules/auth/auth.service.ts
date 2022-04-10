@@ -1,25 +1,39 @@
+import { randomTypes } from "@common/constants/random-types.enum";
+import { BaseRepository } from "@common/database/base.repository";
+import { HelperService } from "@common/helpers/helpers.utils";
+import { IResponse } from "@common/interfaces/response.interface";
+import { OtpLog, User } from "@entities";
+import { TwilioService } from "@lib/twilio/twilio.service";
+import { MikroORM, wrap } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { TokensService } from "@modules/token/tokens.service";
 import {
 	BadRequestException,
 	ForbiddenException,
+	HttpException,
+	HttpStatus,
 	Injectable,
+	NotFoundException,
 } from "@nestjs/common";
-import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityRepository } from "@mikro-orm/core";
-import { TokensService } from "@modules/token/tokens.service";
-import { HelperService } from "@common/helpers/helpers.utils";
-import { User } from "@entities";
-import { IResponse } from "@common/interfaces/response.interface";
-import * as argon from "argon2";
-import { omit } from "@rubiin/js-utils";
 import { ConfigService } from "@nestjs/config";
+import { omit } from "@rubiin/js-utils";
+import * as argon from "argon2";
+import { isAfter } from "date-fns";
+import { I18nRequestScopeService } from "nestjs-i18n";
+import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
+import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
 
 @Injectable()
 export class AuthService {
 	constructor(
 		@InjectRepository(User)
-		private readonly userRepository: EntityRepository<User>,
+		private readonly userRepository: BaseRepository<User>,
+		private readonly otpRepository: BaseRepository<OtpLog>,
 		private readonly tokenService: TokensService,
 		private readonly configService: ConfigService,
+		private readonly twilioService: TwilioService,
+		private readonly i18n: I18nRequestScopeService,
+		private readonly orm: MikroORM,
 	) {}
 
 	async validateUser(email: string, pass: string): Promise<any> {
@@ -91,5 +105,106 @@ export class AuthService {
 		);
 
 		return this.tokenService.deleteRefreshToken(user, payload);
+	}
+
+	async forgotPassword(sendOtp: SendOtpDto) {
+		const { mobileNumber } = sendOtp;
+		const userExists = await this.userRepository.findOne({ mobileNumber });
+
+		if (!userExists) {
+			throw new HttpException(
+				await this.i18n.translate("operations.USER_NOT_FOUND"),
+				HttpStatus.NOT_FOUND,
+			);
+		}
+
+		const otpNumber = (await HelperService.getRandom(
+			randomTypes.NUMBER,
+			6,
+		)) as string; // random six digit otp
+		const content = `Your OTP code for password reset is ${otpNumber}`;
+
+		await this.twilioService.sendSms(mobileNumber, content);
+
+		const otp = this.otpRepository.create({
+			user: userExists,
+			otpCode: otpNumber,
+			expiresIn: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
+		});
+
+		return this.otpRepository.persistAndFlush(otp);
+	}
+
+	async resetPassword(resetPassword: ResetPasswordDto) {
+		const { password, otpCode } = resetPassword;
+		const details = await this.otpRepository.findOne({
+			otpCode,
+		});
+
+		return this.userRepository.nativeUpdate(
+			{ id: details.user.id },
+			{ password },
+		);
+	}
+
+	async verifyOtp(otpDto: OtpVerifyDto) {
+		const { otpCode } = otpDto;
+		const codeDetails = await this.otpRepository.findOne({
+			otpCode,
+		});
+
+		if (!codeDetails) {
+			throw new NotFoundException(
+				await this.i18n.translate("operations.OTP_NOT_FOUND"),
+			);
+		}
+
+		const isExpired = isAfter(new Date(), new Date(codeDetails.expiresIn));
+
+		if (isExpired) {
+			throw new BadRequestException(
+				await this.i18n.translate("operations.OTP_EXPIRED"),
+			);
+		}
+
+		await this.orm.em.transactional(async em => {
+			wrap(codeDetails).assign({
+				isUsed: true,
+			});
+
+			em.nativeUpdate(
+				User,
+				{
+					id: codeDetails.user.id,
+				},
+				{ isVerified: true },
+			);
+
+			em.flush();
+		});
+	}
+
+	async changePassword(dto: ChangePasswordDto, user: User) {
+		const { password, currentPassword } = dto;
+		const userDetails = await this.userRepository.findOne({
+			id: user.id,
+		});
+
+		const isValid = await argon.verify(
+			userDetails.password,
+			currentPassword,
+		);
+
+		if (!isValid) {
+			throw new BadRequestException(
+				await this.i18n.translate("operations.INVALID_PASSWORD"),
+			);
+		}
+
+		wrap(userDetails).assign({
+			password,
+		});
+
+		return this.userRepository.flush();
 	}
 }

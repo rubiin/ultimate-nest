@@ -1,3 +1,4 @@
+import { BaseRepository } from "@common/database/base.repository";
 import * as Entities from "@entities";
 import { LoadStrategy } from "@mikro-orm/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
@@ -25,6 +26,7 @@ const logger = new Logger("MikroORM");
 				loadStrategy: LoadStrategy.JOINED,
 				highlighter: new SqlHighlighter(),
 				metadataProvider: TsMorphMetadataProvider,
+				entityRepository: BaseRepository,
 				registerRequestContext: false,
 				pool: { min: 2, max: 10 },
 				allowGlobalContext: true,

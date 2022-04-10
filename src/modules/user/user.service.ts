@@ -1,12 +1,14 @@
+import { PageOptionsDto } from "@common/classes/pagination";
+import { BaseRepository } from "@common/database/base.repository";
 import { User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { EntityManager, MikroORM, wrap } from "@mikro-orm/core";
+import { createPaginationObject } from "@lib/pagination";
+import { MikroORM, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityRepository } from "@mikro-orm/postgresql";
 import {
+	BadRequestException,
 	Injectable,
 	NotFoundException,
-	BadRequestException,
 } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
 import { CreateUserDto, EditUserDto } from "./dtos";
@@ -20,15 +22,23 @@ export interface UserFindOne {
 export class UserService {
 	constructor(
 		@InjectRepository(User)
-		private readonly userRepository: EntityRepository<User>,
+		private userRepository: BaseRepository<User>,
 		private readonly mailService: MailerService,
 		private readonly orm: MikroORM,
-		private readonly em: EntityManager,
 		private readonly i18nService: I18nService,
 	) {}
 
-	async getMany() {
-		return await this.userRepository.find({});
+	async getMany({ limit, offset, order, page }: PageOptionsDto) {
+		const { results, total } = await this.userRepository.findAndPaginate(
+			{},
+			{
+				limit,
+				offset,
+				orderBy: { createdAt: order.toLowerCase() },
+			},
+		);
+
+		return createPaginationObject<User>(results, total, page, limit);
 	}
 
 	async getOne(id: number, userEntity?: User) {
@@ -91,12 +101,5 @@ export class UserService {
 		this.userRepository.remove(user);
 
 		return user;
-	}
-
-	async findOne(data: UserFindOne) {
-		return await this.userRepository
-			.createQueryBuilder("user")
-			.where(data)
-			.getSingleResult();
 	}
 }

@@ -1,22 +1,23 @@
+import { PageOptionsDto } from "@common/classes/pagination";
+import { AppResource } from "@common/constants/app.roles";
+import { Auth } from "@common/decorators/auth.decorator";
+import { LoggedInUser } from "@common/decorators/user.decorator";
+import { User as UserEntity } from "@entities";
 import {
+	Body,
 	Controller,
+	Delete,
 	Get,
 	Param,
+	ParseIntPipe,
 	Post,
 	Put,
-	Delete,
-	Body,
-	ParseIntPipe,
+	Query,
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
-import { PostService } from "./post.service";
 import { CreatePostDto, EditPostDto } from "./dtos";
-import { Auth } from "@common/decorators/auth.decorator";
-import { User as UserEntity } from "@entities";
-import { LoggedInUser } from "@common/decorators/user.decorator";
-import { AppResource } from "@common/constants/app.roles";
-import { I18n, I18nContext } from "nestjs-i18n";
+import { PostService } from "./post.service";
 
 @ApiTags("Posts")
 @Controller("post")
@@ -27,18 +28,19 @@ export class PostController {
 		private readonly roleBuilder: RolesBuilder,
 	) {}
 
+	@Auth({
+		possession: "any",
+		action: "read",
+		resource: AppResource.POST,
+	})
 	@Get()
-	async getMany() {
-		const data = await this.postService.getMany();
-
-		return { data };
+	async getMany(@Query() pageOptionsDto: PageOptionsDto) {
+		return this.postService.getMany(pageOptionsDto);
 	}
 
 	@Get(":id")
 	async getById(@Param("id", ParseIntPipe) id: number) {
-		const data = await this.postService.getById(id);
-
-		return { data };
+		return await this.postService.getById(id);
 	}
 
 	@Auth({
@@ -50,11 +52,8 @@ export class PostController {
 	async createPost(
 		@Body() dto: CreatePostDto,
 		@LoggedInUser() author: UserEntity,
-		@I18n() i18n: I18nContext,
 	) {
-		const data = await this.postService.createOne(dto, author);
-
-		return { message: i18n.t("operations.POST_CREATED"), data };
+		return this.postService.createOne(dto, author);
 	}
 
 	@Auth({
@@ -67,15 +66,11 @@ export class PostController {
 		@Param("id") id: number,
 		@Body() dto: EditPostDto,
 		@LoggedInUser() author: UserEntity,
-		@I18n() i18n: I18nContext,
 	) {
-		const data = await (this.roleBuilder
-			.can(author.roles)
-			.updateAny(AppResource.POST).granted
+		return this.roleBuilder.can(author.roles).updateAny(AppResource.POST)
+			.granted
 			? this.postService.editOne(id, dto)
-			: this.postService.editOne(id, dto, author));
-
-		return { message: i18n.t("operations.POST_EDITED"), data };
+			: this.postService.editOne(id, dto, author);
 	}
 
 	@Auth({
@@ -87,14 +82,10 @@ export class PostController {
 	async deleteOne(
 		@Param("id") id: number,
 		@LoggedInUser() author: UserEntity,
-		@I18n() i18n: I18nContext,
 	) {
-		const data = await (this.roleBuilder
-			.can(author.roles)
-			.deleteAny(AppResource.POST).granted
+		return this.roleBuilder.can(author.roles).deleteAny(AppResource.POST)
+			.granted
 			? this.postService.deleteOne(id)
-			: this.postService.deleteOne(id, author));
-
-		return { message: i18n.t("operations.POST_DELETED"), data };
+			: this.postService.deleteOne(id, author);
 	}
 }

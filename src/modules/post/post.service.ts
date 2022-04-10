@@ -1,20 +1,30 @@
+import { PageOptionsDto } from "@common/classes/pagination";
+import { BaseRepository } from "@common/database/base.repository";
 import { Post, User } from "@entities";
+import { createPaginationObject } from "@lib/pagination";
 import { wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
-
 import { CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
 export class PostService {
 	constructor(
 		@InjectRepository(Post)
-		private readonly postRepository: EntityRepository<Post>,
+		private readonly postRepository: BaseRepository<Post>,
 	) {}
 
-	async getMany() {
-		return await this.postRepository.find({});
+	async getMany({ page, order, limit, offset }: PageOptionsDto) {
+		const { results, total } = await this.postRepository.findAndPaginate(
+			{},
+			{
+				limit,
+				offset,
+				orderBy: { createdAt: order.toLowerCase() },
+			},
+		);
+
+		return createPaginationObject<Post>(results, total, page, limit);
 	}
 
 	async getById(id: number, author?: User) {

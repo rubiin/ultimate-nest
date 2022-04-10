@@ -1,22 +1,23 @@
-import {
-	Controller,
-	Get,
-	Post,
-	Put,
-	Delete,
-	Param,
-	Body,
-} from "@nestjs/common";
-import { UserService } from "./user.service";
-import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { RolesBuilder, InjectRolesBuilder } from "nest-access-control";
-import { User as UserEntity } from "@entities";
+import { PageOptionsDto } from "@common/classes/pagination";
+import { AppResource, AppRoles } from "@common/constants/app.roles";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
-import { AppResource, AppRoles } from "@common/constants/app.roles";
+import { User as UserEntity } from "@entities";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Post,
+	Put,
+	Query,
+} from "@nestjs/common";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { omit } from "@rubiin/js-utils";
-import { I18n, I18nContext } from "nestjs-i18n";
+import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
+import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
+import { UserService } from "./user.service";
 
 @ApiTags("Users routes")
 @Controller("user")
@@ -27,32 +28,27 @@ export class UserController {
 		private readonly rolesBuilder: RolesBuilder,
 	) {}
 
+	@ApiOperation({ summary: "Users list" })
 	@Get()
-	async getMany() {
-		const data = await this.userService.getMany();
+	async getMany(@Query() pageOptionsDto: PageOptionsDto) {
+		const data = await this.userService.getMany(pageOptionsDto);
 
 		return { data };
 	}
 
 	@ApiOperation({ summary: "public registration" })
 	@Post("register")
-	async publicRegistration(
-		@Body() dto: UserRegistrationDto,
-		@I18n() i18n: I18nContext,
-	) {
-		const data = await this.userService.createOne({
+	async publicRegistration(@Body() dto: UserRegistrationDto) {
+		return this.userService.createOne({
 			...dto,
 			roles: [AppRoles.AUTHOR],
 		});
-
-		return { message: i18n.t("operations.USER_REGISTERED"), data };
 	}
 
+	@ApiOperation({ summary: "User fetch" })
 	@Get(":id")
 	async getOne(@Param("id") id: number) {
-		const data = await this.userService.getOne(id);
-
-		return { data };
+		return this.userService.getOne(id);
 	}
 
 	@ApiOperation({ summary: "Admin create user" })
@@ -62,12 +58,11 @@ export class UserController {
 		resource: AppResource.USER,
 	})
 	@Post()
-	async createOne(@Body() dto: CreateUserDto, @I18n() i18n: I18nContext) {
-		const data = await this.userService.createOne(dto);
-
-		return { message: i18n.t("operations.USER_CREATED"), data };
+	async createOne(@Body() dto: CreateUserDto) {
+		return this.userService.createOne(dto);
 	}
 
+	@ApiOperation({ summary: "Edit user" })
 	@Auth({
 		possession: "own",
 		action: "update",
@@ -78,7 +73,6 @@ export class UserController {
 		@Param("id") id: number,
 		@Body() dto: EditUserDto,
 		@LoggedInUser() user: UserEntity,
-		@I18n() i18n: I18nContext,
 	) {
 		let data: any;
 
@@ -93,26 +87,20 @@ export class UserController {
 			data = await this.userService.editOne(id, rest, user);
 		}
 
-		return { message: i18n.t("operations.USER_EDITED"), data };
+		return data;
 	}
 
+	@ApiOperation({ summary: "User delete" })
 	@Auth({
 		action: "delete",
 		possession: "own",
 		resource: AppResource.USER,
 	})
 	@Delete(":id")
-	async deleteOne(
-		@Param("id") id: number,
-		@LoggedInUser() user: UserEntity,
-		@I18n() i18n: I18nContext,
-	) {
-		const data = await (this.rolesBuilder
-			.can(user.roles)
-			.updateAny(AppResource.USER).granted
+	async deleteOne(@Param("id") id: number, @LoggedInUser() user: UserEntity) {
+		return this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
+			.granted
 			? this.userService.deleteOne(id)
-			: this.userService.deleteOne(id, user));
-
-		return { message: i18n.t("operations.USER_DELETED"), data };
+			: this.userService.deleteOne(id, user);
 	}
 }

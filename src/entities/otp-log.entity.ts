@@ -16,5 +16,5 @@ export class OtpLog extends BaseEntity {
 	user: User;
 
 	@Property()
-	isRevoked!: boolean;
+	isUsed!: boolean;
 }
