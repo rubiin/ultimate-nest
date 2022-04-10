@@ -13,7 +13,10 @@ import { MailModule } from "./mailer.module";
 				port: configService.get<number>("mail.port"),
 				username: configService.get("mail.username"),
 				password: configService.get("mail.password"),
-				previewEmail: configService.get<boolean>("mail.previewEmail"),
+				previewEmail: configService.get<boolean>(
+					"mail.previewEmail",
+					false,
+				),
 				template: {
 					dir: configService.get("mail.templateDir"),
 					etaOptions: {
