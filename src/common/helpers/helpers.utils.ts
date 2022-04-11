@@ -11,10 +11,7 @@ import { hashString } from "@common/misc/threads";
 
 let puppetterInstance = null;
 
-export /** @type {*} */
-/** @type {*} */
-/** @type {*} */
-const HelperService = {
+export const HelperService = {
 	/**
 	 *
 	 *
@@ -62,12 +59,6 @@ const HelperService = {
 				...(refreshToken ? { refresh_token: refreshToken } : {}),
 			},
 		};
-	},
-
-	EnumToString: (_enum: object) => {
-		Object.keys(_enum)
-			.map(key => _enum[key])
-			.filter(value => typeof value === "string") as string[];
 	},
 
 	/**

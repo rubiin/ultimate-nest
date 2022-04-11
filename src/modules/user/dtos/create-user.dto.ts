@@ -1,5 +1,5 @@
 import { AppRoles } from "@common/constants/app.roles";
-import { HelperService } from "@common/helpers/helpers.utils";
+import { enumToString } from "@rubiin/js-utils";
 import {
 	IsString,
 	IsEmail,
@@ -21,9 +21,6 @@ export class CreateUserDto {
 	@MaxLength(255)
 	lastName: string;
 
-	@IsOptional()
-	@IsString()
-	@MaxLength(255)
 	avatar: string;
 
 	@IsEmail()
@@ -37,9 +34,7 @@ export class CreateUserDto {
 	@IsArray()
 	@IsEnum(AppRoles, {
 		each: true,
-		message: `must be a valid role value,${HelperService.EnumToString(
-			AppRoles,
-		)}`,
+		message: `must be a valid role value,${enumToString(AppRoles)}`,
 	})
 	roles: [AppRoles];
 }

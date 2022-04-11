@@ -1,31 +1,71 @@
-version: '3.5'
+version:
+    "3.9"
+
+    #######################################
+    # Basic neede services
+    #######################################
 
 services:
-    #######################################
-    # Ultimate-nest Service
-    #######################################
-    ultimate-nest-service:
-        container_name: ultimate-nest-service
-        env_file: 'env/${ENV}.env'
+    nest-app:
+        container_name: nest-app
+        env_file: "../env/${ENV}.env"
         build:
-            context: '..'
-            dockerfile: ./docker/Dockerfile
-        image: ultimate-nest-service
-
+            context: ".."
+            dockerfile: ./Dockerfile
+        image: nest-app
+        depends_on:
+            - redis
+            - db
+        command: npm run start:prod
         networks:
             - ultimate-nest-net
         ports:
-            - 4054:4000
-        command: npm run start:prod
+            - "8000"
         volumes:
             - ./dist:/usr/src/app
-        restart: unless-stopped
+        restart-policy:
+            condition: on-failure
+            delay: 5s
+            max_attempts: 3
+            window: 120
+
+    db:
+        image: postgres:14.2-alpine
+        restart: always
+        ports:
+            - "5432"
+        networks:
+            - ultimate-nest-net
+        restart-policy:
+            condition: on-failure
+            delay: 5s
+            max_attempts: 3
+            window: 120
+        environment:
+            POSTGRES_PASSWORD: mysecretpassword
+        volumes:
+            - db-data:/var/lib/postgresql/data
+
+    redis:
+        image: redis:6.2.6-alpine
+        restart: always
+        ports:
+            - "6379"
+        restart-policy:
+            condition: on-failure
+            delay: 5s
+            max_attempts: 3
+            window: 120
+        networks:
+            - ultimate-nest-net
+        command: redis-server --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+        volumes:
+            - redis-data:/data
+
+volumes:
+    redis-data:
+    db-data:
 
 networks:
     ultimate-nest-net:
         name: ultimate-network
-        ipam:
-            driver: default
-            config:
-                - subnet: '172.16.238.0/24'
-                - subnet: '2001:3984:3989::/64'

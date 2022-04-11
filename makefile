@@ -1,8 +1,9 @@
 
-init: clean make-initial-migrations
+init: clean-files make-initial-migrations
+clean-db: unmigrate migrate seed
 
-clean:
-	@rm -rf temp @rm -rf src/migrations/ @rm -rf logs @rm -rf dist
+clean-files:
+	@rm -rf temp @rm -rf src/migrations/ @rm -rf logs @rm -rf dist @rm -rf uploads
 	
 make-initial-migrations:
 	@NODE_ENV=$(env) npm run orm migration:create --initial
@@ -20,6 +21,9 @@ seed:
 
 build:
 	nest build
+
+encryption:
+	@sh scripts/encryption.sh
 
 
 

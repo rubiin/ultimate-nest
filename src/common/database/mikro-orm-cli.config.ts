@@ -1,14 +1,16 @@
 import { Options } from "@mikro-orm/core";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
+import { Logger } from "@nestjs/common";
 import * as dotenv from "dotenv";
 import * as dotEnvExpand from "dotenv-expand";
-import * as chalk from "chalk";
 
 /**
  * This is required to run mikro-orm cli
  *
  */
+
+const logger = new Logger("MikroORM-CLI");
 
 const myEnv = dotenv.config({
 	path: `${process.cwd()}/env/.env.${process.env.NODE_ENV}`,
@@ -16,9 +18,7 @@ const myEnv = dotenv.config({
 
 dotEnvExpand.expand(myEnv);
 
-console.info(
-	chalk.green(`Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}`),
-);
+logger.log(`⚙️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
 
 const config = {
 	dbName: process.env.DB_DATABASE,
@@ -33,12 +33,16 @@ const config = {
 		transactional: true,
 	},
 	seeder: {
-		path: "./src/seeders", // path to the folder with seeders
+		path: "dist/common/database/seeders/", // path to the folder with seeders
+		pathTs: "src/common/database/seeders/", // path to the folder with seeders
 		defaultSeeder: "DatabaseSeeder", // default seeder class name
+		glob: "!(*.d).{js,ts}", // how to match seeder files (all .js and .ts files, but not .d.ts)
+		emit: "ts", // seeder generation mode
 	},
 	password: process.env.DB_PASSWORD,
 	port: +process.env.DB_PORT,
 	type: "postgresql",
+	logger: msg => logger.log(msg),
 	highlighter: new SqlHighlighter(),
 	user: process.env.DB_USERNAME,
 	metadataProvider: TsMorphMetadataProvider,
