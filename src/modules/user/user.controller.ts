@@ -51,11 +51,10 @@ export class UserController {
 		@Body() dto: UserRegistrationDto,
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 	) {
-		dto.avatar = image.filename;
-
 		return this.userService.createOne({
 			...dto,
 			roles: [AppRoles.AUTHOR],
+			image,
 		});
 	}
 
@@ -77,9 +76,7 @@ export class UserController {
 		@Body() dto: CreateUserDto,
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 	) {
-		dto.avatar = image.filename;
-
-		return this.userService.createOne(dto);
+		return this.userService.createOne({ ...dto, image });
 	}
 
 	@ApiOperation({ summary: "Edit user" })
