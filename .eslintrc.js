@@ -18,7 +18,7 @@ module.exports = {
 		'plugin:@typescript-eslint/recommended',
 		'plugin:import/errors',
 		'plugin:import/typescript',
-		'plugin:unicorn/recommended',
+		'plugin:unicorn/all',
 		'prettier',
 	],
 	root: true,
@@ -38,10 +38,21 @@ module.exports = {
 		'unicorn/filename-case': 'off',
 		'no-secrets/no-secrets': 'error',
 		'import/prefer-default': 'off',
+		'unicorn/prevent-abbreviations': [
+			"error",
+	{
+		"ignore": [
+			"\\.e2e*",
+			"\\.spec*",
+			"\\*idx*",
+		]
+	}
+		],
 		'import/prefer-node-protocol': 'off',
-		'unicorn/prevent-abbreviations': 'off',
+		"unicorn/prefer-top-level-await": "off",
 		'unicorn/no-null': 'off',
 		'unicorn/import-style': 'off',
+		'unicorn/no-unsafe-regex': 'off',
 		'unicorn/prefer-module': 'off',
 		'unicorn/prefer-node-protocol': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
@@ -78,7 +89,7 @@ module.exports = {
 		],
 		quotes: [
 			'error',
-			'single',
+			'double',
 			{
 				allowTemplateLiterals: true,
 				avoidEscape: true,

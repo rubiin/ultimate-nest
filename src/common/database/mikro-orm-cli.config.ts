@@ -12,11 +12,11 @@ import * as dotEnvExpand from "dotenv-expand";
 
 const logger = new Logger("MikroORM-CLI");
 
-const myEnv = dotenv.config({
+const myEnvironment = dotenv.config({
 	path: `${process.cwd()}/env/.env.${process.env.NODE_ENV}`,
 });
 
-dotEnvExpand.expand(myEnv);
+dotEnvExpand.expand(myEnvironment);
 
 logger.log(`⚙️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
 
@@ -42,7 +42,7 @@ const config = {
 	password: process.env.DB_PASSWORD,
 	port: +process.env.DB_PORT,
 	type: "postgresql",
-	logger: msg => logger.log(msg),
+	logger: message => logger.log(message),
 	highlighter: new SqlHighlighter(),
 	user: process.env.DB_USERNAME,
 	metadataProvider: TsMorphMetadataProvider,

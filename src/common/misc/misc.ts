@@ -8,7 +8,7 @@ import { extname } from "path";
 const allowedExtensions = new Set(["png", "jpg", "jpeg"]);
 
 export const diskStorageConfig = multer.diskStorage({
-	destination: (req, file, cb) => {
+	destination: (request, file, callback) => {
 		const path = "./uploads";
 
 		// check if the folder exists
@@ -17,14 +17,14 @@ export const diskStorageConfig = multer.diskStorage({
 			fs.mkdirSync(path, { recursive: true });
 		}
 
-		return cb(null, path);
+		return callback(null, path);
 	},
 	filename: (
-		_req: Request,
+		_request: Request,
 		file: { originalname: string },
-		cb: (arg0: any, arg1: string) => void,
+		callback: (argument0: any, argument1: string) => void,
 	) => {
-		cb(null, randomFileName(file));
+		callback(null, randomFileName(file));
 	},
 });
 
@@ -33,12 +33,12 @@ export const ImageMulterOption: MulterOptions = {
 		fileSize: 5 * 1024 * 1024, // 5 mb
 	},
 	storage: multer.memoryStorage(),
-	fileFilter: (_req: Request, file, cb) => {
+	fileFilter: (_request: Request, file, callback) => {
 		if (!allowedExtensions.has(mime.extension(file.mimetype))) {
-			return cb(new Error("Only image files are allowed!"), false);
+			return callback(new Error("Only image files are allowed!"), false);
 		}
 
-		return cb(null, true);
+		return callback(null, true);
 	},
 };
 
@@ -50,8 +50,8 @@ export const randomFileName = (file: { originalname: string }): string => {
 		name = name.slice(0, 8);
 	}
 
-	const fileExtName = extname(file.originalname);
+	const fileExtensionName = extname(file.originalname);
 	const randomName = Date.now();
 
-	return `${name}-${randomName}${fileExtName}`;
+	return `${name}-${randomName}${fileExtensionName}`;
 };

@@ -19,8 +19,8 @@ export const HelperService = {
 	 * @param {...any[]} args
 	 * @return {*}  {*}
 	 */
-	makeTask: (op: any, ...args: any[]): any => {
-		return { op, args };
+	makeTask: (op: any, ...arguments_: any[]): any => {
+		return { op, args: arguments_ };
 	},
 
 	/**
@@ -29,9 +29,9 @@ export const HelperService = {
 	 * @param {Record<string,any>} obj
 	 * @return {*}
 	 */
-	dispatcher: (obj: Record<string, any>) => {
+	dispatcher: (object: Record<string, any>) => {
 		return async ({ op, args }) => {
-			return await obj[op](...args);
+			return await object[op](...args);
 		};
 	},
 

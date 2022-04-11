@@ -71,9 +71,11 @@ export class LoggingInterceptor implements NestInterceptor {
 	 */
 	private logNext(body: unknown, context: ExecutionContext): void {
 		const request: Request = context.switchToHttp().getRequest<Request>();
-		const res: Response = context.switchToHttp().getResponse<Response>();
+		const response: Response = context
+			.switchToHttp()
+			.getResponse<Response>();
 		const { method, url } = request;
-		const { statusCode } = res;
+		const { statusCode } = response;
 		const context_ = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`;
 		const message = `Response - ${statusCode} - ${method} - ${url}`;
 

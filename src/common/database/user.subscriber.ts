@@ -13,15 +13,15 @@ export class UserSubscriber implements EventSubscriber<User> {
 		return [User];
 	}
 
-	async beforeCreate(args: EventArgs<User>): Promise<void> {
-		args.entity.password = await HelperService.hashString(
-			args.entity.password,
+	async beforeCreate(arguments_: EventArgs<User>): Promise<void> {
+		arguments_.entity.password = await HelperService.hashString(
+			arguments_.entity.password,
 		);
 	}
 
-	async beforeUpdate(args: EventArgs<User>): Promise<void> {
-		args.entity.password = await HelperService.hashString(
-			args.entity.password,
+	async beforeUpdate(arguments_: EventArgs<User>): Promise<void> {
+		arguments_.entity.password = await HelperService.hashString(
+			arguments_.entity.password,
 		);
 	}
 }
