@@ -3,6 +3,7 @@ import { AppResource, AppRoles } from "@common/constants/app.roles";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { ImageMulterOption } from "@common/misc/misc";
+import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
 import { User as UserEntity } from "@entities";
 import {
 	Body,
@@ -48,7 +49,7 @@ export class UserController {
 	@Post("register")
 	async publicRegistration(
 		@Body() dto: UserRegistrationDto,
-		@UploadedFile() image: Express.Multer.File,
+		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 	) {
 		dto.avatar = image.filename;
 
@@ -74,7 +75,7 @@ export class UserController {
 	@Post()
 	async createOne(
 		@Body() dto: CreateUserDto,
-		@UploadedFile() image: Express.Multer.File,
+		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 	) {
 		dto.avatar = image.filename;
 
@@ -93,20 +94,10 @@ export class UserController {
 		@Body() dto: EditUserDto,
 		@LoggedInUser() user: UserEntity,
 	) {
-		let data: any;
-
-		if (
-			this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
-				.granted
-		) {
-			data = await this.userService.editOne(idx, dto);
-		} else {
-			const rest = omit(dto, ["roles"]);
-
-			data = await this.userService.editOne(idx, rest, user);
-		}
-
-		return data;
+		return this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
+			.granted
+			? this.userService.editOne(idx, dto)
+			: this.userService.editOne(idx, omit(dto, ["roles"]), user);
 	}
 
 	@ApiOperation({ summary: "User delete" })
