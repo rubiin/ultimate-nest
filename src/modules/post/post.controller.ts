@@ -5,6 +5,7 @@ import { LoggedInUser } from "@common/decorators/user.decorator";
 import { User as UserEntity } from "@entities";
 import {
 	Body,
+	CacheInterceptor,
 	Controller,
 	Delete,
 	Get,
@@ -14,6 +15,7 @@ import {
 	Post,
 	Put,
 	Query,
+	UseInterceptors,
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
@@ -21,6 +23,7 @@ import { CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
 @ApiTags("Posts")
+@UseInterceptors(CacheInterceptor)
 @Controller("post")
 export class PostController {
 	constructor(

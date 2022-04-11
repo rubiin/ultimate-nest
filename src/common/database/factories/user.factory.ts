@@ -1,4 +1,4 @@
-import { User } from "../entities/user.entity";
+import { User } from "../../../entities/user.entity";
 import { Factory, Faker } from "@mikro-orm/seeder";
 import { AppRoles } from "@common/constants/app.roles";
 

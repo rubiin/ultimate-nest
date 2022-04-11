@@ -11,8 +11,6 @@ import { TokensService } from "@modules/token/tokens.service";
 import {
 	BadRequestException,
 	ForbiddenException,
-	HttpException,
-	HttpStatus,
 	Injectable,
 	NotFoundException,
 } from "@nestjs/common";
@@ -120,9 +118,8 @@ export class AuthService {
 		});
 
 		if (!userExists) {
-			throw new HttpException(
+			throw new NotFoundException(
 				await this.i18n.translate("operations.USER_NOT_FOUND"),
-				HttpStatus.NOT_FOUND,
 			);
 		}
 

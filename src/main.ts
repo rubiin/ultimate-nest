@@ -56,6 +56,9 @@ async function bootstrap() {
 
 	app.useLogger(app.get(Logger));
 
+	// Starts listening for shutdown hooks
+	app.enableShutdownHooks();
+
 	const port = configService.get<number>("app.port", 3000);
 
 	await app.listen(port);

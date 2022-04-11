@@ -2,6 +2,7 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { AppResource, AppRoles } from "@common/constants/app.roles";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
+import { ImageMulterOption } from "@common/misc/misc";
 import { User as UserEntity } from "@entities";
 import {
 	Body,
@@ -14,8 +15,10 @@ import {
 	Post,
 	Put,
 	Query,
+	UploadedFile,
 	UseInterceptors,
 } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { omit } from "@rubiin/js-utils";
 import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
@@ -41,8 +44,14 @@ export class UserController {
 	}
 
 	@ApiOperation({ summary: "public registration" })
+	@UseInterceptors(FileInterceptor("avatar", ImageMulterOption))
 	@Post("register")
-	async publicRegistration(@Body() dto: UserRegistrationDto) {
+	async publicRegistration(
+		@Body() dto: UserRegistrationDto,
+		@UploadedFile() image: Express.Multer.File,
+	) {
+		dto.avatar = image.filename;
+
 		return this.userService.createOne({
 			...dto,
 			roles: [AppRoles.AUTHOR],
@@ -61,8 +70,14 @@ export class UserController {
 		action: "create",
 		resource: AppResource.USER,
 	})
+	@UseInterceptors(FileInterceptor("avatar", ImageMulterOption))
 	@Post()
-	async createOne(@Body() dto: CreateUserDto) {
+	async createOne(
+		@Body() dto: CreateUserDto,
+		@UploadedFile() image: Express.Multer.File,
+	) {
+		dto.avatar = image.filename;
+
 		return this.userService.createOne(dto);
 	}
 
