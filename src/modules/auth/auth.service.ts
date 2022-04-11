@@ -43,12 +43,14 @@ export class AuthService {
 		});
 
 		if (!user) {
-			throw new BadRequestException("Invalid credentials");
+			throw new BadRequestException(
+				this.i18n.translate("operations.INVALID_CREDENTIALS"),
+			);
 		}
 
 		if (!user.isActive) {
 			throw new ForbiddenException(
-				"Account not found. Please create new account from the Login screen.",
+				this.i18n.translate("operations.ACCOUNT_NOT_FOUND"),
 			);
 		}
 
@@ -119,7 +121,7 @@ export class AuthService {
 
 		if (!userExists) {
 			throw new NotFoundException(
-				await this.i18n.translate("operations.USER_NOT_FOUND"),
+				this.i18n.translate("operations.USER_NOT_FOUND"),
 			);
 		}
 
@@ -174,7 +176,7 @@ export class AuthService {
 
 		if (!codeDetails) {
 			throw new NotFoundException(
-				await this.i18n.translate("operations.OTP_NOT_FOUND"),
+				this.i18n.translate("operations.OTP_NOT_FOUND"),
 			);
 		}
 
@@ -182,7 +184,7 @@ export class AuthService {
 
 		if (isExpired) {
 			throw new BadRequestException(
-				await this.i18n.translate("operations.OTP_EXPIRED"),
+				this.i18n.translate("operations.OTP_EXPIRED"),
 			);
 		}
 
@@ -216,7 +218,7 @@ export class AuthService {
 
 		if (!isValid) {
 			throw new BadRequestException(
-				await this.i18n.translate("operations.INVALID_PASSWORD"),
+				this.i18n.translate("operations.INVALID_PASSWORD"),
 			);
 		}
 

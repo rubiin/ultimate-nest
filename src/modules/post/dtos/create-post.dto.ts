@@ -7,22 +7,23 @@ import {
 	IsOptional,
 	IsString,
 } from "class-validator";
+import { i18nValidationMessage } from "nestjs-i18n";
 import { PostCategory } from "../enums";
 
 export class CreatePostDto {
-	@IsString()
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
 	title: string;
 
-	@IsString()
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
 	slug: string;
 
-	@IsString()
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
 	excerpt: string;
 
-	@IsString()
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
 	content: string;
 
-	@IsNotEmpty()
+	@IsNotEmpty({ message: i18nValidationMessage("validation.NOT_EMPTY") })
 	@IsEnum(PostCategory, {
 		message: `Invalid option. Valids options are ${enumToString(
 			PostCategory,
@@ -30,11 +31,14 @@ export class CreatePostDto {
 	})
 	category: string;
 
-	@IsString({ each: true })
-	@IsArray()
+	@IsString({
+		each: true,
+		message: i18nValidationMessage("validation.INVALID_STRING"),
+	})
+	@IsArray({ message: i18nValidationMessage("validation.INVALID_ARRAY") })
 	tags: string[];
 
 	@IsOptional()
-	@IsBoolean()
+	@IsBoolean({ message: i18nValidationMessage("validation.INVALID_BOOLEAN") })
 	status: boolean;
 }
