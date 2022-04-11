@@ -13,7 +13,7 @@
  * Number of characters must be between 6 to 20.
  *
  *
- * Tests at https://regex101.com/r/iU5BLr/1/
+ * Tests at https://regex101.com/r/m5AT6j/1
  */
 
 import {
@@ -27,7 +27,7 @@ import {
 @ValidatorConstraint({ async: true })
 class IsUsernameConstraint implements ValidatorConstraintInterface {
 	async validate(value: string, _argument: ValidationArguments) {
-		return /^(?=.{6,20}$)(?:[\dA-Za-z]+(?:[._-][\dA-Za-z])*)+$/.test(value);
+		return /^[A-Za-z][\w.]{5,12}/.test(value);
 	}
 
 	defaultMessage(argument: ValidationArguments) {
