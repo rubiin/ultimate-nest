@@ -30,7 +30,7 @@ const logger = new Logger("MikroORM");
 				registerRequestContext: false,
 				pool: { min: 2, max: 10 },
 				allowGlobalContext: true,
-				logger: msg => logger.log(msg),
+				logger: message => logger.log(message),
 				migrations: {
 					path: "dist/migrations",
 					pathTs: "src/migrations",

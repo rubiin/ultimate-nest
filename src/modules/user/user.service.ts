@@ -46,8 +46,8 @@ export class UserService {
 		return createPaginationObject<User>(results, total, page, limit);
 	}
 
-	async getOne(idx: string, userEntity?: User) {
-		const user = await this.userRepository.findOne({ idx }).then(
+	async getOne(index: string, userEntity?: User) {
+		const user = await this.userRepository.findOne({ idx: index }).then(
 			u => (!userEntity ? u : !!u && userEntity.id === u.id ? u : null), // checks if self update
 		);
 
@@ -72,33 +72,33 @@ export class UserService {
 			);
 		}
 
-		const newUser = this.userRepository.create(rest);
+		const user = this.userRepository.create(rest);
 
 		await this.orm.em.transactional(async em => {
 			const { url } = await this.cloudinaryService.uploadImage(image);
 
 			// cloudinary gives a url key on response that is the full url to file
 
-			newUser.avatar = url;
+			user.avatar = url;
 
-			await em.persistAndFlush(newUser);
+			await em.persistAndFlush(user);
 			await this.mailService.sendMail({
 				template: EmailTemplateEnum.WELCOME_TEMPLATE,
 				replacements: {
-					firstName: capitalize(newUser.firstName),
+					firstName: capitalize(user.firstName),
 					link: "example.com",
 				},
-				to: newUser.email,
+				to: user.email,
 				subject: "Welcome onboard",
 				from: this.configService.get("mail.senderEmail"),
 			});
 		});
 
-		return newUser;
+		return user;
 	}
 
-	async editOne(idx: string, dto: EditUserDto, userEntity?: User) {
-		const user = await this.getOne(idx, userEntity);
+	async editOne(index: string, dto: EditUserDto, userEntity?: User) {
+		const user = await this.getOne(index, userEntity);
 
 		wrap(user).assign(dto);
 
@@ -107,8 +107,8 @@ export class UserService {
 		return user;
 	}
 
-	async deleteOne(idx: string, userEntity?: User) {
-		const user = await this.getOne(idx, userEntity);
+	async deleteOne(index: string, userEntity?: User) {
+		const user = await this.getOne(index, userEntity);
 
 		this.userRepository.remove(user);
 

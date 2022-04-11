@@ -39,9 +39,9 @@ export class MailerService {
 				`${__dirname}/../../${this.options.template.dir}/${mailOptions.template}.eta`,
 				mailOptions.replacements,
 				this.options.template.etaOptions,
-				(err, html) => {
-					if (err) {
-						reject(err);
+				(error, html) => {
+					if (error) {
+						reject(error);
 					}
 
 					mailOptions.html = html;

@@ -60,8 +60,8 @@ export class UserController {
 
 	@ApiOperation({ summary: "User fetch" })
 	@Get(":idx")
-	async getOne(@Param("idx", ParseUUIDPipe) idx: string) {
-		return this.userService.getOne(idx);
+	async getOne(@Param("idx", ParseUUIDPipe) index: string) {
+		return this.userService.getOne(index);
 	}
 
 	@ApiOperation({ summary: "Admin create user" })
@@ -87,14 +87,14 @@ export class UserController {
 	})
 	@Put(":idx")
 	async editOne(
-		@Param("idx", ParseUUIDPipe) idx: string,
+		@Param("idx", ParseUUIDPipe) index: string,
 		@Body() dto: EditUserDto,
 		@LoggedInUser() user: UserEntity,
 	) {
 		return this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
 			.granted
-			? this.userService.editOne(idx, dto)
-			: this.userService.editOne(idx, omit(dto, ["roles"]), user);
+			? this.userService.editOne(index, dto)
+			: this.userService.editOne(index, omit(dto, ["roles"]), user);
 	}
 
 	@ApiOperation({ summary: "User delete" })
@@ -105,12 +105,12 @@ export class UserController {
 	})
 	@Delete(":idx")
 	async deleteOne(
-		@Param("idx", ParseUUIDPipe) idx: string,
+		@Param("idx", ParseUUIDPipe) index: string,
 		@LoggedInUser() user: UserEntity,
 	) {
 		return this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
 			.granted
-			? this.userService.deleteOne(idx)
-			: this.userService.deleteOne(idx, user);
+			? this.userService.deleteOne(index)
+			: this.userService.deleteOne(index, user);
 	}
 }

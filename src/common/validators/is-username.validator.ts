@@ -26,12 +26,12 @@ import {
 
 @ValidatorConstraint({ async: true })
 class IsUsernameConstraint implements ValidatorConstraintInterface {
-	async validate(value: string, _arg: ValidationArguments) {
+	async validate(value: string, _argument: ValidationArguments) {
 		return /^(?=.{6,20}$)(?:[\dA-Za-z]+(?:[._-][\dA-Za-z])*)+$/.test(value);
 	}
 
-	defaultMessage(arg: ValidationArguments) {
-		const property = arg.property;
+	defaultMessage(argument: ValidationArguments) {
+		const property = argument.property;
 
 		return `${property} must fulfill username's criteria`;
 	}

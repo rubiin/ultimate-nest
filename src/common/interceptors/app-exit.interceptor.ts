@@ -16,8 +16,8 @@ export class ExitInterceptor implements NestInterceptor {
 		return next
 			.handle()
 			.pipe(
-				catchError(e => {
-					return throwError(e);
+				catchError(error => {
+					return throwError(error);
 				}),
 			)
 			.pipe(
