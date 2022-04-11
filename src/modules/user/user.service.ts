@@ -2,6 +2,7 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { EmailTemplateEnum } from "@common/constants/template.enum";
 import { BaseRepository } from "@common/database/base.repository";
 import { User } from "@entities";
+import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { createPaginationObject } from "@lib/pagination";
 import { MikroORM, wrap } from "@mikro-orm/core";
@@ -16,6 +17,10 @@ import { capitalize } from "@rubiin/js-utils";
 import { I18nService } from "nestjs-i18n";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
+interface ICreateUserWithFile extends CreateUserDto {
+	image: Express.Multer.File;
+}
+
 @Injectable()
 export class UserService {
 	constructor(
@@ -25,6 +30,7 @@ export class UserService {
 		private readonly orm: MikroORM,
 		private readonly i18nService: I18nService,
 		private readonly configService: ConfigService,
+		private readonly cloudinaryService: CloudinaryService,
 	) {}
 
 	async getMany({ limit, offset, order, page }: PageOptionsDto) {
@@ -53,10 +59,12 @@ export class UserService {
 		return user;
 	}
 
-	async createOne(dto: CreateUserDto) {
+	async createOne(dto: ICreateUserWithFile) {
 		const userExist = await this.userRepository.findOne({
 			email: dto.email,
 		});
+
+		const { image, ...rest } = dto;
 
 		if (userExist) {
 			throw new BadRequestException(
@@ -64,9 +72,15 @@ export class UserService {
 			);
 		}
 
-		const newUser = this.userRepository.create(dto);
+		const newUser = this.userRepository.create(rest);
 
 		await this.orm.em.transactional(async em => {
+			const { url } = await this.cloudinaryService.uploadImage(image);
+
+			// cloudinary gives a url key on response that is the full url to file
+
+			newUser.avatar = url;
+
 			await em.persistAndFlush(newUser);
 			await this.mailService.sendMail({
 				template: EmailTemplateEnum.WELCOME_TEMPLATE,

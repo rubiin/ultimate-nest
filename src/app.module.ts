@@ -1,6 +1,7 @@
 import { roles } from "@common/constants/app.roles";
 import { NestAdminModule } from "@lib/adminjs/admin.module";
 import { NestCacheModule } from "@lib/cache/cache.module";
+import { NestCloudinaryModule } from "@lib/cloudinary";
 import { NestConfigModule } from "@lib/config/config.module";
 import { NestI18nModule } from "@lib/i18n/i18n.module";
 import { NestMailModule } from "@lib/mailer";
@@ -26,6 +27,7 @@ import { join } from "path";
 		NestI18nModule,
 		NestAdminModule,
 		NestCacheModule,
+		NestCloudinaryModule,
 		AccessControlModule.forRoles(roles),
 		ServeStaticModule.forRoot({
 			rootPath: join(__dirname, "resources"),
