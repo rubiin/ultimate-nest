@@ -5,6 +5,7 @@ import { createPaginationObject } from "@lib/pagination";
 import { wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { I18nService } from "nestjs-i18n";
 import { CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
@@ -12,6 +13,7 @@ export class PostService {
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: BaseRepository<Post>,
+		private readonly i18nService: I18nService,
 	) {}
 
 	async getMany({ page, order, limit, offset }: PageOptionsDto) {
@@ -35,7 +37,9 @@ export class PostService {
 			);
 
 		if (!post)
-			throw new NotFoundException("Post does not exist or unauthorized");
+			throw new NotFoundException(
+				this.i18nService.t("status.POST_EMAIL_EXISTS"),
+			);
 
 		return post;
 	}
@@ -60,7 +64,7 @@ export class PostService {
 	async deleteOne(idx: string, author?: User) {
 		const post = await this.getById(idx, author);
 
-		await this.postRepository.remove(post);
+		await this.postRepository.softRemoveAndFlush(post);
 
 		return post;
 	}

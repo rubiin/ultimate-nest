@@ -1,11 +1,11 @@
-import { HelperService } from "@common/helpers/helpers.utils";
+import { enumToString } from "@rubiin/js-utils";
 import {
-	IsNotEmpty,
-	IsString,
+	IsArray,
 	IsBoolean,
 	IsEnum,
-	IsArray,
+	IsNotEmpty,
 	IsOptional,
+	IsString,
 } from "class-validator";
 import { PostCategory } from "../enums";
 
@@ -24,7 +24,7 @@ export class CreatePostDto {
 
 	@IsNotEmpty()
 	@IsEnum(PostCategory, {
-		message: `Invalid option. Valids options are ${HelperService.EnumToString(
+		message: `Invalid option. Valids options are ${enumToString(
 			PostCategory,
 		)}`,
 	})

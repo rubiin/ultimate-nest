@@ -41,11 +41,9 @@ export class UserService {
 	}
 
 	async getOne(idx: string, userEntity?: User) {
-		const user = await this.userRepository
-			.findOne({ idx })
-			.then(u =>
-				!userEntity ? u : !!u && userEntity.id === u.id ? u : null,
-			);
+		const user = await this.userRepository.findOne({ idx }).then(
+			u => (!userEntity ? u : !!u && userEntity.id === u.id ? u : null), // checks if self update
+		);
 
 		if (!user)
 			throw new NotFoundException(
