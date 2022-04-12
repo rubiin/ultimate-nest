@@ -18,7 +18,7 @@ export class PostService {
 
 	async getMany({ page, order, limit, offset }: PageOptionsDto) {
 		const { results, total } = await this.postRepository.findAndPaginate(
-			{},
+			{ isObsolete: false },
 			{
 				limit,
 				offset,

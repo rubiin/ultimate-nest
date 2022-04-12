@@ -1,5 +1,4 @@
 import { PrimaryKey, Property } from "@mikro-orm/core";
-import { Exclude } from "class-transformer";
 import { randomUUID } from "crypto";
 
 export abstract class BaseEntity {
@@ -12,9 +11,8 @@ export abstract class BaseEntity {
 	@Property()
 	isActive = true;
 
-	@Exclude({ toPlainOnly: true })
-	@Property()
-	isObsolete = false; // deleted status
+	@Property({ hidden: true })
+	isObsolete = false; // deleted status, hidden true removed the property during deserialization
 
 	@Property()
 	deletedAt?: Date;
@@ -22,9 +20,9 @@ export abstract class BaseEntity {
 	@Property()
 	createdAt = new Date();
 
-	@Exclude({ toPlainOnly: true })
 	@Property({
 		onUpdate: () => new Date(),
+		hidden: true,
 	})
 	updatedAt? = new Date();
 }

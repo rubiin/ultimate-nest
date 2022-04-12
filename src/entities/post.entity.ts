@@ -25,6 +25,6 @@ export class Post extends BaseEntity {
 	@Property()
 	status = true;
 
-	@ManyToOne()
+	@ManyToOne({ eager: true })
 	author: User;
 }
