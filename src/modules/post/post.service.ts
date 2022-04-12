@@ -1,11 +1,12 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database/base.repository";
 import { Post, User } from "@entities";
-import { createPaginationObject } from "@lib/pagination";
+import { createPaginationObject, Pagination } from "@lib/pagination";
 import { wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
+import { from, map, Observable } from "rxjs";
 import { CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
@@ -16,17 +17,31 @@ export class PostService {
 		private readonly i18nService: I18nService,
 	) {}
 
-	async getMany({ page, order, limit, offset }: PageOptionsDto) {
-		const { results, total } = await this.postRepository.findAndPaginate(
-			{ isObsolete: false },
-			{
-				limit,
-				offset,
-				orderBy: { createdAt: order.toLowerCase() },
-			},
+	getMany({
+		page,
+		order,
+		limit,
+		offset,
+	}: PageOptionsDto): Observable<Pagination<Post>> {
+		return from(
+			this.postRepository.findAndPaginate(
+				{ isObsolete: false },
+				{
+					limit,
+					offset,
+					orderBy: { createdAt: order.toLowerCase() },
+				},
+			),
+		).pipe(
+			map(({ results, total }) => {
+				return createPaginationObject<Post>(
+					results,
+					total,
+					page,
+					limit,
+				);
+			}),
 		);
-
-		return createPaginationObject<Post>(results, total, page, limit);
 	}
 
 	async getById(index: string, author?: User) {
