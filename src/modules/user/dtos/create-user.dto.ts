@@ -1,38 +1,34 @@
 import { AppRoles } from "@common/constants/app.roles";
 import { enumToString } from "@rubiin/js-utils";
 import {
-	IsString,
-	IsEmail,
-	MinLength,
-	MaxLength,
-	IsOptional,
 	IsArray,
+	IsEmail,
 	IsEnum,
+	IsString,
+	MaxLength,
+	MinLength,
 } from "class-validator";
-import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreateUserDto {
-	@IsOptional()
-	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
-	@MaxLength(255, { message: i18nValidationMessage("validation.MAX_LENGTH") })
+	@IsString()
+	@MaxLength(255)
 	firstName: string;
 
-	@IsOptional()
-	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
-	@MaxLength(255, { message: i18nValidationMessage("validation.MAX_LENGTH") })
+	@IsString()
+	@MaxLength(255)
 	lastName: string;
 
 	avatar: string;
 
-	@IsEmail({}, { message: i18nValidationMessage("validation.INVALID_EMAIL") })
+	@IsEmail()
 	email: string;
 
-	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
-	@MinLength(8, { message: i18nValidationMessage("validation.MIN_LENGTH") })
-	@MaxLength(128, { message: i18nValidationMessage("validation.MAX_LENGTH") })
+	@IsString()
+	@MinLength(8)
+	@MaxLength(128)
 	password: string;
 
-	@IsArray({ message: i18nValidationMessage("validation.INVALID_ARRAY") })
+	@IsArray()
 	@IsEnum(AppRoles, {
 		each: true,
 		message: `must be a valid role value,${enumToString(AppRoles)}`,

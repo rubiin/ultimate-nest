@@ -1,16 +1,16 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
+import { AppUtils } from "@common/helpers/app.utils";
 import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { setupSwagger } from "./swagger";
-import { AppUtils } from "@common/helpers/app.utils";
-import helmet from "helmet";
-import * as compression from "compression";
+import { NestFactory } from "@nestjs/core";
 import {
 	ExpressAdapter,
 	NestExpressApplication,
 } from "@nestjs/platform-express";
+import * as compression from "compression";
+import helmet from "helmet";
 import { Logger } from "nestjs-pino";
+import { AppModule } from "./app.module";
+import { setupSwagger } from "./swagger";
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(
