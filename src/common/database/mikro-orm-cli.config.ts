@@ -42,7 +42,7 @@ const config = {
 	password: process.env.DB_PASSWORD,
 	port: +process.env.DB_PORT,
 	type: "postgresql",
-	logger: message => logger.log(message),
+	logger: logger.log.bind(logger),
 	highlighter: new SqlHighlighter(),
 	user: process.env.DB_USERNAME,
 	metadataProvider: TsMorphMetadataProvider,
