@@ -35,7 +35,7 @@ export class UserService {
 
 	async getMany({ limit, offset, order, page }: PageOptionsDto) {
 		const { results, total } = await this.userRepository.findAndPaginate(
-			{},
+			{ isObsolete: false },
 			{
 				limit,
 				offset,
