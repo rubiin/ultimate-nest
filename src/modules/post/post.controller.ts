@@ -3,6 +3,8 @@ import { AppResource } from "@common/constants/app.roles";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { User as UserEntity } from "@entities";
+import { Post as PostEntity } from "@entities";
+import { Pagination } from "@lib/pagination";
 import {
 	Body,
 	CacheInterceptor,
@@ -18,6 +20,7 @@ import {
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
+import { Observable } from "rxjs";
 import { CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
@@ -37,7 +40,9 @@ export class PostController {
 		resource: AppResource.POST,
 	})
 	@Get()
-	async getMany(@Query() pageOptionsDto: PageOptionsDto) {
+	getMany(
+		@Query() pageOptionsDto: PageOptionsDto,
+	): Observable<Pagination<PostEntity>> {
 		return this.postService.getMany(pageOptionsDto);
 	}
 

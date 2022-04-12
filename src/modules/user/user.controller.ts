@@ -4,7 +4,8 @@ import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { ImageMulterOption } from "@common/misc/misc";
 import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
-import { User as UserEntity } from "@entities";
+import { User, User as UserEntity } from "@entities";
+import { Pagination } from "@lib/pagination";
 import {
 	Body,
 	CacheInterceptor,
@@ -23,6 +24,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { omit } from "@rubiin/js-utils";
 import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
+import { Observable } from "rxjs";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
@@ -38,10 +40,10 @@ export class UserController {
 
 	@ApiOperation({ summary: "Users list" })
 	@Get()
-	async getMany(@Query() pageOptionsDto: PageOptionsDto) {
-		const data = await this.userService.getMany(pageOptionsDto);
-
-		return { data };
+	getMany(
+		@Query() pageOptionsDto: PageOptionsDto,
+	): Observable<Pagination<User>> {
+		return this.userService.getMany(pageOptionsDto);
 	}
 
 	@ApiOperation({ summary: "public registration" })

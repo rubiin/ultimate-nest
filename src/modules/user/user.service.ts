@@ -4,7 +4,7 @@ import { BaseRepository } from "@common/database/base.repository";
 import { User } from "@entities";
 import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { createPaginationObject } from "@lib/pagination";
+import { createPaginationObject, Pagination } from "@lib/pagination";
 import { MikroORM, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import {
@@ -15,6 +15,7 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { capitalize } from "@rubiin/js-utils";
 import { I18nService } from "nestjs-i18n";
+import { from, map, Observable } from "rxjs";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 interface ICreateUserWithFile extends CreateUserDto {
@@ -33,17 +34,31 @@ export class UserService {
 		private readonly cloudinaryService: CloudinaryService,
 	) {}
 
-	async getMany({ limit, offset, order, page }: PageOptionsDto) {
-		const { results, total } = await this.userRepository.findAndPaginate(
-			{ isObsolete: false },
-			{
-				limit,
-				offset,
-				orderBy: { createdAt: order.toLowerCase() },
-			},
+	getMany({
+		limit,
+		offset,
+		order,
+		page,
+	}: PageOptionsDto): Observable<Pagination<User>> {
+		return from(
+			this.userRepository.findAndPaginate(
+				{ isObsolete: false },
+				{
+					limit,
+					offset,
+					orderBy: { createdAt: order.toLowerCase() },
+				},
+			),
+		).pipe(
+			map(({ results, total }) => {
+				return createPaginationObject<User>(
+					results,
+					total,
+					page,
+					limit,
+				);
+			}),
 		);
-
-		return createPaginationObject<User>(results, total, page, limit);
 	}
 
 	async getOne(index: string, userEntity?: User) {
