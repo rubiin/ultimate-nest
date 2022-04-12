@@ -48,8 +48,8 @@ export class UserController {
 	@UseInterceptors(FileInterceptor("avatar", ImageMulterOption))
 	@Post("register")
 	async publicRegistration(
-		@Body() dto: UserRegistrationDto,
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
+		@Body() dto: UserRegistrationDto,
 	) {
 		return this.userService.createOne({
 			...dto,
@@ -73,8 +73,8 @@ export class UserController {
 	@UseInterceptors(FileInterceptor("avatar", ImageMulterOption))
 	@Post()
 	async createOne(
-		@Body() dto: CreateUserDto,
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
+		@Body() dto: CreateUserDto,
 	) {
 		return this.userService.createOne({ ...dto, image });
 	}
