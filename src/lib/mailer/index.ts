@@ -21,6 +21,7 @@ import { MailModule } from "./mailer.module";
 					dir: configService.get("mail.templateDir"),
 					etaOptions: {
 						cache: true,
+						rmWhitespace: true,
 					},
 				},
 			}),
