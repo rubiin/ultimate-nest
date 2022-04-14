@@ -6,6 +6,13 @@ import {
 	HealthIndicatorResult,
 } from "@nestjs/terminus";
 
+/**
+ *
+ * This is the health indicator for the database.
+ * Tries to run a simple count query on the database.
+ *
+ */
+
 @Injectable()
 export class DatabaseHealthIndicator extends HealthIndicator {
 	constructor(private readonly orm: MikroORM) {
@@ -14,11 +21,9 @@ export class DatabaseHealthIndicator extends HealthIndicator {
 
 	async isHealthy(key = "Users"): Promise<HealthIndicatorResult> {
 		try {
-			const users = await this.orm.em.find(
-				"User",
-				{ isObsolete: false },
-				{ limit: 1 },
-			);
+			const users = await this.orm.em.count("User", {
+				isObsolete: false,
+			});
 
 			return this.getStatus(key, true, { users });
 		} catch (error) {
