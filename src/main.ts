@@ -35,7 +35,7 @@ async function bootstrap() {
 	// configureNestGlobals
 	// ==================================================
 
-	const globalPrefix = "v1";
+	const globalPrefix = configService.get<string>("app.prefix");
 
 	app.useGlobalPipes(
 		new ValidationPipe({

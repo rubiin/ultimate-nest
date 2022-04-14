@@ -14,6 +14,8 @@ import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { AccessControlModule } from "nest-access-control";
 import { join } from "path";
+import { HealthModule } from "./health/health.module";
+import { HttpModule } from "@nestjs/axios";
 
 @Module({
 	imports: [
@@ -24,6 +26,7 @@ import { join } from "path";
 		OrmModule,
 		NestMailModule,
 		NestPinoModule,
+		HttpModule,
 		NestI18nModule,
 		NestAdminModule,
 		NestCacheModule,
@@ -35,6 +38,7 @@ import { join } from "path";
 				maxAge: 86_400, // 1 day
 			},
 		}),
+		HealthModule,
 	],
 })
 export class AppModule {}
