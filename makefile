@@ -25,5 +25,8 @@ build:
 encryption:
 	@sh scripts/encryption.sh
 
+ssl:
+	@mkcert $(site)
+
 
 

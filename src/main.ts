@@ -10,13 +10,14 @@ import * as compression from "compression";
 import helmet from "helmet";
 import { Logger } from "nestjs-pino";
 import { AppModule } from "./app.module";
+import { ssl } from "./ssl";
 import { setupSwagger } from "./swagger";
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(
 		AppModule,
 		new ExpressAdapter(),
-		{ bufferLogs: true },
+		{ httpsOptions: ssl(), bufferLogs: true },
 	);
 
 	AppUtils.killAppWithGrace(app);
@@ -42,7 +43,9 @@ async function bootstrap() {
 			whitelist: true,
 			transform: true,
 		}),
-	).setGlobalPrefix(globalPrefix);
+	);
+
+	app.setGlobalPrefix(globalPrefix);
 
 	// ==================================================
 	// configureNestSwagger
