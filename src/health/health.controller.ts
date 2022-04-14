@@ -32,23 +32,30 @@ export class HealthController {
 			() =>
 				this.http.pingCheck(
 					"swagger",
-					`http://localhost:${this.configService.get(
+					`https://localhost:${this.configService.get(
 						"app.port",
 					)}/doc`,
 				),
 			() =>
 				this.http.pingCheck(
 					"routes",
-					`http://localhost:${this.configService.get(
+					`https://localhost:${this.configService.get(
 						"app.port",
 					)}/${this.configService.get("app.prefix")}/health/test`,
 				),
 			() => this.databaseHealth.isHealthy(),
 			async () => this.memory.checkHeap("memory_heap", 200 * 1024 * 1024),
 			async () => this.memory.checkRSS("memory_rss", 3000 * 1024 * 1024),
+			// The used disk storage should not exceed 50% of the full disk size
 			() =>
 				this.disk.checkStorage("disk health", {
 					thresholdPercent: 0.5,
+					path: "/",
+				}),
+			// The used disk storage should not exceed 250 GB
+			() =>
+				this.disk.checkStorage("disk health", {
+					threshold: 250 * 1024 * 1024 * 1024,
 					path: "/",
 				}),
 		]);
