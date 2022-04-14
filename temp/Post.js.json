@@ -9,7 +9,7 @@
 			"category": { "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"tags": { "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
 			"status": { "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": true, "type": "User", "nullable": false }
 		},
 		"props": [
 			{ "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
@@ -19,7 +19,7 @@
 			{ "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
 			{ "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": true, "type": "User", "nullable": false }
 		],
 		"primaryKeys": [],
 		"filters": {},
@@ -36,10 +36,10 @@
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
-		"relations": [{ "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }],
+		"relations": [{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": true, "type": "User", "nullable": false }],
 		"collection": "post"
 	},
 	"origin": "./dist/entities/post.entity.js",
-	"hash": "f4cc2f57a56d589a96e6a9f183df6862",
+	"hash": "9af1c054e0089db67f706d4b14a2cc73",
 	"version": "5.1.2"
 }
