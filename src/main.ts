@@ -10,14 +10,13 @@ import * as compression from "compression";
 import helmet from "helmet";
 import { Logger } from "nestjs-pino";
 import { AppModule } from "./app.module";
-import { ssl } from "./ssl";
-import { setupSwagger } from "./swagger";
+import rateLimit from "express-rate-limit";
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(
 		AppModule,
 		new ExpressAdapter(),
-		{ httpsOptions: ssl(), bufferLogs: true },
+		{ httpsOptions: AppUtils.ssl(), bufferLogs: true },
 	);
 
 	AppUtils.killAppWithGrace(app);
@@ -25,12 +24,29 @@ async function bootstrap() {
 	const configService = app.get(ConfigService);
 
 	// ==================================================
-	// configureExpressSettings
+	// security
 	// ==================================================
 
 	app.enableCors();
-	app.use(helmet());
 	app.use(compression());
+	app.enable("trust proxy");
+	app.use(helmet());
+
+	app.use(
+		rateLimit({
+			windowMs: 15 * 60 * 1000, // 15 minutes
+			max: 100, // limit each IP to 100 requests per windowMs
+			message: "Too many requests from this IP, please try again later",
+		}),
+	);
+	const createAccountLimiter = rateLimit({
+		windowMs: 60 * 60 * 1000, // 1 hour window
+		max: 60, // start blocking after 3 requests
+		message:
+			"Too many accounts created from this IP, please try again after an hour",
+	});
+
+	app.use("user/register", createAccountLimiter);
 
 	// ==================================================
 	// configureNestGlobals
@@ -51,7 +67,7 @@ async function bootstrap() {
 	// configureNestSwagger
 	// ==================================================
 
-	setupSwagger(app);
+	AppUtils.setupSwagger(app);
 
 	// ==================================================
 	// configurePinoLogger
