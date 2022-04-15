@@ -20,9 +20,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		});
 	}
 
+	/**
+	 * @description Validate the token and return the user
+	 * @param payload string
+	 * @returns User
+	 */
+
 	async validate(payload: any) {
 		const { sub: id } = payload;
 
+		// Accept the JWT and attempt to validate it using the user service
 		return await this.usersRepo.findOne({ id });
 	}
 }
