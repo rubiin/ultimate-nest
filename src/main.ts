@@ -23,9 +23,9 @@ async function bootstrap() {
 
 	const configService = app.get(ConfigService);
 
-	// ==================================================
+	// ======================================================
 	// security
-	// ==================================================
+	// ======================================================
 
 	app.enableCors();
 	app.use(compression());
@@ -48,9 +48,9 @@ async function bootstrap() {
 
 	app.use("user/register", createAccountLimiter);
 
-	// ==================================================
+	// =====================================================
 	// configureNestGlobals
-	// ==================================================
+	// =====================================================
 
 	const globalPrefix = configService.get<string>("app.prefix");
 
@@ -63,19 +63,20 @@ async function bootstrap() {
 
 	app.setGlobalPrefix(globalPrefix);
 
-	// ==================================================
+	// =========================================================
 	// configureNestSwagger
-	// ==================================================
+	// =========================================================
 
 	AppUtils.setupSwagger(app);
 
-	// ==================================================
+	// =========================================================
 	// configurePinoLogger
-	// ==================================================
+	// =========================================================
 
 	app.useLogger(app.get(Logger));
 
 	// Starts listening for shutdown hooks
+
 	app.enableShutdownHooks();
 
 	const port = configService.get<number>("app.port", 3000);
