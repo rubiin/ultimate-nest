@@ -2,11 +2,10 @@ import { User } from "@entities";
 import * as eta from "eta";
 import * as sharp from "sharp";
 import puppeteer from "puppeteer";
-import { pick } from "@rubiin/js-utils";
+import { pick, slugify } from "@rubiin/js-utils";
 import { customAlphabet } from "nanoid/async";
 import { randomTypes } from "@common/constants/random-types.enum";
 import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
-import { slugify } from "@rubiin/js-utils";
 import { hashString } from "@common/misc/threads";
 
 let puppetterInstance = null;
