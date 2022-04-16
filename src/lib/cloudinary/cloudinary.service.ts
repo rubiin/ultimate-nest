@@ -7,6 +7,7 @@ import {
 import { Readable } from "stream";
 import { CLOUDINARY_MODULE_OPTIONS } from "./cloudinary.constant";
 import { CloudinaryModuleOptions } from "./cloudinary.options";
+import * as sharp from "sharp";
 
 @Injectable()
 export class CloudinaryService {
@@ -49,16 +50,12 @@ export class CloudinaryService {
 			);
 			const stream: Readable = new Readable();
 
-			// const shrinkedImage = await sharp(file.buffer)
-			// 	.resize(500)
-			// 	.toBuffer();
+			const shrinkedImage = await sharp(file.buffer)
+				.resize(800)
+				.toBuffer();
 
-			this.logger.log("hererrere", file.buffer);
-
-			stream.push(file.buffer);
+			stream.push(shrinkedImage);
 			stream.push(null);
-
-			this.logger.log(typeof stream);
 
 			stream.pipe(upload);
 		});

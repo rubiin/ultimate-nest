@@ -1,4 +1,5 @@
 import { roles } from "@common/constants/app.roles";
+import { RabbitInterceptor } from "@common/interceptors/rabbit.interceptor";
 import { NestAdminModule } from "@lib/adminjs/admin.module";
 import { NestCacheModule } from "@lib/cache/cache.module";
 import { NestCloudinaryModule } from "@lib/cloudinary";
@@ -10,10 +11,14 @@ import { NestPinoModule } from "@lib/pino/pino.module";
 import { AuthModule } from "@modules/auth/auth.module";
 import { PostModule } from "@modules/post/post.module";
 import { UserModule } from "@modules/user/user.module";
+import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
+import { APP_INTERCEPTOR } from "@nestjs/core";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { AccessControlModule } from "nest-access-control";
 import { join } from "path";
+import { HealthModule } from "./health/health.module";
+import { RabbitModule } from "./modules/rabbit/rabbit.module";
 
 @Module({
 	imports: [
@@ -24,6 +29,7 @@ import { join } from "path";
 		OrmModule,
 		NestMailModule,
 		NestPinoModule,
+		HttpModule,
 		NestI18nModule,
 		NestAdminModule,
 		NestCacheModule,
@@ -35,6 +41,14 @@ import { join } from "path";
 				maxAge: 86_400, // 1 day
 			},
 		}),
+		HealthModule,
+		RabbitModule,
+	],
+	providers: [
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: RabbitInterceptor,
+		},
 	],
 })
 export class AppModule {}
