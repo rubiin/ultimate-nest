@@ -15,6 +15,7 @@ import * as path from "path";
 				path: path.join(__dirname, "../../resources/i18n/"),
 				watch: true,
 			},
+			disableMiddleware: true,
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,

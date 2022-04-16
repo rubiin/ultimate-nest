@@ -21,9 +21,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 	}
 
 	/**
+	 *
 	 * @description Validate the token and return the user
 	 * @param payload string
 	 * @returns User
+	 *
 	 */
 
 	async validate(payload: any) {

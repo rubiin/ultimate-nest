@@ -1,5 +1,5 @@
 import { AppUtils } from "@common/helpers/app.utils";
-import { ValidationPipe } from "@nestjs/common";
+import { ValidationPipe, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import {
@@ -8,7 +8,6 @@ import {
 } from "@nestjs/platform-express";
 import * as compression from "compression";
 import helmet from "helmet";
-import { Logger } from "nestjs-pino";
 import { AppModule } from "./app.module";
 import rateLimit from "express-rate-limit";
 
@@ -83,7 +82,7 @@ async function bootstrap() {
 
 	await app.listen(port);
 
-	console.info(
+	Logger.log(
 		`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
 	);
 }

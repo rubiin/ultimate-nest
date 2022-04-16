@@ -1,7 +1,6 @@
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, Logger } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as fs from "fs";
-import { Logger } from "@nestjs/common";
 
 export const AppUtils = {
 	/**
