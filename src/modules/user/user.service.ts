@@ -61,7 +61,7 @@ export class UserService {
 		);
 	}
 
-	getOne(index: string, userEntity?: User) {
+	getOne(index: string, userEntity?: User): Observable<User> {
 		return from(
 			this.userRepository.findOne({ idx: index, isObsolete: false }),
 		).pipe(
@@ -121,7 +121,11 @@ export class UserService {
 		return user;
 	}
 
-	editOne(index: string, dto: EditUserDto, userEntity?: User) {
+	editOne(
+		index: string,
+		dto: EditUserDto,
+		userEntity?: User,
+	): Observable<User> {
 		return this.getOne(index, userEntity).pipe(
 			switchMap(user => {
 				wrap(user).assign(dto);
@@ -131,7 +135,7 @@ export class UserService {
 		);
 	}
 
-	async deleteOne(index: string, userEntity?: User) {
+	deleteOne(index: string, userEntity?: User): Observable<User> {
 		return this.getOne(index, userEntity).pipe(
 			switchMap(user => {
 				return from(this.userRepository.softRemoveAndFlush(user)).pipe(

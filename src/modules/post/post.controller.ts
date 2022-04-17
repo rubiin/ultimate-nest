@@ -2,8 +2,7 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { AppResource } from "@common/constants/app.roles";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
-import { User as UserEntity } from "@entities";
-import { Post as PostEntity } from "@entities";
+import { User as UserEntity, Post as PostEntity } from "@entities";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
@@ -47,8 +46,10 @@ export class PostController {
 	}
 
 	@Get(":idx")
-	async getById(@Param("idx", ParseUUIDPipe) index: string) {
-		return await this.postService.getById(index);
+	getById(
+		@Param("idx", ParseUUIDPipe) index: string,
+	): Observable<PostEntity> {
+		return this.postService.getById(index);
 	}
 
 	@Auth({
@@ -69,12 +70,12 @@ export class PostController {
 		action: "update",
 		possession: "own",
 	})
-	@Put(":id")
-	async editOne(
+	@Put(":idx")
+	editOne(
 		@Param("idx", ParseUUIDPipe) index: string,
 		@Body() dto: EditPostDto,
 		@LoggedInUser() author: UserEntity,
-	) {
+	): Observable<PostEntity> {
 		return this.roleBuilder.can(author.roles).updateAny(AppResource.POST)
 			.granted
 			? this.postService.editOne(index, dto)
@@ -86,11 +87,11 @@ export class PostController {
 		action: "delete",
 		possession: "own",
 	})
-	@Delete(":id")
-	async deleteOne(
+	@Delete(":idx")
+	deleteOne(
 		@Param("idx", ParseUUIDPipe) index: string,
 		@LoggedInUser() author: UserEntity,
-	) {
+	): Observable<PostEntity> {
 		return this.roleBuilder.can(author.roles).deleteAny(AppResource.POST)
 			.granted
 			? this.postService.deleteOne(index)

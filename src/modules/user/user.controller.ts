@@ -62,7 +62,7 @@ export class UserController {
 
 	@ApiOperation({ summary: "User fetch" })
 	@Get(":idx")
-	async getOne(@Param("idx", ParseUUIDPipe) index: string) {
+	getOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
 		return this.userService.getOne(index);
 	}
 
@@ -88,11 +88,11 @@ export class UserController {
 		resource: AppResource.USER,
 	})
 	@Put(":idx")
-	async editOne(
+	editOne(
 		@Param("idx", ParseUUIDPipe) index: string,
 		@Body() dto: EditUserDto,
 		@LoggedInUser() user: UserEntity,
-	) {
+	): Observable<User> {
 		return this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
 			.granted
 			? this.userService.editOne(index, dto)
@@ -106,10 +106,10 @@ export class UserController {
 		resource: AppResource.USER,
 	})
 	@Delete(":idx")
-	async deleteOne(
+	deleteOne(
 		@Param("idx", ParseUUIDPipe) index: string,
 		@LoggedInUser() user: UserEntity,
-	) {
+	): Observable<User> {
 		return this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
 			.granted
 			? this.userService.deleteOne(index)
