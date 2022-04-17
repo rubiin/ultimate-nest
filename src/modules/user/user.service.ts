@@ -15,7 +15,7 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { capitalize } from "@rubiin/js-utils";
 import { I18nService } from "nestjs-i18n";
-import { from, map, Observable } from "rxjs";
+import { from, map, Observable, switchMap } from "rxjs";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 interface ICreateUserWithFile extends CreateUserDto {
@@ -61,17 +61,26 @@ export class UserService {
 		);
 	}
 
-	async getOne(index: string, userEntity?: User) {
-		const user = await this.userRepository.findOne({ idx: index }).then(
-			u => (!userEntity ? u : !!u && userEntity.id === u.id ? u : null), // checks if self update
+	getOne(index: string, userEntity?: User) {
+		return from(
+			this.userRepository.findOne({ idx: index, isObsolete: false }),
+		).pipe(
+			map(u => {
+				const user = !userEntity
+					? u
+					: !!u && userEntity.id === u.id
+					? u
+					: null;
+
+				if (!user) {
+					throw new NotFoundException(
+						this.i18nService.t("status.USER_DOESNT_EXIST"),
+					);
+				} else {
+					return user;
+				}
+			}),
 		);
-
-		if (!user)
-			throw new NotFoundException(
-				this.i18nService.t("status.USER_DOESNT_EXIST"),
-			);
-
-		return user;
 	}
 
 	async createOne(dto: ICreateUserWithFile) {
@@ -112,21 +121,23 @@ export class UserService {
 		return user;
 	}
 
-	async editOne(index: string, dto: EditUserDto, userEntity?: User) {
-		const user = await this.getOne(index, userEntity);
+	editOne(index: string, dto: EditUserDto, userEntity?: User) {
+		return this.getOne(index, userEntity).pipe(
+			switchMap(user => {
+				wrap(user).assign(dto);
 
-		wrap(user).assign(dto);
-
-		await this.userRepository.flush();
-
-		return user;
+				return from(this.userRepository.flush()).pipe(map(() => user));
+			}),
+		);
 	}
 
 	async deleteOne(index: string, userEntity?: User) {
-		const user = await this.getOne(index, userEntity);
-
-		this.userRepository.remove(user);
-
-		return user;
+		return this.getOne(index, userEntity).pipe(
+			switchMap(user => {
+				return from(this.userRepository.softRemoveAndFlush(user)).pipe(
+					map(() => user),
+				);
+			}),
+		);
 	}
 }
