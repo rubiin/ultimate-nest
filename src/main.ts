@@ -6,7 +6,7 @@ import {
 	ExpressAdapter,
 	NestExpressApplication,
 } from "@nestjs/platform-express";
-import * as compression from "compression";
+import compression from "compression";
 import helmet from "helmet";
 import { AppModule } from "./app.module";
 import rateLimit from "express-rate-limit";

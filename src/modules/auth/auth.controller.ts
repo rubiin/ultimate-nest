@@ -2,7 +2,6 @@ import { AppResource } from "@common/constants/app.roles";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
-import { LocalAuthGuard } from "@common/guards/local-auth.guard";
 import { IResponse } from "@common/interfaces/response.interface";
 import { User, User as UserEntity } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
@@ -17,9 +16,10 @@ import {
 	UseGuards,
 } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Observable } from "rxjs";
 import { AuthService } from "./auth.service";
 import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
-import { RefreshRequest } from "./dtos/refresh-request.dto";
+import { RefreshTokenDto } from "./dtos/refresh-request.dto";
 import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
 import { UserLoginDto } from "./dtos/user-login";
 
@@ -32,19 +32,15 @@ export class AuthController {
 	) {}
 
 	@ApiOperation({ summary: "Login" })
-	@UseGuards(LocalAuthGuard)
 	@Post("login")
 	@ApiBody({ type: UserLoginDto })
-	async login(
-		@Body() _loginDto: UserLoginDto,
-		@LoggedInUser() user: UserEntity,
-	) {
-		return this.authService.login(user);
+	login(@Body() _loginDto: UserLoginDto) {
+		return this.authService.login(_loginDto);
 	}
 
 	@ApiOperation({ summary: "Reset password" })
 	@Post("reset-password")
-	async resetUserPassword(@Body() dto: ResetPasswordDto) {
+	resetUserPassword(@Body() dto: ResetPasswordDto) {
 		return this.authService.resetPassword(dto);
 	}
 
@@ -67,7 +63,7 @@ export class AuthController {
 		resource: AppResource.USER,
 	})
 	@Post("change-password")
-	async changePassword(
+	changePassword(
 		@Body() dto: ChangePasswordDto,
 		@LoggedInUser() user: UserEntity,
 	) {
@@ -76,7 +72,7 @@ export class AuthController {
 
 	@ApiOperation({ summary: "Refresh token" })
 	@Post("token/refresh")
-	public async refresh(@Body() body: RefreshRequest): Promise<any> {
+	public async refresh(@Body() body: RefreshTokenDto): Promise<any> {
 		const { token } =
 			await this.tokenService.createAccessTokenFromRefreshToken(
 				body.refreshToken,
@@ -88,11 +84,11 @@ export class AuthController {
 	@ApiOperation({ summary: "Logout user" })
 	@UseGuards(JwtAuthGuard)
 	@Post("logout")
-	async logout(
+	logout(
 		@LoggedInUser() user: User,
-		@Body() refreshToken?: RefreshRequest,
+		@Body() refreshToken?: RefreshTokenDto,
 		@Query("from_all", ParseBoolPipe) fromAll = false,
-	): Promise<IResponse<any>> {
+	): Observable<IResponse<any>> {
 		return fromAll
 			? this.authService.logoutFromAll(user)
 			: this.authService.logout(user, refreshToken.refreshToken);

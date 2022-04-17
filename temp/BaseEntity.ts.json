@@ -5,19 +5,19 @@
 			"id": { "name": "id", "reference": "scalar", "primary": true, "hidden": true, "type": "number" },
 			"idx": { "name": "idx", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"isActive": { "name": "isActive", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			"isObsolete": { "name": "isObsolete", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
+			"isObsolete": { "name": "isObsolete", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "boolean" },
 			"deletedAt": { "name": "deletedAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "nullable": true },
 			"createdAt": { "name": "createdAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date" },
-			"updatedAt": { "name": "updatedAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "nullable": true }
+			"updatedAt": { "name": "updatedAt", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "Date", "nullable": true }
 		},
 		"props": [
 			{ "name": "id", "reference": "scalar", "primary": true, "hidden": true, "type": "number" },
 			{ "name": "idx", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "isActive", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			{ "name": "isObsolete", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
+			{ "name": "isObsolete", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "boolean" },
 			{ "name": "deletedAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "nullable": true },
 			{ "name": "createdAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date" },
-			{ "name": "updatedAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "nullable": true }
+			{ "name": "updatedAt", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "Date", "nullable": true }
 		],
 		"primaryKeys": ["id"],
 		"filters": {},
@@ -36,6 +36,6 @@
 		"relations": []
 	},
 	"origin": "./src/common/database/base-entity.entity.ts",
-	"hash": "9b2207141af8de7d34d982eaf1871f0f",
+	"hash": "163ef926f2e214d22a41ad667d365d0d",
 	"version": "5.1.2"
 }

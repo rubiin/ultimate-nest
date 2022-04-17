@@ -1,7 +1,9 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import * as twilio from "twilio";
+import twilio from "twilio";
 import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
 import { TWILIO_MODULE_OPTIONS } from "@lib/twilio/twilio.constant";
+import { catchError, from, Observable, tap, throwError } from "rxjs";
+import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message";
 
 @Injectable()
 export class TwilioService {
@@ -12,24 +14,22 @@ export class TwilioService {
 
 	private readonly logger: Logger = new Logger(TwilioService.name);
 
-	async sendSms(content: string, phone: string) {
+	sendSms(content: string, phone: string): Observable<MessageInstance> {
 		const client = twilio(this.options.accountSid, this.options.authToken);
 
-		return new Promise<boolean>((resolve, reject) =>
-			client.messages
-				.create({
-					body: content,
-					from: this.options.from,
-					to: `+977${phone}`,
-				})
-				.then(message => {
-					this.logger.log(`Message sent ${message.sid}`);
-					resolve(true);
-				})
-				.catch(error => {
-					this.logger.error(error);
-					reject(false);
-				}),
+		return from(
+			client.messages.create({
+				body: content,
+				from: this.options.from,
+				to: `+977${phone}`,
+			}),
+		).pipe(
+			tap(message => this.logger.log(`SMS sent to ${message.sid}`)),
+			catchError(error => {
+				this.logger.error(error);
+
+				return throwError(() => error);
+			}),
 		);
 	}
 }

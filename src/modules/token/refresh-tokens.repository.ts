@@ -20,7 +20,10 @@ export class RefreshTokensRepository {
 
 		expiration.setTime(expiration.getTime() + ttl * 1000);
 
-		const token = new RefreshToken(user, expiration, false);
+		const token = this.refreshTokenRepository.create({
+			user,
+			expiresIn: expiration,
+		});
 
 		return from(this.refreshTokenRepository.persistAndFlush(token)).pipe(
 			map(() => token),

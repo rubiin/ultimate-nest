@@ -12,12 +12,4 @@ export class RefreshToken extends BaseEntity {
 
 	@Property()
 	isRevoked = false;
-
-	constructor(user: User, expiresIn: Date, isRevoked: boolean) {
-		super();
-
-		this.user = user;
-		this.expiresIn = expiresIn;
-		this.isRevoked = isRevoked;
-	}
 }

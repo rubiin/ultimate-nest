@@ -1,9 +1,9 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
+import * as eta from "eta";
 import { createTransport, SendMailOptions } from "nodemailer";
+import previewEmail from "preview-email";
 import { MAIL_MODULE_OPTIONS } from "./mailer.constants";
 import { MailModuleOptions } from "./mailer.options";
-import * as eta from "eta";
-import * as previewEmail from "preview-email";
 
 interface IMailOptions extends Partial<SendMailOptions> {
 	template: string;
@@ -19,7 +19,7 @@ export class MailerService {
 
 	private readonly logger: Logger = new Logger(MailerService.name);
 
-	async sendMail(mailOptions: IMailOptions) {
+	sendMail(mailOptions: IMailOptions) {
 		const transporter = createTransport({
 			host: this.options.host,
 			port: this.options.port,

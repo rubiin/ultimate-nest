@@ -13,14 +13,16 @@ import {
 	ForbiddenException,
 	Injectable,
 	NotFoundException,
+	UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { capitalize, omit } from "@rubiin/js-utils";
-import * as argon from "argon2";
 import { isAfter } from "date-fns";
-import { I18nRequestScopeService } from "nestjs-i18n";
+import { I18nService } from "nestjs-i18n";
+import { from, map, Observable, of, switchMap, zip } from "rxjs";
 import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
 import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
+import { UserLoginDto } from "./dtos/user-login";
 
 @Injectable()
 export class AuthService {
@@ -32,56 +34,74 @@ export class AuthService {
 		private readonly tokenService: TokensService,
 		private readonly configService: ConfigService,
 		private readonly mailService: MailerService,
-		private readonly i18n: I18nRequestScopeService,
+		private readonly i18n: I18nService,
 		private readonly orm: MikroORM,
 	) {}
 
-	async validateUser(email: string, pass: string): Promise<any> {
-		const user = await this.userRepository.findOne({
-			email,
-			isObsolete: false,
-		});
+	validateUser(email: string, pass: string): Observable<any> {
+		return from(
+			this.userRepository.findOne({
+				email,
+				isObsolete: false,
+			}),
+		).pipe(
+			switchMap(user => {
+				if (!user) {
+					throw new BadRequestException(
+						this.i18n.translate(
+							"operations.USER_PASSWORD_DONT_MATCH",
+						),
+					);
+				}
 
-		if (!user) {
-			throw new BadRequestException(
-				this.i18n.translate("operations.INVALID_CREDENTIALS"),
-			);
-		}
+				if (!user.isActive) {
+					throw new ForbiddenException(
+						this.i18n.translate("operations.ACCOUNT_NOT_FOUND"),
+					);
+				}
 
-		if (!user.isActive) {
-			throw new ForbiddenException(
-				this.i18n.translate("operations.ACCOUNT_NOT_FOUND"),
-			);
-		}
+				if (user) {
+					return HelperService.verifyHash(user.password, pass).pipe(
+						map(isValid => {
+							if (isValid) {
+								return omit(user, ["password"]);
+							}
 
-		if (user && (await argon.verify(user.password, pass))) {
-			return omit(user, ["password"]);
-		}
-
-		return null;
+							return of(null);
+						}),
+					);
+				}
+			}),
+		);
 	}
 
-	/**
-	 *
-	 *
-	 * @param {UserLoginDto} userDto
-	 * @return {Promise<IResponse<any>>}
-	 * @memberof AuthService
-	 */
-	async login(user: User): Promise<any> {
-		const token = await this.tokenService.generateAccessToken(user);
-		const refresh = await this.tokenService.generateRefreshToken(
-			user,
-			this.configService.get<number>("jwt.refreshExpiry"),
-		);
+	login(loginDto: UserLoginDto): Observable<any> {
+		return this.validateUser(loginDto.email, loginDto.password).pipe(
+			switchMap(user => {
+				if (!user)
+					throw new UnauthorizedException(
+						this.i18n.translate(
+							"operations.USER_PASSWORD_DONT_MATCH",
+						),
+					);
 
-		const payload = HelperService.buildPayloadResponse(
-			user,
-			token,
-			refresh,
+				return zip(
+					this.tokenService.generateAccessToken(user),
+					this.tokenService.generateRefreshToken(
+						user,
+						this.configService.get<number>("jwt.refreshExpiry"),
+					),
+				).pipe(
+					map(([accessToken, refreshToken]) => {
+						return HelperService.buildPayloadResponse(
+							user,
+							accessToken,
+							refreshToken,
+						);
+					}),
+				);
+			}),
 		);
-
-		return payload;
 	}
 
 	/**
@@ -92,27 +112,19 @@ export class AuthService {
 	 * @return {Promise<IResponse>}
 	 * @memberof AuthService
 	 */
-	async logoutFromAll(user: User): Promise<IResponse<any>> {
-		return this.tokenService.deleteRefreshTokenForUser(user);
+	logoutFromAll(user: User): Observable<IResponse<any>> {
+		return from(this.tokenService.deleteRefreshTokenForUser(user));
 	}
 
-	/**
-	 *
-	 *
-	 * @param {User} user
-	 * @param {string} refreshToken
-	 * @return {*}  {Promise<IResponse<any>>}
-	 * @memberof AuthService
-	 */
-	async logout(user: User, refreshToken: string): Promise<IResponse<any>> {
-		const payload = await this.tokenService.decodeRefreshToken(
-			refreshToken,
+	logout(user: User, refreshToken: string): Observable<IResponse<any>> {
+		return from(this.tokenService.decodeRefreshToken(refreshToken)).pipe(
+			switchMap(payload => {
+				return this.tokenService.deleteRefreshToken(user, payload);
+			}),
 		);
-
-		return this.tokenService.deleteRefreshToken(user, payload);
 	}
 
-	async forgotPassword(sendOtp: SendOtpDto) {
+	async forgotPassword(sendOtp: SendOtpDto): Promise<OtpLog> {
 		const { email } = sendOtp;
 		const userExists = await this.userRepository.findOne({
 			email,
@@ -156,15 +168,22 @@ export class AuthService {
 		return otp;
 	}
 
-	async resetPassword(resetPassword: ResetPasswordDto) {
+	resetPassword(resetPassword: ResetPasswordDto): Observable<any> {
 		const { password, otpCode } = resetPassword;
-		const details = await this.otpRepository.findOne({
-			otpCode,
-		});
 
-		return this.userRepository.nativeUpdate(
-			{ id: details.user.id },
-			{ password },
+		return from(
+			this.otpRepository.findOne({
+				otpCode,
+			}),
+		).pipe(
+			switchMap(details => {
+				return from(
+					this.userRepository.nativeUpdate(
+						{ id: details.user.id },
+						{ password },
+					),
+				);
+			}),
 		);
 	}
 
@@ -205,27 +224,37 @@ export class AuthService {
 		});
 	}
 
-	async changePassword(dto: ChangePasswordDto, user: User) {
+	changePassword(dto: ChangePasswordDto, user: User): Observable<User> {
 		const { password, currentPassword } = dto;
-		const userDetails = await this.userRepository.findOne({
-			id: user.id,
-		});
 
-		const isValid = await argon.verify(
-			userDetails.password,
-			currentPassword,
+		return from(
+			this.userRepository.findOne({
+				id: user.id,
+			}),
+		).pipe(
+			switchMap(userDetails => {
+				return HelperService.verifyHash(
+					userDetails.password,
+					currentPassword,
+				).pipe(
+					map(isValid => {
+						if (!isValid) {
+							throw new BadRequestException(
+								this.i18n.translate(
+									"operations.INVALID_PASSWORD",
+								),
+							);
+						}
+						wrap(userDetails).assign({
+							password,
+						});
+
+						this.userRepository.flush();
+
+						return userDetails;
+					}),
+				);
+			}),
 		);
-
-		if (!isValid) {
-			throw new BadRequestException(
-				this.i18n.translate("operations.INVALID_PASSWORD"),
-			);
-		}
-
-		wrap(userDetails).assign({
-			password,
-		});
-
-		return this.userRepository.flush();
 	}
 }

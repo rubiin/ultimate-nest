@@ -1,9 +1,12 @@
+import { Logger } from "@nestjs/common";
 import { createPaginationObject } from "./create-pagination";
 import { Pagination } from "./pagination";
 import { IPaginationOptions } from "./pagination-option.interface";
 
 const DEFAULT_LIMIT = 10;
 const DEFAULT_PAGE = 1;
+
+const logger = new Logger(Pagination.name);
 
 export async function paginate<T>(
 	items: T[],
@@ -37,7 +40,7 @@ function resolveNumericOption(
 	if (Number.isInteger(resolvedValue) && resolvedValue >= 0)
 		return resolvedValue;
 
-	console.warn(
+	logger.warn(
 		`Query parameter "${key}" with value "${value}" was resolved as "${resolvedValue}", please validate your query input! Falling back to default "${defaultValue}".`,
 	);
 
