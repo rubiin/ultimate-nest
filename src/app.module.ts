@@ -18,7 +18,6 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { AccessControlModule } from "nest-access-control";
 import { join } from "path";
 import { HealthModule } from "./health/health.module";
-import { RabbitModule } from "./modules/rabbit/rabbit.module";
 
 @Module({
 	imports: [
@@ -42,7 +41,6 @@ import { RabbitModule } from "./modules/rabbit/rabbit.module";
 			},
 		}),
 		HealthModule,
-		RabbitModule,
 	],
 	providers: [
 		{
