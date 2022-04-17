@@ -2,7 +2,7 @@ import { AdminModuleFactory, CustomLoader } from "@adminjs/nestjs";
 import { Post, User } from "@entities";
 import { AnyEntity, EntityClass, MikroORM } from "@mikro-orm/core";
 import AdminJS from "adminjs";
-import * as argon from "argon2";
+import argon from "argon2";
 
 const defaultPropertyList = {
 	createdAt: {

@@ -1,5 +1,5 @@
 import { ConfigService } from "@lib/config/config.service";
-import * as admin from "firebase-admin";
+import admin from "firebase-admin";
 import { existsSync } from "fs";
 import path from "path";
 import { FIREBASE_ADMIN_TOKEN } from "./firebase-admin.constant";

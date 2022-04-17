@@ -14,12 +14,6 @@ export interface RefreshTokenPayload {
 	sub: number;
 }
 
-/**
- *
- *
- * @export
- * @class TokensService
- */
 @Injectable()
 export class TokensService {
 	private readonly tokens: RefreshTokensRepository;
@@ -29,13 +23,6 @@ export class TokensService {
 		audience: "some-app",
 	};
 
-	/**
-	 * Creates an instance of TokensService.
-	 * @param {RefreshTokensRepository} tokens
-	 * @param {JwtService} jwt
-	 * @param {EntityRepository<User>} userRepository
-	 * @memberof TokensService
-	 */
 	constructor(
 		tokens: RefreshTokensRepository,
 		jwt: JwtService,
@@ -50,7 +37,7 @@ export class TokensService {
 	 *
 	 *
 	 * @param {User} user
-	 * @return {*}  {Promise<string>}
+	 * @return {*}  {Observable<string>}
 	 * @memberof TokensService
 	 */
 	generateAccessToken(user: User): Observable<string> {
@@ -69,7 +56,7 @@ export class TokensService {
 	 *
 	 * @param {User} user
 	 * @param {number} expiresIn
-	 * @return {*}  {Promise<string>}
+	 * @return {*}  {Observable<string>}
 	 * @memberof TokensService
 	 */
 	generateRefreshToken(user: User, expiresIn: number): Observable<string> {
@@ -160,9 +147,9 @@ export class TokensService {
 
 	/**
 	 *
-	 * Remove all the refresh tokens associated to a user
 	 *
-	 * @param {Customer} user
+	 * @param {User} user
+	 * @return {*}  {Observable<IResponse<User>>}
 	 * @memberof TokensService
 	 */
 	deleteRefreshTokenForUser(user: User): Observable<IResponse<User>> {
@@ -177,11 +164,11 @@ export class TokensService {
 	 *
 	 * Removes a refresh token, and invalidated all access tokens for the user
 	 *
-	 * @param {Customer} user
+	 * @param {User} user
 	 * @param {RefreshTokenPayload} payload
+	 * @return {*}  {Observable<IResponse<User>>}
 	 * @memberof TokensService
 	 */
-
 	deleteRefreshToken(
 		user: User,
 		payload: RefreshTokenPayload,
@@ -204,7 +191,7 @@ export class TokensService {
 	 *
 	 * @private
 	 * @param {RefreshTokenPayload} payload
-	 * @return {*}  {Promise<User>}
+	 * @return {*}  {Observable<User>}
 	 * @memberof TokensService
 	 */
 	private getUserFromRefreshTokenPayload(
@@ -223,14 +210,6 @@ export class TokensService {
 		);
 	}
 
-	/**
-	 *
-	 *
-	 * @private
-	 * @param {RefreshTokenPayload} payload
-	 * @return {*}  {(Promise<RefreshToken | null>)}
-	 * @memberof TokensService
-	 */
 	private getStoredTokenFromRefreshTokenPayload(
 		payload: RefreshTokenPayload,
 	): Observable<RefreshToken | null> {

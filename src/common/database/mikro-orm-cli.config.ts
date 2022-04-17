@@ -2,8 +2,8 @@ import { Options } from "@mikro-orm/core";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { Logger } from "@nestjs/common";
-import * as dotenv from "dotenv";
-import * as dotEnvExpand from "dotenv-expand";
+import dotenv from "dotenv";
+import dotEnvExpand from "dotenv-expand";
 
 /**
  * This is required to run mikro-orm cli

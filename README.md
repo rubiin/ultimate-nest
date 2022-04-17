@@ -6,6 +6,8 @@
 
 [![CI](https://github.com/rubiin/ultimate-nest/actions/workflows/github-ci.yml/badge.svg)](https://github.com/rubiin/ultimate-nest/actions/workflows/github-ci.yml)
 
+> NOTE: Starting April 18,2022 , the repo has ditched most promises for observables. You can check the latest promised version code at [commit](https://github.com/rubiin/ultimate-nest/tree/fb06b34f7d36f36195880e600f8f1b5b86f71213)
+
 # Getting started
 
 Clone this repo. Edit the env file and pass in your credentials

@@ -1,12 +1,14 @@
 import { User } from "@entities";
 import * as eta from "eta";
-import * as sharp from "sharp";
+import sharp from "sharp";
 import puppeteer from "puppeteer";
 import { pick, slugify } from "@rubiin/js-utils";
 import { customAlphabet } from "nanoid/async";
 import { randomTypes } from "@common/constants/random-types.enum";
 import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
 import { hashString } from "@common/misc/threads";
+import argon from "argon2";
+import { from, Observable } from "rxjs";
 
 let puppetterInstance = null;
 
@@ -71,6 +73,13 @@ export const HelperService = {
 	 */
 	hashString: (string: string): Promise<string> => {
 		return hashString(string);
+	},
+
+	verifyHash: (
+		userPassword: string,
+		passwordToCompare: string,
+	): Observable<boolean> => {
+		return from(argon.verify(userPassword, passwordToCompare));
 	},
 
 	/**

@@ -7,7 +7,7 @@ import {
 import { Readable } from "stream";
 import { CLOUDINARY_MODULE_OPTIONS } from "./cloudinary.constant";
 import { CloudinaryModuleOptions } from "./cloudinary.options";
-import * as sharp from "sharp";
+import sharp from "sharp";
 
 @Injectable()
 export class CloudinaryService {

@@ -17,7 +17,7 @@ import { APP_INTERCEPTOR } from "@nestjs/core";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { AccessControlModule } from "nest-access-control";
 import { join } from "path";
-import { HealthModule } from "./health/health.module";
+import { HealthModule } from "./modules/health/health.module";
 
 @Module({
 	imports: [
