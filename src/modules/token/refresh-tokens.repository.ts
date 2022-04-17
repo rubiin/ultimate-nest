@@ -3,6 +3,7 @@ import { MikroORM } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
+import { from, map, Observable } from "rxjs";
 
 @Injectable()
 export class RefreshTokensRepository {
@@ -12,47 +13,44 @@ export class RefreshTokensRepository {
 		private readonly orm: MikroORM,
 	) {}
 
-	async createRefreshToken(user: User, ttl: number): Promise<RefreshToken> {
-		const token = new RefreshToken();
-
-		token.user = user;
-		token.isRevoked = false;
-
+	createRefreshToken(user: User, ttl: number): Observable<RefreshToken> {
 		const expiration = new Date();
 
-		// the input is treated as milis so *1000 is necessary
+		// the input is treated as millis so *1000 is necessary
 
 		expiration.setTime(expiration.getTime() + ttl * 1000);
 
-		token.expiresIn = expiration;
+		const token = new RefreshToken(user, expiration, false);
 
-		await this.refreshTokenRepository.persistAndFlush(token);
-
-		return token;
-	}
-
-	async findTokenByIdx(id: number): Promise<RefreshToken | null> {
-		return this.refreshTokenRepository.findOne({
-			id,
-			isRevoked: false,
-		});
-	}
-
-	async deleteTokensForUser(user: User): Promise<boolean> {
-		await this.refreshTokenRepository.nativeUpdate(
-			{ user },
-			{ isRevoked: true },
+		return from(this.refreshTokenRepository.persistAndFlush(token)).pipe(
+			map(() => token),
 		);
-
-		return true;
 	}
 
-	async deleteToken(user: User, tokenId: number): Promise<boolean> {
-		await this.refreshTokenRepository.nativeUpdate(
-			{ user, id: tokenId },
-			{ isRevoked: true },
+	findTokenByIdx(id: number): Observable<RefreshToken> {
+		return from(
+			this.refreshTokenRepository.findOne({
+				id,
+				isRevoked: false,
+			}),
 		);
+	}
 
-		return true;
+	deleteTokensForUser(user: User): Observable<boolean> {
+		return from(
+			this.refreshTokenRepository.nativeUpdate(
+				{ user },
+				{ isRevoked: true },
+			),
+		).pipe(map(() => true));
+	}
+
+	deleteToken(user: User, tokenId: number): Observable<boolean> {
+		return from(
+			this.refreshTokenRepository.nativeUpdate(
+				{ user, id: tokenId },
+				{ isRevoked: true },
+			),
+		).pipe(map(() => true));
 	}
 }

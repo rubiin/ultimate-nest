@@ -6,6 +6,7 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "@rubiin/js-utils";
 import { TokenExpiredError } from "jsonwebtoken";
+import { from, lastValueFrom, map, Observable, switchMap } from "rxjs";
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 export interface RefreshTokenPayload {
@@ -52,13 +53,15 @@ export class TokensService {
 	 * @return {*}  {Promise<string>}
 	 * @memberof TokensService
 	 */
-	async generateAccessToken(user: User): Promise<string> {
+	generateAccessToken(user: User): Observable<string> {
 		const options: JwtSignOptions = {
 			...this.BASE_OPTIONS,
 			subject: String(user.id),
 		};
 
-		return this.jwt.signAsync({ ...pick(user, ["id", "idx"]) }, options);
+		return from(
+			this.jwt.signAsync({ ...pick(user, ["id", "idx"]) }, options),
+		);
 	}
 
 	/**
@@ -69,17 +72,19 @@ export class TokensService {
 	 * @return {*}  {Promise<string>}
 	 * @memberof TokensService
 	 */
-	async generateRefreshToken(user: User, expiresIn: number): Promise<string> {
-		const token = await this.tokens.createRefreshToken(user, expiresIn);
+	generateRefreshToken(user: User, expiresIn: number): Observable<string> {
+		return this.tokens.createRefreshToken(user, expiresIn).pipe(
+			switchMap(token => {
+				const options: JwtSignOptions = {
+					...this.BASE_OPTIONS,
+					expiresIn,
+					subject: String(user.id),
+					jwtid: String(token.id),
+				};
 
-		const options: JwtSignOptions = {
-			...this.BASE_OPTIONS,
-			expiresIn,
-			subject: String(user.id),
-			jwtid: String(token.id),
-		};
-
-		return this.jwt.signAsync({}, options);
+				return from(this.jwt.signAsync({}, options));
+			}),
+		);
 	}
 
 	/**
@@ -93,7 +98,9 @@ export class TokensService {
 		encoded: string,
 	): Promise<{ user: User; token: RefreshToken }> {
 		const payload = await this.decodeRefreshToken(encoded);
-		const token = await this.getStoredTokenFromRefreshTokenPayload(payload);
+		const token = await lastValueFrom(
+			this.getStoredTokenFromRefreshTokenPayload(payload),
+		);
 
 		if (!token) {
 			throw new UnauthorizedException("Refresh token not found");
@@ -103,7 +110,9 @@ export class TokensService {
 			throw new UnauthorizedException("Refresh token revoked");
 		}
 
-		const user = await this.getUserFromRefreshTokenPayload(payload);
+		const user = await lastValueFrom(
+			this.getUserFromRefreshTokenPayload(payload),
+		);
 
 		if (!user) {
 			throw new UnauthorizedException("Refresh token malformed");
@@ -124,7 +133,7 @@ export class TokensService {
 	): Promise<{ token: string; user: User }> {
 		const { user } = await this.resolveRefreshToken(refresh);
 
-		const token = await this.generateAccessToken(user);
+		const token = await lastValueFrom(this.generateAccessToken(user));
 
 		return { user, token };
 	}
@@ -156,10 +165,12 @@ export class TokensService {
 	 * @param {Customer} user
 	 * @memberof TokensService
 	 */
-	async deleteRefreshTokenForUser(user: User): Promise<IResponse<User>> {
-		await this.tokens.deleteTokensForUser(user);
-
-		return { message: "Operation Successful", data: user };
+	deleteRefreshTokenForUser(user: User): Observable<IResponse<User>> {
+		return this.tokens.deleteTokensForUser(user).pipe(
+			map(() => {
+				return { message: "Operation Successful", data: user };
+			}),
+		);
 	}
 
 	/**
@@ -171,18 +182,21 @@ export class TokensService {
 	 * @memberof TokensService
 	 */
 
-	async deleteRefreshToken(
+	deleteRefreshToken(
 		user: User,
 		payload: RefreshTokenPayload,
-	): Promise<IResponse<User>> {
+	): Observable<IResponse<User>> {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
 			throw new UnauthorizedException("Refresh token malformed");
 		}
-		await this.tokens.deleteToken(user, tokenId);
 
-		return { message: "Operation Successful", data: user };
+		return this.tokens.deleteToken(user, tokenId).pipe(
+			map(() => {
+				return { message: "Operation Successful", data: user };
+			}),
+		);
 	}
 
 	/**
@@ -193,18 +207,20 @@ export class TokensService {
 	 * @return {*}  {Promise<User>}
 	 * @memberof TokensService
 	 */
-	private async getUserFromRefreshTokenPayload(
+	private getUserFromRefreshTokenPayload(
 		payload: RefreshTokenPayload,
-	): Promise<User> {
+	): Observable<User> {
 		const subId = payload.sub;
 
 		if (!subId) {
 			throw new UnauthorizedException("Refresh token malformed");
 		}
 
-		return this.userRepository.findOne({
-			id: subId,
-		});
+		return from(
+			this.userRepository.findOne({
+				id: subId,
+			}),
+		);
 	}
 
 	/**
@@ -215,15 +231,15 @@ export class TokensService {
 	 * @return {*}  {(Promise<RefreshToken | null>)}
 	 * @memberof TokensService
 	 */
-	private async getStoredTokenFromRefreshTokenPayload(
+	private getStoredTokenFromRefreshTokenPayload(
 		payload: RefreshTokenPayload,
-	): Promise<RefreshToken | null> {
+	): Observable<RefreshToken | null> {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
 			throw new UnauthorizedException("Refresh token malformed");
 		}
 
-		return this.tokens.findTokenByIdx(tokenId);
+		return from(this.tokens.findTokenByIdx(tokenId));
 	}
 }
