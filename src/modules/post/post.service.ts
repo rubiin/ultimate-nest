@@ -6,7 +6,7 @@ import { wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
-import { from, map, Observable } from "rxjs";
+import { from, map, Observable, switchMap } from "rxjs";
 import { CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
@@ -44,19 +44,26 @@ export class PostService {
 		);
 	}
 
-	async getById(index: string, author?: User) {
-		const post = await this.postRepository
-			.findOne({ idx: index })
-			.then(p =>
-				!author ? p : !!p && author.id === p.author.id ? p : null,
-			);
+	getById(index: string, author?: User): Observable<Post> {
+		return from(
+			this.postRepository.findOne({ idx: index, isObsolete: false }),
+		).pipe(
+			map(p => {
+				const post = !author
+					? p
+					: !!p && author.id === p.author.id
+					? p
+					: null;
 
-		if (!post)
-			throw new NotFoundException(
-				this.i18nService.t("status.POST_EMAIL_EXISTS"),
-			);
-
-		return post;
+				if (!post) {
+					throw new NotFoundException(
+						this.i18nService.t("status.POST_DOESNT_EXIST"),
+					);
+				} else {
+					return post;
+				}
+			}),
+		);
 	}
 
 	async createOne(dto: CreatePostDto, author: User) {
@@ -67,20 +74,23 @@ export class PostService {
 		return post;
 	}
 
-	async editOne(index: string, dto: EditPostDto, author?: User) {
-		const post = await this.getById(index, author);
+	editOne(index: string, dto: EditPostDto, author?: User): Observable<Post> {
+		return this.getById(index, author).pipe(
+			switchMap(post => {
+				wrap(post).assign(dto);
 
-		wrap(post).assign(dto);
-		await this.postRepository.flush();
-
-		return post;
+				return from(this.postRepository.flush()).pipe(map(() => post));
+			}),
+		);
 	}
 
-	async deleteOne(index: string, author?: User) {
-		const post = await this.getById(index, author);
-
-		await this.postRepository.softRemoveAndFlush(post);
-
-		return post;
+	deleteOne(index: string, author?: User): Observable<Post> {
+		return this.getById(index, author).pipe(
+			switchMap(post => {
+				return from(this.postRepository.softRemoveAndFlush(post)).pipe(
+					map(() => post),
+				);
+			}),
+		);
 	}
 }
