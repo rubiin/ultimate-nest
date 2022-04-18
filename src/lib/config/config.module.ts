@@ -1,7 +1,6 @@
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { app, database, jwt, mail, redis } from "./configs";
-import { cloudinary } from "./configs/cloudinary.config";
+import { app, cloudinary, database, jwt, mail, rabbit, redis } from "./configs";
 import { validationSchema } from "./validate.config";
 
 @Global()
@@ -9,7 +8,7 @@ import { validationSchema } from "./validate.config";
 	imports: [
 		ConfigModule.forRoot({
 			envFilePath: [`env/.env.${process.env.NODE_ENV}`],
-			load: [app, jwt, database, mail, redis, cloudinary],
+			load: [app, jwt, database, mail, redis, cloudinary, rabbit],
 			cache: true,
 			isGlobal: true,
 			expandVariables: true,

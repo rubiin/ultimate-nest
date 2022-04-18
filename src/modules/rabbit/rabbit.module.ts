@@ -1,22 +1,29 @@
 import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
-import { Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { RabbitController } from "./rabbit.controller";
 import { RabbitService } from "./rabbit.service";
 
+@Global()
 @Module({
 	imports: [
-		RabbitMQModule.forRoot(RabbitMQModule, {
-			exchanges: [
-				{
-					name: "exchange1",
-					type: "topic",
-				},
-			],
-			uri: process.env.RABBIT_MQ_URI,
-			connectionInitOptions: { wait: false },
+		RabbitMQModule.forRootAsync(RabbitMQModule, {
+			imports: [ConfigModule],
+			useFactory: (configService: ConfigService) => ({
+				exchanges: [
+					{
+						name: configService.get<string>("rabbit.exchange"),
+						type: "topic",
+					},
+				],
+				uri: configService.get<string>("rabbit.uri"),
+				connectionInitOptions: { wait: false },
+			}),
+			inject: [ConfigService],
 		}),
 	],
 	controllers: [RabbitController],
 	providers: [RabbitService],
+	exports: [RabbitService, RabbitMQModule],
 })
 export class RabbitModule {}

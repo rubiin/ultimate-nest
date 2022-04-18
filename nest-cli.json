@@ -12,6 +12,6 @@
 				}
 			}
 		],
-		"assets": ["resources/**/*"]
+		"assets": [{ "include": "resources/**/*", "exclude": "resources/images/*", "watchAssets": true }]
 	}
 }

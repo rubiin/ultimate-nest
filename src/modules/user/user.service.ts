@@ -2,8 +2,8 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { EmailTemplateEnum } from "@common/constants/template.enum";
 import { BaseRepository } from "@common/database/base.repository";
 import { User } from "@entities";
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
-import { MailerService } from "@lib/mailer/mailer.service";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { MikroORM, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -27,10 +27,10 @@ export class UserService {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
-		private readonly mailService: MailerService,
 		private readonly orm: MikroORM,
 		private readonly i18nService: I18nService,
 		private readonly configService: ConfigService,
+		private readonly amqpConnection: AmqpConnection,
 		private readonly cloudinaryService: CloudinaryService,
 	) {}
 
@@ -88,14 +88,13 @@ export class UserService {
 			email: dto.email,
 		});
 
-		const { image, ...rest } = dto;
-
 		if (userExist) {
 			throw new BadRequestException(
 				this.i18nService.t("status.USER_EMAIL_EXISTS"),
 			);
 		}
 
+		const { image, ...rest } = dto;
 		const user = this.userRepository.create(rest);
 
 		await this.orm.em.transactional(async em => {
@@ -106,7 +105,8 @@ export class UserService {
 			user.avatar = url;
 
 			await em.persistAndFlush(user);
-			await this.mailService.sendMail({
+
+			await this.amqpConnection.publish("nestify", "send-mail", {
 				template: EmailTemplateEnum.WELCOME_TEMPLATE,
 				replacements: {
 					firstName: capitalize(user.firstName),
