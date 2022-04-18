@@ -18,7 +18,7 @@ const myEnvironment = dotenv.config({
 
 dotEnvExpand.expand(myEnvironment);
 
-logger.log(`⚙️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
+logger.log(`🛠️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
 
 const config = {
 	dbName: process.env.DB_DATABASE,

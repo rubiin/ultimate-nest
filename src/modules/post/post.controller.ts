@@ -33,11 +33,6 @@ export class PostController {
 		private readonly roleBuilder: RolesBuilder,
 	) {}
 
-	@Auth({
-		possession: "any",
-		action: "read",
-		resource: AppResource.POST,
-	})
 	@Get()
 	getMany(
 		@Query() pageOptionsDto: PageOptionsDto,

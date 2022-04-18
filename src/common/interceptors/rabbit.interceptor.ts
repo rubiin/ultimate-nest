@@ -11,7 +11,6 @@ export class RabbitInterceptor implements NestInterceptor {
 	intercept(context: ExecutionContext, next: CallHandler<any>) {
 		const shouldSkip = isRabbitContext(context);
 
-		console.info("RabbitInterceptor", shouldSkip);
 		if (shouldSkip) {
 			return next.handle();
 		}

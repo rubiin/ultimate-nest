@@ -19,7 +19,7 @@ import { ConfigService } from "@nestjs/config";
 import { capitalize, omit } from "@rubiin/js-utils";
 import { isAfter } from "date-fns";
 import { I18nService } from "nestjs-i18n";
-import { from, map, Observable, of, switchMap, zip } from "rxjs";
+import { from, map, Observable, switchMap, zip } from "rxjs";
 import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
 import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
 import { UserLoginDto } from "./dtos/user-login";
@@ -47,16 +47,14 @@ export class AuthService {
 		).pipe(
 			switchMap(user => {
 				if (!user) {
-					throw new BadRequestException(
-						this.i18n.translate(
-							"operations.USER_PASSWORD_DONT_MATCH",
-						),
+					throw new ForbiddenException(
+						this.i18n.translate("status.ACCOUNT_NOT_FOUND"),
 					);
 				}
 
 				if (!user.isActive) {
 					throw new ForbiddenException(
-						this.i18n.translate("operations.ACCOUNT_NOT_FOUND"),
+						this.i18n.translate("status.ACCOUNT_NOT_FOUND"),
 					);
 				}
 
@@ -67,7 +65,11 @@ export class AuthService {
 								return omit(user, ["password"]);
 							}
 
-							return of(null);
+							throw new BadRequestException(
+								this.i18n.translate(
+									"status.USER_PASSWORD_DONT_MATCH",
+								),
+							);
 						}),
 					);
 				}
@@ -80,9 +82,7 @@ export class AuthService {
 			switchMap(user => {
 				if (!user)
 					throw new UnauthorizedException(
-						this.i18n.translate(
-							"operations.USER_PASSWORD_DONT_MATCH",
-						),
+						this.i18n.translate("status.USER_PASSWORD_DONT_MATCH"),
 					);
 
 				return zip(

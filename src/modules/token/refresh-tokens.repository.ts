@@ -21,7 +21,7 @@ export class RefreshTokensRepository {
 		expiration.setTime(expiration.getTime() + ttl * 1000);
 
 		const token = this.refreshTokenRepository.create({
-			user,
+			user: user.id,
 			expiresIn: expiration,
 		});
 
