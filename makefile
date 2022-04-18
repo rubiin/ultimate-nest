@@ -5,7 +5,7 @@ clean-db: unmigrate migrate seed
 clean-files:
 	@rm -rf temp @rm -rf src/migrations/ @rm -rf logs @rm -rf dist @rm -rf uploads
 	
-make-initial-migrations:
+makemigration-init:
 	@NODE_ENV=$(env) npm run orm migration:create --initial
 
 makemigration:

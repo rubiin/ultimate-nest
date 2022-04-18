@@ -10,6 +10,7 @@ import { OrmModule } from "@lib/orm/orm.module";
 import { NestPinoModule } from "@lib/pino/pino.module";
 import { AuthModule } from "@modules/auth/auth.module";
 import { PostModule } from "@modules/post/post.module";
+import { RabbitModule } from "@modules/rabbit/rabbit.module";
 import { UserModule } from "@modules/user/user.module";
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
@@ -24,8 +25,10 @@ import { HealthModule } from "./modules/health/health.module";
 		AuthModule,
 		UserModule,
 		PostModule,
+		HealthModule,
 		NestConfigModule,
 		OrmModule,
+		RabbitModule,
 		NestMailModule,
 		NestPinoModule,
 		HttpModule,
@@ -40,7 +43,6 @@ import { HealthModule } from "./modules/health/health.module";
 				maxAge: 86_400, // 1 day
 			},
 		}),
-		HealthModule,
 	],
 	providers: [
 		{
