@@ -4,3 +4,5 @@ export * from "./database.config";
 export * from "./mail.config";
 export * from "./redis.config";
 export * from "./minio.config";
+export * from "./rabbit.config";
+export * from "./cloudinary.config";
