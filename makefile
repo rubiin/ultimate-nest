@@ -20,13 +20,16 @@ seed:
 	@NODE_ENV=$(env) npm run orm seeder:run
 
 build:
-	nest build
+	@npx nest build
 
 encryption:
 	@sh scripts/encryption.sh
 
 ssl:
 	@mkcert $(site)
+
+yarn_audit:
+	@npm_config_yes=true npx yarn-audit-fix
 
 
 
