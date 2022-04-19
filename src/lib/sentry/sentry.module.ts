@@ -8,10 +8,10 @@ import { SentryModule } from "@ntegral/nestjs-sentry";
 		SentryModule.forRootAsync({
 			imports: [NestConfigModule],
 			useFactory: async (configService: ConfigService) => ({
-				dsn: configService.get("sentryDsn"),
+				dsn: configService.get("app.sentryDsn"),
 				debug: true,
-				environment: "dev",
-				release: null,
+				environment: "development",
+				tracesSampleRate: 1,
 			}),
 			inject: [ConfigService],
 		}),

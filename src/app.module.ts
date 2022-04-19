@@ -1,5 +1,4 @@
 import { roles } from "@common/constants/app.roles";
-import { RabbitInterceptor } from "@common/interceptors/rabbit.interceptor";
 import { NestAdminModule } from "@lib/adminjs/admin.module";
 import { NestCacheModule } from "@lib/cache/cache.module";
 import { NestCloudinaryModule } from "@lib/cloudinary";
@@ -8,6 +7,7 @@ import { NestI18nModule } from "@lib/i18n/i18n.module";
 import { NestMailModule } from "@lib/mailer";
 import { OrmModule } from "@lib/orm/orm.module";
 import { NestPinoModule } from "@lib/pino/pino.module";
+import { NestSentryModule } from "@lib/sentry/sentry.module";
 import { AuthModule } from "@modules/auth/auth.module";
 import { PostModule } from "@modules/post/post.module";
 import { RabbitModule } from "@modules/rabbit/rabbit.module";
@@ -16,6 +16,7 @@ import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 import { ServeStaticModule } from "@nestjs/serve-static";
+import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 import { AccessControlModule } from "nest-access-control";
 import { join } from "path";
 import { HealthModule } from "./modules/health/health.module";
@@ -36,6 +37,7 @@ import { HealthModule } from "./modules/health/health.module";
 		NestAdminModule,
 		NestCacheModule,
 		NestCloudinaryModule,
+		NestSentryModule,
 		AccessControlModule.forRoles(roles),
 		ServeStaticModule.forRoot({
 			rootPath: join(__dirname, "resources"),
@@ -47,7 +49,7 @@ import { HealthModule } from "./modules/health/health.module";
 	providers: [
 		{
 			provide: APP_INTERCEPTOR,
-			useClass: RabbitInterceptor,
+			useValue: new SentryInterceptor(),
 		},
 	],
 })

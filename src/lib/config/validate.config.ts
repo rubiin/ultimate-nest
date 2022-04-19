@@ -26,7 +26,7 @@ export const validationSchema = Joi.object({
 	CLOUDINARY_API_SECRET: Joi.string().required(),
 	RABBITMQ_URI: Joi.string().required(),
 	RABBITMQ_EXCHANGE: Joi.string().required(),
-	// SENTRY_DSN: Joi.string().required(),
+	SENTRY_DSN: Joi.string().required(),
 	// MINIO_HOST: Joi.string().required(),
 	// MINIO_PORT: Joi.number().required(),
 	// MINIO_ACCESS_KEY: Joi.string().required(),
