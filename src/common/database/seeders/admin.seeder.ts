@@ -8,6 +8,8 @@ export class AdminSeeder extends Seeder {
 		await new UserFactory(em).createOne({
 			email: "roobin.bhandari@gmail.com",
 			password: "Test@1234",
+			firstName: "Rubin",
+			lastName: "Bhandari",
 			roles: [AppRoles.ADMIN],
 		});
 	}

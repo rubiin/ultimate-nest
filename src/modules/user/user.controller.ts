@@ -2,7 +2,6 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { AppResource, AppRoles } from "@common/constants/app.roles";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
-import { JwtAuthGuard } from "@common/guards/jwt.guard";
 import { ImageMulterOption } from "@common/misc/misc";
 import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
 import { User, User as UserEntity } from "@entities";
@@ -19,7 +18,6 @@ import {
 	Put,
 	Query,
 	UploadedFile,
-	UseGuards,
 	UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -41,7 +39,6 @@ export class UserController {
 	) {}
 
 	@ApiOperation({ summary: "Users list" })
-	@UseGuards(JwtAuthGuard)
 	@Get()
 	getMany(
 		@Query() pageOptionsDto: PageOptionsDto,
