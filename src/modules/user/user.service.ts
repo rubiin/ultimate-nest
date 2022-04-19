@@ -114,7 +114,7 @@ export class UserService {
 				},
 				to: user.email,
 				subject: "Welcome onboard",
-				from: this.configService.get("mail.senderEmail"),
+				from: this.configService.get("mail.sender_email"),
 			});
 		});
 

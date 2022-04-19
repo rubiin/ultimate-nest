@@ -89,7 +89,7 @@ export class AuthService {
 					this.tokenService.generateAccessToken(user),
 					this.tokenService.generateRefreshToken(
 						user,
-						this.configService.get<number>("jwt.refreshExpiry"),
+						this.configService.get<number>("jwt.refresh_expiry"),
 					),
 				).pipe(
 					map(([accessToken, refreshToken]) => {
@@ -161,7 +161,7 @@ export class AuthService {
 				},
 				to: userExists.email,
 				subject: "Reset Password",
-				from: this.configService.get("mail.senderEmail"),
+				from: this.configService.get("mail.sender_email"),
 			});
 		});
 

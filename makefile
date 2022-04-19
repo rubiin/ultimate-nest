@@ -25,9 +25,6 @@ build:
 encryption:
 	@sh scripts/encryption.sh
 
-ssl:
-	@mkcert $(site)
-
 yarn_audit:
 	@npm_config_yes=true npx yarn-audit-fix
 

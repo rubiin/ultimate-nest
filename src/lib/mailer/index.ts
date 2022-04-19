@@ -14,11 +14,11 @@ import { MailModule } from "./mailer.module";
 				username: configService.get("mail.username"),
 				password: configService.get("mail.password"),
 				previewEmail: configService.get<boolean>(
-					"mail.previewEmail",
+					"mail.preview_email",
 					false,
 				),
 				template: {
-					dir: configService.get("mail.templateDir"),
+					dir: configService.get("mail.template_dir"),
 					etaOptions: {
 						cache: true,
 						rmWhitespace: true,

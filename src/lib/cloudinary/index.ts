@@ -9,9 +9,9 @@ import { CloudinaryModule } from "./cloudinary.module";
 		CloudinaryModule.forRootAsync(CloudinaryModule, {
 			imports: [NestConfigModule],
 			useFactory: (configService: ConfigService) => ({
-				cloudName: configService.get("cloudinary.cloudName"),
-				apiKey: configService.get("cloudinary.apiKey"),
-				apiSecret: configService.get("cloudinary.apiSecret"),
+				cloudName: configService.get("cloudinary.cloud_name"),
+				apiKey: configService.get("cloudinary.api_key"),
+				apiSecret: configService.get("cloudinary.secret_key"),
 			}),
 			inject: [ConfigService],
 		}),
