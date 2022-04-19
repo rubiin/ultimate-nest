@@ -11,4 +11,9 @@ export class RabbitController {
 			msg: "hello world",
 		});
 	}
+
+	@Get("sentry")
+	sentryTest() {
+		throw new Error("test");
+	}
 }
