@@ -13,6 +13,9 @@ import { validationSchema } from "./validate.config";
 			isGlobal: true,
 			expandVariables: true,
 			validationSchema: validationSchema,
+			validationOptions: {
+				abortEarly: true,
+			},
 		}),
 	],
 	providers: [ConfigService],
