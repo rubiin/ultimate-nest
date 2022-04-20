@@ -1,9 +1,9 @@
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { Request } from "express";
-import fs from "fs";
+import fs from "node:fs";
 import mime from "mime-types";
 import multer from "multer";
-import { extname } from "path";
+import { extname } from "node:path";
 
 const allowedExtensions = new Set(["png", "jpg", "jpeg"]);
 

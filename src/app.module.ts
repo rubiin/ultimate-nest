@@ -1,5 +1,4 @@
 import { roles } from "@common/constants/app.roles";
-import { NestAdminModule } from "@lib/adminjs/admin.module";
 import { NestCacheModule } from "@lib/cache/cache.module";
 import { NestCloudinaryModule } from "@lib/cloudinary";
 import { NestConfigModule } from "@lib/config/config.module";
@@ -18,7 +17,7 @@ import { APP_INTERCEPTOR } from "@nestjs/core";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 import { AccessControlModule } from "nest-access-control";
-import { join } from "path";
+import { join } from "node:path";
 import { HealthModule } from "./modules/health/health.module";
 
 @Module({
@@ -34,7 +33,6 @@ import { HealthModule } from "./modules/health/health.module";
 		NestPinoModule,
 		HttpModule,
 		NestI18nModule,
-		NestAdminModule,
 		NestCacheModule,
 		NestCloudinaryModule,
 		NestSentryModule,

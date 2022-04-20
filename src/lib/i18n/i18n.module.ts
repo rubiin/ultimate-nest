@@ -5,7 +5,7 @@ import {
 	I18nModule,
 	QueryResolver,
 } from "nestjs-i18n";
-import path from "path";
+import path from "node:path";
 
 @Module({
 	imports: [

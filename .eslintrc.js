@@ -49,7 +49,6 @@ module.exports = {
 		]
 	}
 		],
-		'import/prefer-node-protocol': 'off',
 		'import/namespace': 'off',
 		"unicorn/prefer-top-level-await": "off",
 		'unicorn/no-null': 'off',

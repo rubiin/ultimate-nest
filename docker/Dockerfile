@@ -1,5 +1,5 @@
 ## ===========================================================> The common stage
-FROM node:16.14 AS base
+FROM node:16.14.2 AS base
 ENV NODE_ENV=production
 
 WORKDIR /app
@@ -11,6 +11,7 @@ RUN yarn --frozen-lockfile --ignore-scripts --production \
  && yarn cache clean
 
 ## Remove unnecessary files from `node_modules` directory
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN ( wget -q -O /dev/stdout https://gobinaries.com/tj/node-prune | sh ) \
  && node-prune
 
@@ -28,7 +29,7 @@ RUN yarn build
 
 
 ## =================================================> The production image stage
-FROM node:16.14-alpine3.14 AS prod
+FROM node:16.14.2-alpine3.14 AS prod
 ENV NODE_ENV=production
 
 ARG PORT=3000
@@ -45,10 +46,8 @@ COPY --from=base --chown=node:node /app/*.json ./
 COPY --from=build --chown=node:node /app/dist ./dist/
 
 ## https://engineeringblog.yelp.com/2016/01/dumb-init-an-init-for-docker.html
-RUN apk add --no-cache dumb-init
+RUN apk update && apk add --no-cache dumb-init=1.2.5-r1 chromium=100.0.4896.127-r0
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser"
-ENV NODE_ENV production
-RUN apk update && apk add chromium && rm -rf /var/cache/apk/*
 
 ## Dropping privileges
 USER node
