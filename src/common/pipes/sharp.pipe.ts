@@ -1,5 +1,5 @@
 import { Injectable, PipeTransform } from "@nestjs/common";
-import path from "path";
+import path from "node:path";
 import sharp from "sharp";
 
 /**

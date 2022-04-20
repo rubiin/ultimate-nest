@@ -4,7 +4,7 @@ import {
 	UploadApiResponse,
 	v2 as cloudinary,
 } from "cloudinary";
-import { Readable } from "stream";
+import { Readable } from "node:stream";
 import { CLOUDINARY_MODULE_OPTIONS } from "./cloudinary.constant";
 import { CloudinaryModuleOptions } from "./cloudinary.options";
 import sharp from "sharp";
