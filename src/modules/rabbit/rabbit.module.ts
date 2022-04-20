@@ -1,7 +1,6 @@
 import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { RabbitController } from "./rabbit.controller";
 import { RabbitService } from "./rabbit.service";
 
 @Global()
@@ -22,7 +21,7 @@ import { RabbitService } from "./rabbit.service";
 			inject: [ConfigService],
 		}),
 	],
-	controllers: [RabbitController],
+	controllers: [],
 	providers: [RabbitService],
 	exports: [RabbitService, RabbitMQModule],
 })
