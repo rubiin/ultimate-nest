@@ -22,7 +22,7 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { omit } from "@rubiin/js-utils";
+import { omit } from "helper-fns";
 import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
 import { Observable } from "rxjs";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";

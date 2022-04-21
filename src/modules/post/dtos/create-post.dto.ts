@@ -1,4 +1,4 @@
-import { enumToString } from "@rubiin/js-utils";
+import { enumToString } from "helper-fns";
 import {
 	IsArray,
 	IsBoolean,

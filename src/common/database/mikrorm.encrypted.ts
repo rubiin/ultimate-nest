@@ -4,7 +4,7 @@ import {
 	EntityProperty,
 	ValidationError,
 } from "@mikro-orm/core";
-import { encrypt, decrypt } from "@rubiin/js-utils";
+import { encrypt, decrypt } from "helper-fns";
 
 export class EncryptedType extends Type<string> {
 	private readonly encKey = process.env.ENC_KEY;

@@ -13,7 +13,7 @@ import {
 	NotFoundException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { capitalize } from "@rubiin/js-utils";
+import { capitalize } from "helper-fns";
 import { I18nService } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
 import { CreateUserDto, EditUserDto } from "./dtos";

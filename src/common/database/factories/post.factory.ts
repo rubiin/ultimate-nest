@@ -1,6 +1,6 @@
 import { Post } from "../../../entities/post.entity";
 import { Factory, Faker } from "@mikro-orm/seeder";
-import { randomNumber } from "@rubiin/js-utils";
+import { randomNumber } from "helper-fns";
 
 export class PostFactory extends Factory<Post> {
 	model = Post;

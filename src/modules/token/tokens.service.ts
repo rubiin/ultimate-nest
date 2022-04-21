@@ -4,7 +4,7 @@ import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService, JwtSignOptions } from "@nestjs/jwt";
-import { pick } from "@rubiin/js-utils";
+import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
 import { from, lastValueFrom, map, Observable, switchMap } from "rxjs";
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
