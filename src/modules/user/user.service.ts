@@ -144,4 +144,8 @@ export class UserService {
 			}),
 		);
 	}
+
+	getVerifiedUserByEmail(email: string): Observable<User> {
+		return from(this.userRepository.findOne({ email, isObsolete: false }));
+	}
 }
