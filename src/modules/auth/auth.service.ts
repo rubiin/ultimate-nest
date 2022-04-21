@@ -16,7 +16,7 @@ import {
 	UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { capitalize, omit } from "@rubiin/js-utils";
+import { capitalize, omit } from "helper-fns";
 import { isAfter } from "date-fns";
 import { I18nService } from "nestjs-i18n";
 import { from, map, Observable, switchMap, zip } from "rxjs";

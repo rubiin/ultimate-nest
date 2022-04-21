@@ -1,4 +1,4 @@
-import { PickType } from "@nestjs/swagger";
+import { PickType } from "@nestjs/mapped-types";
 import { IsNotEmpty } from "class-validator";
 
 export class OtpVerifyDto {
