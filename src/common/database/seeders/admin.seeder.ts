@@ -7,7 +7,7 @@ export class AdminSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
 		await new UserFactory(em).createOne({
 			email: "roobin.bhandari@gmail.com",
-			password: "Test@1234",
+			password: process.env.USER_PASSWORD,
 			firstName: "Rubin",
 			lastName: "Bhandari",
 			roles: [AppRoles.ADMIN],
