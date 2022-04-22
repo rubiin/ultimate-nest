@@ -12,11 +12,7 @@ export class UserFactory extends Factory<User> {
 			avatar: faker.image.avatar(),
 			email: faker.internet.email(),
 			roles: [AppRoles.AUTHOR],
-			password: faker.internet.password(
-				9,
-				false,
-				/(!|\?|&|\[|]|%|\$|[\dA-Za-z])/,
-			),
+			password: process.env.USER_PASSWORD,
 		};
 	}
 }

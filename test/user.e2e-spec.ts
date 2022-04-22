@@ -1,7 +1,7 @@
-import { AppRoles } from "@common/constants/app.roles";
 import { faker } from "@mikro-orm/seeder";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
+import path from "node:path";
 import request from "supertest";
 import { AppModule } from "../src/app.module";
 
@@ -26,25 +26,21 @@ describe("AppController (e2e)", () => {
 
 	describe("if user is logged in as (ADMIN)", () => {
 		let jwttoken: string;
+		let userIndex: string;
 
 		const userDto = {
 			firstName: faker.name.firstName(),
 			lastName: faker.name.firstName(),
 			email: faker.internet.email(),
-			roles: [AppRoles.AUTHOR],
-			password: faker.internet.password(
-				9,
-				false,
-				/(!|\?|&|\[|]|%|\$|[\dA-Za-z])/,
-			),
+			password: process.env.USER_PASSWORD,
 		};
 
-		it("should login and admin user /auth/login (POST)", () => {
+		it("should login an admin user /auth/login (POST)", () => {
 			return request(app.getHttpServer())
 				.post("/auth/login")
 				.send({
 					email: "roobin.bhandari@gmail.com",
-					password: "Test@1234",
+					password: process.env.USER_PASSWORD,
 				})
 				.expect(({ body }) => {
 					expect(body.user).toBeDefined();
@@ -55,40 +51,51 @@ describe("AppController (e2e)", () => {
 				.expect(201);
 		});
 
-		it("should get a list of all user posts /post (GET)", () => {
+		it("should create a new user /users (POST)", () => {
 			return request(app.getHttpServer())
-				.get("/post")
+				.post("/user")
+				.auth(jwttoken, { type: "bearer" })
+				.field("firstName", userDto.firstName)
+				.field("lastName", userDto.lastName)
+				.field("email", userDto.email)
+				.field("roles[]", ["AUTHOR"])
+				.field("password", userDto.password)
+				.attach("avatar", path.resolve(__dirname, "./test.png"))
 				.expect(({ body }) => {
-					expect(body.meta).toBeDefined();
+					expect(body).toBeDefined();
+					expect(body.email).toEqual(userDto.email);
+					userIndex = body.idx;
 				})
-				.expect(200);
+				.expect(201);
 		});
+
 		it("should get a list of all user /users (GET)", () => {
 			return request(app.getHttpServer())
 				.get("/user")
-				.expect(200)
 				.expect(({ body }) => {
 					expect(body.meta).toBeDefined();
+					expect(body.items).toBeDefined();
+				})
+				.expect(200);
+		});
+
+		it("should get a user with an idx /users (GET)", () => {
+			return request(app.getHttpServer())
+				.get(`/user/${userIndex}`)
+				.expect(({ body }) => {
+					expect(body).toBeDefined();
+					expect(body.idx).toEqual(userIndex);
 				});
 		});
 
-		it("should create a user /users (POST)", () => {
+		it("should delete a user with an idx /users (DELETE)", () => {
 			return request(app.getHttpServer())
-				.post("/user")
-				.expect(200)
-				.field("firstName", userDto.firstName)
-				.field("lastName", userDto.lastName)
-				.field("password", userDto.password)
-				.field("email", userDto.email)
-				.field("roles", userDto.roles)
+				.delete(`/user/${userIndex}`)
+				.auth(jwttoken, { type: "bearer" })
 				.expect(({ body }) => {
-					expect(body.idx).toBeDefined();
-					expect(body.email).toEqual(userDto.email);
-					expect(body.avatar).toMatch(
-						/^http:\/\/res.cloudinary.com+/,
-					);
-				})
-				.auth(jwttoken, { type: "bearer" });
+					expect(body).toBeDefined();
+					expect(body.idx).toEqual(userIndex);
+				});
 		});
 	});
 });

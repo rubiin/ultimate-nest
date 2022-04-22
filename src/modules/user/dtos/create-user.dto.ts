@@ -1,5 +1,4 @@
 import { AppRoles } from "@common/constants/app.roles";
-import { enumToString } from "helper-fns";
 import {
 	IsArray,
 	IsEmail,
@@ -8,6 +7,7 @@ import {
 	MaxLength,
 	MinLength,
 } from "class-validator";
+import { enumToString } from "helper-fns";
 
 export class CreateUserDto {
 	@IsString()
