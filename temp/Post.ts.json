@@ -6,7 +6,6 @@
 			"title": { "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"excerpt": { "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
 			"content": { "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
-			"category": { "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"tags": { "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
 			"status": { "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
 			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": true, "type": "User", "nullable": false }
@@ -16,7 +15,6 @@
 			{ "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
 			{ "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
-			{ "name": "category", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
 			{ "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
 			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": true, "type": "User", "nullable": false }
@@ -40,6 +38,6 @@
 		"collection": "post"
 	},
 	"origin": "./src/entities/post.entity.ts",
-	"hash": "df04c437431e91a0111b4076f0925ce2",
+	"hash": "d766e881f6c68777b7c4ea7078973518",
 	"version": "5.1.2"
 }

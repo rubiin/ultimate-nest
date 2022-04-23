@@ -36,7 +36,6 @@ describe("AppController (e2e)", () => {
 			title: faker.lorem.words(randomNumber(1, 10)),
 			content: faker.lorem.paragraph(randomNumber(2, 4)),
 			slug: faker.lorem.slug(),
-			category: "LIFESTYLE",
 			excerpt: faker.lorem.paragraph(randomNumber(1, 2)),
 			tags: faker.lorem.words(randomNumber(1, 4)).split(" "),
 		};
