@@ -27,9 +27,7 @@ export const validationSchema = Joi.object({
 	RABBITMQ_URI: Joi.string().required(),
 	RABBITMQ_EXCHANGE: Joi.string().required(),
 	SENTRY_DSN: Joi.string().required(),
-	// MINIO_HOST: Joi.string().required(),
-	// MINIO_PORT: Joi.number().required(),
-	// MINIO_ACCESS_KEY: Joi.string().required(),
-	// MINIO_SECRET_KEY: Joi.string().required(),
-	// MINIO_USE_SSL: Joi.boolean().required(),
+	GOOGLE_CLIENT_ID: Joi.string().required(),
+	GOOGLE_SECRET: Joi.string().required(),
+	GOOGLE_CALLBACK_URL: Joi.string().required(),
 });

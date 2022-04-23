@@ -4,11 +4,11 @@ import sharp from "sharp";
 import puppeteer from "puppeteer";
 import { pick, slugify } from "helper-fns";
 import { customAlphabet } from "nanoid/async";
-import { randomTypes } from "@common/constants/random-types.enum";
 import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
 import { hashString } from "@common/misc/threads";
 import argon from "argon2";
 import { from, Observable } from "rxjs";
+import { RandomTypes } from "@common/constants/misc.enum";
 
 let puppetterInstance = null;
 
@@ -146,14 +146,14 @@ export const HelperService = {
 	 *
 	 *
 	 * @static
-	 * @param {randomTypes} type
+	 * @param {RandomTypes} type
 	 * @param {number} length
 	 * @param {string} [alphabet]
 	 * @return {*}  {(Promise<number | string>)}
 	 * @memberof HelperService
 	 */
 	getRandom: (
-		type: randomTypes,
+		type: RandomTypes,
 		length: number,
 		alphabet?: string,
 	): Promise<number | string> => {
@@ -162,7 +162,7 @@ export const HelperService = {
 		}
 
 		return customAlphabet(
-			type === randomTypes.NUMBER
+			type === RandomTypes.NUMBER
 				? "1234567890"
 				: // eslint-disable-next-line no-secrets/no-secrets
 				  "abcdefghijklmnopqrstuvwxyz",

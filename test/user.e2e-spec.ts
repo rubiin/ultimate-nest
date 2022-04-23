@@ -109,6 +109,17 @@ describe("AppController (e2e)", () => {
 				});
 		});
 
+		it("should throw error if user not found by idx /users (GET)", () => {
+			return request(app.getHttpServer())
+				.get(`/user/30906d04-d770-4694-b4c1-5c084c0c96f0`)
+				.expect(({ body }) => {
+					expect(body.message).toEqual(
+						"User does not exists or unauthorized",
+					);
+				})
+				.expect(404);
+		});
+
 		it("should update /users (POST)", () => {
 			return request(app.getHttpServer())
 				.put(`/user/${userIndex}`)
