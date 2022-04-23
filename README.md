@@ -47,7 +47,7 @@ should be of format .env.[environment] Ex. (.env.test). The env to use should be
 -   📱 **NestJS** — latest version
 -   🎉 **TypeScript** - Type checking
 -   ⚙️ **Dotenv** - Supports environment variables
--   🗝 **Authentication** - JWT, RSA256
+-   🗝 **Authentication** - JWT, RSA256, oauth
 -   🏬 **Authorization** - RBAC
 -   🏪 **MikroORM** - Database ORM
 -   🏪 **PostgreSQL** - Open-Source Relational Database
