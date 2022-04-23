@@ -107,7 +107,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.20.0",
 		"@typescript-eslint/parser": "^5.20.0",
 		"cz-conventional-changelog": "3.3.0",
-		"eslint": "^8.13.0",
+		"eslint": "^8.14.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-import": "^2.26.0",
 		"eslint-plugin-no-secrets": "^0.8.9",
@@ -132,10 +132,12 @@
 			"json",
 			"ts"
 		],
+		"testTimeout": 30000,
 		"moduleNameMapper": {
+			"^@entities": "<rootDir>/entities/index",
 			"^@common/(.*)$": "<rootDir>/common/$1",
 			"^@modules/(.*)$": "<rootDir>/modules/$1",
-			"^@entities/(.*)$": "<rootDir>/entities/$1"
+			"^@lib/(.*)$": "<rootDir>/lib/$1"
 		},
 		"rootDir": "src",
 		"testRegex": ".spec.ts$",
