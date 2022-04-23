@@ -16,9 +16,6 @@ export class Post extends BaseEntity {
 	@Property({ type: "text" })
 	content!: string;
 
-	@Property()
-	category: string;
-
 	@Property({ type: ArrayType })
 	tags: string[];
 
