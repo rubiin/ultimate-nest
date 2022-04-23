@@ -8,6 +8,9 @@ import { AppModule } from "../src/app.module";
 describe("AppController (e2e)", () => {
 	let app: INestApplication;
 
+	afterAll(async () => {
+		await app.close();
+	});
 	beforeAll(async () => {
 		const moduleFixture: TestingModule = await Test.createTestingModule({
 			imports: [AppModule],
@@ -69,6 +72,24 @@ describe("AppController (e2e)", () => {
 				.expect(201);
 		});
 
+		it("should reject duplicate email /users (POST)", () => {
+			return request(app.getHttpServer())
+				.post("/user")
+				.auth(jwttoken, { type: "bearer" })
+				.field("firstName", userDto.firstName)
+				.field("lastName", userDto.lastName)
+				.field("email", "roobin.bhandari@gmail.com")
+				.field("roles[]", ["AUTHOR"])
+				.field("password", userDto.password)
+				.attach("avatar", path.resolve(__dirname, "./test.png"))
+				.expect(({ body }) => {
+					expect(body.message).toEqual(
+						"User already registered with email",
+					);
+				})
+				.expect(400);
+		});
+
 		it("should get a list of all user /users (GET)", () => {
 			return request(app.getHttpServer())
 				.get("/user")
@@ -86,6 +107,17 @@ describe("AppController (e2e)", () => {
 					expect(body).toBeDefined();
 					expect(body.idx).toEqual(userIndex);
 				});
+		});
+
+		it("should update /users (POST)", () => {
+			return request(app.getHttpServer())
+				.put(`/user/${userIndex}`)
+				.auth(jwttoken, { type: "bearer" })
+				.field("roles[]", ["READER"])
+				.expect(({ body }) => {
+					expect(body).toBeDefined();
+				})
+				.expect(200);
 		});
 
 		it("should delete a user with an idx /users (DELETE)", () => {
