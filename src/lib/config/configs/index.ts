@@ -6,3 +6,4 @@ export * from "./redis.config";
 export * from "./minio.config";
 export * from "./rabbit.config";
 export * from "./cloudinary.config";
+export * from "./google.config";

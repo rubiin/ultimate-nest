@@ -1,5 +1,3 @@
-import { randomTypes } from "@common/constants/random-types.enum";
-import { EmailTemplateEnum } from "@common/constants/template.enum";
 import { BaseRepository } from "@common/database/base.repository";
 import { HelperService } from "@common/helpers/helpers.utils";
 import { IResponse } from "@common/interfaces/response.interface";
@@ -19,10 +17,15 @@ import { ConfigService } from "@nestjs/config";
 import { capitalize, omit } from "helper-fns";
 import { isAfter } from "date-fns";
 import { I18nService } from "nestjs-i18n";
-import { from, map, Observable, switchMap, zip } from "rxjs";
+import { from, map, Observable, of, switchMap, zip } from "rxjs";
 import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
 import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
 import { UserLoginDto } from "./dtos/user-login";
+import {
+	RandomTypes,
+	EmailTemplateEnum,
+	LoginType,
+} from "@common/constants/misc.enum";
 
 @Injectable()
 export class AuthService {
@@ -38,7 +41,11 @@ export class AuthService {
 		private readonly orm: MikroORM,
 	) {}
 
-	validateUser(email: string, pass: string): Observable<any> {
+	validateUser(
+		email: string,
+		pass: string,
+		loginType: LoginType,
+	): Observable<any> {
 		return from(
 			this.userRepository.findOne({
 				email,
@@ -58,27 +65,31 @@ export class AuthService {
 					);
 				}
 
-				if (user) {
-					return HelperService.verifyHash(user.password, pass).pipe(
-						map(isValid => {
-							if (isValid) {
-								return omit(user, ["password"]);
-							}
+				return user && loginType === LoginType.PASSWORD
+					? HelperService.verifyHash(user.password, pass).pipe(
+							map(isValid => {
+								if (isValid) {
+									return omit(user, ["password"]);
+								}
 
-							throw new BadRequestException(
-								this.i18n.translate(
-									"status.USER_PASSWORD_DONT_MATCH",
-								),
-							);
-						}),
-					);
-				}
+								throw new BadRequestException(
+									this.i18n.translate(
+										"status.USER_PASSWORD_DONT_MATCH",
+									),
+								);
+							}),
+					  )
+					: of(omit(user, ["password"]));
 			}),
 		);
 	}
 
-	login(loginDto: UserLoginDto): Observable<any> {
-		return this.validateUser(loginDto.email, loginDto.password).pipe(
+	login(loginDto: UserLoginDto, loginType: LoginType): Observable<any> {
+		return this.validateUser(
+			loginDto.email,
+			loginDto.password,
+			loginType,
+		).pipe(
 			switchMap(user => {
 				if (!user)
 					throw new UnauthorizedException(
@@ -138,7 +149,7 @@ export class AuthService {
 		}
 
 		const otpNumber = (await HelperService.getRandom(
-			randomTypes.NUMBER,
+			RandomTypes.NUMBER,
 			6,
 		)) as string; // random six digit otp
 

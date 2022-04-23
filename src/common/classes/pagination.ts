@@ -1,4 +1,4 @@
-import { Order } from "@common/constants/order.enum";
+import { Order } from "@common/constants/misc.enum";
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsEnum, IsOptional, IsInt, Min, Max } from "class-validator";

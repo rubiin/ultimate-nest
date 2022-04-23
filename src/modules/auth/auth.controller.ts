@@ -1,4 +1,5 @@
 import { AppResource } from "@common/constants/app.roles";
+import { LoginType } from "@common/constants/misc.enum";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
@@ -13,8 +14,10 @@ import {
 	Post,
 	Put,
 	Query,
+	Req,
 	UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { AuthService } from "./auth.service";
@@ -35,7 +38,7 @@ export class AuthController {
 	@Post("login")
 	@ApiBody({ type: UserLoginDto })
 	login(@Body() _loginDto: UserLoginDto) {
-		return this.authService.login(_loginDto);
+		return this.authService.login(_loginDto, LoginType.PASSWORD);
 	}
 
 	@ApiOperation({ summary: "Reset password" })
@@ -48,6 +51,21 @@ export class AuthController {
 	@Put("forgot-password")
 	async forgotPassword(@Body() dto: SendOtpDto) {
 		return this.authService.forgotPassword(dto);
+	}
+
+	@Get("google")
+	@UseGuards(AuthGuard("google"))
+	googleAuth(@Req() _request) {
+		// the google auth redirect will be handled by passport
+	}
+
+	@Get("google/redirect")
+	@UseGuards(AuthGuard("google"))
+	googleAuthRedirect(
+		@LoggedInUser()
+		user: Pick<UserEntity, "firstName" | "lastName" | "email" | "avatar">,
+	) {
+		return this.authService.login({ email: user.email }, LoginType.GOOGLE);
 	}
 
 	@ApiOperation({ summary: "Verify otp" })
