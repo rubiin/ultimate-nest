@@ -1,4 +1,3 @@
-import { IResponse } from "@common/interfaces/response.interface";
 import { RefreshToken, User } from "@entities";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -152,10 +151,10 @@ export class TokensService {
 	 * @return {*}  {Observable<IResponse<User>>}
 	 * @memberof TokensService
 	 */
-	deleteRefreshTokenForUser(user: User): Observable<IResponse<User>> {
+	deleteRefreshTokenForUser(user: User): Observable<User> {
 		return this.tokens.deleteTokensForUser(user).pipe(
 			map(() => {
-				return { message: "Operation Successful", data: user };
+				return user;
 			}),
 		);
 	}
@@ -172,7 +171,7 @@ export class TokensService {
 	deleteRefreshToken(
 		user: User,
 		payload: RefreshTokenPayload,
-	): Observable<IResponse<User>> {
+	): Observable<User> {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
@@ -181,7 +180,7 @@ export class TokensService {
 
 		return this.tokens.deleteToken(user, tokenId).pipe(
 			map(() => {
-				return { message: "Operation Successful", data: user };
+				return user;
 			}),
 		);
 	}

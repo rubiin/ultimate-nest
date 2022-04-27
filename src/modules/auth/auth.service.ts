@@ -1,6 +1,5 @@
 import { BaseRepository } from "@common/database/base.repository";
 import { HelperService } from "@common/helpers/helpers.utils";
-import { IResponse } from "@common/interfaces/response.interface";
 import { OtpLog, User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { MikroORM, wrap } from "@mikro-orm/core";
@@ -123,11 +122,11 @@ export class AuthService {
 	 * @return {Promise<IResponse>}
 	 * @memberof AuthService
 	 */
-	logoutFromAll(user: User): Observable<IResponse<any>> {
+	logoutFromAll(user: User): Observable<any> {
 		return from(this.tokenService.deleteRefreshTokenForUser(user));
 	}
 
-	logout(user: User, refreshToken: string): Observable<IResponse<any>> {
+	logout(user: User, refreshToken: string): Observable<any> {
 		return from(this.tokenService.decodeRefreshToken(refreshToken)).pipe(
 			switchMap(payload => {
 				return this.tokenService.deleteRefreshToken(user, payload);

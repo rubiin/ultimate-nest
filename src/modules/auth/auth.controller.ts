@@ -3,7 +3,6 @@ import { LoginType } from "@common/constants/misc.enum";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
-import { IResponse } from "@common/interfaces/response.interface";
 import { User, User as UserEntity } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
@@ -19,6 +18,7 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Request } from "express";
 import { Observable } from "rxjs";
 import { AuthService } from "./auth.service";
 import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
@@ -55,7 +55,7 @@ export class AuthController {
 
 	@Get("google")
 	@UseGuards(AuthGuard("google"))
-	googleAuth(@Req() _request) {
+	googleAuth(@Req() _request: Request) {
 		// the google auth redirect will be handled by passport
 	}
 
@@ -106,7 +106,7 @@ export class AuthController {
 		@LoggedInUser() user: User,
 		@Body() refreshToken?: RefreshTokenDto,
 		@Query("from_all", ParseBoolPipe) fromAll = false,
-	): Observable<IResponse<any>> {
+	): Observable<any> {
 		return fromAll
 			? this.authService.logoutFromAll(user)
 			: this.authService.logout(user, refreshToken.refreshToken);
