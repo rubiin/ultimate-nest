@@ -18,10 +18,6 @@ import { I18nService } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
-interface ICreateUserWithFile extends CreateUserDto {
-	image: Express.Multer.File;
-}
-
 @Injectable()
 export class UserService {
 	constructor(
@@ -83,7 +79,9 @@ export class UserService {
 		);
 	}
 
-	async createOne(dto: ICreateUserWithFile) {
+	async createOne(
+		dto: CreateUserDto & { image: Express.Multer.File },
+	): Promise<User> {
 		const userExist = await this.userRepository.findOne({
 			email: dto.email,
 		});
