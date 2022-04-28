@@ -1,0 +1,38 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"body": { "name": "body", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"article": { "name": "article", "reference": "m:1", "cascade": ["persist"], "type": "Post", "nullable": false },
+			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+		},
+		"props": [
+			{ "name": "body", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "article", "reference": "m:1", "cascade": ["persist"], "type": "Post", "nullable": false },
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "Comment",
+		"path": "./src/entities/comment.entity.ts",
+		"name": "Comment",
+		"abstract": false,
+		"constructorParams": ["author", "article", "body"],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [
+			{ "name": "article", "reference": "m:1", "cascade": ["persist"], "type": "Post", "nullable": false },
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "type": "User", "nullable": false }
+		],
+		"collection": "comment"
+	},
+	"origin": "./src/entities/comment.entity.ts",
+	"hash": "79eab26414497c0b2df87bff4aef53ec",
+	"version": "5.1.3"
+}

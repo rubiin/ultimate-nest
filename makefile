@@ -1,5 +1,5 @@
 
-init: clean-files make-initial-migrations
+init: clean-files makemigration-init
 clean-db: unmigrate migrate seed
 
 clean-files:

@@ -4,6 +4,7 @@
 		"properties": {
 			"firstName": { "name": "firstName", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			"lastName": { "name": "lastName", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
+			"username": { "name": "username", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			"email": { "name": "email", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			"avatar": { "name": "avatar", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			"password": { "name": "password", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "string" },
@@ -19,24 +20,53 @@
 			},
 			"mobileNumber": { "name": "mobileNumber", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
 			"isVerified": { "name": "isVerified", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			"articles": { "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" }
+			"articles": { "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			"favorites": { "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
+			"followers": {
+				"name": "followers",
+				"reference": "m:n",
+				"cascade": ["persist"],
+				"owner": true,
+				"pivotTable": "user_to_follower",
+				"hidden": true,
+				"type": "User",
+				"fixedOrder": false,
+				"joinColumns": ["follower"],
+				"inverseJoinColumns": ["following"]
+			},
+			"followed": { "name": "followed", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "User", "fixedOrder": false }
 		},
 		"props": [
 			{ "name": "firstName", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			{ "name": "lastName", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
+			{ "name": "username", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			{ "name": "email", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			{ "name": "avatar", "reference": "scalar", "length": 255, "getter": false, "setter": false, "type": "string" },
 			{ "name": "password", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "string" },
 			{ "name": "roles", "reference": "scalar", "enum": false, "items": ["AUTHOR", "ADMIN", "READER"], "array": true, "default": ["AUTHOR"], "type": "AppRoles", "customType": "customType" },
 			{ "name": "mobileNumber", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
 			{ "name": "isVerified", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			{ "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" }
+			{ "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			{ "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
+			{
+				"name": "followers",
+				"reference": "m:n",
+				"cascade": ["persist"],
+				"owner": true,
+				"pivotTable": "user_to_follower",
+				"hidden": true,
+				"type": "User",
+				"fixedOrder": false,
+				"joinColumns": ["follower"],
+				"inverseJoinColumns": ["following"]
+			},
+			{ "name": "followed", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "User", "fixedOrder": false }
 		],
 		"primaryKeys": [],
 		"filters": {},
 		"hooks": { "beforeUpdate": ["hashPassword"], "beforeCreate": ["hashPassword"] },
 		"indexes": [],
-		"uniques": [{ "properties": "email" }, { "properties": "mobileNumber" }],
+		"uniques": [{ "properties": "username" }, { "properties": "email" }, { "properties": "mobileNumber" }],
 		"checks": [],
 		"concurrencyCheckKeys": {},
 		"className": "User",
@@ -47,10 +77,26 @@
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
-		"relations": [{ "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" }],
+		"relations": [
+			{ "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			{ "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
+			{
+				"name": "followers",
+				"reference": "m:n",
+				"cascade": ["persist"],
+				"owner": true,
+				"pivotTable": "user_to_follower",
+				"hidden": true,
+				"type": "User",
+				"fixedOrder": false,
+				"joinColumns": ["follower"],
+				"inverseJoinColumns": ["following"]
+			},
+			{ "name": "followed", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "User", "fixedOrder": false }
+		],
 		"collection": "user"
 	},
 	"origin": "./src/entities/user.entity.ts",
-	"hash": "6136e8c6caf4ca25f4498899acf4aea5",
+	"hash": "a0869213243a9f5bbed3568d599b2929",
 	"version": "5.1.3"
 }
