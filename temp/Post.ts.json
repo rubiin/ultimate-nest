@@ -4,20 +4,22 @@
 		"properties": {
 			"slug": { "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"title": { "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
-			"excerpt": { "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
+			"description": { "name": "description", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			"content": { "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
 			"tags": { "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
-			"status": { "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": true, "type": "User", "nullable": false }
+			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false },
+			"comments": { "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" },
+			"favoritesCount": { "name": "favoritesCount", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
 		},
 		"props": [
 			{ "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
-			{ "name": "excerpt", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
+			{ "name": "description", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
 			{ "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
 			{ "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
-			{ "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": true, "type": "User", "nullable": false }
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false },
+			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" },
+			{ "name": "favoritesCount", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
 		],
 		"primaryKeys": [],
 		"filters": {},
@@ -30,22 +32,17 @@
 		"path": "./src/entities/post.entity.ts",
 		"name": "Post",
 		"abstract": false,
-		"constructorParams": [],
+		"constructorParams": ["author", "title", "description", "body"],
 		"toJsonParams": [],
 		"extends": "BaseEntity",
 		"useCache": true,
-		"relations": [{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": true, "type": "User", "nullable": false }],
+		"relations": [
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false },
+			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+		],
 		"collection": "post"
 	},
 	"origin": "./src/entities/post.entity.ts",
-<<<<<<< HEAD
-	"hash": "d766e881f6c68777b7c4ea7078973518",
-	"version": "5.1.2"
-||||||| parent of b1a430a (fix(types): fixed types)
-	"hash": "df04c437431e91a0111b4076f0925ce2",
-	"version": "5.1.2"
-=======
-	"hash": "d13c23a3cb2168842797fa5f4215440f",
+	"hash": "864598a77dc691d44c87b781ad60dc37",
 	"version": "5.1.3"
->>>>>>> b1a430a (fix(types): fixed types)
 }

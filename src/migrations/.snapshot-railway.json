@@ -90,6 +90,16 @@
 					"length": 255,
 					"mappedType": "string"
 				},
+				"username": {
+					"name": "username",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"length": 255,
+					"mappedType": "string"
+				},
 				"email": {
 					"name": "email",
 					"type": "varchar(255)",
@@ -153,6 +163,13 @@
 			"schema": "public",
 			"indexes": [
 				{
+					"columnNames": ["username"],
+					"composite": false,
+					"keyName": "user_username_unique",
+					"primary": false,
+					"unique": true
+				},
+				{
 					"columnNames": ["email"],
 					"composite": false,
 					"keyName": "user_email_unique",
@@ -176,6 +193,60 @@
 			],
 			"checks": [],
 			"foreignKeys": {}
+		},
+		{
+			"columns": {
+				"follower": {
+					"name": "follower",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"following": {
+					"name": "following",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				}
+			},
+			"name": "user_to_follower",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "user_to_follower_pkey",
+					"columnNames": ["follower", "following"],
+					"composite": true,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"checks": [],
+			"foreignKeys": {
+				"user_to_follower_follower_foreign": {
+					"constraintName": "user_to_follower_follower_foreign",
+					"columnNames": ["follower"],
+					"localTableName": "public.user_to_follower",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"deleteRule": "cascade",
+					"updateRule": "cascade"
+				},
+				"user_to_follower_following_foreign": {
+					"constraintName": "user_to_follower_following_foreign",
+					"columnNames": ["following"],
+					"localTableName": "public.user_to_follower",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"deleteRule": "cascade",
+					"updateRule": "cascade"
+				}
+			}
 		},
 		{
 			"columns": {
@@ -529,13 +600,13 @@
 					"nullable": false,
 					"mappedType": "string"
 				},
-				"excerpt": {
-					"name": "excerpt",
+				"description": {
+					"name": "description",
 					"type": "varchar(255)",
 					"unsigned": false,
 					"autoincrement": false,
 					"primary": false,
-					"nullable": true,
+					"nullable": false,
 					"mappedType": "string"
 				},
 				"content": {
@@ -556,17 +627,17 @@
 					"nullable": false,
 					"mappedType": "array"
 				},
-				"status": {
-					"name": "status",
-					"type": "boolean",
+				"author_id": {
+					"name": "author_id",
+					"type": "int",
 					"unsigned": false,
 					"autoincrement": false,
 					"primary": false,
 					"nullable": false,
-					"mappedType": "boolean"
+					"mappedType": "integer"
 				},
-				"author_id": {
-					"name": "author_id",
+				"favorites_count": {
+					"name": "favorites_count",
 					"type": "int",
 					"unsigned": false,
 					"autoincrement": false,
@@ -594,6 +665,60 @@
 					"localTableName": "public.post",
 					"referencedColumnNames": ["id"],
 					"referencedTableName": "public.user",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"user_id": {
+					"name": "user_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"post_id": {
+					"name": "post_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				}
+			},
+			"name": "user_favorites",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "user_favorites_pkey",
+					"columnNames": ["user_id", "post_id"],
+					"composite": true,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"checks": [],
+			"foreignKeys": {
+				"user_favorites_user_id_foreign": {
+					"constraintName": "user_favorites_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "public.user_favorites",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"deleteRule": "cascade",
+					"updateRule": "cascade"
+				},
+				"user_favorites_post_id_foreign": {
+					"constraintName": "user_favorites_post_id_foreign",
+					"columnNames": ["post_id"],
+					"localTableName": "public.user_favorites",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.post",
+					"deleteRule": "cascade",
 					"updateRule": "cascade"
 				}
 			}
@@ -722,6 +847,133 @@
 					"constraintName": "otp_log_user_id_foreign",
 					"columnNames": ["user_id"],
 					"localTableName": "public.otp_log",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.user",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "string"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "boolean"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "boolean",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "boolean"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 6,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"length": 6,
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamptz(0)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 6,
+					"mappedType": "datetime"
+				},
+				"body": {
+					"name": "body",
+					"type": "varchar(255)",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "string"
+				},
+				"article_id": {
+					"name": "article_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"author_id": {
+					"name": "author_id",
+					"type": "int",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				}
+			},
+			"name": "comment",
+			"schema": "public",
+			"indexes": [
+				{
+					"keyName": "comment_pkey",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"checks": [],
+			"foreignKeys": {
+				"comment_article_id_foreign": {
+					"constraintName": "comment_article_id_foreign",
+					"columnNames": ["article_id"],
+					"localTableName": "public.comment",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "public.post",
+					"updateRule": "cascade"
+				},
+				"comment_author_id_foreign": {
+					"constraintName": "comment_author_id_foreign",
+					"columnNames": ["author_id"],
+					"localTableName": "public.comment",
 					"referencedColumnNames": ["id"],
 					"referencedTableName": "public.user",
 					"updateRule": "cascade"
