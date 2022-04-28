@@ -3,12 +3,6 @@ export enum Order {
 	DESC = "DESC",
 }
 
-export enum PostCategory {
-	"TECHNOLOGY",
-	"LIFESTYLE",
-	"CODING",
-}
-
 export enum RandomTypes {
 	NUMBER = "NUMBER",
 	STRING = "STRING",

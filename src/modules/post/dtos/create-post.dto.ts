@@ -5,10 +5,7 @@ export class CreatePostDto {
 	title: string;
 
 	@IsString()
-	slug: string;
-
-	@IsString()
-	excerpt: string;
+	description: string;
 
 	@IsString()
 	content: string;

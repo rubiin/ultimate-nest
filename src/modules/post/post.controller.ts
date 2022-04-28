@@ -2,7 +2,7 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { AppResource } from "@common/constants/app.roles";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
-import { User as UserEntity, Post as PostEntity } from "@entities";
+import { User as UserEntity, Post as PostEntity, Comment } from "@entities";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
@@ -20,7 +20,7 @@ import {
 import { ApiTags } from "@nestjs/swagger";
 import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
 import { Observable } from "rxjs";
-import { CreatePostDto, EditPostDto } from "./dtos";
+import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
 @ApiTags("Posts")
@@ -45,6 +45,11 @@ export class PostController {
 		@Param("idx", ParseUUIDPipe) index: string,
 	): Observable<PostEntity> {
 		return this.postService.getById(index);
+	}
+
+	@Get(":slug/comments")
+	findComments(@Param("slug") slug): Observable<Comment[]> {
+		return this.postService.findComments(slug);
 	}
 
 	@Auth({
@@ -91,5 +96,33 @@ export class PostController {
 			.granted
 			? this.postService.deleteOne(index)
 			: this.postService.deleteOne(index, author);
+	}
+
+	async createComment(
+		@LoggedInUser("id") user: number,
+		@Param("slug") slug,
+		@Body("comment") commentData: CreateCommentDto,
+	) {
+		return this.postService.addComment(user, slug, commentData);
+	}
+
+	@Delete(":slug/comments/:id")
+	deleteComment(@Param() parameters: { [key in "slug" | "id"]: string }) {
+		const { slug, id } = parameters;
+
+		return this.postService.deleteComment(slug, +id);
+	}
+
+	@Post(":slug/favorite")
+	favorite(@LoggedInUser("id") userId: number, @Param("slug") slug: string) {
+		return this.postService.favorite(userId, slug);
+	}
+
+	@Delete(":slug/favorite")
+	async unFavorite(
+		@LoggedInUser("id") userId: number,
+		@Param("slug") slug: string,
+	) {
+		return this.postService.unFavorite(userId, slug);
 	}
 }
