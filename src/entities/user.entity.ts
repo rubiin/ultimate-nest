@@ -7,6 +7,7 @@ import {
 	Collection,
 	Entity,
 	Enum,
+	ManyToMany,
 	OneToMany,
 	Property,
 	Unique,
@@ -21,6 +22,10 @@ export class User extends BaseEntity {
 
 	@Property({ length: 255 })
 	lastName = "";
+
+	@Unique()
+	@Property({ length: 255 })
+	username!: string;
 
 	@Unique()
 	@Property({ length: 255 })
@@ -50,6 +55,23 @@ export class User extends BaseEntity {
 
 	@OneToMany(() => Post, post => post.author, { hidden: true })
 	articles = new Collection<Post>(this);
+
+	@ManyToMany({ hidden: true })
+	favorites = new Collection<Post>(this);
+
+	@ManyToMany({
+		entity: () => User,
+		inversedBy: u => u.followed,
+		owner: true,
+		pivotTable: "user_to_follower",
+		joinColumn: "follower",
+		inverseJoinColumn: "following",
+		hidden: true,
+	})
+	followers = new Collection<User>(this);
+
+	@ManyToMany(() => User, u => u.followers, { hidden: true })
+	followed = new Collection<User>(this);
 
 	toJSON() {
 		const o = wrap<User>(this).toObject();
