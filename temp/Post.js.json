@@ -1,0 +1,48 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"slug": { "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"title": { "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"description": { "name": "description", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			"content": { "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
+			"tags": { "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
+			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false },
+			"comments": { "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": false, "orphanRemoval": true, "type": "Comment" },
+			"favoritesCount": { "name": "favoritesCount", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
+		},
+		"props": [
+			{ "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "description", "reference": "scalar", "getter": false, "setter": false, "type": "string" },
+			{ "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
+			{ "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false },
+			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": false, "orphanRemoval": true, "type": "Comment" },
+			{ "name": "favoritesCount", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "Post",
+		"path": "./dist/entities/post.entity.js",
+		"name": "Post",
+		"abstract": false,
+		"constructorParams": ["author", "title", "description", "body"],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false },
+			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": false, "orphanRemoval": true, "type": "Comment" }
+		],
+		"collection": "post"
+	},
+	"origin": "./dist/entities/post.entity.js",
+	"hash": "7ee92987abab980f7abddc5cc9c54ae2",
+	"version": "5.1.3"
+}

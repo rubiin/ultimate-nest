@@ -53,7 +53,7 @@ export class User extends BaseEntity {
 		this.password = await HelperService.hashString(this.password);
 	}
 
-	@OneToMany(() => Post, post => post.author, { hidden: true })
+	@OneToMany(() => Post, post => post.author)
 	posts = new Collection<Post>(this);
 
 	@ManyToMany({ hidden: true })
@@ -70,7 +70,7 @@ export class User extends BaseEntity {
 	})
 	followers = new Collection<User>(this);
 
-	@ManyToMany(() => User, u => u.followers, { hidden: true })
+	@ManyToMany(() => User, u => u.followers)
 	followed = new Collection<User>(this);
 
 	toJSON() {
