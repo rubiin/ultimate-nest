@@ -53,7 +53,7 @@ export const HelperService = {
 	): IAuthenticationPayload => {
 		return {
 			user: {
-				...pick(user, ["id", "idx"]),
+				...pick(user, ["id", "idx", "email"]),
 			},
 			payload: {
 				access_token: accessToken,

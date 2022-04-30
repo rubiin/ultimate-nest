@@ -46,7 +46,10 @@ export class TokensService {
 		};
 
 		return from(
-			this.jwt.signAsync({ ...pick(user, ["id", "idx"]) }, options),
+			this.jwt.signAsync(
+				{ ...pick(user, ["id", "idx", "email"]) },
+				options,
+			),
 		);
 	}
 
