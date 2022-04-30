@@ -930,8 +930,8 @@
 					"nullable": false,
 					"mappedType": "string"
 				},
-				"article_id": {
-					"name": "article_id",
+				"post_id": {
+					"name": "post_id",
 					"type": "int",
 					"unsigned": false,
 					"autoincrement": false,
@@ -962,9 +962,9 @@
 			],
 			"checks": [],
 			"foreignKeys": {
-				"comment_article_id_foreign": {
-					"constraintName": "comment_article_id_foreign",
-					"columnNames": ["article_id"],
+				"comment_post_id_foreign": {
+					"constraintName": "comment_post_id_foreign",
+					"columnNames": ["post_id"],
 					"localTableName": "public.comment",
 					"referencedColumnNames": ["id"],
 					"referencedTableName": "public.post",

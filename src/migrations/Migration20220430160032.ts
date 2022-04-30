@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations";
 
-export class Migration20220428143204 extends Migration {
+export class Migration20220430160032 extends Migration {
 	async up(): Promise<void> {
 		this.addSql(
 			'create table "user" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "first_name" varchar(255) not null, "last_name" varchar(255) not null, "username" varchar(255) not null, "email" varchar(255) not null, "avatar" varchar(255) not null, "password" varchar(255) not null, "roles" text[] not null default \'{AUTHOR}\', "mobile_number" varchar(255) null, "is_verified" boolean not null);',
@@ -46,7 +46,7 @@ export class Migration20220428143204 extends Migration {
 		);
 
 		this.addSql(
-			'create table "comment" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "body" varchar(255) not null, "article_id" int not null, "author_id" int not null);',
+			'create table "comment" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "body" varchar(255) not null, "post_id" int not null, "author_id" int not null);',
 		);
 
 		this.addSql(
@@ -80,7 +80,7 @@ export class Migration20220428143204 extends Migration {
 		);
 
 		this.addSql(
-			'alter table "comment" add constraint "comment_article_id_foreign" foreign key ("article_id") references "post" ("id") on update cascade;',
+			'alter table "comment" add constraint "comment_post_id_foreign" foreign key ("post_id") references "post" ("id") on update cascade;',
 		);
 		this.addSql(
 			'alter table "comment" add constraint "comment_author_id_foreign" foreign key ("author_id") references "user" ("id") on update cascade;',
@@ -129,7 +129,7 @@ export class Migration20220428143204 extends Migration {
 		);
 
 		this.addSql(
-			'alter table "comment" drop constraint "comment_article_id_foreign";',
+			'alter table "comment" drop constraint "comment_post_id_foreign";',
 		);
 
 		this.addSql('drop table if exists "user" cascade;');

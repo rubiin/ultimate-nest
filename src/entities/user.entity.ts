@@ -54,7 +54,7 @@ export class User extends BaseEntity {
 	}
 
 	@OneToMany(() => Post, post => post.author, { hidden: true })
-	articles = new Collection<Post>(this);
+	posts = new Collection<Post>(this);
 
 	@ManyToMany({ hidden: true })
 	favorites = new Collection<Post>(this);

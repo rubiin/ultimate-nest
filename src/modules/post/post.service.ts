@@ -60,6 +60,7 @@ export class PostService {
 			),
 		);
 		const user$ = from(this.userRepository.findOneOrFail(userId));
+
 		return forkJoin([post$, user$]).pipe(
 			switchMap(([post, user]) => {
 				const comment = new Comment(user, post, dto.body);
@@ -72,22 +73,25 @@ export class PostService {
 	}
 
 	deleteComment(slug: string, id: number) {
-		const article$ = from(
+		const post$ = from(
 			this.postRepository.findOneOrFail(
 				{ slug, isObsolete: false, isActive: true },
 				{ populate: ["author"] },
 			),
 		);
-		article$.pipe(
-			switchMap(article => {
+
+		post$.pipe(
+			switchMap(post => {
 				const comment = this.commentRepository.getReference(id);
-				if (article.comments.contains(comment)) {
-					article.comments.remove(comment);
+
+				if (post.comments.contains(comment)) {
+					post.comments.remove(comment);
 					from(this.commentRepository.removeAndFlush(comment)).pipe(
-						map(() => article),
+						map(() => post),
 					);
 				}
-				return of(article);
+
+				return of(post);
 			}),
 		);
 	}
@@ -152,11 +156,11 @@ export class PostService {
 				{ slug, isObsolete: false, isActive: true },
 				{ populate: ["comments"] },
 			),
-		).pipe(map(article => article.comments.getItems()));
+		).pipe(map(post => post.comments.getItems()));
 	}
 
 	favorite(id: number, slug: string): Observable<Post> {
-		const article$ = from(
+		const post$ = from(
 			this.postRepository.findOneOrFail(
 				{ slug },
 				{ populate: ["author"] },
@@ -171,21 +175,20 @@ export class PostService {
 			),
 		);
 
-		return forkJoin([article$, user$]).pipe(
-			switchMap(([article, user]) => {
-				if (!user.favorites.contains(article)) {
-					user.favorites.add(article);
-					article.favoritesCount++;
+		return forkJoin([post$, user$]).pipe(
+			switchMap(([post, user]) => {
+				if (!user.favorites.contains(post)) {
+					user.favorites.add(post);
+					post.favoritesCount++;
 				}
-				return from(this.postRepository.flush()).pipe(
-					map(() => article),
-				);
+
+				return from(this.postRepository.flush()).pipe(map(() => post));
 			}),
 		);
 	}
 
 	unFavorite(id: number, slug: string): Observable<Post> {
-		const article$ = from(
+		const post$ = from(
 			this.postRepository.findOneOrFail(
 				{ slug, isObsolete: false, isActive: true },
 				{ populate: ["author"] },
@@ -200,15 +203,14 @@ export class PostService {
 			),
 		);
 
-		return forkJoin([article$, user$]).pipe(
-			switchMap(([article, user]) => {
-				if (!user.favorites.contains(article)) {
-					user.favorites.remove(article);
-					article.favoritesCount--;
+		return forkJoin([post$, user$]).pipe(
+			switchMap(([post, user]) => {
+				if (!user.favorites.contains(post)) {
+					user.favorites.remove(post);
+					post.favoritesCount--;
 				}
-				return from(this.postRepository.flush()).pipe(
-					map(() => article),
-				);
+
+				return from(this.postRepository.flush()).pipe(map(() => post));
 			}),
 		);
 	}

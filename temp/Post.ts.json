@@ -8,7 +8,7 @@
 			"content": { "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
 			"tags": { "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
 			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false },
-			"comments": { "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" },
+			"comments": { "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": false, "orphanRemoval": true, "type": "Comment" },
 			"favoritesCount": { "name": "favoritesCount", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
 		},
 		"props": [
@@ -18,7 +18,7 @@
 			{ "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false },
 			{ "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
 			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false },
-			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" },
+			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": false, "orphanRemoval": true, "type": "Comment" },
 			{ "name": "favoritesCount", "reference": "scalar", "getter": false, "setter": false, "type": "number" }
 		],
 		"primaryKeys": [],
@@ -38,11 +38,11 @@
 		"useCache": true,
 		"relations": [
 			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "nullable": false },
-			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": true, "orphanRemoval": true, "type": "Comment" }
+			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": false, "orphanRemoval": true, "type": "Comment" }
 		],
 		"collection": "post"
 	},
 	"origin": "./src/entities/post.entity.ts",
-	"hash": "864598a77dc691d44c87b781ad60dc37",
+	"hash": "8dc157ffe1cff9374556a9491aabe16f",
 	"version": "5.1.3"
 }

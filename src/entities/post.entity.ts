@@ -31,7 +31,7 @@ export class Post extends BaseEntity {
 	@ManyToOne({ eager: false })
 	author: User;
 
-	@OneToMany(() => Comment, comment => comment.article, {
+	@OneToMany(() => Comment, comment => comment.post, {
 		eager: false,
 		orphanRemoval: true,
 	})

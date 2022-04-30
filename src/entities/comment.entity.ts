@@ -9,15 +9,15 @@ export class Comment extends BaseEntity {
 	body: string;
 
 	@ManyToOne()
-	article: Post;
+	post: Post;
 
 	@ManyToOne()
 	author: User;
 
-	constructor(author: User, article: Post, body: string) {
+	constructor(author: User, post: Post, body: string) {
 		super();
 		this.author = author;
-		this.article = article;
+		this.post = post;
 		this.body = body;
 	}
 }
