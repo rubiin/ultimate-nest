@@ -107,7 +107,7 @@ export class ProfileService {
 		const profile$ = from(
 			this.userRepository.findOne(
 				{ email, isObsolete: false, isActive: true },
-				{ populate: ["articles"] },
+				{ populate: ["posts"] },
 			),
 		);
 

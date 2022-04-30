@@ -20,7 +20,7 @@
 			},
 			"mobileNumber": { "name": "mobileNumber", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
 			"isVerified": { "name": "isVerified", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			"articles": { "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			"posts": { "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
 			"favorites": { "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
 			"followers": {
 				"name": "followers",
@@ -46,7 +46,7 @@
 			{ "name": "roles", "reference": "scalar", "enum": false, "items": ["AUTHOR", "ADMIN", "READER"], "array": true, "default": ["AUTHOR"], "type": "AppRoles", "customType": "customType" },
 			{ "name": "mobileNumber", "reference": "scalar", "getter": false, "setter": false, "type": "string", "nullable": true },
 			{ "name": "isVerified", "reference": "scalar", "getter": false, "setter": false, "type": "boolean" },
-			{ "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
 			{ "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
 			{
 				"name": "followers",
@@ -78,7 +78,7 @@
 		"extends": "BaseEntity",
 		"useCache": true,
 		"relations": [
-			{ "name": "articles", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
+			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "hidden": true, "type": "Post" },
 			{ "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true },
 			{
 				"name": "followers",
@@ -97,6 +97,6 @@
 		"collection": "user"
 	},
 	"origin": "./src/entities/user.entity.ts",
-	"hash": "a0869213243a9f5bbed3568d599b2929",
+	"hash": "3165f7605a5a2dc66bbeada2bc071646",
 	"version": "5.1.3"
 }

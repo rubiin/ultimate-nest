@@ -11,7 +11,7 @@ export class UserSeeder extends Seeder {
 					author: user,
 				});
 
-				user.articles.set(posts);
+				user.posts.set(posts);
 			})
 			.make(5);
 	}
