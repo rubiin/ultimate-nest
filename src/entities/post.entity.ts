@@ -32,7 +32,7 @@ export class Post extends BaseEntity {
 	author: User;
 
 	@OneToMany(() => Comment, comment => comment.article, {
-		eager: true,
+		eager: false,
 		orphanRemoval: true,
 	})
 	comments = new Collection<Comment>(this);

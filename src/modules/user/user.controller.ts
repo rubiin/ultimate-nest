@@ -2,7 +2,6 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { AppResource, AppRoles } from "@common/constants/app.roles";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
-import { IProfileData } from "@common/interfaces/followers.interface";
 import { ImageMulterOption } from "@common/misc/misc";
 import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
 import { User, User as UserEntity } from "@entities";
@@ -115,21 +114,5 @@ export class UserController {
 			.granted
 			? this.userService.deleteOne(index)
 			: this.userService.deleteOne(index, user);
-	}
-
-	@Post(":username/follow")
-	follow(
-		@LoggedInUser("email") email: string,
-		@Param("username") username: string,
-	): Observable<IProfileData> {
-		return this.userService.follow(email, username);
-	}
-
-	@Delete(":username/follow")
-	unFollow(
-		@LoggedInUser("id") userId: number,
-		@Param("username") username: string,
-	): Observable<IProfileData> {
-		return this.userService.unFollow(userId, username);
 	}
 }
