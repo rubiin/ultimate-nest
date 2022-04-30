@@ -111,11 +111,4 @@ export class AuthController {
 			? this.authService.logoutFromAll(user)
 			: this.authService.logout(user, refreshToken.refreshToken);
 	}
-
-	@ApiOperation({ summary: "User profile" })
-	@Auth()
-	@Get("profile")
-	profile(@LoggedInUser() user: UserEntity) {
-		return user;
-	}
 }
