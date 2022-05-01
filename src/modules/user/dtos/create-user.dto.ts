@@ -21,7 +21,7 @@ export class CreateUserDto {
 
 	avatar: string;
 
-	@IsEmail()
+	@IsEmail({}, { message: i18nValidationMessage("validation.INVALID_EMAIL") })
 	email: string;
 
 	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
