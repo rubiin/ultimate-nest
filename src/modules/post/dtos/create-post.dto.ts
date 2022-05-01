@@ -1,16 +1,20 @@
 import { IsArray, IsString } from "class-validator";
+import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreatePostDto {
-	@IsString()
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
 	title: string;
 
-	@IsString()
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
 	description: string;
 
-	@IsString()
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
 	content: string;
 
-	@IsString({ each: true })
-	@IsArray()
+	@IsString({
+		message: i18nValidationMessage("validation.INVALID_STRING"),
+		each: true,
+	})
+	@IsArray({ message: i18nValidationMessage("validation.INVALID_ARRAY") })
 	tags: string[];
 }
