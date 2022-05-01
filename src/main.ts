@@ -10,6 +10,10 @@ import compression from "compression";
 import helmet from "helmet";
 import { AppModule } from "./app.module";
 import rateLimit from "express-rate-limit";
+import {
+	i18nValidationErrorFactory,
+	I18nValidationExceptionFilter,
+} from "nestjs-i18n";
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(
@@ -57,9 +61,11 @@ async function bootstrap() {
 		new ValidationPipe({
 			whitelist: true,
 			transform: true,
+			exceptionFactory: i18nValidationErrorFactory,
 		}),
 	);
 
+	app.useGlobalFilters(new I18nValidationExceptionFilter());
 	app.setGlobalPrefix(globalPrefix);
 
 	// =========================================================

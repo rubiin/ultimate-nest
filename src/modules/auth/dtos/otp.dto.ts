@@ -1,11 +1,13 @@
 import { PickType } from "@nestjs/mapped-types";
-import { IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty } from "class-validator";
+import { i18nValidationMessage } from "nestjs-i18n";
 
 export class OtpVerifyDto {
-	@IsNotEmpty()
+	@IsNotEmpty({ message: i18nValidationMessage("validation.NOT_EMPTY") })
 	otpCode!: string;
 
-	@IsNotEmpty()
+	@IsNotEmpty({ message: i18nValidationMessage("validation.NOT_EMPTY") })
+	@IsEmail()
 	email!: string;
 }
 

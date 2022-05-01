@@ -8,14 +8,15 @@ import {
 	MinLength,
 } from "class-validator";
 import { enumToString } from "helper-fns";
+import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreateUserDto {
-	@IsString()
-	@MaxLength(255)
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
+	@MaxLength(255, { message: i18nValidationMessage("validation.MAX_LENGTH") })
 	firstName: string;
 
-	@IsString()
-	@MaxLength(255)
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
+	@MaxLength(255, { message: i18nValidationMessage("validation.MAX_LENGTH") })
 	lastName: string;
 
 	avatar: string;
@@ -23,12 +24,12 @@ export class CreateUserDto {
 	@IsEmail()
 	email: string;
 
-	@IsString()
-	@MinLength(8)
-	@MaxLength(128)
+	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
+	@MinLength(8, { message: i18nValidationMessage("validation.MIN_LENGTH") })
+	@MaxLength(128, { message: i18nValidationMessage("validation.MAX_LENGTH") })
 	password: string;
 
-	@IsArray()
+	@IsArray({ message: i18nValidationMessage("validation.INVALID_ARRAY") })
 	@IsEnum(AppRoles, {
 		each: true,
 		message: `must be a valid role value,${enumToString(AppRoles)}`,
