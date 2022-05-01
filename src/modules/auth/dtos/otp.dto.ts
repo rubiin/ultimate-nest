@@ -7,7 +7,7 @@ export class OtpVerifyDto {
 	otpCode!: string;
 
 	@IsNotEmpty({ message: i18nValidationMessage("validation.NOT_EMPTY") })
-	@IsEmail()
+	@IsEmail({}, { message: i18nValidationMessage("validation.INVALID_EMAIL") })
 	email!: string;
 }
 
