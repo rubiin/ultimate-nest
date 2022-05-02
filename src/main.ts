@@ -65,7 +65,9 @@ async function bootstrap() {
 		}),
 	);
 
-	app.useGlobalFilters(new I18nValidationExceptionFilter());
+	app.useGlobalFilters(
+		new I18nValidationExceptionFilter({ detailedErrors: false }),
+	);
 	app.setGlobalPrefix(globalPrefix);
 
 	// =========================================================
@@ -88,7 +90,7 @@ async function bootstrap() {
 
 	await app.listen(port);
 
-	Logger.log(
+	new Logger("Bootstrap").log(
 		`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
 	);
 }
