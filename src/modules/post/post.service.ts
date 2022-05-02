@@ -50,12 +50,12 @@ export class PostService {
 
 	addComment(
 		userId: number,
-		slug: string,
+		index: string,
 		dto: CreateCommentDto,
 	): Observable<Post> {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
-				{ slug, isObsolete: false, isActive: true },
+				{ idx: index, isObsolete: false, isActive: true },
 				{ populate: ["author"] },
 			),
 		);
@@ -72,17 +72,17 @@ export class PostService {
 		);
 	}
 
-	deleteComment(slug: string, id: number) {
+	deleteComment(index: string) {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
-				{ slug, isObsolete: false, isActive: true },
+				{ idx: index, isObsolete: false, isActive: true },
 				{ populate: ["author"] },
 			),
 		);
 
 		post$.pipe(
 			switchMap(post => {
-				const comment = this.commentRepository.getReference(id);
+				const comment = this.commentRepository.getReference(post.id);
 
 				if (post.comments.contains(comment)) {
 					post.comments.remove(comment);
@@ -98,11 +98,14 @@ export class PostService {
 
 	getById(index: string, author?: User): Observable<Post> {
 		return from(
-			this.postRepository.findOne({
-				idx: index,
-				isObsolete: false,
-				isActive: true,
-			}),
+			this.postRepository.findOne(
+				{
+					idx: index,
+					isObsolete: false,
+					isActive: true,
+				},
+				{ populate: ["author", "comments"] },
+			),
 		).pipe(
 			map(p => {
 				const post = !author
@@ -150,25 +153,25 @@ export class PostService {
 		);
 	}
 
-	findComments(slug: string): Observable<Comment[]> {
+	findComments(index: string): Observable<Comment[]> {
 		return from(
 			this.postRepository.findOne(
-				{ slug, isObsolete: false, isActive: true },
+				{ idx: index, isObsolete: false, isActive: true },
 				{ populate: ["comments"] },
 			),
 		).pipe(map(post => post.comments.getItems()));
 	}
 
-	favorite(id: number, slug: string): Observable<Post> {
+	favorite(userId: number, postIndex: string): Observable<Post> {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
-				{ slug },
+				{ idx: postIndex },
 				{ populate: ["author"] },
 			),
 		);
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id, isObsolete: false, isActive: true },
+				{ id: userId, isObsolete: false, isActive: true },
 				{
 					populate: ["favorites", "followers"],
 				},
@@ -187,16 +190,16 @@ export class PostService {
 		);
 	}
 
-	unFavorite(id: number, slug: string): Observable<Post> {
+	unFavorite(userId: number, postIndex: string): Observable<Post> {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
-				{ slug, isObsolete: false, isActive: true },
+				{ idx: postIndex, isObsolete: false, isActive: true },
 				{ populate: ["author"] },
 			),
 		);
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id, isObsolete: false, isActive: true },
+				{ id: userId, isObsolete: false, isActive: true },
 				{
 					populate: ["favorites", "followers"],
 				},
