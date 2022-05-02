@@ -1,17 +1,15 @@
 import { BaseRepository } from "@common/database/base.repository";
 import { IProfileData } from "@common/interfaces/followers.interface";
 import { User } from "@entities";
-import { MikroORM } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { Observable, from, switchMap, map, forkJoin } from "rxjs";
+import { forkJoin, from, map, Observable, switchMap } from "rxjs";
 
 @Injectable()
 export class ProfileService {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
-		private readonly orm: MikroORM,
 	) {}
 
 	follow(followerEmail: string, username: string): Observable<IProfileData> {

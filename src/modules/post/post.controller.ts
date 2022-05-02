@@ -47,9 +47,11 @@ export class PostController {
 		return this.postService.getById(index);
 	}
 
-	@Get(":slug/comments")
-	findComments(@Param("slug") slug): Observable<Comment[]> {
-		return this.postService.findComments(slug);
+	@Get(":idx/comments")
+	findComments(
+		@Param("idx", ParseUUIDPipe) index: string,
+	): Observable<Comment[]> {
+		return this.postService.findComments(index);
 	}
 
 	@Auth({
@@ -98,31 +100,33 @@ export class PostController {
 			: this.postService.deleteOne(index, author);
 	}
 
+	@Post(":idx/comments")
 	async createComment(
 		@LoggedInUser("id") user: number,
-		@Param("slug") slug,
+		@Param("idx", ParseUUIDPipe) index: string,
 		@Body("comment") commentData: CreateCommentDto,
 	) {
-		return this.postService.addComment(user, slug, commentData);
+		return this.postService.addComment(user, index, commentData);
 	}
 
-	@Delete(":slug/comments/:id")
-	deleteComment(@Param() parameters: { [key in "slug" | "id"]: string }) {
-		const { slug, id } = parameters;
-
-		return this.postService.deleteComment(slug, +id);
+	@Delete(":idx/comments")
+	deleteComment(@Param("idx", ParseUUIDPipe) index: string) {
+		return this.postService.deleteComment(index);
 	}
 
-	@Post(":slug/favorite")
-	favorite(@LoggedInUser("id") userId: number, @Param("slug") slug: string) {
-		return this.postService.favorite(userId, slug);
+	@Post(":idx/favorite")
+	favorite(
+		@LoggedInUser("id") userId: number,
+		@Param("idx", ParseUUIDPipe) index: string,
+	) {
+		return this.postService.favorite(userId, index);
 	}
 
-	@Delete(":slug/favorite")
+	@Delete(":idx/favorite")
 	async unFavorite(
 		@LoggedInUser("id") userId: number,
-		@Param("slug") slug: string,
+		@Param("idx", ParseUUIDPipe) index: string,
 	) {
-		return this.postService.unFavorite(userId, slug);
+		return this.postService.unFavorite(userId, index);
 	}
 }
