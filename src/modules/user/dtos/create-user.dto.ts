@@ -14,7 +14,7 @@ export class CreateUserDto {
 	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
 	@MinLength(4, { message: i18nValidationMessage("validation.MIN_LENGTH") })
 	@MaxLength(128, { message: i18nValidationMessage("validation.MAX_LENGTH") })
-	userName: string;
+	username: string;
 
 	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
 	@MaxLength(255, { message: i18nValidationMessage("validation.MAX_LENGTH") })

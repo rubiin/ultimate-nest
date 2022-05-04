@@ -1,16 +1,13 @@
-import { User } from "@entities";
-import * as eta from "eta";
-import sharp from "sharp";
-import puppeteer from "puppeteer";
-import { pick, slugify } from "helper-fns";
-import { customAlphabet } from "nanoid/async";
+import { RandomTypes } from "@common/constants/misc.enum";
 import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
 import { hashString } from "@common/misc/threads";
+import { User } from "@entities";
 import argon from "argon2";
+import * as eta from "eta";
+import { pick, slugify } from "helper-fns";
+import { customAlphabet } from "nanoid/async";
 import { from, Observable } from "rxjs";
-import { RandomTypes } from "@common/constants/misc.enum";
-
-let puppetterInstance = null;
+import sharp from "sharp";
 
 export const HelperService = {
 	/**
@@ -112,34 +109,6 @@ export const HelperService = {
 		config: { height: number; width: number },
 	): Promise<Buffer> => {
 		return sharp(input).resize(config).toFormat("png").toBuffer();
-	},
-
-	/**
-	 *
-	 *
-	 * @static
-	 * @returns
-	 * @memberof HelperService
-	 */
-
-	getBrowserInstance: async () => {
-		if (puppetterInstance) {
-			puppetterInstance = await puppeteer.launch({
-				headless: true,
-				args: [
-					"--no-sandbox",
-					"--disable-setuid-sandbox",
-					"--disable-dev-shm-usage",
-					"--disable-accelerated-2d-canvas",
-					"--no-first-run",
-					"--no-zygote",
-					"--single-process", // <- this one doesn't works in Windows
-					"--disable-gpu",
-				],
-			});
-		}
-
-		return puppetterInstance;
 	},
 
 	/**
