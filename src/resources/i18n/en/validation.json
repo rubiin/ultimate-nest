@@ -1,9 +1,9 @@
 {
-	"NOT_EMPTY": "{property} cannot be empty",
-	"INVALID_EMAIL": "email is invalid",
-	"INVALID_STRING": "{property} is not a string",
-	"INVALID_ARRAY": "{property} is not a array",
-	"INVALID_BOOLEAN": "{property} is not a boolean",
-	"MIN_LENGTH": "{property} with value: \"{value}\" needs to be at least {constraints.0}, ow and {message}",
-	"MAX_LENGTH": "{property} with value: \"{value}\" needs to be less than {constraints.0}, ow and {message}"
+	"NOT_EMPTY": "{property} should not be empty",
+	"INVALID_EMAIL": "email must be an email",
+	"INVALID_STRING": "{property} must be a string",
+	"INVALID_ARRAY": "{property} must be an array",
+	"INVALID_BOOLEAN": "{property} must be a boolean",
+	"MIN_LENGTH": "{property} must be longer than or equal to {constraints.0} characters",
+	"MAX_LENGTH": "{property} must be shorter than or equal to {constraints.0} characters "
 }

@@ -1,6 +1,10 @@
 import { faker } from "@mikro-orm/seeder";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
+import {
+	i18nValidationErrorFactory,
+	I18nValidationExceptionFilter,
+} from "nestjs-i18n";
 import path from "node:path";
 import request from "supertest";
 import { AppModule } from "../src/app.module";
@@ -22,7 +26,12 @@ describe("AppController (e2e)", () => {
 			new ValidationPipe({
 				whitelist: true,
 				transform: true,
+				exceptionFactory: i18nValidationErrorFactory,
 			}),
+		);
+
+		app.useGlobalFilters(
+			new I18nValidationExceptionFilter({ detailedErrors: false }),
 		);
 		await app.init();
 	});
