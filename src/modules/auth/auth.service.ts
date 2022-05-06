@@ -70,7 +70,6 @@ export class AuthService {
 								if (isValid) {
 									return omit(user, ["password"]);
 								}
-
 								throw new BadRequestException(
 									this.i18n.translate(
 										"status.USER_PASSWORD_DONT_MATCH",

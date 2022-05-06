@@ -39,7 +39,7 @@ export class TokensService {
 	 * @return {*}  {Observable<string>}
 	 * @memberof TokensService
 	 */
-	generateAccessToken(user: User): Observable<string> {
+	generateAccessToken(user: Omit<User, "password">): Observable<string> {
 		const options: JwtSignOptions = {
 			...this.BASE_OPTIONS,
 			subject: String(user.id),
