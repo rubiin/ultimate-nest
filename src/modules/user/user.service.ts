@@ -30,6 +30,11 @@ export class UserService {
 		private readonly cloudinaryService: CloudinaryService,
 	) {}
 
+	/**
+	 * It returns an observable of a pagination object of users
+	 * @param {PageOptionsDto}  - PageOptionsDto - This is a DTO that contains the following properties:
+	 * @returns An observable of a pagination object.
+	 */
 	getMany({
 		limit,
 		offset,
@@ -57,6 +62,13 @@ export class UserService {
 		);
 	}
 
+	/**
+	 * It returns an observable of a user entity, which is either the user entity that was passed in, or
+	 * the user entity that was found in the database
+	 * @param {string} index - string - the index of the user you want to get
+	 * @param {User} [userEntity] - User - this is the user entity that is currently logged in.
+	 * @returns Observable<User>
+	 */
 	getOne(index: string, userEntity?: User): Observable<User> {
 		return from(
 			this.userRepository.findOne({
@@ -83,6 +95,11 @@ export class UserService {
 		);
 	}
 
+	/**
+	 * It creates a user and sends a welcome email
+	 * @param dto - CreateUserDto & { image: Express.Multer.File }
+	 * @returns The user object
+	 */
 	async createOne(
 		dto: CreateUserDto & { image: Express.Multer.File },
 	): Promise<User> {
@@ -127,6 +144,16 @@ export class UserService {
 		return user;
 	}
 
+	/**
+	 * "Get a user, assign the DTO to it, and then flush the changes to the database."
+	 *
+	 * The first thing we do is get the user. We do this by calling the `getOne` function we created
+	 * earlier
+	 * @param {string} index - string - the index of the user to edit
+	 * @param {EditUserDto} dto - EditUserDto
+	 * @param {User} [userEntity] - This is the user entity that is currently logged in.
+	 * @returns Observable<User>
+	 */
 	editOne(
 		index: string,
 		dto: EditUserDto,
@@ -141,6 +168,14 @@ export class UserService {
 		);
 	}
 
+	/**
+	 * "Get the user, then delete it."
+	 *
+	 * The first thing we do is get the user. We do this by calling the `getOne` function we just created
+	 * @param {string} index - string - The index of the user to delete.
+	 * @param {User} [userEntity] - This is the user entity that you want to delete.
+	 * @returns Observable<User>
+	 */
 	deleteOne(index: string, userEntity?: User): Observable<User> {
 		return this.getOne(index, userEntity).pipe(
 			switchMap(user => {
