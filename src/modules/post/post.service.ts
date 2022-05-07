@@ -32,6 +32,7 @@ export class PostService {
 		page,
 		order,
 		limit,
+		sort,
 		offset,
 	}: PageOptionsDto): Observable<Pagination<Post>> {
 		return from(
@@ -40,7 +41,7 @@ export class PostService {
 				{
 					limit,
 					offset,
-					orderBy: { createdAt: order.toLowerCase() },
+					orderBy: { [sort]: order.toLowerCase() },
 				},
 			),
 		).pipe(

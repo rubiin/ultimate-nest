@@ -39,6 +39,7 @@ export class UserService {
 		limit,
 		offset,
 		order,
+		sort,
 		page,
 	}: PageOptionsDto): Observable<Pagination<User>> {
 		return from(
@@ -47,7 +48,7 @@ export class UserService {
 				{
 					limit,
 					offset,
-					orderBy: { createdAt: order.toLowerCase() },
+					orderBy: { [sort]: order.toLowerCase() },
 				},
 			),
 		).pipe(

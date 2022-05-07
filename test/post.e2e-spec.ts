@@ -65,9 +65,9 @@ describe("AppController (e2e)", () => {
 				.expect(201);
 		});
 
-		it("should get a list of all user posts /post (GET)", () => {
+		it("should get a list of all user posts /posts (GET)", () => {
 			return request(app.getHttpServer())
-				.get("/post")
+				.get("/posts")
 				.expect(({ body }) => {
 					expect(body.meta).toBeDefined();
 					postIndex = body.items[0].id;
@@ -75,9 +75,9 @@ describe("AppController (e2e)", () => {
 				.expect(200);
 		});
 
-		it("should create a new post /post", () => {
+		it("should create a new post /posts", () => {
 			return request(app.getHttpServer())
-				.post("/post")
+				.post("/posts")
 				.auth(jwttoken, { type: "bearer" })
 				.send(postDto)
 				.expect(({ body }) => {
@@ -89,18 +89,18 @@ describe("AppController (e2e)", () => {
 				.expect(201);
 		});
 
-		it("should get a post with an idx /post (GET)", () => {
+		it("should get a post with an idx /posts (GET)", () => {
 			return request(app.getHttpServer())
-				.get(`/post/${postIndex}`)
+				.get(`/posts/${postIndex}`)
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
 					expect(body.idx).toEqual(postIndex);
 				});
 		});
 
-		it("should update a new post /post", () => {
+		it("should update a new post /posts", () => {
 			return request(app.getHttpServer())
-				.put(`/post/${postIndex}`)
+				.put(`/posts/${postIndex}`)
 				.auth(jwttoken, { type: "bearer" })
 				.send({
 					title: faker.lorem.words(randomNumber(1, 4)),
@@ -114,9 +114,9 @@ describe("AppController (e2e)", () => {
 				.expect(200);
 		});
 
-		it("should delete a post with an idx /post (DELETE)", () => {
+		it("should delete a post with an idx /posts (DELETE)", () => {
 			return request(app.getHttpServer())
-				.delete(`/post/${postIndex}`)
+				.delete(`/posts/${postIndex}`)
 				.auth(jwttoken, { type: "bearer" })
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
