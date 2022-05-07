@@ -22,6 +22,7 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Throttle } from "@nestjs/throttler";
 import { omit } from "helper-fns";
 import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
 import { Observable } from "rxjs";
@@ -47,6 +48,7 @@ export class UserController {
 	}
 
 	@ApiOperation({ summary: "public registration" })
+	@Throttle(10, 3600)
 	@UseInterceptors(FileInterceptor("avatar", ImageMulterOption))
 	@Post("register")
 	async publicRegistration(
@@ -72,6 +74,7 @@ export class UserController {
 		action: "create",
 		resource: AppResource.USER,
 	})
+	@Throttle(10, 3600)
 	@UseInterceptors(FileInterceptor("avatar", ImageMulterOption))
 	@Post()
 	async createOne(

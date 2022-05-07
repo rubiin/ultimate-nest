@@ -18,6 +18,8 @@ import { join } from "node:path";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { AccessControlModule } from "nest-access-control";
 import { roles } from "@common/constants/app.roles";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { APP_GUARD } from "@nestjs/core";
 
 @Module({
 	imports: [
@@ -37,12 +39,22 @@ import { roles } from "@common/constants/app.roles";
 		NestCloudinaryModule,
 		NestSentryModule,
 		AccessControlModule.forRoles(roles),
+		ThrottlerModule.forRoot({
+			ttl: 60,
+			limit: 10,
+		}),
 		ServeStaticModule.forRoot({
 			rootPath: join(__dirname, "resources"),
 			serveStaticOptions: {
 				maxAge: 86_400, // 1 day
 			},
 		}),
+	],
+	providers: [
+		{
+			provide: APP_GUARD,
+			useClass: ThrottlerGuard,
+		},
 	],
 })
 export class SharedModule {}
