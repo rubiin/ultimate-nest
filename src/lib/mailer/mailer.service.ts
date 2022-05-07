@@ -19,6 +19,11 @@ export class MailerService {
 
 	private readonly logger: Logger = new Logger(MailerService.name);
 
+	/**
+	 * It takes a mailOptions object, renders the template, and sends the email
+	 * @param {IMailOptions} mailOptions - IMailOptions
+	 * @returns A promise that resolves to a boolean.
+	 */
 	sendMail(mailOptions: IMailOptions) {
 		const transporter = createTransport({
 			host: this.options.host,

@@ -3,6 +3,7 @@ import { LoginType } from "@common/constants/misc.enum";
 import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
+import { IGoogleResponse } from "@common/interfaces/authentication.interface";
 import { User, User as UserEntity } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
@@ -14,12 +15,13 @@ import {
 	Put,
 	Query,
 	Req,
+	Res,
 	UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
-import { Request } from "express";
-import { Observable } from "rxjs";
+import { Request, Response } from "express";
+import { map, Observable } from "rxjs";
 import { AuthService } from "./auth.service";
 import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
 import { RefreshTokenDto } from "./dtos/refresh-request.dto";
@@ -63,9 +65,19 @@ export class AuthController {
 	@UseGuards(AuthGuard("google"))
 	googleAuthRedirect(
 		@LoggedInUser()
-		user: Pick<UserEntity, "firstName" | "lastName" | "email" | "avatar">,
+		user: IGoogleResponse,
+		@Res() response: Response,
 	) {
-		return this.authService.login({ email: user.email }, LoginType.GOOGLE);
+		return this.authService
+			.login({ email: user.email }, LoginType.GOOGLE)
+			.pipe(
+				map(data => {
+					// client url
+					return response.redirect(
+						`/oauth2?accessToken=${data.payload.access_token}&refreshToken=${data.payload.refresh_token}`,
+					);
+				}),
+			);
 	}
 
 	@ApiOperation({ summary: "Verify otp" })

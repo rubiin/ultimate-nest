@@ -25,6 +25,7 @@ import {
 	EmailTemplateEnum,
 	LoginType,
 } from "@common/constants/misc.enum";
+import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
 
 @Injectable()
 export class AuthService {
@@ -82,7 +83,10 @@ export class AuthService {
 		);
 	}
 
-	login(loginDto: UserLoginDto, loginType: LoginType): Observable<any> {
+	login(
+		loginDto: UserLoginDto,
+		loginType: LoginType,
+	): Observable<IAuthenticationPayload> {
 		return this.validateUser(
 			loginDto.email,
 			loginDto.password,

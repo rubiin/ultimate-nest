@@ -4,6 +4,16 @@ import {
 } from "./pagination-option.interface";
 import { Pagination } from "./pagination";
 
+/**
+ * It takes an array of items, a total number of items, the current page, the limit, and an optional
+ * route, and returns a pagination object
+ * @param {T[]} items - The items to be paginated.
+ * @param {number} totalItems - The total number of items in the database.
+ * @param {number} currentPage - The current page number
+ * @param {number} limit - The number of items to return per page.
+ * @param {string} [route] - The route to the endpoint.
+ * @returns A new instance of the Pagination class.
+ */
 export function createPaginationObject<T>(
 	items: T[],
 	totalItems: number,

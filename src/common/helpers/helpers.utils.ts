@@ -33,16 +33,7 @@ export const HelperService = {
 		};
 	},
 
-	/**
-	 * builds response for login
-	 *
-	 * @static
-	 * @param {User} user
-	 * @param {string} accessToken
-	 * @param {string} [refreshToken]
-	 * @return {AuthenticationPayload}
-	 * @memberof UtilService
-	 */
+	/* A function that returns an object. */
 	buildPayloadResponse: (
 		user: User,
 		accessToken: string,
@@ -59,19 +50,12 @@ export const HelperService = {
 		};
 	},
 
-	/**
-	 *
-	 * hashes string with argon2
-	 *
-	 * @static
-	 * @param {string} string
-	 * @return {*} {(Promise<string>)}
-	 * @memberof HelperService
-	 */
+	/* A function that returns a promise that resolves to a string. */
 	hashString: (string: string): Promise<string> => {
 		return hashString(string);
 	},
 
+	/* A function that returns an observable that resolves to a boolean. */
 	verifyHash: (
 		userPassword: string,
 		passwordToCompare: string,
@@ -79,14 +63,7 @@ export const HelperService = {
 		return from(argon.verify(userPassword, passwordToCompare));
 	},
 
-	/**
-	 * renders template file with eta
-	 * @static
-	 * @param {unknown} data
-	 * @param {string} path
-	 * @return {*}  {(Promise<string | void>)}
-	 * @memberof HelperService
-	 */
+	/* Rendering a template. */
 	renderTemplate: (data: unknown, path: string): void | Promise<string> => {
 		return eta.renderFileAsync(
 			path,
@@ -95,15 +72,7 @@ export const HelperService = {
 		);
 	},
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {Buffer} input
-	 * @param {{height: number, width: number}} config
-	 * @return {*}  {Promise<Buffer>}
-	 * @memberof HelperService
-	 */
+	/* Generating a thumbnail from a buffer. */
 	generateThumb: (
 		input: Buffer,
 		config: { height: number; width: number },
@@ -111,16 +80,7 @@ export const HelperService = {
 		return sharp(input).resize(config).toFormat("png").toBuffer();
 	},
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {RandomTypes} type
-	 * @param {number} length
-	 * @param {string} [alphabet]
-	 * @return {*}  {(Promise<number | string>)}
-	 * @memberof HelperService
-	 */
+	/* A function that returns a promise that resolves to a random number or string. */
 	getRandom: (
 		type: RandomTypes,
 		length: number,
@@ -139,12 +99,14 @@ export const HelperService = {
 		)();
 	},
 
+	/* Converting an enum to a string. */
 	enumToString: (value: Record<string, any>): string[] => {
 		const length = Object.keys(value).length;
 
 		return Object.keys(value).splice(length / 2, length);
 	},
 
+	/* Generating a slug from a string. */
 	generateSlug: (value: string): string => {
 		return slugify(value);
 	},
