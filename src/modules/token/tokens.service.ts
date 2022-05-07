@@ -18,8 +18,8 @@ export class TokensService {
 	private readonly tokens: RefreshTokensRepository;
 	private readonly jwt: JwtService;
 	private readonly BASE_OPTIONS: JwtSignOptions = {
-		issuer: "some-app",
-		audience: "some-app",
+		issuer: "nestify",
+		audience: "nestify",
 	};
 
 	constructor(
@@ -33,11 +33,9 @@ export class TokensService {
 	}
 
 	/**
-	 *
-	 *
-	 * @param {User} user
-	 * @return {*}  {Observable<string>}
-	 * @memberof TokensService
+	 * It takes a user object, and returns an observable of a string
+	 * @param user - Omit<User, "password">
+	 * @returns An Observable of a string.
 	 */
 	generateAccessToken(user: Omit<User, "password">): Observable<string> {
 		const options: JwtSignOptions = {
@@ -54,12 +52,10 @@ export class TokensService {
 	}
 
 	/**
-	 *
-	 *
-	 * @param {User} user
-	 * @param {number} expiresIn
-	 * @return {*}  {Observable<string>}
-	 * @memberof TokensService
+	 * It creates a refresh token in the database, then signs it with JWT
+	 * @param {User} user - User - The user object that we want to generate a token for.
+	 * @param {number} expiresIn - number - The number of seconds the token will be valid for.
+	 * @returns A string
 	 */
 	generateRefreshToken(user: User, expiresIn: number): Observable<string> {
 		return this.tokens.createRefreshToken(user, expiresIn).pipe(
@@ -77,11 +73,10 @@ export class TokensService {
 	}
 
 	/**
-	 *
-	 *
-	 * @param {string} encoded
-	 * @return {*}  {Promise<{ user: User; token: RefreshToken }>}
-	 * @memberof TokensService
+	 * It takes an encoded refresh token, decodes it, finds the user and token in the database, and
+	 * returns them
+	 * @param {string} encoded - string - The encoded refresh token
+	 * @returns An object with a user and a token.
 	 */
 	async resolveRefreshToken(
 		encoded: string,
@@ -111,11 +106,9 @@ export class TokensService {
 	}
 
 	/**
-	 *
-	 *
-	 * @param {string} refresh
-	 * @return {*}  {Promise<{ token: string; user: User }>}
-	 * @memberof TokensService
+	 * It takes a refresh token, resolves it to a user, and then generates an access token for that user
+	 * @param {string} refresh - string - The refresh token that was sent to the client.
+	 * @returns { token: string; user: User }
 	 */
 	async createAccessTokenFromRefreshToken(
 		refresh: string,
@@ -128,11 +121,9 @@ export class TokensService {
 	}
 
 	/**
-	 *
-	 *
-	 * @param {string} token
-	 * @return {*}  {Promise<RefreshTokenPayload>}
-	 * @memberof TokensService
+	 * It decodes the refresh token and throws an error if the token is expired or malformed
+	 * @param {string} token - The refresh token to decode.
+	 * @returns The payload of the token.
 	 */
 	async decodeRefreshToken(token: string): Promise<RefreshTokenPayload> {
 		try {
@@ -148,11 +139,9 @@ export class TokensService {
 	}
 
 	/**
-	 *
-	 *
-	 * @param {User} user
-	 * @return {*}  {Observable<IResponse<User>>}
-	 * @memberof TokensService
+	 * It deletes the refresh token for the given user, and then returns the user
+	 * @param {User} user - The user object that we want to delete the refresh token for.
+	 * @returns The user object.
 	 */
 	deleteRefreshTokenForUser(user: User): Observable<User> {
 		return this.tokens.deleteTokensForUser(user).pipe(
@@ -163,13 +152,10 @@ export class TokensService {
 	}
 
 	/**
-	 *
-	 * Removes a refresh token, and invalidated all access tokens for the user
-	 *
-	 * @param {User} user
-	 * @param {RefreshTokenPayload} payload
-	 * @return {*}  {Observable<IResponse<User>>}
-	 * @memberof TokensService
+	 * It deletes the refresh token from the database and returns the user
+	 * @param {User} user - The user object that was returned from the validateUser method.
+	 * @param {RefreshTokenPayload} payload - The payload of the refresh token.
+	 * @returns The user object
 	 */
 	deleteRefreshToken(
 		user: User,
@@ -189,12 +175,10 @@ export class TokensService {
 	}
 
 	/**
-	 *
-	 *
-	 * @private
-	 * @param {RefreshTokenPayload} payload
-	 * @return {*}  {Observable<User>}
-	 * @memberof TokensService
+	 * It takes a refresh token payload, extracts the user ID from it, and then returns an observable of
+	 * the user with that ID
+	 * @param {RefreshTokenPayload} payload - RefreshTokenPayload
+	 * @returns A user object
 	 */
 	private getUserFromRefreshTokenPayload(
 		payload: RefreshTokenPayload,
@@ -212,6 +196,12 @@ export class TokensService {
 		);
 	}
 
+	/**
+	 * It takes a refresh token payload, extracts the token ID from it, and then uses that token ID to
+	 * find the corresponding refresh token in the database
+	 * @param {RefreshTokenPayload} payload - RefreshTokenPayload
+	 * @returns Observable<RefreshToken | null>
+	 */
 	private getStoredTokenFromRefreshTokenPayload(
 		payload: RefreshTokenPayload,
 	): Observable<RefreshToken | null> {

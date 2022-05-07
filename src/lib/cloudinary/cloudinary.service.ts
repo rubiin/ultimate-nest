@@ -18,6 +18,12 @@ export class CloudinaryService {
 
 	private logger = new Logger(CloudinaryService.name);
 
+	/**
+	 * It takes a file, shrinks it to 800px wide, uploads it to Cloudinary, and returns the response from
+	 * Cloudinary
+	 * @param file - Express.Multer.File - This is the file that was uploaded by the user.
+	 * @returns A promise that resolves to an UploadApiResponse or UploadApiErrorResponse
+	 */
 	async uploadImage(
 		file: Express.Multer.File,
 	): Promise<UploadApiResponse | UploadApiErrorResponse> {

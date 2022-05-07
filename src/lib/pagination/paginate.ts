@@ -8,6 +8,14 @@ const DEFAULT_PAGE = 1;
 
 const logger = new Logger(Pagination.name);
 
+/**
+ * It takes an array of items, and returns a pagination object with the items sliced to the current
+ * page, the total number of items, the current page, the number of items per page, and the route
+ * @param {T[]} items - The array of items to paginate.
+ * @param {IPaginationOptions} options - IPaginationOptions
+ * @returns A function that takes in an array of items and an options object and returns a promise that
+ * resolves to a pagination object.
+ */
 export async function paginate<T>(
 	items: T[],
 	options: IPaginationOptions,

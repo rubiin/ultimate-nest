@@ -7,6 +7,8 @@ import {
 } from "class-validator";
 import { isValid, lightFormat } from "date-fns";
 
+/* It validates that a date is in a given format */
+
 @ValidatorConstraint({ async: true })
 class IsDateInFormatConstraint implements ValidatorConstraintInterface {
 	async validate(value: any | Array<any>, arguments_: ValidationArguments) {

@@ -14,6 +14,13 @@ export class TwilioService {
 
 	private readonly logger: Logger = new Logger(TwilioService.name);
 
+	/**
+	 * It takes a content and a phone number as arguments, creates a Twilio client, and sends an SMS to the
+	 * given phone number
+	 * @param {string} content - The content of the SMS.
+	 * @param {string} phone - The phone number to send the SMS to.
+	 * @returns Observable<MessageInstance>
+	 */
 	sendSms(content: string, phone: string): Observable<MessageInstance> {
 		const client = twilio(this.options.accountSid, this.options.authToken);
 

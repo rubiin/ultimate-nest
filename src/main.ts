@@ -9,6 +9,7 @@ import {
 import compression from "compression";
 import helmet from "helmet";
 import { AppModule } from "./app.module";
+import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import {
 	i18nValidationErrorFactory,
@@ -32,6 +33,7 @@ async function bootstrap() {
 
 	app.enableCors();
 	app.use(compression());
+	app.use(cookieParser());
 	app.enable("trust proxy");
 	app.use(helmet());
 

@@ -11,8 +11,16 @@ export interface IAuthenticationPayload {
 	};
 }
 
-export interface JwtPayload {
+export interface IJwtPayload {
 	username: string;
 	role: AppRoles;
 	iat?: Date;
+}
+
+export interface IGoogleResponse {
+	email: string;
+	firstName: string;
+	lastName: string;
+	avatar: string;
+	accessToken: string;
 }
