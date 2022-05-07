@@ -47,7 +47,6 @@ export function createPaginationObject<T>(
 		totalItems: totalItems,
 		itemCount: items.length,
 		itemsPerPage: limit,
-
 		totalPages: totalPages,
 		currentPage: currentPage,
 	};

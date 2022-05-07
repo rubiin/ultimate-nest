@@ -63,9 +63,9 @@ describe("AppController (e2e)", () => {
 				.expect(201);
 		});
 
-		it("should create a new user /users (POST)", () => {
+		it("should create a new user /userss (POST)", () => {
 			return request(app.getHttpServer())
-				.post("/user")
+				.post("/users")
 				.auth(jwttoken, { type: "bearer" })
 				.field("firstName", userDto.firstName)
 				.field("lastName", userDto.lastName)
@@ -81,9 +81,9 @@ describe("AppController (e2e)", () => {
 				.expect(201);
 		});
 
-		it("should reject duplicate email /users (POST)", () => {
+		it("should reject duplicate email /userss (POST)", () => {
 			return request(app.getHttpServer())
-				.post("/user")
+				.post("/users")
 				.auth(jwttoken, { type: "bearer" })
 				.field("firstName", userDto.firstName)
 				.field("lastName", userDto.lastName)
@@ -99,9 +99,9 @@ describe("AppController (e2e)", () => {
 				.expect(400);
 		});
 
-		it("should get a list of all user /users (GET)", () => {
+		it("should get a list of all user /userss (GET)", () => {
 			return request(app.getHttpServer())
-				.get("/user")
+				.get("/users")
 				.expect(({ body }) => {
 					expect(body.meta).toBeDefined();
 					expect(body.items).toBeDefined();
@@ -109,18 +109,18 @@ describe("AppController (e2e)", () => {
 				.expect(200);
 		});
 
-		it("should get a user with an idx /users (GET)", () => {
+		it("should get a user with an idx /userss (GET)", () => {
 			return request(app.getHttpServer())
-				.get(`/user/${userIndex}`)
+				.get(`/users/${userIndex}`)
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
 					expect(body.idx).toEqual(userIndex);
 				});
 		});
 
-		it("should throw error if user not found by idx /users (GET)", () => {
+		it("should throw error if user not found by idx /userss (GET)", () => {
 			return request(app.getHttpServer())
-				.get(`/user/30906d04-d770-4694-b4c1-5c084c0c96f0`)
+				.get(`/users/30906d04-d770-4694-b4c1-5c084c0c96f0`)
 				.expect(({ body }) => {
 					expect(body.message).toEqual(
 						"User does not exists or unauthorized",
@@ -129,9 +129,9 @@ describe("AppController (e2e)", () => {
 				.expect(404);
 		});
 
-		it("should update /users (POST)", () => {
+		it("should update /userss (POST)", () => {
 			return request(app.getHttpServer())
-				.put(`/user/${userIndex}`)
+				.put(`/users/${userIndex}`)
 				.auth(jwttoken, { type: "bearer" })
 				.field("roles[]", ["READER"])
 				.expect(({ body }) => {
@@ -140,9 +140,9 @@ describe("AppController (e2e)", () => {
 				.expect(200);
 		});
 
-		it("should delete a user with an idx /users (DELETE)", () => {
+		it("should delete a user with an idx /userss (DELETE)", () => {
 			return request(app.getHttpServer())
-				.delete(`/user/${userIndex}`)
+				.delete(`/users/${userIndex}`)
 				.auth(jwttoken, { type: "bearer" })
 				.expect(({ body }) => {
 					expect(body).toBeDefined();

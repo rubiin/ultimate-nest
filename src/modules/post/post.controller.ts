@@ -25,7 +25,7 @@ import { PostService } from "./post.service";
 
 @ApiTags("Posts")
 @UseInterceptors(CacheInterceptor)
-@Controller("post")
+@Controller("posts")
 export class PostController {
 	constructor(
 		private readonly postService: PostService,
