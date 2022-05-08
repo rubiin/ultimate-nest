@@ -2,6 +2,7 @@ import { Post } from "../../../entities/post.entity";
 import { Factory, Faker } from "@mikro-orm/seeder";
 import { randomNumber, slugify } from "helper-fns";
 
+/* `PostFactory` is a factory that creates `Post` instances */
 export class PostFactory extends Factory<Post> {
 	model = Post;
 
