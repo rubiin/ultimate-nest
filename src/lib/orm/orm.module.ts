@@ -27,9 +27,9 @@ const logger = new Logger("MikroORM");
 				highlighter: new SqlHighlighter(),
 				metadataProvider: TsMorphMetadataProvider,
 				entityRepository: BaseRepository,
+				allowGlobalContext: true,
 				registerRequestContext: false,
 				pool: { min: 2, max: 10 },
-				allowGlobalContext: true,
 				logger: logger.log.bind(logger),
 				migrations: {
 					path: "dist/migrations",
