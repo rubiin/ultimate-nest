@@ -44,6 +44,7 @@ describe("AppController (e2e)", () => {
 			firstName: faker.name.firstName(),
 			lastName: faker.name.firstName(),
 			email: faker.internet.email(),
+			username: faker.internet.userName(),
 			password: process.env.USER_PASSWORD,
 		};
 
@@ -63,10 +64,11 @@ describe("AppController (e2e)", () => {
 				.expect(201);
 		});
 
-		it("should create a new user /userss (POST)", () => {
+		it("should create a new user /users (POST)", () => {
 			return request(app.getHttpServer())
 				.post("/users")
 				.auth(jwttoken, { type: "bearer" })
+				.field("username", userDto.username)
 				.field("firstName", userDto.firstName)
 				.field("lastName", userDto.lastName)
 				.field("email", userDto.email)
@@ -81,10 +83,11 @@ describe("AppController (e2e)", () => {
 				.expect(201);
 		});
 
-		it("should reject duplicate email /userss (POST)", () => {
+		it("should reject duplicate email /users (POST)", () => {
 			return request(app.getHttpServer())
 				.post("/users")
 				.auth(jwttoken, { type: "bearer" })
+				.field("username", userDto.username)
 				.field("firstName", userDto.firstName)
 				.field("lastName", userDto.lastName)
 				.field("email", "roobin.bhandari@gmail.com")
@@ -99,7 +102,7 @@ describe("AppController (e2e)", () => {
 				.expect(400);
 		});
 
-		it("should get a list of all user /userss (GET)", () => {
+		it("should get a list of all user /users (GET)", () => {
 			return request(app.getHttpServer())
 				.get("/users")
 				.expect(({ body }) => {
@@ -109,7 +112,7 @@ describe("AppController (e2e)", () => {
 				.expect(200);
 		});
 
-		it("should get a user with an idx /userss (GET)", () => {
+		it("should get a user with an idx /users (GET)", () => {
 			return request(app.getHttpServer())
 				.get(`/users/${userIndex}`)
 				.expect(({ body }) => {
@@ -118,7 +121,7 @@ describe("AppController (e2e)", () => {
 				});
 		});
 
-		it("should throw error if user not found by idx /userss (GET)", () => {
+		it("should throw error if user not found by idx /users (GET)", () => {
 			return request(app.getHttpServer())
 				.get(`/users/30906d04-d770-4694-b4c1-5c084c0c96f0`)
 				.expect(({ body }) => {
@@ -129,7 +132,7 @@ describe("AppController (e2e)", () => {
 				.expect(404);
 		});
 
-		it("should update /userss (POST)", () => {
+		it("should update /users (POST)", () => {
 			return request(app.getHttpServer())
 				.put(`/users/${userIndex}`)
 				.auth(jwttoken, { type: "bearer" })
@@ -140,7 +143,7 @@ describe("AppController (e2e)", () => {
 				.expect(200);
 		});
 
-		it("should delete a user with an idx /userss (DELETE)", () => {
+		it("should delete a user with an idx /users (DELETE)", () => {
 			return request(app.getHttpServer())
 				.delete(`/users/${userIndex}`)
 				.auth(jwttoken, { type: "bearer" })

@@ -31,7 +31,7 @@ import { UserService } from "./user.service";
 
 @ApiTags("Users routes")
 @UseInterceptors(CacheInterceptor)
-@Controller("user")
+@Controller("users")
 export class UserController {
 	constructor(
 		private readonly userService: UserService,
