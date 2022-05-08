@@ -1,6 +1,7 @@
 import { PrimaryKey, Property } from "@mikro-orm/core";
 import { randomUUID } from "crypto";
 
+/* A base class for all entities. */
 export abstract class BaseEntity {
 	@PrimaryKey({ hidden: true })
 	id!: number;

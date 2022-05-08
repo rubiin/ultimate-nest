@@ -5,6 +5,8 @@ import {
 	BadRequestException,
 } from "@nestjs/common";
 
+/* It throws an exception if the file(s) are not present */
+
 @Injectable()
 export class ParseFilePipe implements PipeTransform {
 	transform(

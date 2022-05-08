@@ -4,6 +4,7 @@ import { PostFactory } from "../factories/post.factory";
 import { UserFactory } from "../factories/user.factory";
 import { CommentFactory } from "../factories/comment.factory";
 
+/* It creates a post, a user, and a comment */
 export class UserSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
 		new UserFactory(em)

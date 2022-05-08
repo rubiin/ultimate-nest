@@ -5,9 +5,11 @@ import {
 	EventSubscriber,
 	Subscriber,
 } from "@mikro-orm/core";
-import { User } from "../../entities/user.entity";
+import { User } from "@entities";
 
 @Subscriber()
+/* It's a class that implements the EventSubscriber interface, and it's responsible for hashing the
+password before the user is created or updated */
 export class UserSubscriber implements EventSubscriber<User> {
 	getSubscribedEntities(): EntityName<User>[] {
 		return [User];

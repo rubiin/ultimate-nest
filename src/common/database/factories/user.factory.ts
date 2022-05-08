@@ -2,6 +2,7 @@ import { User } from "../../../entities/user.entity";
 import { Factory, Faker } from "@mikro-orm/seeder";
 import { AppRoles } from "@common/constants/app.roles";
 
+/* `UserFactory` is a factory that creates `User` instances */
 export class UserFactory extends Factory<User> {
 	model = User;
 
