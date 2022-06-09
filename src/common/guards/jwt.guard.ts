@@ -5,13 +5,15 @@ import { AuthGuard } from "@nestjs/passport";
 export class JwtAuthGuard extends AuthGuard("jwt") {
 	handleRequest(error: any, user: any, info: Error) {
 		if (error || info || !user) {
-			throw info?.name === "TokenExpiredError"
-				? new UnauthorizedException(
-						"The session has expired. Please relogin",
-				  )
-				: new UnauthorizedException("Token malformed");
+			if (info?.name === "TokenExpiredError") {
+				new UnauthorizedException(
+					"The session has expired. Please relogin",
+				);
+			} else if (info?.name === "JsonWebTokenError") {
+				throw new UnauthorizedException("Token malformed");
+			} else {
+				throw new UnauthorizedException(info?.message);
+			}
 		}
-
-		return user;
 	}
 }
