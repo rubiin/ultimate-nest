@@ -14,15 +14,20 @@ module.exports = {
 		'no-secrets',
 	],
 	extends: [
+		'plugin:import/typescript',
 		'plugin:@typescript-eslint/eslint-recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:import/recommended',
 		'plugin:import/errors',
-		'plugin:import/typescript',
 		'plugin:unicorn/all',
 		'prettier',
 	],
 	root: true,
+	"settings": {
+    "import/resolver": {
+      "typescript": {}
+    },
+  },
 	env: {
 		node: true,
 		jest: true,
@@ -30,14 +35,17 @@ module.exports = {
 		browser: true,
 	},
 	rules: {
-		'import/no-unresolved': [
-			2,
-			{
-				ignore: ['@', 'minifaker'],
-			},
-		],
+		'no-duplicate-imports': 'error',
+		'no-param-reassign': 'error',
 		'unicorn/filename-case': 'off',
 		'no-secrets/no-secrets': 'error',
+		'no-array-constructor': 'error',
+		'no-mixed-operators': 'error',
+		'import/default': 'off',
+		'no-plusplus': [
+			"error",
+			{ "allowForLoopAfterthoughts": true }
+		],
 		'import/prefer-default': 'off',
 		'unicorn/prevent-abbreviations': [
 			"error",
