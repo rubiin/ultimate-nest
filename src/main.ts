@@ -2,7 +2,7 @@ import { AppUtils } from "@common/helpers/app.utils";
 import { ValidationPipe } from "@common/pipes/validation";
 import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { NestFactory } from "@nestjs/core";
+import { NestFactory, repl } from "@nestjs/core";
 import {
 	ExpressAdapter,
 	NestExpressApplication,
@@ -71,6 +71,12 @@ async function bootstrap() {
 	app.enableShutdownHooks();
 
 	const port = configService.get<number>("app.port", 3000);
+
+
+		// use nestjs repl to debug
+		if (process.env.REPL) {
+			await repl(AppModule);
+		}
 
 	await app.listen(port);
 
