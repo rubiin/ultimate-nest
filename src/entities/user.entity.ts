@@ -7,6 +7,7 @@ import {
 	Collection,
 	Entity,
 	Enum,
+	EventArgs,
 	ManyToMany,
 	OneToMany,
 	Property,
@@ -47,11 +48,6 @@ export class User extends BaseEntity {
 	@Property()
 	isVerified = false;
 
-	@BeforeCreate()
-	@BeforeUpdate()
-	async hashPassword() {
-		this.password = await HelperService.hashString(this.password);
-	}
 
 	@OneToMany(() => Post, post => post.author)
 	posts = new Collection<Post>(this);
@@ -81,5 +77,13 @@ export class User extends BaseEntity {
 			`https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`;
 
 		return o;
+	}
+
+	@BeforeCreate()
+	@BeforeUpdate()
+	async hashPassword(arguments_: EventArgs<this>) {
+		if (arguments_.changeSet.payload?.password) {
+			this.password = await HelperService.hashString(this.password);
+		}
 	}
 }
