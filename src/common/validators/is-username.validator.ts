@@ -17,34 +17,34 @@
  */
 
 import {
-	registerDecorator,
-	ValidationOptions,
-	ValidationArguments,
-	ValidatorConstraint,
-	ValidatorConstraintInterface,
+    registerDecorator,
+    ValidationArguments,
+    ValidationOptions,
+    ValidatorConstraint,
+    ValidatorConstraintInterface,
 } from "class-validator";
 
-@ValidatorConstraint({ async: true })
+@ValidatorConstraint({async: true})
 class IsUsernameConstraint implements ValidatorConstraintInterface {
-	async validate(value: string, _argument: ValidationArguments) {
-		return /^[A-Za-z][\w.]{5,12}/.test(value);
-	}
+    async validate(value: string, _argument: ValidationArguments) {
+        return /^[A-Za-z][\w.]{5,12}/.test(value);
+    }
 
-	defaultMessage(argument: ValidationArguments) {
-		const property = argument.property;
+    defaultMessage(argument: ValidationArguments) {
+        const property = argument.property;
 
-		return `${property} must fulfill username's criteria`;
-	}
+        return `${property} must fulfill username's criteria`;
+    }
 }
 
 export function IsUsername(validationOptions?: ValidationOptions) {
-	return function (object: Record<string, any>, propertyName: string): void {
-		registerDecorator({
-			target: object.constructor,
-			propertyName: propertyName,
-			options: validationOptions,
-			constraints: [],
-			validator: IsUsernameConstraint,
-		});
-	};
+    return function (object: Record<string, any>, propertyName: string): void {
+        registerDecorator({
+            target: object.constructor,
+            propertyName: propertyName,
+            options: validationOptions,
+            constraints: [],
+            validator: IsUsernameConstraint,
+        });
+    };
 }

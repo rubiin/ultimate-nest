@@ -1,4 +1,4 @@
-import { Injectable, PipeTransform } from "@nestjs/common";
+import {Injectable, PipeTransform} from "@nestjs/common";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -14,17 +14,16 @@ import sharp from "sharp";
 
 @Injectable()
 export class SharpPipe
-	implements PipeTransform<Express.Multer.File, Promise<string>>
-{
-	async transform(image: Express.Multer.File): Promise<string> {
-		const originalName = path.parse(image.originalname).name;
-		const filename = Date.now() + "-" + originalName + ".webp";
+    implements PipeTransform<Express.Multer.File, Promise<string>> {
+    async transform(image: Express.Multer.File): Promise<string> {
+        const originalName = path.parse(image.originalname).name;
+        const filename = Date.now() + "-" + originalName + ".webp";
 
-		await sharp(image.buffer)
-			.resize(800)
-			.webp({ effort: 3 })
-			.toFile(path.join("uploads", filename));
+        await sharp(image.buffer)
+            .resize(800)
+            .webp({effort: 3})
+            .toFile(path.join("uploads", filename));
 
-		return filename;
-	}
+        return filename;
+    }
 }

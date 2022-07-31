@@ -1,29 +1,29 @@
-import { PrimaryKey, Property } from "@mikro-orm/core";
-import { randomUUID } from "crypto";
+import {PrimaryKey, Property} from "@mikro-orm/core";
+import {randomUUID} from "crypto";
 
 /* A base class for all entities. */
 export abstract class BaseEntity {
-	@PrimaryKey({ hidden: true })
-	id!: number;
+    @PrimaryKey({hidden: true})
+    id!: number;
 
-	@Property()
-	idx: string = randomUUID();
+    @Property()
+    idx: string = randomUUID();
 
-	@Property()
-	isActive = true;
+    @Property()
+    isActive = true;
 
-	@Property({ hidden: true })
-	isObsolete = false; // deleted status, hidden true removed the property during deserialization
+    @Property({hidden: true})
+    isObsolete = false; // deleted status, hidden true removed the property during deserialization
 
-	@Property()
-	deletedAt?: Date;
+    @Property()
+    deletedAt?: Date;
 
-	@Property()
-	createdAt = new Date();
+    @Property()
+    createdAt = new Date();
 
-	@Property({
-		onUpdate: () => new Date(),
-		hidden: true,
-	})
-	updatedAt? = new Date();
+    @Property({
+        onUpdate: () => new Date(),
+        hidden: true,
+    })
+    updatedAt? = new Date();
 }
