@@ -1,11 +1,12 @@
-import { Module } from "@nestjs/common";
-import { PostController } from "./post.controller";
-import { PostService } from "./post.service";
-import { OrmModule } from "@lib/orm/orm.module";
+import {Module} from "@nestjs/common";
+import {PostController} from "./post.controller";
+import {PostService} from "./post.service";
+import {OrmModule} from "@lib/orm/orm.module";
 
 @Module({
-	imports: [OrmModule],
-	controllers: [PostController],
-	providers: [PostService],
+    imports: [OrmModule],
+    controllers: [PostController],
+    providers: [PostService],
 })
-export class PostModule {}
+export class PostModule {
+}
