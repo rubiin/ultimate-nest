@@ -1,39 +1,39 @@
 import {
-    registerDecorator,
-    ValidationArguments,
-    ValidationOptions,
-    ValidatorConstraint,
-    ValidatorConstraintInterface,
+	registerDecorator,
+	ValidationArguments,
+	ValidationOptions,
+	ValidatorConstraint,
+	ValidatorConstraintInterface,
 } from "class-validator";
 
-@ValidatorConstraint({async: true})
+@ValidatorConstraint({ async: true })
 class IsEqualToConstraint implements ValidatorConstraintInterface {
-    async validate(value: string, arguments_: ValidationArguments) {
-        const [relatedPropertyName] = arguments_.constraints;
-        const relatedValue = (arguments_.object as any)[relatedPropertyName];
+	async validate(value: string, arguments_: ValidationArguments) {
+		const [relatedPropertyName] = arguments_.constraints;
+		const relatedValue = (arguments_.object as any)[relatedPropertyName];
 
-        return value === relatedValue;
-    }
+		return value === relatedValue;
+	}
 
-    defaultMessage(arguments_: ValidationArguments) {
-        const property = arguments_.property;
-        const [relatedPropertyName] = arguments_.constraints;
+	defaultMessage(arguments_: ValidationArguments) {
+		const property = arguments_.property;
+		const [relatedPropertyName] = arguments_.constraints;
 
-        return `${property} should be equal to ${relatedPropertyName}`;
-    }
+		return `${property} should be equal to ${relatedPropertyName}`;
+	}
 }
 
 export function IsEqualTo(
-    property: string,
-    validationOptions?: ValidationOptions,
+	property: string,
+	validationOptions?: ValidationOptions,
 ) {
-    return function (object: Record<string, any>, propertyName: string): void {
-        registerDecorator({
-            target: object.constructor,
-            propertyName: propertyName,
-            options: validationOptions,
-            constraints: [property],
-            validator: IsEqualToConstraint,
-        });
-    };
+	return function (object: Record<string, any>, propertyName: string): void {
+		registerDecorator({
+			target: object.constructor,
+			propertyName: propertyName,
+			options: validationOptions,
+			constraints: [property],
+			validator: IsEqualToConstraint,
+		});
+	};
 }

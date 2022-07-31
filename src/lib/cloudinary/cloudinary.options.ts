@@ -1,5 +1,5 @@
 export interface CloudinaryModuleOptions {
-    cloudName: string;
-    apiKey: string;
-    apiSecret: string;
+	cloudName: string;
+	apiKey: string;
+	apiSecret: string;
 }

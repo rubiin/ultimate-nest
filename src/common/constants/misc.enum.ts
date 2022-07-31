@@ -1,19 +1,19 @@
 export enum Order {
-    ASC = "ASC",
-    DESC = "DESC",
+	ASC = "ASC",
+	DESC = "DESC",
 }
 
 export enum RandomTypes {
-    NUMBER = "NUMBER",
-    STRING = "STRING",
+	NUMBER = "NUMBER",
+	STRING = "STRING",
 }
 
 export enum EmailTemplateEnum {
-    "RESET_PASSWORD_TEMPLATE" = "reset",
-    "WELCOME_TEMPLATE" = "welcome",
+	"RESET_PASSWORD_TEMPLATE" = "reset",
+	"WELCOME_TEMPLATE" = "welcome",
 }
 
 export enum LoginType {
-    PASSWORD = "PASSWORD",
-    GOOGLE = "GOOGLE",
+	PASSWORD = "PASSWORD",
+	GOOGLE = "GOOGLE",
 }
