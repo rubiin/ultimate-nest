@@ -23,16 +23,20 @@ module.exports = {
 		'prettier',
 	],
 	root: true,
-	"settings": {
+	settings: {
     "import/resolver": {
-      "typescript": {}
+      "typescript": {
+				"alwaysTryTypes": true, 
+				"project": './tsconfig.json'
+
+			}
     },
   },
 	env: {
 		node: true,
 		jest: true,
 		es6: true,
-		browser: true,
+		browser: false,
 	},
 	rules: {
 		'no-duplicate-imports': 'error',
@@ -103,10 +107,11 @@ module.exports = {
 				avoidEscape: true,
 			},
 		],
+		"no-unused-vars": ["error", { "varsIgnorePattern": "^_","ignoreRestSiblings": true,"argsIgnorePattern": "^_" }],
 		'no-console': [
 			'error',
 			{
-				allow: ['warn', 'error', 'info'],
+				allow: ['warn', 'error', 'info','table'],
 			},
 		],
 	},

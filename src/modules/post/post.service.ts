@@ -244,7 +244,7 @@ export class PostService {
 			switchMap(([post, user]) => {
 				if (!user.favorites.contains(post)) {
 					user.favorites.add(post);
-					post.favoritesCount++;
+					post.favoritesCount+=1;
 				}
 
 				return from(this.postRepository.flush()).pipe(map(() => post));
@@ -280,7 +280,7 @@ export class PostService {
 			switchMap(([post, user]) => {
 				if (!user.favorites.contains(post)) {
 					user.favorites.remove(post);
-					post.favoritesCount--;
+					post.favoritesCount-=1;
 				}
 
 				return from(this.postRepository.flush()).pipe(map(() => post));
