@@ -2,7 +2,7 @@ import { RandomTypes } from "@common/constants/misc.enum";
 import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
 import { hashString } from "@common/misc/threads";
 import { User } from "@entities";
-import argon from "argon2";
+import { verify } from "argon2";
 import * as eta from "eta";
 import { pick, slugify } from "helper-fns";
 import { customAlphabet } from "nanoid/async";
@@ -60,7 +60,7 @@ export const HelperService = {
 		userPassword: string,
 		passwordToCompare: string,
 	): Observable<boolean> => {
-		return from(argon.verify(userPassword, passwordToCompare));
+		return from(verify(userPassword, passwordToCompare));
 	},
 
 	/* Rendering a template. */

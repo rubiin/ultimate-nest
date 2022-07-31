@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import {
 	UploadApiErrorResponse,

@@ -2,13 +2,13 @@ import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer
 import { Request } from "express";
 import fs from "node:fs";
 import mime from "mime-types";
-import multer from "multer";
 import { extname } from "node:path";
+import { diskStorage, memoryStorage } from "multer";
 
 const allowedExtensions = new Set(["png", "jpg", "jpeg"]);
 
-export const diskStorageConfig = multer.diskStorage({
-	destination: (request, file, callback) => {
+export const diskStorageConfig = diskStorage({
+	destination: (_request, _file, callback) => {
 		const path = "./uploads";
 
 		// check if the folder exists
@@ -32,7 +32,7 @@ export const ImageMulterOption: MulterOptions = {
 	limits: {
 		fileSize: 5 * 1024 * 1024, // 5 mb
 	},
-	storage: multer.memoryStorage(),
+	storage: memoryStorage(),
 	fileFilter: (_request: Request, file, callback) => {
 		if (!allowedExtensions.has(mime.extension(file.mimetype))) {
 			return callback(new Error("Only image files are allowed!"), false);
