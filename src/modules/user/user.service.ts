@@ -87,7 +87,7 @@ export class UserService {
 
 				if (!user) {
 					throw new NotFoundException(
-						this.i18nService.t("status.USER_DOESNT_EXIST"),
+						this.i18nService.t("exception.USER_DOESNT_EXIST"),
 					);
 				} else {
 					return user;
@@ -110,7 +110,7 @@ export class UserService {
 
 		if (userExist) {
 			throw new BadRequestException(
-				this.i18nService.t("status.USER_EMAIL_EXISTS"),
+				this.i18nService.t("exception.USER_EMAIL_EXISTS"),
 			);
 		}
 

@@ -139,7 +139,9 @@ export class PostService {
 
 				if (!post) {
 					throw new NotFoundException(
-						this.i18nService.t("status.POST_DOESNT_EXIST"),
+						this.i18nService.t("status.itemDoesNotExist", {
+							args: { item: "Post" },
+						}),
 					);
 				} else {
 					return post;

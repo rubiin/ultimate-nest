@@ -55,13 +55,15 @@ export class AuthService {
 			switchMap(user => {
 				if (!user) {
 					throw new ForbiddenException(
-						this.i18n.translate("status.ACCOUNT_NOT_FOUND"),
+						this.i18n.t("status.itemDoesNotExist", {
+							args: { item: "Account" },
+						}),
 					);
 				}
 
 				if (!user.isActive) {
 					throw new ForbiddenException(
-						this.i18n.translate("status.ACCOUNT_NOT_FOUND"),
+						this.i18n.t("status.inactiveUser"),
 					);
 				}
 
@@ -72,8 +74,8 @@ export class AuthService {
 									return omit(user, ["password"]);
 								}
 								throw new BadRequestException(
-									this.i18n.translate(
-										"status.USER_PASSWORD_DONT_MATCH",
+									this.i18n.t(
+										"exception.invalidCredentials",
 									),
 								);
 							}),
@@ -95,7 +97,7 @@ export class AuthService {
 			switchMap(user => {
 				if (!user)
 					throw new UnauthorizedException(
-						this.i18n.translate("status.USER_PASSWORD_DONT_MATCH"),
+						this.i18n.t("exception.invalidCredentials"),
 					);
 
 				return zip(
@@ -146,8 +148,11 @@ export class AuthService {
 
 		if (!userExists) {
 			throw new NotFoundException(
-				this.i18n.translate("operations.USER_NOT_FOUND"),
+				this.i18n.t("status.itemDoesNotExist", {
+					args: { item: "Account" },
+				})
 			);
+			
 		}
 
 		const otpNumber = (await HelperService.getRandom(
@@ -208,7 +213,9 @@ export class AuthService {
 
 		if (!codeDetails) {
 			throw new NotFoundException(
-				this.i18n.translate("operations.OTP_NOT_FOUND"),
+				this.i18n.t("status.itemDoesNotExist", {
+					args: { item: "Otp" },
+				})
 			);
 		}
 
@@ -216,7 +223,9 @@ export class AuthService {
 
 		if (isExpired) {
 			throw new BadRequestException(
-				this.i18n.translate("operations.OTP_EXPIRED"),
+				this.i18n.t("status.itemExpired", {
+					args: { item: "Otp" },
+				})
 			);
 		}
 
@@ -254,7 +263,7 @@ export class AuthService {
 						if (!isValid) {
 							throw new BadRequestException(
 								this.i18n.translate(
-									"operations.INVALID_PASSWORD",
+									"exception.invalidCredentials",
 								),
 							);
 						}
