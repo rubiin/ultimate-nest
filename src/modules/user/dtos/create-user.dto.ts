@@ -1,4 +1,5 @@
 import { AppRoles } from "@common/constants/app.roles";
+import { IsPassword } from "@common/validators/is-password.validator";
 import {
 	IsArray,
 	IsEmail,
@@ -12,35 +13,37 @@ import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreateUserDto {
-	@IsNotEmpty({ message: i18nValidationMessage("validation.NOT_EMPTY") })
-	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
-	@MinLength(4, { message: i18nValidationMessage("validation.MIN_LENGTH") })
-	@MaxLength(128, { message: i18nValidationMessage("validation.MAX_LENGTH") })
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsString({ message: i18nValidationMessage("validation.isDataType", {type: "string"}) })
+	@MinLength(3, { message: i18nValidationMessage("validation.minLength") })
+	@MaxLength(100, { message: i18nValidationMessage("validation.maxLength") })
 	username: string;
 
-	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
-	@MaxLength(255, { message: i18nValidationMessage("validation.MAX_LENGTH") })
+	@IsString({ message: i18nValidationMessage("validation.isDataType", {type: "string"}) })
+	@MinLength(3, { message: i18nValidationMessage("validation.minLength") })
+	@MaxLength(100, { message: i18nValidationMessage("validation.maxLength") })
 	firstName: string;
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.NOT_EMPTY") })
-	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
-	@MaxLength(255, { message: i18nValidationMessage("validation.MAX_LENGTH") })
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsString({ message: i18nValidationMessage("validation.isDataType", {type: "string"}) })
+	@MinLength(3, { message: i18nValidationMessage("validation.minLength") })
+	@MaxLength(100, { message: i18nValidationMessage("validation.maxLength") })
 	lastName: string;
 
 	avatar: string;
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.NOT_EMPTY") })
-	@IsEmail({}, { message: i18nValidationMessage("validation.INVALID_EMAIL") })
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsEmail({},{ message: i18nValidationMessage("validation.isDataType", {type: "email"}) })
 	email: string;
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.NOT_EMPTY") })
-	@IsString({ message: i18nValidationMessage("validation.INVALID_STRING") })
-	@MinLength(8, { message: i18nValidationMessage("validation.MIN_LENGTH") })
-	@MaxLength(128, { message: i18nValidationMessage("validation.MAX_LENGTH") })
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@MinLength(8, { message: i18nValidationMessage("validation.minLength") })
+	@MaxLength(25, { message: i18nValidationMessage("validation.maxLength") })
+	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
 	password: string;
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.NOT_EMPTY") })
-	@IsArray({ message: i18nValidationMessage("validation.INVALID_ARRAY") })
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsArray({ message: i18nValidationMessage("validation.isDataType", {type: "array"}) })
 	@IsEnum(AppRoles, {
 		each: true,
 		message: `must be a valid role value,${enumToString(AppRoles)}`,

@@ -1,9 +1,11 @@
 {
-  "NOT_EMPTY": "{property} should not be empty",
-  "INVALID_EMAIL": "email must be an email",
-  "INVALID_STRING": "{property} must be a string",
-  "INVALID_ARRAY": "{property} must be an array",
-  "INVALID_BOOLEAN": "{property} must be a boolean",
-  "MIN_LENGTH": "{property} must be longer than or equal to {constraints.0} characters",
-  "MAX_LENGTH": "{property} must be shorter than or equal to {constraints.0} characters "
+  "isNotEmpty": "{property} should not be empty",
+  "maxLength": "{property} can only have maximum length of {constraints.0} ",
+  "minLength": "{property} must have minimum length of {constraints.0} ",
+  "max": "{property} can be less than or equal to {constraints.0}",
+  "min": "{property} must have greater than or equal to {ln}",
+  "isPassword": "password should contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character",
+  "isIn": "{property} must be one of {items}",
+  "isEnum": "{property} must be one of {items}",
+  "isDataType": "{property} must be {type}"
 }

@@ -1,10 +1,10 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import eta from "eta";
 import { createTransport, SendMailOptions } from "nodemailer";
 import previewEmail from "preview-email";
 import { MAIL_MODULE_OPTIONS } from "./mailer.constants";
 import { MailModuleOptions } from "./mailer.options";
 import { join } from "node:path";
+import eta from "eta";
 
 interface IMailOptions extends Partial<SendMailOptions> {
 	template: string;

@@ -51,7 +51,7 @@ export class ProfileService {
 			switchMap(([followerUser, followingUser]) => {
 				if (followingUser.email === followerEmail) {
 					throw new BadRequestException(
-						this.i18nService.t("status.CANNOT_FOLLOW_YOURSELF"),
+						this.i18nService.t("exception.CANNOT_FOLLOW_YOURSELF"),
 					);
 				}
 
