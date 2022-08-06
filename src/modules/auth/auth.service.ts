@@ -74,9 +74,7 @@ export class AuthService {
 									return omit(user, ["password"]);
 								}
 								throw new BadRequestException(
-									this.i18n.t(
-										"exception.invalidCredentials",
-									),
+									this.i18n.t("exception.invalidCredentials"),
 								);
 							}),
 					  )
@@ -150,9 +148,8 @@ export class AuthService {
 			throw new NotFoundException(
 				this.i18n.t("status.itemDoesNotExist", {
 					args: { item: "Account" },
-				})
+				}),
 			);
-			
 		}
 
 		const otpNumber = (await HelperService.getRandom(
@@ -160,10 +157,12 @@ export class AuthService {
 			6,
 		)) as string; // random six digit otp
 
+		const otpExpiry = 60 * 60 * 1000; // 1 hour
+
 		const otp = this.otpRepository.create({
 			user: userExists,
 			otpCode: otpNumber,
-			expiresIn: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000),
+			expiresIn: new Date(Date.now() + otpExpiry),
 			isUsed: false,
 		});
 
@@ -215,7 +214,7 @@ export class AuthService {
 			throw new NotFoundException(
 				this.i18n.t("status.itemDoesNotExist", {
 					args: { item: "Otp" },
-				})
+				}),
 			);
 		}
 
@@ -225,7 +224,7 @@ export class AuthService {
 			throw new BadRequestException(
 				this.i18n.t("status.itemExpired", {
 					args: { item: "Otp" },
-				})
+				}),
 			);
 		}
 

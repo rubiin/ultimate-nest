@@ -1,4 +1,4 @@
-import { EtaConfig } from "eta/dist/types/config";
+import { config } from "eta";
 
 export interface MailModuleOptions {
 	host: string;
@@ -8,6 +8,6 @@ export interface MailModuleOptions {
 	previewEmail: boolean;
 	template: {
 		dir: string;
-		etaOptions: Partial<EtaConfig>;
+		etaOptions: Partial<typeof config>;
 	};
 }

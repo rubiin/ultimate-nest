@@ -23,8 +23,9 @@ export class RefreshTokensRepository {
 		const expiration = new Date();
 
 		// the input is treated as millis so *1000 is necessary
+		const ttlSeconds = ttl * 1000; // seconds
 
-		expiration.setTime(expiration.getTime() + ttl * 1000);
+		expiration.setTime(expiration.getTime() + ttlSeconds);
 
 		const token = this.refreshTokenRepository.create({
 			user: user.id,

@@ -4,7 +4,7 @@ import previewEmail from "preview-email";
 import { MAIL_MODULE_OPTIONS } from "./mailer.constants";
 import { MailModuleOptions } from "./mailer.options";
 import { join } from "node:path";
-import eta from "eta";
+import { renderFile } from "eta";
 
 interface IMailOptions extends Partial<SendMailOptions> {
 	template: string;
@@ -41,7 +41,7 @@ export class MailerService {
 		});
 
 		return new Promise<boolean>((resolve, reject) =>
-			eta.renderFile(
+			renderFile(
 				join(
 					__dirname,
 					"/../../",
