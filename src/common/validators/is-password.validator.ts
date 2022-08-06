@@ -10,7 +10,7 @@ import {
 class IsPasswordConstraint implements ValidatorConstraintInterface {
 	async validate(value: string, _arguments: ValidationArguments) {
 		const passwordRegex = new RegExp(
-			"^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])(?=.{8,})",
+			"^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*s).{8,25}$",
 		);
 
 		return passwordRegex.test(value);
@@ -19,7 +19,7 @@ class IsPasswordConstraint implements ValidatorConstraintInterface {
 	defaultMessage(arguments_: ValidationArguments) {
 		const property = arguments_.property;
 
-		return `${property} must be fulfill password's criteria`;
+		return `${property} should contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character`;
 	}
 }
 
