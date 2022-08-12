@@ -28,7 +28,7 @@ export const AppUtils = {
 	},
 	setupSwagger: (app: INestApplication): void => {
 		const options = new DocumentBuilder()
-			.setTitle("Api")
+			.setTitle("Api Documentation")
 			.addBearerAuth()
 			.setDescription(
 				"The API description built using swagger OpenApi. You can find out more about Swagger at http://swagger.io",
@@ -36,9 +36,16 @@ export const AppUtils = {
 			.setVersion("1.0")
 			.build();
 
-		const document = SwaggerModule.createDocument(app, options);
+		const document = SwaggerModule.createDocument(app, options, {});
 
-		SwaggerModule.setup("doc", app, document);
+		SwaggerModule.setup("doc", app, document, {
+			explorer: true,
+			swaggerOptions: {
+				docExpansion: "list",
+				filter: true,
+				showRequestDuration: true,
+			},
+		});
 	},
 	ssl: (): { key: Buffer; cert: Buffer } | null => {
 		let httpsOptions = null;

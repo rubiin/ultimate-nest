@@ -7,7 +7,14 @@ export class OtpVerifyDto {
 	otpCode!: string;
 
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsEmail({}, { message: i18nValidationMessage("validation.isDataType", {type: "email"}) })
+	@IsEmail(
+		{},
+		{
+			message: i18nValidationMessage("validation.isDataType", {
+				type: "email",
+			}),
+		},
+	)
 	email!: string;
 }
 

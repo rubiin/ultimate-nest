@@ -20,12 +20,12 @@ import { from, map, Observable, of, switchMap, zip } from "rxjs";
 import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
 import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
 import { UserLoginDto } from "./dtos/user-login";
+import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
 import {
 	EmailTemplateEnum,
 	LoginType,
 	RandomTypes,
-} from "@common/constants/misc.enum";
-import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
+} from "@common/types/misc.enum";
 
 @Injectable()
 export class AuthService {

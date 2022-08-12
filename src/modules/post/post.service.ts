@@ -64,7 +64,7 @@ export class PostService {
 	 * @returns Post
 	 */
 	addComment(
-		userId: number,
+		userId: string,
 		index: string,
 		dto: CreateCommentDto,
 	): Observable<Post> {
@@ -119,7 +119,7 @@ export class PostService {
 	}
 
 	/* Finding a post by id, and then returning the comments of that post */
-	getById(index: string, author?: User): Observable<Post> {
+	getById(index: string): Observable<Post> {
 		return from(
 			this.postRepository.findOne(
 				{
@@ -130,13 +130,7 @@ export class PostService {
 				{ populate: ["author", "comments"] },
 			),
 		).pipe(
-			map(p => {
-				const post = !author
-					? p
-					: !!p && author.id === p.author.id
-					? p
-					: null;
-
+			map(post => {
 				if (!post) {
 					throw new NotFoundException(
 						this.i18nService.t("status.itemDoesNotExist", {
@@ -169,11 +163,10 @@ export class PostService {
 	 * database
 	 * @param {string} index - string - the index of the post to edit
 	 * @param {EditPostDto} dto - EditPostDto
-	 * @param {User} [author] - The user who is editing the post.
 	 * @returns Observable<Post>
 	 */
-	editOne(index: string, dto: EditPostDto, author?: User): Observable<Post> {
-		return this.getById(index, author).pipe(
+	editOne(index: string, dto: EditPostDto): Observable<Post> {
+		return this.getById(index).pipe(
 			switchMap(post => {
 				wrap(post).assign(dto);
 
@@ -188,11 +181,10 @@ export class PostService {
 	 * The first thing we do is get the post by id. We do this by calling the `getById` function we just
 	 * created
 	 * @param {string} index - string - The index of the post to delete.
-	 * @param {User} [author] - User - the author of the post
 	 * @returns Observable<Post>
 	 */
-	deleteOne(index: string, author?: User): Observable<Post> {
-		return this.getById(index, author).pipe(
+	deleteOne(index: string): Observable<Post> {
+		return this.getById(index).pipe(
 			switchMap(post => {
 				return from(this.postRepository.softRemoveAndFlush(post)).pipe(
 					map(() => post),
@@ -222,11 +214,11 @@ export class PostService {
 	 * The first thing we do is create two observables, one for the post and one for the user. We use the
 	 * `findOneOrFail` method to find the post and user. The `findOneOrFail` method will throw an error if
 	 * the post or user is not found
-	 * @param {number} userId - number - The id of the user who is favoriting the post.
+	 * @param {string} userId - number - The id of the user who is favoriting the post.
 	 * @param {string} postIndex - The index of the post to be favorited.
 	 * @returns A post object
 	 */
-	favorite(userId: number, postIndex: string): Observable<Post> {
+	favorite(userId: string, postIndex: string): Observable<Post> {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
 				{ idx: postIndex },
@@ -258,11 +250,11 @@ export class PostService {
 	 * It finds a post and a user, checks if the user has favorited the post, if so, it removes the post
 	 * from the user's favorites and decrements the post's favorites count, then it saves the changes to
 	 * the database and returns the post
-	 * @param {number} userId - number - The id of the user who is favoriting the post.
+	 * @param {string} userId - number - The id of the user who is favoriting the post.
 	 * @param {string} postIndex - The index of the post to be favorited.
 	 * @returns A post object
 	 */
-	unFavorite(userId: number, postIndex: string): Observable<Post> {
+	unFavorite(userId: string, postIndex: string): Observable<Post> {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
 				{ idx: postIndex, isObsolete: false, isActive: true },

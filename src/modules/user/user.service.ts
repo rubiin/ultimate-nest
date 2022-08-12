@@ -1,6 +1,6 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { EmailTemplateEnum } from "@common/constants/misc.enum";
 import { BaseRepository } from "@common/database/base.repository";
+import { EmailTemplateEnum } from "@common/types/misc.enum";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
@@ -67,10 +67,9 @@ export class UserService {
 	 * It returns an observable of a user entity, which is either the user entity that was passed in, or
 	 * the user entity that was found in the database
 	 * @param {string} index - string - the index of the user you want to get
-	 * @param {User} [userEntity] - User - this is the user entity that is currently logged in.
 	 * @returns Observable<User>
 	 */
-	getOne(index: string, userEntity?: User): Observable<User> {
+	getOne(index: string): Observable<User> {
 		return from(
 			this.userRepository.findOne({
 				idx: index,
@@ -78,13 +77,7 @@ export class UserService {
 				isActive: true,
 			}),
 		).pipe(
-			map(u => {
-				const user = !userEntity
-					? u
-					: !!u && userEntity.id === u.id
-					? u
-					: null;
-
+			map(user => {
 				if (!user) {
 					throw new NotFoundException(
 						this.i18nService.t("exception.USER_DOESNT_EXIST"),
@@ -152,15 +145,10 @@ export class UserService {
 	 * earlier
 	 * @param {string} index - string - the index of the user to edit
 	 * @param {EditUserDto} dto - EditUserDto
-	 * @param {User} [userEntity] - This is the user entity that is currently logged in.
 	 * @returns Observable<User>
 	 */
-	editOne(
-		index: string,
-		dto: EditUserDto,
-		userEntity?: User,
-	): Observable<User> {
-		return this.getOne(index, userEntity).pipe(
+	editOne(index: string, dto: EditUserDto): Observable<User> {
+		return this.getOne(index).pipe(
 			switchMap(user => {
 				wrap(user).assign(dto);
 
@@ -174,11 +162,10 @@ export class UserService {
 	 *
 	 * The first thing we do is get the user. We do this by calling the `getOne` function we just created
 	 * @param {string} index - string - The index of the user to delete.
-	 * @param {User} [userEntity] - This is the user entity that you want to delete.
 	 * @returns Observable<User>
 	 */
-	deleteOne(index: string, userEntity?: User): Observable<User> {
-		return this.getOne(index, userEntity).pipe(
+	deleteOne(index: string): Observable<User> {
+		return this.getOne(index).pipe(
 			switchMap(user => {
 				return from(this.userRepository.softRemoveAndFlush(user)).pipe(
 					map(() => user),

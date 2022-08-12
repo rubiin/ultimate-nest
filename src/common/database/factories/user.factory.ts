@@ -1,6 +1,6 @@
 import { User } from "../../../entities/user.entity";
 import { Factory, Faker } from "@mikro-orm/seeder";
-import { AppRoles } from "@common/constants/app.roles";
+import { Roles } from "@common/types/permission.enum";
 
 /* `UserFactory` is a factory that creates `User` instances */
 export class UserFactory extends Factory<User> {
@@ -13,7 +13,7 @@ export class UserFactory extends Factory<User> {
 			username: faker.internet.userName(),
 			avatar: faker.image.avatar(),
 			email: faker.internet.email(),
-			roles: [AppRoles.AUTHOR],
+			roles: [Roles.AUTHOR],
 			password: process.env.USER_PASSWORD,
 		};
 	}

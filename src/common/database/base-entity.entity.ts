@@ -3,8 +3,8 @@ import { randomUUID } from "crypto";
 
 /* A base class for all entities. */
 export abstract class BaseEntity {
-	@PrimaryKey({ hidden: true })
-	id!: number;
+	@PrimaryKey()
+	id!: string;
 
 	@Property()
 	idx: string = randomUUID();

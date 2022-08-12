@@ -1,8 +1,8 @@
-import { AppRoles } from "@common/constants/app.roles";
+import { Roles } from "@common/types/permission.enum";
 
 export interface IAuthenticationPayload {
 	user: {
-		id: number;
+		id: string;
 		idx: string;
 	};
 	payload: {
@@ -13,7 +13,7 @@ export interface IAuthenticationPayload {
 
 export interface IJwtPayload {
 	username: string;
-	role: AppRoles;
+	role: Roles;
 	iat?: Date;
 }
 

@@ -1,4 +1,4 @@
-import { AppRoles } from "@common/constants/app.roles";
+import { Roles } from "@common/types/permission.enum";
 import type { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
 import { UserFactory } from "../factories/user.factory";
@@ -12,7 +12,7 @@ export class AdminSeeder extends Seeder {
 			password: process.env.USER_PASSWORD,
 			firstName: "Rubin",
 			lastName: "Bhandari",
-			roles: [AppRoles.ADMIN],
+			roles: [Roles.ADMIN],
 		});
 	}
 }

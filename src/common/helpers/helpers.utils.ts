@@ -1,6 +1,6 @@
-import { RandomTypes } from "@common/constants/misc.enum";
 import { IAuthenticationPayload } from "@common/interfaces/authentication.interface";
 import { hashString } from "@common/misc/threads";
+import { RandomTypes } from "@common/types/misc.enum";
 import { User } from "@entities";
 import { verify } from "argon2";
 import { pick, slugify } from "helper-fns";

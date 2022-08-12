@@ -74,11 +74,11 @@ export class ProfileService {
 	 * It takes a followerId and a username, finds the user with the given username, removes the user with
 	 * the given followerId from the followers list of the user with the given username, and returns a
 	 * profile object
-	 * @param {number} followerId - The id of the user who is following the other user.
+	 * @param {string} followerId - The id of the user who is following the other user.
 	 * @param {string} username - The username of the user you want to follow.
 	 * @returns An observable of type IProfileData
 	 */
-	unFollow(followerId: number, username: string): Observable<IProfileData> {
+	unFollow(followerId: string, username: string): Observable<IProfileData> {
 		if (!followerId || !username) {
 			throw new BadRequestException(
 				"FollowerId and username not provided.",

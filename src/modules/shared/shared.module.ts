@@ -16,10 +16,9 @@ import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { join } from "node:path";
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { AccessControlModule } from "nest-access-control";
-import { roles } from "@common/constants/app.roles";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { APP_GUARD } from "@nestjs/core";
+import { NestCaslModule } from "@lib/casl/casl.module";
 
 @Module({
 	imports: [
@@ -38,7 +37,7 @@ import { APP_GUARD } from "@nestjs/core";
 		NestCacheModule,
 		NestCloudinaryModule,
 		NestSentryModule,
-		AccessControlModule.forRoles(roles),
+		NestCaslModule,
 		ThrottlerModule.forRoot({
 			ttl: 60,
 			limit: 10,
