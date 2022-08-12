@@ -17,3 +17,13 @@ export enum LoginType {
 	PASSWORD = "PASSWORD",
 	GOOGLE = "GOOGLE",
 }
+
+export enum Gender {
+	MALE = "MALE",
+	FEMALE = "FEMALE",
+}
+
+export enum Status {
+	ENABLED = "ENABLED",
+	DISABLED = "DISABLED",
+}

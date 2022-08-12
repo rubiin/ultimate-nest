@@ -1,10 +1,12 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { AppResource, AppRoles } from "@common/constants/app.roles";
-import { Auth } from "@common/decorators/auth.decorator";
-import { LoggedInUser } from "@common/decorators/user.decorator";
+import { Permissions } from "@common/decorators/permission.decorator";
+import { JwtAuthGuard } from "@common/guards/jwt.guard";
 import { ImageMulterOption } from "@common/misc/misc";
+import { UserHook } from "@common/permissions/user.hook";
 import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
-import { User, User as UserEntity } from "@entities";
+import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
+import { Roles } from "@common/types/permission.enum";
+import { User } from "@entities";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
@@ -12,34 +14,33 @@ import {
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	ParseUUIDPipe,
 	Post,
 	Put,
 	Query,
 	UploadedFile,
+	UseGuards,
 	UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Throttle } from "@nestjs/throttler";
-import { omit } from "helper-fns";
-import { InjectRolesBuilder, RolesBuilder } from "nest-access-control";
+import { AccessGuard, Actions } from "nest-casl";
 import { Observable } from "rxjs";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
-@ApiTags("Users routes")
+@ApiTags("Users")
+@UseGuards(JwtAuthGuard, AccessGuard)
 @UseInterceptors(CacheInterceptor)
 @Controller("users")
 export class UserController {
-	constructor(
-		private readonly userService: UserService,
-		@InjectRolesBuilder()
-		private readonly rolesBuilder: RolesBuilder,
-	) {}
+	constructor(private readonly userService: UserService) {}
 
 	@ApiOperation({ summary: "Users list" })
+	@ApiPaginatedResponse(User)
 	@Get()
 	getMany(
 		@Query() pageOptionsDto: PageOptionsDto,
@@ -57,23 +58,29 @@ export class UserController {
 	) {
 		return this.userService.createOne({
 			...dto,
-			roles: [AppRoles.AUTHOR],
+			roles: [Roles.AUTHOR],
 			image,
 		});
 	}
 
 	@ApiOperation({ summary: "User fetch" })
+	@ApiParam({
+		name: "id",
+		type: String,
+		required: true,
+		description: "id of the item",
+	})
 	@Get(":idx")
 	getOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
 		return this.userService.getOne(index);
 	}
 
 	@ApiOperation({ summary: "Admin create user" })
-	@Auth({
-		possession: "any",
-		action: "create",
-		resource: AppResource.USER,
+	@ApiResponse({
+		status: HttpStatus.BAD_REQUEST,
+		description: "User already registered with email.",
 	})
+	@Permissions(Actions.delete, User)
 	@Throttle(10, 3600)
 	@UseInterceptors(FileInterceptor("avatar", ImageMulterOption))
 	@Post()
@@ -85,37 +92,39 @@ export class UserController {
 	}
 
 	@ApiOperation({ summary: "Edit user" })
-	@Auth({
-		possession: "own",
-		action: "update",
-		resource: AppResource.USER,
+	@ApiResponse({
+		status: HttpStatus.NOT_FOUND,
+		description: "User does not exist.",
 	})
+	@ApiParam({
+		name: "id",
+		type: String,
+		required: true,
+		description: "id of the item",
+	})
+	@Permissions(Actions.update, User, UserHook)
 	@Put(":idx")
 	editOne(
 		@Param("idx", ParseUUIDPipe) index: string,
 		@Body() dto: EditUserDto,
-		@LoggedInUser() user: UserEntity,
 	): Observable<User> {
-		return this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
-			.granted
-			? this.userService.editOne(index, dto)
-			: this.userService.editOne(index, omit(dto, ["roles"]), user);
+		return this.userService.editOne(index, dto);
 	}
 
 	@ApiOperation({ summary: "User delete" })
-	@Auth({
-		action: "delete",
-		possession: "own",
-		resource: AppResource.USER,
+	@ApiResponse({
+		status: HttpStatus.NOT_FOUND,
+		description: "User does not exist.",
 	})
+	@ApiParam({
+		name: "id",
+		type: String,
+		required: true,
+		description: "id of the item",
+	})
+	@Permissions(Actions.delete, User, UserHook)
 	@Delete(":idx")
-	deleteOne(
-		@Param("idx", ParseUUIDPipe) index: string,
-		@LoggedInUser() user: UserEntity,
-	): Observable<User> {
-		return this.rolesBuilder.can(user.roles).updateAny(AppResource.USER)
-			.granted
-			? this.userService.deleteOne(index)
-			: this.userService.deleteOne(index, user);
+	deleteOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
+		return this.userService.deleteOne(index);
 	}
 }

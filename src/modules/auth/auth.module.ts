@@ -1,3 +1,4 @@
+import { NestCaslModule } from "@lib/casl/casl.module";
 import { NestJwtModule } from "@lib/jwt/jwt.module";
 import { OrmModule } from "@lib/orm/orm.module";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
@@ -11,7 +12,13 @@ import { GoogleStrategy } from "./strategies/google.strategy";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 
 @Module({
-	imports: [PassportModule, NestJwtModule, OrmModule, UserModule],
+	imports: [
+		PassportModule,
+		NestJwtModule,
+		OrmModule,
+		UserModule,
+		NestCaslModule,
+	],
 	controllers: [AuthController],
 	providers: [
 		AuthService,

@@ -1,9 +1,7 @@
-import { AppResource } from "@common/constants/app.roles";
-import { LoginType } from "@common/constants/misc.enum";
-import { Auth } from "@common/decorators/auth.decorator";
 import { LoggedInUser } from "@common/decorators/user.decorator";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
 import { IGoogleResponse } from "@common/interfaces/authentication.interface";
+import { LoginType } from "@common/types/misc.enum";
 import { User, User as UserEntity } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
@@ -87,11 +85,6 @@ export class AuthController {
 	}
 
 	@ApiOperation({ summary: "Change password" })
-	@Auth({
-		action: "update",
-		possession: "own",
-		resource: AppResource.USER,
-	})
 	@Post("change-password")
 	changePassword(
 		@Body() dto: ChangePasswordDto,

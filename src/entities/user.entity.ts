@@ -1,6 +1,6 @@
-import { AppRoles } from "@common/constants/app.roles";
 import { BaseEntity } from "@common/database/base-entity.entity";
 import { HelperService } from "@common/helpers/helpers.utils";
+import { Roles } from "@common/types/permission.enum";
 import {
 	BeforeCreate,
 	BeforeUpdate,
@@ -38,8 +38,8 @@ export class User extends BaseEntity {
 	@Property({ hidden: true })
 	password!: string;
 
-	@Enum({ items: () => AppRoles, array: true, default: [AppRoles.AUTHOR] })
-	roles: AppRoles[] = [AppRoles.AUTHOR];
+	@Enum({ items: () => Roles, array: true, default: [Roles.AUTHOR] })
+	roles: Roles[] = [Roles.AUTHOR];
 
 	@Unique()
 	@Property()
