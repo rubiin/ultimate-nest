@@ -1,6 +1,5 @@
-import { LoggedInUser } from "@common/decorators/user.decorator";
-import { JwtAuthGuard } from "@common/guards/jwt.guard";
-import { IProfileData } from "@common/interfaces/followers.interface";
+import { Auth, LoggedInUser } from "@common/decorators";
+import { IProfileData } from "@common/types/interfaces/followers.interface";
 import { User } from "@entities";
 import {
 	CacheInterceptor,
@@ -10,16 +9,14 @@ import {
 	HttpStatus,
 	Param,
 	Post,
-	UseGuards,
 	UseInterceptors,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { AccessGuard } from "nest-casl";
 import { Observable } from "rxjs";
 import { ProfileService } from "./profile.service";
 
 @ApiTags("Profile")
-@UseGuards(JwtAuthGuard, AccessGuard)
+@Auth()
 @UseInterceptors(CacheInterceptor)
 @Controller("profile")
 export class ProfileController {
@@ -55,7 +52,7 @@ export class ProfileController {
 	})
 	@Delete(":username/follow")
 	unFollow(
-		@LoggedInUser("id") userId: string,
+		@LoggedInUser("id") userId: number,
 		@Param("username") username: string,
 	): Observable<IProfileData> {
 		return this.profileService.unFollow(userId, username);

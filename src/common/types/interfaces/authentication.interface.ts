@@ -1,8 +1,8 @@
-import { Roles } from "@common/types/permission.enum";
+import { Roles } from "@common/types/enums/permission.enum";
 
 export interface IAuthenticationPayload {
 	user: {
-		id: string;
+		id: number;
 		idx: string;
 	};
 	payload: {

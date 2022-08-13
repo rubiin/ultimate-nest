@@ -1,4 +1,4 @@
-import { Roles } from "@common/types/permission.enum";
+import { Roles } from "@common/types/enums/permission.enum";
 import { IsPassword } from "@common/validators/is-password.validator";
 import {
 	IsArray,

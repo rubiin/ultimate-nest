@@ -39,10 +39,10 @@ export class RefreshTokensRepository {
 
 	/**
 	 * It finds a refresh token by its id and returns it as an observable
-	 * @param {string} id - The id of the token to be found.
+	 * @param {number} id - The id of the token to be found.
 	 * @returns Observable<RefreshToken>
 	 */
-	findTokenByIdx(id: string): Observable<RefreshToken> {
+	findTokenByIdx(id: number): Observable<RefreshToken> {
 		return from(
 			this.refreshTokenRepository.findOne({
 				id,
@@ -68,10 +68,10 @@ export class RefreshTokensRepository {
 	/**
 	 * It deletes a refresh token by setting its `isRevoked` property to `true`
 	 * @param {User} user - User - the user object that is currently logged in
-	 * @param {string} tokenId - The ID of the token to be deleted.
+	 * @param {number} tokenId - The ID of the token to be deleted.
 	 * @returns A boolean value.
 	 */
-	deleteToken(user: User, tokenId: string): Observable<boolean> {
+	deleteToken(user: User, tokenId: number): Observable<boolean> {
 		return from(
 			this.refreshTokenRepository.nativeUpdate(
 				{ user, id: tokenId },

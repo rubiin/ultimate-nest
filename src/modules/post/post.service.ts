@@ -64,7 +64,7 @@ export class PostService {
 	 * @returns Post
 	 */
 	addComment(
-		userId: string,
+		userId: number,
 		index: string,
 		dto: CreateCommentDto,
 	): Observable<Post> {
@@ -214,11 +214,11 @@ export class PostService {
 	 * The first thing we do is create two observables, one for the post and one for the user. We use the
 	 * `findOneOrFail` method to find the post and user. The `findOneOrFail` method will throw an error if
 	 * the post or user is not found
-	 * @param {string} userId - number - The id of the user who is favoriting the post.
+	 * @param {number} userId - number - The id of the user who is favoriting the post.
 	 * @param {string} postIndex - The index of the post to be favorited.
 	 * @returns A post object
 	 */
-	favorite(userId: string, postIndex: string): Observable<Post> {
+	favorite(userId: number, postIndex: string): Observable<Post> {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
 				{ idx: postIndex },
@@ -250,11 +250,11 @@ export class PostService {
 	 * It finds a post and a user, checks if the user has favorited the post, if so, it removes the post
 	 * from the user's favorites and decrements the post's favorites count, then it saves the changes to
 	 * the database and returns the post
-	 * @param {string} userId - number - The id of the user who is favoriting the post.
+	 * @param {number} userId - number - The id of the user who is favoriting the post.
 	 * @param {string} postIndex - The index of the post to be favorited.
 	 * @returns A post object
 	 */
-	unFavorite(userId: string, postIndex: string): Observable<Post> {
+	unFavorite(userId: number, postIndex: string): Observable<Post> {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
 				{ idx: postIndex, isObsolete: false, isActive: true },

@@ -1,8 +1,7 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { LoggedInUser } from "@common/decorators/user.decorator";
-import { JwtAuthGuard } from "@common/guards/jwt.guard";
+import { Auth, LoggedInUser } from "@common/decorators";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
-import { Comment, Post as PostEntity, User as UserEntity } from "@entities";
+import { Comment, Post as PostEntity, User } from "@entities";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
@@ -16,17 +15,15 @@ import {
 	Post,
 	Put,
 	Query,
-	UseGuards,
 	UseInterceptors,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { AccessGuard } from "nest-casl";
 import { Observable } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
 @ApiTags("Posts")
-@UseGuards(JwtAuthGuard, AccessGuard)
+@Auth()
 @UseInterceptors(CacheInterceptor)
 @Controller("posts")
 export class PostController {
@@ -66,10 +63,7 @@ export class PostController {
 	}
 
 	@Post()
-	async createPost(
-		@Body() dto: CreatePostDto,
-		@LoggedInUser() author: UserEntity,
-	) {
+	async createPost(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
 		return this.postService.createOne(dto, author);
 	}
 
@@ -105,7 +99,7 @@ export class PostController {
 	})
 	@Post(":idx/comments")
 	async createComment(
-		@LoggedInUser("id") user: string,
+		@LoggedInUser("id") user: number,
 		@Param("idx", ParseUUIDPipe) index: string,
 		@Body("comment") commentData: CreateCommentDto,
 	) {
@@ -129,7 +123,7 @@ export class PostController {
 	})
 	@Post(":idx/favorite")
 	favorite(
-		@LoggedInUser("id") userId: string,
+		@LoggedInUser("id") userId: number,
 		@Param("idx", ParseUUIDPipe) index: string,
 	) {
 		return this.postService.favorite(userId, index);
@@ -142,7 +136,7 @@ export class PostController {
 	})
 	@Delete(":idx/favorite")
 	async unFavorite(
-		@LoggedInUser("id") userId: string,
+		@LoggedInUser("id") userId: number,
 		@Param("idx", ParseUUIDPipe) index: string,
 	) {
 		return this.postService.unFavorite(userId, index);

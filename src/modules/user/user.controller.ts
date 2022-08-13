@@ -1,12 +1,16 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { Permissions } from "@common/decorators/permission.decorator";
-import { JwtAuthGuard } from "@common/guards/jwt.guard";
-import { ImageMulterOption } from "@common/misc/misc";
-import { UserHook } from "@common/permissions/user.hook";
+import { ApiFile, Auth } from "@common/decorators";
 import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
-import { Roles } from "@common/types/permission.enum";
+import { Roles } from "@common/types/enums";
 import { User } from "@entities";
+import { CheckPolicies } from "@lib/casl/policies.decorator";
+import {
+	CreateUserPolicyHandler,
+	DeleteUserPolicyHandler,
+	ReadUserPolicyHandler,
+	UpdateUserPolicyHandler,
+} from "@lib/casl/policies/user";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
@@ -21,19 +25,16 @@ import {
 	Put,
 	Query,
 	UploadedFile,
-	UseGuards,
 	UseInterceptors,
 } from "@nestjs/common";
-import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Throttle } from "@nestjs/throttler";
-import { AccessGuard, Actions } from "nest-casl";
 import { Observable } from "rxjs";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
 @ApiTags("Users")
-@UseGuards(JwtAuthGuard, AccessGuard)
+@Auth()
 @UseInterceptors(CacheInterceptor)
 @Controller("users")
 export class UserController {
@@ -50,7 +51,8 @@ export class UserController {
 
 	@ApiOperation({ summary: "public registration" })
 	@Throttle(10, 3600)
-	@UseInterceptors(FileInterceptor("avatar", ImageMulterOption))
+	@ApiFile("avatar")
+	@CheckPolicies(new CreateUserPolicyHandler())
 	@Post("register")
 	async publicRegistration(
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
@@ -65,11 +67,10 @@ export class UserController {
 
 	@ApiOperation({ summary: "User fetch" })
 	@ApiParam({
-		name: "id",
-		type: String,
+		name: "idx",
 		required: true,
-		description: "id of the item",
 	})
+	@CheckPolicies(new ReadUserPolicyHandler())
 	@Get(":idx")
 	getOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
 		return this.userService.getOne(index);
@@ -80,9 +81,9 @@ export class UserController {
 		status: HttpStatus.BAD_REQUEST,
 		description: "User already registered with email.",
 	})
-	@Permissions(Actions.delete, User)
+	@CheckPolicies(new CreateUserPolicyHandler())
 	@Throttle(10, 3600)
-	@UseInterceptors(FileInterceptor("avatar", ImageMulterOption))
+	@ApiFile("avatar")
 	@Post()
 	async createOne(
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
@@ -97,12 +98,10 @@ export class UserController {
 		description: "User does not exist.",
 	})
 	@ApiParam({
-		name: "id",
-		type: String,
+		name: "idx",
 		required: true,
-		description: "id of the item",
 	})
-	@Permissions(Actions.update, User, UserHook)
+	@CheckPolicies(new UpdateUserPolicyHandler())
 	@Put(":idx")
 	editOne(
 		@Param("idx", ParseUUIDPipe) index: string,
@@ -117,12 +116,10 @@ export class UserController {
 		description: "User does not exist.",
 	})
 	@ApiParam({
-		name: "id",
-		type: String,
+		name: "idx",
 		required: true,
-		description: "id of the item",
 	})
-	@Permissions(Actions.delete, User, UserHook)
+	@CheckPolicies(new DeleteUserPolicyHandler())
 	@Delete(":idx")
 	deleteOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
 		return this.userService.deleteOne(index);

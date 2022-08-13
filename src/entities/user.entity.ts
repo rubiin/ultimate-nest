@@ -1,6 +1,6 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
 import { HelperService } from "@common/helpers/helpers.utils";
-import { Roles } from "@common/types/permission.enum";
+import { Roles } from "@common/types/enums/permission.enum";
 import {
 	BeforeCreate,
 	BeforeUpdate,
@@ -84,5 +84,10 @@ export class User extends BaseEntity {
 		if (arguments_.changeSet.payload?.password) {
 			this.password = await HelperService.hashString(this.password);
 		}
+	}
+
+	constructor(data: Pick<User, "idx">) {
+		super();
+		Object.assign(this, data);
 	}
 }

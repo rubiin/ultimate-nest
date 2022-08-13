@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 /* A base class for all entities. */
 export abstract class BaseEntity {
 	@PrimaryKey()
-	id!: string;
+	id!: number;
 
 	@Property()
 	idx: string = randomUUID();

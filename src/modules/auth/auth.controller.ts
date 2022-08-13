@@ -1,8 +1,8 @@
-import { LoggedInUser } from "@common/decorators/user.decorator";
+import { LoggedInUser } from "@common/decorators";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
-import { IGoogleResponse } from "@common/interfaces/authentication.interface";
-import { LoginType } from "@common/types/misc.enum";
-import { User, User as UserEntity } from "@entities";
+import { IGoogleResponse } from "@common/types/interfaces";
+import { LoginType } from "@common/types/enums/misc.enum";
+import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
 	Body,
@@ -21,10 +21,14 @@ import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { map, Observable } from "rxjs";
 import { AuthService } from "./auth.service";
-import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
-import { RefreshTokenDto } from "./dtos/refresh-request.dto";
-import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
-import { UserLoginDto } from "./dtos/user-login";
+import {
+	ChangePasswordDto,
+	OtpVerifyDto,
+	RefreshTokenDto,
+	ResetPasswordDto,
+	SendOtpDto,
+	UserLoginDto,
+} from "./dtos";
 
 @ApiTags("Auth routes")
 @Controller("auth")
@@ -86,10 +90,7 @@ export class AuthController {
 
 	@ApiOperation({ summary: "Change password" })
 	@Post("change-password")
-	changePassword(
-		@Body() dto: ChangePasswordDto,
-		@LoggedInUser() user: UserEntity,
-	) {
+	changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User) {
 		return this.authService.changePassword(dto, user);
 	}
 
