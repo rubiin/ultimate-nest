@@ -9,8 +9,8 @@ import { from, lastValueFrom, map, Observable, switchMap } from "rxjs";
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 export interface RefreshTokenPayload {
-	jti: string;
-	sub: string;
+	jti: number;
+	sub: number;
 }
 
 @Injectable()

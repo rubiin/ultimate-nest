@@ -1,6 +1,6 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database/base.repository";
-import { EmailTemplateEnum } from "@common/types/misc.enum";
+import { EmailTemplateEnum } from "@common/types/enums/misc.enum";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";

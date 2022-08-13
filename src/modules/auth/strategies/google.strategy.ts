@@ -1,4 +1,4 @@
-import { IGoogleResponse } from "@common/interfaces/authentication.interface";
+import { IGoogleResponse } from "@common/types/interfaces/authentication.interface";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
