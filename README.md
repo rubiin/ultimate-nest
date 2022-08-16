@@ -48,7 +48,7 @@ should be of format .env.[environment] Ex. (.env.test). The env to use should be
 -   🎉 **TypeScript** - Type checking
 -   ⚙️ **Dotenv** - Supports environment variables
 -   🗝 **Authentication** - JWT, RSA256, oauth
--   🏬 **Authorization** - RBAC
+-   🏬 **Authorization** - RBAC with casl
 -   🏪 **MikroORM** - Database ORM
 -   🏪 **PostgreSQL** - Open-Source Relational Database
 -   🧠 **Configuration** - Single config for all
