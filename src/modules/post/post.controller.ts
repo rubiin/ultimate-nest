@@ -1,61 +1,56 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { Auth, LoggedInUser } from "@common/decorators";
+import {
+	ControllerDecorator,
+	LoggedInUser,
+	SwaggerDecorator,
+} from "@common/decorators";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
-	CacheInterceptor,
-	Controller,
 	Delete,
 	Get,
-	HttpStatus,
 	Param,
 	ParseUUIDPipe,
 	Post,
 	Put,
 	Query,
-	UseInterceptors,
 } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiOperation } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
-@ApiTags("Posts")
-@Auth()
-@UseInterceptors(CacheInterceptor)
-@Controller("posts")
+@ControllerDecorator("posts")
 export class PostController {
 	constructor(private readonly postService: PostService) {}
 
+	@Get()
 	@ApiOperation({ summary: "Post list" })
 	@ApiPaginatedResponse(PostEntity)
-	@Get()
 	getMany(
 		@Query() pageOptionsDto: PageOptionsDto,
 	): Observable<Pagination<PostEntity>> {
 		return this.postService.getMany(pageOptionsDto);
 	}
 
-	@ApiOperation({ summary: "Post fetch" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "Post does not exist.",
-	})
 	@Get(":idx")
+	@SwaggerDecorator({
+		operation: "Post fetch",
+		notFound: "Post doesn't exist.",
+	})
 	getById(
 		@Param("idx", ParseUUIDPipe) index: string,
 	): Observable<PostEntity> {
 		return this.postService.getById(index);
 	}
 
-	@ApiOperation({ summary: "Post comment fetch" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "Post does not exist.",
-	})
 	@Get(":idx/comments")
+	@SwaggerDecorator({
+		operation: "Post comment fetch",
+		notFound: "Post doesn't exist.",
+	})
 	findComments(
 		@Param("idx", ParseUUIDPipe) index: string,
 	): Observable<Comment[]> {
@@ -63,16 +58,16 @@ export class PostController {
 	}
 
 	@Post()
+	@SwaggerDecorator({ operation: "create post" })
 	async createPost(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
 		return this.postService.createOne(dto, author);
 	}
 
-	@ApiOperation({ summary: "Post edit" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "Post does not exist.",
-	})
 	@Put(":idx")
+	@SwaggerDecorator({
+		operation: "Post update",
+		notFound: "Post doesn't exist.",
+	})
 	editOne(
 		@Param("idx", ParseUUIDPipe) index: string,
 		@Body() dto: EditPostDto,
@@ -80,24 +75,22 @@ export class PostController {
 		return this.postService.editOne(index, dto);
 	}
 
-	@ApiOperation({ summary: "Post delete" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "Post does not exist.",
-	})
 	@Delete(":idx")
+	@SwaggerDecorator({
+		operation: "Post delete",
+		notFound: "Post doesn't exist.",
+	})
 	deleteOne(
 		@Param("idx", ParseUUIDPipe) index: string,
 	): Observable<PostEntity> {
 		return this.postService.deleteOne(index);
 	}
 
-	@ApiOperation({ summary: "Post comment create" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "Post does not exist.",
-	})
 	@Post(":idx/comments")
+	@SwaggerDecorator({
+		operation: "Post comment create",
+		notFound: "Post doesn't exist.",
+	})
 	async createComment(
 		@LoggedInUser("id") user: number,
 		@Param("idx", ParseUUIDPipe) index: string,
@@ -106,22 +99,20 @@ export class PostController {
 		return this.postService.addComment(user, index, commentData);
 	}
 
-	@ApiOperation({ summary: "Post comment delete" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "Post does not exist.",
-	})
 	@Delete(":idx/comments")
+	@SwaggerDecorator({
+		operation: "Post comment delete",
+		notFound: "Post doesn't exist.",
+	})
 	deleteComment(@Param("idx", ParseUUIDPipe) index: string) {
 		return this.postService.deleteComment(index);
 	}
 
-	@ApiOperation({ summary: "Post favorite" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "Post does not exist.",
-	})
 	@Post(":idx/favorite")
+	@SwaggerDecorator({
+		operation: "Post favorite",
+		notFound: "Post doesn't exist.",
+	})
 	favorite(
 		@LoggedInUser("id") userId: number,
 		@Param("idx", ParseUUIDPipe) index: string,
@@ -129,12 +120,11 @@ export class PostController {
 		return this.postService.favorite(userId, index);
 	}
 
-	@ApiOperation({ summary: "Post remove favorite" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "Post does not exist.",
-	})
 	@Delete(":idx/favorite")
+	@SwaggerDecorator({
+		operation: "Post unfavorite",
+		notFound: "Post doesn't exist.",
+	})
 	async unFavorite(
 		@LoggedInUser("id") userId: number,
 		@Param("idx", ParseUUIDPipe) index: string,
