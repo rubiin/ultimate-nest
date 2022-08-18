@@ -33,9 +33,9 @@ specifiers:
     "@nestjs/throttler": ^3.0.0
     "@ntegral/nestjs-sentry": ^3.0.7
     "@ryansonshine/cz-conventional-changelog": ^3.3.4
-    "@sentry/hub": ^7.10.0
-    "@sentry/node": ^7.10.0
-    "@sentry/types": ^7.10.0
+    "@sentry/hub": ^7.11.1
+    "@sentry/node": ^7.11.1
+    "@sentry/types": ^7.11.1
     "@supercharge/request-ip": ^1.2.0
     "@types/cache-manager": ^4.0.1
     "@types/cache-manager-redis-store": ^2.0.1
@@ -66,7 +66,7 @@ specifiers:
     date-fns: ^2.29.1
     eslint: ^8.22.0
     eslint-config-prettier: ^8.5.0
-    eslint-import-resolver-typescript: ^3.4.1
+    eslint-import-resolver-typescript: ^3.4.2
     eslint-plugin-import: ^2.26.0
     eslint-plugin-no-secrets: ^0.8.9
     eslint-plugin-prettier: ^4.2.1
@@ -81,7 +81,7 @@ specifiers:
     joi: ^17.6.0
     lint-staged: ^13.0.3
     nanoid: ^3.3.4
-    nestjs-i18n: ^9.1.5
+    nestjs-i18n: ^9.1.6
     nestjs-minio: ^2.2.0
     nestjs-pino: ^3.1.1
     nodemailer: ^6.7.8
@@ -89,7 +89,7 @@ specifiers:
     passport-google-oauth20: ^2.0.0
     passport-jwt: 4.0.0
     pino-http: ^8.2.0
-    pino-pretty: ^9.0.0
+    pino-pretty: ^9.0.1
     piscina: ^3.2.0
     prettier: ^2.7.1
     preview-email: ^3.0.7
@@ -130,10 +130,10 @@ dependencies:
     "@nestjs/swagger": 6.0.5_ivnm4e5qsl7bn6kf5k4o57kelu
     "@nestjs/terminus": 9.1.1_mr622mjrz7hsw5sxbt7k6brday
     "@nestjs/throttler": 3.0.0_fvppslgepxggj3fnmtlnh4cori
-    "@ntegral/nestjs-sentry": 3.0.7_q6nz77e4v6cxzsyc4afd4lngw4
-    "@sentry/hub": 7.10.0
-    "@sentry/node": 7.10.0
-    "@sentry/types": 7.10.0
+    "@ntegral/nestjs-sentry": 3.0.7_j37z66kluu2pkhdkobtwn3g3ru
+    "@sentry/hub": 7.11.1
+    "@sentry/node": 7.11.1
+    "@sentry/types": 7.11.1
     "@supercharge/request-ip": 1.2.0
     argon2: 0.28.7
     cache-manager: 4.1.0
@@ -149,7 +149,7 @@ dependencies:
     helper-fns: 2.5.11
     joi: 17.6.0
     nanoid: 3.3.4
-    nestjs-i18n: 9.1.5_oonymkv6qq72ebvisdbbroskp4
+    nestjs-i18n: 9.1.6_oonymkv6qq72ebvisdbbroskp4
     nestjs-minio: 2.2.0_khr6mt6ojlxbw7bo55fknouh34
     nestjs-pino: 3.1.1_i6unz6wuqvgkfrilibx2liv5zi
     nodemailer: 6.7.8
@@ -157,7 +157,7 @@ dependencies:
     passport-google-oauth20: 2.0.0
     passport-jwt: 4.0.0
     pino-http: 8.2.0
-    pino-pretty: 9.0.0
+    pino-pretty: 9.0.1
     piscina: 3.2.0
     preview-email: 3.0.7
     reflect-metadata: 0.1.13
@@ -198,8 +198,8 @@ devDependencies:
     cz-conventional-changelog: 3.3.0
     eslint: 8.22.0
     eslint-config-prettier: 8.5.0_eslint@8.22.0
-    eslint-import-resolver-typescript: 3.4.1_2iahngt3u2tkbdlu6s4gkur3pu
-    eslint-plugin-import: 2.26.0_g5wkbnicgr2n6ig4tvi45b7ibe
+    eslint-import-resolver-typescript: 3.4.2_2iahngt3u2tkbdlu6s4gkur3pu
+    eslint-plugin-import: 2.26.0_s6f7spxf43rfknbsivdq2mydle
     eslint-plugin-no-secrets: 0.8.9_eslint@8.22.0
     eslint-plugin-prettier: 4.2.1_i2cojdczqdiurzgttlwdgf764e
     eslint-plugin-unicorn: 43.0.2_eslint@8.22.0
@@ -246,7 +246,7 @@ packages:
                 optional: true
         dependencies:
             ajv: 8.11.0
-            ajv-formats: 2.1.1
+            ajv-formats: 2.1.1_ajv@8.11.0
             chokidar: 3.5.3
             jsonc-parser: 3.0.0
             rxjs: 6.6.7
@@ -1915,7 +1915,7 @@ packages:
             "@types/node": 18.7.6
             chalk: 4.1.2
             cosmiconfig: 7.0.1
-            cosmiconfig-typescript-loader: 2.0.2_z5yog5l5yqinvqran22gqy2vdi
+            cosmiconfig-typescript-loader: 2.0.2_ldfczzris72nghdhzrofxyotea
             lodash: 4.17.21
             resolve-from: 5.0.0
             typescript: 4.7.4
@@ -3443,7 +3443,7 @@ packages:
             "@nodelib/fs.scandir": 2.1.5
             fastq: 1.13.0
 
-    /@ntegral/nestjs-sentry/3.0.7_q6nz77e4v6cxzsyc4afd4lngw4:
+    /@ntegral/nestjs-sentry/3.0.7_j37z66kluu2pkhdkobtwn3g3ru:
         resolution:
             {
                 integrity: sha512-D319UQyX+Xcn68D8lvV0vla++RFM9pe+EnunWZLaay+SG1Myl9PDh1DcehZKjM3WaPgGDWBZZKh/J062Yycsmw==,
@@ -3459,8 +3459,8 @@ packages:
         dependencies:
             "@nestjs/common": 9.0.11_mgy7w2bm3yhmntrbe3boyroj6m
             "@nestjs/core": 9.0.11_psficsz3mqirqwo2ujbfhdr2aa
-            "@sentry/hub": 7.10.0
-            "@sentry/node": 7.10.0
+            "@sentry/hub": 7.11.1
+            "@sentry/node": 7.11.1
             reflect-metadata: 0.1.13
             rimraf: 3.0.2
             rxjs: 7.5.6
@@ -3677,42 +3677,42 @@ packages:
             selderee: 0.6.0
         dev: false
 
-    /@sentry/core/7.10.0:
+    /@sentry/core/7.11.1:
         resolution:
             {
-                integrity: sha512-uq6oUXPH+6cjsEL5/j/xSW91mVrJo7knTqax7E5MDiA5j98BPK4budGiBiPO7GEB856QhA7N+pOO0lccii5QYQ==,
+                integrity: sha512-kaDSZ6VNuO4ZZdqUOOX6XM6x+kjo2bMnDQ3IJG51FPvVjr8lXYhXj1Ccxcot3pBYAIWPPby2+vNDOXllmXqoBA==,
             }
         engines: { node: ">=8" }
         dependencies:
-            "@sentry/hub": 7.10.0
-            "@sentry/types": 7.10.0
-            "@sentry/utils": 7.10.0
+            "@sentry/hub": 7.11.1
+            "@sentry/types": 7.11.1
+            "@sentry/utils": 7.11.1
             tslib: 1.14.1
         dev: false
 
-    /@sentry/hub/7.10.0:
+    /@sentry/hub/7.11.1:
         resolution:
             {
-                integrity: sha512-9Appy7J87EU7Xu2BDY1cLK79nsuE72geeYmG71lgdttTD3XOMcQBOxET4/2sAI+d/ansurXnURx+DAQ9FOKT+w==,
+                integrity: sha512-M6ClgdXdptS0lUBKB5KpXXe2qMQhsoiEN2pEGRI6+auqhfHCUQB1ZXsfjiOYexKC9fwx7TyFyZ9Jcaf2DTxEhw==,
             }
         engines: { node: ">=8" }
         dependencies:
-            "@sentry/types": 7.10.0
-            "@sentry/utils": 7.10.0
+            "@sentry/types": 7.11.1
+            "@sentry/utils": 7.11.1
             tslib: 1.14.1
         dev: false
 
-    /@sentry/node/7.10.0:
+    /@sentry/node/7.11.1:
         resolution:
             {
-                integrity: sha512-L/DSEJ7Biy8ovvlCyfu5MpCYG108FIGVbJ1h0NBGr5+uLxTNg2WJWojJoiQNiRcWl4s0dcIXrRdi0HR2Sx+DUw==,
+                integrity: sha512-EAAHou/eHSzwRK0Z5qnQiwXNbkpnjWjloaG979gftA+MS/kM0AxQHdOrSJQbOEaqRf3F7/eC4Hj+1tfglAuaLQ==,
             }
         engines: { node: ">=8" }
         dependencies:
-            "@sentry/core": 7.10.0
-            "@sentry/hub": 7.10.0
-            "@sentry/types": 7.10.0
-            "@sentry/utils": 7.10.0
+            "@sentry/core": 7.11.1
+            "@sentry/hub": 7.11.1
+            "@sentry/types": 7.11.1
+            "@sentry/utils": 7.11.1
             cookie: 0.4.2
             https-proxy-agent: 5.0.1
             lru_map: 0.3.3
@@ -3721,22 +3721,22 @@ packages:
             - supports-color
         dev: false
 
-    /@sentry/types/7.10.0:
+    /@sentry/types/7.11.1:
         resolution:
             {
-                integrity: sha512-1UBwdbS0xXzANzp63g4eNQly/qKIXp0swP5OTKWoADvKBtL4anroLUA/l8ADMtuwFZYtVANc8WRGxM2+YmaXtg==,
+                integrity: sha512-gIEhOPxC2cjrxQ0+K2SFJ1P6e/an5osSxVc9OOtekN28eHtVsXFCLB8XVWeNQnS7N2VkrVrkqORMBz1kvIcvVQ==,
             }
         engines: { node: ">=8" }
         dev: false
 
-    /@sentry/utils/7.10.0:
+    /@sentry/utils/7.11.1:
         resolution:
             {
-                integrity: sha512-/aD2DnfyOhV0Wdbb6VF78vu4fQIZJyuReDpBI7MV/EqcEB6FxUKq2YjinfKZF/exHEPig6Ag/Yt+CRFgvtVFuw==,
+                integrity: sha512-tRVXNT5O9ilkV31pyHeTqA1PcPQfMV/2OR6yUYM4ah+QVISovC0f0ybhByuH5nYg6x/Gsnx1o7pc8L1GE3+O7A==,
             }
         engines: { node: ">=8" }
         dependencies:
-            "@sentry/types": 7.10.0
+            "@sentry/types": 7.11.1
             tslib: 1.14.1
         dev: false
 
@@ -4765,11 +4765,13 @@ packages:
             indent-string: 4.0.0
         dev: true
 
-    /ajv-formats/2.1.1:
+    /ajv-formats/2.1.1_ajv@8.11.0:
         resolution:
             {
                 integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==,
             }
+        peerDependencies:
+            ajv: ^8.0.0
         peerDependenciesMeta:
             ajv:
                 optional: true
@@ -6409,7 +6411,7 @@ packages:
             object-assign: 4.1.1
             vary: 1.1.2
 
-    /cosmiconfig-typescript-loader/2.0.2_z5yog5l5yqinvqran22gqy2vdi:
+    /cosmiconfig-typescript-loader/2.0.2_ldfczzris72nghdhzrofxyotea:
         resolution:
             {
                 integrity: sha512-KmE+bMjWMXJbkWCeY4FJX/npHuZPNr9XF9q9CIQ/bpFwi1qHfCmSiKarrCcRa0LO4fWjk93pVoeRtJAkTGcYNw==,
@@ -6417,6 +6419,7 @@ packages:
         engines: { node: ">=12", npm: ">=6" }
         peerDependencies:
             "@types/node": "*"
+            cosmiconfig: ">=7"
             typescript: ">=3"
         dependencies:
             "@types/node": 18.7.6
@@ -7280,10 +7283,10 @@ packages:
             - supports-color
         dev: true
 
-    /eslint-import-resolver-typescript/3.4.1_2iahngt3u2tkbdlu6s4gkur3pu:
+    /eslint-import-resolver-typescript/3.4.2_2iahngt3u2tkbdlu6s4gkur3pu:
         resolution:
             {
-                integrity: sha512-rcD4V2nnxk76JF6nuLcclGpya18KLhr/lwpl5xFXrVWZtdRSepfCGHk/oFn9HNstWX317Nuo/E3Z1vymPyPhlQ==,
+                integrity: sha512-8SuWlRIEO83X9PsJSK9VjgH0EDk1ZzNI36+r3C0xNYVJ+O1+TprOFtTwqqyPMHG+br/I9A5Q80RE7K3/eIr9XA==,
             }
         engines: { node: ^12.20.0 || ^14.18.0 || >=16.0.0 }
         peerDependencies:
@@ -7293,17 +7296,17 @@ packages:
             debug: 4.3.4
             enhanced-resolve: 5.10.0
             eslint: 8.22.0
-            eslint-plugin-import: 2.26.0_g5wkbnicgr2n6ig4tvi45b7ibe
+            eslint-plugin-import: 2.26.0_s6f7spxf43rfknbsivdq2mydle
             get-tsconfig: 4.2.0
             globby: 13.1.2
             is-core-module: 2.9.0
             is-glob: 4.0.3
-            synckit: 0.8.1
+            synckit: 0.8.3
         transitivePeerDependencies:
             - supports-color
         dev: true
 
-    /eslint-module-utils/2.7.3_kezchty4y3ojyc27yq6aao5gme:
+    /eslint-module-utils/2.7.3_byvnxyfln2kf2ocwynr5yewvyq:
         resolution:
             {
                 integrity: sha512-088JEC7O3lDZM9xGe0RerkOMd0EjFl+Yvd1jPWIkMT5u3H9+HC34mWWPnqPrN13gieT9pBOO+Qt07Nb/6TresQ==,
@@ -7327,13 +7330,13 @@ packages:
             "@typescript-eslint/parser": 5.33.1_4rv7y5c6xz3vfxwhbrcxxi73bq
             debug: 3.2.7
             eslint-import-resolver-node: 0.3.6
-            eslint-import-resolver-typescript: 3.4.1_2iahngt3u2tkbdlu6s4gkur3pu
+            eslint-import-resolver-typescript: 3.4.2_2iahngt3u2tkbdlu6s4gkur3pu
             find-up: 2.1.0
         transitivePeerDependencies:
             - supports-color
         dev: true
 
-    /eslint-plugin-import/2.26.0_g5wkbnicgr2n6ig4tvi45b7ibe:
+    /eslint-plugin-import/2.26.0_s6f7spxf43rfknbsivdq2mydle:
         resolution:
             {
                 integrity: sha512-hYfi3FXaM8WPLf4S1cikh/r4IxnO6zrhZbEGz2b660EJRbuxgpDS5gkCuYgGWg2xxh2rBuIr4Pvhve/7c31koA==,
@@ -7353,7 +7356,7 @@ packages:
             doctrine: 2.1.0
             eslint: 8.22.0
             eslint-import-resolver-node: 0.3.6
-            eslint-module-utils: 2.7.3_kezchty4y3ojyc27yq6aao5gme
+            eslint-module-utils: 2.7.3_byvnxyfln2kf2ocwynr5yewvyq
             has: 1.0.3
             is-core-module: 2.9.0
             is-glob: 4.0.3
@@ -11503,10 +11506,10 @@ packages:
             }
         dev: true
 
-    /nestjs-i18n/9.1.5_oonymkv6qq72ebvisdbbroskp4:
+    /nestjs-i18n/9.1.6_oonymkv6qq72ebvisdbbroskp4:
         resolution:
             {
-                integrity: sha512-E6eXt9mmzBErq/UlylNUCyc3OGjFrqN85knSE74ATyl4E6YoLTeJQgRUGr6kHtOgCXzD7Dn0wsao5DRuczQZPw==,
+                integrity: sha512-W7xdZV7NkMsUpqYLlARoAejLwdkXTGy/1PKomuxovvwnQ4F/b0zSeRqIsV9f4QsZ/Vu0wQ6tETwaBvToUHVOnQ==,
             }
         peerDependencies:
             "@nestjs/common": "*"
@@ -12500,10 +12503,10 @@ packages:
             process-warning: 2.0.0
         dev: false
 
-    /pino-pretty/9.0.0:
+    /pino-pretty/9.0.1:
         resolution:
             {
-                integrity: sha512-WcojVUw8aJQz0in90xj7nQo5g14d9bLkBnE80P/Sk8JxNilbtyXp9mNjRcF07uOBEoNMrdkBniv8Tu1Lale7Kw==,
+                integrity: sha512-5gFIIeDu1niFlL0pBACerwDR8Ts+i4gO0W9S0jRoHVvaQluvGOW4cUaDmC+/dSTCoG4VqfOQhP0dwuDLd0qJ6A==,
             }
         hasBin: true
         dependencies:
@@ -14545,10 +14548,10 @@ packages:
         engines: { node: ">=0.10" }
         dev: true
 
-    /synckit/0.8.1:
+    /synckit/0.8.3:
         resolution:
             {
-                integrity: sha512-rJEeygO5PNmcZICmrgnbOd2usi5zWE1ESc0Gn5tTmJlongoU8zCTwMFQtar2UgMSiR68vK9afPQ+uVs2lURSIA==,
+                integrity: sha512-1goXnDYNJlKwCM37f5MTzRwo+8SqutgVtg2d37D6YnHHT4E3IhQMRfKiGdfTZU7LBlI6T8inCQUxnMBFHrbqWw==,
             }
         engines: { node: ^14.18.0 || >=16.0.0 }
         dependencies:
