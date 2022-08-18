@@ -1,6 +1,9 @@
-import { Auth, LoggedInUser } from "@common/decorators";
-import { ControllerDecorator } from "@common/decorators/controller.decorator";
-import { SwaggerDecorator } from "@common/decorators/swagger-api.decorator";
+import {
+	Auth,
+	ControllerDecorator,
+	LoggedInUser,
+	SwaggerDecorator,
+} from "@common/decorators";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
 import { LoginType } from "@common/types/enums/misc.enum";
 import { IGoogleResponse } from "@common/types/interfaces";
