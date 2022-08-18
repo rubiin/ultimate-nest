@@ -1,12 +1,13 @@
-import { LoggedInUser } from "@common/decorators";
+import { Auth, LoggedInUser } from "@common/decorators";
+import { ControllerDecorator } from "@common/decorators/controller.decorator";
+import { SwaggerDecorator } from "@common/decorators/swagger-api.decorator";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
-import { IGoogleResponse } from "@common/types/interfaces";
 import { LoginType } from "@common/types/enums/misc.enum";
+import { IGoogleResponse } from "@common/types/interfaces";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
 	Body,
-	Controller,
 	Get,
 	ParseBoolPipe,
 	Post,
@@ -17,7 +18,7 @@ import {
 	UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { map, Observable } from "rxjs";
 import { AuthService } from "./auth.service";
@@ -30,29 +31,43 @@ import {
 	UserLoginDto,
 } from "./dtos";
 
-@ApiTags("Auth routes")
-@Controller("auth")
+@ControllerDecorator("auth", false)
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
 		private readonly tokenService: TokensService,
 	) {}
 
-	@ApiOperation({ summary: "Login" })
 	@Post("login")
-	@ApiBody({ type: UserLoginDto })
+	@ApiOperation({ summary: "User Login" })
+	@ApiResponse({
+		status: 403,
+		description: "You account has not been activated yet!",
+	})
+	@ApiResponse({
+		status: 400,
+		description: "User name and password provided does not match.",
+	})
 	login(@Body() _loginDto: UserLoginDto) {
 		return this.authService.login(_loginDto, LoginType.PASSWORD);
 	}
 
-	@ApiOperation({ summary: "Reset password" })
 	@Post("reset-password")
+	@SwaggerDecorator({
+		operation: "Reset password",
+		notFound: "Otp doesn't exist.",
+		badRequest: "Otp is expired.",
+	})
 	resetUserPassword(@Body() dto: ResetPasswordDto) {
 		return this.authService.resetPassword(dto);
 	}
 
-	@ApiOperation({ summary: "Forgot password" })
 	@Put("forgot-password")
+	@Auth()
+	@SwaggerDecorator({
+		operation: "Forgot password",
+		notFound: "Account doesn't exist.",
+	})
 	async forgotPassword(@Body() dto: SendOtpDto) {
 		return this.authService.forgotPassword(dto);
 	}
@@ -82,14 +97,22 @@ export class AuthController {
 			);
 	}
 
-	@ApiOperation({ summary: "Verify otp" })
 	@Post("verify-otp")
+	@SwaggerDecorator({
+		operation: "Verify otp",
+		notFound: "Otp doesn't exist.",
+		badRequest: "Otp is expired.",
+	})
 	async verifyOtp(@Body() dto: OtpVerifyDto) {
 		return this.authService.verifyOtp(dto);
 	}
 
-	@ApiOperation({ summary: "Change password" })
 	@Post("change-password")
+	@Auth()
+	@SwaggerDecorator({
+		operation: "Change password",
+		badRequest: "Username and password provided does not match.",
+	})
 	changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User) {
 		return this.authService.changePassword(dto, user);
 	}

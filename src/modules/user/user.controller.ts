@@ -1,5 +1,7 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { ApiFile, Auth } from "@common/decorators";
+import { ApiFile } from "@common/decorators";
+import { ControllerDecorator } from "@common/decorators/controller.decorator";
+import { SwaggerDecorator } from "@common/decorators/swagger-api.decorator";
 import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
 import { Roles } from "@common/types/enums";
@@ -14,29 +16,21 @@ import {
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
-	CacheInterceptor,
-	Controller,
 	Delete,
 	Get,
-	HttpStatus,
 	Param,
 	ParseUUIDPipe,
 	Post,
 	Put,
 	Query,
 	UploadedFile,
-	UseInterceptors,
 } from "@nestjs/common";
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Throttle } from "@nestjs/throttler";
+import { ApiOperation } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
-@ApiTags("Users")
-@Auth()
-@UseInterceptors(CacheInterceptor)
-@Controller("users")
+@ControllerDecorator("users")
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
@@ -49,11 +43,13 @@ export class UserController {
 		return this.userService.getMany(pageOptionsDto);
 	}
 
-	@ApiOperation({ summary: "public registration" })
-	@Throttle(10, 3600)
+	@Post("register")
+	@SwaggerDecorator({
+		operation: "Create user",
+		badRequest: "User already registered with email.",
+	})
 	@ApiFile("avatar")
 	@CheckPolicies(new CreateUserPolicyHandler())
-	@Post("register")
 	async publicRegistration(
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 		@Body() dto: UserRegistrationDto,
@@ -65,26 +61,23 @@ export class UserController {
 		});
 	}
 
-	@ApiOperation({ summary: "User fetch" })
-	@ApiParam({
-		name: "idx",
-		required: true,
+	@Get(":idx")
+	@SwaggerDecorator({
+		operation: "User fetch",
+		notFound: "User does not exist.",
 	})
 	@CheckPolicies(new ReadUserPolicyHandler())
-	@Get(":idx")
 	getOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
 		return this.userService.getOne(index);
 	}
 
-	@ApiOperation({ summary: "Admin create user" })
-	@ApiResponse({
-		status: HttpStatus.BAD_REQUEST,
-		description: "User already registered with email.",
+	@Post()
+	@SwaggerDecorator({
+		operation: "User fetch",
+		badRequest: "User already registered with email.",
 	})
 	@CheckPolicies(new CreateUserPolicyHandler())
-	@Throttle(10, 3600)
 	@ApiFile("avatar")
-	@Post()
 	async createOne(
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 		@Body() dto: CreateUserDto,
@@ -92,17 +85,13 @@ export class UserController {
 		return this.userService.createOne({ ...dto, image });
 	}
 
-	@ApiOperation({ summary: "Edit user" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "User does not exist.",
-	})
-	@ApiParam({
-		name: "idx",
-		required: true,
+	@Put(":idx")
+	@SwaggerDecorator({
+		operation: "User fetch",
+		badRequest: "User already registered with email.",
+		notFound: "User does not exist.",
 	})
 	@CheckPolicies(new UpdateUserPolicyHandler())
-	@Put(":idx")
 	editOne(
 		@Param("idx", ParseUUIDPipe) index: string,
 		@Body() dto: EditUserDto,
@@ -110,17 +99,12 @@ export class UserController {
 		return this.userService.editOne(index, dto);
 	}
 
-	@ApiOperation({ summary: "User delete" })
-	@ApiResponse({
-		status: HttpStatus.NOT_FOUND,
-		description: "User does not exist.",
-	})
-	@ApiParam({
-		name: "idx",
-		required: true,
+	@Delete(":idx")
+	@SwaggerDecorator({
+		operation: "User fetch",
+		notFound: "User does not exist.",
 	})
 	@CheckPolicies(new DeleteUserPolicyHandler())
-	@Delete(":idx")
 	deleteOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
 		return this.userService.deleteOne(index);
 	}
