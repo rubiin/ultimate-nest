@@ -1,18 +1,16 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { ApiFile } from "@common/decorators";
+import { ApiFile, SwaggerDecorator } from "@common/decorators";
 import { ControllerDecorator } from "@common/decorators/controller.decorator";
-import { SwaggerDecorator } from "@common/decorators/swagger-api.decorator";
 import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
-import { CheckPolicies } from "@lib/casl/policies.decorator";
 import {
-	CreateUserPolicyHandler,
-	DeleteUserPolicyHandler,
-	ReadUserPolicyHandler,
+	Action,
+	GenericPolicyHandler,
 	UpdateUserPolicyHandler,
-} from "@lib/casl/policies/user";
+} from "@lib/casl";
+import { CheckPolicies } from "@lib/casl/policies.decorator";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
@@ -49,7 +47,7 @@ export class UserController {
 		badRequest: "User already registered with email.",
 	})
 	@ApiFile("avatar")
-	@CheckPolicies(new CreateUserPolicyHandler())
+	@CheckPolicies(new GenericPolicyHandler(User, Action.Create))
 	async publicRegistration(
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 		@Body() dto: UserRegistrationDto,
@@ -66,7 +64,7 @@ export class UserController {
 		operation: "User fetch",
 		notFound: "User does not exist.",
 	})
-	@CheckPolicies(new ReadUserPolicyHandler())
+	@CheckPolicies(new GenericPolicyHandler(User, Action.Read))
 	getOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
 		return this.userService.getOne(index);
 	}
@@ -76,7 +74,7 @@ export class UserController {
 		operation: "User fetch",
 		badRequest: "User already registered with email.",
 	})
-	@CheckPolicies(new CreateUserPolicyHandler())
+	@CheckPolicies(new GenericPolicyHandler(User, Action.Create))
 	@ApiFile("avatar")
 	async createOne(
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
@@ -104,7 +102,7 @@ export class UserController {
 		operation: "User fetch",
 		notFound: "User does not exist.",
 	})
-	@CheckPolicies(new DeleteUserPolicyHandler())
+	@CheckPolicies(new GenericPolicyHandler(User, Action.Delete))
 	deleteOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
 		return this.userService.deleteOne(index);
 	}

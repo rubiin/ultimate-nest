@@ -6,10 +6,10 @@ import {
 	ExtractSubjectType,
 	InferSubjects,
 } from "@casl/ability";
-import { User } from "@entities";
+import { Post, User } from "@entities";
 import { Roles } from "@common/types/enums/permission.enum";
 
-type Subjects = InferSubjects<typeof User> | "all";
+export type Subjects = InferSubjects<typeof User | typeof Post> | "all";
 
 export enum Action {
 	Manage = "manage",
