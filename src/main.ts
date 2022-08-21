@@ -3,24 +3,17 @@ import { ValidationPipe } from "@common/pipes/validation";
 import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory, repl } from "@nestjs/core";
-import {
-	ExpressAdapter,
-	NestExpressApplication,
-} from "@nestjs/platform-express";
+import { ExpressAdapter, NestExpressApplication } from "@nestjs/platform-express";
 import compression from "compression";
 import helmet from "helmet";
-import {
-	i18nValidationErrorFactory,
-	I18nValidationExceptionFilter,
-} from "nestjs-i18n";
+import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestjs-i18n";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
-	const app = await NestFactory.create<NestExpressApplication>(
-		AppModule,
-		new ExpressAdapter(),
-		{ httpsOptions: AppUtils.ssl(), bufferLogs: true },
-	);
+	const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
+		httpsOptions: AppUtils.ssl(),
+		bufferLogs: true,
+	});
 
 	AppUtils.killAppWithGrace(app);
 
@@ -46,12 +39,12 @@ async function bootstrap() {
 			whitelist: true,
 			transform: true,
 			exceptionFactory: i18nValidationErrorFactory,
+			validatorPackage: require("@nestjs/class-validator"),
+			transformerPackage: require("@nestjs/class-transformer"),
 		}),
 	);
 
-	app.useGlobalFilters(
-		new I18nValidationExceptionFilter({ detailedErrors: false }),
-	);
+	app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
 	app.setGlobalPrefix(globalPrefix);
 
 	// =========================================================
@@ -70,11 +63,11 @@ async function bootstrap() {
 
 	app.enableShutdownHooks();
 
-	const port = configService.get<number>("app.port", 3000);
-	const isRepl = configService.get<string>("app.repl", "false");
+	const port = process.env.PORT || configService.get<number>("app.port");
+	const isRepl = process.env.REPL === "true";
 
 	// use nestjs repl to debug
-	if (JSON.parse(isRepl)) {
+	if (isRepl) {
 		await repl(AppModule);
 	}
 

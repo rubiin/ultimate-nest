@@ -4,7 +4,7 @@ import {
 	ValidationOptions,
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
-} from "class-validator";
+} from "@nestjs/class-validator";
 import { isValid, lightFormat } from "date-fns";
 
 /* It validates that a date is in a given format */
@@ -25,10 +25,7 @@ class IsDateInFormatConstraint implements ValidatorConstraintInterface {
 	}
 }
 
-export function IsDateInFormat(
-	format: string,
-	validationOptions?: ValidationOptions,
-) {
+export function IsDateInFormat(format: string, validationOptions?: ValidationOptions) {
 	return function (object: Record<string, any>, propertyName: string): void {
 		registerDecorator({
 			target: object.constructor,

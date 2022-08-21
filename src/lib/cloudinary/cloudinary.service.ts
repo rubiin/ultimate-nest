@@ -1,10 +1,6 @@
 /* eslint-disable import/named */
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import {
-	UploadApiErrorResponse,
-	UploadApiResponse,
-	v2 as cloudinary,
-} from "cloudinary";
+import { UploadApiErrorResponse, UploadApiResponse, v2 as cloudinary } from "cloudinary";
 import { Readable } from "node:stream";
 import { CLOUDINARY_MODULE_OPTIONS } from "./cloudinary.constant";
 import { CloudinaryModuleOptions } from "./cloudinary.options";
@@ -41,9 +37,7 @@ export class CloudinaryService {
 					result:
 						| UploadApiResponse
 						| UploadApiErrorResponse
-						| PromiseLike<
-								UploadApiResponse | UploadApiErrorResponse
-						  >,
+						| PromiseLike<UploadApiResponse | UploadApiErrorResponse>,
 				) => {
 					if (error) {
 						this.logger.error(error);
@@ -57,9 +51,7 @@ export class CloudinaryService {
 			);
 			const stream: Readable = new Readable();
 
-			const shrinkedImage = await sharp(file.buffer)
-				.resize(800)
-				.toBuffer();
+			const shrinkedImage = await sharp(file.buffer).resize(800).toBuffer();
 
 			stream.push(shrinkedImage);
 			stream.push(null);

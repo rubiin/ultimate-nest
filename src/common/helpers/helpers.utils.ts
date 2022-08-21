@@ -55,27 +55,17 @@ export const HelperService = {
 	},
 
 	/* A function that returns an observable that resolves to a boolean. */
-	verifyHash: (
-		userPassword: string,
-		passwordToCompare: string,
-	): Observable<boolean> => {
+	verifyHash: (userPassword: string, passwordToCompare: string): Observable<boolean> => {
 		return from(verify(userPassword, passwordToCompare));
 	},
 
 	/* Generating a thumbnail from a buffer. */
-	generateThumb: (
-		input: Buffer,
-		config: { height: number; width: number },
-	): Promise<Buffer> => {
+	generateThumb: (input: Buffer, config: { height: number; width: number }): Promise<Buffer> => {
 		return sharp(input).resize(config).toFormat("png").toBuffer();
 	},
 
 	/* A function that returns a promise that resolves to a random number or string. */
-	getRandom: (
-		type: RandomTypes,
-		length: number,
-		alphabet?: string,
-	): Promise<number | string> => {
+	getRandom: (type: RandomTypes, length: number, alphabet?: string): Promise<number | string> => {
 		if (alphabet) {
 			return customAlphabet(alphabet, length)();
 		}

@@ -4,7 +4,7 @@ import {
 	ValidationOptions,
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
-} from "class-validator";
+} from "@nestjs/class-validator";
 
 @ValidatorConstraint({ async: true })
 class IsEqualToConstraint implements ValidatorConstraintInterface {
@@ -23,10 +23,7 @@ class IsEqualToConstraint implements ValidatorConstraintInterface {
 	}
 }
 
-export function IsEqualTo(
-	property: string,
-	validationOptions?: ValidationOptions,
-) {
+export function IsEqualTo(property: string, validationOptions?: ValidationOptions) {
 	return function (object: Record<string, any>, propertyName: string): void {
 		registerDecorator({
 			target: object.constructor,

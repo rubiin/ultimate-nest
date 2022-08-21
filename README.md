@@ -17,7 +17,7 @@ Clone this repo. Edit the env file and pass in your credentials
 Install dependencies
 
 ```sh
- yarn
+ npm install
 ```
 
 ## Database
@@ -28,11 +28,11 @@ Install dependencies
 
 The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres database.
 
-Copy MikroORM config example file and adjust the connection settings and other settings(jwt,redism,mail,etc) respectively on sample env file
+Copy sample env file and adjust the connection settings and other settings(jwt,redis,mail,etc) respectively on sample env file
 
-Start local Postgres server and run `NODE_ENV=dev yarn orm:up` to apply migrations
+Start local Postgres server and run `NODE_ENV=dev make migrate` to apply migrations
 
-Now you can start the application witt `NODE_ENV=dev yarn start.
+Now you can start the application witt `NODE_ENV=dev npm run start.
 
 Note: Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage']. The env file name
 should be of format .env.[environment] Ex. (.env.test). The env to use should be provided while running any script as NODE_ENV=dev npm run dev
@@ -61,10 +61,10 @@ should be of format .env.[environment] Ex. (.env.test). The env to use should be
 
 ## NPM scripts
 
--   `yarn start` - Start application
--   `yarn start:watch` - Start application in watch mode
--   `yarn test` - run Jest test runner
--   `yarn start:prod` - Build application
+-   `npm run start` - Start application
+-   `npm run start:watch` - Start application in watch mode
+-   `npm run test` - run Jest test runner
+-   `npm run start:prod` - Build application
 
 Additionally, you can also see the scripts in `makefile`
 
@@ -72,7 +72,7 @@ Additionally, you can also see the scripts in `makefile`
 
 ## Setup
 
--   First if you dont want to use any libs from like redis, mailer etc. replace them from the app.module.tasks
+-   First if you don't want to use any libs from like redis, mailer etc. replace them from the app.module.tasks
     -   You will also need to remove the config from `validate.config.ts` from line ` load: []`
     -   Also remove the unwanted config variables from the env file
 -   Make sure you create a env file under `env` directory with name like `.env.something`.The portion after .env is the `NODE_ENV` value which will be required while running the app
@@ -80,8 +80,8 @@ Additionally, you can also see the scripts in `makefile`
 
 ## Start application
 
--   `NODE_ENV=[env name] yarn start` (without ssl)
--   `NODE_ENV=[env name] SSL=true yarn start` (with ssl)
+-   `NODE_ENV=[env name] npm run start` (without ssl)
+-   `NODE_ENV=[env name] SSL=true npm run start` (with ssl)
 -   Test api by browsing to `http://localhost:[port]/v1/user`
 -   View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
 

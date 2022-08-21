@@ -1,11 +1,3 @@
-import { NestCacheModule } from "@lib/cache/cache.module";
-import { NestCloudinaryModule } from "@lib/cloudinary";
-import { NestConfigModule } from "@lib/config/config.module";
-import { NestI18nModule } from "@lib/i18n/i18n.module";
-import { NestMailModule } from "@lib/mailer";
-import { OrmModule } from "@lib/orm/orm.module";
-import { NestPinoModule } from "@lib/pino/pino.module";
-import { NestSentryModule } from "@lib/sentry/sentry.module";
 import { AuthModule } from "@modules/auth/auth.module";
 import { HealthModule } from "@modules/health/health.module";
 import { PostModule } from "@modules/post/post.module";
@@ -18,7 +10,17 @@ import { join } from "node:path";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { APP_GUARD } from "@nestjs/core";
-import { NestCaslModule } from "@lib/casl/casl.module";
+import {
+	NestCaslModule,
+	OrmModule,
+	NestCacheModule,
+	NestPinoModule,
+	NestSentryModule,
+	NestCloudinaryModule,
+	NestI18nModule,
+	NestMailModule,
+	NestConfigModule,
+} from "@lib/index";
 
 @Module({
 	imports: [

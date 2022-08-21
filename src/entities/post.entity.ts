@@ -1,12 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
-import {
-	ArrayType,
-	Collection,
-	Entity,
-	ManyToOne,
-	OneToMany,
-	Property,
-} from "@mikro-orm/core";
+import { ArrayType, Collection, Entity, ManyToOne, OneToMany, Property } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 import { Comment } from "./comment.entity";
 
@@ -41,12 +34,7 @@ export class Post extends BaseEntity {
 	@Property()
 	favoritesCount = 0;
 
-	constructor(
-		author: User,
-		title: string,
-		description: string,
-		body: string,
-	) {
+	constructor(author: User, title: string, description: string, body: string) {
 		super();
 		this.author = author;
 		this.title = title;

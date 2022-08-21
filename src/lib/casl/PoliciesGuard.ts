@@ -7,17 +7,11 @@ import { CHECK_POLICIES_KEY } from "./policies.decorator";
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
-	constructor(
-		private reflector: Reflector,
-		private caslAbilityFactory: CaslAbilityFactory,
-	) {}
+	constructor(private reflector: Reflector, private caslAbilityFactory: CaslAbilityFactory) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const policyHandlers =
-			this.reflector.get<PolicyHandler[]>(
-				CHECK_POLICIES_KEY,
-				context.getHandler(),
-			) || [];
+			this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY, context.getHandler()) || [];
 
 		const request = context.switchToHttp().getRequest() as Request;
 
@@ -25,16 +19,10 @@ export class PoliciesGuard implements CanActivate {
 
 		const ability = this.caslAbilityFactory.createForUser(user);
 
-		return policyHandlers.every(handler =>
-			this.execPolicyHandler(handler, request, ability),
-		);
+		return policyHandlers.every(handler => this.execPolicyHandler(handler, request, ability));
 	}
 
-	private execPolicyHandler(
-		handler: PolicyHandler,
-		request: Request,
-		ability: AppAbility,
-	) {
+	private execPolicyHandler(handler: PolicyHandler, request: Request, ability: AppAbility) {
 		if (typeof handler === "function") {
 			return handler(request, ability);
 		}

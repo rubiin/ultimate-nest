@@ -1,8 +1,4 @@
-import {
-	ControllerDecorator,
-	LoggedInUser,
-	SwaggerDecorator,
-} from "@common/decorators";
+import { ControllerDecorator, LoggedInUser, SwaggerDecorator } from "@common/decorators";
 import { IProfileData } from "@common/types/interfaces/followers.interface";
 import { User } from "@entities";
 import { Delete, Get, Param, Post } from "@nestjs/common";

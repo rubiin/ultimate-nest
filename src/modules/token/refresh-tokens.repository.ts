@@ -32,9 +32,7 @@ export class RefreshTokensRepository {
 			expiresIn: expiration,
 		});
 
-		return from(this.refreshTokenRepository.persistAndFlush(token)).pipe(
-			map(() => token),
-		);
+		return from(this.refreshTokenRepository.persistAndFlush(token)).pipe(map(() => token));
 	}
 
 	/**
@@ -57,12 +55,9 @@ export class RefreshTokensRepository {
 	 * @returns A boolean value.
 	 */
 	deleteTokensForUser(user: User): Observable<boolean> {
-		return from(
-			this.refreshTokenRepository.nativeUpdate(
-				{ user },
-				{ isRevoked: true },
-			),
-		).pipe(map(() => true));
+		return from(this.refreshTokenRepository.nativeUpdate({ user }, { isRevoked: true })).pipe(
+			map(() => true),
+		);
 	}
 
 	/**
@@ -73,10 +68,7 @@ export class RefreshTokensRepository {
 	 */
 	deleteToken(user: User, tokenId: number): Observable<boolean> {
 		return from(
-			this.refreshTokenRepository.nativeUpdate(
-				{ user, id: tokenId },
-				{ isRevoked: true },
-			),
+			this.refreshTokenRepository.nativeUpdate({ user, id: tokenId }, { isRevoked: true }),
 		).pipe(map(() => true));
 	}
 }

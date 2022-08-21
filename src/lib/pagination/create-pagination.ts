@@ -1,7 +1,4 @@
-import {
-	IPaginationLinks,
-	IPaginationMeta,
-} from "./pagination-option.interface";
+import { IPaginationLinks, IPaginationMeta } from "./pagination-option.interface";
 import { Pagination } from "./pagination";
 
 /**
@@ -32,15 +29,9 @@ export function createPaginationObject<T>(
 
 	const routes: IPaginationLinks = {
 		first: hasFirstPage ? `${route}${symbol}limit=${limit}` : "",
-		previous: hasPreviousPage
-			? `${route}${symbol}page=${currentPage - 1}&limit=${limit}`
-			: "",
-		next: hasNextPage
-			? `${route}${symbol}page=${currentPage + 1}&limit=${limit}`
-			: "",
-		last: hasLastPage
-			? `${route}${symbol}page=${totalPages}&limit=${limit}`
-			: "",
+		previous: hasPreviousPage ? `${route}${symbol}page=${currentPage - 1}&limit=${limit}` : "",
+		next: hasNextPage ? `${route}${symbol}page=${currentPage + 1}&limit=${limit}` : "",
+		last: hasLastPage ? `${route}${symbol}page=${totalPages}&limit=${limit}` : "",
 	};
 
 	const meta: IPaginationMeta = {

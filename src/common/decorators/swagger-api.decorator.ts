@@ -15,9 +15,7 @@ export function SwaggerDecorator({
 	const decsToApply = [ApiOperation({ summary: operation })];
 
 	if (param) {
-		decsToApply.push(
-			ApiParam({ name: param, required: true, type: String }),
-		);
+		decsToApply.push(ApiParam({ name: param, required: true, type: String }));
 	}
 
 	if (badRequest) {

@@ -9,9 +9,8 @@ import { MailerService } from "./mailer.service"; // the service to be provided 
 	providers: [MailerService],
 	exports: [MailerService],
 })
-export class MailModule extends createConfigurableDynamicRootModule<
-	MailModule,
-	MailModuleOptions
->(MAIL_MODULE_OPTIONS) {
+export class MailModule extends createConfigurableDynamicRootModule<MailModule, MailModuleOptions>(
+	MAIL_MODULE_OPTIONS,
+) {
 	static Deferred = MailModule.externallyConfigured(MailModule, 0);
 }

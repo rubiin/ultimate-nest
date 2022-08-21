@@ -2,10 +2,7 @@ import { faker } from "@mikro-orm/seeder";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { randomNumber } from "helper-fns";
-import {
-	i18nValidationErrorFactory,
-	I18nValidationExceptionFilter,
-} from "nestjs-i18n";
+import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestjs-i18n";
 import request from "supertest";
 import { AppModule } from "../src/app.module";
 
@@ -31,9 +28,7 @@ describe("AppController (e2e)", () => {
 			}),
 		);
 
-		app.useGlobalFilters(
-			new I18nValidationExceptionFilter({ detailedErrors: false }),
-		);
+		app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
 		await app.init();
 	});
 

@@ -28,13 +28,7 @@ export class PostService {
 	 * offset.
 	 * @returns An observable of a pagination object.
 	 */
-	getMany({
-		page,
-		order,
-		limit,
-		sort,
-		offset,
-	}: PageOptionsDto): Observable<Pagination<Post>> {
+	getMany({ page, order, limit, sort, offset }: PageOptionsDto): Observable<Pagination<Post>> {
 		return from(
 			this.postRepository.findAndPaginate(
 				{ isObsolete: false },
@@ -46,12 +40,7 @@ export class PostService {
 			),
 		).pipe(
 			map(({ results, total }) => {
-				return createPaginationObject<Post>(
-					results,
-					total,
-					page,
-					limit,
-				);
+				return createPaginationObject<Post>(results, total, page, limit);
 			}),
 		);
 	}
@@ -63,11 +52,7 @@ export class PostService {
 	 * @param {CreateCommentDto} dto - CreateCommentDto
 	 * @returns Post
 	 */
-	addComment(
-		userId: number,
-		index: string,
-		dto: CreateCommentDto,
-	): Observable<Post> {
+	addComment(userId: number, index: string, dto: CreateCommentDto): Observable<Post> {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
 				{ idx: index, isObsolete: false, isActive: true },
@@ -80,9 +65,7 @@ export class PostService {
 			switchMap(([post, user]) => {
 				const comment = new Comment(user, post, dto.body);
 
-				return from(
-					this.commentRepository.persistAndFlush(comment),
-				).pipe(map(() => post));
+				return from(this.commentRepository.persistAndFlush(comment)).pipe(map(() => post));
 			}),
 		);
 	}
@@ -108,9 +91,7 @@ export class PostService {
 
 				if (post.comments.contains(comment)) {
 					post.comments.remove(comment);
-					from(this.commentRepository.removeAndFlush(comment)).pipe(
-						map(() => post),
-					);
+					from(this.commentRepository.removeAndFlush(comment)).pipe(map(() => post));
 				}
 
 				return of(post);
@@ -186,9 +167,7 @@ export class PostService {
 	deleteOne(index: string): Observable<Post> {
 		return this.getById(index).pipe(
 			switchMap(post => {
-				return from(this.postRepository.softRemoveAndFlush(post)).pipe(
-					map(() => post),
-				);
+				return from(this.postRepository.softRemoveAndFlush(post)).pipe(map(() => post));
 			}),
 		);
 	}
@@ -220,10 +199,7 @@ export class PostService {
 	 */
 	favorite(userId: number, postIndex: string): Observable<Post> {
 		const post$ = from(
-			this.postRepository.findOneOrFail(
-				{ idx: postIndex },
-				{ populate: ["author"] },
-			),
+			this.postRepository.findOneOrFail({ idx: postIndex }, { populate: ["author"] }),
 		);
 		const user$ = from(
 			this.userRepository.findOneOrFail(

@@ -8,9 +8,7 @@ export class Migration20220430160032 extends Migration {
 		this.addSql(
 			'alter table "user" add constraint "user_username_unique" unique ("username");',
 		);
-		this.addSql(
-			'alter table "user" add constraint "user_email_unique" unique ("email");',
-		);
+		this.addSql('alter table "user" add constraint "user_email_unique" unique ("email");');
 		this.addSql(
 			'alter table "user" add constraint "user_mobile_number_unique" unique ("mobile_number");',
 		);
@@ -100,37 +98,25 @@ export class Migration20220430160032 extends Migration {
 			'alter table "user_to_follower" drop constraint "user_to_follower_following_foreign";',
 		);
 
-		this.addSql(
-			'alter table "refresh_token" drop constraint "refresh_token_user_id_foreign";',
-		);
+		this.addSql('alter table "refresh_token" drop constraint "refresh_token_user_id_foreign";');
 
-		this.addSql(
-			'alter table "post" drop constraint "post_author_id_foreign";',
-		);
+		this.addSql('alter table "post" drop constraint "post_author_id_foreign";');
 
 		this.addSql(
 			'alter table "user_favorites" drop constraint "user_favorites_user_id_foreign";',
 		);
 
-		this.addSql(
-			'alter table "otp_log" drop constraint "otp_log_user_id_foreign";',
-		);
+		this.addSql('alter table "otp_log" drop constraint "otp_log_user_id_foreign";');
 
-		this.addSql(
-			'alter table "comment" drop constraint "comment_author_id_foreign";',
-		);
+		this.addSql('alter table "comment" drop constraint "comment_author_id_foreign";');
 
-		this.addSql(
-			'alter table "activity_log" drop constraint "activity_log_user_id_foreign";',
-		);
+		this.addSql('alter table "activity_log" drop constraint "activity_log_user_id_foreign";');
 
 		this.addSql(
 			'alter table "user_favorites" drop constraint "user_favorites_post_id_foreign";',
 		);
 
-		this.addSql(
-			'alter table "comment" drop constraint "comment_post_id_foreign";',
-		);
+		this.addSql('alter table "comment" drop constraint "comment_post_id_foreign";');
 
 		this.addSql('drop table if exists "user" cascade;');
 

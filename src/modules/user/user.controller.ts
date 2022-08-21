@@ -5,11 +5,7 @@ import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
-import {
-	Action,
-	GenericPolicyHandler,
-	UpdateUserPolicyHandler,
-} from "@lib/casl";
+import { Action, GenericPolicyHandler, UpdateUserPolicyHandler } from "@lib/casl";
 import { CheckPolicies } from "@lib/casl/policies.decorator";
 import { Pagination } from "@lib/pagination";
 import {
@@ -35,9 +31,7 @@ export class UserController {
 	@ApiOperation({ summary: "Users list" })
 	@ApiPaginatedResponse(User)
 	@Get()
-	getMany(
-		@Query() pageOptionsDto: PageOptionsDto,
-	): Observable<Pagination<User>> {
+	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<User>> {
 		return this.userService.getMany(pageOptionsDto);
 	}
 

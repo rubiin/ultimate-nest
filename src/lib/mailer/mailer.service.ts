@@ -57,9 +57,7 @@ export class MailerService {
 					mailOptions.html = html;
 
 					if (this.options.previewEmail) {
-						previewEmail(mailOptions)
-							.then(console.info)
-							.catch(console.error);
+						previewEmail(mailOptions).then(console.info).catch(console.error);
 					}
 
 					transporter.sendMail(mailOptions, async (error, info) => {
@@ -67,10 +65,7 @@ export class MailerService {
 							this.logger.error("error is " + error);
 							reject(false);
 						} else {
-							this.logger.debug(
-								"info",
-								"Email sent: " + info.response,
-							);
+							this.logger.debug("info", "Email sent: " + info.response);
 							resolve(true);
 						}
 					});

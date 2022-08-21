@@ -6,9 +6,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
 	handleRequest(error: any, user: any, info: any) {
 		if (error || info || !user) {
 			if (info?.name === "TokenExpiredError") {
-				throw new UnauthorizedException(
-					"The session has expired. Please relogin",
-				);
+				throw new UnauthorizedException("The session has expired. Please relogin");
 			} else if (info?.name === "JsonWebTokenError") {
 				throw new UnauthorizedException("Token malformed");
 			} else {

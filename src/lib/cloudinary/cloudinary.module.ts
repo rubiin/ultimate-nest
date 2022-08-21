@@ -13,8 +13,5 @@ export class CloudinaryModule extends createConfigurableDynamicRootModule<
 	CloudinaryModule,
 	CloudinaryModuleOptions
 >(CLOUDINARY_MODULE_OPTIONS) {
-	static Deferred = CloudinaryModule.externallyConfigured(
-		CloudinaryModule,
-		0,
-	);
+	static Deferred = CloudinaryModule.externallyConfigured(CloudinaryModule, 0);
 }

@@ -1,25 +1,10 @@
-import {
-	Auth,
-	ControllerDecorator,
-	LoggedInUser,
-	SwaggerDecorator,
-} from "@common/decorators";
+import { Auth, ControllerDecorator, LoggedInUser, SwaggerDecorator } from "@common/decorators";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
 import { LoginType } from "@common/types/enums/misc.enum";
 import { IGoogleResponse } from "@common/types/interfaces";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
-import {
-	Body,
-	Get,
-	ParseBoolPipe,
-	Post,
-	Put,
-	Query,
-	Req,
-	Res,
-	UseGuards,
-} from "@nestjs/common";
+import { Body, Get, ParseBoolPipe, Post, Put, Query, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { Request, Response } from "express";
@@ -88,16 +73,14 @@ export class AuthController {
 		user: IGoogleResponse,
 		@Res() response: Response,
 	) {
-		return this.authService
-			.login({ email: user.email }, LoginType.GOOGLE)
-			.pipe(
-				map(data => {
-					// client url
-					return response.redirect(
-						`/oauth2?accessToken=${data.payload.access_token}&refreshToken=${data.payload.refresh_token}`,
-					);
-				}),
-			);
+		return this.authService.login({ email: user.email }, LoginType.GOOGLE).pipe(
+			map(data => {
+				// client url
+				return response.redirect(
+					`/oauth2?accessToken=${data.payload.access_token}&refreshToken=${data.payload.refresh_token}`,
+				);
+			}),
+		);
 	}
 
 	@Post("verify-otp")
@@ -123,10 +106,9 @@ export class AuthController {
 	@ApiOperation({ summary: "Refresh token" })
 	@Post("token/refresh")
 	public async refresh(@Body() body: RefreshTokenDto): Promise<any> {
-		const { token } =
-			await this.tokenService.createAccessTokenFromRefreshToken(
-				body.refreshToken,
-			);
+		const { token } = await this.tokenService.createAccessTokenFromRefreshToken(
+			body.refreshToken,
+		);
 
 		return token;
 	}

@@ -32,9 +32,7 @@ export class HealthController {
 			() =>
 				this.http.pingCheck(
 					"swagger",
-					`https://localhost:${this.configService.get(
-						"app.port",
-					)}/doc`,
+					`https://localhost:${this.configService.get("app.port")}/doc`,
 				),
 			() =>
 				this.http.pingCheck(

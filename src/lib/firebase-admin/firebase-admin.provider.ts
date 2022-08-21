@@ -9,10 +9,7 @@ export const FirebaseAdminProvider = {
 	inject: [ConfigService],
 	provide: FIREBASE_ADMIN_TOKEN,
 	useFactory: (configService: ConfigService) => {
-		const config = configService.validate(
-			"FirebaseAdminModule",
-			FirebaseAdminConfig,
-		);
+		const config = configService.validate("FirebaseAdminModule", FirebaseAdminConfig);
 
 		const filePath = path.resolve(".", config.FIREBASE_CREDENTIAL_PATH);
 

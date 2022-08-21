@@ -21,11 +21,7 @@ import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
 import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
 import { UserLoginDto } from "./dtos/user-login";
 import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
-import {
-	EmailTemplateEnum,
-	LoginType,
-	RandomTypes,
-} from "@common/types/enums/misc.enum";
+import { EmailTemplateEnum, LoginType, RandomTypes } from "@common/types/enums/misc.enum";
 
 @Injectable()
 export class AuthService {
@@ -41,11 +37,7 @@ export class AuthService {
 		private readonly orm: MikroORM,
 	) {}
 
-	validateUser(
-		email: string,
-		pass: string,
-		loginType: LoginType,
-	): Observable<any> {
+	validateUser(email: string, pass: string, loginType: LoginType): Observable<any> {
 		return from(
 			this.userRepository.findOne({
 				email,
@@ -62,9 +54,7 @@ export class AuthService {
 				}
 
 				if (!user.isActive) {
-					throw new ForbiddenException(
-						this.i18n.t("status.inactiveUser"),
-					);
+					throw new ForbiddenException(this.i18n.t("status.inactiveUser"));
 				}
 
 				return user && loginType === LoginType.PASSWORD
@@ -83,20 +73,11 @@ export class AuthService {
 		);
 	}
 
-	login(
-		loginDto: UserLoginDto,
-		loginType: LoginType,
-	): Observable<IAuthenticationPayload> {
-		return this.validateUser(
-			loginDto.email,
-			loginDto.password,
-			loginType,
-		).pipe(
+	login(loginDto: UserLoginDto, loginType: LoginType): Observable<IAuthenticationPayload> {
+		return this.validateUser(loginDto.email, loginDto.password, loginType).pipe(
 			switchMap(user => {
 				if (!user)
-					throw new UnauthorizedException(
-						this.i18n.t("exception.invalidCredentials"),
-					);
+					throw new UnauthorizedException(this.i18n.t("exception.invalidCredentials"));
 
 				return zip(
 					this.tokenService.generateAccessToken(user),
@@ -106,11 +87,7 @@ export class AuthService {
 					),
 				).pipe(
 					map(([accessToken, refreshToken]) => {
-						return HelperService.buildPayloadResponse(
-							user,
-							accessToken,
-							refreshToken,
-						);
+						return HelperService.buildPayloadResponse(user, accessToken, refreshToken);
 					}),
 				);
 			}),
@@ -152,10 +129,7 @@ export class AuthService {
 			);
 		}
 
-		const otpNumber = (await HelperService.getRandom(
-			RandomTypes.NUMBER,
-			6,
-		)) as string; // random six digit otp
+		const otpNumber = (await HelperService.getRandom(RandomTypes.NUMBER, 6)) as string; // random six digit otp
 
 		const otpExpiry = 60 * 60 * 1000; // 1 hour
 
@@ -195,10 +169,7 @@ export class AuthService {
 		).pipe(
 			switchMap(details => {
 				return from(
-					this.userRepository.nativeUpdate(
-						{ id: details.user.id },
-						{ password },
-					),
+					this.userRepository.nativeUpdate({ id: details.user.id }, { password }),
 				);
 			}),
 		);
@@ -254,16 +225,11 @@ export class AuthService {
 			}),
 		).pipe(
 			switchMap(userDetails => {
-				return HelperService.verifyHash(
-					userDetails.password,
-					currentPassword,
-				).pipe(
+				return HelperService.verifyHash(userDetails.password, currentPassword).pipe(
 					map(isValid => {
 						if (!isValid) {
 							throw new BadRequestException(
-								this.i18n.translate(
-									"exception.invalidCredentials",
-								),
+								this.i18n.translate("exception.invalidCredentials"),
 							);
 						}
 						wrap(userDetails).assign({
