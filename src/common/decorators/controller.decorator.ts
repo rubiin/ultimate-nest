@@ -1,9 +1,4 @@
-import {
-	applyDecorators,
-	CacheInterceptor,
-	Controller,
-	UseInterceptors,
-} from "@nestjs/common";
+import { applyDecorators, CacheInterceptor, Controller, UseInterceptors } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { capitalize } from "helper-fns";
 import { Auth } from "./auth.decorator";

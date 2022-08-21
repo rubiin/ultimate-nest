@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from "@nestjs/class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class UserLoginDto {

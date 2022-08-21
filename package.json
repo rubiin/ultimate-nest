@@ -21,7 +21,6 @@
 		"orm": "npx mikro-orm"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.154.0",
 		"@casl/ability": "^6.0.0",
 		"@golevelup/nestjs-modules": "^0.6.1",
 		"@golevelup/nestjs-rabbitmq": "^3.2.0",
@@ -32,6 +31,8 @@
 		"@mikro-orm/reflection": "^5.3.1",
 		"@mikro-orm/sql-highlighter": "^1.0.1",
 		"@nestjs/axios": "^0.1.0",
+		"@nestjs/class-transformer": "^0.4.0",
+		"@nestjs/class-validator": "^0.13.4",
 		"@nestjs/common": "9.0.11",
 		"@nestjs/config": "^2.2.0",
 		"@nestjs/core": "9.0.11",
@@ -51,8 +52,6 @@
 		"argon2": "^0.28.7",
 		"cache-manager": "^4.1.0",
 		"cache-manager-redis-store": "^2.0.0",
-		"class-transformer": "^0.5.1",
-		"class-validator": "^0.13.2",
 		"cloudinary": "^1.30.1",
 		"compression": "^1.7.4",
 		"date-fns": "^2.29.2",
@@ -76,7 +75,6 @@
 		"reflect-metadata": "0.1.13",
 		"rxjs": "^7.5.6",
 		"sharp": "^0.30.7",
-		"swagger-ui-express": "^4.5.0",
 		"twilio": "^3.80.1"
 	},
 	"devDependencies": {

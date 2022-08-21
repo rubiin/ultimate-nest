@@ -1,10 +1,4 @@
-import {
-	EntityManager,
-	EntityRepository,
-	FilterQuery,
-	FindOptions,
-	Loaded,
-} from "@mikro-orm/core";
+import { EntityManager, EntityRepository, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
 import { BaseEntity } from "./base-entity.entity";
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {

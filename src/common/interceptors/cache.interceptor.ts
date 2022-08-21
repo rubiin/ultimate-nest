@@ -5,10 +5,7 @@ export class MyCacheInterceptor extends CacheInterceptor {
 		const http = context.switchToHttp();
 		const request = http.getRequest();
 
-		const ignoreCaching: boolean = this.reflector.get(
-			"ignoreCaching",
-			context.getHandler(),
-		);
+		const ignoreCaching: boolean = this.reflector.get("ignoreCaching", context.getHandler());
 
 		return !ignoreCaching || request.method === "GET";
 	}

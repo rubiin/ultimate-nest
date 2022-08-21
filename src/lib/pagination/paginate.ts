@@ -16,10 +16,7 @@ const logger = new Logger(Pagination.name);
  * @returns A function that takes in an array of items and an options object and returns a promise that
  * resolves to a pagination object.
  */
-export async function paginate<T>(
-	items: T[],
-	options: IPaginationOptions,
-): Promise<Pagination<T>> {
+export async function paginate<T>(items: T[], options: IPaginationOptions): Promise<Pagination<T>> {
 	const [page, limit, route] = resolveOptions(options);
 
 	if (page < 1) {
@@ -45,8 +42,7 @@ function resolveNumericOption(
 	const value = options[key];
 	const resolvedValue = Number(value);
 
-	if (Number.isInteger(resolvedValue) && resolvedValue >= 0)
-		return resolvedValue;
+	if (Number.isInteger(resolvedValue) && resolvedValue >= 0) return resolvedValue;
 
 	logger.warn(
 		`Query parameter "${key}" with value "${value}" was resolved as "${resolvedValue}", please validate your query input! Falling back to default "${defaultValue}".`,

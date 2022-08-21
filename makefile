@@ -28,5 +28,11 @@ encryption:
 ssl:
 	@mkcert $(site)
 
+shell:
+	REPL=true npm run start:dev
+	
+deploy:
+	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 PASSWORD=test@1234 ENV=dev docker-compose up --build
+
 
 

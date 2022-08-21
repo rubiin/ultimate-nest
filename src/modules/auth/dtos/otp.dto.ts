@@ -1,5 +1,5 @@
 import { PickType } from "@nestjs/mapped-types";
-import { IsEmail, IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty } from "@nestjs/class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class OtpVerifyDto {

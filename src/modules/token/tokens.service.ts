@@ -43,12 +43,7 @@ export class TokensService {
 			subject: String(user.id),
 		};
 
-		return from(
-			this.jwt.signAsync(
-				{ ...pick(user, ["id", "idx", "email"]) },
-				options,
-			),
-		);
+		return from(this.jwt.signAsync({ ...pick(user, ["id", "idx", "email"]) }, options));
 	}
 
 	/**
@@ -78,13 +73,9 @@ export class TokensService {
 	 * @param {string} encoded - string - The encoded refresh token
 	 * @returns An object with a user and a token.
 	 */
-	async resolveRefreshToken(
-		encoded: string,
-	): Promise<{ user: User; token: RefreshToken }> {
+	async resolveRefreshToken(encoded: string): Promise<{ user: User; token: RefreshToken }> {
 		const payload = await this.decodeRefreshToken(encoded);
-		const token = await lastValueFrom(
-			this.getStoredTokenFromRefreshTokenPayload(payload),
-		);
+		const token = await lastValueFrom(this.getStoredTokenFromRefreshTokenPayload(payload));
 
 		if (!token) {
 			throw new UnauthorizedException("Refresh token not found");
@@ -94,9 +85,7 @@ export class TokensService {
 			throw new UnauthorizedException("Refresh token revoked");
 		}
 
-		const user = await lastValueFrom(
-			this.getUserFromRefreshTokenPayload(payload),
-		);
+		const user = await lastValueFrom(this.getUserFromRefreshTokenPayload(payload));
 
 		if (!user) {
 			throw new UnauthorizedException("Refresh token malformed");
@@ -157,10 +146,7 @@ export class TokensService {
 	 * @param {RefreshTokenPayload} payload - The payload of the refresh token.
 	 * @returns The user object
 	 */
-	deleteRefreshToken(
-		user: User,
-		payload: RefreshTokenPayload,
-	): Observable<User> {
+	deleteRefreshToken(user: User, payload: RefreshTokenPayload): Observable<User> {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
@@ -180,9 +166,7 @@ export class TokensService {
 	 * @param {RefreshTokenPayload} payload - RefreshTokenPayload
 	 * @returns A user object
 	 */
-	private getUserFromRefreshTokenPayload(
-		payload: RefreshTokenPayload,
-	): Observable<User> {
+	private getUserFromRefreshTokenPayload(payload: RefreshTokenPayload): Observable<User> {
 		const subId = payload.sub;
 
 		if (!subId) {

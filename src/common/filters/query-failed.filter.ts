@@ -1,13 +1,5 @@
-import {
-	DriverException,
-	UniqueConstraintViolationException,
-} from "@mikro-orm/core";
-import {
-	ArgumentsHost,
-	Catch,
-	ExceptionFilter,
-	HttpStatus,
-} from "@nestjs/common";
+import { DriverException, UniqueConstraintViolationException } from "@mikro-orm/core";
+import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from "@nestjs/common";
 import { Response } from "express";
 import { STATUS_CODES } from "http";
 

@@ -1,9 +1,4 @@
-import {
-	ArgumentMetadata,
-	BadRequestException,
-	Injectable,
-	PipeTransform,
-} from "@nestjs/common";
+import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from "@nestjs/common";
 
 /* It throws an exception if the file(s) are not present */
 

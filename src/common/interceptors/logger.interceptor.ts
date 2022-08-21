@@ -33,10 +33,7 @@ export class LoggingInterceptor implements NestInterceptor {
 	 * @param context details about the current request
 	 * @param call$ implements the handle method that returns an Observable
 	 */
-	intercept(
-		context: ExecutionContext,
-		call$: CallHandler,
-	): Observable<unknown> {
+	intercept(context: ExecutionContext, call$: CallHandler): Observable<unknown> {
 		const request: Request = context.switchToHttp().getRequest();
 		const { method, url, body, headers } = request;
 		const context_ = `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`;
@@ -71,9 +68,7 @@ export class LoggingInterceptor implements NestInterceptor {
 	 */
 	private logNext(body: unknown, context: ExecutionContext): void {
 		const request: Request = context.switchToHttp().getRequest<Request>();
-		const response: Response = context
-			.switchToHttp()
-			.getResponse<Response>();
+		const response: Response = context.switchToHttp().getResponse<Response>();
 		const { method, url } = request;
 		const { statusCode } = response;
 		const context_ = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`;

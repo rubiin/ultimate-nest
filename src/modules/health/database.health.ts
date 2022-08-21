@@ -1,10 +1,6 @@
 import { MikroORM } from "@mikro-orm/core";
 import { Injectable } from "@nestjs/common";
-import {
-	HealthCheckError,
-	HealthIndicator,
-	HealthIndicatorResult,
-} from "@nestjs/terminus";
+import { HealthCheckError, HealthIndicator, HealthIndicatorResult } from "@nestjs/terminus";
 
 @Injectable()
 export class DatabaseHealthIndicator extends HealthIndicator {

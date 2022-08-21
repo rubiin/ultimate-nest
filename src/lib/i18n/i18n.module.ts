@@ -1,10 +1,5 @@
 import { Module } from "@nestjs/common";
-import {
-	AcceptLanguageResolver,
-	HeaderResolver,
-	I18nModule,
-	QueryResolver,
-} from "nestjs-i18n";
+import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n";
 import path from "node:path";
 
 @Module({

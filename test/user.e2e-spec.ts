@@ -1,10 +1,7 @@
 import { faker } from "@mikro-orm/seeder";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
-import {
-	i18nValidationErrorFactory,
-	I18nValidationExceptionFilter,
-} from "nestjs-i18n";
+import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestjs-i18n";
 import path from "node:path";
 import request from "supertest";
 import { AppModule } from "../src/app.module";
@@ -30,9 +27,7 @@ describe("AppController (e2e)", () => {
 			}),
 		);
 
-		app.useGlobalFilters(
-			new I18nValidationExceptionFilter({ detailedErrors: false }),
-		);
+		app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
 		await app.init();
 	});
 
@@ -95,9 +90,7 @@ describe("AppController (e2e)", () => {
 				.field("password", userDto.password)
 				.attach("avatar", path.resolve(__dirname, "./test.png"))
 				.expect(({ body }) => {
-					expect(body.message).toEqual(
-						"User already registered with email",
-					);
+					expect(body.message).toEqual("User already registered with email");
 				})
 				.expect(400);
 		});
@@ -125,9 +118,7 @@ describe("AppController (e2e)", () => {
 			return request(app.getHttpServer())
 				.get(`/users/30906d04-d770-4694-b4c1-5c084c0c96f0`)
 				.expect(({ body }) => {
-					expect(body.message).toEqual(
-						"User does not exists or unauthorized",
-					);
+					expect(body.message).toEqual("User does not exists or unauthorized");
 				})
 				.expect(404);
 		});

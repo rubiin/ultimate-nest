@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { plainToClass } from "class-transformer";
-import { validateSync } from "class-validator";
+import { plainToClass } from "@nestjs/class-transformer";
+import { validateSync } from "@nestjs/class-validator";
 
 @Injectable()
 export class ConfigService {

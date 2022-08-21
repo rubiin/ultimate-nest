@@ -1,0 +1,53 @@
+version:
+    "3.9"
+
+    #######################################
+    # Basic needed services
+    #######################################
+
+services:
+    cit-be:
+        container_name: cit-be
+        env_file: "env/.env.${ENV}"
+        build:
+            context: "."
+            dockerfile: ./docker/dev.Dockerfile
+        image: cit-be
+        depends_on:
+            - redis
+        restart: unless-stopped
+        command: npm run start:dev
+        ports:
+            - "8000:8000"
+        stdin_open: true
+        tty: true
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+
+    redis:
+        image: redis:7.0.4-alpine
+        restart: always
+        ports:
+            - "6379:6379"
+        command: redis-server --loglevel warning --requirepass ${PASSWORD}
+        volumes:
+            - redis-data:/data
+
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3.8-management-alpine
+        environment:
+            - RABBITMQ_DEFAULT_USER=cit
+            - RABBITMQ_DEFAULT_PASS=${PASSWORD}
+        ports:
+            # AMQP protocol port
+            - "5672:5672"
+            # HTTP management UI
+            - "15672:15672"
+        volumes:
+            - rabbitmq-data:/var/lib/rabbitmq/mnesia/
+
+volumes:
+    redis-data:
+    rabbitmq-data:

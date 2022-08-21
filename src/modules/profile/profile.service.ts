@@ -25,9 +25,7 @@ export class ProfileService {
 
 	follow(followerEmail: string, username: string): Observable<IProfileData> {
 		if (!followerEmail || !username) {
-			throw new BadRequestException(
-				"Follower email and username not provided.",
-			);
+			throw new BadRequestException("Follower email and username not provided.");
 		}
 
 		const followingUser$ = from(
@@ -63,9 +61,7 @@ export class ProfileService {
 					username: followingUser.username,
 				};
 
-				return from(this.userRepository.flush()).pipe(
-					map(() => profile),
-				);
+				return from(this.userRepository.flush()).pipe(map(() => profile));
 			}),
 		);
 	}
@@ -80,9 +76,7 @@ export class ProfileService {
 	 */
 	unFollow(followerId: number, username: string): Observable<IProfileData> {
 		if (!followerId || !username) {
-			throw new BadRequestException(
-				"FollowerId and username not provided.",
-			);
+			throw new BadRequestException("FollowerId and username not provided.");
 		}
 
 		const followingUser$ = from(
@@ -96,13 +90,10 @@ export class ProfileService {
 
 		return followingUser$.pipe(
 			switchMap(followingUser => {
-				const followerUser =
-					this.userRepository.getReference(followerId);
+				const followerUser = this.userRepository.getReference(followerId);
 
 				if (followingUser.id === followerId) {
-					throw new BadRequestException(
-						"FollowerId and FollowingId cannot be equal.",
-					);
+					throw new BadRequestException("FollowerId and FollowingId cannot be equal.");
 				}
 
 				followingUser.followers.remove(followerUser);
@@ -113,9 +104,7 @@ export class ProfileService {
 					username: followingUser.username,
 				};
 
-				return from(this.userRepository.flush()).pipe(
-					map(() => profile),
-				);
+				return from(this.userRepository.flush()).pipe(map(() => profile));
 			}),
 		);
 	}

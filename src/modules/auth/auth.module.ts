@@ -12,21 +12,9 @@ import { GoogleStrategy } from "./strategies/google.strategy";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 
 @Module({
-	imports: [
-		PassportModule,
-		NestJwtModule,
-		OrmModule,
-		UserModule,
-		NestCaslModule,
-	],
+	imports: [PassportModule, NestJwtModule, OrmModule, UserModule, NestCaslModule],
 	controllers: [AuthController],
-	providers: [
-		AuthService,
-		TokensService,
-		RefreshTokensRepository,
-		JwtStrategy,
-		GoogleStrategy,
-	],
+	providers: [AuthService, TokensService, RefreshTokensRepository, JwtStrategy, GoogleStrategy],
 	exports: [NestJwtModule, AuthService, JwtStrategy],
 })
 export class AuthModule {}

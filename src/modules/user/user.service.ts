@@ -7,11 +7,7 @@ import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { MikroORM, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import {
-	BadRequestException,
-	Injectable,
-	NotFoundException,
-} from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { capitalize } from "helper-fns";
 import { I18nService } from "nestjs-i18n";
@@ -35,13 +31,7 @@ export class UserService {
 	 * @param {PageOptionsDto}  - PageOptionsDto - This is a DTO that contains the following properties:
 	 * @returns An observable of a pagination object.
 	 */
-	getMany({
-		limit,
-		offset,
-		order,
-		sort,
-		page,
-	}: PageOptionsDto): Observable<Pagination<User>> {
+	getMany({ limit, offset, order, sort, page }: PageOptionsDto): Observable<Pagination<User>> {
 		return from(
 			this.userRepository.findAndPaginate(
 				{ isObsolete: false, isActive: true },
@@ -53,12 +43,7 @@ export class UserService {
 			),
 		).pipe(
 			map(({ results, total }) => {
-				return createPaginationObject<User>(
-					results,
-					total,
-					page,
-					limit,
-				);
+				return createPaginationObject<User>(results, total, page, limit);
 			}),
 		);
 	}
@@ -79,9 +64,7 @@ export class UserService {
 		).pipe(
 			map(user => {
 				if (!user) {
-					throw new NotFoundException(
-						this.i18nService.t("exception.USER_DOESNT_EXIST"),
-					);
+					throw new NotFoundException(this.i18nService.t("exception.USER_DOESNT_EXIST"));
 				} else {
 					return user;
 				}
@@ -94,17 +77,13 @@ export class UserService {
 	 * @param dto - CreateUserDto & { image: Express.Multer.File }
 	 * @returns The user object
 	 */
-	async createOne(
-		dto: CreateUserDto & { image: Express.Multer.File },
-	): Promise<User> {
+	async createOne(dto: CreateUserDto & { image: Express.Multer.File }): Promise<User> {
 		const userExist = await this.userRepository.findOne({
 			email: dto.email,
 		});
 
 		if (userExist) {
-			throw new BadRequestException(
-				this.i18nService.t("exception.USER_EMAIL_EXISTS"),
-			);
+			throw new BadRequestException(this.i18nService.t("exception.USER_EMAIL_EXISTS"));
 		}
 
 		const { image, ...rest } = dto;
@@ -167,9 +146,7 @@ export class UserService {
 	deleteOne(index: string): Observable<User> {
 		return this.getOne(index).pipe(
 			switchMap(user => {
-				return from(this.userRepository.softRemoveAndFlush(user)).pipe(
-					map(() => user),
-				);
+				return from(this.userRepository.softRemoveAndFlush(user)).pipe(map(() => user));
 			}),
 		);
 	}

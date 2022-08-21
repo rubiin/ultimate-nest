@@ -1,22 +1,9 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import {
-	ControllerDecorator,
-	LoggedInUser,
-	SwaggerDecorator,
-} from "@common/decorators";
+import { ControllerDecorator, LoggedInUser, SwaggerDecorator } from "@common/decorators";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { Pagination } from "@lib/pagination";
-import {
-	Body,
-	Delete,
-	Get,
-	Param,
-	ParseUUIDPipe,
-	Post,
-	Put,
-	Query,
-} from "@nestjs/common";
+import { Body, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
@@ -29,9 +16,7 @@ export class PostController {
 	@Get()
 	@ApiOperation({ summary: "Post list" })
 	@ApiPaginatedResponse(PostEntity)
-	getMany(
-		@Query() pageOptionsDto: PageOptionsDto,
-	): Observable<Pagination<PostEntity>> {
+	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<PostEntity>> {
 		return this.postService.getMany(pageOptionsDto);
 	}
 
@@ -40,9 +25,7 @@ export class PostController {
 		operation: "Post fetch",
 		notFound: "Post doesn't exist.",
 	})
-	getById(
-		@Param("idx", ParseUUIDPipe) index: string,
-	): Observable<PostEntity> {
+	getById(@Param("idx", ParseUUIDPipe) index: string): Observable<PostEntity> {
 		return this.postService.getById(index);
 	}
 
@@ -51,9 +34,7 @@ export class PostController {
 		operation: "Post comment fetch",
 		notFound: "Post doesn't exist.",
 	})
-	findComments(
-		@Param("idx", ParseUUIDPipe) index: string,
-	): Observable<Comment[]> {
+	findComments(@Param("idx", ParseUUIDPipe) index: string): Observable<Comment[]> {
 		return this.postService.findComments(index);
 	}
 
@@ -80,9 +61,7 @@ export class PostController {
 		operation: "Post delete",
 		notFound: "Post doesn't exist.",
 	})
-	deleteOne(
-		@Param("idx", ParseUUIDPipe) index: string,
-	): Observable<PostEntity> {
+	deleteOne(@Param("idx", ParseUUIDPipe) index: string): Observable<PostEntity> {
 		return this.postService.deleteOne(index);
 	}
 
@@ -113,10 +92,7 @@ export class PostController {
 		operation: "Post favorite",
 		notFound: "Post doesn't exist.",
 	})
-	favorite(
-		@LoggedInUser("id") userId: number,
-		@Param("idx", ParseUUIDPipe) index: string,
-	) {
+	favorite(@LoggedInUser("id") userId: number, @Param("idx", ParseUUIDPipe) index: string) {
 		return this.postService.favorite(userId, index);
 	}
 

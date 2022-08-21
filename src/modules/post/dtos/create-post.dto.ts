@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsString } from "@nestjs/class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreatePostDto {

@@ -1,7 +1,4 @@
-import {
-	ValidationError,
-	ValidationPipe as OriginalValidationPipe,
-} from "@nestjs/common";
+import { ValidationError, ValidationPipe as OriginalValidationPipe } from "@nestjs/common";
 import { iterate } from "iterare";
 
 export class ValidationPipe extends OriginalValidationPipe {
