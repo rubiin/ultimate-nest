@@ -1,6 +1,7 @@
 import { INestApplication, Logger } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import fs from "node:fs";
+import * as swaggerStats from "swagger-stats";
 
 export const AppUtils = {
 	/**
@@ -26,7 +27,7 @@ export const AppUtils = {
 			process.exit(0);
 		});
 	},
-	setupSwagger: (app: INestApplication): void => {
+	setupSwagger: (app: INestApplication, { user, pass }: { user: string; pass: string }): void => {
 		const options = new DocumentBuilder()
 			.setTitle("Api Documentation")
 			.addBearerAuth()
@@ -37,6 +38,19 @@ export const AppUtils = {
 			.build();
 
 		const document = SwaggerModule.createDocument(app, options, {});
+
+		app.use(
+			swaggerStats.getMiddleware({
+				swaggerSpec: document,
+				authentication: true,
+				hostname: "cit",
+				uriPath: "/stats",
+				onAuthenticate: function (request: any, username: string, password: string) {
+					// simple check for username and password
+					return username === user && password === pass;
+				},
+			}),
+		);
 
 		SwaggerModule.setup("doc", app, document, {
 			explorer: true,

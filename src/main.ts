@@ -51,7 +51,10 @@ async function bootstrap() {
 	// configureNestSwagger
 	// =========================================================
 
-	AppUtils.setupSwagger(app);
+	AppUtils.setupSwagger(app, {
+		user: configService.get("app.swaggerUser"),
+		pass: configService.get("app.swaggerPass"),
+	});
 
 	// =========================================================
 	// configurePinoLogger
