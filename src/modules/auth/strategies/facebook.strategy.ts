@@ -2,14 +2,14 @@ import { IOauthResponse } from "@common/types/interfaces/authentication.interfac
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
-import { Profile, Strategy, VerifyCallback } from "passport-google-oauth20";
+import { Profile, Strategy } from "passport-facebook";
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
+export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 	/**
-	 * It's a PassportStrategy that uses the GoogleStrategy and the Google OAuth2.0 API to authenticate users
+	 * It's a PassportStrategy that uses the FacebookStrategy and the Google OAuth2.0 API to authenticate users
 	 * Create a new project at
-	 * https://console.cloud.google.com/apis/
+	 * https://developers.facebook.com
 	 *
 	 * The callback url should match whats specified in the callbackURL section
 	 *
@@ -18,10 +18,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 
 	constructor(public readonly configService: ConfigService) {
 		super({
-			clientID: configService.get<string>("googleOauth.clientId"),
-			clientSecret: configService.get<string>("googleOauth.secret"),
-			callbackURL: configService.get<string>("googleOauth.callbackUrl"),
-			scope: ["email", "profile"],
+			scope: "email",
+			profileFields: ["emails", "name"],
+			clientID: configService.get<string>("facebookOauth.clientId"),
+			clientSecret: configService.get<string>("facebookOauth.secret"),
+			callbackURL: configService.get<string>("facebookOauth.callbackUrl"),
 		});
 	}
 
@@ -29,7 +30,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 		accessToken: string,
 		_refreshToken: string,
 		profile: Profile,
-		done: VerifyCallback,
+		done: (error: any, user: any, info?: any) => void,
 	): Promise<any> {
 		const { name, emails } = profile;
 		const user: IOauthResponse = {

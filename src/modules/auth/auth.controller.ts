@@ -1,12 +1,23 @@
-import { Auth, ControllerDecorator, LoggedInUser, SwaggerDecorator } from "@common/decorators";
+import { Auth, LoggedInUser, SwaggerDecorator } from "@common/decorators";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
 import { LoginType } from "@common/types/enums/misc.enum";
-import { IGoogleResponse } from "@common/types/interfaces";
+import { IOauthResponse } from "@common/types/interfaces";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
-import { Body, Get, ParseBoolPipe, Post, Put, Query, Req, Res, UseGuards } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Get,
+	ParseBoolPipe,
+	Post,
+	Put,
+	Query,
+	Req,
+	Res,
+	UseGuards,
+} from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { map, Observable } from "rxjs";
 import { AuthService } from "./auth.service";
@@ -19,7 +30,8 @@ import {
 	UserLoginDto,
 } from "./dtos";
 
-@ControllerDecorator("auth", false)
+@ApiTags("auth")
+@Controller("auth")
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
@@ -70,17 +82,46 @@ export class AuthController {
 	@UseGuards(AuthGuard("google"))
 	googleAuthRedirect(
 		@LoggedInUser()
-		user: IGoogleResponse,
+		user: IOauthResponse,
 		@Res() response: Response,
 	) {
 		return this.authService.login({ email: user.email }, LoginType.GOOGLE).pipe(
 			map(data => {
 				// client url
 				return response.redirect(
-					`/oauth2?accessToken=${data.payload.access_token}&refreshToken=${data.payload.refresh_token}`,
+					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.payload.access_token}`,
 				);
 			}),
 		);
+	}
+
+	@Get("facebook")
+	@UseGuards(AuthGuard("facebook"))
+	facebookAuth(@Req() _request: Request) {
+		// the facebook auth redirect will be handled by passport
+	}
+
+	@Get("facebook/redirect")
+	@UseGuards(AuthGuard("facebook"))
+	facebookAuthRedirect(
+		@LoggedInUser()
+		user: IOauthResponse,
+		@Res() response: Response,
+	) {
+		return this.authService.login({ email: user.email }, LoginType.FACEBOOK).pipe(
+			map(data => {
+				// client url
+				return response.redirect(
+					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.payload.access_token}`,
+				);
+			}),
+		);
+	}
+
+	// this simulates a frontend url for testing oauth login
+	@Get("oauth/login")
+	oauthMock(@Query() query: { token: string }) {
+		return { message: "successfully logged", token: query.token };
 	}
 
 	@Post("verify-otp")
