@@ -6,13 +6,13 @@ version:
     #######################################
 
 services:
-    cit-be:
-        container_name: cit-be
+    nestify:
+        container_name: nestify
         env_file: "env/.env.${ENV}"
         build:
             context: "."
             dockerfile: ./docker/dev.Dockerfile
-        image: cit-be
+        image: nestify
         depends_on:
             - redis
         restart: unless-stopped
@@ -38,7 +38,7 @@ services:
         container_name: rabbitmq
         image: rabbitmq:3.8-management-alpine
         environment:
-            - RABBITMQ_DEFAULT_USER=cit
+            - RABBITMQ_DEFAULT_USER=nestify
             - RABBITMQ_DEFAULT_PASS=${PASSWORD}
         ports:
             # AMQP protocol port
