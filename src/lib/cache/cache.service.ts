@@ -12,7 +12,10 @@ export class CacheService {
 
 		const match = keys.filter((key: string) => regex.test(key));
 
+    // only delete if matches to prevent from getting redis error for DEL arguments
+		if(match.length > 0) {
 		await this.cacheManager.store.del(match);
+		}
 
 		return true;
 	}
