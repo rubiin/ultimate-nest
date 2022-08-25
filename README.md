@@ -90,3 +90,14 @@ Additionally, you can also see the scripts in `makefile`
 # Authentication
 
 This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and authentication of the token.
+
+# Deployment
+
+You need to have docker and docker-compose installed. Also since we are using makefiles for deployment, you need to have make installed.
+
+```sh
+  env=dev make deploy    # deploys dev environment
+  env=prod make deploy   # deploys prod environment
+```
+
+The password for `redis` and `rabbitmq` is `test@1234` can be changed in the make file under `deploy` script
