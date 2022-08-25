@@ -5,8 +5,10 @@ import { Cache } from "cache-manager";
 export class CacheService {
 	constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
 
-	async deleteMatch(regex: RegExp): Promise<boolean> {
+	async deleteMatch(regexString: string): Promise<boolean> {
 		const keys = await this.cacheManager.store.keys();
+
+		const regex = new RegExp(regexString,"i");
 
 		const match = keys.filter((key: string) => regex.test(key));
 
