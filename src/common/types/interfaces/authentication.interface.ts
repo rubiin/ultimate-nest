@@ -17,10 +17,9 @@ export interface IJwtPayload {
 	iat?: Date;
 }
 
-export interface IGoogleResponse {
+export interface IOauthResponse {
 	email: string;
 	firstName: string;
 	lastName: string;
-	avatar: string;
 	accessToken: string;
 }

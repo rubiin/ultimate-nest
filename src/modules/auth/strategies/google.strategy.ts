@@ -1,4 +1,4 @@
-import { IGoogleResponse } from "@common/types/interfaces/authentication.interface";
+import { IOauthResponse } from "@common/types/interfaces/authentication.interface";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
@@ -31,12 +31,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 		profile: Profile,
 		done: VerifyCallback,
 	): Promise<any> {
-		const { name, emails, photos } = profile;
-		const user: IGoogleResponse = {
+		const { name, emails } = profile;
+		const user: IOauthResponse = {
 			email: emails[0].value,
 			firstName: name.givenName,
 			lastName: name.familyName,
-			avatar: photos[0].value,
 			accessToken,
 		};
 
