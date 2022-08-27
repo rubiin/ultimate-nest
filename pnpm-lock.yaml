@@ -95,6 +95,7 @@ specifiers:
     preview-email: ^3.0.7
     reflect-metadata: 0.1.13
     rxjs: ^7.5.6
+    sample-env: ^1.2.4
     sharp: ^0.30.7
     supertest: 6.2.4
     swagger-stats: ^0.99.2
@@ -206,6 +207,7 @@ devDependencies:
     jest: 29.0.0_vqz5d3y22yhywvm6xfyh7j5jna
     lint-staged: 13.0.3
     prettier: 2.7.1
+    sample-env: 1.2.4
     supertest: 6.2.4
     ts-jest: 28.0.8_vlousi5pv75cjulniipya6iqiu
     ts-loader: 9.3.1_xnp4kzegbjokq62cajex2ovgkm
@@ -12836,6 +12838,16 @@ packages:
             {
                 integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==,
             }
+
+    /sample-env/1.2.4:
+        resolution:
+            {
+                integrity: sha512-wTAZucN1UHsLnYlmmJzLYLDRqrU6SK5g9Q1fuaqEhiGs8BSgE6E9W6yVWnk7537g/im91vLmkcqreh3onVaIjg==,
+            }
+        hasBin: true
+        dependencies:
+            yargs: 17.5.1
+        dev: true
 
     /sax/1.2.4:
         resolution:

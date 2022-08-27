@@ -101,3 +101,7 @@ You need to have docker and docker-compose installed. Also since we are using ma
 ```
 
 The password for `redis` and `rabbitmq` is `test@1234` can be changed in the make file under `deploy` script
+
+## sample env
+
+The sample env is generated using [sample-env](https://www.github.com/rubiin/sample-env)
