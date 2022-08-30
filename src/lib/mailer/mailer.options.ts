@@ -5,6 +5,7 @@ export interface MailModuleOptions {
 	port: number;
 	password: string;
 	username: string;
+	server: string;
 	previewEmail: boolean;
 	template: {
 		dir: string;

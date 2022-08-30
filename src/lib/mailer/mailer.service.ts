@@ -1,10 +1,11 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { createTransport, SendMailOptions } from "nodemailer";
+import * as eta from "eta";
+import { createTransport, SendMailOptions, Transporter } from "nodemailer";
+import { SentMessageInfo } from "nodemailer/lib/ses-transport";
 import previewEmail from "preview-email";
 import { MAIL_MODULE_OPTIONS } from "./mailer.constants";
 import { MailModuleOptions } from "./mailer.options";
-import { join } from "node:path";
-import { renderFile } from "eta";
+import aws from "@aws-sdk/client-ses";
 
 interface IMailOptions extends Partial<SendMailOptions> {
 	template: string;
@@ -26,27 +27,41 @@ export class MailerService {
 	 * @returns A promise that resolves to a boolean.
 	 */
 	sendMail(mailOptions: IMailOptions) {
-		const transporter = createTransport({
-			host: this.options.host,
-			port: this.options.port,
-			secure: true,
-			auth: {
-				user: this.options.username,
-				pass: this.options.password,
-			},
-			tls: {
-				// do not fail on invalid certs
-				rejectUnauthorized: false,
-			},
-		});
+		let transporter: Transporter<SentMessageInfo>;
+
+		// create Nodemailer SES transporter
+		if (this.options.server === "SES") {
+			const ses = new aws.SES({
+				apiVersion: "2010-12-01",
+				region: "ap-southeast-2",
+				credentials: {
+					accessKeyId: this.options.username,
+					secretAccessKey: this.options.password,
+				},
+			});
+
+			transporter = createTransport({
+				SES: { ses, aws },
+			});
+		} else {
+			transporter = createTransport({
+				host: this.options.host,
+				port: this.options.port,
+				secure: true,
+				auth: {
+					user: this.options.username,
+					pass: this.options.password,
+				},
+				tls: {
+					// do not fail on invalid certs
+					rejectUnauthorized: false,
+				},
+			});
+		}
 
 		return new Promise<boolean>((resolve, reject) =>
-			renderFile(
-				join(
-					__dirname,
-					"/../../",
-					`${this.options.template.dir}/${mailOptions.template}.eta`,
-				),
+			eta.renderFile(
+				`${__dirname}/../../${this.options.template.dir}/${mailOptions.template}.eta`,
 				mailOptions.replacements,
 				this.options.template.etaOptions,
 				(error, html) => {
