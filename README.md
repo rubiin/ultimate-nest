@@ -35,7 +35,9 @@ should be of format .env.[environment] Ex. (.env.dev). The env to use should be 
 
 Start local Postgres server and run `NODE_ENV=dev make migrate` to apply migrations
 
-Now you can start the application witt `NODE_ENV=dev npm run start.
+Now you can start the application witt `NODE_ENV=dev npm run start`.
+
+Note: If you are using windows, `SET NODE_ENV=dev npm run start`
 
 ---
 
@@ -78,6 +80,20 @@ Additionally, you can also see the scripts in `makefile`
 -   Make sure you create a env file under `env` directory with name like `.env.something`.The portion after .env is the `NODE_ENV` value which will be required while running the app
 -   Also make sure you have ssl files inside `src/resources/ssl` if you tend to use ssl. Replace the sample files with your ssl files but keep the name same. Additionally
 
+# Migration and seeding
+
+Migrations are used to update the database schema. The migration files are stored in `migrations` directory.
+```sh
+  env=dev make migrate # applies migration for dev env
+```
+Seeding is used to insert data into the database. The seeding files are stored in `common/database/seeders` directory.
+```sh
+  env=dev USER_PASSWORD=Test@1234 make seed   # seeds data for dev env with user password set as Test@1234
+```
+
+
+
+
 ## Start application
 
 -   `NODE_ENV=[env name] npm run start` (without ssl)
@@ -90,6 +106,7 @@ Additionally, you can also see the scripts in `makefile`
 # Authentication
 
 This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and authentication of the token.
+
 
 # Deployment
 
