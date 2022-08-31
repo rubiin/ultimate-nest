@@ -35,5 +35,12 @@ deploy:
 	npm i --package-lock-only --legacy-peer-deps
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 PASSWORD=test@1234 ENV=dev docker-compose up --build
 
+stop:
+	ENV=dev PASSWORD=test@1234  docker-compose -f docker-compose.$(env).yml stop
+
+remove:
+	ENV=dev PASSWORD=test@1234 docker-compose -f docker-compose.$(env).yml down
+
+
 
 

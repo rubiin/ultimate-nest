@@ -1,4 +1,4 @@
-import { PickType } from "@nestjs/mapped-types";
+import { PickType } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty } from "@nestjs/class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
