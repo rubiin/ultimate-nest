@@ -1,8 +1,10 @@
 import { PrimaryKey, Property } from "@mikro-orm/core";
 import { randomUUID } from "crypto";
+import { ApiHideProperty } from "@nestjs/swagger";
 
 /* A base class for all entities. */
 export abstract class BaseEntity {
+  @ApiHideProperty()
 	@PrimaryKey()
 	id!: number;
 
