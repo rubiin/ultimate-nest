@@ -7,31 +7,31 @@ import { LoggerModule } from "nestjs-pino";
 		LoggerModule.forRootAsync({
 			useFactory: () => {
 				return {
-
 					pinoHttp: {
 						serializers: {
 							req(request) {
 								request.body = request.raw.body;
 								
 return request;
-							}
+							},
 						},
 						autoLogging: {
 							ignore(request) {
-								return [
-									"/doc",
-								].includes(request.url);
+								return ["/doc"].includes(request.url);
 							},
 						},
 						redact: {
 							paths: ["req.headers.authorization"],
-							remove: true,
 						},
-						colorize: true,
 						transport:
-						process.env.NODE_ENV !== "production"
-							? { target: "pino-pretty" }
-							: undefined,
+							process.env.NODE_ENV !== "production"
+								? {
+										target: "pino-pretty",
+										options: {
+											forceColor: true,
+										},
+								  }
+								: undefined,
 					},
 				};
 			},
