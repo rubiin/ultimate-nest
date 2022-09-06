@@ -1,2 +1,3 @@
 export * from "./misc";
-export * from "./threads";
+export * from "./pool";
+export * from "./workers";
