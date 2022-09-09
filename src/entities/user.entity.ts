@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
-import { pool } from "@common/misc";
+import { hashString } from "@common/misc";
 import { Roles } from "@common/types/enums/permission.enum";
 import {
 	BeforeCreate,
@@ -82,7 +82,7 @@ export class User extends BaseEntity {
 	@BeforeUpdate()
 	async hashPassword(arguments_: EventArgs<this>) {
 		if (arguments_.changeSet.payload?.password) {
-			this.password = await pool.run(this.password, { name: "hashString" });
+			this.password = await hashString(this.password);
 		}
 	}
 

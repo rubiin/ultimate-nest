@@ -1,5 +1,4 @@
 import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
-import { hashString } from "@common/misc/threads";
 import { RandomTypes } from "@common/types/enums/misc.enum";
 import { User } from "@entities";
 import { verify } from "argon2";
@@ -47,11 +46,6 @@ export const HelperService = {
 				...(refreshToken ? { refresh_token: refreshToken } : {}),
 			},
 		};
-	},
-
-	/* A function that returns a promise that resolves to a string. */
-	hashString: (string: string): Promise<string> => {
-		return hashString(string);
 	},
 
 	/* A function that returns an observable that resolves to a boolean. */
