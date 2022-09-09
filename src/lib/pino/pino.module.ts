@@ -11,8 +11,8 @@ import { LoggerModule } from "nestjs-pino";
 						serializers: {
 							req(request) {
 								request.body = request.raw.body;
-								
-return request;
+
+								return request;
 							},
 						},
 						autoLogging: {

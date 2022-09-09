@@ -1,7 +1,13 @@
 import {
-	NestCacheModule, NestCaslModule, NestCloudinaryModule, NestConfigModule, NestI18nModule,
-	NestMailModule, NestPinoModule,
-	NestSentryModule, OrmModule
+	NestCacheModule,
+	NestCaslModule,
+	NestCloudinaryModule,
+	NestConfigModule,
+	NestI18nModule,
+	NestMailModule,
+	NestPinoModule,
+	NestSentryModule,
+	OrmModule,
 } from "@lib/index";
 import { AuthModule } from "@modules/auth/auth.module";
 import { HealthModule } from "@modules/health/health.module";
@@ -38,6 +44,6 @@ import { join } from "node:path";
 				maxAge: 86_400, // 1 day
 			},
 		}),
-	]
+	],
 })
 export class SharedModule {}

@@ -9,7 +9,7 @@ import { validationSchema } from "./validate.config";
 	imports: [
 		ConfigModule.forRoot({
 			envFilePath: [`env/.env.${process.env.NODE_ENV}`],
-			load: [app, jwt, database, mail, redis, cloudinary, rabbit, googleOauth,facebookOauth],
+			load: [app, jwt, database, mail, redis, cloudinary, rabbit, googleOauth, facebookOauth],
 			cache: true,
 			isGlobal: true,
 			expandVariables: true,
