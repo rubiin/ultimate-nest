@@ -1,38 +1,26 @@
 import { Order } from "@common/types/enums/misc.enum";
-import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "@nestjs/class-transformer";
 import { IsEnum, IsInt, IsOptional, Max, Min } from "@nestjs/class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class PageOptionsDto {
-	@ApiPropertyOptional({ enum: Order, default: Order.ASC })
 	@IsEnum(Order)
 	@IsOptional()
 	readonly order?: Order = Order.DESC;
 
-	@ApiPropertyOptional({ default: "createdAt" })
 	@IsOptional()
 	readonly sort?: string = "createdAt";
 
-	@ApiPropertyOptional({
-		minimum: 1,
-		default: 1,
-	})
 	@Type(() => Number)
 	@IsInt()
-	@Min(1, { message: i18nValidationMessage("validation.MIN_LENGTH") })
+	@Min(1, { message: i18nValidationMessage("validation.minLength") })
 	@IsOptional()
 	readonly page?: number = 1;
 
-	@ApiPropertyOptional({
-		minimum: 1,
-		maximum: 50,
-		default: 10,
-	})
 	@Type(() => Number)
 	@IsInt()
-	@Min(1, { message: i18nValidationMessage("validation.MIN_LENGTH") })
-	@Max(50, { message: i18nValidationMessage("validation.MAX_LENGTH") })
+	@Min(1, { message: i18nValidationMessage("validation.minLength") })
+	@Max(50, { message: i18nValidationMessage("validation.maxLength") })
 	@IsOptional()
 	readonly limit?: number = 10;
 
