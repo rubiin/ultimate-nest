@@ -1,5 +1,5 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { ApiFile, SwaggerDecorator } from "@common/decorators";
+import { ApiFile, Public, SwaggerDecorator } from "@common/decorators";
 import { ControllerDecorator } from "@common/decorators/controller.decorator";
 import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
@@ -35,13 +35,13 @@ export class UserController {
 		return this.userService.getMany(pageOptionsDto);
 	}
 
+	@Public()
 	@Post("register")
 	@SwaggerDecorator({
 		operation: "Create user",
 		badRequest: "User already registered with email.",
 	})
 	@ApiFile("avatar")
-	@CheckPolicies(new GenericPolicyHandler(User, Action.Create))
 	async publicRegistration(
 		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 		@Body() dto: UserRegistrationDto,

@@ -10,6 +10,12 @@ export class PoliciesGuard implements CanActivate {
 	constructor(private reflector: Reflector, private caslAbilityFactory: CaslAbilityFactory) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
+		const isPublic = this.reflector.get<boolean>("isPublic", context.getHandler());
+
+		if (isPublic) {
+			return true;
+		}
+
 		const policyHandlers =
 			this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY, context.getHandler()) || [];
 
