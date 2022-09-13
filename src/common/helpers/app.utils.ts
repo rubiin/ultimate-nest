@@ -1,5 +1,5 @@
 import { INestApplication, Logger } from "@nestjs/common";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { DocumentBuilder, SwaggerModule, OpenAPIObject } from "@nestjs/swagger";
 import fs from "node:fs";
 import * as swaggerStats from "swagger-stats";
 
@@ -38,6 +38,16 @@ export const AppUtils = {
 			.build();
 
 		const document = SwaggerModule.createDocument(app, options, {});
+
+		/** check if there is Public decorator for each path (action) and its method (findMany / findOne) on each controller */
+		/* eslint-disable unicorn/no-array-for-each */
+		Object.values((document as OpenAPIObject).paths).forEach((path: any) => {
+			Object.values(path).forEach((method: any) => {
+				if (Array.isArray(method.security) && method.security.includes("isPublic")) {
+					method.security = [];
+				}
+			});
+		});
 
 		app.use(
 			swaggerStats.getMiddleware({
