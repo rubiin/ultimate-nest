@@ -1,5 +1,5 @@
-import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
 import { RandomTypes } from "@common/types/enums/misc.enum";
+import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
 import { User } from "@entities";
 import { verify } from "argon2";
 import { pick, slugify } from "helper-fns";
@@ -29,6 +29,10 @@ export const HelperService = {
 		return async ({ op, args }) => {
 			return await object[op](...args);
 		};
+	},
+
+	resourceLink: (resource: string, id: string) => {
+		return `${process.env.API_URL}/v1/${resource}/${id}`;
 	},
 
 	/* A function that returns an object. */
@@ -65,10 +69,7 @@ export const HelperService = {
 		}
 
 		return customAlphabet(
-			type === RandomTypes.NUMBER
-				? "1234567890"
-				: // eslint-disable-next-line no-secrets/no-secrets
-				  "abcdefghijklmnopqrstuvwxyz",
+			type === RandomTypes.NUMBER ? "1234567890" : "abcdefghijklmnopqrstuvwxyz",
 			length,
 		)();
 	},
