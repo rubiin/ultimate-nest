@@ -12,7 +12,7 @@ module.exports = {
 		'prettier',
 		'unicorn',
 		'import',
-		'no-secrets',
+		'simple-import-sort'
 	],
 	extends: [
 		'plugin:import/typescript',
@@ -43,7 +43,6 @@ module.exports = {
 		'no-duplicate-imports': 'error',
 		'no-param-reassign': 'error',
 		'unicorn/filename-case': 'off',
-		'no-secrets/no-secrets': 'error',
 		'no-array-constructor': 'error',
 		'no-mixed-operators': 'error',
 		'import/default': 'off',
@@ -68,6 +67,8 @@ module.exports = {
 		'unicorn/import-style': 'off',
 		'unicorn/prefer-module': 'off',
 		'unicorn/prefer-node-protocol': 'off',
+		"simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -75,7 +76,6 @@ module.exports = {
 			'error',
 			{ argsIgnorePattern: '^_' },
 		],
-		"no-secrets/no-secrets":["error",{"ignoreContent":"^(operations.|exception.|validation.)"}],
 		'no-multi-spaces': 'error',
 		'linebreak-style': ['error', 'unix'],
 		'newline-before-return': 'error',

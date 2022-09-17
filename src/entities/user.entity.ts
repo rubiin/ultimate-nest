@@ -1,4 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
+import { HelperService } from "@common/helpers";
 import { hashString } from "@common/misc";
 import { Roles } from "@common/types/enums/permission.enum";
 import {
@@ -14,6 +15,7 @@ import {
 	Unique,
 	wrap,
 } from "@mikro-orm/core";
+
 import { Post } from "./post.entity";
 
 @Entity()
@@ -84,6 +86,11 @@ export class User extends BaseEntity {
 		if (arguments_.changeSet.payload?.password) {
 			this.password = await hashString(this.password);
 		}
+	}
+
+	@Property({ persist: false })
+	get self() {
+		return HelperService.resourceLink("users", this.idx);
 	}
 
 	constructor(data: Pick<User, "idx">) {
