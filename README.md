@@ -14,10 +14,12 @@ Clone this repo. Edit the env file and pass in your credentials
 
 ## Installation
 
-Install dependencies
+Install dependencies (preferred: pnpm)
 
 ```sh
- npm install
+ npm install --legacy-peer-deps
+ yarn install
+ pnpm install --shamefully-hoist=true
 ```
 
 ## Database
@@ -111,11 +113,11 @@ This applications uses JSON Web Token (JWT) to handle authentication. The token 
 
 # Deployment
 
-You need to have docker and docker-compose installed. Also since we are using makefiles for deployment, you need to have make installed.
+You need to have `docker` and `docker-compose` (not the compose plugin) installed. Also since we are using `makefiles` for deployment, you need to have `make` installed.
 
 ```sh
-  env=dev make deploy    # deploys dev environment
-  env=prod make deploy   # deploys prod environment
+  env=dev make deploy    # deploys dev environment (.env.dev used)
+  env=prod make deploy   # deploys prod environment (.env.prod used)
 ```
 
 The password for `redis` and `rabbitmq` is `test@1234` can be changed in the make file under `deploy` script
