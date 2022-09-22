@@ -9,10 +9,16 @@ import {
 	MaxLength,
 	MinLength,
 } from "@nestjs/class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreateUserDto {
+	/**
+	 * Username of user
+	 * @example rubiin
+	 */
+
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsString({
 		message: i18nValidationMessage("validation.isDataType", {
@@ -23,6 +29,11 @@ export class CreateUserDto {
 	@MaxLength(100, { message: i18nValidationMessage("validation.maxLength") })
 	username: string;
 
+	/**
+	 * Firstname of user
+	 * @example John
+	 */
+
 	@IsString({
 		message: i18nValidationMessage("validation.isDataType", {
 			type: "string",
@@ -31,6 +42,11 @@ export class CreateUserDto {
 	@MinLength(3, { message: i18nValidationMessage("validation.minLength") })
 	@MaxLength(100, { message: i18nValidationMessage("validation.maxLength") })
 	firstName: string;
+
+	/**
+	 * Lastname of user
+	 * @example Doe
+	 */
 
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsString({
@@ -42,8 +58,16 @@ export class CreateUserDto {
 	@MaxLength(100, { message: i18nValidationMessage("validation.maxLength") })
 	lastName: string;
 
-	avatar: string;
+	/**
+	 * Indicates the profile picture of user
+	 */
+	@ApiProperty({ type: "string", format: "binary", required: false, name: "image" })
+	avatar?: string;
 
+	/**
+	 * Email of user
+	 * @example someemail@gmail.com
+	 */
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsEmail(
 		{},
@@ -55,12 +79,21 @@ export class CreateUserDto {
 	)
 	email: string;
 
+	/**
+	 * Password of user
+	 * @example SomePassword@123
+	 */
+
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@MinLength(8, { message: i18nValidationMessage("validation.minLength") })
 	@MaxLength(25, { message: i18nValidationMessage("validation.maxLength") })
 	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
 	password: string;
 
+	/**
+	 * Roles of user
+	 * @example ["ADMIN"]
+	 */
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsArray({
 		message: i18nValidationMessage("validation.isDataType", {

@@ -8,29 +8,6 @@ import { from, Observable } from "rxjs";
 import sharp from "sharp";
 
 export const HelperService = {
-	/**
-	 *
-	 *
-	 * @param {*} op
-	 * @param {...any[]} args
-	 * @return {*}  {*}
-	 */
-	makeTask: (op: any, ...arguments_: any[]): any => {
-		return { op, args: arguments_ };
-	},
-
-	/**
-	 *
-	 *
-	 * @param {Record<string,any>} obj
-	 * @return {*}
-	 */
-	dispatcher: (object: Record<string, any>) => {
-		return async ({ op, args }) => {
-			return await object[op](...args);
-		};
-	},
-
 	resourceLink: (resource: string, id: string) => {
 		return `${process.env.API_URL}/v1/${resource}/${id}`;
 	},

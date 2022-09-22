@@ -1,8 +1,11 @@
+import fs from "node:fs";
+import { extname } from "node:path";
+
+import { FileSizes, FileTypes } from "@common/types/enums";
+import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { Request } from "express";
-import fs from "node:fs";
 import mime from "mime-types";
-import { extname } from "node:path";
 import { diskStorage, memoryStorage } from "multer";
 
 const allowedExtensions = new Set(["png", "jpg", "jpeg"]);
@@ -54,4 +57,22 @@ export const randomFileName = (file: { originalname: string }): string => {
 	const randomName = Date.now();
 
 	return `${name}-${randomName}${fileExtensionName}`;
+};
+
+export const fileValidatorPipe = ({
+	fileType = FileTypes.IMAGE,
+	fileSize = FileSizes.IMAGE,
+	required = true,
+}) => {
+	return new ParseFilePipeBuilder()
+		.addFileTypeValidator({
+			fileType,
+		})
+		.addMaxSizeValidator({
+			maxSize: fileSize,
+		})
+		.build({
+			errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+			fileIsRequired: required,
+		});
 };

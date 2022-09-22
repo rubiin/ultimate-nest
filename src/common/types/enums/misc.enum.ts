@@ -28,3 +28,11 @@ export enum Status {
 	ENABLED = "ENABLED",
 	DISABLED = "DISABLED",
 }
+
+export enum FileSizes {
+	IMAGE = 5 * 1024 * 1000, // 5mb
+}
+
+export const FileTypes = {
+	IMAGE: /(jpg|jpeg|png|gif)$/i,
+};
