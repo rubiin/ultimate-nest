@@ -44,6 +44,7 @@ Note: If you are using windows, `SET NODE_ENV=dev npm run start`
 ## Features covered:
 
 -   🌐 **i18n** - Internationalization
+-   🧵 **Stats** - swagger stats for common server metrics
 -   🧵 **piscina** - threads for cpu extensive tasks
 -   💬 **Twillio** - sms support
 -   📱 **NestJS** — latest version
@@ -83,16 +84,16 @@ Additionally, you can also see the scripts in `makefile`
 # Migration and seeding
 
 Migrations are used to update the database schema. The migration files are stored in `migrations` directory.
+
 ```sh
   env=dev make migrate # applies migration for dev env
 ```
+
 Seeding is used to insert data into the database. The seeding files are stored in `common/database/seeders` directory.
+
 ```sh
   env=dev USER_PASSWORD=Test@1234 make seed   # seeds data for dev env with user password set as Test@1234
 ```
-
-
-
 
 ## Start application
 
@@ -100,13 +101,13 @@ Seeding is used to insert data into the database. The seeding files are stored i
 -   `NODE_ENV=[env name] SSL=true npm run start` (with ssl)
 -   Test api by browsing to `http://localhost:[port]/v1/user`
 -   View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
+-   View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and password is the values set in the env file under `SWAGGER_USERNAME` and `SWAGGER_PASS` respectively
 
 ---
 
 # Authentication
 
 This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and authentication of the token.
-
 
 # Deployment
 

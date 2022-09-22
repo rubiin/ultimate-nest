@@ -2,6 +2,11 @@ import { IsArray, IsNotEmpty, IsString } from "@nestjs/class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreatePostDto {
+	/**
+	 * Title of post
+	 * @example "Lorem ipsum dolor sit"
+	 */
+
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsString({
 		message: i18nValidationMessage("validation.isDataType", {
@@ -9,6 +14,11 @@ export class CreatePostDto {
 		}),
 	})
 	title: string;
+
+	/**
+	 * Description of post
+	 * @example "Some paragraph of text"
+	 */
 
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsString({
@@ -18,6 +28,11 @@ export class CreatePostDto {
 	})
 	description: string;
 
+	/**
+	 * Content of post
+	 * @example "Long paragraph of text"
+	 */
+
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsString({
 		message: i18nValidationMessage("validation.isDataType", {
@@ -25,6 +40,11 @@ export class CreatePostDto {
 		}),
 	})
 	content: string;
+
+	/**
+	 * Tags of post
+	 * @example ["fantasy", "adventure"]
+	 */
 
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsString({

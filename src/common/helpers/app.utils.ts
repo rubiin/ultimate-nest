@@ -1,6 +1,7 @@
-import { INestApplication, Logger } from "@nestjs/common";
-import { DocumentBuilder, SwaggerModule, OpenAPIObject } from "@nestjs/swagger";
 import fs from "node:fs";
+
+import { INestApplication, Logger } from "@nestjs/common";
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import * as swaggerStats from "swagger-stats";
 
 export const AppUtils = {
@@ -53,9 +54,9 @@ export const AppUtils = {
 			swaggerStats.getMiddleware({
 				swaggerSpec: document,
 				authentication: true,
-				hostname: "cit",
+				hostname: "nestify",
 				uriPath: "/stats",
-				onAuthenticate: function (request: any, username: string, password: string) {
+				onAuthenticate: function (_request: any, username: string, password: string) {
 					// simple check for username and password
 					return username === user && password === pass;
 				},

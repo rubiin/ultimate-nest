@@ -1,7 +1,7 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { ApiFile, Public, SwaggerDecorator } from "@common/decorators";
 import { ControllerDecorator } from "@common/decorators/controller.decorator";
-import { ParseFilePipe } from "@common/pipes/parse-file.pipe";
+import { fileValidatorPipe } from "@common/misc";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
@@ -21,6 +21,7 @@ import {
 } from "@nestjs/common";
 import { ApiOperation } from "@nestjs/swagger";
 import { Observable } from "rxjs";
+
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
@@ -43,8 +44,9 @@ export class UserController {
 	})
 	@ApiFile("avatar")
 	async publicRegistration(
-		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 		@Body() dto: UserRegistrationDto,
+		@UploadedFile(fileValidatorPipe({}))
+		image: Express.Multer.File,
 	) {
 		return this.userService.createOne({
 			...dto,
@@ -71,8 +73,9 @@ export class UserController {
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Create))
 	@ApiFile("avatar")
 	async createOne(
-		@UploadedFile(ParseFilePipe) image: Express.Multer.File,
 		@Body() dto: CreateUserDto,
+		@UploadedFile(fileValidatorPipe({}))
+		image: Express.Multer.File,
 	) {
 		return this.userService.createOne({ ...dto, image });
 	}
