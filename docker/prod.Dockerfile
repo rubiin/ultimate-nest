@@ -1,14 +1,15 @@
 ## ===========================================================> The common stage
-FROM node:16.17.0-alpine AS base
+FROM node:16.17.0-slim AS base
 ENV NODE_ENV=production
 
 WORKDIR /app
 
+RUN npm i -g pnpm
 
 # Add necessary packages for Sharp to work
-COPY package*.json ./
-RUN npm install --arch=x64 --platform=linux --libc=glibc sharp
-RUN npm ci --omit=dev
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm i --shamefully-hoist=true
+
 
 
 ## Remove unnecessary files from `node_modules` directory
@@ -23,12 +24,13 @@ ENV NODE_ENV=development
 COPY . .
 ## This step could install only the missing dependencies (ie., development deps ones)
 ## but there's no way to do that with this NPM version
-RUN npm ci
+COPY --from=base /app/node_modules ./node_modules
 ## Compile the TypeScript source code
-RUN npm run build
+RUN pnpm build
+RUN pnpm prune --prod
 
 ## =================================================> The production image stage
-FROM node:16.17.0-alpine AS prod
+FROM node:16.17.0-slim AS prod
 ENV NODE_ENV=production
 
 ARG PORT=8000
@@ -46,9 +48,7 @@ COPY --from=base --chown=node:node /app/*.json ./
 COPY --from=build --chown=node:node /app/dist ./dist/
 
 ## https://engineeringblog.yelp.com/2016/01/dumb-init-an-init-for-docker.html
-RUN apk add --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing \
- dumb-init
-
+RUN apt-get install dumb-init
 
 ## Running the app wrapped by the init system for helping on graceful shutdowns
 CMD ["dumb-init", "node", "dist/main.js"]

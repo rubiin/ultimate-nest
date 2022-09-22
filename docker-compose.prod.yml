@@ -15,6 +15,7 @@ services:
         image: nestify
         depends_on:
             - redis
+            - rabbitmq
         restart: unless-stopped
         ports:
             - "8000:8000"

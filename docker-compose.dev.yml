@@ -15,6 +15,7 @@ services:
         image: nestify
         depends_on:
             - redis
+            - rabbitmq
         restart: unless-stopped
         command: npm run start:dev
         ports:
