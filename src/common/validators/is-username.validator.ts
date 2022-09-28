@@ -22,7 +22,7 @@ import {
 	ValidationOptions,
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
-} from "@nestjs/class-validator";
+} from "class-validator";
 
 @ValidatorConstraint({ async: true })
 class IsUsernameConstraint implements ValidatorConstraintInterface {

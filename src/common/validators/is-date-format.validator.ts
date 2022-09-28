@@ -4,7 +4,7 @@ import {
 	ValidationOptions,
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
-} from "@nestjs/class-validator";
+} from "class-validator";
 import { isValid, lightFormat } from "date-fns";
 
 /* It validates that a date is in a given format */
