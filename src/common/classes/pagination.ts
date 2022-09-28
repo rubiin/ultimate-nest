@@ -1,6 +1,6 @@
 import { Order } from "@common/types/enums/misc.enum";
-import { Type } from "@nestjs/class-transformer";
-import { IsEnum, IsInt, IsOptional, Max, Min } from "@nestjs/class-validator";
+import { Type } from "class-transformer";
+import { IsEnum, IsInt, IsOptional, Max, Min } from "class-validator";
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
 

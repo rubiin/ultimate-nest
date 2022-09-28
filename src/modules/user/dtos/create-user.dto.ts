@@ -8,7 +8,7 @@ import {
 	IsString,
 	MaxLength,
 	MinLength,
-} from "@nestjs/class-validator";
+} from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";

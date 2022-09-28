@@ -4,6 +4,7 @@ import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory, repl } from "@nestjs/core";
 import { ExpressAdapter, NestExpressApplication } from "@nestjs/platform-express";
+import { useContainer } from "class-validator";
 import compression from "compression";
 import helmet from "helmet";
 import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestjs-i18n";
@@ -38,9 +39,7 @@ async function bootstrap() {
 		new ValidationPipe({
 			whitelist: true,
 			transform: true,
-			exceptionFactory: i18nValidationErrorFactory,
-			validatorPackage: require("@nestjs/class-validator"),
-			transformerPackage: require("@nestjs/class-transformer"),
+			exceptionFactory: i18nValidationErrorFactory
 		}),
 	);
 
@@ -74,6 +73,7 @@ async function bootstrap() {
 		await repl(AppModule);
 	}
 
+	useContainer(app.select(AppModule), { fallbackOnErrors: true });
 	await app.listen(port);
 
 	new Logger("Bootstrap").log(

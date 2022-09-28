@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "@nestjs/class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class FirebaseAdminConfig {
 	@IsNotEmpty()

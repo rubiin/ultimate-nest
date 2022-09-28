@@ -1,4 +1,4 @@
-import { ValidateIf, ValidationOptions } from "@nestjs/class-validator";
+import { ValidateIf, ValidationOptions } from "class-validator";
 
 export function IsOptional(validationOptions?: ValidationOptions) {
 	return ValidateIf((_, value) => {
