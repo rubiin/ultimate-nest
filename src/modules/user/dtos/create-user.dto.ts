@@ -1,15 +1,13 @@
+import { IsStringMinMaxDecorator } from "@common/decorators";
 import { Roles } from "@common/types/enums/permission.enum";
 import { IsPassword } from "@common/validators/is-password.validator";
+import { ApiProperty } from "@nestjs/swagger";
 import {
 	IsArray,
 	IsEmail,
 	IsEnum,
-	IsNotEmpty,
-	IsString,
-	MaxLength,
-	MinLength,
+	IsNotEmpty
 } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
 
@@ -19,14 +17,7 @@ export class CreateUserDto {
 	 * @example rubiin
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsString({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "string",
-		}),
-	})
-	@MinLength(3, { message: i18nValidationMessage("validation.minLength") })
-	@MaxLength(100, { message: i18nValidationMessage("validation.maxLength") })
+	 @IsStringMinMaxDecorator()
 	username: string;
 
 	/**
@@ -34,13 +25,7 @@ export class CreateUserDto {
 	 * @example John
 	 */
 
-	@IsString({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "string",
-		}),
-	})
-	@MinLength(3, { message: i18nValidationMessage("validation.minLength") })
-	@MaxLength(100, { message: i18nValidationMessage("validation.maxLength") })
+	 @IsStringMinMaxDecorator()
 	firstName: string;
 
 	/**
@@ -48,14 +33,7 @@ export class CreateUserDto {
 	 * @example Doe
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsString({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "string",
-		}),
-	})
-	@MinLength(3, { message: i18nValidationMessage("validation.minLength") })
-	@MaxLength(100, { message: i18nValidationMessage("validation.maxLength") })
+	 @IsStringMinMaxDecorator()
 	lastName: string;
 
 	/**
@@ -84,9 +62,7 @@ export class CreateUserDto {
 	 * @example SomePassword@123
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@MinLength(8, { message: i18nValidationMessage("validation.minLength") })
-	@MaxLength(25, { message: i18nValidationMessage("validation.maxLength") })
+	 @IsStringMinMaxDecorator()
 	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
 	password: string;
 

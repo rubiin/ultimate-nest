@@ -1,3 +1,4 @@
+import { IsStringMinMaxDecorator } from "@common/decorators";
 import { IsArray, IsNotEmpty, IsString } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
@@ -7,12 +8,7 @@ export class CreatePostDto {
 	 * @example "Lorem ipsum dolor sit"
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsString({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "string",
-		}),
-	})
+	 @IsStringMinMaxDecorator()
 	title: string;
 
 	/**
@@ -20,12 +16,7 @@ export class CreatePostDto {
 	 * @example "Some paragraph of text"
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsString({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "string",
-		}),
-	})
+	 @IsStringMinMaxDecorator()
 	description: string;
 
 	/**
@@ -33,12 +24,7 @@ export class CreatePostDto {
 	 * @example "Long paragraph of text"
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsString({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "string",
-		}),
-	})
+	 @IsStringMinMaxDecorator()
 	content: string;
 
 	/**
