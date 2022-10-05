@@ -6,6 +6,6 @@ export class CreateCommentDto {
 	 * @example "This is a comment"
 	 */
 
-@IsStringMinMaxDecorator()
+	@IsStringMinMaxDecorator()
 	readonly body: string;
 }
