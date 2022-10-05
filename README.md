@@ -67,7 +67,7 @@ Note: If you are using windows, `SET NODE_ENV=dev npm run start`
 ## NPM scripts
 
 -   `npm run start` - Start application
--   `npm run start:watch` - Start application in watch mode
+-   `npm run start:dev` - Start application in watch mode
 -   `npm run test` - run Jest test runner
 -   `npm run start:prod` - Build application
 
