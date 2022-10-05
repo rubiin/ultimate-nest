@@ -4,7 +4,7 @@ import { i18nValidationMessage } from "nestjs-i18n";
 import { Sanitize } from "./sanitize.decorator";
 import { IsOptional } from "@common/validators/custom-optional.validator";
 
-export function IsStringMinMaxDecorator(required=true,min = 3, max = 255) {
+export function IsStringMinMaxDecorator(required = true, min = 3, max = 255) {
 	const decoratorsToApply = [
 		Sanitize(),
 		IsString({
@@ -16,7 +16,11 @@ export function IsStringMinMaxDecorator(required=true,min = 3, max = 255) {
 		MaxLength(max, { message: i18nValidationMessage("validation.maxLength") }),
 	];
 
-	required ? decoratorsToApply.push(IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })) : decoratorsToApply.push(IsOptional());
+	required
+		? decoratorsToApply.push(
+				IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") }),
+		  )
+		: decoratorsToApply.push(IsOptional());
 
 	return applyDecorators(...decoratorsToApply);
 }

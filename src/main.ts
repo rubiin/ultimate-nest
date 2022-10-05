@@ -39,7 +39,7 @@ async function bootstrap() {
 		new ValidationPipe({
 			whitelist: true,
 			transform: true,
-			exceptionFactory: i18nValidationErrorFactory
+			exceptionFactory: i18nValidationErrorFactory,
 		}),
 	);
 
