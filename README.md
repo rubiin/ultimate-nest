@@ -45,9 +45,9 @@ Note: If you are using windows, `SET NODE_ENV=dev npm run start`
 
 ## Features covered:
 
--   🌐 **i18n** - Internationalization
+-   🌐 **I18n** - Internationalization
 -   🧵 **Stats** - swagger stats for common server metrics
--   🧵 **piscina** - threads for cpu extensive tasks
+-   🧵 **Poolifier** - threads for cpu extensive tasks
 -   💬 **Twillio** - sms support
 -   📱 **NestJS** — latest version
 -   🎉 **TypeScript** - Type checking

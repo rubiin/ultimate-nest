@@ -2,12 +2,7 @@ import { IsStringMinMaxDecorator } from "@common/decorators";
 import { Roles } from "@common/types/enums/permission.enum";
 import { IsPassword } from "@common/validators/is-password.validator";
 import { ApiProperty } from "@nestjs/swagger";
-import {
-	IsArray,
-	IsEmail,
-	IsEnum,
-	IsNotEmpty
-} from "class-validator";
+import { IsArray, IsEmail, IsEnum, IsNotEmpty } from "class-validator";
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
 
@@ -17,7 +12,7 @@ export class CreateUserDto {
 	 * @example rubiin
 	 */
 
-	 @IsStringMinMaxDecorator()
+	@IsStringMinMaxDecorator()
 	username: string;
 
 	/**
@@ -25,7 +20,7 @@ export class CreateUserDto {
 	 * @example John
 	 */
 
-	 @IsStringMinMaxDecorator()
+	@IsStringMinMaxDecorator()
 	firstName: string;
 
 	/**
@@ -33,7 +28,7 @@ export class CreateUserDto {
 	 * @example Doe
 	 */
 
-	 @IsStringMinMaxDecorator()
+	@IsStringMinMaxDecorator()
 	lastName: string;
 
 	/**
@@ -62,7 +57,7 @@ export class CreateUserDto {
 	 * @example SomePassword@123
 	 */
 
-	 @IsStringMinMaxDecorator()
+	@IsStringMinMaxDecorator()
 	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
 	password: string;
 

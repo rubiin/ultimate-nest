@@ -8,7 +8,7 @@ export class CreatePostDto {
 	 * @example "Lorem ipsum dolor sit"
 	 */
 
-	 @IsStringMinMaxDecorator()
+	@IsStringMinMaxDecorator()
 	title: string;
 
 	/**
@@ -16,7 +16,7 @@ export class CreatePostDto {
 	 * @example "Some paragraph of text"
 	 */
 
-	 @IsStringMinMaxDecorator()
+	@IsStringMinMaxDecorator()
 	description: string;
 
 	/**
@@ -24,7 +24,7 @@ export class CreatePostDto {
 	 * @example "Long paragraph of text"
 	 */
 
-	 @IsStringMinMaxDecorator()
+	@IsStringMinMaxDecorator()
 	content: string;
 
 	/**
