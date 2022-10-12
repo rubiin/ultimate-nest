@@ -3,7 +3,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { capitalize } from "helper-fns";
 import { Auth } from "./auth.decorator";
 
-export function ControllerDecorator(name: string, secured = true) {
+export function GenericController(name: string, secured = true) {
 	const decsToApply = [
 		ApiTags(capitalize(name)),
 		Controller(name),

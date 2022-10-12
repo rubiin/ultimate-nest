@@ -1,11 +1,11 @@
-import { ControllerDecorator, LoggedInUser, SwaggerDecorator } from "@common/decorators";
+import { GenericController, LoggedInUser, SwaggerDecorator } from "@common/decorators";
 import { IProfileData } from "@common/types/interfaces/followers.interface";
 import { User } from "@entities";
 import { Delete, Get, Param, Post } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { ProfileService } from "./profile.service";
 
-@ControllerDecorator("profile")
+@GenericController("profile")
 export class ProfileController {
 	constructor(private readonly profileService: ProfileService) {}
 

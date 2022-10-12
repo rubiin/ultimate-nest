@@ -1,6 +1,6 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { ApiFile, Public, SwaggerDecorator } from "@common/decorators";
-import { ControllerDecorator } from "@common/decorators/controller.decorator";
+import { GenericController } from "@common/decorators/controller.decorator";
 import { fileValidatorPipe } from "@common/misc";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
 import { Roles } from "@common/types/enums";
@@ -25,7 +25,7 @@ import { Observable } from "rxjs";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
-@ControllerDecorator("users")
+@GenericController("users")
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
