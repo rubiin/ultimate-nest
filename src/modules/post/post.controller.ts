@@ -1,5 +1,5 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { ControllerDecorator, LoggedInUser, SwaggerDecorator } from "@common/decorators";
+import { GenericController, LoggedInUser, SwaggerDecorator } from "@common/decorators";
 import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { Pagination } from "@lib/pagination";
@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
-@ControllerDecorator("posts")
+@GenericController("posts")
 export class PostController {
 	constructor(private readonly postService: PostService) {}
 
