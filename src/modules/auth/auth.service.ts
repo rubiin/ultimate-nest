@@ -181,6 +181,8 @@ export class AuthService {
 			otpCode,
 		});
 
+		
+
 		if (!codeDetails) {
 			throw new NotFoundException(
 				this.i18n.t("status.itemDoesNotExist", {
