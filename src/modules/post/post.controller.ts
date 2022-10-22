@@ -1,21 +1,18 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { GenericController, LoggedInUser, SwaggerDecorator } from "@common/decorators";
-import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
+import { GenericController, LoggedInUser, SwaggerDecorator, ApiPaginatedResponse } from "@common/decorators";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from "@nestjs/common";
-import { ApiOperation } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
 @GenericController("posts")
 export class PostController {
-	constructor(private readonly postService: PostService) {}
+	constructor(private readonly postService: PostService) { }
 
 	@Get()
-	@ApiOperation({ summary: "Post list" })
-	@ApiPaginatedResponse(PostEntity)
+	@ApiPaginatedResponse(PostEntity, "Post list")
 	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<PostEntity>> {
 		return this.postService.getMany(pageOptionsDto);
 	}
