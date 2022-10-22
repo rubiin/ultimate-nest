@@ -1,8 +1,9 @@
 import { applyDecorators, Type } from "@nestjs/common";
-import { ApiOkResponse, getSchemaPath } from "@nestjs/swagger";
+import { ApiOkResponse, ApiOperation, getSchemaPath } from "@nestjs/swagger";
 
-export const ApiPaginatedResponse = <TModel extends Type<any>>(model: TModel) => {
+export const ApiPaginatedResponse = <TModel extends Type<any>>(model: TModel,operation : string) => {
 	return applyDecorators(
+		ApiOperation({ summary: operation }),
 		ApiOkResponse({
 			description: "Successfully received model list",
 			schema: {

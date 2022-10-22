@@ -1,5 +1,5 @@
 import { GenericController, LoggedInUser, SwaggerDecorator } from "@common/decorators";
-import { IProfileData } from "@common/types/interfaces/followers.interface";
+import { IProfileData } from "@common/types/interfaces";
 import { User } from "@entities";
 import { Delete, Get, Param, Post } from "@nestjs/common";
 import { Observable } from "rxjs";

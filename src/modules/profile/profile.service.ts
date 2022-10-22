@@ -1,5 +1,5 @@
 import { BaseRepository } from "@common/database/base.repository";
-import { IProfileData } from "@common/types/interfaces/followers.interface";
+import { IProfileData } from "@common/types/interfaces";
 import { User } from "@entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Injectable } from "@nestjs/common";

@@ -1,12 +1,9 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { ApiFile, Public, SwaggerDecorator } from "@common/decorators";
-import { GenericController } from "@common/decorators/controller.decorator";
+import { ApiFile, Public, SwaggerDecorator,GenericController,ApiPaginatedResponse } from "@common/decorators";
 import { fileValidatorPipe } from "@common/misc";
-import { ApiPaginatedResponse } from "@common/swagger/ApiPaginated";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
-import { Action, GenericPolicyHandler, UpdateUserPolicyHandler } from "@lib/casl";
-import { CheckPolicies } from "@lib/casl/policies.decorator";
+import { Action, GenericPolicyHandler, UpdateUserPolicyHandler,CheckPolicies } from "@lib/casl";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
@@ -19,7 +16,6 @@ import {
 	Query,
 	UploadedFile,
 } from "@nestjs/common";
-import { ApiOperation } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
@@ -28,9 +24,8 @@ import { UserService } from "./user.service";
 @GenericController("users")
 export class UserController {
 	constructor(private readonly userService: UserService) {}
-
-	@ApiOperation({ summary: "Users list" })
-	@ApiPaginatedResponse(User)
+	
+	@ApiPaginatedResponse(User,"Users list"  )
 	@Get()
 	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<User>> {
 		return this.userService.getMany(pageOptionsDto);
