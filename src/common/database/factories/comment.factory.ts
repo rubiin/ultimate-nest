@@ -1,6 +1,6 @@
+import { Comment } from "@entities";
 import { Factory, Faker } from "@mikro-orm/seeder";
 import { randomNumber } from "helper-fns";
-import { Comment } from "../../../entities/comment.entity";
 
 /* `CommentFactory` is a factory that creates `Comment` instances */
 export class CommentFactory extends Factory<Comment> {

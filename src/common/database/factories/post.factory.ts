@@ -1,4 +1,4 @@
-import { Post } from "../../../entities/post.entity";
+import { Post } from "@entities";
 import { Factory, Faker } from "@mikro-orm/seeder";
 import { randomNumber, slugify } from "helper-fns";
 
