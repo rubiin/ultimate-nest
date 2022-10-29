@@ -8,7 +8,7 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest]
-                node-version: [18.x,19.x]
+                node-version: [16.x,18.x]
 
         steps:
             - uses: actions/checkout@v2
@@ -16,10 +16,8 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
-            - name: install pnpm and npm
-            - run: |
-                curl -L https://get.pnpm.io/v6.js | node - add --global pnpm
-            - run: pnpm install --shamefully-hoist=true
-            - run: pnpm run lint
+            - run: yarn
+            - run: yarn build
+            - run: yarn lint
               env:
                   CI: true
