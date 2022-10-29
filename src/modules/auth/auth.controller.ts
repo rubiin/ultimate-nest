@@ -1,4 +1,4 @@
-import { Auth, LoggedInUser, SwaggerDecorator } from "@common/decorators";
+import { Auth, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
 import { LoginType } from "@common/types/enums/misc.enum";
 import { IOauthResponse } from "@common/types/interfaces";
@@ -53,7 +53,7 @@ export class AuthController {
 	}
 
 	@Post("reset-password")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Reset password",
 		notFound: "Otp doesn't exist.",
 		badRequest: "Otp is expired.",
@@ -64,7 +64,7 @@ export class AuthController {
 
 	@Put("forgot-password")
 	@Auth()
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Forgot password",
 		notFound: "Account doesn't exist.",
 	})
@@ -125,7 +125,7 @@ export class AuthController {
 	}
 
 	@Post("verify-otp")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Verify otp",
 		notFound: "Otp doesn't exist.",
 		badRequest: "Otp is expired.",
@@ -136,7 +136,7 @@ export class AuthController {
 
 	@Post("change-password")
 	@Auth()
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Change password",
 		badRequest: "Username and password provided does not match.",
 	})

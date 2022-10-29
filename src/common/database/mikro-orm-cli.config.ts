@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import dotEnvExpand from "dotenv-expand";
 
 /**
+ * 
+ * `MikroOrmConfig` is a configuration object for `MikroORM` that is used to
  * This is required to run mikro-orm cli
  *
  */

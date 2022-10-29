@@ -9,7 +9,7 @@ interface IsStringMinMaxDecoratorOptions {
 		optional?: boolean;
 }
 
-export function IsStringMinMaxDecorator(ops?: IsStringMinMaxDecoratorOptions) {
+export function IsStringMinMax(ops?: IsStringMinMaxDecoratorOptions) {
 	const options = { min: 3, max: 500, required: true, ...ops }
 	const decoratorsToApply = [
 		Sanitize(),

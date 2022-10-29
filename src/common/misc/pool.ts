@@ -1,7 +1,10 @@
-import Piscina from "piscina";
-import { resolve } from "path";
+import {Logger} from "@nestjs/common";
+import {resolve} from "path";
+import {DynamicThreadPool} from "poolifier";
 
-export const pool = new Piscina({
-	filename: resolve(__dirname, "workers.js"),
-	idleTimeout: Number.MAX_SAFE_INTEGER,
+const logger = new Logger("ThreadPool");
+
+export const pool = new DynamicThreadPool(7, 20, resolve(__dirname, "workers.js"), {
+    errorHandler: error => logger.error(error),
+    onlineHandler: () => logger.log("worker is online"),
 });
