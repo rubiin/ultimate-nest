@@ -20,7 +20,7 @@ dotEnvExpand.expand(myEnvironment);
 
 logger.log(`🛠️  Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
 
-const config = {
+const config: Options  = {
 	dbName: process.env.DB_DATABASE,
 	debug: true,
 	entities: ["dist/**/*.entity.js"],
@@ -46,6 +46,6 @@ const config = {
 	highlighter: new SqlHighlighter(),
 	user: process.env.DB_USERNAME,
 	metadataProvider: TsMorphMetadataProvider,
-} as Options;
+};
 
 export default config;
