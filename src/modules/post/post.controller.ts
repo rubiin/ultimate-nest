@@ -1,5 +1,5 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { GenericController, LoggedInUser, SwaggerDecorator, ApiPaginatedResponse } from "@common/decorators";
+import { GenericController, LoggedInUser, SwaggerResponse, ApiPaginatedResponse } from "@common/decorators";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from "@nestjs/common";
@@ -18,7 +18,7 @@ export class PostController {
 	}
 
 	@Get(":idx")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Post fetch",
 		notFound: "Post doesn't exist.",
 	})
@@ -27,7 +27,7 @@ export class PostController {
 	}
 
 	@Get(":idx/comments")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Post comment fetch",
 		notFound: "Post doesn't exist.",
 	})
@@ -36,13 +36,13 @@ export class PostController {
 	}
 
 	@Post()
-	@SwaggerDecorator({ operation: "create post" })
+	@SwaggerResponse({ operation: "create post" })
 	async createPost(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
 		return this.postService.createOne(dto, author);
 	}
 
 	@Put(":idx")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Post update",
 		notFound: "Post doesn't exist.",
 	})
@@ -54,7 +54,7 @@ export class PostController {
 	}
 
 	@Delete(":idx")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Post delete",
 		notFound: "Post doesn't exist.",
 	})
@@ -63,7 +63,7 @@ export class PostController {
 	}
 
 	@Post(":idx/comments")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Post comment create",
 		notFound: "Post doesn't exist.",
 	})
@@ -76,7 +76,7 @@ export class PostController {
 	}
 
 	@Delete(":idx/comments")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Post comment delete",
 		notFound: "Post doesn't exist.",
 	})
@@ -85,7 +85,7 @@ export class PostController {
 	}
 
 	@Post(":idx/favorite")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Post favorite",
 		notFound: "Post doesn't exist.",
 	})
@@ -94,7 +94,7 @@ export class PostController {
 	}
 
 	@Delete(":idx/favorite")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Post unfavorite",
 		notFound: "Post doesn't exist.",
 	})

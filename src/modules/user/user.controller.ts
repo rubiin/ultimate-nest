@@ -1,5 +1,5 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { ApiFile, Public, SwaggerDecorator,GenericController,ApiPaginatedResponse } from "@common/decorators";
+import { ApiFile, Public, SwaggerResponse,GenericController,ApiPaginatedResponse } from "@common/decorators";
 import { fileValidatorPipe } from "@common/misc";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
@@ -24,7 +24,7 @@ import { UserService } from "./user.service";
 @GenericController("users")
 export class UserController {
 	constructor(private readonly userService: UserService) {}
-	
+
 	@ApiPaginatedResponse(User,"Users list"  )
 	@Get()
 	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<User>> {
@@ -33,7 +33,7 @@ export class UserController {
 
 	@Public()
 	@Post("register")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Create user",
 		badRequest: "User already registered with email.",
 	})
@@ -51,7 +51,7 @@ export class UserController {
 	}
 
 	@Get(":idx")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "User fetch",
 		notFound: "User does not exist.",
 	})
@@ -61,7 +61,7 @@ export class UserController {
 	}
 
 	@Post()
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "User fetch",
 		badRequest: "User already registered with email.",
 	})
@@ -76,7 +76,7 @@ export class UserController {
 	}
 
 	@Put(":idx")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "User fetch",
 		badRequest: "User already registered with email.",
 		notFound: "User does not exist.",
@@ -90,7 +90,7 @@ export class UserController {
 	}
 
 	@Delete(":idx")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "User fetch",
 		notFound: "User does not exist.",
 	})

@@ -1,4 +1,4 @@
-import { IsStringMinMaxDecorator } from "@common/decorators";
+import { IsStringMinMax } from "@common/decorators";
 
 export class CreateCommentDto {
 	/**
@@ -6,6 +6,6 @@ export class CreateCommentDto {
 	 * @example "This is a comment"
 	 */
 
-	@IsStringMinMaxDecorator()
+	@IsStringMinMax()
 	readonly body: string;
 }

@@ -1,7 +1,7 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 
-export function SwaggerDecorator({
+export function SwaggerResponse({
 	operation,
 	notFound,
 	badRequest,

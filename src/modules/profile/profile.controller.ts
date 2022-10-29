@@ -1,4 +1,4 @@
-import { GenericController, LoggedInUser, SwaggerDecorator } from "@common/decorators";
+import { GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { IProfileData } from "@common/types/interfaces";
 import { User } from "@entities";
 import { Delete, Get, Param, Post } from "@nestjs/common";
@@ -10,7 +10,7 @@ export class ProfileController {
 	constructor(private readonly profileService: ProfileService) {}
 
 	@Get()
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Profile fetch",
 		notFound: "Profile does not exist.",
 	})
@@ -19,7 +19,7 @@ export class ProfileController {
 	}
 
 	@Post(":username/follow")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Profile follow",
 		notFound: "Profile does not exist.",
 	})
@@ -31,7 +31,7 @@ export class ProfileController {
 	}
 
 	@Delete(":username/follow")
-	@SwaggerDecorator({
+	@SwaggerResponse({
 		operation: "Profile unfollow",
 		notFound: "Profile does not exist.",
 	})

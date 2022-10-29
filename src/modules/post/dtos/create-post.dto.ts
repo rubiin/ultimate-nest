@@ -1,4 +1,4 @@
-import { IsStringMinMaxDecorator } from "@common/decorators";
+import { IsStringMinMax } from "@common/decorators";
 import { IsArray, IsNotEmpty, IsString } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
@@ -8,7 +8,7 @@ export class CreatePostDto {
 	 * @example "Lorem ipsum dolor sit"
 	 */
 
-	@IsStringMinMaxDecorator()
+	@IsStringMinMax()
 	title: string;
 
 	/**
@@ -16,7 +16,7 @@ export class CreatePostDto {
 	 * @example "Some paragraph of text"
 	 */
 
-	@IsStringMinMaxDecorator()
+	@IsStringMinMax()
 	description: string;
 
 	/**
@@ -24,7 +24,7 @@ export class CreatePostDto {
 	 * @example "Long paragraph of text"
 	 */
 
-	@IsStringMinMaxDecorator()
+	@IsStringMinMax()
 	content: string;
 
 	/**
