@@ -1,6 +1,8 @@
 import { IsStringMinMax } from "@common/decorators";
 import { Roles } from "@common/types/enums/permission.enum";
+import { IsUnique } from "@common/validators";
 import { IsPassword } from "@common/validators/is-password.validator";
+import { User } from "@entities";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsEmail, IsEnum, IsNotEmpty } from "class-validator";
 import { enumToString } from "helper-fns";
@@ -13,6 +15,7 @@ export class CreateUserDto {
 	 */
 
 	@IsStringMinMax()
+	@IsUnique(() => User, "username")
 	username: string;
 
 	/**
@@ -42,6 +45,7 @@ export class CreateUserDto {
 	 * @example someemail@gmail.com
 	 */
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsUnique(() => User, "email")
 	@IsEmail(
 		{},
 		{

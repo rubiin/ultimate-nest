@@ -7,7 +7,7 @@ import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { MikroORM, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { capitalize } from "helper-fns";
 import { I18nService } from "nestjs-i18n";
@@ -78,13 +78,6 @@ export class UserService {
 	 * @returns The user object
 	 */
 	async createOne(dto: CreateUserDto & { image: Express.Multer.File }): Promise<User> {
-		const userExist = await this.userRepository.findOne({
-			email: dto.email,
-		});
-
-		if (userExist) {
-			throw new BadRequestException(this.i18nService.t("exception.USER_EMAIL_EXISTS"));
-		}
 
 		const { image, ...rest } = dto;
 		const user = this.userRepository.create(rest);
