@@ -1,4 +1,6 @@
 import { IsStringMinMax } from "@common/decorators";
+import { IsUnique } from "@common/validators";
+import { Post } from "@entities";
 import { IsArray, IsNotEmpty, IsString } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
@@ -9,6 +11,7 @@ export class CreatePostDto {
 	 */
 
 	@IsStringMinMax()
+	@IsUnique(() => Post, "title")
 	title: string;
 
 	/**
