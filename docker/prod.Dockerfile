@@ -1,5 +1,5 @@
 ## ===========================================================> The common stage
-FROM node:16.18.0-slim AS base
+FROM node:18.12.0-slim AS base
 
 RUN npm i -g pnpm
 ## https://engineeringblog.yelp.com/2016/01/dumb-init-an-init-for-docker.html
@@ -10,6 +10,7 @@ FROM base AS dependencies
 
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
+RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store\
 RUN pnpm install --shamefully-hoist=true --frozen-lockfile
 
 ## ======================================================> The build image stage
