@@ -1,5 +1,8 @@
-FROM node:16.18.0-slim
+FROM node:18.12.0-slim
 WORKDIR /usr/src/app
-COPY package*.json ./
+RUN npm i -g pnpm
+# pnpm fetch does require only lockfile
 COPY pnpm-lock.yaml ./
-RUN pnpm i --shamefully-hoist=true 
+COPY package.json ./
+RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store\
+RUN pnpm install --shamefully-hoist=true --frozen-lockfile
