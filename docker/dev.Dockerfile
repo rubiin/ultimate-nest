@@ -3,6 +3,6 @@ WORKDIR /usr/src/app
 RUN npm i -g pnpm
 # pnpm fetch does require only lockfile
 COPY pnpm-lock.yaml ./
+RUN --mount=type=cache,id=pnpm,target=/usr/app/.pnpm-store/v3 pnpm fetch
 COPY package.json ./
-RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store\
-RUN pnpm install --shamefully-hoist=true --frozen-lockfile
+RUN pnpm install --offline --shamefully-hoist=true --frozen-lockfile
