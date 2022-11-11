@@ -12,7 +12,6 @@ export class CacheService {
 
 		const match = keys.filter((key: string) => regex.test(key));
 
-
 		if (match.length > 0) {
 			const promiseQueue = [];
 			for (const keys of match) {
@@ -20,7 +19,7 @@ export class CacheService {
 			}
 
 			await Promise.all(promiseQueue);
-			}
+		}
 
 		return true;
 	}

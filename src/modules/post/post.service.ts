@@ -63,7 +63,7 @@ export class PostService {
 
 		return forkJoin([post$, user$]).pipe(
 			switchMap(([post, user]) => {
-				const comment = new Comment(user, post, dto.body);
+				const comment = new Comment({ body: dto.body, author: user, post });
 
 				return from(this.commentRepository.persistAndFlush(comment)).pipe(map(() => post));
 			}),
@@ -100,7 +100,7 @@ export class PostService {
 	}
 
 	/* Finding a post by id, and then returning the comments of that post */
-	getById(index: string): Observable<Post> {
+	getById(index: string, populate = false): Observable<Post> {
 		return from(
 			this.postRepository.findOne(
 				{
@@ -108,7 +108,7 @@ export class PostService {
 					isObsolete: false,
 					isActive: true,
 				},
-				{ populate: ["author", "comments"] },
+				{ populate: populate ? ["author", "comments"] : undefined },
 			),
 		).pipe(
 			map(post => {

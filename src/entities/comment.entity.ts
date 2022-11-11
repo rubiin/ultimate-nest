@@ -15,11 +15,9 @@ export class Comment extends BaseEntity {
 	@ManyToOne()
 	author: User;
 
-	constructor(author: User, post: Post, body: string) {
+	constructor(partial?: Partial<Comment>) {
 		super();
-		this.author = author;
-		this.post = post;
-		this.body = body;
+		Object.assign(this, partial);
 	}
 
 	@Property({ persist: false })

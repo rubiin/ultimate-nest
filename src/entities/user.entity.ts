@@ -12,7 +12,7 @@ import {
 	OneToMany,
 	Property,
 	Unique,
-	wrap
+	wrap,
 } from "@mikro-orm/core";
 import { hash } from "argon2";
 
@@ -93,7 +93,7 @@ export class User extends BaseEntity {
 		return HelperService.resourceLink("users", this.idx);
 	}
 
-	constructor(data: Pick<User, "idx">) {
+	constructor(data?: Pick<User, "idx">) {
 		super();
 		Object.assign(this, data);
 	}

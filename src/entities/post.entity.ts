@@ -35,13 +35,10 @@ export class Post extends BaseEntity {
 	@Property()
 	favoritesCount = 0;
 
-	constructor(author: User, title: string, description: string, body: string) {
+	constructor(partial?: Partial<Post>) {
 		super();
-		this.author = author;
-		this.title = title;
-		this.description = description;
-		this.content = body;
-		this.slug = slugify(title);
+		Object.assign(this, partial);
+		this.slug = slugify(partial.title);
 	}
 
 	@Property({ persist: false })
