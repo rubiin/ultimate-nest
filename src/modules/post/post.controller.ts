@@ -1,5 +1,10 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { GenericController, LoggedInUser, SwaggerResponse, ApiPaginatedResponse } from "@common/decorators";
+import {
+	GenericController,
+	LoggedInUser,
+	SwaggerResponse,
+	ApiPaginatedResponse,
+} from "@common/decorators";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from "@nestjs/common";
@@ -9,7 +14,7 @@ import { PostService } from "./post.service";
 
 @GenericController("posts")
 export class PostController {
-	constructor(private readonly postService: PostService) { }
+	constructor(private readonly postService: PostService) {}
 
 	@Get()
 	@ApiPaginatedResponse(PostEntity, "Post list")

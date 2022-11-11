@@ -4,13 +4,13 @@ import { i18nValidationMessage } from "nestjs-i18n";
 import { Sanitize } from "./sanitize.decorator";
 
 interface IsStringMinMaxDecoratorOptions {
-		min: number;
-		max: number;
-		optional?: boolean;
+	min: number;
+	max: number;
+	optional?: boolean;
 }
 
 export function IsStringMinMax(ops?: IsStringMinMaxDecoratorOptions) {
-	const options = { min: 3, max: 500, required: true, ...ops }
+	const options = { min: 3, max: 500, required: true, ...ops };
 	const decoratorsToApply = [
 		Sanitize(),
 		IsString({

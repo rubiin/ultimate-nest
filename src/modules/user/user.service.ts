@@ -78,7 +78,6 @@ export class UserService {
 	 * @returns The user object
 	 */
 	async createOne(dto: CreateUserDto & { image: Express.Multer.File }): Promise<User> {
-
 		const { image, ...rest } = dto;
 		const user = this.userRepository.create(rest);
 

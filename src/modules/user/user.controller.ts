@@ -1,9 +1,15 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { ApiFile, Public, SwaggerResponse,GenericController,ApiPaginatedResponse } from "@common/decorators";
+import {
+	ApiFile,
+	Public,
+	SwaggerResponse,
+	GenericController,
+	ApiPaginatedResponse,
+} from "@common/decorators";
 import { fileValidatorPipe } from "@common/misc";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
-import { Action, GenericPolicyHandler, UpdateUserPolicyHandler,CheckPolicies } from "@lib/casl";
+import { Action, GenericPolicyHandler, UpdateUserPolicyHandler, CheckPolicies } from "@lib/casl";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,
@@ -25,7 +31,7 @@ import { UserService } from "./user.service";
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@ApiPaginatedResponse(User,"Users list"  )
+	@ApiPaginatedResponse(User, "Users list")
 	@Get()
 	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<User>> {
 		return this.userService.getMany(pageOptionsDto);
