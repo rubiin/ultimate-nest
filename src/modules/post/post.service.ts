@@ -3,6 +3,7 @@ import { BaseRepository } from "@common/database/base.repository";
 import { Comment, Post, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { wrap } from "@mikro-orm/core";
+import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
@@ -54,10 +55,7 @@ export class PostService {
 	 */
 	addComment(userId: number, index: string, dto: CreateCommentDto): Observable<Post> {
 		const post$ = from(
-			this.postRepository.findOneOrFail(
-				{ idx: index, isObsolete: false, isActive: true },
-				{ populate: ["author"] },
-			),
+			this.postRepository.findOneOrFail({ idx: index, isObsolete: false, isActive: true }),
 		);
 		const user$ = from(this.userRepository.findOneOrFail(userId));
 
@@ -81,7 +79,7 @@ export class PostService {
 		const post$ = from(
 			this.postRepository.findOneOrFail(
 				{ idx: index, isObsolete: false, isActive: true },
-				{ populate: ["author"] },
+				{ populate: ["comments"] },
 			),
 		);
 
@@ -100,7 +98,7 @@ export class PostService {
 	}
 
 	/* Finding a post by id, and then returning the comments of that post */
-	getById(index: string, populate = false): Observable<Post> {
+	getById(index: string, populate: AutoPath<Post, keyof Post>[] = []): Observable<Post> {
 		return from(
 			this.postRepository.findOne(
 				{
@@ -108,13 +106,13 @@ export class PostService {
 					isObsolete: false,
 					isActive: true,
 				},
-				{ populate: populate ? ["author", "comments"] : undefined },
+				{ populate },
 			),
 		).pipe(
 			map(post => {
 				if (!post) {
 					throw new NotFoundException(
-						this.i18nService.t("status.itemDoesNotExist", {
+						this.i18nService.t("exception.itemDoesNotExist", {
 							args: { item: "Post" },
 						}),
 					);
@@ -198,14 +196,12 @@ export class PostService {
 	 * @returns A post object
 	 */
 	favorite(userId: number, postIndex: string): Observable<Post> {
-		const post$ = from(
-			this.postRepository.findOneOrFail({ idx: postIndex }, { populate: ["author"] }),
-		);
+		const post$ = from(this.postRepository.findOneOrFail({ idx: postIndex }));
 		const user$ = from(
 			this.userRepository.findOneOrFail(
 				{ id: userId, isObsolete: false, isActive: true },
 				{
-					populate: ["favorites", "followers"],
+					populate: ["favorites"],
 				},
 			),
 		);
@@ -232,16 +228,17 @@ export class PostService {
 	 */
 	unFavorite(userId: number, postIndex: string): Observable<Post> {
 		const post$ = from(
-			this.postRepository.findOneOrFail(
-				{ idx: postIndex, isObsolete: false, isActive: true },
-				{ populate: ["author"] },
-			),
+			this.postRepository.findOneOrFail({
+				idx: postIndex,
+				isObsolete: false,
+				isActive: true,
+			}),
 		);
 		const user$ = from(
 			this.userRepository.findOneOrFail(
 				{ id: userId, isObsolete: false, isActive: true },
 				{
-					populate: ["favorites", "followers"],
+					populate: ["favorites"],
 				},
 			),
 		);

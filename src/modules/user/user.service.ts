@@ -64,7 +64,11 @@ export class UserService {
 		).pipe(
 			map(user => {
 				if (!user) {
-					throw new NotFoundException(this.i18nService.t("exception.USER_DOESNT_EXIST"));
+					throw new NotFoundException(
+						this.i18nService.t("exception.itemDoesNotExist", {
+							args: { item: "User" },
+						}),
+					);
 				} else {
 					return user;
 				}
