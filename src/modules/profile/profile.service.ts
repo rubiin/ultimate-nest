@@ -49,7 +49,7 @@ export class ProfileService {
 			switchMap(([followerUser, followingUser]) => {
 				if (followingUser.email === followerEmail) {
 					throw new BadRequestException(
-						this.i18nService.t("exception.CANNOT_FOLLOW_YOURSELF"),
+						this.i18nService.t("exception.cantfollowYourself"),
 					);
 				}
 
@@ -109,7 +109,11 @@ export class ProfileService {
 		);
 	}
 
-	/* A method that takes an email and returns an observable of type User. */
+	/**
+	 * It returns an observable of a user object, which is populated with posts, followed, and followers
+	 * @param {string} email - string - the email of the user we want to find
+	 * @returns A user object with the following properties:
+	 */
 	profile(email: string): Observable<User> {
 		const profile$ = from(
 			this.userRepository.findOne(

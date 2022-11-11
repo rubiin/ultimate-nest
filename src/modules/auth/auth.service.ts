@@ -47,14 +47,14 @@ export class AuthService {
 			switchMap(user => {
 				if (!user) {
 					throw new ForbiddenException(
-						this.i18n.t("status.itemDoesNotExist", {
+						this.i18n.t("exception.itemDoesNotExist", {
 							args: { item: "Account" },
 						}),
 					);
 				}
 
 				if (!user.isActive) {
-					throw new ForbiddenException(this.i18n.t("status.inactiveUser"));
+					throw new ForbiddenException(this.i18n.t("exception.inactiveUser"));
 				}
 
 				return user && loginType === LoginType.PASSWORD
@@ -123,7 +123,7 @@ export class AuthService {
 
 		if (!userExists) {
 			throw new NotFoundException(
-				this.i18n.t("status.itemDoesNotExist", {
+				this.i18n.t("exception.itemDoesNotExist", {
 					args: { item: "Account" },
 				}),
 			);
@@ -183,7 +183,7 @@ export class AuthService {
 
 		if (!codeDetails) {
 			throw new NotFoundException(
-				this.i18n.t("status.itemDoesNotExist", {
+				this.i18n.t("exception.itemDoesNotExist", {
 					args: { item: "Otp" },
 				}),
 			);
@@ -193,7 +193,7 @@ export class AuthService {
 
 		if (isExpired) {
 			throw new BadRequestException(
-				this.i18n.t("status.itemExpired", {
+				this.i18n.t("exception.itemExpired", {
 					args: { item: "Otp" },
 				}),
 			);
