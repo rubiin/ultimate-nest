@@ -24,10 +24,10 @@ export class ProfileController {
 		notFound: "Profile does not exist.",
 	})
 	follow(
-		@LoggedInUser("email") email: string,
+		@LoggedInUser() user: User,
 		@Param("username") username: string,
 	): Observable<IProfileData> {
-		return this.profileService.follow(email, username);
+		return this.profileService.follow(user, username);
 	}
 
 	@Delete(":username/follow")

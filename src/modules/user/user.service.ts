@@ -69,9 +69,8 @@ export class UserService {
 							args: { item: "User" },
 						}),
 					);
-				} else {
-					return user;
 				}
+				return user;
 			}),
 		);
 	}

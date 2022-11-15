@@ -54,9 +54,7 @@ export class PostService {
 	 * @returns Post
 	 */
 	addComment(userId: number, index: string, dto: CreateCommentDto): Observable<Post> {
-		const post$ = from(
-			this.postRepository.findOneOrFail({ idx: index, isObsolete: false, isActive: true }),
-		);
+		const post$ = this.getById(index);
 		const user$ = from(this.userRepository.findOneOrFail(userId));
 
 		return forkJoin([post$, user$]).pipe(
@@ -76,14 +74,7 @@ export class PostService {
 	 * @param {string} index - string - The index of the post to delete the comment from.
 	 */
 	deleteComment(index: string) {
-		const post$ = from(
-			this.postRepository.findOneOrFail(
-				{ idx: index, isObsolete: false, isActive: true },
-				{ populate: ["comments"] },
-			),
-		);
-
-		post$.pipe(
+		return this.getById(index, ["comments"]).pipe(
 			switchMap(post => {
 				const comment = this.commentRepository.getReference(post.id);
 
@@ -116,9 +107,8 @@ export class PostService {
 							args: { item: "Post" },
 						}),
 					);
-				} else {
-					return post;
 				}
+				return post;
 			}),
 		);
 	}

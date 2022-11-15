@@ -1,10 +1,11 @@
 import { BaseRepository } from "@common/database/base.repository";
 import { IProfileData } from "@common/types/interfaces";
 import { User } from "@entities";
+import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
-import { forkJoin, from, map, Observable, switchMap } from "rxjs";
+import { from, map, Observable, switchMap } from "rxjs";
 
 @Injectable()
 export class ProfileService {
@@ -14,46 +15,60 @@ export class ProfileService {
 		private readonly i18nService: I18nService,
 	) {}
 
-	/**
-	 * It takes an email and a username, finds the user with the given email and the user with the given
-	 * username, adds the user with the given email to the followers of the user with the given username,
-	 * and returns a profile object
-	 * @param {string} followerEmail - The email of the user who is following the other user.
-	 * @param {string} username - The username of the user to follow.
-	 * @returns An observable of type IProfileData
-	 */
-
-	follow(followerEmail: string, username: string): Observable<IProfileData> {
-		if (!followerEmail || !username) {
-			throw new BadRequestException("Follower email and username not provided.");
-		}
-
-		const followingUser$ = from(
+	/* Finding a profile by username*/
+	getProfileByUsername(
+		username: string,
+		populate: AutoPath<User, keyof User>[] = [],
+	): Observable<User> {
+		return from(
 			this.userRepository.findOne(
-				{ username, isObsolete: false, isActive: true },
 				{
-					populate: ["followers"],
+					username,
+					isObsolete: false,
+					isActive: true,
 				},
+				{ populate },
 			),
-		);
-
-		const followerUser$ = from(
-			this.userRepository.findOne({
-				email: followerEmail,
-				isObsolete: false,
-				isActive: true,
+		).pipe(
+			map(user => {
+				if (!user) {
+					throw new NotFoundException(
+						this.i18nService.t("exception.itemDoesNotExist", {
+							args: { item: "Profile" },
+						}),
+					);
+				}
+				return user;
 			}),
 		);
+	}
 
-		return forkJoin([followerUser$, followingUser$]).pipe(
-			switchMap(([followerUser, followingUser]) => {
-				if (followingUser.email === followerEmail) {
+	/**
+	 * It takes a logged in user and a username to follow, and returns an observable of the profile data
+	 * of the user that was followed
+	 * @param {User} loggedInUser - User - The user that is currently logged in.
+	 * @param {string} usernameToFollow - The username of the user to follow.
+	 * @returns A profile object with the following properties:
+	 * 	following: true,
+	 * 	avatar: followingUser.avatar,
+	 * 	username: followingUser.username,
+	 */
+	follow(loggedInUser: User, usernameToFollow: string): Observable<IProfileData> {
+		if (!usernameToFollow) {
+			throw new BadRequestException("Follower username not provided.");
+		}
+
+		const followingUser$ = this.getProfileByUsername(usernameToFollow, ["followers"]);
+
+		return followingUser$.pipe(
+			switchMap(followingUser => {
+				if (loggedInUser.username === usernameToFollow) {
 					throw new BadRequestException(
 						this.i18nService.t("exception.cantfollowYourself"),
 					);
 				}
 
-				followingUser.followers.add(followerUser);
+				followingUser.followers.add(loggedInUser);
 
 				const profile: IProfileData = {
 					following: true,
@@ -79,14 +94,7 @@ export class ProfileService {
 			throw new BadRequestException("FollowerId and username not provided.");
 		}
 
-		const followingUser$ = from(
-			this.userRepository.findOne(
-				{ username, isObsolete: false, isActive: true },
-				{
-					populate: ["followers"],
-				},
-			),
-		);
+		const followingUser$ = this.getProfileByUsername(username, ["followers"]);
 
 		return followingUser$.pipe(
 			switchMap(followingUser => {
@@ -111,17 +119,10 @@ export class ProfileService {
 
 	/**
 	 * It returns an observable of a user object, which is populated with posts, followed, and followers
-	 * @param {string} email - string - the email of the user we want to find
+	 * @param {string} username - string - the username of the user we want to find
 	 * @returns A user object with the following properties:
 	 */
-	profile(email: string): Observable<User> {
-		const profile$ = from(
-			this.userRepository.findOne(
-				{ email, isObsolete: false, isActive: true },
-				{ populate: ["posts", "followed", "followers"] },
-			),
-		);
-
-		return profile$.pipe(map(user => user));
+	profile(username: string): Observable<User> {
+		return this.getProfileByUsername(username);
 	}
 }
