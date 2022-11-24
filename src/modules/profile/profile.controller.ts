@@ -14,8 +14,8 @@ export class ProfileController {
 		operation: "Profile fetch",
 		notFound: "Profile does not exist.",
 	})
-	profile(@LoggedInUser("email") email: string): Observable<User> {
-		return this.profileService.profile(email);
+	profile(@LoggedInUser("username") username: string): Observable<User> {
+		return this.profileService.getProfileByUsername(username);
 	}
 
 	@Post(":username/follow")

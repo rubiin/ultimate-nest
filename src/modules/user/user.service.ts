@@ -43,7 +43,7 @@ export class UserService {
 			),
 		).pipe(
 			map(({ results, total }) => {
-				return createPaginationObject<User>(results, total, page, limit);
+				return createPaginationObject<User>(results, total, page, limit,'users');
 			}),
 		);
 	}
