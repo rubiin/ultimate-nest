@@ -1,5 +1,4 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
-import { HelperService } from "@common/helpers";
 import { Roles } from "@common/types/enums/permission.enum";
 import {
 	BeforeCreate,
@@ -12,7 +11,7 @@ import {
 	OneToMany,
 	Property,
 	Unique,
-	wrap,
+	wrap
 } from "@mikro-orm/core";
 import { hash } from "argon2";
 
@@ -88,10 +87,6 @@ export class User extends BaseEntity {
 		}
 	}
 
-	@Property({ persist: false })
-	get self() {
-		return HelperService.resourceLink("users", this.idx);
-	}
 
 	constructor(data?: Pick<User, "idx">) {
 		super();

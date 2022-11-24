@@ -1,5 +1,4 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
-import { HelperService } from "@common/helpers";
 import { ArrayType, Collection, Entity, ManyToOne, OneToMany, Property } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
@@ -41,8 +40,5 @@ export class Post extends BaseEntity {
 		this.slug = slugify(partial.title);
 	}
 
-	@Property({ persist: false })
-	get self() {
-		return HelperService.resourceLink("posts", this.idx);
-	}
+	
 }

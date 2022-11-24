@@ -47,7 +47,7 @@ export class PageOptionsDto {
 	 * Sorting criteria
 	 */
 	@IsOptional()
-	readonly sort: string = "createdAt";
+	readonly sort?: string = "createdAt";
 
 	/**
 	 * Search query

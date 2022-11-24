@@ -16,7 +16,7 @@ export function createPaginationObject<T>(
 	totalItems: number,
 	currentPage: number,
 	limit: number,
-	route?: string,
+	route = '/',
 ): Pagination<T> {
 	const totalPages = Math.ceil(totalItems / limit);
 

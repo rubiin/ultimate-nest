@@ -117,12 +117,5 @@ export class ProfileService {
 		);
 	}
 
-	/**
-	 * It returns an observable of a user object, which is populated with posts, followed, and followers
-	 * @param {string} username - string - the username of the user we want to find
-	 * @returns A user object with the following properties:
-	 */
-	profile(username: string): Observable<User> {
-		return this.getProfileByUsername(username);
-	}
+
 }
