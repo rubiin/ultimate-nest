@@ -41,7 +41,7 @@ export class PostService {
 			),
 		).pipe(
 			map(({ results, total }) => {
-				return createPaginationObject<Post>(results, total, page, limit);
+				return createPaginationObject<Post>(results, total, page, limit,'posts');
 			}),
 		);
 	}
