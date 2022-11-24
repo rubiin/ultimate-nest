@@ -5,10 +5,10 @@ import { PostService } from "./post.service";
 import { createMock } from "@golevelup/ts-jest";
 import { I18nService } from "nestjs-i18n";
 import { BaseRepository } from "@common/database/base.repository";
-import { mockedUser,mockedPost } from "../../_mocks_";
+import { mockedUser, mockedPost, query } from "@mocks";
 import { lastValueFrom } from "rxjs";
-import { PageOptionsDto } from "@common/classes/pagination";
-import { Order } from "@common/types/enums";
+
+
 
 describe("PostService", () => {
   let service: PostService;
@@ -17,6 +17,17 @@ describe("PostService", () => {
   const mockPostRepo = createMock<BaseRepository<Post>>();
   const mockUserRepo = createMock<BaseRepository<User>>();
   const mockCommentRepo = createMock<BaseRepository<Comment>>();
+
+
+
+
+  // default mocks
+
+  mockPostRepo.findOne.mockImplementation(() =>
+    Promise.resolve({
+      ...mockedPost,
+    } as any)
+  )
 
 
   beforeEach(async () => {
@@ -49,24 +60,13 @@ describe("PostService", () => {
   });
 
   it('should getById', async () => {
-    const findOneSpy = mockPostRepo.findOne.mockImplementation(() =>
-    Promise.resolve({
-      ...mockedPost,
-    } as any)
-  )
+    const findOneSpy = mockPostRepo.findOne
     const foundPost = await lastValueFrom(service.getById('postId'));
     expect(foundPost).toEqual(mockedPost);
     expect(findOneSpy).toBeCalledWith({ idx: 'postId', isObsolete: false, isActive: true }, { populate: [] });
   });
 
   it("should get post list", async () => {
-    const query: PageOptionsDto = {
-      page: 1,
-      limit: 10,
-      offset: 5,
-      sort: 'createdAt',
-      order: Order.DESC
-    };
 
     const findmanySpy =
       mockPostRepo.findAndPaginate.mockResolvedValue({
@@ -84,23 +84,21 @@ describe("PostService", () => {
 
 
 
-	it("should create post", async () => {
+  it("should create post", async () => {
 
-    const user =new User(mockedUser);
+    const loggedInUser = new User({ ...mockedUser });
 
     const createSpy = mockPostRepo.create.mockImplementation(() =>
     ({
       ...mockedPost,
-      author: user
+      author: loggedInUser
     } as any)
-  )
-    const result = await service.createOne(mockedPost,user);
+    )
+    const result = await service.createOne(mockedPost, loggedInUser);
     expect(createSpy).toHaveBeenCalled();
-    expect(createSpy).toHaveBeenCalledWith({...mockedPost,author:user});
-    expect(result).toEqual({...mockedPost,author:user});
+    expect(createSpy).toHaveBeenCalledWith({ ...mockedPost, author: loggedInUser });
+    expect(result).toEqual({ ...mockedPost, author: loggedInUser });
   });
-
-
 
 
 });
