@@ -7,7 +7,7 @@ import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
-import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
+import { forkJoin, from, map, Observable, of, switchMap, tap } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
@@ -43,48 +43,6 @@ export class PostService {
 		).pipe(
 			map(({ results, total }) => {
 				return createPaginationObject<Post>(results, total, page, limit, "posts");
-			}),
-		);
-	}
-
-	/**
-	 * It takes a userId, a post index, and a DTO, and returns an observable of a post
-	 * @param {number} userId - number,
-	 * @param {string} index - string - the index of the post to add the comment to
-	 * @param {CreateCommentDto} dto - CreateCommentDto
-	 * @returns Post
-	 */
-	addComment(userId: number, index: string, dto: CreateCommentDto): Observable<Post> {
-		const post$ = this.getById(index);
-		const user$ = from(this.userRepository.findOneOrFail(userId));
-
-		return forkJoin([post$, user$]).pipe(
-			switchMap(([post, user]) => {
-				const comment = new Comment({ body: dto.body, author: user, post });
-
-				return from(this.commentRepository.persistAndFlush(comment)).pipe(map(() => post));
-			}),
-		);
-	}
-
-	/**
-	 * "Delete a comment from a post."
-	 *
-	 * The first thing we do is to get the post from the database. We use the `findOneOrFail` method to get
-	 * the post. We also use the `populate` option to get the author of the post
-	 * @param {string} index - string - The index of the post to delete the comment from.
-	 */
-	deleteComment(index: string) {
-		return this.getById(index, ["comments"]).pipe(
-			switchMap(post => {
-				const comment = this.commentRepository.getReference(post.id);
-
-				if (post.comments.contains(comment)) {
-					post.comments.remove(comment);
-					from(this.commentRepository.removeAndFlush(comment)).pipe(map(() => post));
-				}
-
-				return of(post);
 			}),
 		);
 	}
@@ -139,7 +97,7 @@ export class PostService {
 	editOne(index: string, dto: EditPostDto): Observable<Post> {
 		return this.getById(index).pipe(
 			switchMap(post => {
-				wrap(post).assign(dto);
+				this.postRepository.assign(post, dto);
 
 				return from(this.postRepository.flush()).pipe(map(() => post));
 			}),
@@ -160,20 +118,6 @@ export class PostService {
 				return from(this.postRepository.softRemoveAndFlush(post)).pipe(map(() => post));
 			}),
 		);
-	}
-
-	/**
-	 * It finds a post by index, and then returns the comments of that post
-	 * @param {string} index - string - The index of the post to find comments for.
-	 * @returns An array of comments
-	 */
-	findComments(index: string): Observable<Comment[]> {
-		return from(
-			this.postRepository.findOne(
-				{ idx: index, isObsolete: false, isActive: true },
-				{ populate: ["comments"] },
-			),
-		).pipe(map(post => post.comments.getItems()));
 	}
 
 	/**
@@ -243,6 +187,62 @@ export class PostService {
 				}
 
 				return from(this.postRepository.flush()).pipe(map(() => post));
+			}),
+		);
+	}
+
+	/**
+	 * It finds a post by index, and then returns the comments of that post
+	 * @param {string} index - string - The index of the post to find comments for.
+	 * @returns An array of comments
+	 */
+	findComments(index: string): Observable<Comment[]> {
+		return from(
+			this.postRepository.findOne(
+				{ idx: index, isObsolete: false, isActive: true },
+				{ populate: ["comments"] },
+			),
+		).pipe(map(post => post.comments.getItems()));
+	}
+
+	/**
+	 * It takes a userId, a post index, and a DTO, and returns an observable of a post
+	 * @param {number} userId - number,
+	 * @param {string} index - string - the index of the post to add the comment to
+	 * @param {CreateCommentDto} dto - CreateCommentDto
+	 * @returns Post
+	 */
+	addComment(userId: number, index: string, dto: CreateCommentDto): Observable<Post> {
+		const post$ = this.getById(index);
+		const user$ = from(this.userRepository.findOneOrFail(userId));
+
+		return forkJoin([post$, user$]).pipe(
+			switchMap(([post, user]) => {
+				const comment = new Comment({ body: dto.body, author: user, post });
+
+				return from(this.commentRepository.persistAndFlush(comment)).pipe(map(() => post));
+			}),
+		);
+	}
+
+	/**
+	 * "Delete a comment from a post."
+	 *
+	 * The first thing we do is to get the post from the database. We use the `findOneOrFail` method to get
+	 * the post. We also use the `populate` option to get the author of the post
+	 * @param {string} index - string - The index of the post to delete the comment from.
+	 */
+	deleteComment(index: string) {
+		return this.getById(index, ["comments"]).pipe(
+			switchMap(post => {
+				const comment = this.commentRepository.getReference(post.id);
+
+				if (post.comments.contains(comment)) {
+					post.comments.remove(comment);
+					from(this.commentRepository.removeAndFlush(comment)).pipe(map(() => post));
+				}
+
+				return of(post);
 			}),
 		);
 	}

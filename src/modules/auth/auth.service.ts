@@ -4,7 +4,7 @@ import { EmailTemplateEnum, LoginType, RandomTypes } from "@common/types/enums/m
 import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
 import { OtpLog, User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { MikroORM, wrap } from "@mikro-orm/core";
+import { EntityManager, MikroORM, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { TokensService } from "@modules/token/tokens.service";
 import {
@@ -35,7 +35,7 @@ export class AuthService {
 		private readonly configService: ConfigService,
 		private readonly mailService: MailerService,
 		private readonly i18n: I18nService,
-		private readonly orm: MikroORM,
+		private readonly em: EntityManager,
 	) {}
 
 	validateUser(email: string, pass: string, loginType: LoginType): Observable<any> {
@@ -141,7 +141,7 @@ export class AuthService {
 			isUsed: false,
 		});
 
-		await this.orm.em.transactional(async em => {
+		await this.em.transactional(async em => {
 			await em.persistAndFlush(otp);
 
 			await this.mailService.sendMail({
@@ -200,7 +200,7 @@ export class AuthService {
 			);
 		}
 
-		await this.orm.em.transactional(async em => {
+		await this.em.transactional(async em => {
 			wrap(codeDetails).assign({
 				isUsed: true,
 			});

@@ -5,7 +5,6 @@ import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { mockedPost, mockedUser, query } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
-import { lastValueFrom } from "rxjs";
 
 import { PostService } from "./post.service";
 
@@ -19,11 +18,17 @@ describe("PostService", () => {
 
 	// default mocks
 
-	mockPostRepo.findOne.mockImplementation(() =>
+	mockPostRepo.findOne.mockImplementation((options: any) =>
 		Promise.resolve({
 			...mockedPost,
+			idx: options.idx,
 		} as any),
 	);
+
+	mockPostRepo.softRemoveAndFlush.mockImplementation(entity => {
+		Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
+		return Promise.resolve(entity);
+	});
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
@@ -56,13 +61,14 @@ describe("PostService", () => {
 
 	it("should getById", async () => {
 		const findOneSpy = mockPostRepo.findOne;
-		const foundPost = await lastValueFrom(service.getById("postId"));
 
-		expect(foundPost).toEqual(mockedPost);
-		expect(findOneSpy).toBeCalledWith(
-			{ idx: "postId", isObsolete: false, isActive: true },
-			{ populate: [] },
-		);
+		service.getById("postId").subscribe(result => {
+			expect(result).toStrictEqual({ ...mockedPost, idx: "postId" });
+			expect(findOneSpy).toBeCalledWith(
+				{ idx: "postId", isObsolete: false, isActive: true },
+				{ populate: [] },
+			);
+		});
 	});
 
 	it("should get post list", async () => {
@@ -71,12 +77,12 @@ describe("PostService", () => {
 			total: 100,
 		});
 
-		const result = await lastValueFrom(service.getMany(query));
-
-		expect(result.meta).toBeDefined();
-		expect(result.links).toBeDefined();
-		expect(result.items).toEqual([]);
-		expect(findmanySpy).toHaveBeenCalled();
+		service.getMany(query).subscribe(result => {
+			expect(result.meta).toBeDefined();
+			expect(result.links).toBeDefined();
+			expect(result.items).toStrictEqual([]);
+			expect(findmanySpy).toHaveBeenCalled();
+		});
 	});
 
 	it("should create post", async () => {
@@ -93,6 +99,41 @@ describe("PostService", () => {
 
 		expect(createSpy).toHaveBeenCalled();
 		expect(createSpy).toHaveBeenCalledWith({ ...mockedPost, author: loggedInUser });
-		expect(result).toEqual({ ...mockedPost, author: loggedInUser });
+		expect(result).toStrictEqual({ ...mockedPost, author: loggedInUser });
+	});
+
+	it("should remove post", async () => {
+		service.deleteOne("postId").subscribe(result => {
+			expect(result).toStrictEqual({
+				...mockedPost,
+				idx: "postId",
+				isObsolete: true,
+				deletedAt: expect.any(Date),
+			});
+			expect(mockPostRepo.findOne).toBeCalledWith(
+				{ idx: "postId", isObsolete: false, isActive: true },
+				{ populate: [] },
+			);
+
+			expect(mockPostRepo.softRemoveAndFlush).toBeCalled();
+		});
+	});
+
+	it("should edit post", async () => {
+		const updateSpy = mockPostRepo.assign.mockImplementation((entity, data) => {
+			return Object.assign(entity, data);
+		});
+
+		service.editOne("postId", { content: "new content" }).subscribe(result => {
+			expect(result).toStrictEqual({
+				...mockedPost,
+				idx: "postId",
+				content: "new content",
+			});
+			expect(mockPostRepo.findOne).toBeCalledWith(
+				{ idx: "postId", isObsolete: false, isActive: true },
+				{ populate: [] },
+			);
+		});
 	});
 });

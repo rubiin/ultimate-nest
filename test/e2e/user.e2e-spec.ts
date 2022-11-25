@@ -37,7 +37,7 @@ describe("UserController (e2e)", () => {
 				.attach("avatar", path.resolve(__dirname, "../test.png"))
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
-					expect(body.email).toEqual(userDto.email);
+					expect(body.email).toStrictEqual(userDto.email);
 					userIndex = body.id;
 				})
 				.expect(201);
@@ -52,8 +52,8 @@ describe("UserController (e2e)", () => {
 				.send({ ...pick(userDto, ["roles"]), email, username })
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
-					expect(body.email).toEqual(email);
-					expect(body.roles).toEqual([Roles.AUTHOR]);
+					expect(body.email).toStrictEqual(email);
+					expect(body.roles).toStrictEqual([Roles.AUTHOR]);
 					userIndex = body.id;
 				})
 				.expect(201);
@@ -67,7 +67,7 @@ describe("UserController (e2e)", () => {
 					email: faker.internet.email(),
 				})
 				.expect(({ body }) => {
-					expect(body.errors).toEqual(["property roles should not exist"]);
+					expect(body.errors).toStrictEqual(["property roles should not exist"]);
 				})
 				.expect(400);
 		});
@@ -110,8 +110,8 @@ describe("UserController (e2e)", () => {
 				.expect(({ body }) => {
 					expect(body.meta).toBeDefined();
 					expect(body.items).toBeDefined();
-					expect(body.meta.currentPage).toEqual(page);
-					expect(body.meta.itemsPerPage).toEqual(limit);
+					expect(body.meta.currentPage).toStrictEqual(page);
+					expect(body.meta.itemsPerPage).toStrictEqual(limit);
 				})
 				.expect(200);
 		});
@@ -122,7 +122,7 @@ describe("UserController (e2e)", () => {
 				.auth(adminJwtToken, { type: "bearer" })
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
-					expect(body.id).toEqual(userIndex);
+					expect(body.id).toStrictEqual(userIndex);
 				});
 		});
 
@@ -131,7 +131,7 @@ describe("UserController (e2e)", () => {
 				.get(`/users/30906d04-d770-4694-b4c1-5c084c0c96f0`)
 				.auth(adminJwtToken, { type: "bearer" })
 				.expect(({ body }) => {
-					expect(body.message).toEqual(
+					expect(body.message).toStrictEqual(
 						"User does not exist for the parameter 30906d04-d770-4694-b4c1-5c084c0c96f0.",
 					);
 				})
@@ -145,7 +145,7 @@ describe("UserController (e2e)", () => {
 				.field("firstName", "Updated First Name")
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
-					expect(body.firstName).toEqual("Updated First Name");
+					expect(body.firstName).toStrictEqual("Updated First Name");
 				})
 				.expect(200);
 		});
@@ -156,7 +156,7 @@ describe("UserController (e2e)", () => {
 				.auth(adminJwtToken, { type: "bearer" })
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
-					expect(body.id).toEqual(userIndex);
+					expect(body.id).toStrictEqual(userIndex);
 				});
 		});
 	});
