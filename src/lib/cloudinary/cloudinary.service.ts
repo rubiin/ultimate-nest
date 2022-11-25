@@ -1,10 +1,12 @@
 /* eslint-disable import/named */
+import { Readable } from "node:stream";
+
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { UploadApiErrorResponse, UploadApiResponse, v2 as cloudinary } from "cloudinary";
-import { Readable } from "node:stream";
+import sharp from "sharp";
+
 import { CLOUDINARY_MODULE_OPTIONS } from "./cloudinary.constant";
 import { CloudinaryModuleOptions } from "./cloudinary.options";
-import sharp from "sharp";
 
 @Injectable()
 export class CloudinaryService {

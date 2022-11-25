@@ -18,6 +18,4 @@ export class Comment extends BaseEntity {
 		super();
 		Object.assign(this, partial);
 	}
-
-
 }

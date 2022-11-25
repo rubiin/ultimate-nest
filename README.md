@@ -4,9 +4,19 @@
 
 > ### Blog made using Nestjs + Mikro-orm codebase(backend) containing real world examples (CRUD, auth (password based and oauth), advanced patterns, etc)
 
-[![CI](https://github.com/rubiin/ultimate-nest/actions/workflows/github-ci.yml/badge.svg)](https://github.com/rubiin/ultimate-nest/actions/workflows/github-ci.yml)
+<p align="center">
+<img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/rubiin/ultimate-nest">
+<img alt="Workflow test" src="https://github.com/rubiin/ultimate-nest/actions/workflows/github-ci.yml/badge.svg">
+<img alt="GitHub" src="https://img.shields.io/github/license/rubiin/ultimate-nest">
+<img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/rubiin/ultimate-nest">
+</p>
+<p align="center">
+<a href="https://www.buymeacoffee.com/XbgWxt567" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+</p>
+<br/>
+NOTE: Starting April 18,2022 , the repo has ditched most promises for observables. You can check the latest promised version code at
+[commit](https://github.com/rubiin/ultimate-nest/tree/fb06b34f7d36f36195880e600f8f1b5b86f71213)
 
-> NOTE: Starting April 18,2022 , the repo has ditched most promises for observables. You can check the latest promised version code at [commit](https://github.com/rubiin/ultimate-nest/tree/fb06b34f7d36f36195880e600f8f1b5b86f71213)
 
 # Getting started
 

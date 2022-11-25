@@ -1,11 +1,12 @@
+import aws from "@aws-sdk/client-ses";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import * as eta from "eta";
 import { createTransport, SendMailOptions, Transporter } from "nodemailer";
 import { SentMessageInfo } from "nodemailer/lib/ses-transport";
 import previewEmail from "preview-email";
+
 import { MAIL_MODULE_OPTIONS } from "./mailer.constants";
 import { MailModuleOptions } from "./mailer.options";
-import aws from "@aws-sdk/client-ses";
 
 interface IMailOptions extends Partial<SendMailOptions> {
 	template: string;

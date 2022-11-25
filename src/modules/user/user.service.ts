@@ -12,6 +12,7 @@ import { ConfigService } from "@nestjs/config";
 import { capitalize } from "helper-fns";
 import { I18nService } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
+
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
@@ -43,7 +44,7 @@ export class UserService {
 			),
 		).pipe(
 			map(({ results, total }) => {
-				return createPaginationObject<User>(results, total, page, limit,'users');
+				return createPaginationObject<User>(results, total, page, limit, "users");
 			}),
 		);
 	}
@@ -70,6 +71,7 @@ export class UserService {
 						}),
 					);
 				}
+
 				return user;
 			}),
 		);

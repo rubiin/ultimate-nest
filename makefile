@@ -12,7 +12,7 @@ makemigration:
 	@NODE_ENV=$(env) npm run orm migration:create
 
 fresh:
-	@NODE_ENV=$(env) npm run orm migration:fresh --seed 
+	@NODE_ENV=$(env) npm run orm migration:fresh --seed
 
 migrate:
 	@NODE_ENV=$(env) npm run orm migration:up
@@ -44,3 +44,6 @@ stop:
 
 remove:
 	ENV=dev PASSWORD=test@1234 docker-compose -f docker-compose.$(env).yml down
+
+test-e2e:
+	USER_PASSWORD=Test@1234 NODE_ENV=$(env) yarn test:e2e

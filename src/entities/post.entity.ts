@@ -39,6 +39,4 @@ export class Post extends BaseEntity {
 		Object.assign(this, partial);
 		this.slug = slugify(partial.title);
 	}
-
-	
 }

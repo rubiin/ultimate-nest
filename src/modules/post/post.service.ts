@@ -8,6 +8,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
 import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
+
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
@@ -41,7 +42,7 @@ export class PostService {
 			),
 		).pipe(
 			map(({ results, total }) => {
-				return createPaginationObject<Post>(results, total, page, limit,'posts');
+				return createPaginationObject<Post>(results, total, page, limit, "posts");
 			}),
 		);
 	}
@@ -108,6 +109,7 @@ export class PostService {
 						}),
 					);
 				}
+
 				return post;
 			}),
 		);

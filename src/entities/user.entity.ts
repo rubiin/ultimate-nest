@@ -11,7 +11,7 @@ import {
 	OneToMany,
 	Property,
 	Unique,
-	wrap
+	wrap,
 } from "@mikro-orm/core";
 import { hash } from "argon2";
 
@@ -86,7 +86,6 @@ export class User extends BaseEntity {
 			this.password = await hash(this.password);
 		}
 	}
-
 
 	constructor(data?: Pick<User, "idx">) {
 		super();

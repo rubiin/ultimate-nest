@@ -1,5 +1,6 @@
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+
 import { app, cloudinary, database, googleOauth, jwt, mail, rabbit, redis } from "./configs";
 import { facebookOauth } from "./configs/facebook.config";
 import { validationSchema } from "./validate.config";

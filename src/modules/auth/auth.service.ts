@@ -1,5 +1,7 @@
 import { BaseRepository } from "@common/database/base.repository";
 import { HelperService } from "@common/helpers/helpers.utils";
+import { EmailTemplateEnum, LoginType, RandomTypes } from "@common/types/enums/misc.enum";
+import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
 import { OtpLog, User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { MikroORM, wrap } from "@mikro-orm/core";
@@ -13,15 +15,14 @@ import {
 	UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { capitalize, omit } from "helper-fns";
 import { isAfter } from "date-fns";
+import { capitalize, omit } from "helper-fns";
 import { I18nService } from "nestjs-i18n";
 import { from, map, Observable, of, switchMap, zip } from "rxjs";
+
 import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
 import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
 import { UserLoginDto } from "./dtos/user-login";
-import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
-import { EmailTemplateEnum, LoginType, RandomTypes } from "@common/types/enums/misc.enum";
 
 @Injectable()
 export class AuthService {

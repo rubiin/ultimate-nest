@@ -1,14 +1,15 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import {
+	ApiPaginatedResponse,
 	GenericController,
 	LoggedInUser,
 	SwaggerResponse,
-	ApiPaginatedResponse,
 } from "@common/decorators";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
+
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
