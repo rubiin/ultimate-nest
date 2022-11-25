@@ -1,15 +1,15 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import {
 	ApiFile,
+	ApiPaginatedResponse,
+	GenericController,
 	Public,
 	SwaggerResponse,
-	GenericController,
-	ApiPaginatedResponse,
 } from "@common/decorators";
 import { fileValidatorPipe } from "@common/misc";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
-import { Action, GenericPolicyHandler, UpdateUserPolicyHandler, CheckPolicies } from "@lib/casl";
+import { Action, CheckPolicies, GenericPolicyHandler, UpdateUserPolicyHandler } from "@lib/casl";
 import { Pagination } from "@lib/pagination";
 import {
 	Body,

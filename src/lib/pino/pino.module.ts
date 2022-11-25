@@ -24,14 +24,14 @@ import { LoggerModule } from "nestjs-pino";
 							paths: ["req.headers.authorization"],
 						},
 						transport:
-							process.env.NODE_ENV !== "production"
-								? {
+							process.env.NODE_ENV === "production"
+								? undefined
+								: {
 										target: "pino-pretty",
 										options: {
 											forceColor: true,
 										},
-								  }
-								: undefined,
+								  },
 					},
 				};
 			},

@@ -38,6 +38,7 @@ export class ProfileService {
 						}),
 					);
 				}
+
 				return user;
 			}),
 		);
@@ -116,6 +117,4 @@ export class ProfileService {
 			}),
 		);
 	}
-
-
 }

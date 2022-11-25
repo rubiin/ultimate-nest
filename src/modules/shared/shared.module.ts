@@ -1,3 +1,5 @@
+import { join } from "node:path";
+
 import {
 	NestCacheModule,
 	NestCaslModule,
@@ -18,7 +20,6 @@ import { UserModule } from "@modules/user/user.module";
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { join } from "node:path";
 
 @Module({
 	imports: [

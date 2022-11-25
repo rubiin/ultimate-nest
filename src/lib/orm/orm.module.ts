@@ -39,7 +39,7 @@ const logger = new Logger("MikroORM");
 			inject: [ConfigService],
 		}),
 		MikroOrmModule.forFeature({
-			entities: [...Object.values(Entities)],
+			entities: Object.values(Entities),
 		}),
 	],
 	exports: [MikroOrmModule],

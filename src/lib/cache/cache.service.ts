@@ -14,6 +14,7 @@ export class CacheService {
 
 		if (match.length > 0) {
 			const promiseQueue = [];
+
 			for (const keys of match) {
 				promiseQueue.push(this.cacheManager.del(keys));
 			}

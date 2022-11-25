@@ -1,6 +1,6 @@
-import { Factory, Faker } from "@mikro-orm/seeder";
 import { Roles } from "@common/types/enums/permission.enum";
 import { User } from "@entities";
+import { Factory, Faker } from "@mikro-orm/seeder";
 
 /* `UserFactory` is a factory that creates `User` instances */
 export class UserFactory extends Factory<User> {

@@ -1,5 +1,5 @@
-export * from "./ApiPaginated";
 export * from "./api-file.decorator";
+export * from "./ApiPaginated";
 export * from "./auth.decorator";
 export * from "./controller.decorator";
 export * from "./is-string-minmax.decorator";

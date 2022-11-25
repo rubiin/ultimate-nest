@@ -1,13 +1,13 @@
 {
 	"name": "ultimate-nest",
-	"version": "1.7.0",
+	"version": "1.8.0",
 	"description": "NestJS + MikroORM realworld API example",
 	"license": "MIT",
 	"repository": "https://github.com/rubiin/ultimate-nest",
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"build": "nest build",
-		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+		"format": "prettier --write --cache \"src/**/*.ts\" \"test/**/*.ts\"",
 		"start": "nest start",
 		"lint": "eslint '{src,test}/**/*.ts' --cache --fix",
 		"test": "jest",
@@ -166,10 +166,10 @@
 	"lint-staged": {
 		"*.{ts,tsx}": [
 			"eslint '{src,test}/**/*.ts' --cache --fix",
-			"prettier --write"
+			"prettier --cache --write"
 		],
 		"*.{json,md,yaml,yml}": [
-			"prettier --write"
+			"prettier --cache --write"
 		]
 	},
 	"config": {

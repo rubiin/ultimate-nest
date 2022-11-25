@@ -1,8 +1,9 @@
 import { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
+
+import { CommentFactory } from "../factories/comment.factory";
 import { PostFactory } from "../factories/post.factory";
 import { UserFactory } from "../factories/user.factory";
-import { CommentFactory } from "../factories/comment.factory";
 
 /* It creates a post, a user, and a comment */
 export class UserSeeder extends Seeder {

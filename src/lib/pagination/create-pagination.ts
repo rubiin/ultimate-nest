@@ -1,5 +1,5 @@
-import { IPaginationLinks, IPaginationMeta } from "./pagination-option.interface";
 import { Pagination } from "./pagination";
+import { IPaginationLinks, IPaginationMeta } from "./pagination-option.interface";
 
 /**
  * It takes an array of items, a total number of items, the current page, the limit, and an optional
@@ -16,7 +16,7 @@ export function createPaginationObject<T>(
 	totalItems: number,
 	currentPage: number,
 	limit: number,
-	route = '/',
+	route = "/",
 ): Pagination<T> {
 	const totalPages = Math.ceil(totalItems / limit);
 

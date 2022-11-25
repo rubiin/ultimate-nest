@@ -1,6 +1,7 @@
 import { NestConfigModule } from "@lib/config/config.module";
 import { Global, Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+
 import { MailModule } from "./mailer.module";
 
 @Global()

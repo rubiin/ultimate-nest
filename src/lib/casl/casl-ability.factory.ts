@@ -1,4 +1,3 @@
-import { Injectable } from "@nestjs/common";
 import {
 	Ability,
 	AbilityBuilder,
@@ -6,8 +5,9 @@ import {
 	ExtractSubjectType,
 	InferSubjects,
 } from "@casl/ability";
-import { Post, User } from "@entities";
 import { Roles } from "@common/types/enums/permission.enum";
+import { Post, User } from "@entities";
+import { Injectable } from "@nestjs/common";
 
 export type Subjects = InferSubjects<typeof User | typeof Post> | "all";
 
