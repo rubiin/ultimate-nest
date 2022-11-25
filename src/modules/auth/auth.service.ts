@@ -4,7 +4,7 @@ import { EmailTemplateEnum, LoginType, RandomTypes } from "@common/types/enums/m
 import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
 import { OtpLog, User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { EntityManager, MikroORM, wrap } from "@mikro-orm/core";
+import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { TokensService } from "@modules/token/tokens.service";
 import {
@@ -12,7 +12,7 @@ import {
 	ForbiddenException,
 	Injectable,
 	NotFoundException,
-	UnauthorizedException,
+	UnauthorizedException
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { isAfter } from "date-fns";
@@ -201,7 +201,7 @@ export class AuthService {
 		}
 
 		await this.em.transactional(async em => {
-			wrap(codeDetails).assign({
+			this.otpRepository.assign(codeDetails, {
 				isUsed: true,
 			});
 
@@ -233,7 +233,7 @@ export class AuthService {
 								this.i18n.translate("exception.invalidCredentials"),
 							);
 						}
-						wrap(userDetails).assign({
+						this.userRepository.assign(userDetails, {
 							password,
 						});
 

@@ -33,7 +33,8 @@ describe("UserService", () => {
 
 	mockUserRepo.softRemoveAndFlush.mockImplementation(entity => {
 		Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
-		return Promise.resolve(entity);
+		
+return Promise.resolve(entity);
 	});
 
 	beforeEach(async () => {
@@ -66,9 +67,7 @@ describe("UserService", () => {
 
 		service.getOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
-			expect(findOneSpy).toBeCalledWith(
-				{ idx: "userId", isObsolete: false, isActive: true }
-			);
+			expect(findOneSpy).toBeCalledWith({ idx: "userId", isObsolete: false, isActive: true });
 		});
 	});
 
@@ -86,7 +85,6 @@ describe("UserService", () => {
 		});
 	});
 
-
 	it("should remove user", async () => {
 		service.deleteOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({
@@ -95,12 +93,13 @@ describe("UserService", () => {
 				isObsolete: true,
 				deletedAt: expect.any(Date),
 			});
-			expect(mockUserRepo.findOne).toBeCalledWith(
-				{ idx: "userId", isObsolete: false, isActive: true }
-			);
+			expect(mockUserRepo.findOne).toBeCalledWith({
+				idx: "userId",
+				isObsolete: false,
+				isActive: true,
+			});
 
 			expect(mockUserRepo.softRemoveAndFlush).toBeCalled();
 		});
 	});
-
 });

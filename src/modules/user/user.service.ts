@@ -5,7 +5,7 @@ import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { createPaginationObject, Pagination } from "@lib/pagination";
-import { EntityManager, MikroORM, wrap } from "@mikro-orm/core";
+import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -126,7 +126,7 @@ export class UserService {
 	editOne(index: string, dto: EditUserDto): Observable<User> {
 		return this.getOne(index).pipe(
 			switchMap(user => {
-				wrap(user).assign(dto);
+				this.userRepository.assign(user, dto);
 
 				return from(this.userRepository.flush()).pipe(map(() => user));
 			}),
