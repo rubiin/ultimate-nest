@@ -5,7 +5,6 @@ import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { mockedUser } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
-import { lastValueFrom } from "rxjs";
 
 import { ProfileService } from "./profile.service";
 
@@ -44,12 +43,12 @@ describe("ProfileService", () => {
 	});
 
 	it("should getProfileByUsername", async () => {
-		const foundProfile = await lastValueFrom(service.getProfileByUsername("username"));
-
-		expect(foundProfile).toEqual(mockedUser);
-		expect(mockUserRepo.findOne).toBeCalledWith(
-			{ username: "username", isObsolete: false, isActive: true },
-			{ populate: [] },
-		);
+		service.getProfileByUsername("username").subscribe(result => {
+			expect(result).toStrictEqual(mockedUser);
+			expect(mockUserRepo.findOne).toBeCalledWith(
+				{ username: "username", isObsolete: false, isActive: true },
+				{ populate: [] },
+			);
+		});
 	});
 });

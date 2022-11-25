@@ -27,7 +27,7 @@ describe("PostController (e2e)", () => {
 				.send(postDto)
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
-					expect(body.email).toEqual(userDto.email);
+					expect(body.email).toStrictEqual(userDto.email);
 					postIndex = body.id;
 				})
 				.expect(201);
@@ -65,8 +65,8 @@ describe("PostController (e2e)", () => {
 				.expect(({ body }) => {
 					expect(body.meta).toBeDefined();
 					expect(body.items).toBeDefined();
-					expect(body.meta.currentPage).toEqual(page);
-					expect(body.meta.itemsPerPage).toEqual(limit);
+					expect(body.meta.currentPage).toStrictEqual(page);
+					expect(body.meta.itemsPerPage).toStrictEqual(limit);
 				})
 				.expect(200);
 		});
@@ -77,7 +77,7 @@ describe("PostController (e2e)", () => {
 				.auth(adminJwtToken, { type: "bearer" })
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
-					expect(body.id).toEqual(postIndex);
+					expect(body.id).toStrictEqual(postIndex);
 				});
 		});
 
@@ -86,7 +86,7 @@ describe("PostController (e2e)", () => {
 				.get(`/posts/30906d04-d770-4694-b4c1-5c084c0c96f0`)
 				.auth(adminJwtToken, { type: "bearer" })
 				.expect(({ body }) => {
-					expect(body.message).toEqual(
+					expect(body.message).toStrictEqual(
 						"User does not exist for the parameter 30906d04-d770-4694-b4c1-5c084c0c96f0.",
 					);
 				})
@@ -100,7 +100,7 @@ describe("PostController (e2e)", () => {
 				.send({ content: "updated content" })
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
-					expect(body.content).toEqual("updated content");
+					expect(body.content).toStrictEqual("updated content");
 				})
 				.expect(200);
 		});
@@ -111,7 +111,7 @@ describe("PostController (e2e)", () => {
 				.auth(adminJwtToken, { type: "bearer" })
 				.expect(({ body }) => {
 					expect(body).toBeDefined();
-					expect(body.id).toEqual(postIndex);
+					expect(body.id).toStrictEqual(postIndex);
 				});
 		});
 	});

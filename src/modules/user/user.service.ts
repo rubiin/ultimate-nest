@@ -5,7 +5,7 @@ import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { createPaginationObject, Pagination } from "@lib/pagination";
-import { MikroORM, wrap } from "@mikro-orm/core";
+import { EntityManager, MikroORM, wrap } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -20,7 +20,7 @@ export class UserService {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
-		private readonly orm: MikroORM,
+		private readonly em: EntityManager,
 		private readonly i18nService: I18nService,
 		private readonly configService: ConfigService,
 		private readonly amqpConnection: AmqpConnection,
@@ -86,7 +86,7 @@ export class UserService {
 		const { image, ...rest } = dto;
 		const user = this.userRepository.create(rest);
 
-		await this.orm.em.transactional(async em => {
+		await this.em.transactional(async em => {
 			const { url } = await this.cloudinaryService.uploadImage(image);
 
 			// cloudinary gives a url key on response that is the full url to file

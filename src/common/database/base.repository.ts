@@ -25,10 +25,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * @return {*}  {Promise<void>}
 	 * @memberof BaseRepositroy
 	 */
-	async softRemoveAndFlush(entity: T): Promise<void> {
+	async softRemoveAndFlush(entity: T): Promise<T> {
 		entity.deletedAt = new Date();
 		entity.isObsolete = true;
 		await this.persistAndFlush(entity);
+		return entity;
 	}
 
 	/**
