@@ -29,7 +29,8 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		entity.deletedAt = new Date();
 		entity.isObsolete = true;
 		await this.persistAndFlush(entity);
-		return entity;
+		
+return entity;
 	}
 
 	/**

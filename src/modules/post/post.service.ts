@@ -2,12 +2,11 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database/base.repository";
 import { Comment, Post, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
-import { wrap } from "@mikro-orm/core";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
-import { forkJoin, from, map, Observable, of, switchMap, tap } from "rxjs";
+import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 

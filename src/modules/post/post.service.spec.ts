@@ -27,7 +27,8 @@ describe("PostService", () => {
 
 	mockPostRepo.softRemoveAndFlush.mockImplementation(entity => {
 		Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
-		return Promise.resolve(entity);
+
+return Promise.resolve(entity);
 	});
 
 	beforeEach(async () => {
@@ -120,7 +121,7 @@ describe("PostService", () => {
 	});
 
 	it("should edit post", async () => {
-		const updateSpy = mockPostRepo.assign.mockImplementation((entity, data) => {
+		mockPostRepo.assign.mockImplementation((entity, data) => {
 			return Object.assign(entity, data);
 		});
 
