@@ -5,7 +5,7 @@ import { createMock } from "@golevelup/ts-jest";
 import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { mockedUser, query } from "@mocks";
+import { mockedUser, mockFile, query } from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
@@ -33,8 +33,8 @@ describe("UserService", () => {
 
 	mockUserRepo.softRemoveAndFlush.mockImplementation(entity => {
 		Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
-		
-return Promise.resolve(entity);
+
+		return Promise.resolve(entity);
 	});
 
 	beforeEach(async () => {
@@ -62,16 +62,32 @@ return Promise.resolve(entity);
 		expect(service).toBeDefined();
 	});
 
-	it("should getById", async () => {
+	it("should getById", done => {
 		const findOneSpy = mockUserRepo.findOne;
 
 		service.getOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
 			expect(findOneSpy).toBeCalledWith({ idx: "userId", isObsolete: false, isActive: true });
+			done();
 		});
 	});
 
-	it("should get user list", async () => {
+	it("should create user", async () => {
+		const createSpy = mockUserRepo.create.mockImplementation(
+			() =>
+				({
+					...mockedUser,
+				} as any),
+		);
+
+		const result = await service.createOne({ ...mockedUser, image: mockFile });
+
+		expect(result).toStrictEqual({ ...mockedUser });
+		expect(createSpy).toBeCalledWith({ ...mockedUser });
+		expect(mockEm.transactional).toBeCalled();
+	});
+
+	it("should get user list", done => {
 		const findmanySpy = mockUserRepo.findAndPaginate.mockResolvedValue({
 			results: [],
 			total: 100,
@@ -82,10 +98,11 @@ return Promise.resolve(entity);
 			expect(result.links).toBeDefined();
 			expect(result.items).toStrictEqual([]);
 			expect(findmanySpy).toHaveBeenCalled();
+			done();
 		});
 	});
 
-	it("should remove user", async () => {
+	it("should remove user", done => {
 		service.deleteOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({
 				...mockedUser,
@@ -100,6 +117,7 @@ return Promise.resolve(entity);
 			});
 
 			expect(mockUserRepo.softRemoveAndFlush).toBeCalled();
+			done();
 		});
 	});
 });

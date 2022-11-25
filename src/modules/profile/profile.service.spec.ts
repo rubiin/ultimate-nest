@@ -16,9 +16,10 @@ describe("ProfileService", () => {
 
 	// default mocks
 
-	mockUserRepo.findOne.mockImplementation(() =>
+	mockUserRepo.findOne.mockImplementation((options: any) =>
 		Promise.resolve({
 			...mockedUser,
+			username: options.username,
 		} as any),
 	);
 
@@ -42,13 +43,14 @@ describe("ProfileService", () => {
 		expect(service).toBeDefined();
 	});
 
-	it("should getProfileByUsername", async () => {
+	it("should getProfileByUsername", done => {
 		service.getProfileByUsername("username").subscribe(result => {
 			expect(result).toStrictEqual(mockedUser);
 			expect(mockUserRepo.findOne).toBeCalledWith(
 				{ username: "username", isObsolete: false, isActive: true },
 				{ populate: [] },
 			);
+			done();
 		});
 	});
 });
