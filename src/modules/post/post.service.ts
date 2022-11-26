@@ -78,12 +78,10 @@ export class PostService {
 	 * @param {User} author - User - this is the user that is currently logged in.
 	 * @returns The post object
 	 */
-	async createOne(dto: CreatePostDto, author: User) {
+	createOne(dto: CreatePostDto, author: User): Observable<Post> {
 		const post = this.postRepository.create({ ...dto, author });
 
-		await this.postRepository.persistAndFlush(post);
-
-		return post;
+		return from(this.postRepository.persistAndFlush(post)).pipe(map(() => post));
 	}
 
 	/**

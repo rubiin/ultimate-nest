@@ -42,7 +42,7 @@ describe("ProfileService", () => {
 		expect(service).toBeDefined();
 	});
 
-	it("should getProfileByUsername", async () => {
+	it("should getProfileByUsername", () => {
 		service.getProfileByUsername("username").subscribe(result => {
 			expect(result).toStrictEqual(mockedUser);
 			expect(mockUserRepo.findOne).toBeCalledWith(
