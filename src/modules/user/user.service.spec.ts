@@ -33,8 +33,8 @@ describe("UserService", () => {
 
 	mockUserRepo.softRemoveAndFlush.mockImplementation(entity => {
 		Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
-		
-return Promise.resolve(entity);
+
+		return Promise.resolve(entity);
 	});
 
 	beforeEach(async () => {
@@ -62,7 +62,7 @@ return Promise.resolve(entity);
 		expect(service).toBeDefined();
 	});
 
-	it("should getById", async () => {
+	it("should getById", () => {
 		const findOneSpy = mockUserRepo.findOne;
 
 		service.getOne("userId").subscribe(result => {
@@ -71,7 +71,7 @@ return Promise.resolve(entity);
 		});
 	});
 
-	it("should get user list", async () => {
+	it("should get user list", () => {
 		const findmanySpy = mockUserRepo.findAndPaginate.mockResolvedValue({
 			results: [],
 			total: 100,
@@ -85,7 +85,7 @@ return Promise.resolve(entity);
 		});
 	});
 
-	it("should remove user", async () => {
+	it("should remove user", () => {
 		service.deleteOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({
 				...mockedUser,
