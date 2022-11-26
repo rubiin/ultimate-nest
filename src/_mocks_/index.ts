@@ -28,3 +28,12 @@ export const query: PageOptionsDto = {
 	sort: "createdAt",
 	order: Order.DESC,
 };
+
+export const mockFile = {
+	fieldname: "file",
+	originalname: "test.png",
+	encoding: "8bit",
+	mimetype: "text/png",
+	buffer: Buffer.from(__dirname + "/../../test/test.png", "utf8"),
+	size: 13148,
+} as Express.Multer.File;
