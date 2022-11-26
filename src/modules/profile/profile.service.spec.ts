@@ -16,9 +16,10 @@ describe("ProfileService", () => {
 
 	// default mocks
 
-	mockUserRepo.findOne.mockImplementation(() =>
+	mockUserRepo.findOne.mockImplementation((options: any) =>
 		Promise.resolve({
 			...mockedUser,
+			username: options.username,
 		} as any),
 	);
 
@@ -49,6 +50,7 @@ describe("ProfileService", () => {
 				{ username: "username", isObsolete: false, isActive: true },
 				{ populate: [] },
 			);
+
 		});
 	});
 });

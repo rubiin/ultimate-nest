@@ -69,6 +69,7 @@ describe("PostService", () => {
 				{ idx: "postId", isObsolete: false, isActive: true },
 				{ populate: [] },
 			);
+
 		});
 	});
 
@@ -83,25 +84,11 @@ describe("PostService", () => {
 			expect(result.links).toBeDefined();
 			expect(result.items).toStrictEqual([]);
 			expect(findmanySpy).toHaveBeenCalled();
+
 		});
 	});
 
-	it("should create post", () => {
-		const loggedInUser = new User({ ...mockedUser });
 
-		const createSpy = mockPostRepo.create.mockImplementation(
-			() =>
-				({
-					...mockedPost,
-					author: loggedInUser,
-				} as any),
-		);
-		service.createOne(mockedPost, loggedInUser).subscribe(result => {
-			expect(createSpy).toHaveBeenCalled();
-			expect(createSpy).toHaveBeenCalledWith({ ...mockedPost, author: loggedInUser });
-			expect(result).toStrictEqual({ ...mockedPost, author: loggedInUser });
-		});
-	});
 
 	it("should remove post", () => {
 		service.deleteOne("postId").subscribe(result => {
@@ -117,6 +104,7 @@ describe("PostService", () => {
 			);
 
 			expect(mockPostRepo.softRemoveAndFlush).toBeCalled();
+
 		});
 	});
 
@@ -135,6 +123,7 @@ describe("PostService", () => {
 				{ idx: "postId", isObsolete: false, isActive: true },
 				{ populate: [] },
 			);
+
 		});
 	});
 });

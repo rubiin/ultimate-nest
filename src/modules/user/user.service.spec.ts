@@ -5,7 +5,7 @@ import { createMock } from "@golevelup/ts-jest";
 import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { mockedUser, query } from "@mocks";
+import { mockedUser, mockFile, query } from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
@@ -68,7 +68,23 @@ describe("UserService", () => {
 		service.getOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
 			expect(findOneSpy).toBeCalledWith({ idx: "userId", isObsolete: false, isActive: true });
+
 		});
+	});
+
+	it("should create user",  async() => {
+		const createSpy = mockUserRepo.create.mockImplementation(
+			() =>
+				({
+					...mockedUser,
+				} as any),
+		);
+
+		const result = await service.createOne({ ...mockedUser, image: mockFile });
+
+		expect(result).toStrictEqual({ ...mockedUser });
+		expect(createSpy).toBeCalledWith({ ...mockedUser });
+		expect(mockEm.transactional).toBeCalled();
 	});
 
 	it("should get user list", () => {
@@ -82,6 +98,7 @@ describe("UserService", () => {
 			expect(result.links).toBeDefined();
 			expect(result.items).toStrictEqual([]);
 			expect(findmanySpy).toHaveBeenCalled();
+
 		});
 	});
 
@@ -100,6 +117,7 @@ describe("UserService", () => {
 			});
 
 			expect(mockUserRepo.softRemoveAndFlush).toBeCalled();
+
 		});
 	});
 });

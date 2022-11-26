@@ -79,5 +79,5 @@ export class CreateUserDto {
 		each: true,
 		message: `must be a valid role value,${enumToString(Roles)}`,
 	})
-	roles: [Roles];
+	roles: Roles[];
 }
