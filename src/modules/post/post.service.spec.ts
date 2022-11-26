@@ -2,7 +2,7 @@ import { BaseRepository } from "@common/database/base.repository";
 import { Comment, Post, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { mockedPost, mockedUser, query } from "@mocks";
+import { mockedPost, query } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
 
@@ -69,7 +69,6 @@ describe("PostService", () => {
 				{ idx: "postId", isObsolete: false, isActive: true },
 				{ populate: [] },
 			);
-
 		});
 	});
 
@@ -84,11 +83,8 @@ describe("PostService", () => {
 			expect(result.links).toBeDefined();
 			expect(result.items).toStrictEqual([]);
 			expect(findmanySpy).toHaveBeenCalled();
-
 		});
 	});
-
-
 
 	it("should remove post", () => {
 		service.deleteOne("postId").subscribe(result => {
@@ -104,7 +100,6 @@ describe("PostService", () => {
 			);
 
 			expect(mockPostRepo.softRemoveAndFlush).toBeCalled();
-
 		});
 	});
 
@@ -123,7 +118,6 @@ describe("PostService", () => {
 				{ idx: "postId", isObsolete: false, isActive: true },
 				{ populate: [] },
 			);
-
 		});
 	});
 });

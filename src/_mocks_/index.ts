@@ -35,5 +35,5 @@ export const mockFile = {
 	encoding: "8bit",
 	mimetype: "text/png",
 	buffer: Buffer.from(__dirname + "/../../test/test.png", "utf8"),
-	size: 13148,
+	size: 13_148,
 } as Express.Multer.File;
