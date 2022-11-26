@@ -68,11 +68,10 @@ describe("UserService", () => {
 		service.getOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
 			expect(findOneSpy).toBeCalledWith({ idx: "userId", isObsolete: false, isActive: true });
-
 		});
 	});
 
-	it("should create user",  async() => {
+	it("should create user", async () => {
 		const createSpy = mockUserRepo.create.mockImplementation(
 			() =>
 				({
@@ -98,7 +97,6 @@ describe("UserService", () => {
 			expect(result.links).toBeDefined();
 			expect(result.items).toStrictEqual([]);
 			expect(findmanySpy).toHaveBeenCalled();
-
 		});
 	});
 
@@ -117,7 +115,6 @@ describe("UserService", () => {
 			});
 
 			expect(mockUserRepo.softRemoveAndFlush).toBeCalled();
-
 		});
 	});
 });

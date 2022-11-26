@@ -50,7 +50,6 @@ describe("ProfileService", () => {
 				{ username: "username", isObsolete: false, isActive: true },
 				{ populate: [] },
 			);
-
 		});
 	});
 });
