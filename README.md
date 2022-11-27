@@ -17,6 +17,27 @@
 NOTE: Starting April 18,2022 , the repo has ditched most promises for observables. You can check the latest promised version code at
 [commit](https://github.com/rubiin/ultimate-nest/tree/fb06b34f7d36f36195880e600f8f1b5b86f71213)
 
+<br/>
+
+
+## Prerequisites
+
+NodeJS
+https://nodejs.org/en/
+
+Typescript
+https://www.typescriptlang.org/
+
+PostgresQL
+https://www.postgresql.org/
+
+Redis
+https://redis.io/
+
+RabbitMQ
+https://www.rabbitmq.com
+
+
 
 # Getting started
 
@@ -93,7 +114,7 @@ Additionally, you can also see the scripts in `makefile`
 -   Make sure you create a env file under `env` directory with name like `.env.something`.The portion after .env is the `NODE_ENV` value which will be required while running the app
 -   Also make sure you have ssl files inside `src/resources/ssl` if you tend to use ssl. Replace the sample files with your ssl files but keep the name same. Additionally
 
-# Migration and seeding
+## Migration and seeding
 
 Migrations are used to update the database schema. The migration files are stored in `migrations` directory.
 
@@ -115,7 +136,36 @@ Seeding is used to insert data into the database. The seeding files are stored i
 -   View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
 -   View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and password is the values set in the env file under `SWAGGER_USERNAME` and `SWAGGER_PASS` respectively
 
----
+## File structure
+
+```text
+ultimate-nest
+├── env                                           * Contains all configuration files
+│   └── .env.example                              * Sample configuration file.
+│   └── .env.dev                                  * Configuration file for development environment.
+│   └── .env.prod                                 * Configuration file for production environment.
+│   └── .env.test                                 * Configuration file for test environment.
+├── coverage                                      * Coverage reports after running `yarn coverage` command.
+├── dist                                          * Optimized code for production after `yarn build` is run.
+├── src
+    └── modules                                   * Folder where specific modules all files are stored
+          └── <module>
+      │       └── dto                             * Data Transfer Objects.
+      │       └── <module>.controller.ts          * Controller file.
+      │       └── <module>.module.ts              * root module file for module.
+      │       └── <module>.service.ts             * Service file for <module>.
+      │       └── <module>.service.spec.ts        * Test file for service.
+      │       └── <module>.repository.ts          * Repository file for <module>.
+      │       └── <module>.repository.spec.ts     * Test file for repository.
+│   └── common                                    * Common helpers function, dto, entity,guards, custom validators,types, exception, decorators etc.
+│   └── __mocks__                                 * Fixtures for unit tests.
+│   └── libs                                      * Resusable pre configured libraries
+│   └── resources                                 * Contains all static resources like ssl, i18n,email templates etc.
+│   └── app.module.ts                             * Root module of the application.
+│   └── main.ts                                   * The entry file of the application which uses the core function NestFactory to create a Nest application instance.
+├── test                                          * End to end test files for the application.
+
+```
 
 # Authentication
 
@@ -135,3 +185,4 @@ The password for `redis` and `rabbitmq` is `test@1234` can be changed in the mak
 ## sample env
 
 The sample env is generated using [sample-env](https://www.github.com/rubiin/sample-env)
+
