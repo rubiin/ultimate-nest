@@ -14,8 +14,8 @@ describe("IsPassword", () => {
 		const model = new MyClass();
 
 		model.password = "Test@1234";
-		
-return validator.validate(model).then(errors => {
+
+		return validator.validate(model).then(errors => {
 			expect(errors.length).toEqual(0);
 		});
 	});
@@ -24,8 +24,8 @@ return validator.validate(model).then(errors => {
 		const model = new MyClass();
 
 		model.password = "notStrongPassword";
-		
-return validator.validate(model).then(errors => {
+
+		return validator.validate(model).then(errors => {
 			expect(errors.length).toEqual(1);
 			expect(errors[0].property).toEqual("password");
 			expect(errors[0].constraints).toEqual({

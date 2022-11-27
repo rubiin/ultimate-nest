@@ -13,7 +13,7 @@ export class ProfileService {
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
 		private readonly i18nService: I18nService,
-	) {}
+	) { }
 
 	/* Finding a profile by username*/
 	getProfileByUsername(
@@ -56,16 +56,14 @@ export class ProfileService {
 	 */
 	follow(loggedInUser: User, usernameToFollow: string): Observable<IProfileData> {
 		if (!usernameToFollow) {
-			throw new BadRequestException("Follower username not provided.");
+			throw new BadRequestException(this.i18nService.t("exception.usernameRequired"));
 		}
 
-		const followingUser$ = this.getProfileByUsername(usernameToFollow, ["followers"]);
-
-		return followingUser$.pipe(
+		return this.getProfileByUsername(usernameToFollow, ["followers"]).pipe(
 			switchMap(followingUser => {
 				if (loggedInUser.username === usernameToFollow) {
 					throw new BadRequestException(
-						this.i18nService.t("exception.cantfollowYourself"),
+						this.i18nService.t("exception.followerFollowingSame"),
 					);
 				}
 
@@ -82,27 +80,28 @@ export class ProfileService {
 		);
 	}
 
-	/**
-	 * It takes a followerId and a username, finds the user with the given username, removes the user with
-	 * the given followerId from the followers list of the user with the given username, and returns a
-	 * profile object
-	 * @param {number} followerId - The id of the user who is following the other user.
-	 * @param {string} username - The username of the user you want to follow.
-	 * @returns An observable of type IProfileData
-	 */
-	unFollow(followerId: number, username: string): Observable<IProfileData> {
-		if (!followerId || !username) {
-			throw new BadRequestException("FollowerId and username not provided.");
+/**
+ * It removes the logged in user from the followers of the user with the given username
+ * @param {User} loggedInUser - User - The user who is logged in and is trying to follow another user.
+ * @param {string} username - The username of the user to follow.
+ * @returns A profile object with the following properties:
+ * - following: boolean
+ * - avatar: string
+ * - username: string
+ */
+	unFollow(loggedInUser: User, username: string): Observable<IProfileData> {
+		if (!username) {
+			throw new BadRequestException(this.i18nService.t("exception.usernameRequired"));
 		}
 
-		const followingUser$ = this.getProfileByUsername(username, ["followers"]);
-
-		return followingUser$.pipe(
+		return this.getProfileByUsername(username, ["followers"]).pipe(
 			switchMap(followingUser => {
-				const followerUser = this.userRepository.getReference(followerId);
+				const followerUser = this.userRepository.getReference(loggedInUser.id);
 
-				if (followingUser.id === followerId) {
-					throw new BadRequestException("FollowerId and FollowingId cannot be equal.");
+				if (followingUser.id === loggedInUser.id) {
+					throw new BadRequestException(
+						this.i18nService.t("exception.followerFollowingSame"),
+					);
 				}
 
 				followingUser.followers.remove(followerUser);

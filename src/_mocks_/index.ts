@@ -37,3 +37,15 @@ export const mockFile = {
 	buffer: Buffer.from(__dirname + "/../../test/test.png", "utf8"),
 	size: 13_148,
 } as Express.Multer.File;
+
+export const mockedOtpLog = {
+	expiresIn: new Date(),
+	otpCode: "12344",
+	isUsed: false,
+};
+
+export const mockResetPasswordDto = {
+	password: "Password@1234",
+	confirmPassword: "Password@1234",
+	otpCode: "123456",
+};

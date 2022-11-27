@@ -86,6 +86,15 @@ describe("UserService", () => {
 		expect(mockEm.transactional).toBeCalled();
 	});
 
+	it("should edit user", async () => {
+		mockUserRepo.assign.mockImplementation((entity, dto) => Object.assign(entity, dto));
+
+		service.editOne("userId", { firstName: "updated" }).subscribe(result => {
+			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
+			expect(mockUserRepo.assign).toBeCalled();
+			expect(mockUserRepo.flush).toBeCalled();
+		});
+	});
 	it("should get user list", () => {
 		const findmanySpy = mockUserRepo.findAndPaginate.mockResolvedValue({
 			results: [],
