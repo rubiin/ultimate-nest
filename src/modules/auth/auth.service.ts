@@ -38,6 +38,15 @@ export class AuthService {
 		private readonly em: EntityManager,
 	) {}
 
+	/**
+	 * It takes an email, password, and login type, and returns an observable of the user if the user
+	 * exists, is active, and the password is correct
+	 * @param {string} email - The email address of the user
+	 * @param {string} pass - string - The password that the user entered
+	 * @param {LoginType} loginType - LoginType - This is an enum that we created in the auth.service.ts
+	 * file.
+	 * @returns return omit(user, ["password"]);
+	 */
 	validateUser(email: string, pass: string, loginType: LoginType): Observable<any> {
 		return from(
 			this.userRepository.findOne({
@@ -74,6 +83,13 @@ export class AuthService {
 		);
 	}
 
+	/**
+	 * It validates the user credentials, generates access and refresh tokens, and returns the payload
+	 * @param {UserLoginDto} loginDto - UserLoginDto - This is the DTO that we created earlier.
+	 * @param {LoginType} loginType - LoginType - This is an enum that we created to differentiate between
+	 * the different types of login.
+	 * @returns An observable of type IAuthenticationPayload
+	 */
 	login(loginDto: UserLoginDto, loginType: LoginType): Observable<IAuthenticationPayload> {
 		return this.validateUser(loginDto.email, loginDto.password, loginType).pipe(
 			switchMap(user => {
@@ -96,17 +112,20 @@ export class AuthService {
 	}
 
 	/**
-	 *
-	 * Logout the user from all the devices by invalidating all his refresh tokens
-	 *
-	 * @param {User} user
-	 * @return {Promise<IResponse>}
-	 * @memberof AuthService
+	 * It deletes all refresh tokens for a given user
+	 * @param {User} user - User - The user object that you want to logout from.
+	 * @returns Observable<any>
 	 */
-	logoutFromAll(user: User): Observable<any> {
-		return from(this.tokenService.deleteRefreshTokenForUser(user));
+	logoutFromAll(user: User): Observable<User> {
+		return this.tokenService.deleteRefreshTokenForUser(user);
 	}
 
+	/**
+	 * We decode the refresh token, then delete the refresh token from the database
+	 * @param {User} user - User - The user object that was returned from the login method.
+	 * @param {string} refreshToken - The refresh token that was sent to the client.
+	 * @returns Observable<any>
+	 */
 	logout(user: User, refreshToken: string): Observable<any> {
 		return from(this.tokenService.decodeRefreshToken(refreshToken)).pipe(
 			switchMap(payload => {
@@ -115,6 +134,11 @@ export class AuthService {
 		);
 	}
 
+	/**
+	 * It creates a new OTP, sends it to the user's email, and returns the OTP
+	 * @param {SendOtpDto} sendOtp - SendOtpDto
+	 * @returns OtpLog
+	 */
 	async forgotPassword(sendOtp: SendOtpDto): Promise<OtpLog> {
 		const { email } = sendOtp;
 		const userExists = await this.userRepository.findOne({
@@ -160,7 +184,14 @@ export class AuthService {
 		return otp;
 	}
 
-	resetPassword(resetPassword: ResetPasswordDto): Observable<any> {
+	/**
+	 * We are finding the user details from the OTP table using the OTP code and then updating the password
+	 * of the user in the user table
+	 * @param {ResetPasswordDto} resetPassword - ResetPasswordDto
+	 * @returns Observable<any>
+	 */
+
+	resetPassword(resetPassword: ResetPasswordDto): Observable<User> {
 		const { password, otpCode } = resetPassword;
 
 		return from(
@@ -169,13 +200,17 @@ export class AuthService {
 			}),
 		).pipe(
 			switchMap(details => {
-				return from(
-					this.userRepository.nativeUpdate({ id: details.user.id }, { password }),
-				);
+				this.userRepository.assign(details.user, { password });
+				
+return from(this.userRepository.flush()).pipe(map(() => details.user));
 			}),
 		);
 	}
 
+	/**
+	 * It verifies the OTP code and marks the user as verified
+	 * @param {OtpVerifyDto} otpDto - OtpVerifyDto - This is the DTO that we created earlier.
+	 */
 	async verifyOtp(otpDto: OtpVerifyDto) {
 		const { otpCode } = otpDto;
 		const codeDetails = await this.otpRepository.findOne({
@@ -217,6 +252,13 @@ export class AuthService {
 		});
 	}
 
+	/**
+	 * It takes a user and a DTO, then it checks if the current password is valid, if it is, it updates the
+	 * password and returns the user
+	 * @param {ChangePasswordDto} dto - ChangePasswordDto - This is the DTO that we created earlier.
+	 * @param {User} user - User - The user object that is currently logged in.
+	 * @returns Observable<User>
+	 */
 	changePassword(dto: ChangePasswordDto, user: User): Observable<User> {
 		const { password, currentPassword } = dto;
 
@@ -227,7 +269,7 @@ export class AuthService {
 		).pipe(
 			switchMap(userDetails => {
 				return HelperService.verifyHash(userDetails.password, currentPassword).pipe(
-					map(isValid => {
+					switchMap(isValid => {
 						if (!isValid) {
 							throw new BadRequestException(
 								this.i18n.translate("exception.invalidCredentials"),
@@ -237,9 +279,7 @@ export class AuthService {
 							password,
 						});
 
-						this.userRepository.flush();
-
-						return userDetails;
+						return from(this.userRepository.flush()).pipe(map(() => userDetails));
 					}),
 				);
 			}),

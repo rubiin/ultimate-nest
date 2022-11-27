@@ -37,9 +37,9 @@ export class ProfileController {
 		notFound: "Profile does not exist.",
 	})
 	unFollow(
-		@LoggedInUser("id") userId: number,
+		@LoggedInUser() user: User,
 		@Param("username") username: string,
 	): Observable<IProfileData> {
-		return this.profileService.unFollow(userId, username);
+		return this.profileService.unFollow(user, username);
 	}
 }

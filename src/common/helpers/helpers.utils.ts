@@ -3,9 +3,11 @@ import { IAuthenticationPayload } from "@common/types/interfaces/authentication.
 import { User } from "@entities";
 import { verify } from "argon2";
 import { pick, slugify } from "helper-fns";
-import { customAlphabet } from "nanoid/async";
 import { from, Observable } from "rxjs";
 import sharp from "sharp";
+
+export const dynamicImport = async (packageName: string) =>
+	new Function(`return import('${packageName}')`)();
 
 export const HelperService = {
 	resourceLink: (resource: string, id: string) => {
@@ -35,12 +37,21 @@ export const HelperService = {
 	},
 
 	/* Generating a thumbnail from a buffer. */
-	generateThumb: (input: Buffer, config: { height: number; width: number }): Promise<Buffer> => {
-		return sharp(input).resize(config).toFormat("png").toBuffer();
+	generateThumb: (
+		input: Buffer,
+		config: { height: number; width: number },
+	): Observable<Buffer> => {
+		return from(sharp(input).resize(config).toFormat("png").toBuffer());
 	},
 
 	/* A function that returns a promise that resolves to a random number or string. */
-	getRandom: (type: RandomTypes, length: number, alphabet?: string): Promise<number | string> => {
+	getRandom: async (
+		type: RandomTypes,
+		length: number,
+		alphabet?: string,
+	): Promise<number | string> => {
+		const { customAlphabet } = await dynamicImport("nanoid/async");
+
 		if (alphabet) {
 			return customAlphabet(alphabet, length)();
 		}
