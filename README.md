@@ -145,7 +145,7 @@ ultimate-nest
 │   └── .env.dev                                  * Configuration file for development environment.
 │   └── .env.prod                                 * Configuration file for production environment.
 │   └── .env.test                                 * Configuration file for test environment.
-├── coverage                                      * Coverage reports after running `yarn coverage` command.
+├── coverage                                      * Coverage reports after running `yarn test:cov` command.
 ├── dist                                          * Optimized code for production after `yarn build` is run.
 ├── src
     └── modules                                   * Folder where specific modules all files are stored

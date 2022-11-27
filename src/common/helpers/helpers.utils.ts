@@ -62,13 +62,6 @@ export const HelperService = {
 		)();
 	},
 
-	/* Converting an enum to a string. */
-	enumToString: (value: Record<string, any>): string[] => {
-		const length = Object.keys(value).length;
-
-		return Object.keys(value).splice(length / 2, length);
-	},
-
 	/* Generating a slug from a string. */
 	generateSlug: (value: string): string => {
 		return slugify(value);

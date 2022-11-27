@@ -23,7 +23,7 @@ describe("IsEqualTo", () => {
 		});
 	});
 
-	it("if password and confirm password are same then it should fail", () => {
+	it("if password and confirm password are not same then it should fail", () => {
 		const model = new MyClass();
 
 		model.password = "UniquePassword@123";

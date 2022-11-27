@@ -201,8 +201,8 @@ export class AuthService {
 		).pipe(
 			switchMap(details => {
 				this.userRepository.assign(details.user, { password });
-				
-return from(this.userRepository.flush()).pipe(map(() => details.user));
+
+				return from(this.userRepository.flush()).pipe(map(() => details.user));
 			}),
 		);
 	}

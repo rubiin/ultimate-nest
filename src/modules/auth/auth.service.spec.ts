@@ -1,4 +1,5 @@
 import { BaseRepository } from "@common/database/base.repository";
+import { HelperService } from "@common/helpers";
 import { OtpLog, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { MailerService } from "@lib/mailer/mailer.service";
@@ -35,10 +36,8 @@ describe("AuthService", () => {
 		} as any),
 	);
 
-	mockUserRepo.softRemoveAndFlush.mockImplementation(entity => {
-		Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
-
-		return Promise.resolve(entity);
+	mockUserRepo.assign.mockImplementation((entity, dto) => {
+		return Object.assign(entity, dto);
 	});
 
 	beforeEach(async () => {
@@ -109,6 +108,21 @@ describe("AuthService", () => {
 			expect(mockOtpLogRepo.findOne).toBeCalledWith({
 				otpCode: mockResetPasswordDto.otpCode,
 			});
+		});
+	});
+
+	it("should change password", () => {
+		const dto = {
+			password: "new_password",
+			confirmPassword: "confirm_password",
+			currentPassword: "current_password",
+		};
+
+		HelperService.verifyHash = jest.fn().mockImplementation(() => of(true));
+
+		service.changePassword(dto, loggedInUser).subscribe(result => {
+			expect(result).toStrictEqual({ ...loggedInUser, password: dto.password });
+			expect(HelperService.verifyHash).toHaveBeenCalled();
 		});
 	});
 });
