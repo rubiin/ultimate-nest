@@ -13,7 +13,7 @@ export class ProfileService {
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
 		private readonly i18nService: I18nService,
-	) { }
+	) {}
 
 	/* Finding a profile by username*/
 	getProfileByUsername(
@@ -80,15 +80,15 @@ export class ProfileService {
 		);
 	}
 
-/**
- * It removes the logged in user from the followers of the user with the given username
- * @param {User} loggedInUser - User - The user who is logged in and is trying to follow another user.
- * @param {string} username - The username of the user to follow.
- * @returns A profile object with the following properties:
- * - following: boolean
- * - avatar: string
- * - username: string
- */
+	/**
+	 * It removes the logged in user from the followers of the user with the given username
+	 * @param {User} loggedInUser - User - The user who is logged in and is trying to follow another user.
+	 * @param {string} username - The username of the user to follow.
+	 * @returns A profile object with the following properties:
+	 * - following: boolean
+	 * - avatar: string
+	 * - username: string
+	 */
 	unFollow(loggedInUser: User, username: string): Observable<IProfileData> {
 		if (!username) {
 			throw new BadRequestException(this.i18nService.t("exception.usernameRequired"));

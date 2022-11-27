@@ -3,9 +3,9 @@ import {
 	ValidationArguments,
 	ValidationOptions,
 	ValidatorConstraint,
-	ValidatorConstraintInterface,
+	ValidatorConstraintInterface
 } from "class-validator";
-import { isValid, lightFormat } from "date-fns";
+import { isMatch } from "date-fns";
 
 /* It validates that a date is in a given format */
 
@@ -14,7 +14,7 @@ class IsDateInFormatConstraint implements ValidatorConstraintInterface {
 	async validate(value: any | Array<any>, arguments_: ValidationArguments) {
 		const [format] = arguments_.constraints;
 
-		return isValid(lightFormat(new Date(value), format));
+		return isMatch(value, format);
 	}
 
 	defaultMessage(arguments_: ValidationArguments) {
