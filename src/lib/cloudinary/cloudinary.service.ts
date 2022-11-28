@@ -2,7 +2,12 @@
 import { Readable } from "node:stream";
 
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { UploadApiErrorResponse, UploadApiResponse, v2 as cloudinary } from "cloudinary";
+import {
+	UploadApiErrorResponse,
+	UploadApiOptions,
+	UploadApiResponse,
+	v2 as cloudinary,
+} from "cloudinary";
 import sharp from "sharp";
 
 import { MODULE_OPTIONS_TOKEN } from "./cloudinary.module-definition";
@@ -18,13 +23,18 @@ export class CloudinaryService {
 	) {}
 
 	/**
-	 * It takes a file, shrinks it to 800px wide, uploads it to Cloudinary, and returns the response from
-	 * Cloudinary
-	 * @param file - Express.Multer.File - This is the file that was uploaded by the user.
-	 * @returns A promise that resolves to an UploadApiResponse or UploadApiErrorResponse
+	 * It takes a file, uploads it to cloudinary, and returns a promise that resolves to the response from
+	 * cloudinary
+	 * @param file - Express.Multer.File - The file object that was uploaded.
+	 * @param {UploadApiOptions} [options] - UploadApiOptions
+	 * @returns | UploadApiResponse
+	 * 						| UploadApiErrorResponse
+	 * 						| PromiseLike<UploadApiResponse | UploadApiErrorResponse>,
 	 */
+
 	async uploadFile(
 		file: Express.Multer.File,
+		options?: UploadApiOptions,
 	): Promise<UploadApiResponse | UploadApiErrorResponse> {
 		return new Promise(async (resolve, reject) => {
 			cloudinary.config({
@@ -34,6 +44,7 @@ export class CloudinaryService {
 			});
 
 			const upload = cloudinary.uploader.upload_stream(
+				options,
 				(
 					error: any,
 					result:
@@ -51,11 +62,19 @@ export class CloudinaryService {
 				},
 			);
 
-			const images = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"];
+			const images = [
+				"image/png",
+				"image/jpeg",
+				"image/jpg",
+				"image/gif",
+				"image/webp",
+				"image/bmp",
+				"image/ico",
+			];
 
 			const stream: Readable = new Readable();
 
-			if (images.includes(file.mimetype)) {
+			if (this.options.shrinkImage && images.includes(file.mimetype)) {
 				const shrinkedImage = await sharp(file.buffer).resize(800).toBuffer();
 
 				stream.push(shrinkedImage);

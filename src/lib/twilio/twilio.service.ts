@@ -2,7 +2,10 @@ import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { catchError, from, Observable, tap, throwError } from "rxjs";
 import twilio from "twilio";
-import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message";
+import {
+	MessageInstance,
+	MessageListInstanceCreateOptions,
+} from "twilio/lib/rest/api/v2010/account/message";
 
 import { MODULE_OPTIONS_TOKEN } from "./twilio.module-definition";
 
@@ -16,20 +19,20 @@ export class TwilioService {
 	) {}
 
 	/**
-	 * It takes a content and a phone number as arguments, creates a Twilio client, and sends an SMS to the
-	 * given phone number
-	 * @param {string} content - The content of the SMS.
-	 * @param {string} phone - The phone number to send the SMS to.
+	 * It takes in an options object, creates a Twilio client, and returns an observable of the message
+	 * instance
+	 * @param {MessageListInstanceCreateOptions} options - MessageListInstanceCreateOptions
 	 * @returns Observable<MessageInstance>
 	 */
-	sendSms(content: string, phone: string): Observable<MessageInstance> {
+
+	sendSms(options: MessageListInstanceCreateOptions): Observable<MessageInstance> {
 		const client = twilio(this.options.accountSid, this.options.authToken);
 
 		return from(
 			client.messages.create({
-				body: content,
+				...options,
 				from: this.options.from,
-				to: `+977${phone}`,
+				to: `+977${options.to}`,
 			}),
 		).pipe(
 			tap(message => this.logger.log(`SMS sent to ${message.sid}`)),

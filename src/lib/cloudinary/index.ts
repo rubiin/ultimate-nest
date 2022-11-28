@@ -13,6 +13,7 @@ import { CloudinaryModule } from "./cloudinary.module";
 				cloudName: configService.get("cloudinary.cloudName"),
 				apiKey: configService.get("cloudinary.apiKey"),
 				apiSecret: configService.get("cloudinary.apiSecret"),
+				shrinkImage: true,
 			}),
 			inject: [ConfigService],
 		}),
