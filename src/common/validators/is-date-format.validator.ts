@@ -3,7 +3,7 @@ import {
 	ValidationArguments,
 	ValidationOptions,
 	ValidatorConstraint,
-	ValidatorConstraintInterface
+	ValidatorConstraintInterface,
 } from "class-validator";
 import { isMatch } from "date-fns";
 

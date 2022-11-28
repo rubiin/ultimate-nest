@@ -5,7 +5,7 @@ import { Inject, Injectable, Logger } from "@nestjs/common";
 import { UploadApiErrorResponse, UploadApiResponse, v2 as cloudinary } from "cloudinary";
 import sharp from "sharp";
 
-import { CLOUDINARY_MODULE_OPTIONS } from "./cloudinary.constant";
+import { MODULE_OPTIONS_TOKEN } from "./cloudinary.module-definition";
 import { CloudinaryModuleOptions } from "./cloudinary.options";
 
 @Injectable()
@@ -13,7 +13,7 @@ export class CloudinaryService {
 	private logger = new Logger(CloudinaryService.name);
 
 	constructor(
-		@Inject(CLOUDINARY_MODULE_OPTIONS)
+		@Inject(MODULE_OPTIONS_TOKEN)
 		private readonly options: CloudinaryModuleOptions,
 	) {}
 
@@ -23,7 +23,7 @@ export class CloudinaryService {
 	 * @param file - Express.Multer.File - This is the file that was uploaded by the user.
 	 * @returns A promise that resolves to an UploadApiResponse or UploadApiErrorResponse
 	 */
-	async uploadImage(
+	async uploadFile(
 		file: Express.Multer.File,
 	): Promise<UploadApiResponse | UploadApiErrorResponse> {
 		return new Promise(async (resolve, reject) => {
@@ -46,16 +46,22 @@ export class CloudinaryService {
 
 						return reject(error);
 					} else {
-						this.logger.log(result);
 						resolve(result);
 					}
 				},
 			);
+
+			const images = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"];
+
 			const stream: Readable = new Readable();
 
-			const shrinkedImage = await sharp(file.buffer).resize(800).toBuffer();
+			if (images.includes(file.mimetype)) {
+				const shrinkedImage = await sharp(file.buffer).resize(800).toBuffer();
 
-			stream.push(shrinkedImage);
+				stream.push(shrinkedImage);
+			} else {
+				stream.push(file.buffer);
+			}
 			stream.push(null);
 
 			stream.pipe(upload);

@@ -7,14 +7,14 @@ import { MailModule } from "./mailer.module";
 @Global()
 @Module({
 	imports: [
-		MailModule.forRootAsync(MailModule, {
+		MailModule.forRootAsync({
 			imports: [NestConfigModule],
 			useFactory: (configService: ConfigService) => ({
 				host: configService.get("mail.host"),
 				port: configService.get<number>("mail.port"),
 				username: configService.get("mail.username"),
 				password: configService.get("mail.password"),
-				server: configService.get("mail.server", "SMTP"),
+				server: configService.get("mail.server"),
 				previewEmail: configService.get<boolean>("mail.previewEmail", false),
 				template: {
 					dir: configService.get("mail.templateDir"),

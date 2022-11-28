@@ -1,11 +1,10 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@aws-sdk/client-ses': ^3.216.0
+  '@aws-sdk/client-ses': ^3.218.0
   '@casl/ability': ^6.3.2
   '@firebase/app-compat': 0.x
   '@firebase/app-types': 0.x
-  '@golevelup/nestjs-modules': ^0.6.1
   '@golevelup/nestjs-rabbitmq': ^3.4.0
   '@golevelup/ts-jest': ^0.3.4
   '@mikro-orm/cli': ^5.5.3
@@ -68,7 +67,7 @@ specifiers:
   eslint-plugin-import: ^2.26.0
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-simple-import-sort: ^8.0.0
-  eslint-plugin-unicorn: ^45.0.0
+  eslint-plugin-unicorn: ^45.0.1
   eta: ^1.12.3
   firebase-admin: ^11.3.0
   helmet: ^6.0.0
@@ -92,6 +91,7 @@ specifiers:
   poolifier: ^2.3.7
   prettier: ^2.8.0
   preview-email: ^3.0.7
+  prom-client: ^14.1.0
   reflect-metadata: 0.1.13
   rxjs: ^7.5.7
   sample-env: ^1.0.2
@@ -106,9 +106,8 @@ specifiers:
   typescript: ^4.9
 
 dependencies:
-  '@aws-sdk/client-ses': 3.216.0
+  '@aws-sdk/client-ses': 3.218.0
   '@casl/ability': 6.3.2
-  '@golevelup/nestjs-modules': 0.6.1_bi2eso6j7vrlbtke3xbaenmsmq
   '@golevelup/nestjs-rabbitmq': 3.4.0_bi2eso6j7vrlbtke3xbaenmsmq
   '@mikro-orm/core': 5.5.3_ly6lqsxnk47xnd5l5stfvysgua
   '@mikro-orm/migrations': 5.5.3_hyb25nhnajkmb52eqzfe2fyc7e
@@ -160,10 +159,11 @@ dependencies:
   pino-pretty: 9.1.1
   poolifier: 2.3.7
   preview-email: 3.0.7
+  prom-client: 14.1.0
   reflect-metadata: 0.1.13
   rxjs: 7.5.7
   sharp: 0.31.2
-  swagger-stats: 0.99.2_prom-client@13.2.0
+  swagger-stats: 0.99.2_prom-client@14.1.0
   twilio: 3.83.3
 
 devDependencies:
@@ -199,7 +199,7 @@ devDependencies:
   eslint-plugin-import: 2.26.0_vc54pluhgv7booofyyjouvuf74
   eslint-plugin-prettier: 4.2.1_cwlo2dingkvfydnaculr42urve
   eslint-plugin-simple-import-sort: 8.0.0_eslint@8.28.0
-  eslint-plugin-unicorn: 45.0.0_eslint@8.28.0
+  eslint-plugin-unicorn: 45.0.1_eslint@8.28.0
   husky: 8.0.2
   jest: 29.3.1_odkjkoia5xunhxkdrka32ib6vi
   lint-staged: 13.0.4
@@ -375,15 +375,15 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /@aws-sdk/client-ses/3.216.0:
-    resolution: {integrity: sha512-8SimGt8+Erq1bcftDHfwrXNMXSNHAyIy5B3qna+UO2VdPU83B6Kw2uP/X45EgtWBoPgoagnxq1ElHK1vrzNlqw==}
+  /@aws-sdk/client-ses/3.218.0:
+    resolution: {integrity: sha512-2mzfSs8SjdUqaLlN3EKXOqp3DDWF3kh0hkKbi5VCGAzxKn2N/xESxvDA0/yAE1IrnwOLAJuooURAEldYUDpc2Q==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 2.0.0
       '@aws-crypto/sha256-js': 2.0.0
-      '@aws-sdk/client-sts': 3.216.0
+      '@aws-sdk/client-sts': 3.218.0
       '@aws-sdk/config-resolver': 3.215.0
-      '@aws-sdk/credential-provider-node': 3.216.0
+      '@aws-sdk/credential-provider-node': 3.218.0
       '@aws-sdk/fetch-http-handler': 3.215.0
       '@aws-sdk/hash-node': 3.215.0
       '@aws-sdk/invalid-dependency': 3.215.0
@@ -460,8 +460,8 @@ packages:
       - aws-crt
     dev: false
 
-  /@aws-sdk/client-sso/3.216.0:
-    resolution: {integrity: sha512-9F7JLx9RXEXovg6V4ylqQtpH+sIqQBMIPIrRSGWiQu65rmQQLskRkUka94JsGsBzq1IQwrnqtsuP3Lb0XtwLRA==}
+  /@aws-sdk/client-sso/3.218.0:
+    resolution: {integrity: sha512-kVMlpjaVblxgb1G8q3wD65mKxO3RzKwnjUjIBmOHpmseXzlSkAdAvYcikaDoJP+CRmys4uXk5DN8c7ZdL0OmgA==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 2.0.0
@@ -500,14 +500,14 @@ packages:
       - aws-crt
     dev: false
 
-  /@aws-sdk/client-sts/3.216.0:
-    resolution: {integrity: sha512-8rpMZhZXh1kjsAvQ0WNBMDrnP4XneKkBQtt5XcDEmv/GpULt8jOIJnSIJQxt2gkRfd/I9MUC9C3aZNQoSMxa+g==}
+  /@aws-sdk/client-sts/3.218.0:
+    resolution: {integrity: sha512-0A81eHvryKFEPq7IeY34Opzh5b9bVhhLlf2fDy5VuZjCFf4R9vD2ceOANvFSJeMsmdlqVDq8U1mHYl0E6FRUug==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 2.0.0
       '@aws-crypto/sha256-js': 2.0.0
       '@aws-sdk/config-resolver': 3.215.0
-      '@aws-sdk/credential-provider-node': 3.216.0
+      '@aws-sdk/credential-provider-node': 3.218.0
       '@aws-sdk/fetch-http-handler': 3.215.0
       '@aws-sdk/hash-node': 3.215.0
       '@aws-sdk/invalid-dependency': 3.215.0
@@ -575,13 +575,13 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /@aws-sdk/credential-provider-ini/3.216.0:
-    resolution: {integrity: sha512-tSfrhgRO/l83Ou6WSOE4HauTLbDCOLMo/23Q6oGO8cs/d874J5rE4UM7a9OzE3QdM3eVbdAP7kXUgUS6i71cUw==}
+  /@aws-sdk/credential-provider-ini/3.218.0:
+    resolution: {integrity: sha512-tDDrGW+4A+PQThVJ+l9ee03CsDoD0XLpOB5dcf+dr/dCHjcQ7x/CeVFZ8eM+XUtGQnZVvuzXZGwzS8bUWEdJIg==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-sdk/credential-provider-env': 3.215.0
       '@aws-sdk/credential-provider-imds': 3.215.0
-      '@aws-sdk/credential-provider-sso': 3.216.0
+      '@aws-sdk/credential-provider-sso': 3.218.0
       '@aws-sdk/credential-provider-web-identity': 3.215.0
       '@aws-sdk/property-provider': 3.215.0
       '@aws-sdk/shared-ini-file-loader': 3.215.0
@@ -591,15 +591,15 @@ packages:
       - aws-crt
     dev: false
 
-  /@aws-sdk/credential-provider-node/3.216.0:
-    resolution: {integrity: sha512-Tumt53phB454DTkNB7a1tyCfrkA4JUGHzNLya14VLResGIGW5Re64atahUcO/WS7aTEs5vfAhBXO+p9o4K1rhQ==}
+  /@aws-sdk/credential-provider-node/3.218.0:
+    resolution: {integrity: sha512-J9PB6XFA+V0mgxleuY5W6Jjh5WejV8HjMViTJQpp2JN+NWZP3bGvquUSQHRqWGRGg2fSJy6Z/J4zQ8fpPbGsdQ==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-sdk/credential-provider-env': 3.215.0
       '@aws-sdk/credential-provider-imds': 3.215.0
-      '@aws-sdk/credential-provider-ini': 3.216.0
+      '@aws-sdk/credential-provider-ini': 3.218.0
       '@aws-sdk/credential-provider-process': 3.215.0
-      '@aws-sdk/credential-provider-sso': 3.216.0
+      '@aws-sdk/credential-provider-sso': 3.218.0
       '@aws-sdk/credential-provider-web-identity': 3.215.0
       '@aws-sdk/property-provider': 3.215.0
       '@aws-sdk/shared-ini-file-loader': 3.215.0
@@ -619,11 +619,11 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /@aws-sdk/credential-provider-sso/3.216.0:
-    resolution: {integrity: sha512-1Cag6AUPU4wkeMnZDJvcXXJgwrlrIxbTcRsresJYBFvs1vGJGcTbjtWV0K6fiBRP66GtvuOL9WzQ/eqRf2J7Ag==}
+  /@aws-sdk/credential-provider-sso/3.218.0:
+    resolution: {integrity: sha512-HecWvmxD+xffmY8G4SfLRfCOgSoLFki45wOOU8ESgRM9fQp2+3CfRSyiThKZI5PTmE+xhPTRvmR61HUmQjEv8w==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@aws-sdk/client-sso': 3.216.0
+      '@aws-sdk/client-sso': 3.218.0
       '@aws-sdk/property-provider': 3.215.0
       '@aws-sdk/shared-ini-file-loader': 3.215.0
       '@aws-sdk/token-providers': 3.216.0
@@ -1440,6 +1440,16 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+    dev: true
+
+  /@eslint-community/eslint-utils/4.1.2_eslint@8.28.0:
+    resolution: {integrity: sha512-7qELuQWWjVDdVsFQ5+beUl+KPczrEDA7S3zM4QUd/bJl7oXgsmpXaEVqrRTnOBqenOV4rWf2kVZk2Ot085zPWA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+    dependencies:
+      eslint: 8.28.0
+      eslint-visitor-keys: 3.3.0
     dev: true
 
   /@eslint/eslintrc/1.3.3:
@@ -5627,17 +5637,17 @@ packages:
       eslint: 8.28.0
     dev: true
 
-  /eslint-plugin-unicorn/45.0.0_eslint@8.28.0:
-    resolution: {integrity: sha512-iP8cMRxXKHonKioOhnCoCcqVhoqhAp6rB+nsoLjXFDxTHz3btWMAp8xwzjHA0B1K6YV/U/Yvqn1bUXZt8sJPuQ==}
+  /eslint-plugin-unicorn/45.0.1_eslint@8.28.0:
+    resolution: {integrity: sha512-tLnIw5oDJJc3ILYtlKtqOxPP64FZLTkZkgeuoN6e7x6zw+rhBjOxyvq2c7577LGxXuIhBYrwisZuKNqOOHp3BA==}
     engines: {node: '>=14.18'}
     peerDependencies:
       eslint: '>=8.28.0'
     dependencies:
       '@babel/helper-validator-identifier': 7.19.1
+      '@eslint-community/eslint-utils': 4.1.2_eslint@8.28.0
       ci-info: 3.6.2
       clean-regexp: 1.0.0
       eslint: 8.28.0
-      eslint-utils: 3.0.0_eslint@8.28.0
       esquery: 1.4.0
       indent-string: 4.0.0
       is-builtin-module: 3.2.0
@@ -9527,8 +9537,8 @@ packages:
     resolution: {integrity: sha512-+MmoAXoUX+VTHAlwns0h+kFUWFs/3FZy+ZuchkgjyOu3oioLAo2LB5aCfKPh2+P9O18i3m43tUEv3YqttSy0Ww==}
     dev: false
 
-  /prom-client/13.2.0:
-    resolution: {integrity: sha512-wGr5mlNNdRNzEhRYXgboUU2LxHWIojxscJKmtG3R8f4/KiWqyYgXTLHs0+Ted7tG3zFT7pgHJbtomzZ1L0ARaQ==}
+  /prom-client/14.1.0:
+    resolution: {integrity: sha512-iFWCchQmi4170omLpFXbzz62SQTmPhtBL35v0qGEVRHKcqIeiexaoYeP0vfZTujxEq3tA87iqOdRbC9svS1B9A==}
     engines: {node: '>=10'}
     dependencies:
       tdigest: 0.1.2
@@ -10802,7 +10812,7 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /swagger-stats/0.99.2_prom-client@13.2.0:
+  /swagger-stats/0.99.2_prom-client@14.1.0:
     resolution: {integrity: sha512-ssZi59v3d1P2WyTxrujthOjjKR4zDLuUgcCiOr8iXKhpqdz8ffyKSDRaZudHDe+VerbhkONRyxY3Th+Bah8s+Q==}
     peerDependencies:
       prom-client: '>= 10 <= 13'
@@ -10812,7 +10822,7 @@ packages:
       debug: 4.3.4
       moment: 2.29.4
       path-to-regexp: 6.2.1
-      prom-client: 13.2.0
+      prom-client: 14.1.0
       qs: 6.11.0
       request: 2.88.2
       send: 0.17.2
