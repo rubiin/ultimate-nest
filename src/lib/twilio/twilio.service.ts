@@ -1,16 +1,17 @@
-import { TWILIO_MODULE_OPTIONS } from "@lib/twilio/twilio.constant";
 import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { catchError, from, Observable, tap, throwError } from "rxjs";
 import twilio from "twilio";
 import { MessageInstance } from "twilio/lib/rest/api/v2010/account/message";
 
+import { MODULE_OPTIONS_TOKEN } from "./twilio.module-definition";
+
 @Injectable()
 export class TwilioService {
 	private readonly logger: Logger = new Logger(TwilioService.name);
 
 	constructor(
-		@Inject(TWILIO_MODULE_OPTIONS)
+		@Inject(MODULE_OPTIONS_TOKEN)
 		private readonly options: TwilioModuleOptions,
 	) {}
 

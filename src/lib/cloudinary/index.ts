@@ -7,7 +7,7 @@ import { CloudinaryModule } from "./cloudinary.module";
 @Global()
 @Module({
 	imports: [
-		CloudinaryModule.forRootAsync(CloudinaryModule, {
+		CloudinaryModule.forRootAsync({
 			imports: [NestConfigModule],
 			useFactory: (configService: ConfigService) => ({
 				cloudName: configService.get("cloudinary.cloudName"),

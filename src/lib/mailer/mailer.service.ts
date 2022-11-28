@@ -5,7 +5,7 @@ import { createTransport, SendMailOptions, Transporter } from "nodemailer";
 import { SentMessageInfo } from "nodemailer/lib/ses-transport";
 import previewEmail from "preview-email";
 
-import { MAIL_MODULE_OPTIONS } from "./mailer.constants";
+import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
 import { MailModuleOptions } from "./mailer.options";
 
 interface IMailOptions extends Partial<SendMailOptions> {
@@ -18,7 +18,7 @@ export class MailerService {
 	private readonly logger: Logger = new Logger(MailerService.name);
 
 	constructor(
-		@Inject(MAIL_MODULE_OPTIONS)
+		@Inject(MODULE_OPTIONS_TOKEN)
 		private readonly options: MailModuleOptions,
 	) {}
 
@@ -73,7 +73,7 @@ export class MailerService {
 					mailOptions.html = html;
 
 					if (this.options.previewEmail) {
-						previewEmail(mailOptions).then(console.info).catch(console.error);
+						previewEmail(mailOptions).then(this.logger.debug).catch(this.logger.error);
 					}
 
 					transporter.sendMail(mailOptions, async (error, info) => {

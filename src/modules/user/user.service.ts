@@ -87,7 +87,7 @@ export class UserService {
 		const user = this.userRepository.create(rest);
 
 		await this.em.transactional(async em => {
-			const { url } = await this.cloudinaryService.uploadImage(image);
+			const { url } = await this.cloudinaryService.uploadFile(image);
 
 			// cloudinary gives a url key on response that is the full url to file
 
