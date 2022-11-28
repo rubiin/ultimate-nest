@@ -7,7 +7,7 @@ import { TwilioModule } from "./twilio.module";
 @Global()
 @Module({
 	imports: [
-		TwilioModule.forRootAsync( {
+		TwilioModule.forRootAsync({
 			imports: [NestConfigModule],
 			useFactory: (configService: ConfigService) => ({
 				accountSid: configService.get("twilio.accountSid"),
