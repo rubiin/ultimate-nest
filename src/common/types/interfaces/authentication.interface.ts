@@ -23,3 +23,8 @@ export interface IOauthResponse {
 	lastName: string;
 	accessToken: string;
 }
+
+export interface RefreshTokenPayload {
+	jti: number;
+	sub: number;
+}

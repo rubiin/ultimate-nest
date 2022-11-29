@@ -27,7 +27,7 @@ module.exports = {
 	settings: {
     "import/resolver": {
       "typescript": {
-				"alwaysTryTypes": true, 
+				"alwaysTryTypes": true,
 				"project": './tsconfig.json'
 
 			}
@@ -57,6 +57,7 @@ module.exports = {
 		"ignore": [
 			"\\.e2e*",
 			"\\.spec*",
+			"\\.decorator*",
 			"\\*idx*",
 		]
 	}

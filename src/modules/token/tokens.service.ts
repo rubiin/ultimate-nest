@@ -1,3 +1,4 @@
+import { RefreshTokenPayload } from "@common/types";
 import { RefreshToken, User } from "@entities";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -8,11 +9,6 @@ import { TokenExpiredError } from "jsonwebtoken";
 import { from, lastValueFrom, map, Observable, switchMap } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
-
-export interface RefreshTokenPayload {
-	jti: number;
-	sub: number;
-}
 
 @Injectable()
 export class TokensService {

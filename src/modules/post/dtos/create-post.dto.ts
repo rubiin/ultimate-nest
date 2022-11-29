@@ -1,8 +1,6 @@
-import { IsStringMinMax } from "@common/decorators";
+import { IsStringField } from "@common/decorators";
 import { IsUnique } from "@common/validators";
 import { Post } from "@entities";
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
-import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreatePostDto {
 	/**
@@ -10,7 +8,7 @@ export class CreatePostDto {
 	 * @example "Lorem ipsum dolor sit"
 	 */
 
-	@IsStringMinMax()
+	@IsStringField()
 	@IsUnique(() => Post, "title")
 	title: string;
 
@@ -19,7 +17,7 @@ export class CreatePostDto {
 	 * @example "Some paragraph of text"
 	 */
 
-	@IsStringMinMax()
+	@IsStringField()
 	description: string;
 
 	/**
@@ -27,7 +25,7 @@ export class CreatePostDto {
 	 * @example "Long paragraph of text"
 	 */
 
-	@IsStringMinMax()
+	@IsStringField()
 	content: string;
 
 	/**
@@ -35,17 +33,6 @@ export class CreatePostDto {
 	 * @example ["fantasy", "adventure"]
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsString({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "string",
-		}),
-		each: true,
-	})
-	@IsArray({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "array",
-		}),
-	})
+	@IsStringField({ each: true })
 	tags: string[];
 }
