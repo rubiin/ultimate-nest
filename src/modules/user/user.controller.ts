@@ -5,23 +5,14 @@ import {
 	GenericController,
 	Public,
 	SwaggerResponse,
+	UUIDParam,
 } from "@common/decorators";
 import { fileValidatorPipe } from "@common/misc";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
 import { Action, CheckPolicies, GenericPolicyHandler, UpdateUserPolicyHandler } from "@lib/casl";
 import { Pagination } from "@lib/pagination";
-import {
-	Body,
-	Delete,
-	Get,
-	Param,
-	ParseUUIDPipe,
-	Post,
-	Put,
-	Query,
-	UploadedFile,
-} from "@nestjs/common";
+import { Body, Delete, Get, Post, Put, Query, UploadedFile } from "@nestjs/common";
 import { Observable } from "rxjs";
 
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
@@ -62,7 +53,7 @@ export class UserController {
 		notFound: "User does not exist.",
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Read))
-	getOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
+	getOne(@UUIDParam("idx") index: string): Observable<User> {
 		return this.userService.getOne(index);
 	}
 
@@ -88,10 +79,7 @@ export class UserController {
 		notFound: "User does not exist.",
 	})
 	@CheckPolicies(new UpdateUserPolicyHandler())
-	editOne(
-		@Param("idx", ParseUUIDPipe) index: string,
-		@Body() dto: EditUserDto,
-	): Observable<User> {
+	editOne(@UUIDParam("idx") index: string, @Body() dto: EditUserDto): Observable<User> {
 		return this.userService.editOne(index, dto);
 	}
 
@@ -101,7 +89,7 @@ export class UserController {
 		notFound: "User does not exist.",
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Delete))
-	deleteOne(@Param("idx", ParseUUIDPipe) index: string): Observable<User> {
+	deleteOne(@UUIDParam("idx") index: string): Observable<User> {
 		return this.userService.deleteOne(index);
 	}
 }

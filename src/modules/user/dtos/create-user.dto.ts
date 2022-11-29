@@ -1,11 +1,10 @@
-import { IsStringMinMax } from "@common/decorators";
+import { IsEnumField, IsStringField } from "@common/decorators";
 import { Roles } from "@common/types/enums/permission.enum";
 import { IsUnique } from "@common/validators";
 import { IsPassword } from "@common/validators/is-password.validator";
 import { User } from "@entities";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsEmail, IsEnum, IsNotEmpty } from "class-validator";
-import { enumToString } from "helper-fns";
+import { IsEmail, IsNotEmpty } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreateUserDto {
@@ -14,7 +13,7 @@ export class CreateUserDto {
 	 * @example rubiin
 	 */
 
-	@IsStringMinMax()
+	@IsStringField()
 	@IsUnique(() => User, "username")
 	username: string;
 
@@ -23,7 +22,7 @@ export class CreateUserDto {
 	 * @example John
 	 */
 
-	@IsStringMinMax()
+	@IsStringField()
 	firstName: string;
 
 	/**
@@ -31,7 +30,7 @@ export class CreateUserDto {
 	 * @example Doe
 	 */
 
-	@IsStringMinMax()
+	@IsStringField()
 	lastName: string;
 
 	/**
@@ -61,7 +60,7 @@ export class CreateUserDto {
 	 * @example SomePassword@123
 	 */
 
-	@IsStringMinMax()
+	@IsStringField()
 	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
 	password: string;
 
@@ -69,15 +68,6 @@ export class CreateUserDto {
 	 * Roles of user
 	 * @example ["ADMIN"]
 	 */
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsArray({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "array",
-		}),
-	})
-	@IsEnum(Roles, {
-		each: true,
-		message: `must be a valid role value,${enumToString(Roles)}`,
-	})
+	@IsEnumField(Roles, { each: true })
 	roles: Roles[];
 }

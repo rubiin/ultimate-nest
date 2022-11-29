@@ -4,10 +4,11 @@ import {
 	GenericController,
 	LoggedInUser,
 	SwaggerResponse,
+	UUIDParam,
 } from "@common/decorators";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { Pagination } from "@lib/pagination";
-import { Body, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from "@nestjs/common";
+import { Body, Delete, Get, Post, Put, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
@@ -28,7 +29,7 @@ export class PostController {
 		operation: "Post fetch",
 		notFound: "Post doesn't exist.",
 	})
-	getById(@Param("idx", ParseUUIDPipe) index: string): Observable<PostEntity> {
+	getById(@UUIDParam("idx") index: string): Observable<PostEntity> {
 		return this.postService.getById(index);
 	}
 
@@ -37,7 +38,7 @@ export class PostController {
 		operation: "Post comment fetch",
 		notFound: "Post doesn't exist.",
 	})
-	findComments(@Param("idx", ParseUUIDPipe) index: string): Observable<Comment[]> {
+	findComments(@UUIDParam("idx") index: string): Observable<Comment[]> {
 		return this.postService.findComments(index);
 	}
 
@@ -52,10 +53,7 @@ export class PostController {
 		operation: "Post update",
 		notFound: "Post doesn't exist.",
 	})
-	editOne(
-		@Param("idx", ParseUUIDPipe) index: string,
-		@Body() dto: EditPostDto,
-	): Observable<PostEntity> {
+	editOne(@UUIDParam("idx") index: string, @Body() dto: EditPostDto): Observable<PostEntity> {
 		return this.postService.editOne(index, dto);
 	}
 
@@ -64,7 +62,7 @@ export class PostController {
 		operation: "Post delete",
 		notFound: "Post doesn't exist.",
 	})
-	deleteOne(@Param("idx", ParseUUIDPipe) index: string): Observable<PostEntity> {
+	deleteOne(@UUIDParam("idx") index: string): Observable<PostEntity> {
 		return this.postService.deleteOne(index);
 	}
 
@@ -75,7 +73,7 @@ export class PostController {
 	})
 	async createComment(
 		@LoggedInUser("id") user: number,
-		@Param("idx", ParseUUIDPipe) index: string,
+		@UUIDParam("idx") index: string,
 		@Body("comment") commentData: CreateCommentDto,
 	) {
 		return this.postService.addComment(user, index, commentData);
@@ -86,7 +84,7 @@ export class PostController {
 		operation: "Post comment delete",
 		notFound: "Post doesn't exist.",
 	})
-	deleteComment(@Param("idx", ParseUUIDPipe) index: string) {
+	deleteComment(@UUIDParam("idx") index: string) {
 		return this.postService.deleteComment(index);
 	}
 
@@ -95,7 +93,7 @@ export class PostController {
 		operation: "Post favorite",
 		notFound: "Post doesn't exist.",
 	})
-	favorite(@LoggedInUser("id") userId: number, @Param("idx", ParseUUIDPipe) index: string) {
+	favorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {
 		return this.postService.favorite(userId, index);
 	}
 
@@ -104,10 +102,7 @@ export class PostController {
 		operation: "Post unfavorite",
 		notFound: "Post doesn't exist.",
 	})
-	async unFavorite(
-		@LoggedInUser("id") userId: number,
-		@Param("idx", ParseUUIDPipe) index: string,
-	) {
+	async unFavorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {
 		return this.postService.unFavorite(userId, index);
 	}
 }
