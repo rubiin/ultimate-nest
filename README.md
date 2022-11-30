@@ -125,7 +125,7 @@ Migrations are used to update the database schema. The migration files are store
 Seeding is used to insert data into the database. The seeding files are stored in `common/database/seeders` directory.
 
 ```sh
-  env=dev USER_PASSWORD=Test@1234 make seed   # seeds data for dev env with user password set as Test@1234
+  env=dev make seed   # seeds data for dev env with user password set as Test@1234
 ```
 
 ## Start application
@@ -180,9 +180,10 @@ You need to have `docker` and `docker-compose` (not the compose plugin) installe
   env=prod make deploy   # deploys prod environment (.env.prod used)
 ```
 
-The password for `redis` and `rabbitmq` is `test@1234` can be changed in the make file under `deploy` script
+The password for `redis` and `rabbitmq` is `Test@1234` can be changed in the make file under `deploy` script
 
 ## sample env
 
 The sample env is generated using [sample-env](https://www.github.com/rubiin/sample-env)
 
+More docs found at `docs` folder
