@@ -13,9 +13,7 @@ export function IsEnumField(entity: object, ops?: IsEnumFieldOptions) {
 	const decoratorsToApply = [
 		IsEnum(entity, {
 			each: options.each,
-			message: `must be a valid ${Object.keys({
-				entity,
-			})[0].toLowerCase()} value,${enumToString(entity)}`,
+			message: `must be a valid enum value,${enumToString(entity)}`,
 		}),
 	];
 
