@@ -1,5 +1,6 @@
 import { join } from "node:path";
 
+import { IsUniqueConstraint } from "@common/validators";
 import {
 	NestCacheModule,
 	NestCaslModule,
@@ -46,5 +47,6 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 			},
 		}),
 	],
+	providers: [IsUniqueConstraint],
 })
 export class SharedModule {}
