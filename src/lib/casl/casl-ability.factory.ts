@@ -24,7 +24,7 @@ export type AppAbility = Ability<[Action, Subjects]>;
 @Injectable()
 export class CaslAbilityFactory {
 	createForUser(user: User) {
-		const { can, cannot, build } = new AbilityBuilder<Ability<[Action, Subjects]>>(
+		const { can, build } = new AbilityBuilder<Ability<[Action, Subjects]>>(
 			Ability as AbilityClass<AppAbility>,
 		);
 
@@ -33,9 +33,6 @@ export class CaslAbilityFactory {
 		} else {
 			can(Action.Read, "all"); // read-only access to everything
 		}
-
-		can(Action.Update, User, { id: user.id });
-		cannot(Action.Delete, User, { id: user.id });
 
 		return build({
 			detectSubjectType: item => item.constructor as ExtractSubjectType<Subjects>,
