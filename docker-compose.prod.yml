@@ -17,6 +17,8 @@ services:
             - redis
             - rabbitmq
         restart: unless-stopped
+        networks:
+            - nestify-network
         ports:
             - "8000:8000"
         stdin_open: true
@@ -27,6 +29,8 @@ services:
         restart: always
         ports:
             - "6379:6379"
+        networks:
+            - nestify-network
         command: redis-server --loglevel warning --requirepass ${PASSWORD}
         volumes:
             - redis-data:/data
@@ -34,6 +38,8 @@ services:
     rabbitmq:
         container_name: rabbitmq
         image: rabbitmq:3.8-management-alpine
+        networks:
+            - nestify-network
         environment:
             - RABBITMQ_DEFAULT_USER=nestify
             - RABBITMQ_DEFAULT_PASS=${PASSWORD}
@@ -48,3 +54,7 @@ services:
 volumes:
     redis-data:
     rabbitmq-data:
+
+networks:
+  nestify-network:
+    name: nestify-network
