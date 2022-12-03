@@ -16,13 +16,14 @@ export class ProfileController {
 		notFound: "Profile does not exist.",
 	})
 	profile(@LoggedInUser("username") username: string): Observable<User> {
-		return this.profileService.getProfileByUsername(username);
+		return this.profileService.getProfileByUsername(username, ["followers", "followed"]);
 	}
 
 	@Post(":username/follow")
 	@SwaggerResponse({
 		operation: "Profile follow",
 		notFound: "Profile does not exist.",
+		param: "username",
 	})
 	follow(
 		@LoggedInUser() user: User,
@@ -31,10 +32,11 @@ export class ProfileController {
 		return this.profileService.follow(user, username);
 	}
 
-	@Delete(":username/follow")
+	@Delete(":username/unfollow")
 	@SwaggerResponse({
 		operation: "Profile unfollow",
 		notFound: "Profile does not exist.",
+		param: "username",
 	})
 	unFollow(
 		@LoggedInUser() user: User,
