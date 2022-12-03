@@ -23,7 +23,7 @@ export class ProfileController {
 	@SwaggerResponse({
 		operation: "Profile follow",
 		notFound: "Profile does not exist.",
-		param: "username",
+		params: ["username"],
 	})
 	follow(
 		@LoggedInUser() user: User,
@@ -36,7 +36,7 @@ export class ProfileController {
 	@SwaggerResponse({
 		operation: "Profile unfollow",
 		notFound: "Profile does not exist.",
-		param: "username",
+		params: ["username"],
 	})
 	unFollow(
 		@LoggedInUser() user: User,
