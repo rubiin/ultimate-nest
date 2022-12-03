@@ -5,17 +5,20 @@ export function SwaggerResponse({
 	operation,
 	notFound,
 	badRequest,
-	param,
+	params,
 }: {
 	operation: string;
 	notFound?: string;
 	badRequest?: string;
-	param?: string;
+	params?: string[];
 }) {
 	const decsToApply = [ApiOperation({ summary: operation })];
 
-	if (param) {
+	if (params) {
+		for(const param of params) {
 		decsToApply.push(ApiParam({ name: param, required: true, type: String }));
+
+		}
 	}
 
 	if (badRequest) {

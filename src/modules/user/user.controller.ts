@@ -51,7 +51,7 @@ export class UserController {
 	@SwaggerResponse({
 		operation: "User fetch",
 		notFound: "User does not exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Read))
 	getOne(@UUIDParam("idx") index: string): Observable<User> {
@@ -78,7 +78,7 @@ export class UserController {
 		operation: "User fetch",
 		badRequest: "User already registered with email.",
 		notFound: "User does not exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	@CheckPolicies(new UpdateUserPolicyHandler())
 	editOne(@UUIDParam("idx") index: string, @Body() dto: EditUserDto): Observable<User> {
@@ -89,7 +89,7 @@ export class UserController {
 	@SwaggerResponse({
 		operation: "User fetch",
 		notFound: "User does not exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Delete))
 	deleteOne(@UUIDParam("idx") index: string): Observable<User> {

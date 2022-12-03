@@ -28,7 +28,7 @@ export class PostController {
 	@SwaggerResponse({
 		operation: "Post fetch",
 		notFound: "Post doesn't exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	getById(@UUIDParam("idx") index: string): Observable<PostEntity> {
 		return this.postService.getById(index);
@@ -38,7 +38,7 @@ export class PostController {
 	@SwaggerResponse({
 		operation: "Post comment fetch",
 		notFound: "Post doesn't exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	findComments(@UUIDParam("idx") index: string): Observable<Comment[]> {
 		return this.postService.findComments(index);
@@ -54,7 +54,7 @@ export class PostController {
 	@SwaggerResponse({
 		operation: "Post update",
 		notFound: "Post doesn't exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	editOne(@UUIDParam("idx") index: string, @Body() dto: EditPostDto): Observable<PostEntity> {
 		return this.postService.editOne(index, dto);
@@ -64,7 +64,7 @@ export class PostController {
 	@SwaggerResponse({
 		operation: "Post delete",
 		notFound: "Post doesn't exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	deleteOne(@UUIDParam("idx") index: string): Observable<PostEntity> {
 		return this.postService.deleteOne(index);
@@ -74,7 +74,7 @@ export class PostController {
 	@SwaggerResponse({
 		operation: "Post comment create",
 		notFound: "Post doesn't exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	async createComment(
 		@LoggedInUser("id") user: number,
@@ -89,7 +89,7 @@ export class PostController {
 	@SwaggerResponse({
 		operation: "Post comment delete",
 		notFound: "Post doesn't exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	deleteComment(@UUIDParam("idx") index: string) {
 		return this.postService.deleteComment(index);
@@ -99,7 +99,7 @@ export class PostController {
 	@SwaggerResponse({
 		operation: "Post favorite",
 		notFound: "Post doesn't exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	favorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {
 		return this.postService.favorite(userId, index);
@@ -109,7 +109,7 @@ export class PostController {
 	@SwaggerResponse({
 		operation: "Post unfavorite",
 		notFound: "Post doesn't exist.",
-		param: "idx",
+		params: ["idx"],
 	})
 	async unFavorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {
 		return this.postService.unFavorite(userId, index);
