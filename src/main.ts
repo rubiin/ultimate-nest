@@ -8,6 +8,7 @@ import { useContainer } from "class-validator";
 import compression from "compression";
 import helmet from "helmet";
 import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestjs-i18n";
+import { SocketIOAdapter } from "./socket-io.adapter";
 
 import { AppModule } from "./app.module";
 
@@ -29,7 +30,9 @@ async function bootstrap() {
 	app.use(compression());
 	app.enable("trust proxy");
 	app.use(helmet());
-
+	app.enableCors({
+		origin: "*", // for development use only
+	});
 	// =====================================================
 	// configureNestGlobals
 	// =====================================================
@@ -46,6 +49,7 @@ async function bootstrap() {
 
 	app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
 	app.setGlobalPrefix(globalPrefix);
+	app.useWebSocketAdapter(new SocketIOAdapter(app, configService));
 
 	// =========================================================
 	// configureNestSwagger

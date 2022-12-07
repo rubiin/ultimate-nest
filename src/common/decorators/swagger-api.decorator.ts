@@ -15,9 +15,8 @@ export function SwaggerResponse({
 	const decsToApply = [ApiOperation({ summary: operation })];
 
 	if (params) {
-		for(const param of params) {
-		decsToApply.push(ApiParam({ name: param, required: true, type: String }));
-
+		for (const param of params) {
+			decsToApply.push(ApiParam({ name: param, required: true, type: String }));
 		}
 	}
 

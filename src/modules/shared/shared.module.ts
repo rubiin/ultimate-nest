@@ -18,6 +18,7 @@ import { PostModule } from "@modules/post/post.module";
 import { ProfileModule } from "@modules/profile/profile.module";
 import { RabbitModule } from "@modules/rabbit/rabbit.module";
 import { UserModule } from "@modules/user/user.module";
+
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
@@ -34,8 +35,11 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 		RabbitModule,
 		NestMailModule,
 		NestPinoModule,
-		HttpModule,
 		NestI18nModule,
+		HttpModule.register({
+			timeout: 5000,
+			maxRedirects: 5,
+		}),
 		NestCacheModule,
 		NestCloudinaryModule,
 		NestSentryModule,
