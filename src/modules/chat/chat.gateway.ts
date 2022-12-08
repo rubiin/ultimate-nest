@@ -1,13 +1,14 @@
 import {
-	WebSocketGateway,
-	SubscribeMessage,
-	MessageBody,
-	WebSocketServer,
 	ConnectedSocket,
+	MessageBody,
+	SubscribeMessage,
+	WebSocketGateway,
+	WebSocketServer,
 } from "@nestjs/websockets";
+import { Namespace, Socket } from "socket.io";
+
 import { ChatService } from "./chat.service";
 import { CreateChatDto } from "./dto/create-chat.dto";
-import { Namespace, Socket } from "socket.io";
 
 @WebSocketGateway({
 	namespace: "chat",
@@ -17,8 +18,8 @@ export class ChatGateway {
 	constructor(private readonly chatService: ChatService) {}
 
 	@SubscribeMessage("createChat")
-	async create(@MessageBody() createChatDto: CreateChatDto) {
-		const message = this.chatService.create(createChatDto);
+	async create(@MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() client: Socket) {
+		const message = this.chatService.create(createChatDto, client.id);
 
 		this.server.emit("message", message);
 
@@ -33,8 +34,8 @@ export class ChatGateway {
 	@SubscribeMessage("typing")
 	typing(@MessageBody("isTyping") isTyping: boolean, @ConnectedSocket() client: Socket) {
 		const name = this.chatService.getClientName(client.id);
+
 		client.broadcast.emit("typing", { name, isTyping });
-		return this.chatService.typing();
 	}
 
 	@SubscribeMessage("join")
