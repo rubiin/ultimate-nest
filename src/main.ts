@@ -8,9 +8,9 @@ import { useContainer } from "class-validator";
 import compression from "compression";
 import helmet from "helmet";
 import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestjs-i18n";
-import { SocketIOAdapter } from "./socket-io.adapter";
 
 import { AppModule } from "./app.module";
+import { SocketIOAdapter } from "./socket-io.adapter";
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
