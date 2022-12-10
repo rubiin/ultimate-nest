@@ -1,5 +1,5 @@
 import { createMock } from "@golevelup/ts-jest";
-import { ExecutionContext } from "@nestjs/common";
+import { ExecutionContext, HttpException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 
 import { AuthGuard } from "./auth.guard";
@@ -34,6 +34,18 @@ describe("AuthenticatedGuard", () => {
 			const canActivate = authenticatedGuard.canActivate(mockContext);
 
 			expect(canActivate).toBe(true);
+		});
+
+		it("should throw error when invalid token", () => {
+			mockJwt.verify.mockImplementationOnce(() => {
+				throw new Error("Invalid token");
+			});
+
+			try {
+				authenticatedGuard.canActivate(mockContext);
+			} catch (error) {
+				expect(error).toBeInstanceOf(HttpException);
+			}
 		});
 	});
 });
