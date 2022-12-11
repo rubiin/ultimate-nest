@@ -30,10 +30,7 @@ describe("AuthenticatedGuard", () => {
 			mockJwt.verify.mockImplementationOnce(() => {
 				return { idx: "idx" };
 			});
-
-			const canActivate = authenticatedGuard.canActivate(mockContext);
-
-			expect(canActivate).toBe(true);
+			expect(authenticatedGuard.canActivate(mockContext)).toBe(true);
 		});
 
 		it("should throw error when invalid token", () => {
