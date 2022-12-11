@@ -1,6 +1,10 @@
 import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
+import DOMPurify from "dompurify";
+import { JSDOM } from "jsdom";
 import { Observable } from "rxjs";
-import validator from "validator";
+
+const window = new JSDOM("").window;
+const purify = DOMPurify(window);
 
 export class RequestSanitizerInterceptor implements NestInterceptor {
 	private except = ["password", "captcha"];
@@ -15,9 +19,9 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 		request.query = this.cleanObject(request.query);
 		request.params = this.cleanObject(request.params);
 
-		// we wont be sending body on GET and POST
+		// we wont be sending body on GET and DELETE requests
 
-		if (request.method !== "GET" || request.method !== "DELETE") {
+		if (!request.body.includes(["GET", "DELETE"])) {
 			request.body = this.cleanObject(request.body);
 		}
 	}
@@ -50,7 +54,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 			this.isString(key) &&
 			!this.except.some(element => element.includes(key))
 		) {
-			return validator.trim(escape(value));
+			return purify.sanitize(value.trim());
 		}
 
 		return value;
