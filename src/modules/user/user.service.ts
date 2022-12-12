@@ -5,13 +5,14 @@ import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { createPaginationObject, Pagination } from "@lib/pagination";
-import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { capitalize } from "helper-fns";
 import { I18nService } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
+import minify from "url-minify";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
@@ -94,6 +95,7 @@ export class UserService {
 			user.avatar = url;
 
 			await em.persistAndFlush(user);
+			const link = await minify(url);
 
 			await this.amqpConnection.publish(
 				this.configService.get<string>("rabbit.exchange"),
@@ -102,7 +104,7 @@ export class UserService {
 					template: EmailTemplateEnum.WELCOME_TEMPLATE,
 					replacements: {
 						firstName: capitalize(user.firstName),
-						link: "example.com",
+						link,
 					},
 					to: user.email,
 					subject: "Welcome onboard",

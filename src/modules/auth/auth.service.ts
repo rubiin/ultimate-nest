@@ -4,8 +4,8 @@ import { EmailTemplateEnum, LoginType, RandomTypes } from "@common/types/enums/m
 import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
 import { OtpLog, User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { TokensService } from "@modules/token/tokens.service";
 import {
 	BadRequestException,
