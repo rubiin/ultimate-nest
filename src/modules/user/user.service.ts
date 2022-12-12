@@ -12,7 +12,6 @@ import { ConfigService } from "@nestjs/config";
 import { capitalize } from "helper-fns";
 import { I18nService } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
-import minify from "url-minify";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
@@ -95,7 +94,7 @@ export class UserService {
 			user.avatar = url;
 
 			await em.persistAndFlush(user);
-			const link = await minify(url);
+			const link = "www.google.com";
 
 			await this.amqpConnection.publish(
 				this.configService.get<string>("rabbit.exchange"),

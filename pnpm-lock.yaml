@@ -32,9 +32,9 @@ specifiers:
     "@nestjs/testing": 9.2.1
     "@nestjs/throttler": ^3.1.0
     "@nestjs/websockets": ^9.2.1
-    "@sentry/hub": ^7.24.2
-    "@sentry/node": ^7.24.2
-    "@sentry/types": ^7.24.2
+    "@sentry/hub": ^7.25.0
+    "@sentry/node": ^7.25.0
+    "@sentry/types": ^7.25.0
     "@supercharge/request-ip": ^1.2.0
     "@types/cache-manager": ^4.0.2
     "@types/cache-manager-redis-store": ^2.0.1
@@ -70,7 +70,7 @@ specifiers:
     eslint-plugin-import: ^2.26.0
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-simple-import-sort: ^8.0.0
-    eslint-plugin-unicorn: ^45.0.1
+    eslint-plugin-unicorn: ^45.0.2
     eta: ^1.12.3
     firebase-admin: ^11.3.0
     helmet: ^6.0.1
@@ -81,7 +81,7 @@ specifiers:
     jsdom: ^20.0.3
     lint-staged: ^13.1.0
     nanoid: ^4.0.0
-    nestjs-i18n: ^9.2.3
+    nestjs-i18n: ^9.3.0
     nestjs-minio: ^2.2.2
     nestjs-pino: ^3.1.1
     nodemailer: ^6.8.0
@@ -107,7 +107,7 @@ specifiers:
     tsconfig-paths: 4.1.1
     twilio: ^3.83.4
     typescript: ^4.9
-    url-minify: ^2.8.3
+    url-minify: ^2.8.4
 
 dependencies:
     "@aws-sdk/client-ses": 3.226.0
@@ -133,11 +133,11 @@ dependencies:
     "@nestjs/terminus": 9.1.4_hbawsnmhturo7ziqwkmgnefc64
     "@nestjs/throttler": 3.1.0_dntc3uqqknzoduyjojusds5kla
     "@nestjs/websockets": 9.2.1_ubhkn2rkypo72fzu2sqkmpne6a
-    "@sentry/hub": 7.24.2
-    "@sentry/node": 7.24.2
-    "@sentry/types": 7.24.2
+    "@sentry/hub": 7.25.0
+    "@sentry/node": 7.25.0
+    "@sentry/types": 7.25.0
     "@supercharge/request-ip": 1.2.0
-    "@xiifain/nestjs-sentry": 4.0.2_wramlsuz32rsxxijb4puai2v7u
+    "@xiifain/nestjs-sentry": 4.0.2_gvmnnoznbl4cgpvyouootim3me
     argon2: 0.30.2
     cache-manager: 4.1.0
     cache-manager-redis-store: 2.0.0
@@ -154,7 +154,7 @@ dependencies:
     joi: 17.7.0
     jsdom: 20.0.3
     nanoid: 4.0.0
-    nestjs-i18n: 9.2.3_nav3grtcen7ldtbsu3sacdfrbu
+    nestjs-i18n: 9.3.0_nav3grtcen7ldtbsu3sacdfrbu
     nestjs-minio: 2.2.2_hjcqpoaebdr7gdo5hgc22hthbe
     nestjs-pino: 3.1.1_fcd54ft2xb4u3edoqjuduti5cy
     nodemailer: 6.8.0
@@ -172,7 +172,7 @@ dependencies:
     sharp: 0.31.2
     swagger-stats: 0.99.4_prom-client@14.1.0
     twilio: 3.83.4
-    url-minify: 2.8.3
+    url-minify: 2.8.4
 
 devDependencies:
     "@firebase/app-compat": 0.2.0
@@ -207,7 +207,7 @@ devDependencies:
     eslint-plugin-import: 2.26.0_hmezkefo75s2prddlqllgjxqc4
     eslint-plugin-prettier: 4.2.1_5dgjrgoi64tgrv3zzn3walur3u
     eslint-plugin-simple-import-sort: 8.0.0_eslint@8.29.0
-    eslint-plugin-unicorn: 45.0.1_eslint@8.29.0
+    eslint-plugin-unicorn: 45.0.2_eslint@8.29.0
     husky: 8.0.2
     jest: 29.3.1_sfpnjnnyjha3fwltwg26xa3eti
     lint-staged: 13.1.0
@@ -3597,41 +3597,41 @@ packages:
             selderee: 0.10.0
         dev: false
 
-    /@sentry/core/7.24.2:
+    /@sentry/core/7.25.0:
         resolution:
             {
-                integrity: sha512-CDfrVvr3PQ0qImJv7/6yN/5hxhwxy1HicxTL9K5RwSDoXqgK3kUGv/WmTvPNIVB2RQKodLwzS2T52NFRxRoqNw==,
+                integrity: sha512-4PMuf+MsLxtbesXFBdXfRQhdxHVMi4e6z52DEdtSN9V41lT/R78qIfVopHs5gAr9j4lxCaiKSnNQDKziWLeQ8w==,
             }
         engines: { node: ">=8" }
         dependencies:
-            "@sentry/types": 7.24.2
-            "@sentry/utils": 7.24.2
+            "@sentry/types": 7.25.0
+            "@sentry/utils": 7.25.0
             tslib: 1.14.1
         dev: false
 
-    /@sentry/hub/7.24.2:
+    /@sentry/hub/7.25.0:
         resolution:
             {
-                integrity: sha512-i9uSIPex6TiyUR3csC/bpn/iys9ZullbamFD7a+sdqb0zwhen5mwz0yPcuLucdbqiM99WlxiN6SKqVbvm1nYmw==,
+                integrity: sha512-1W8ZGJKJh20LJozulE9EJNLRyAlMT0Endu0HiBe3DWu9NT7rTI/+YPEKqB2raidANKhXXJAOXLyZntY/JsgbAA==,
             }
         engines: { node: ">=8" }
         dependencies:
-            "@sentry/core": 7.24.2
-            "@sentry/types": 7.24.2
-            "@sentry/utils": 7.24.2
+            "@sentry/core": 7.25.0
+            "@sentry/types": 7.25.0
+            "@sentry/utils": 7.25.0
             tslib: 1.14.1
         dev: false
 
-    /@sentry/node/7.24.2:
+    /@sentry/node/7.25.0:
         resolution:
             {
-                integrity: sha512-wNUwiPOBogJmqmpwsbnsgBatUqbhvUpv8HChsBI1XLgCm6DlNlpb1BQHn2Z9PEMxvr4V43HJIdsfyrTC2SpAAA==,
+                integrity: sha512-7I0EVJzUdyBZuAOH4BPUkmxF7NSseuQbbMFu4v2mo8PRBIP+40ZP6+xhBMz+UvBqsWCLZkZtG/8iujhfDxmQRw==,
             }
         engines: { node: ">=8" }
         dependencies:
-            "@sentry/core": 7.24.2
-            "@sentry/types": 7.24.2
-            "@sentry/utils": 7.24.2
+            "@sentry/core": 7.25.0
+            "@sentry/types": 7.25.0
+            "@sentry/utils": 7.25.0
             cookie: 0.4.2
             https-proxy-agent: 5.0.1
             lru_map: 0.3.3
@@ -3640,22 +3640,22 @@ packages:
             - supports-color
         dev: false
 
-    /@sentry/types/7.24.2:
+    /@sentry/types/7.25.0:
         resolution:
             {
-                integrity: sha512-x2LEnKBPzUVzTGspvB0CjZmt1dWeJsLVHGeDKPUMUm004nIscFCxJsmYefqaJQdaIUMqDit5ApwcmKchuK6VKQ==,
+                integrity: sha512-m/tVeuZpbYNQjp4BYOz7bBxZEWdTHdTgXg9YlztUOCf5JDDujpxYp2Pyp4+cDDulzFIixXzRH7FRiKsOJ0WF7w==,
             }
         engines: { node: ">=8" }
         dev: false
 
-    /@sentry/utils/7.24.2:
+    /@sentry/utils/7.25.0:
         resolution:
             {
-                integrity: sha512-VuuYEF39v43Qk6YZMid8Em/N0HqCsS5ItuTSvunMtBai2dzDAIkJ2LqemF95wWFAXrzpLy4Nx3QyGVHayMn31A==,
+                integrity: sha512-1Wct+LvDySYgXBYHjoTzccASK4Rk/88cCifSZF7pLrix3Rzk+8QnPt4vZ/ce62nTNBDs/OeFXO1eFwiz9nCoEg==,
             }
         engines: { node: ">=8" }
         dependencies:
-            "@sentry/types": 7.24.2
+            "@sentry/types": 7.25.0
             tslib: 1.14.1
         dev: false
 
@@ -4619,7 +4619,7 @@ packages:
             "@xtuc/long": 4.2.2
         dev: true
 
-    /@xiifain/nestjs-sentry/4.0.2_wramlsuz32rsxxijb4puai2v7u:
+    /@xiifain/nestjs-sentry/4.0.2_gvmnnoznbl4cgpvyouootim3me:
         resolution:
             {
                 integrity: sha512-i+MGEgR7wCrm4uwHWKrX7eI981L8SYkqRPvk2M6z+tlOdQHkMBPFoPcKGSW1YuLziOj7ABL75h1WOPqDCyp3Wg==,
@@ -4635,8 +4635,8 @@ packages:
         dependencies:
             "@nestjs/common": 9.2.1_ypfeug4d5dyqijriw2rdd44oey
             "@nestjs/core": 9.2.1_2mhkftbjgb5wz72t6dfc6i7ave
-            "@sentry/hub": 7.24.2
-            "@sentry/node": 7.24.2
+            "@sentry/hub": 7.25.0
+            "@sentry/node": 7.25.0
             reflect-metadata: 0.1.13
             rimraf: 3.0.2
             rxjs: 7.6.0
@@ -5190,6 +5190,13 @@ packages:
             }
         dev: false
 
+    /async_hooks/1.0.0:
+        resolution:
+            {
+                integrity: sha512-t4BSJgx48V3e7U6Ll3/WOUNmxIRPzmPdxVfgbyzcnRItEnn4iKp4F//b0sV3L9hzbdr5qxWdNWzOF7t+rjYSfA==,
+            }
+        dev: false
+
     /asynckit/0.4.0:
         resolution:
             {
@@ -5245,22 +5252,23 @@ packages:
             - debug
         dev: false
 
-    /axios/0.27.2:
-        resolution:
-            {
-                integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==,
-            }
-        dependencies:
-            follow-redirects: 1.15.2
-            form-data: 4.0.0
-        transitivePeerDependencies:
-            - debug
-        dev: false
-
     /axios/1.1.3:
         resolution:
             {
                 integrity: sha512-00tXVRwKx/FZr/IDVFt4C+f9FYairX517WoGCL6dpOntqLkZofjhu43F/Xl44UOpqa+9sLFDrG/XAnFsUYgkDA==,
+            }
+        dependencies:
+            follow-redirects: 1.15.2
+            form-data: 4.0.0
+            proxy-from-env: 1.1.0
+        transitivePeerDependencies:
+            - debug
+        dev: false
+
+    /axios/1.2.1:
+        resolution:
+            {
+                integrity: sha512-I88cFiGu9ryt/tfVEi4kX2SITsvDddTajXTOFmt2uK1ZVA8LytjtdeyefdQWEf5PU8w+4SSJDoYnggflB5tW4A==,
             }
         dependencies:
             follow-redirects: 1.15.2
@@ -7618,10 +7626,10 @@ packages:
             eslint: 8.29.0
         dev: true
 
-    /eslint-plugin-unicorn/45.0.1_eslint@8.29.0:
+    /eslint-plugin-unicorn/45.0.2_eslint@8.29.0:
         resolution:
             {
-                integrity: sha512-tLnIw5oDJJc3ILYtlKtqOxPP64FZLTkZkgeuoN6e7x6zw+rhBjOxyvq2c7577LGxXuIhBYrwisZuKNqOOHp3BA==,
+                integrity: sha512-Y0WUDXRyGDMcKLiwgL3zSMpHrXI00xmdyixEGIg90gHnj0PcHY4moNv3Ppje/kDivdAy5vUeUr7z211ImPv2gw==,
             }
         engines: { node: ">=14.18" }
         peerDependencies:
@@ -11933,10 +11941,10 @@ packages:
             }
         dev: true
 
-    /nestjs-i18n/9.2.3_nav3grtcen7ldtbsu3sacdfrbu:
+    /nestjs-i18n/9.3.0_nav3grtcen7ldtbsu3sacdfrbu:
         resolution:
             {
-                integrity: sha512-IivN7aDbvK/oUN7vOwXpq0nuIZOdfM6+9J87MazR4lJbFEsa/mKW7Hw47uekZyCtcOr1JVdXk+6M1jn7Z+otpg==,
+                integrity: sha512-Nrygxc/GUUzFrr1DR1j9tiaJT94ahwwZpu32aZmmtv5edazLmq1lQdgVG6bouCfGcofAjJsFi51XlHOiDO3ZBQ==,
             }
         peerDependencies:
             "@nestjs/common": "*"
@@ -11947,6 +11955,7 @@ packages:
             "@nestjs/common": 9.2.1_ypfeug4d5dyqijriw2rdd44oey
             "@nestjs/core": 9.2.1_2mhkftbjgb5wz72t6dfc6i7ave
             accept-language-parser: 1.5.0
+            async_hooks: 1.0.0
             chokidar: 3.5.3
             class-validator: 0.14.0
             cookie: 0.5.0
@@ -15803,13 +15812,13 @@ packages:
         dependencies:
             punycode: 2.1.1
 
-    /url-minify/2.8.3:
+    /url-minify/2.8.4:
         resolution:
             {
-                integrity: sha512-iO4J4m+kMYDoNZixAXIfOe1VHwqYN1uX8vQIDm9jNDg+MB8p4mlLf1IL6+PVSciD6HqI79Hd65p2xl1npLkb7Q==,
+                integrity: sha512-z65Z5vTTzJEA8GPCYcC2SJ3+rr+rH08F77xEU0QVLELo/8iJJ5WBVpjtJMzLLhqTGxCCpZWSeHEMYQ4JjwN/Gg==,
             }
         dependencies:
-            axios: 0.27.2
+            axios: 1.2.1
         transitivePeerDependencies:
             - debug
         dev: false
