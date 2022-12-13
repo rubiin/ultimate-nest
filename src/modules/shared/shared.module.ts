@@ -13,6 +13,7 @@ import {
 	OrmModule,
 } from "@lib/index";
 import { AuthModule } from "@modules/auth/auth.module";
+import { ChatModule } from "@modules/chat/chat.module";
 import { HealthModule } from "@modules/health/health.module";
 import { PostModule } from "@modules/post/post.module";
 import { ProfileModule } from "@modules/profile/profile.module";
@@ -35,6 +36,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 		NestMailModule,
 		NestPinoModule,
 		NestI18nModule,
+		ChatModule,
 		HttpModule.register({
 			timeout: 5000,
 			maxRedirects: 5,

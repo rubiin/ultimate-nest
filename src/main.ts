@@ -1,5 +1,5 @@
 import { AppUtils } from "@common/helpers/app.utils";
-import { ValidationPipe } from "@common/pipes/validation";
+import { ValidationPipe } from "@common/pipes/validation.pipe";
 import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory, repl } from "@nestjs/core";
