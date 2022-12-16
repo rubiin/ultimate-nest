@@ -11,7 +11,6 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
 				path: path.join(__dirname, "../../resources/i18n/"),
 				watch: true,
 			},
-			disableMiddleware: true,
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,
