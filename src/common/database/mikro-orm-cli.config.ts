@@ -33,6 +33,8 @@ const config: Options = {
 		pathTs: "src/migrations/",
 		tableName: "migrations",
 		transactional: true,
+		glob: "!(*.d).{js,ts}",
+		emit: "ts",
 	},
 	seeder: {
 		path: "dist/common/database/seeders/", // path to the folder with seeders
