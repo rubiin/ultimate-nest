@@ -9,8 +9,13 @@ export interface MailModuleOptions {
 	previewEmail: boolean;
 	server: string;
 	templateDir: string;
-	engine: {
-		adapter: "eta" | "pug";
-		options: Partial<typeof config> | PugOptions;
-	};
+	engine:
+		| {
+				adapter: "eta";
+				options: Partial<typeof config>;
+		  }
+		| {
+				adapter: "pug";
+				options: Partial<PugOptions>;
+		  };
 }

@@ -1,10 +1,12 @@
+import { resolve } from "node:path";
+
 import aws from "@aws-sdk/client-ses";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { createTransport, SendMailOptions, Transporter } from "nodemailer";
 import { SentMessageInfo } from "nodemailer/lib/ses-transport";
 import previewEmail from "preview-email";
-import { EtaAdapter, PugAdapter } from "./abstract.adapter";
 
+import { EtaAdapter, PugAdapter } from "./adapters";
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
 import { MailModuleOptions } from "./mailer.options";
 
@@ -63,11 +65,15 @@ export class MailerService {
 		// render template
 
 		const adapter =
-			this.options.engine.adapter === "pug"
-				? new PugAdapter(this.options.engine.options)
-				: new EtaAdapter(this.options.engine.options);
+			this.options.engine.adapter === "eta"
+				? new EtaAdapter(this.options.engine.options)
+				: new PugAdapter(this.options.engine.options);
 
-		const html = await adapter.compile(mailOptions.template, mailOptions.replacements);
+		const templatePath = resolve(
+			`${__dirname}/../../${this.options.templateDir}/${mailOptions.template}.${this.options.engine.adapter}`,
+		);
+
+		const html = await adapter.compile(templatePath, mailOptions.replacements);
 
 		mailOptions.html = html;
 

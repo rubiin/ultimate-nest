@@ -17,12 +17,13 @@ import { MailModule } from "./mailer.module";
 				server: configService.get("mail.server"),
 				previewEmail: configService.get<boolean>("mail.previewEmail", false),
 				templateDir: configService.get("mail.templateDir"),
-				 engine: {
-						adapter: 'eta',
-						options: {
-							
-						}
+				engine: {
+					adapter: "eta",
+					options: {
+						rmWhitespace: true,
+						cache: true,
 					},
+				},
 			}),
 			inject: [ConfigService],
 		}),
