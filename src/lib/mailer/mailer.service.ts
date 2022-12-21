@@ -1,9 +1,9 @@
 import aws from "@aws-sdk/client-ses";
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import * as eta from "eta";
 import { createTransport, SendMailOptions, Transporter } from "nodemailer";
 import { SentMessageInfo } from "nodemailer/lib/ses-transport";
 import previewEmail from "preview-email";
+import { EtaAdapter } from "./abstract.adapter";
 
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
 import { MailModuleOptions } from "./mailer.options";
@@ -27,7 +27,7 @@ export class MailerService {
 	 * @param {IMailOptions} mailOptions - IMailOptions
 	 * @returns A promise that resolves to a boolean.
 	 */
-	sendMail(mailOptions: IMailOptions) {
+	async sendMail(mailOptions: IMailOptions) {
 		let transporter: Transporter<SentMessageInfo>;
 
 		// create Nodemailer SES transporter
@@ -60,33 +60,19 @@ export class MailerService {
 			});
 		}
 
-		return new Promise<boolean>((resolve, reject) =>
-			eta.renderFile(
-				`${__dirname}/../../${this.options.template.dir}/${mailOptions.template}.eta`,
-				mailOptions.replacements,
-				this.options.template.etaOptions,
-				(error, html) => {
-					if (error) {
-						reject(error);
-					}
+		// render template
 
-					mailOptions.html = html;
-
-					if (this.options.previewEmail) {
-						previewEmail(mailOptions).then(this.logger.debug).catch(this.logger.error);
-					}
-
-					transporter.sendMail(mailOptions, async (error, info) => {
-						if (error) {
-							this.logger.error("error is " + error);
-							reject(false);
-						} else {
-							this.logger.debug("info", "Email sent: " + info.response);
-							resolve(true);
-						}
-					});
-				},
-			),
+		const html = await new EtaAdapter(this.options).compile(
+			mailOptions.template,
+			mailOptions.replacements,
 		);
+
+		mailOptions.html = html;
+
+		if (this.options.previewEmail) {
+			previewEmail(mailOptions).then(this.logger.debug).catch(this.logger.error);
+		}
+
+		return transporter.sendMail(mailOptions);
 	}
 }
