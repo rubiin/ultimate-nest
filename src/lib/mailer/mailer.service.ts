@@ -3,7 +3,7 @@ import { Inject, Injectable, Logger } from "@nestjs/common";
 import { createTransport, SendMailOptions, Transporter } from "nodemailer";
 import { SentMessageInfo } from "nodemailer/lib/ses-transport";
 import previewEmail from "preview-email";
-import { EtaAdapter } from "./abstract.adapter";
+import { EtaAdapter, PugAdapter } from "./abstract.adapter";
 
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
 import { MailModuleOptions } from "./mailer.options";
@@ -62,10 +62,12 @@ export class MailerService {
 
 		// render template
 
-		const html = await new EtaAdapter(this.options).compile(
-			mailOptions.template,
-			mailOptions.replacements,
-		);
+		const adapter =
+			this.options.engine.adapter === "pug"
+				? new PugAdapter(this.options.engine.options)
+				: new EtaAdapter(this.options.engine.options);
+
+		const html = await adapter.compile(mailOptions.template, mailOptions.replacements);
 
 		mailOptions.html = html;
 

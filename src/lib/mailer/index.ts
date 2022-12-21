@@ -16,13 +16,13 @@ import { MailModule } from "./mailer.module";
 				password: configService.get("mail.password"),
 				server: configService.get("mail.server"),
 				previewEmail: configService.get<boolean>("mail.previewEmail", false),
-				template: {
-					dir: configService.get("mail.templateDir"),
-					etaOptions: {
-						cache: true,
-						rmWhitespace: true,
+				templateDir: configService.get("mail.templateDir"),
+				 engine: {
+						adapter: 'eta',
+						options: {
+							
+						}
 					},
-				},
 			}),
 			inject: [ConfigService],
 		}),
