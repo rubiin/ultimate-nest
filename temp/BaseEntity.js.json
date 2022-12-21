@@ -1,1 +1,41 @@
-{"data":{"propertyOrder":{},"properties":{"id":{"name":"id","reference":"scalar","primary":true,"type":"number","array":false},"idx":{"name":"idx","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},"isActive":{"name":"isActive","reference":"scalar","getter":false,"setter":false,"type":"boolean","array":false},"isObsolete":{"name":"isObsolete","reference":"scalar","hidden":true,"getter":false,"setter":false,"type":"boolean","array":false},"deletedAt":{"name":"deletedAt","reference":"scalar","getter":false,"setter":false,"type":"Date","array":false,"optional":true},"createdAt":{"name":"createdAt","reference":"scalar","getter":false,"setter":false,"type":"Date","array":false},"updatedAt":{"name":"updatedAt","reference":"scalar","hidden":true,"getter":false,"setter":false,"type":"Date","array":false,"optional":true}},"props":[{"name":"id","reference":"scalar","primary":true,"type":"number","array":false},{"name":"idx","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},{"name":"isActive","reference":"scalar","getter":false,"setter":false,"type":"boolean","array":false},{"name":"isObsolete","reference":"scalar","hidden":true,"getter":false,"setter":false,"type":"boolean","array":false},{"name":"deletedAt","reference":"scalar","getter":false,"setter":false,"type":"Date","array":false,"optional":true},{"name":"createdAt","reference":"scalar","getter":false,"setter":false,"type":"Date","array":false},{"name":"updatedAt","reference":"scalar","hidden":true,"getter":false,"setter":false,"type":"Date","array":false,"optional":true}],"primaryKeys":["id"],"filters":{},"hooks":{},"indexes":[],"uniques":[],"checks":[],"concurrencyCheckKeys":{},"className":"BaseEntity","path":"./dist/common/database/base-entity.entity.js","abstract":true,"constructorParams":[],"toJsonParams":[],"useCache":true,"compositePK":false,"relations":[]},"origin":"./dist/common/database/base-entity.entity.js","hash":"8ddce155c70e16426db1ef8dc1a3127b","version":"5.5.3"}
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"id": { "name": "id", "reference": "scalar", "primary": true, "type": "number", "array": false },
+			"idx": { "name": "idx", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			"isActive": { "name": "isActive", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
+			"isObsolete": { "name": "isObsolete", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "boolean", "array": false },
+			"deletedAt": { "name": "deletedAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "array": false, "optional": true },
+			"createdAt": { "name": "createdAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "array": false },
+			"updatedAt": { "name": "updatedAt", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "Date", "array": false, "optional": true }
+		},
+		"props": [
+			{ "name": "id", "reference": "scalar", "primary": true, "type": "number", "array": false },
+			{ "name": "idx", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			{ "name": "isActive", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
+			{ "name": "isObsolete", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "boolean", "array": false },
+			{ "name": "deletedAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "array": false, "optional": true },
+			{ "name": "createdAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "array": false },
+			{ "name": "updatedAt", "reference": "scalar", "hidden": true, "getter": false, "setter": false, "type": "Date", "array": false, "optional": true }
+		],
+		"primaryKeys": ["id"],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "BaseEntity",
+		"path": "./dist/common/database/base-entity.entity.js",
+		"abstract": true,
+		"constructorParams": [],
+		"toJsonParams": [],
+		"useCache": true,
+		"compositePK": false,
+		"relations": []
+	},
+	"origin": "./dist/common/database/base-entity.entity.js",
+	"hash": "a92d4c6451625d3e3f2e13224877cafb",
+	"version": "5.6.1"
+}

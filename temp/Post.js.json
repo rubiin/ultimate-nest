@@ -1,1 +1,48 @@
-{"data":{"propertyOrder":{},"properties":{"slug":{"name":"slug","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},"title":{"name":"title","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},"description":{"name":"description","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},"content":{"name":"content","reference":"scalar","type":"text","getter":false,"setter":false,"array":false},"tags":{"name":"tags","reference":"scalar","getter":false,"setter":false,"array":true},"author":{"name":"author","reference":"m:1","cascade":["persist"],"eager":false,"type":"User","owner":true,"array":false},"comments":{"name":"comments","reference":"1:m","cascade":["persist"],"eager":false,"orphanRemoval":true,"type":"Comment","array":false},"favoritesCount":{"name":"favoritesCount","reference":"scalar","getter":false,"setter":false,"type":"number","array":false}},"props":[{"name":"slug","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},{"name":"title","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},{"name":"description","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},{"name":"content","reference":"scalar","type":"text","getter":false,"setter":false,"array":false},{"name":"tags","reference":"scalar","getter":false,"setter":false,"array":true},{"name":"author","reference":"m:1","cascade":["persist"],"eager":false,"type":"User","owner":true,"array":false},{"name":"comments","reference":"1:m","cascade":["persist"],"eager":false,"orphanRemoval":true,"type":"Comment","array":false},{"name":"favoritesCount","reference":"scalar","getter":false,"setter":false,"type":"number","array":false}],"primaryKeys":[],"filters":{},"hooks":{},"indexes":[],"uniques":[],"checks":[],"concurrencyCheckKeys":{},"className":"Post","path":"./dist/entities/post.entity.js","name":"Post","abstract":false,"constructorParams":["partial"],"toJsonParams":[],"extends":"BaseEntity","useCache":true,"relations":[{"name":"author","reference":"m:1","cascade":["persist"],"eager":false,"type":"User","owner":true,"array":false},{"name":"comments","reference":"1:m","cascade":["persist"],"eager":false,"orphanRemoval":true,"type":"Comment","array":false}],"collection":"post"},"origin":"./dist/entities/post.entity.js","hash":"1ba03f4e7c88504dc6c6b6ffe381ace5","version":"5.5.3"}
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"slug": { "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			"title": { "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			"description": { "name": "description", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			"content": { "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false, "array": false },
+			"tags": { "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
+			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "owner": true, "array": false },
+			"comments": { "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": false, "orphanRemoval": true, "type": "Comment", "array": false },
+			"favoritesCount": { "name": "favoritesCount", "reference": "scalar", "getter": false, "setter": false, "type": "number", "array": false }
+		},
+		"props": [
+			{ "name": "slug", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			{ "name": "title", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			{ "name": "description", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			{ "name": "content", "reference": "scalar", "type": "text", "getter": false, "setter": false, "array": false },
+			{ "name": "tags", "reference": "scalar", "getter": false, "setter": false, "array": true },
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "owner": true, "array": false },
+			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": false, "orphanRemoval": true, "type": "Comment", "array": false },
+			{ "name": "favoritesCount", "reference": "scalar", "getter": false, "setter": false, "type": "number", "array": false }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "Post",
+		"path": "./dist/entities/post.entity.js",
+		"name": "Post",
+		"abstract": false,
+		"constructorParams": ["partial"],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "owner": true, "array": false },
+			{ "name": "comments", "reference": "1:m", "cascade": ["persist"], "eager": false, "orphanRemoval": true, "type": "Comment", "array": false }
+		],
+		"collection": "post"
+	},
+	"origin": "./dist/entities/post.entity.js",
+	"hash": "ee19970171355930d0b706f5ed367e9f",
+	"version": "5.6.1"
+}
