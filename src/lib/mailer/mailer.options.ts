@@ -1,4 +1,5 @@
 import { config } from "eta";
+import type { Options as PugOptions } from "pug";
 
 export interface MailModuleOptions {
 	host?: string;
@@ -7,8 +8,9 @@ export interface MailModuleOptions {
 	username: string;
 	previewEmail: boolean;
 	server: string;
-	template: {
-		dir: string;
-		etaOptions: Partial<typeof config>;
+	templateDir: string;
+	engine: {
+		adapter: "eta" | "pug";
+		options: Partial<typeof config> | PugOptions;
 	};
 }
