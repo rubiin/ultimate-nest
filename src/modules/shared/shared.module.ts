@@ -21,6 +21,7 @@ import { RabbitModule } from "@modules/rabbit/rabbit.module";
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
+import { UserModule } from "@modules/user/user.module";
 
 @Module({
 	imports: [
@@ -29,6 +30,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 		ProfileModule,
 		HealthModule,
 		NestConfigModule,
+		UserModule,
 		OrmModule,
 		RabbitModule,
 		NestMailModule,
@@ -38,6 +40,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 		HttpModule.register({
 			timeout: 5000,
 			maxRedirects: 5,
+			withCredentials: false,
 		}),
 		NestCacheModule,
 		NestCloudinaryModule,

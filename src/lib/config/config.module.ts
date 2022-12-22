@@ -1,8 +1,17 @@
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
-import { app, cloudinary, database, googleOauth, jwt, mail, rabbit, redis } from "./configs";
-import { facebookOauth } from "./configs/facebook.config";
+import {
+	app,
+	cloudinary,
+	database,
+	googleOauth,
+	facebookOauth,
+	jwt,
+	mail,
+	rabbit,
+	redis,
+} from "./configs";
 import { validationSchema } from "./validate.config";
 
 @Global()
@@ -17,6 +26,7 @@ import { validationSchema } from "./validate.config";
 			validationSchema: validationSchema,
 			validationOptions: {
 				abortEarly: true,
+				debug: true,
 			},
 		}),
 	],
