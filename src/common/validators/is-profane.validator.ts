@@ -5,15 +5,16 @@ import {
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
 } from "class-validator";
-import { profanity } from "@2toad/profanity";
+import unprofane from "unprofane";
 
 @ValidatorConstraint({ async: true })
 class IsProfaneConstraint implements ValidatorConstraintInterface {
 	async validate(value: any | Array<any>) {
+		const isProfane = new unprofane({lang : 'all'});
     if(Array.isArray(value)){
-      return value.some((v) => profanity.exists(v));
+      return value.some((v) => isProfane.check(v));
     }
-		return profanity.exists(value);
+		return isProfane.check(value);
 	}
 
 	defaultMessage(arguments_: ValidationArguments) {
