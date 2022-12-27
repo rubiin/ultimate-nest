@@ -12,6 +12,7 @@ import { JwtModule } from "@nestjs/jwt";
 				secret: configService.get("jwt.secret"),
 				signOptions: {
 					expiresIn: configService.get("jwt.accessExpiry"),
+					algorithm: "HS256",
 				},
 			}),
 			inject: [ConfigService],

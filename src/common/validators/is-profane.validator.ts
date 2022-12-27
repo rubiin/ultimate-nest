@@ -10,10 +10,10 @@ import unprofane from "unprofane";
 @ValidatorConstraint({ async: true })
 class IsProfaneConstraint implements ValidatorConstraintInterface {
 	async validate(value: any | Array<any>) {
-		const isProfane = new unprofane({lang : 'all'});
-    if(Array.isArray(value)){
-      return value.some((v) => isProfane.check(v));
-    }
+		const isProfane = new unprofane({ lang: "all" });
+		if (Array.isArray(value)) {
+			return value.some(v => isProfane.check(v));
+		}
 		return isProfane.check(value);
 	}
 

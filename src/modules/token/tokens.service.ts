@@ -42,7 +42,7 @@ export class TokensService {
 			subject: String(user.id),
 		};
 
-		return from(this.jwt.signAsync({ ...pick(user, ["id", "idx", "email"]) }, options));
+		return from(this.jwt.signAsync({ ...pick(user, ["idx", "email"]) }, options));
 	}
 
 	/**
