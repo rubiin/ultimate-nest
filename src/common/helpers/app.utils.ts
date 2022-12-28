@@ -2,9 +2,22 @@ import fs from "node:fs";
 
 import { INestApplication, Logger } from "@nestjs/common";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
-import * as swaggerStats from "swagger-stats";
+import swaggerStats from "swagger-stats";
 
 export const AppUtils = {
+
+/* A function that is called when the process receives a signal. */
+
+	gracefulShutdown(app: INestApplication, code: string): void {
+		const logger: Logger = new Logger("Graceful Shutdown");
+		setTimeout(() => process.exit(1), 5000);
+		logger.verbose(`signal received with code ${code}`);
+		logger.log("Closing http server...");
+		app.close().then(() => {
+			logger.log("Http server closed.");
+			process.exit(0);
+		});
+	},
 	/**
 	 *
 	 *
@@ -15,17 +28,13 @@ export const AppUtils = {
 
 	killAppWithGrace: (app: INestApplication) => {
 		process.on("SIGINT", async () => {
-			setTimeout(() => process.exit(1), 5000);
-			await app.close();
-			process.exit(0);
+			AppUtils.gracefulShutdown(app, "SIGINT");
 		});
 
 		// kill -15
 
 		process.on("SIGTERM", async () => {
-			setTimeout(() => process.exit(1), 5000);
-			await app.close();
-			process.exit(0);
+			AppUtils.gracefulShutdown(app, "SIGTERM");
 		});
 	},
 	setupSwagger: (app: INestApplication, { user, pass }: { user: string; pass: string }): void => {

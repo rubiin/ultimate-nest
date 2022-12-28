@@ -31,6 +31,7 @@ async function bootstrap() {
 	app.use(helmet());
 	app.enableCors({
 		credentials: true,
+		maxAge: 3600,
 		origin: "*", // for development use only
 	});
 	// =====================================================
