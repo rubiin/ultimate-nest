@@ -14,6 +14,10 @@ class IsDateInFormatConstraint implements ValidatorConstraintInterface {
 	async validate(value: any | Array<any>, arguments_: ValidationArguments) {
 		const [format] = arguments_.constraints;
 
+		if (Array.isArray(value)) {
+			return value.some(v => isMatch(v, format));
+		}
+
 		return isMatch(value, format);
 	}
 

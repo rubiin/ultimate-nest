@@ -82,7 +82,7 @@ specifiers:
   jsdom: ^20.0.3
   lint-staged: ^13.1.0
   nanoid: ^4.0.0
-  nestjs-i18n: ^10.2.1
+  nestjs-i18n: ^10.2.3
   nestjs-minio: ^2.3.0
   nestjs-pino: ^3.1.1
   nodemailer: ^6.8.0
@@ -157,7 +157,7 @@ dependencies:
   joi: 17.7.0
   jsdom: 20.0.3
   nanoid: 4.0.0
-  nestjs-i18n: 10.2.1_h2lpa5ubie3gihnjyboxiixjsy
+  nestjs-i18n: 10.2.3_h2lpa5ubie3gihnjyboxiixjsy
   nestjs-minio: 2.3.0_hjcqpoaebdr7gdo5hgc22hthbe
   nestjs-pino: 3.1.1_k7wt3lqunl6v7sj6psdgp67dpe
   nodemailer: 6.8.0
@@ -8726,13 +8726,13 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /nestjs-i18n/10.2.1_h2lpa5ubie3gihnjyboxiixjsy:
-    resolution: {integrity: sha512-FIdA8jiR4ZO3kh7pKUsFzvkf3j6VAMRCk8BeS+rx7bYtI5WqOp/IXhyyarwp6gzz/kK4s5XWalkE9DutGuDdbA==}
+  /nestjs-i18n/10.2.3_h2lpa5ubie3gihnjyboxiixjsy:
+    resolution: {integrity: sha512-6vPc4sfw8Ia969sqyGgiw0v5tsISFSxLiYlriCwXK6S8P4GbzRoRSjGISq2kj1Qtbmajgu6TzNHac0LqhOym3w==}
     engines: {node: '>=16'}
     peerDependencies:
       '@nestjs/common': '*'
       '@nestjs/core': '*'
-      class-validator: ~0.13
+      class-validator: '*'
       rxjs: '*'
     dependencies:
       '@nestjs/common': 9.2.1_uisgqpdqsnlcxoqiidaahrhoi4
