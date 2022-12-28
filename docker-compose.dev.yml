@@ -14,6 +14,7 @@ services:
             dockerfile: ./docker/dev.Dockerfile
         image: nestify
         depends_on:
+            - traefik
             - redis
             - rabbitmq
         restart: unless-stopped
@@ -28,8 +29,32 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
 
+ traefik:
+    image: traefik:v2.9
+    container_name: "traefik"
+    command:
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--api.debug=true"
+      - "--providers.docker=true"
+      - "--log.LEVEL=DEBUG"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--providers.docker.exposedbydefault=false"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.email=hello@paularah.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "443:443"
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
     redis:
-        image: redis:7.0.4-alpine
+        image: redis:7.0.7-alpine
         restart: always
         ports:
             - "6379:6379"
@@ -41,7 +66,7 @@ services:
 
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3.8-management-alpine
+        image: rabbitmq:3.11.5-management-alpine
         networks:
             - nestify-network
         environment:

@@ -26,11 +26,11 @@ async function bootstrap() {
 	// security
 	// ======================================================
 
-	app.enableCors();
 	app.use(compression());
 	app.enable("trust proxy");
 	app.use(helmet());
 	app.enableCors({
+		credentials: true,
 		origin: "*", // for development use only
 	});
 	// =====================================================
@@ -43,13 +43,14 @@ async function bootstrap() {
 		new ValidationPipe({
 			whitelist: true,
 			transform: true,
+			forbidUnknownValues: false,
 			exceptionFactory: i18nValidationErrorFactory,
 		}),
 	);
 
 	app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
 	app.setGlobalPrefix(globalPrefix);
-	app.useWebSocketAdapter(new SocketIOAdapter(app, configService));
+	app.useWebSocketAdapter(new SocketIOAdapter(app));
 
 	// =========================================================
 	// configureNestSwagger

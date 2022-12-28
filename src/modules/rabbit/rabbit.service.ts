@@ -2,6 +2,17 @@ import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { Injectable, Logger } from "@nestjs/common";
 
+
+interface IMailPayload {
+	template: string;
+	replacements: Record<string, string>;
+	to: string;
+	subject: string;
+	from: string;
+
+
+}
+
 @Injectable()
 export class RabbitService {
 	private logger = new Logger(RabbitService.name);
@@ -13,7 +24,7 @@ export class RabbitService {
 		routingKey: "send-mail",
 		queue: "mail-queue",
 	})
-	public async sendMail(payload: Record<string, any>) {
+	public async sendMail(payload: IMailPayload) {
 		await this.mailService.sendMail({
 			template: payload.template,
 			replacements: payload.replacements,

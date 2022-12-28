@@ -16,6 +16,10 @@
 		"baseUrl": "src",
 		"incremental": true,
 		"skipLibCheck": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
 		"paths": {
 			"@common/*": ["./common/*"],
 			"@modules/*": ["./modules/*"],
@@ -24,12 +28,5 @@
 			"@mocks": ["./_mocks_/index"]
 		}
 	},
-	"include": ["test/**/*", "src/**/*"],
-	"strict": true,
-	"noUnusedLocals": true,
-	"noUnusedParameters": true,
-	"noImplicitReturns": true,
-	"noFallthroughCasesInSwitch": true,
-	"noUncheckedIndexedAccess": true,
-	"noPropertyAccessFromIndexSignature": true
+	"include": ["test/**/*", "src/**/*"]
 }
