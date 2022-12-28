@@ -2,15 +2,12 @@ import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { Injectable, Logger } from "@nestjs/common";
 
-
 interface IMailPayload {
 	template: string;
 	replacements: Record<string, string>;
 	to: string;
 	subject: string;
 	from: string;
-
-
 }
 
 @Injectable()
