@@ -6,7 +6,7 @@ import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
-import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
+import { forkJoin, from, map, Observable, of, switchMap, zip } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
@@ -29,19 +29,25 @@ export class PostService {
 	 * offset.
 	 * @returns An observable of a pagination object.
 	 */
-	getMany({ page, order, limit, sort, offset }: PageOptionsDto): Observable<Pagination<Post>> {
-		return from(
-			this.postRepository.findAndPaginate(
-				{ isObsolete: false },
-				{
-					limit,
-					offset,
-					orderBy: { [sort]: order.toLowerCase() },
-				},
-			),
-		).pipe(
-			map(({ results, total }) => {
-				return createPaginationObject<Post>(results, total, page, limit, "posts");
+	getMany({ page, order, limit, sort, offset, search }: PageOptionsDto): Observable<Pagination<Post>> {
+		const qb = this.postRepository.createQueryBuilder("p").select("p.*");
+
+		qb.where({ isObsolete: false, isActive: true });
+
+		if(search){
+ 			qb.andWhere({ title: { $ilike: `%${search}%` }});
+		}
+
+		qb.orderBy({ [sort]: order.toLowerCase() })
+			.limit(limit)
+			.offset(offset);
+
+		const result$ = from(qb.getResult());
+		const total$ = from(qb.clone().count("id", true).execute("get"));
+
+		return zip(result$, total$).pipe(
+			map(([results, total]) => {
+				return createPaginationObject<Post>(results, total.count, page, limit, "posts");
 			}),
 		);
 	}

@@ -71,7 +71,7 @@ describe("AuthService", () => {
 
 	it("should logout", () => {
 		mockTokenService.decodeRefreshToken.mockImplementation(() =>
-			Promise.resolve({
+			of({
 				jti: 1,
 				sub: 1,
 			}),

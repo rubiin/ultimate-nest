@@ -7,5 +7,5 @@ export class CreateCommentDto {
 	 */
 
 	@IsStringField()
-	readonly body: string;
+	readonly body!: string;
 }

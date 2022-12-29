@@ -11,7 +11,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { capitalize } from "helper-fns";
 import { I18nService } from "nestjs-i18n";
-import { from, map, Observable, switchMap } from "rxjs";
+import { from, map, Observable, switchMap, zip } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
@@ -32,19 +32,25 @@ export class UserService {
 	 * @param {PageOptionsDto}  - PageOptionsDto - This is a DTO that contains the following properties:
 	 * @returns An observable of a pagination object.
 	 */
-	getMany({ limit, offset, order, sort, page }: PageOptionsDto): Observable<Pagination<User>> {
-		return from(
-			this.userRepository.findAndPaginate(
-				{ isObsolete: false, isActive: true },
-				{
-					limit,
-					offset,
-					orderBy: { [sort]: order.toLowerCase() },
-				},
-			),
-		).pipe(
-			map(({ results, total }) => {
-				return createPaginationObject<User>(results, total, page, limit, "users");
+	getMany({ limit, offset, order, sort, page, search }: PageOptionsDto): Observable<Pagination<User>> {
+		const qb = this.userRepository.createQueryBuilder("u").select("u.*");
+
+		if(search){
+			qb.andWhere({ firstName: { $ilike: `%${search}%` }});
+	 }
+
+
+		qb.orderBy({ [sort]: order.toLowerCase() })
+			.limit(limit)
+			.offset(offset);
+
+		const result$ = from(qb.getResult());
+
+		const total$ = from(qb.clone().count("id", true).execute("get"));
+
+		return zip(result$, total$).pipe(
+			map(([results, total]) => {
+				return createPaginationObject<User>(results, total.count, page, limit, "users");
 			}),
 		);
 	}
@@ -94,9 +100,9 @@ export class UserService {
 			user.avatar = url;
 
 			await em.persistAndFlush(user);
-			const link = "www.google.com";
+			const link = this.configService.get("app.clientUrl");
 
-			await this.amqpConnection.publish(
+			this.amqpConnection.publish(
 				this.configService.get<string>("rabbit.exchange"),
 				"send-mail",
 				{
