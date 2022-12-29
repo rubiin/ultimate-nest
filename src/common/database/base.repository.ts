@@ -1,4 +1,5 @@
-import { EntityManager, EntityRepository, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
+import { EntityManager, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
+import { EntityRepository } from "@mikro-orm/postgresql";
 
 import { BaseEntity } from "./base-entity.entity";
 
@@ -22,7 +23,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 *  soft remove
 	 *
 	 * @param {T} entity
-	 * @return {*}  {Promise<void>}
+	 * @return {*}  {Promise<T>}
 	 * @memberof BaseRepositroy
 	 */
 	async softRemoveAndFlush(entity: T): Promise<T> {

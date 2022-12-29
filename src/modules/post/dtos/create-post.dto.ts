@@ -10,7 +10,7 @@ export class CreatePostDto {
 
 	@IsStringField()
 	@IsUnique(() => Post, "title")
-	title: string;
+	title!: string;
 
 	/**
 	 * Description of post
@@ -18,7 +18,7 @@ export class CreatePostDto {
 	 */
 
 	@IsStringField()
-	description: string;
+	description!: string;
 
 	/**
 	 * Content of post
@@ -26,7 +26,7 @@ export class CreatePostDto {
 	 */
 
 	@IsStringField()
-	content: string;
+	content!: string;
 
 	/**
 	 * Tags of post
@@ -34,5 +34,5 @@ export class CreatePostDto {
 	 */
 
 	@IsStringField({ each: true })
-	tags: string[];
+	tags!: string[];
 }
