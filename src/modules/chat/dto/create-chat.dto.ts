@@ -1,3 +1,3 @@
 export class CreateChatDto {
-	message: string;
+	message!: string;
 }

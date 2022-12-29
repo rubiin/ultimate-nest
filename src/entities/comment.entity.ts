@@ -6,13 +6,13 @@ import { Post, User } from "./index";
 @Entity()
 export class Comment extends BaseEntity {
 	@Property()
-	body: string;
+	body!: string;
 
 	@ManyToOne()
-	post: Post;
+	post!: Post;
 
 	@ManyToOne()
-	author: User;
+	author!: User;
 
 	constructor(partial?: Partial<Comment>) {
 		super();

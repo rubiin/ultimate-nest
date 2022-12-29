@@ -7,7 +7,7 @@ import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
 import { I18nService } from "nestjs-i18n";
-import { from, lastValueFrom, map, Observable, switchMap } from "rxjs";
+import { catchError, from, lastValueFrom, map, Observable, switchMap } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
@@ -72,37 +72,43 @@ export class TokensService {
 	 * @param {string} encoded - string - The encoded refresh token
 	 * @returns An object with a user and a token.
 	 */
-	async resolveRefreshToken(encoded: string): Promise<{ user: User; token: RefreshToken }> {
-		const payload = await this.decodeRefreshToken(encoded);
-		const token = await lastValueFrom(this.getStoredTokenFromRefreshTokenPayload(payload));
+	resolveRefreshToken(encoded: string): Observable<{ user: User; token: RefreshToken }> {
+		return this.decodeRefreshToken(encoded).pipe(
+			switchMap(payload => {
+				return this.getStoredTokenFromRefreshTokenPayload(payload).pipe(
+					switchMap(token => {
+						if (!token) {
+							throw new UnauthorizedException(
+								this.i18nService.t("exception.refreshToken", {
+									args: { error: "not found" },
+								}),
+							);
+						}
 
-		if (!token) {
-			throw new UnauthorizedException(
-				this.i18nService.t("exception.refreshToken", {
-					args: { error: "not found" },
-				}),
-			);
-		}
+						if (token.isRevoked) {
+							throw new UnauthorizedException(
+								this.i18nService.t("exception.refreshToken", {
+									args: { error: "revoked" },
+								}),
+							);
+						}
+						return this.getUserFromRefreshTokenPayload(payload).pipe(
+							map(user => {
+								if (!user) {
+									throw new UnauthorizedException(
+										this.i18nService.t("exception.refreshToken", {
+											args: { error: "malformed" },
+										}),
+									);
+								}
 
-		if (token.isRevoked) {
-			throw new UnauthorizedException(
-				this.i18nService.t("exception.refreshToken", {
-					args: { error: "revoked" },
-				}),
-			);
-		}
-
-		const user = await lastValueFrom(this.getUserFromRefreshTokenPayload(payload));
-
-		if (!user) {
-			throw new UnauthorizedException(
-				this.i18nService.t("exception.refreshToken", {
-					args: { error: "malformed" },
-				}),
-			);
-		}
-
-		return { user, token };
+								return { user, token };
+							}),
+						);
+					}),
+				);
+			}),
+		);
 	}
 
 	/**
@@ -110,14 +116,16 @@ export class TokensService {
 	 * @param {string} refresh - string - The refresh token that was sent to the client.
 	 * @returns { token: string; user: User }
 	 */
-	async createAccessTokenFromRefreshToken(
-		refresh: string,
-	): Promise<{ token: string; user: User }> {
-		const { user } = await this.resolveRefreshToken(refresh);
-
-		const token = await lastValueFrom(this.generateAccessToken(user));
-
-		return { user, token };
+	createAccessTokenFromRefreshToken(refresh: string): Observable<{ token: string; user: User }> {
+		return this.resolveRefreshToken(refresh).pipe(
+			switchMap(({ user }) => {
+				return this.generateAccessToken(user).pipe(
+					map(token => {
+						return { token, user };
+					}),
+				);
+			}),
+		);
 	}
 
 	/**
@@ -125,25 +133,26 @@ export class TokensService {
 	 * @param {string} token - The refresh token to decode.
 	 * @returns The payload of the token.
 	 */
-	async decodeRefreshToken(token: string): Promise<RefreshTokenPayload> {
-		try {
-			return this.jwt.verify(token);
-		} catch (error_) {
-			const error =
-				error_ instanceof TokenExpiredError
-					? new UnauthorizedException(
-							this.i18nService.t("exception.refreshToken", {
-								args: { error: "expired" },
-							}),
-					  )
-					: new UnauthorizedException(
-							this.i18nService.t("exception.refreshToken", {
-								args: { error: "malformed" },
-							}),
-					  );
+	decodeRefreshToken(token: string): Observable<RefreshTokenPayload> {
+		return from(this.jwt.verifyAsync(token)).pipe(
+			map(payload => payload),
+			catchError(err => {
+				const error =
+					err instanceof TokenExpiredError
+						? new UnauthorizedException(
+								this.i18nService.t("exception.refreshToken", {
+									args: { error: "expired" },
+								}),
+						  )
+						: new UnauthorizedException(
+								this.i18nService.t("exception.refreshToken", {
+									args: { error: "malformed" },
+								}),
+						  );
 
-			throw error;
-		}
+				throw error;
+			}),
+		);
 	}
 
 	/**
