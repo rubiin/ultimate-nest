@@ -10,7 +10,7 @@ import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
-import { of } from "rxjs";
+import { from, of } from "rxjs";
 
 import { AuthService } from "./auth.service";
 
@@ -71,7 +71,7 @@ describe("AuthService", () => {
 
 	it("should logout", () => {
 		mockTokenService.decodeRefreshToken.mockImplementation(() =>
-			Promise.resolve({
+			of({
 				jti: 1,
 				sub: 1,
 			}),

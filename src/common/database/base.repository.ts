@@ -22,7 +22,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 *  soft remove
 	 *
 	 * @param {T} entity
-	 * @return {*}  {Promise<void>}
+	 * @return {*}  {Promise<T>}
 	 * @memberof BaseRepositroy
 	 */
 	async softRemoveAndFlush(entity: T): Promise<T> {

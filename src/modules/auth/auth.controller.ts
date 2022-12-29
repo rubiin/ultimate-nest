@@ -147,12 +147,10 @@ export class AuthController {
 
 	@ApiOperation({ summary: "Refresh token" })
 	@Post("token/refresh")
-	public async refresh(@Body() body: RefreshTokenDto): Promise<any> {
-		const { token } = await this.tokenService.createAccessTokenFromRefreshToken(
-			body.refreshToken,
-		);
-
-		return token;
+	refresh(@Body() body: RefreshTokenDto): Observable<any> {
+		return this.tokenService
+			.createAccessTokenFromRefreshToken(body.refreshToken)
+			.pipe(map(token => ({ token })));
 	}
 
 	@ApiOperation({ summary: "Logout user" })

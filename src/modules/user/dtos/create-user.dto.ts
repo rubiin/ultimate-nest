@@ -15,7 +15,7 @@ export class CreateUserDto {
 
 	@IsStringField()
 	@IsUnique(() => User, "username")
-	username: string;
+	username!: string;
 
 	/**
 	 * Firstname of user
@@ -23,7 +23,7 @@ export class CreateUserDto {
 	 */
 
 	@IsStringField()
-	firstName: string;
+	firstName!: string;
 
 	/**
 	 * Lastname of user
@@ -31,7 +31,7 @@ export class CreateUserDto {
 	 */
 
 	@IsStringField()
-	lastName: string;
+	lastName!: string;
 
 	/**
 	 * Indicates the profile picture of user
@@ -53,7 +53,7 @@ export class CreateUserDto {
 			}),
 		},
 	)
-	email: string;
+	email!: string;
 
 	/**
 	 * Password of user
@@ -62,12 +62,12 @@ export class CreateUserDto {
 
 	@IsStringField()
 	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
-	password: string;
+	password!: string;
 
 	/**
 	 * Roles of user
 	 * @example ["ADMIN"]
 	 */
 	@IsEnumField(Roles, { each: true })
-	roles: Roles[];
+	roles!: Roles[];
 }

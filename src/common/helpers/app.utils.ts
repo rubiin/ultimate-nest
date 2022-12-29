@@ -5,8 +5,7 @@ import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import swaggerStats from "swagger-stats";
 
 export const AppUtils = {
-
-/* A function that is called when the process receives a signal. */
+	/* A function that is called when the process receives a signal. */
 
 	gracefulShutdown(app: INestApplication, code: string): void {
 		const logger: Logger = new Logger("Graceful Shutdown");

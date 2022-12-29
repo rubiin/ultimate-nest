@@ -96,7 +96,7 @@ export class UserService {
 			await em.persistAndFlush(user);
 			const link = "www.google.com";
 
-			await this.amqpConnection.publish(
+			this.amqpConnection.publish(
 				this.configService.get<string>("rabbit.exchange"),
 				"send-mail",
 				{
@@ -108,7 +108,7 @@ export class UserService {
 					to: user.email,
 					subject: "Welcome onboard",
 					from: this.configService.get("mail.senderEmail"),
-				},
+				}
 			);
 		});
 

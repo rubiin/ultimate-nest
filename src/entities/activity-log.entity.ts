@@ -32,5 +32,5 @@ export class ActivityLog extends BaseEntity {
 	loginStatus = true;
 
 	@ManyToOne()
-	user: User;
+	user!: User;
 }
