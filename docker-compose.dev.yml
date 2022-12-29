@@ -19,6 +19,8 @@ services:
             - rabbitmq
         restart: unless-stopped
         command: npm run start:dev
+        labels:
+            - "traefik.http.routers.nestify.rule=Host(`api.example.com`)"
         ports:
             - "8000:8000"
         stdin_open: true
@@ -40,11 +42,8 @@ services:
       - "--log.LEVEL=DEBUG"
       - "--entryPoints.web.address=:80"
       - "--entryPoints.websecure.address=:443"
-      - "--providers.docker.exposedbydefault=false"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.myresolver.acme.email=hello@paularah.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    networks:
+      - nestify-network
     ports:
       - "443:443"
       - "80:80"
