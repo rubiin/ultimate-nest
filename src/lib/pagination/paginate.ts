@@ -17,7 +17,7 @@ const logger = new Logger(Pagination.name);
  * @returns A function that takes in an array of items and an options object and returns a promise that
  * resolves to a pagination object.
  */
-export async function paginate<T>(items: T[], options: IPaginationOptions): Promise<Pagination<T>> {
+export function paginate<T>(items: T[], options: IPaginationOptions): Pagination<T> {
 	const [page, limit, route] = resolveOptions(options);
 
 	if (page < 1) {
