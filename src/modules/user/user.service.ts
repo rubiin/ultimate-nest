@@ -32,13 +32,19 @@ export class UserService {
 	 * @param {PageOptionsDto}  - PageOptionsDto - This is a DTO that contains the following properties:
 	 * @returns An observable of a pagination object.
 	 */
-	getMany({ limit, offset, order, sort, page, search }: PageOptionsDto): Observable<Pagination<User>> {
+	getMany({
+		limit,
+		offset,
+		order,
+		sort,
+		page,
+		search,
+	}: PageOptionsDto): Observable<Pagination<User>> {
 		const qb = this.userRepository.createQueryBuilder("u").select("u.*");
 
-		if(search){
-			qb.andWhere({ firstName: { $ilike: `%${search}%` }});
-	 }
-
+		if (search) {
+			qb.andWhere({ firstName: { $ilike: `%${search}%` } });
+		}
 
 		qb.orderBy({ [sort]: order.toLowerCase() })
 			.limit(limit)

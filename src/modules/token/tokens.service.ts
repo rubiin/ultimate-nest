@@ -13,23 +13,18 @@ import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 @Injectable()
 export class TokensService {
-	private readonly tokens: RefreshTokensRepository;
-	private readonly jwt: JwtService;
 	private readonly BASE_OPTIONS: JwtSignOptions = {
 		issuer: "nestify",
 		audience: "nestify",
 	};
 
 	constructor(
-		tokens: RefreshTokensRepository,
-		jwt: JwtService,
 		@InjectRepository(User)
 		private readonly userRepository: EntityRepository<User>,
 		private readonly i18nService: I18nService,
-	) {
-		this.tokens = tokens;
-		this.jwt = jwt;
-	}
+		private readonly refreshTokenRepo: RefreshTokensRepository,
+		private readonly jwt: JwtService,
+	) {}
 
 	/**
 	 * It takes a user object, and returns an observable of a string
@@ -52,7 +47,7 @@ export class TokensService {
 	 * @returns A string
 	 */
 	generateRefreshToken(user: User, expiresIn: number): Observable<string> {
-		return this.tokens.createRefreshToken(user, expiresIn).pipe(
+		return this.refreshTokenRepo.createRefreshToken(user, expiresIn).pipe(
 			switchMap(token => {
 				const options: JwtSignOptions = {
 					...this.BASE_OPTIONS,
@@ -93,7 +88,7 @@ export class TokensService {
 							);
 						}
 
-return this.getUserFromRefreshTokenPayload(payload).pipe(
+						return this.getUserFromRefreshTokenPayload(payload).pipe(
 							map(user => {
 								if (!user) {
 									throw new UnauthorizedException(
@@ -162,7 +157,7 @@ return this.getUserFromRefreshTokenPayload(payload).pipe(
 	 * @returns The user object.
 	 */
 	deleteRefreshTokenForUser(user: User): Observable<User> {
-		return this.tokens.deleteTokensForUser(user).pipe(
+		return this.refreshTokenRepo.deleteTokensForUser(user).pipe(
 			map(() => {
 				return user;
 			}),
@@ -186,7 +181,7 @@ return this.getUserFromRefreshTokenPayload(payload).pipe(
 			);
 		}
 
-		return this.tokens.deleteToken(user, tokenId).pipe(
+		return this.refreshTokenRepo.deleteToken(user, tokenId).pipe(
 			map(() => {
 				return user;
 			}),
@@ -236,6 +231,6 @@ return this.getUserFromRefreshTokenPayload(payload).pipe(
 			);
 		}
 
-		return from(this.tokens.findTokenByIdx(tokenId));
+		return from(this.refreshTokenRepo.findTokenByIdx(tokenId));
 	}
 }
