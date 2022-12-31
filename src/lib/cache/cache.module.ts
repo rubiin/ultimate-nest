@@ -16,6 +16,7 @@ import { CacheService } from "./cache.service";
 				ttl: configService.get<number>("redis.ttl", 10),
 				database: 0,
 				isGlobal: true,
+				no_ready_check: true,
 				isolationPoolOptions: {
 					max: 10,
 					min: 1,

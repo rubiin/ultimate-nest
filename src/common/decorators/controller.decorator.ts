@@ -1,4 +1,4 @@
-import { applyDecorators, CacheInterceptor, Controller, UseInterceptors } from "@nestjs/common";
+import { applyDecorators, Controller } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { capitalize } from "helper-fns";
 
@@ -8,7 +8,6 @@ export function GenericController(name: string, secured = true) {
 	const decsToApply = [
 		ApiTags(capitalize(name)),
 		Controller(name),
-		UseInterceptors(CacheInterceptor),
 	];
 
 	if (secured) {
