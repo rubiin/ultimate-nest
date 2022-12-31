@@ -1,6 +1,3 @@
-export interface CloudinaryModuleOptions {
-	cloudName: string;
-	apiKey: string;
-	apiSecret: string;
-	shrinkImage?: boolean;
-}
+import type { ConfigOptions } from "cloudinary";
+
+export type CloudinaryModuleOptions = ConfigOptions

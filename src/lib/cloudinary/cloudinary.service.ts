@@ -13,6 +13,12 @@ import sharp from "sharp";
 import { MODULE_OPTIONS_TOKEN } from "./cloudinary.module-definition";
 import { CloudinaryModuleOptions } from "./cloudinary.options";
 
+interface ISharpInputOptions{
+	width?: number;
+	height?: number;
+	options?: sharp.SharpOptions;
+}
+
 @Injectable()
 export class CloudinaryService {
 	private logger = new Logger(CloudinaryService.name);
@@ -35,6 +41,7 @@ export class CloudinaryService {
 	async uploadFile(
 		file: Express.Multer.File,
 		options?: UploadApiOptions,
+		sharpOptions?: ISharpInputOptions,
 	): Promise<UploadApiResponse | UploadApiErrorResponse> {
 		return new Promise(async (resolve, reject) => {
 			cloudinary.config({
@@ -74,8 +81,10 @@ export class CloudinaryService {
 
 			const stream: Readable = new Readable();
 
-			if (this.options.shrinkImage && images.includes(file.mimetype)) {
-				const shrinkedImage = await sharp(file.buffer).resize(800).toBuffer();
+			if (sharpOptions && images.includes(file.mimetype)) {
+
+				const options = {width: 800, ...sharpOptions}
+				const shrinkedImage = await sharp(file.buffer).resize(options).toBuffer();
 
 				stream.push(shrinkedImage);
 			} else {

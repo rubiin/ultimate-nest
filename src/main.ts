@@ -84,10 +84,10 @@ async function bootstrap() {
 
 	useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  if (module.hot) {
-    module.hot.accept();
-    module.hot.dispose(() => app.close());
-  }
+	if (module.hot) {
+		module.hot.accept();
+		module.hot.dispose(() => app.close());
+	}
 
 	await app.listen(port);
 
