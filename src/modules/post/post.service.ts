@@ -44,7 +44,7 @@ export class PostService {
 		if (search) {
 			qb.andWhere({ title: { $ilike: `%${search}%` } });
 		}
-		
+
 		qb.orderBy({ [sort]: order.toLowerCase() })
 			.limit(limit)
 			.offset(offset);

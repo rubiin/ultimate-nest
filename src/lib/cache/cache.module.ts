@@ -2,7 +2,8 @@ import { NestConfigModule } from "@lib/config/config.module";
 import { CacheModule, Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import redisStore from "cache-manager-redis-store";
-import type { ClientOpts } from 'redis';
+import type { ClientOpts } from "redis";
+
 import { CacheService } from "./cache.service";
 
 @Module({
@@ -15,10 +16,10 @@ import { CacheService } from "./cache.service";
 				ttl: configService.get<number>("redis.ttl", 10),
 				database: 0,
 				isGlobal: true,
-				isolationPoolOptions :{
+				isolationPoolOptions: {
 					max: 10,
 					min: 1,
-				}
+				},
 			}),
 			inject: [ConfigService],
 		}),
