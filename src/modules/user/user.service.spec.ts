@@ -2,7 +2,7 @@ import { BaseRepository } from "@common/database/base.repository";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
-import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
+import { CloudinaryService } from "nestjs-cloudinary";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { mockedUser, mockFile, query } from "@mocks";

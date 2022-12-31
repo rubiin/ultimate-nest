@@ -3,7 +3,7 @@ import { BaseRepository } from "@common/database/base.repository";
 import { EmailTemplateEnum } from "@common/types/enums/misc.enum";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
+import { CloudinaryService } from "nestjs-cloudinary";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
