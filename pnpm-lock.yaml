@@ -82,6 +82,7 @@ specifiers:
   jsdom: ^20.0.3
   lint-staged: ^13.1.0
   nanoid: ^4.0.0
+  nestjs-cloudinary: ^1.0.2
   nestjs-i18n: ^10.2.3
   nestjs-minio: ^2.3.0
   nestjs-pino: ^3.1.1
@@ -95,7 +96,7 @@ specifiers:
   poolifier: ^2.3.7
   prettier: ^2.8.1
   preview-email: ^3.0.7
-  prom-client: ^14.1.0
+  prom-client: ^14.1.1
   pug: ^3.0.2
   reflect-metadata: 0.1.13
   rxjs: ^7.8.0
@@ -157,6 +158,7 @@ dependencies:
   joi: 17.7.0
   jsdom: 20.0.3
   nanoid: 4.0.0
+  nestjs-cloudinary: 1.0.2_@nestjs+common@9.2.1
   nestjs-i18n: 10.2.3_h2lpa5ubie3gihnjyboxiixjsy
   nestjs-minio: 2.3.0_hjcqpoaebdr7gdo5hgc22hthbe
   nestjs-pino: 3.1.1_k7wt3lqunl6v7sj6psdgp67dpe
@@ -169,12 +171,12 @@ dependencies:
   pino-pretty: 9.1.1
   poolifier: 2.3.7
   preview-email: 3.0.7
-  prom-client: 14.1.0
+  prom-client: 14.1.1
   pug: 3.0.2
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
   sharp: 0.31.3
-  swagger-stats: 0.99.4_prom-client@14.1.0
+  swagger-stats: 0.99.4_prom-client@14.1.1
   twilio: 3.84.0
   unprofane: 1.0.3
   url-minify: 2.8.4
@@ -8726,6 +8728,18 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
+  /nestjs-cloudinary/1.0.2_@nestjs+common@9.2.1:
+    resolution: {integrity: sha512-28ABlNXuh58XzW1E3UaInjXJlbf6RS7cRcwAMhCFL1RPWQgKLjGdDS9hooO64ciTM2CSuxx581PnrC8LyOwQTg==}
+    peerDependencies:
+      '@nestjs/common': '>7.0.0'
+    dependencies:
+      '@nestjs/common': 9.2.1_uisgqpdqsnlcxoqiidaahrhoi4
+      cloudinary: 1.33.0
+      sharp: 0.31.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /nestjs-i18n/10.2.3_h2lpa5ubie3gihnjyboxiixjsy:
     resolution: {integrity: sha512-6vPc4sfw8Ia969sqyGgiw0v5tsISFSxLiYlriCwXK6S8P4GbzRoRSjGISq2kj1Qtbmajgu6TzNHac0LqhOym3w==}
     engines: {node: '>=16'}
@@ -9548,8 +9562,8 @@ packages:
     engines: {node: '>= 0.6.0'}
     dev: false
 
-  /prom-client/14.1.0:
-    resolution: {integrity: sha512-iFWCchQmi4170omLpFXbzz62SQTmPhtBL35v0qGEVRHKcqIeiexaoYeP0vfZTujxEq3tA87iqOdRbC9svS1B9A==}
+  /prom-client/14.1.1:
+    resolution: {integrity: sha512-hFU32q7UZQ59bVJQGUtm3I2PrJ3gWvoCkilX9sF165ks1qflhugVCeK+S1JjJYHvyt3o5kj68+q3bchormjnzw==}
     engines: {node: '>=10'}
     dependencies:
       tdigest: 0.1.2
@@ -10809,7 +10823,7 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /swagger-stats/0.99.4_prom-client@14.1.0:
+  /swagger-stats/0.99.4_prom-client@14.1.1:
     resolution: {integrity: sha512-Uki9JlNm0fp3dPq2O+BeGW+eGxtcskLnAifhKK4EDA1Nc3INnONdMwkgIQFUh2/p2LSY8uis3wdC+pCAdycbqw==}
     peerDependencies:
       prom-client: '>= 10 <= 14'
@@ -10819,7 +10833,7 @@ packages:
       debug: 4.3.4
       moment: 2.29.4
       path-to-regexp: 6.2.1
-      prom-client: 14.1.0
+      prom-client: 14.1.1
       qs: 6.11.0
       request: 2.88.2
       send: 0.18.0
