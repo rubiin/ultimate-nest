@@ -7,3 +7,4 @@ export * from "./minio.config";
 export * from "./oauth2.config";
 export * from "./rabbit.config";
 export * from "./redis.config";
+export * from "./throttle.config";
