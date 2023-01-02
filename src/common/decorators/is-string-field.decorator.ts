@@ -10,7 +10,7 @@ interface IsStringFieldOptions {
 }
 
 export function IsStringField(ops?: IsStringFieldOptions) {
-	const options = { min: 3, max: 500, required: true, each: false, ...ops };
+	const options = { min: 2, max: 500, required: true, each: false, ...ops };
 	const decoratorsToApply = [
 		IsString({
 			message: i18nValidationMessage("validation.isDataType", {

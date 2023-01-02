@@ -22,6 +22,8 @@ import { UserModule } from "@modules/user/user.module";
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
+import { ThrottlerModule } from "@nestjs/throttler";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
 	imports: [
@@ -51,6 +53,14 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 			serveStaticOptions: {
 				maxAge: 86_400, // 1 day
 			},
+		}),
+		ThrottlerModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: (config: ConfigService) => ({
+				ttl: config.get("throttle.ttl"),
+				limit: config.get("throttle.limit"),
+			}),
 		}),
 	],
 	providers: [IsUniqueConstraint],
