@@ -60,6 +60,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 			useFactory: (config: ConfigService) => ({
 				ttl: config.get("throttle.ttl"),
 				limit: config.get("throttle.limit"),
+				ignoreUserAgents: [/nestify/i],
 			}),
 		}),
 	],
