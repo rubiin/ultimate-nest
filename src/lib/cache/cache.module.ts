@@ -1,27 +1,30 @@
 import { NestConfigModule } from "@lib/config/config.module";
 import { CacheModule, Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import redisStore from "cache-manager-redis-store";
-import type { ClientOpts } from "redis";
+import { redisStore } from "cache-manager-redis-store";
+import type { RedisClientOptions } from "redis";
 
 import { CacheService } from "./cache.service";
 
 @Module({
 	imports: [
-		CacheModule.registerAsync<ClientOpts>({
+		CacheModule.registerAsync<any>({
 			imports: [NestConfigModule],
-			useFactory: async (configService: ConfigService) => ({
-				store: redisStore,
-				url: configService.get("redis.uri"),
-				ttl: configService.get<number>("redis.ttl", 10),
-				database: 0,
-				isGlobal: true,
-				no_ready_check: true,
-				isolationPoolOptions: {
-					max: 10,
-					min: 1,
-				},
-			}),
+			isGlobal: true,
+			useFactory: async (configService: ConfigService) => {
+				const store = await redisStore({
+					url: configService.get("redis.uri"),
+					ttl: configService.get<number>("redis.ttl", 10),
+					database: 0,
+					isolationPoolOptions: {
+						min: 1,
+						max: 10,
+					},
+				});
+				return {
+					store: () => store,
+				};
+			},
 			inject: [ConfigService],
 		}),
 	],
