@@ -3,15 +3,15 @@ import { BaseRepository } from "@common/database/base.repository";
 import { EmailTemplateEnum } from "@common/types/enums/misc.enum";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { CloudinaryService } from "nestjs-cloudinary";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { capitalize } from "helper-fns";
+import { CloudinaryService } from "nestjs-cloudinary";
 import { I18nService } from "nestjs-i18n";
-import { from, map, Observable, switchMap, zip } from "rxjs";
+import { from, map, Observable, switchMap } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
@@ -50,15 +50,13 @@ export class UserService {
 			.limit(limit)
 			.offset(offset);
 
-		const result$ = from(qb.getResult());
+			const pagination$ = from(qb.getResultAndCount());
 
-		const total$ = from(qb.clone().count("id", true).execute("get"));
-
-		return zip(result$, total$).pipe(
-			map(([results, total]) => {
-				return createPaginationObject<User>(results, total.count, page, limit, "users");
-			}),
-		);
+			return pagination$.pipe(
+				map(([results, total]) => {
+					return createPaginationObject<User>(results, total, page, limit, "users");
+				}),
+			);
 	}
 
 	/**

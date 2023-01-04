@@ -6,7 +6,7 @@ import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { I18nService } from "nestjs-i18n";
-import { forkJoin, from, map, Observable, of, switchMap, zip } from "rxjs";
+import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
@@ -49,12 +49,11 @@ export class PostService {
 			.limit(limit)
 			.offset(offset);
 
-		const result$ = from(qb.getResult());
-		const total$ = from(qb.clone().count("id", true).execute("get"));
+		const pagination$ = from(qb.getResultAndCount());
 
-		return zip(result$, total$).pipe(
+		return pagination$.pipe(
 			map(([results, total]) => {
-				return createPaginationObject<Post>(results, total.count, page, limit, "posts");
+				return createPaginationObject<Post>(results, total, page, limit, "posts");
 			}),
 		);
 	}
