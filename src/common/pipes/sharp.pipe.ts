@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { Injectable, PipeTransform } from "@nestjs/common";
 import sharp from "sharp";
-
+import { IFile } from "@common/types";
 /**
  *
  *  Usage:
@@ -14,8 +14,8 @@ import sharp from "sharp";
  */
 
 @Injectable()
-export class SharpPipe implements PipeTransform<Express.Multer.File, Promise<string>> {
-	async transform(image: Express.Multer.File): Promise<string> {
+export class SharpPipe implements PipeTransform<IFile, Promise<string>> {
+	async transform(image: IFile): Promise<string> {
 		const originalName = path.parse(image.originalname).name;
 		const filename = Date.now() + "-" + originalName + ".webp";
 

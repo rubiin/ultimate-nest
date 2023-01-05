@@ -55,7 +55,7 @@ specifiers:
   '@types/swagger-ui-express': ^4.1.3
   '@typescript-eslint/eslint-plugin': ^5.48.0
   '@typescript-eslint/parser': ^5.48.0
-  argon2: ^0.30.2
+  argon2: ^0.30.3
   cache-manager: 5.1.4
   cache-manager-redis-store: ^3.0.1
   class-transformer: ^0.5.1
@@ -75,7 +75,7 @@ specifiers:
   eta: ^1.12.3
   firebase-admin: ^11.4.1
   helmet: ^6.0.1
-  helper-fns: ^2.5.18
+  helper-fns: ^2.5.19
   husky: ^8.0.3
   jest: 29.3.1
   joi: ^17.7.0
@@ -85,7 +85,7 @@ specifiers:
   nestjs-cloudinary: ^1.0.8
   nestjs-i18n: ^10.2.4
   nestjs-minio: ^2.3.0
-  nestjs-pino: ^3.1.1
+  nestjs-pino: ^3.1.2
   nodemailer: ^6.8.0
   passport: 0.6.0
   passport-facebook: ^3.0.0
@@ -121,7 +121,7 @@ dependencies:
   '@casl/ability': 6.3.3
   '@golevelup/nestjs-rabbitmq': 3.4.0_ubmmrcqtmfxeoof5hyze5vl4ge
   '@mikro-orm/core': 5.6.4_qsetvm64mgxawzrgybt7l4gdmq
-  '@mikro-orm/migrations': 5.6.4_6mzy456jfgpqtztuju4aip7pgi
+  '@mikro-orm/migrations': 5.6.4_@mikro-orm+core@5.6.4
   '@mikro-orm/nestjs': 5.1.5_tja2ojw55fiv27nfunuvsdxobq
   '@mikro-orm/postgresql': 5.6.4_l64ulvs6iyrl3mr4lfctunkrpy
   '@mikro-orm/reflection': 5.6.4_@mikro-orm+core@5.6.4
@@ -140,12 +140,12 @@ dependencies:
   '@nestjs/terminus': 9.1.4_jarwtgji4n6l42fqkfl6b2zhiy
   '@nestjs/throttler': 3.1.0_dntc3uqqknzoduyjojusds5kla
   '@nestjs/websockets': 9.2.1_cbx4gblrpxxed5smhozfworgty
-  '@ntegral/nestjs-sentry': 4.0.0_dwlxnimqdu6g3vjgijm2w5megm
+  '@ntegral/nestjs-sentry': 4.0.0_mo4ht2pqn665lnsrp2utygs4ty
   '@sentry/hub': 7.29.0
   '@sentry/node': 7.29.0
   '@sentry/types': 7.29.0
   '@supercharge/request-ip': 1.2.0
-  argon2: 0.30.2
+  argon2: 0.30.3
   cache-manager: 5.1.4
   cache-manager-redis-store: 3.0.1
   class-transformer: 0.5.1
@@ -157,14 +157,14 @@ dependencies:
   eta: 1.12.3
   firebase-admin: 11.4.1_@firebase+app-types@0.9.0
   helmet: 6.0.1
-  helper-fns: 2.5.18
+  helper-fns: 2.5.19
   joi: 17.7.0
   jsdom: 20.0.3
   nanoid: 4.0.0
   nestjs-cloudinary: 1.0.8_@nestjs+common@9.2.1
   nestjs-i18n: 10.2.4_h2lpa5ubie3gihnjyboxiixjsy
   nestjs-minio: 2.3.0_hjcqpoaebdr7gdo5hgc22hthbe
-  nestjs-pino: 3.1.1_sfapocvosrcjidgmqxjuhlo64q
+  nestjs-pino: 3.1.2_sfapocvosrcjidgmqxjuhlo64q
   nodemailer: 6.8.0
   passport: 0.6.0
   passport-facebook: 3.0.0
@@ -188,7 +188,7 @@ devDependencies:
   '@firebase/app-compat': 0.2.0
   '@firebase/app-types': 0.9.0
   '@golevelup/ts-jest': 0.3.4
-  '@mikro-orm/cli': 5.6.4_25afurjrkqytq3vmitm2bazqle
+  '@mikro-orm/cli': 5.6.4_qsetvm64mgxawzrgybt7l4gdmq
   '@mikro-orm/seeder': 5.6.4_@mikro-orm+core@5.6.4
   '@nestjs/cli': 9.1.8
   '@nestjs/schematics': 9.0.4_typescript@4.9.4
@@ -226,7 +226,7 @@ devDependencies:
   run-script-webpack-plugin: 0.1.1
   sample-env: 1.0.2
   supertest: 6.3.3
-  ts-jest: 29.0.3_jgcrazg63n7mkdjrxsk5jv2npy
+  ts-jest: 29.0.3_p6ekqnroyms5nhqbfxosryz7rm
   ts-loader: 9.4.2_3fkjkrd3audxnith3e7fo4fnxi
   ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
   tsconfig-paths: 4.1.2
@@ -254,7 +254,7 @@ packages:
         optional: true
     dependencies:
       ajv: 8.11.0
-      ajv-formats: 2.1.1_ajv@8.11.0
+      ajv-formats: 2.1.1
       jsonc-parser: 3.2.0
       rxjs: 6.6.7
       source-map: 0.7.4
@@ -270,7 +270,7 @@ packages:
         optional: true
     dependencies:
       ajv: 8.11.0
-      ajv-formats: 2.1.1_ajv@8.11.0
+      ajv-formats: 2.1.1
       chokidar: 3.5.3
       jsonc-parser: 3.2.0
       rxjs: 6.6.7
@@ -1705,36 +1705,33 @@ packages:
     dev: false
     optional: true
 
-  /@graphql-tools/merge/8.3.12_graphql@16.6.0:
+  /@graphql-tools/merge/8.3.12:
     resolution: {integrity: sha512-BFL8r4+FrqecPnIW0H8UJCBRQ4Y8Ep60aujw9c/sQuFmQTiqgWgpphswMGfaosP2zUinDE3ojU5wwcS2IJnumA==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@graphql-tools/utils': 9.1.1_graphql@16.6.0
-      graphql: 16.6.0
+      '@graphql-tools/utils': 9.1.1
       tslib: 2.4.1
     dev: false
     optional: true
 
-  /@graphql-tools/schema/9.0.10_graphql@16.6.0:
+  /@graphql-tools/schema/9.0.10:
     resolution: {integrity: sha512-lV0o4df9SpPiaeeDAzgdCJ2o2N9Wvsp0SMHlF2qDbh9aFCFQRsXuksgiDm2yTgT3TG5OtUes/t0D6uPjPZFUbQ==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@graphql-tools/merge': 8.3.12_graphql@16.6.0
-      '@graphql-tools/utils': 9.1.1_graphql@16.6.0
-      graphql: 16.6.0
+      '@graphql-tools/merge': 8.3.12
+      '@graphql-tools/utils': 9.1.1
       tslib: 2.4.1
       value-or-promise: 1.0.11
     dev: false
     optional: true
 
-  /@graphql-tools/utils/9.1.1_graphql@16.6.0:
+  /@graphql-tools/utils/9.1.1:
     resolution: {integrity: sha512-DXKLIEDbihK24fktR2hwp/BNIVwULIHaSTNTNhXS+19vgT50eX9wndx1bPxGwHnVBOONcwjXy0roQac49vdt/w==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      graphql: 16.6.0
       tslib: 2.4.1
     dev: false
     optional: true
@@ -2090,7 +2087,7 @@ packages:
       - supports-color
     dev: false
 
-  /@mikro-orm/cli/5.6.4_25afurjrkqytq3vmitm2bazqle:
+  /@mikro-orm/cli/5.6.4_qsetvm64mgxawzrgybt7l4gdmq:
     resolution: {integrity: sha512-c3Pq2/4z3wn2QpXfYFQ38M9oONu+pkdGCYft5b0Ha7+q6HCjVV5rZl6M8sCtuCU0z+a/p9MHdfYcvoB/2GmJtQ==}
     engines: {node: '>= 14.0.0'}
     hasBin: true
@@ -2128,8 +2125,8 @@ packages:
         optional: true
     dependencies:
       '@mikro-orm/core': 5.6.4_qsetvm64mgxawzrgybt7l4gdmq
-      '@mikro-orm/knex': 5.6.4_4tqascvncxobpz7rg4dvhscx54
-      '@mikro-orm/migrations': 5.6.4_6mzy456jfgpqtztuju4aip7pgi
+      '@mikro-orm/knex': 5.6.4_oambjanqj3hh6fpucfe4jns6aa
+      '@mikro-orm/migrations': 5.6.4_@mikro-orm+core@5.6.4
       '@mikro-orm/postgresql': 5.6.4_l64ulvs6iyrl3mr4lfctunkrpy
       '@mikro-orm/seeder': 5.6.4_@mikro-orm+core@5.6.4
       fs-extra: 11.1.0
@@ -2184,7 +2181,7 @@ packages:
       '@mikro-orm/sqlite':
         optional: true
     dependencies:
-      '@mikro-orm/migrations': 5.6.4_6mzy456jfgpqtztuju4aip7pgi
+      '@mikro-orm/migrations': 5.6.4_@mikro-orm+core@5.6.4
       '@mikro-orm/postgresql': 5.6.4_l64ulvs6iyrl3mr4lfctunkrpy
       '@mikro-orm/seeder': 5.6.4_@mikro-orm+core@5.6.4
       acorn-loose: 8.3.0
@@ -2227,7 +2224,7 @@ packages:
         optional: true
     dependencies:
       '@mikro-orm/core': 5.6.4_qsetvm64mgxawzrgybt7l4gdmq
-      '@mikro-orm/migrations': 5.6.4_6mzy456jfgpqtztuju4aip7pgi
+      '@mikro-orm/migrations': 5.6.4_@mikro-orm+core@5.6.4
       fs-extra: 11.1.0
       knex: 2.3.0_pg@8.8.0
       pg: 8.8.0
@@ -2237,16 +2234,57 @@ packages:
       - supports-color
       - tedious
 
-  /@mikro-orm/migrations/5.6.4_6mzy456jfgpqtztuju4aip7pgi:
+  /@mikro-orm/knex/5.6.4_oambjanqj3hh6fpucfe4jns6aa:
+    resolution: {integrity: sha512-HMTePRGvx6qZBa89DY8SboQJr30XIH61WCMErCa7DTKj3GgUIe+M0QbPdveR65U1/bJobM+DEFc8kKa/qz3rnA==}
+    engines: {node: '>= 14.0.0'}
+    peerDependencies:
+      '@mikro-orm/core': ^5.0.0
+      '@mikro-orm/entity-generator': ^5.0.0
+      '@mikro-orm/migrations': ^5.0.0
+      better-sqlite3: ^8.0.0
+      mssql: ^7.0.0
+      mysql: ^2.18.1
+      mysql2: ^2.1.0
+      pg: ^8.0.3
+      sqlite3: ^5.0.0
+    peerDependenciesMeta:
+      '@mikro-orm/entity-generator':
+        optional: true
+      '@mikro-orm/migrations':
+        optional: true
+      better-sqlite3:
+        optional: true
+      mssql:
+        optional: true
+      mysql:
+        optional: true
+      mysql2:
+        optional: true
+      pg:
+        optional: true
+      sqlite3:
+        optional: true
+    dependencies:
+      '@mikro-orm/core': 5.6.4_qsetvm64mgxawzrgybt7l4gdmq
+      '@mikro-orm/migrations': 5.6.4_@mikro-orm+core@5.6.4
+      fs-extra: 11.1.0
+      knex: 2.3.0
+      sqlstring: 2.3.3
+    transitivePeerDependencies:
+      - pg-native
+      - supports-color
+      - tedious
+
+  /@mikro-orm/migrations/5.6.4_@mikro-orm+core@5.6.4:
     resolution: {integrity: sha512-NvXZGWoMKB1XGd/jhbW2todnSZk4VxoWWjWsv/TJDnfqRMGUmVLMyzVWcxjWlAFAKODcOOeg2f7sBJMtW/Jq5A==}
     engines: {node: '>= 14.0.0'}
     peerDependencies:
       '@mikro-orm/core': ^5.0.0
     dependencies:
       '@mikro-orm/core': 5.6.4_qsetvm64mgxawzrgybt7l4gdmq
-      '@mikro-orm/knex': 5.6.4_4tqascvncxobpz7rg4dvhscx54
+      '@mikro-orm/knex': 5.6.4_oambjanqj3hh6fpucfe4jns6aa
       fs-extra: 11.1.0
-      knex: 2.3.0_pg@8.8.0
+      knex: 2.3.0
       umzug: 3.2.1
     transitivePeerDependencies:
       - '@mikro-orm/entity-generator'
@@ -2291,7 +2329,7 @@ packages:
     dependencies:
       '@mikro-orm/core': 5.6.4_qsetvm64mgxawzrgybt7l4gdmq
       '@mikro-orm/knex': 5.6.4_4tqascvncxobpz7rg4dvhscx54
-      '@mikro-orm/migrations': 5.6.4_6mzy456jfgpqtztuju4aip7pgi
+      '@mikro-orm/migrations': 5.6.4_@mikro-orm+core@5.6.4
       '@mikro-orm/seeder': 5.6.4_@mikro-orm+core@5.6.4
       pg: 8.8.0
     transitivePeerDependencies:
@@ -2457,7 +2495,7 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@nestjs/graphql/10.1.7_urhyahvzvempfjm3smbecys5j4:
+  /@nestjs/graphql/10.1.7_4fhhxyztwhblafku3krlstrun4:
     resolution: {integrity: sha512-InWjG3dV8D/1iAHeAQD6tiDg3HyVNkUILTev3DU33Q0xpFzv+PqtKQR35a9xOncLY9ZS68kwkGB5wksfMyGjAg==}
     requiresBuild: true
     peerDependencies:
@@ -2479,9 +2517,9 @@ packages:
       ts-morph:
         optional: true
     dependencies:
-      '@graphql-tools/merge': 8.3.12_graphql@16.6.0
-      '@graphql-tools/schema': 9.0.10_graphql@16.6.0
-      '@graphql-tools/utils': 9.1.1_graphql@16.6.0
+      '@graphql-tools/merge': 8.3.12
+      '@graphql-tools/schema': 9.0.10
+      '@graphql-tools/utils': 9.1.1
       '@nestjs/common': 9.2.1_66pidaijumrtzyachnvfwzkz3e
       '@nestjs/core': 9.2.1_w3aokaw6dj62wscfwgppttd7ii
       '@nestjs/mapped-types': 1.2.0_ejjx6q7ue32bc24a7sespjpcyu
@@ -2489,13 +2527,12 @@ packages:
       class-transformer: 0.5.1
       class-validator: 0.14.0
       fast-glob: 3.2.12
-      graphql: 16.6.0
-      graphql-tag: 2.12.6_graphql@16.6.0
-      graphql-ws: 5.5.5_graphql@16.6.0
+      graphql-tag: 2.12.6
+      graphql-ws: 5.5.5
       lodash: 4.17.21
       normalize-path: 3.0.0
       reflect-metadata: 0.1.13
-      subscriptions-transport-ws: 0.11.0_graphql@16.6.0
+      subscriptions-transport-ws: 0.11.0
       tslib: 2.4.1
       uuid: 9.0.0
       ws: 8.11.0
@@ -2774,7 +2811,7 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.14.0
 
-  /@ntegral/nestjs-sentry/4.0.0_dwlxnimqdu6g3vjgijm2w5megm:
+  /@ntegral/nestjs-sentry/4.0.0_mo4ht2pqn665lnsrp2utygs4ty:
     resolution: {integrity: sha512-6WHZcK7NLeg7ue1y3Z61msEBzCGZeXQ0hWhliH1ddQH0kPbZ6lXLxduGMWYb0N/fPjXAX1Astz8urqnoTOZBQw==}
     peerDependencies:
       '@nestjs/common': ^9.0.4
@@ -2790,10 +2827,9 @@ packages:
       '@sentry/hub': 7.29.0
       '@sentry/node': 7.29.0
       reflect-metadata: 0.1.13
-      rimraf: 3.0.2
       rxjs: 7.8.0
     optionalDependencies:
-      '@nestjs/graphql': 10.1.7_urhyahvzvempfjm3smbecys5j4
+      '@nestjs/graphql': 10.1.7_4fhhxyztwhblafku3krlstrun4
     transitivePeerDependencies:
       - '@apollo/subgraph'
       - bufferutil
@@ -3756,15 +3792,13 @@ packages:
       indent-string: 4.0.0
     dev: true
 
-  /ajv-formats/2.1.1_ajv@8.11.0:
+  /ajv-formats/2.1.1:
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependencies:
-      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
     dependencies:
-      ajv: 8.11.0
+      ajv: 8.11.2
     dev: true
 
   /ajv-keywords/3.5.2_ajv@6.12.6:
@@ -3800,7 +3834,6 @@ packages:
       require-from-string: 2.0.2
       uri-js: 4.4.1
     dev: true
-    optional: true
 
   /amqp-connection-manager/3.9.0_amqplib@0.8.0:
     resolution: {integrity: sha512-ZKw9ckJKz40Lc2pC7DY0NVocpzPalMaCgv0sBn+N4er2QFAJul9pIiMOm/FsPHeCzB+FulV7PckOpmZvWvewGQ==}
@@ -3911,8 +3944,8 @@ packages:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
     dev: true
 
-  /argon2/0.30.2:
-    resolution: {integrity: sha512-RBbXTUsrJUQH259/72CCJxQa0hV961pV4PyZ7R1czGkArSsQP4DToCS2axmNfHywXaBNEMPWMW6rM82EArulYA==}
+  /argon2/0.30.3:
+    resolution: {integrity: sha512-DoH/kv8c9127ueJSBxAVJXinW9+EuPA3EMUxoV2sAY1qDE5H9BjTyVF/aD2XyHqbqUWabgBkIfcP3ZZuGhbJdg==}
     engines: {node: '>=14.0.0'}
     requiresBuild: true
     dependencies:
@@ -6698,30 +6731,21 @@ packages:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
     dev: true
 
-  /graphql-tag/2.12.6_graphql@16.6.0:
+  /graphql-tag/2.12.6:
     resolution: {integrity: sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==}
     engines: {node: '>=10'}
     peerDependencies:
       graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
-      graphql: 16.6.0
       tslib: 2.4.1
     dev: false
     optional: true
 
-  /graphql-ws/5.5.5_graphql@16.6.0:
+  /graphql-ws/5.5.5:
     resolution: {integrity: sha512-hvyIS71vs4Tu/yUYHPvGXsTgo0t3arU820+lT5VjZS2go0ewp2LqyCgxEN56CzOG7Iys52eRhHBiD1gGRdiQtw==}
     engines: {node: '>=10'}
     peerDependencies:
       graphql: '>=0.11 <=16'
-    dependencies:
-      graphql: 16.6.0
-    dev: false
-    optional: true
-
-  /graphql/16.6.0:
-    resolution: {integrity: sha512-KPIBPDlW7NxrbT/eh4qPXz5FiFdL5UbaA0XUNz2Rp3Z3hqBSkbj0GVjwFDztsWVauZUWsbKHgMg++sk8UX0bkw==}
-    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
     dev: false
     optional: true
 
@@ -6831,8 +6855,8 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
-  /helper-fns/2.5.18:
-    resolution: {integrity: sha512-7S4ViAnStokzWkiM3cbp5gQskdDJU5kxlmTx4mETCJMpD7IR/C0M2qUstyq1BIrTkNqN3UuvDDrMPS2I0Oafig==}
+  /helper-fns/2.5.19:
+    resolution: {integrity: sha512-WKraB/GXir28O9jkAhQaqhvOqVswt+JbIOeo6vs8j6lK8QJ8EcEG/Uz7iZayh2kUh2zNnjDC7kalqFT3gvbusw==}
     dev: false
 
   /hexoid/1.0.0:
@@ -8134,6 +8158,51 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /knex/2.3.0:
+    resolution: {integrity: sha512-WMizPaq9wRMkfnwKXKXgBZeZFOSHGdtoSz5SaLAVNs3WRDfawt9O89T4XyH52PETxjV8/kRk0Yf+8WBEP/zbYw==}
+    engines: {node: '>=12'}
+    hasBin: true
+    peerDependencies:
+      better-sqlite3: '*'
+      mysql: '*'
+      mysql2: '*'
+      pg: '*'
+      pg-native: '*'
+      sqlite3: '*'
+      tedious: '*'
+    peerDependenciesMeta:
+      better-sqlite3:
+        optional: true
+      mysql:
+        optional: true
+      mysql2:
+        optional: true
+      pg:
+        optional: true
+      pg-native:
+        optional: true
+      sqlite3:
+        optional: true
+      tedious:
+        optional: true
+    dependencies:
+      colorette: 2.0.19
+      commander: 9.4.1
+      debug: 4.3.4
+      escalade: 3.1.1
+      esm: 3.2.25
+      get-package-type: 0.1.0
+      getopts: 2.3.0
+      interpret: 2.2.0
+      lodash: 4.17.21
+      pg-connection-string: 2.5.0
+      rechoir: 0.8.0
+      resolve-from: 5.0.0
+      tarn: 3.0.2
+      tildify: 2.0.0
+    transitivePeerDependencies:
+      - supports-color
+
   /knex/2.3.0_pg@8.8.0:
     resolution: {integrity: sha512-WMizPaq9wRMkfnwKXKXgBZeZFOSHGdtoSz5SaLAVNs3WRDfawt9O89T4XyH52PETxjV8/kRk0Yf+8WBEP/zbYw==}
     engines: {node: '>=12'}
@@ -8828,8 +8897,8 @@ packages:
       minio: 7.0.32
     dev: false
 
-  /nestjs-pino/3.1.1_sfapocvosrcjidgmqxjuhlo64q:
-    resolution: {integrity: sha512-T7ajfqYTSHKrirzrElQJ3EWO/OZF5fFFkgaRvD+I7F5YY2hU3X295E/CnTkgpHZozL0s/3Ud4OtTZlT3NisTBw==}
+  /nestjs-pino/3.1.2_sfapocvosrcjidgmqxjuhlo64q:
+    resolution: {integrity: sha512-Rxt9v/OlHwurE2GPyBlHVjzCLCnxIPxGa+Esligij412zEcqqB6kka5MhKAk3l61u1jyTLx3Mzol+HQrR6/f9w==}
     engines: {node: '>= 14'}
     requiresBuild: true
     peerDependencies:
@@ -10794,7 +10863,7 @@ packages:
     dev: false
     optional: true
 
-  /subscriptions-transport-ws/0.11.0_graphql@16.6.0:
+  /subscriptions-transport-ws/0.11.0:
     resolution: {integrity: sha512-8D4C6DIH5tGiAIpp5I0wD/xRlNiZAPGHygzCe7VzyzUoxHtawzjNAY9SUTXU05/EY2NMY9/9GF0ycizkXr1CWQ==}
     deprecated: The `subscriptions-transport-ws` package is no longer maintained. We recommend you use `graphql-ws` instead. For help migrating Apollo software to `graphql-ws`, see https://www.apollographql.com/docs/apollo-server/data/subscriptions/#switching-from-subscriptions-transport-ws    For general help using `graphql-ws`, see https://github.com/enisdenjo/graphql-ws/blob/master/README.md
     peerDependencies:
@@ -10802,7 +10871,6 @@ packages:
     dependencies:
       backo2: 1.0.2
       eventemitter3: 3.1.2
-      graphql: 16.6.0
       iterall: 1.3.0
       symbol-observable: 1.2.0
       ws: 7.5.9
@@ -11137,7 +11205,7 @@ packages:
     hasBin: true
     dev: true
 
-  /ts-jest/29.0.3_jgcrazg63n7mkdjrxsk5jv2npy:
+  /ts-jest/29.0.3_p6ekqnroyms5nhqbfxosryz7rm:
     resolution: {integrity: sha512-Ibygvmuyq1qp/z3yTh9QTwVVAbFdDy/+4BtIQR2sp6baF2SJU/8CKK/hhnGIDY2L90Az2jIqTwZPnN2p+BweiQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -11158,7 +11226,6 @@ packages:
       esbuild:
         optional: true
     dependencies:
-      '@babel/core': 7.20.7
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
       jest: 29.3.1_zfha7dvnw4nti6zkbsmhmn6xo4

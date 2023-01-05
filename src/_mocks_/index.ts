@@ -1,4 +1,5 @@
 import { PageOptionsDto } from "@common/classes/pagination";
+import { IFile } from "@common/types";
 import { Order, Roles } from "@common/types/enums";
 
 export const mockedUser = {
@@ -36,7 +37,7 @@ export const mockFile = {
 	mimetype: "text/png",
 	buffer: Buffer.from(__dirname + "/../../test/test.png", "utf8"),
 	size: 13_148,
-} as Express.Multer.File;
+} as IFile;
 
 export const mockedOtpLog = {
 	expiresIn: new Date(),
