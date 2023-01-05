@@ -5,12 +5,13 @@ import {
 	app,
 	cloudinary,
 	database,
-	googleOauth,
 	facebookOauth,
+	googleOauth,
 	jwt,
 	mail,
 	rabbit,
 	redis,
+	throttle,
 } from "./configs";
 import { validationSchema } from "./validate.config";
 
@@ -19,7 +20,18 @@ import { validationSchema } from "./validate.config";
 	imports: [
 		ConfigModule.forRoot({
 			envFilePath: [`env/.env.${process.env.NODE_ENV}`],
-			load: [app, jwt, database, mail, redis, cloudinary, rabbit, googleOauth, facebookOauth],
+			load: [
+				app,
+				jwt,
+				database,
+				mail,
+				redis,
+				cloudinary,
+				rabbit,
+				googleOauth,
+				facebookOauth,
+				throttle,
+			],
 			cache: true,
 			isGlobal: true,
 			expandVariables: true,

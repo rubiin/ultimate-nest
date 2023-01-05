@@ -12,6 +12,8 @@ import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestj
 import { AppModule } from "./app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
 
+declare const module: any;
+
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
 		httpsOptions: AppUtils.ssl(),
@@ -81,6 +83,12 @@ async function bootstrap() {
 	}
 
 	useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
+	if (module.hot) {
+		module.hot.accept();
+		module.hot.dispose(() => app.close());
+	}
+
 	await app.listen(port);
 
 	new Logger("Bootstrap").log(

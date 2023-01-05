@@ -43,6 +43,7 @@ module.exports = {
 		'no-duplicate-imports': 'error',
 		'no-param-reassign': 'error',
 		'unicorn/filename-case': 'off',
+		'unicorn/no-process-exit': 'off',
 		'no-array-constructor': 'error',
 		'no-mixed-operators': 'error',
 		'import/default': 'off',

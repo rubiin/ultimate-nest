@@ -1,4 +1,5 @@
-import { EntityManager, EntityRepository, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
+import { EntityManager, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
+import { EntityRepository } from "@mikro-orm/postgresql";
 
 import { BaseEntity } from "./base-entity.entity";
 

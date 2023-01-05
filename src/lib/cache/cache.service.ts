@@ -5,6 +5,11 @@ import { Cache } from "cache-manager";
 export class CacheService {
 	constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
 
+	/**
+	 * It deletes all cache keys that match the given regular expression
+	 * @param {string} regexString - The regex string to match against the cache keys.
+	 * @returns A boolean value.
+	 */
 	async deleteMatch(regexString: string): Promise<boolean> {
 		const keys = await this.cacheManager.store.keys();
 
@@ -23,5 +28,13 @@ export class CacheService {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Reset the cache.
+	 * @returns A promise that resolves to void.
+	 */
+	async resetCache(): Promise<void> {
+		return this.cacheManager.reset();
 	}
 }
