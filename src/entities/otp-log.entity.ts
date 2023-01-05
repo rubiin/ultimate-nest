@@ -1,6 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
-import { Relation } from "@common/types";
-import { Entity, ManyToOne, Property } from "@mikro-orm/core";
+import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
 
 import { User } from "./user.entity";
 
@@ -15,7 +14,7 @@ export class OtpLog extends BaseEntity {
 	otpCode?: string;
 
 	@ManyToOne()
-	user: Relation<User>;
+	user: Rel<User>;
 
 	@Property()
 	isUsed!: boolean;
