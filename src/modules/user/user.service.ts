@@ -1,6 +1,7 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database/base.repository";
 import { EmailTemplateEnum } from "@common/types/enums/misc.enum";
+import { IFile } from "@common/types/interfaces";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createPaginationObject, Pagination } from "@lib/pagination";
@@ -50,13 +51,13 @@ export class UserService {
 			.limit(limit)
 			.offset(offset);
 
-			const pagination$ = from(qb.getResultAndCount());
+		const pagination$ = from(qb.getResultAndCount());
 
-			return pagination$.pipe(
-				map(([results, total]) => {
-					return createPaginationObject<User>(results, total, page, limit, "users");
-				}),
-			);
+		return pagination$.pipe(
+			map(([results, total]) => {
+				return createPaginationObject<User>(results, total, page, limit, "users");
+			}),
+		);
 	}
 
 	/**
@@ -89,10 +90,10 @@ export class UserService {
 
 	/**
 	 * It creates a user and sends a welcome email
-	 * @param dto - CreateUserDto & { image: Express.Multer.File }
+	 * @param dto - CreateUserDto & { image: IFile }
 	 * @returns The user object
 	 */
-	async createOne(dto: CreateUserDto & { image: Express.Multer.File }): Promise<User> {
+	async createOne(dto: CreateUserDto & { image: IFile }): Promise<User> {
 		const { image, ...rest } = dto;
 		const user = this.userRepository.create(rest);
 

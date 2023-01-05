@@ -19,7 +19,7 @@ export function IsStringField(ops?: IsStringFieldOptions) {
 			}),
 			each: options.each,
 		}),
-		MinMax(options.min, options.max, options.each)
+		MinMax(options.min, options.max, options.each),
 	];
 
 	options.required
