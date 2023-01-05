@@ -7,29 +7,24 @@ import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
 import { I18nService } from "nestjs-i18n";
-import { catchError, from, lastValueFrom, map, Observable, switchMap } from "rxjs";
+import { catchError, from, map, Observable, switchMap } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 @Injectable()
 export class TokensService {
-	private readonly tokens: RefreshTokensRepository;
-	private readonly jwt: JwtService;
 	private readonly BASE_OPTIONS: JwtSignOptions = {
 		issuer: "nestify",
 		audience: "nestify",
 	};
 
 	constructor(
-		tokens: RefreshTokensRepository,
-		jwt: JwtService,
 		@InjectRepository(User)
 		private readonly userRepository: EntityRepository<User>,
 		private readonly i18nService: I18nService,
-	) {
-		this.tokens = tokens;
-		this.jwt = jwt;
-	}
+		private readonly refreshTokenRepo: RefreshTokensRepository,
+		private readonly jwt: JwtService,
+	) {}
 
 	/**
 	 * It takes a user object, and returns an observable of a string
@@ -52,7 +47,7 @@ export class TokensService {
 	 * @returns A string
 	 */
 	generateRefreshToken(user: User, expiresIn: number): Observable<string> {
-		return this.tokens.createRefreshToken(user, expiresIn).pipe(
+		return this.refreshTokenRepo.createRefreshToken(user, expiresIn).pipe(
 			switchMap(token => {
 				const options: JwtSignOptions = {
 					...this.BASE_OPTIONS,
@@ -92,6 +87,7 @@ export class TokensService {
 								}),
 							);
 						}
+
 						return this.getUserFromRefreshTokenPayload(payload).pipe(
 							map(user => {
 								if (!user) {
@@ -136,9 +132,9 @@ export class TokensService {
 	decodeRefreshToken(token: string): Observable<RefreshTokenPayload> {
 		return from(this.jwt.verifyAsync(token)).pipe(
 			map(payload => payload),
-			catchError(err => {
+			catchError(error_ => {
 				const error =
-					err instanceof TokenExpiredError
+					error_ instanceof TokenExpiredError
 						? new UnauthorizedException(
 								this.i18nService.t("exception.refreshToken", {
 									args: { error: "expired" },
@@ -161,7 +157,7 @@ export class TokensService {
 	 * @returns The user object.
 	 */
 	deleteRefreshTokenForUser(user: User): Observable<User> {
-		return this.tokens.deleteTokensForUser(user).pipe(
+		return this.refreshTokenRepo.deleteTokensForUser(user).pipe(
 			map(() => {
 				return user;
 			}),
@@ -185,7 +181,7 @@ export class TokensService {
 			);
 		}
 
-		return this.tokens.deleteToken(user, tokenId).pipe(
+		return this.refreshTokenRepo.deleteToken(user, tokenId).pipe(
 			map(() => {
 				return user;
 			}),
@@ -235,6 +231,6 @@ export class TokensService {
 			);
 		}
 
-		return from(this.tokens.findTokenByIdx(tokenId));
+		return from(this.refreshTokenRepo.findTokenByIdx(tokenId));
 	}
 }

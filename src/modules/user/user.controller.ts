@@ -8,6 +8,7 @@ import {
 	UUIDParam,
 } from "@common/decorators";
 import { fileValidatorPipe } from "@common/misc";
+import { IFile } from "@common/types";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
 import { Action, CheckPolicies, GenericPolicyHandler, UpdateUserPolicyHandler } from "@lib/casl";
@@ -38,7 +39,7 @@ export class UserController {
 	async publicRegistration(
 		@Body() dto: UserRegistrationDto,
 		@UploadedFile(fileValidatorPipe({}))
-		image: Express.Multer.File,
+		image: IFile,
 	) {
 		return this.userService.createOne({
 			...dto,
@@ -68,7 +69,7 @@ export class UserController {
 	async createOne(
 		@Body() dto: CreateUserDto,
 		@UploadedFile(fileValidatorPipe({}))
-		image: Express.Multer.File,
+		image: IFile,
 	) {
 		return this.userService.createOne({ ...dto, image });
 	}

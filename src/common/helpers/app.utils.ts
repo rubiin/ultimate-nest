@@ -9,6 +9,7 @@ export const AppUtils = {
 
 	gracefulShutdown(app: INestApplication, code: string): void {
 		const logger: Logger = new Logger("Graceful Shutdown");
+
 		setTimeout(() => process.exit(1), 5000);
 		logger.verbose(`signal received with code ${code}`);
 		logger.log("Closing http server...");

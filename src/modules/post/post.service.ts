@@ -29,18 +29,30 @@ export class PostService {
 	 * offset.
 	 * @returns An observable of a pagination object.
 	 */
-	getMany({ page, order, limit, sort, offset }: PageOptionsDto): Observable<Pagination<Post>> {
-		return from(
-			this.postRepository.findAndPaginate(
-				{ isObsolete: false },
-				{
-					limit,
-					offset,
-					orderBy: { [sort]: order.toLowerCase() },
-				},
-			),
-		).pipe(
-			map(({ results, total }) => {
+	getMany({
+		page,
+		order,
+		limit,
+		sort,
+		offset,
+		search,
+	}: PageOptionsDto): Observable<Pagination<Post>> {
+		const qb = this.postRepository.createQueryBuilder("p").select("p.*");
+
+		qb.where({ isObsolete: false, isActive: true });
+
+		if (search) {
+			qb.andWhere({ title: { $ilike: `%${search}%` } });
+		}
+
+		qb.orderBy({ [sort]: order.toLowerCase() })
+			.limit(limit)
+			.offset(offset);
+
+		const pagination$ = from(qb.getResultAndCount());
+
+		return pagination$.pipe(
+			map(([results, total]) => {
 				return createPaginationObject<Post>(results, total, page, limit, "posts");
 			}),
 		);

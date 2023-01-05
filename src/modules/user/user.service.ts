@@ -1,15 +1,16 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database/base.repository";
 import { EmailTemplateEnum } from "@common/types/enums/misc.enum";
+import { IFile } from "@common/types/interfaces";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { CloudinaryService } from "@lib/cloudinary/cloudinary.service";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { capitalize } from "helper-fns";
+import { CloudinaryService } from "nestjs-cloudinary";
 import { I18nService } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
 
@@ -32,18 +33,28 @@ export class UserService {
 	 * @param {PageOptionsDto}  - PageOptionsDto - This is a DTO that contains the following properties:
 	 * @returns An observable of a pagination object.
 	 */
-	getMany({ limit, offset, order, sort, page }: PageOptionsDto): Observable<Pagination<User>> {
-		return from(
-			this.userRepository.findAndPaginate(
-				{ isObsolete: false, isActive: true },
-				{
-					limit,
-					offset,
-					orderBy: { [sort]: order.toLowerCase() },
-				},
-			),
-		).pipe(
-			map(({ results, total }) => {
+	getMany({
+		limit,
+		offset,
+		order,
+		sort,
+		page,
+		search,
+	}: PageOptionsDto): Observable<Pagination<User>> {
+		const qb = this.userRepository.createQueryBuilder("u").select("u.*");
+
+		if (search) {
+			qb.andWhere({ firstName: { $ilike: `%${search}%` } });
+		}
+
+		qb.orderBy({ [sort]: order.toLowerCase() })
+			.limit(limit)
+			.offset(offset);
+
+		const pagination$ = from(qb.getResultAndCount());
+
+		return pagination$.pipe(
+			map(([results, total]) => {
 				return createPaginationObject<User>(results, total, page, limit, "users");
 			}),
 		);
@@ -79,10 +90,10 @@ export class UserService {
 
 	/**
 	 * It creates a user and sends a welcome email
-	 * @param dto - CreateUserDto & { image: Express.Multer.File }
+	 * @param dto - CreateUserDto & { image: IFile }
 	 * @returns The user object
 	 */
-	async createOne(dto: CreateUserDto & { image: Express.Multer.File }): Promise<User> {
+	async createOne(dto: CreateUserDto & { image: IFile }): Promise<User> {
 		const { image, ...rest } = dto;
 		const user = this.userRepository.create(rest);
 
@@ -94,7 +105,7 @@ export class UserService {
 			user.avatar = url;
 
 			await em.persistAndFlush(user);
-			const link = "www.google.com";
+			const link = this.configService.get("app.clientUrl");
 
 			this.amqpConnection.publish(
 				this.configService.get<string>("rabbit.exchange"),

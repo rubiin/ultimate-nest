@@ -10,7 +10,7 @@ import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
-import { from, of } from "rxjs";
+import { of } from "rxjs";
 
 import { AuthService } from "./auth.service";
 

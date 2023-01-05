@@ -18,10 +18,12 @@ import { HealthModule } from "@modules/health/health.module";
 import { PostModule } from "@modules/post/post.module";
 import { ProfileModule } from "@modules/profile/profile.module";
 import { RabbitModule } from "@modules/rabbit/rabbit.module";
+import { UserModule } from "@modules/user/user.module";
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { UserModule } from "@modules/user/user.module";
+import { ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
 	imports: [
@@ -51,6 +53,15 @@ import { UserModule } from "@modules/user/user.module";
 			serveStaticOptions: {
 				maxAge: 86_400, // 1 day
 			},
+		}),
+		ThrottlerModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: (config: ConfigService) => ({
+				ttl: config.get("throttle.ttl"),
+				limit: config.get("throttle.limit"),
+				ignoreUserAgents: [/nestify/i],
+			}),
 		}),
 	],
 	providers: [IsUniqueConstraint],

@@ -1,19 +1,17 @@
 import { NestConfigModule } from "@lib/config/config.module";
-import { Global, Module } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { CloudinaryModule } from "nestjs-cloudinary";
 
-import { CloudinaryModule } from "./cloudinary.module";
-
-@Global()
 @Module({
 	imports: [
 		CloudinaryModule.forRootAsync({
 			imports: [NestConfigModule],
 			useFactory: (configService: ConfigService) => ({
-				cloudName: configService.get("cloudinary.cloudName"),
-				apiKey: configService.get("cloudinary.apiKey"),
-				apiSecret: configService.get("cloudinary.apiSecret"),
-				shrinkImage: true,
+				isGlobal: true,
+				cloud_name: configService.get("cloudinary.cloudName"),
+				api_key: configService.get("cloudinary.apiKey"),
+				api_secret: configService.get("cloudinary.apiSecret"),
 			}),
 			inject: [ConfigService],
 		}),
