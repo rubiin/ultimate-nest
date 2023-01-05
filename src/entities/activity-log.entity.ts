@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
-import { Relation } from "@common/types";
+import { Rel } from "@mikro-orm/core";
 import { Entity, ManyToOne, Property } from "@mikro-orm/core";
 
 import { User } from "./user.entity";
@@ -33,5 +33,5 @@ export class ActivityLog extends BaseEntity {
 	loginStatus = true;
 
 	@ManyToOne()
-	user!: Relation<User>;
+	user!: Rel<User>;
 }
