@@ -1,4 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
+import { Relation } from "@common/types";
 import { Entity, ManyToOne, Property } from "@mikro-orm/core";
 
 import { Post, User } from "./index";
@@ -9,10 +10,10 @@ export class Comment extends BaseEntity {
 	body!: string;
 
 	@ManyToOne()
-	post!: Post;
+	post!: Relation<Post>;
 
 	@ManyToOne()
-	author!: User;
+	author!: Relation<User>;
 
 	constructor(partial?: Partial<Comment>) {
 		super();
