@@ -51,8 +51,8 @@ services:
         - --api
         # Enable the Dashboard and API in insecure mode for local development
         - --api.insecure=true
-        labels:
-            - "traefik.enable=true"
+    labels:
+        - "traefik.enable=true"
     networks:
       - nestify-network
     ports:
