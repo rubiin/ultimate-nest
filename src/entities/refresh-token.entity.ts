@@ -1,4 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
+import { Relation } from "@common/types";
 import { Entity, ManyToOne, Property } from "@mikro-orm/core";
 
 import { User } from "./user.entity";
@@ -9,7 +10,7 @@ export class RefreshToken extends BaseEntity {
 	expiresIn!: Date;
 
 	@ManyToOne()
-	user: User;
+	user: Relation<User>;
 
 	@Property()
 	isRevoked = false;

@@ -1,7 +1,6 @@
 import { NestConfigModule } from "@lib/config/config.module";
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-
 import { CloudinaryModule } from "nestjs-cloudinary";
 
 @Module({

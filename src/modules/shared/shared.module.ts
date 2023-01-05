@@ -21,9 +21,9 @@ import { RabbitModule } from "@modules/rabbit/rabbit.module";
 import { UserModule } from "@modules/user/user.module";
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { ThrottlerModule } from "@nestjs/throttler";
-import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
 	imports: [

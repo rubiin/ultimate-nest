@@ -1,5 +1,5 @@
 import { applyDecorators } from "@nestjs/common";
-import { MinLength, MaxLength } from "class-validator";
+import { MaxLength, MinLength } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export function MinMax(min: number, max: number, each = false) {
