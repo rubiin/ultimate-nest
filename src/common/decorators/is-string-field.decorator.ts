@@ -1,6 +1,7 @@
 import { applyDecorators } from "@nestjs/common";
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
+
 import { MinMax } from "./min-max.decorator";
 
 interface IsStringFieldOptions {

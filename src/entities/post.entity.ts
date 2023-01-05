@@ -1,4 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
+import { Relation } from "@common/types";
 import { ArrayType, Collection, Entity, ManyToOne, OneToMany, Property } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
@@ -23,7 +24,7 @@ export class Post extends BaseEntity {
 	tags: string[];
 
 	@ManyToOne({ eager: false })
-	author: User;
+	author: Relation<User>;
 
 	@OneToMany(() => Comment, comment => comment.post, {
 		eager: false,
