@@ -187,3 +187,5 @@ The password for `redis` and `rabbitmq` is `Test@1234` can be changed in the mak
 The sample env is generated using [sample-env](https://www.github.com/rubiin/sample-env)
 
 More docs found at `docs` folder
+
+Made with ❤️ with opensource.
