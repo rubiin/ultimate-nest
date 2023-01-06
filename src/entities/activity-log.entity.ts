@@ -1,6 +1,5 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
-import { Rel } from "@mikro-orm/core";
-import { Entity, ManyToOne, Property } from "@mikro-orm/core";
+import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
 
 import { User } from "./user.entity";
 

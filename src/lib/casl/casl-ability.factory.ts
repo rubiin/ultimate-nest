@@ -1,9 +1,9 @@
 import {
-	Ability,
 	AbilityBuilder,
-	AbilityClass,
+	createMongoAbility,
 	ExtractSubjectType,
 	InferSubjects,
+	MongoAbility,
 } from "@casl/ability";
 import { Roles } from "@common/types/enums/permission.enum";
 import { Post, User } from "@entities";
@@ -19,14 +19,12 @@ export enum Action {
 	Delete = "delete",
 }
 
-export type AppAbility = Ability<[Action, Subjects]>;
+export type AppAbility = MongoAbility<[Action, Subjects]>;
 
 @Injectable()
 export class CaslAbilityFactory {
 	createForUser(user: User) {
-		const { can, build } = new AbilityBuilder<Ability<[Action, Subjects]>>(
-			Ability as AbilityClass<AppAbility>,
-		);
+		const { can, build } = new AbilityBuilder<AppAbility>(createMongoAbility);
 
 		if (user.roles.includes(Roles.ADMIN)) {
 			can(Action.Manage, "all"); // read-write access to everything

@@ -13,6 +13,7 @@ export class PoliciesGuard implements CanActivate {
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const isPublic = this.reflector.get<boolean>("isPublic", context.getHandler());
 
+		// if route is marked as public, allow request
 		if (isPublic) {
 			return true;
 		}
@@ -20,13 +21,15 @@ export class PoliciesGuard implements CanActivate {
 		const policyHandlers =
 			this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY, context.getHandler()) || [];
 
-		const request = context.switchToHttp().getRequest() as Request;
+		const request = context.switchToHttp().getRequest();
 
-		const { user } = context.switchToHttp().getRequest();
+		const { user } = request;
 
 		const ability = this.caslAbilityFactory.createForUser(user);
 
-		return policyHandlers.every(handler => this.execPolicyHandler(handler, request, ability));
+		return policyHandlers.every(handler =>
+			this.execPolicyHandler(handler, request as Request, ability),
+		);
 	}
 
 	private execPolicyHandler(handler: PolicyHandler, request: Request, ability: AppAbility) {
