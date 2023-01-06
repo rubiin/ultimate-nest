@@ -5,8 +5,9 @@
 	"testTimeout": 30000,
 	"testRegex": ".e2e-spec.ts$",
 	"transform": {
-		"^.+\\.(t|j)s$": "ts-jest"
+		"^.+\\.(t|j)s$": "@swc/jest"
 	},
+	"runtime": "@side/jest-runtime",
 	"moduleNameMapper": {
 		"^@entities": "<rootDir>/../src/entities/index",
 		"^@common/(.*)$": "<rootDir>/../src/common/$1",

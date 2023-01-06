@@ -160,7 +160,7 @@
 		"transform": {
 			"^.+\\.(t|j)s$": "@swc/jest"
 		},
-		  "runtime": "@side/jest-runtime",
+		"runtime": "@side/jest-runtime",
 		"coverageDirectory": "../coverage",
 		"testEnvironment": "node",
 		"coverageReporters": [
@@ -181,6 +181,9 @@
 	"lint-staged": {
 		"*.{ts,tsx}": [
 			"eslint '{src,test}/**/*.ts' --cache --fix",
+			"prettier --cache --write"
+		],
+		"*.{json,md,yaml,yml}": [
 			"prettier --cache --write"
 		]
 	},
