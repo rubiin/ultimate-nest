@@ -11,7 +11,7 @@ export const hashStringByThread = (value: string): Promise<string> =>
 		timeCost: 4,
 	});
 
-function workerFunction(data: { functionName: string; input: any }) {
+function workerFunction(data: { functionName: string; input: string }) {
 	if (data.functionName === "hashString") {
 		return hashStringByThread(data.input);
 	} else {

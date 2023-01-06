@@ -18,7 +18,7 @@ describe("PostService", () => {
 
 	// default mocks
 
-	mockPostRepo.findOne.mockImplementation((options: any) =>
+	mockPostRepo.findOne.mockImplementation((options: { idx: string }) =>
 		Promise.resolve({
 			...mockedPost,
 			idx: options.idx,

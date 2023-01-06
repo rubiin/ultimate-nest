@@ -11,7 +11,7 @@ import { isMatch } from "date-fns";
 
 @ValidatorConstraint({ async: true })
 class IsDateInFormatConstraint implements ValidatorConstraintInterface {
-	async validate(value: any | Array<any>, arguments_: ValidationArguments) {
+	async validate(value: string | Array<string>, arguments_: ValidationArguments) {
 		const [format] = arguments_.constraints;
 
 		if (Array.isArray(value)) {

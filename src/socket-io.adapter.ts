@@ -9,13 +9,10 @@ export class SocketIOAdapter extends IoAdapter {
 	}
 
 	createIOServer(port: number, options?: ServerOptions) {
-		const clientPort = 8000;
+		const _clientPort = 8000;
 
 		const cors = {
-			origin: [
-				`http://localhost:${clientPort}`,
-				new RegExp(`/^http:\/\/192\.168\.1\.([1-9]|[1-9]\d):${clientPort}$/`),
-			],
+			origin: [`http://localhost:${_clientPort}`],
 		};
 
 		const optionsWithCORS: ServerOptions = {
