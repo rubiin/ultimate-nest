@@ -14,21 +14,60 @@ services:
             dockerfile: ./docker/prod.Dockerfile
         image: nestify
         depends_on:
+            - traefik
             - redis
             - rabbitmq
         restart: unless-stopped
-        networks:
-            - nestify-network
+        command: npm run start
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nestify.rule=Host(`api.takeodev.ml`)"
+            - "traefik.http.services.nestify.loadbalancer.server.port=8000"
         ports:
             - "8000:8000"
         stdin_open: true
         tty: true
+        networks:
+            - nestify-network
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+
+    traefik:
+        image: traefik:v2.9.6
+        container_name: traefik
+        command:
+            # Enable Docker in Traefik, so that it reads labels from Docker services
+            - --providers.docker=true
+            # Do not expose all Docker services, only the ones explicitly exposed
+            - --providers.docker.exposedbydefault=false
+            # Disable Docker Swarm mode for local development
+            # - --providers.docker.swarmmode
+            # Enable the access log, with HTTP requests
+            - --accesslog
+            # Enable the Traefik log, for configurations and errors
+            - --log
+            # Enable the Dashboard and API
+            - --api
+            # Enable the Dashboard and API in insecure mode for local development
+            - --api.insecure=true
+        labels:
+            - "traefik.enable=true"
+        networks:
+            - nestify-network
+        ports:
+            - "443:443"
+            - "80:80"
+            - "8080:8080"
+        volumes:
+            - "./letsencrypt:/letsencrypt"
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
     redis:
-        image: redis:7.0.4-alpine
+        image: redis:7.0.7-alpine
         restart: always
         ports:
-            - "6379:6379"
+            - "6379"
         networks:
             - nestify-network
         command: redis-server --loglevel warning --requirepass ${PASSWORD}
@@ -37,7 +76,7 @@ services:
 
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3.8-management-alpine
+        image: rabbitmq:3.11.5-management-alpine
         networks:
             - nestify-network
         environment:
@@ -51,10 +90,39 @@ services:
         volumes:
             - rabbitmq-data:/var/lib/rabbitmq/mnesia/
 
+    db:
+        image: postgres:14.1-alpine
+        restart: unless-stopped
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=somesecretpassword
+            - POSTGRES_DB=postgres
+        networks:
+            - nestify-network
+
+    pgadmin:
+        container_name: pgadmin4_container
+        image: dpage/pgadmin4:5.5
+        restart: unless-stopped
+        environment:
+            - PGADMIN_DEFAULT_EMAIL: admin@admin.com
+            - PGADMIN_DEFAULT_PASSWORD: secret
+            - PGADMIN_LISTEN_PORT: 80
+        ports:
+            - "8090:80"
+        volumes:
+            - pgadmin-data:/var/lib/pgadmin
+        networks:
+            - nestify-network
+
 volumes:
     redis-data:
     rabbitmq-data:
+    postgres_data:
+    pgadmin-data:
 
 networks:
-  nestify-network:
-    name: nestify-network
+    nestify-network:
+        name: nestify-network
