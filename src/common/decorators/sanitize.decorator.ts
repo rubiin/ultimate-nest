@@ -1,13 +1,9 @@
 import { applyDecorators } from "@nestjs/common";
 import { Transform } from "class-transformer";
-import DOMPurify from "dompurify";
-import { JSDOM } from "jsdom";
-
-const window = new JSDOM("").window;
-const purify = DOMPurify(window);
+import DOMPurify from "isomorphic-dompurify";
 
 export function Sanitize() {
 	return applyDecorators(
-		Transform(({ value }) => purify.sanitize(value.trim()), { toClassOnly: true }),
+		Transform(({ value }) => DOMPurify.sanitize(value.trim()), { toClassOnly: true }),
 	);
 }

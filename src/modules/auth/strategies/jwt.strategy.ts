@@ -28,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 	 *
 	 */
 
-	async validate(payload: any) {
+	async validate(payload: { sub: number }) {
 		const { sub: id } = payload;
 
 		// Accept the JWT and attempt to validate it using the user service

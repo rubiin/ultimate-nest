@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
 		}
 
 		try {
-			const decoded: any = this.jwt.verify(token.split(" ")[1]);
+			const decoded: { idx: string } = this.jwt.verify(token.split(" ")[1]);
 
 			request.idx = decoded.idx;
 

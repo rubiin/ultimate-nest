@@ -9,7 +9,7 @@ import unprofane from "unprofane";
 
 @ValidatorConstraint({ async: true })
 class IsProfaneConstraint implements ValidatorConstraintInterface {
-	async validate(value: any | Array<any>) {
+	async validate(value: string | Array<string>) {
 		const isProfane = new unprofane({ lang: "all" });
 
 		if (Array.isArray(value)) {
