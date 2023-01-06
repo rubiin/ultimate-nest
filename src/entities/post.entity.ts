@@ -1,5 +1,13 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
-import { ArrayType, Collection, Entity, ManyToOne, OneToMany, Property, Rel } from "@mikro-orm/core";
+import {
+	ArrayType,
+	Collection,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	Property,
+	Rel,
+} from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
 import { Comment } from "./comment.entity";
