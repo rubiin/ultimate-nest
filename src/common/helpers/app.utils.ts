@@ -45,7 +45,7 @@ export const AppUtils = {
 				"The API description built using swagger OpenApi. You can find out more about Swagger at http://swagger.io",
 			)
 			.setVersion("1.0")
-			.addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'token')
+			.addBearerAuth({ type: "http", scheme: "bearer", bearerFormat: "JWT" }, "token")
 			.build();
 
 		const document = SwaggerModule.createDocument(app, options, {});
@@ -79,6 +79,7 @@ export const AppUtils = {
 				docExpansion: "list",
 				filter: true,
 				showRequestDuration: true,
+				persistAuthorization: true,
 			},
 		});
 	},
