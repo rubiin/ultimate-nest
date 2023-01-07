@@ -45,7 +45,14 @@ export const AppUtils = {
 				"The API description built using swagger OpenApi. You can find out more about Swagger at http://swagger.io",
 			)
 			.setVersion("1.0")
-			.addBearerAuth({ type: "http", scheme: "bearer", bearerFormat: "JWT" }, "token")
+			.addBearerAuth({
+				type: "http",
+				scheme: "Bearer",
+				bearerFormat: "JWT",
+				name: "JWT",
+				description: "Enter JWT token",
+				in: "header",
+			})
 			.build();
 
 		const document = SwaggerModule.createDocument(app, options, {});
@@ -81,6 +88,7 @@ export const AppUtils = {
 				showRequestDuration: true,
 				persistAuthorization: true,
 			},
+			customSiteTitle: "Nestify API Documentation",
 		});
 	},
 	ssl: (): { key: Buffer; cert: Buffer } | null => {
