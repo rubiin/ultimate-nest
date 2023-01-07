@@ -4,6 +4,7 @@ import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory, repl } from "@nestjs/core";
 import { ExpressAdapter, NestExpressApplication } from "@nestjs/platform-express";
+import bodyParser from "body-parser";
 import { useContainer } from "class-validator";
 import compression from "compression";
 import helmet from "helmet";
@@ -30,6 +31,8 @@ async function bootstrap() {
 
 	app.use(compression());
 	app.enable("trust proxy");
+	app.set("etag", "strong");
+	app.use(bodyParser.json({ limit: "10mb" }));
 	app.use(helmet());
 	app.enableCors({
 		credentials: true,

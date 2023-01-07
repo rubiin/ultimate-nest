@@ -1,8 +1,9 @@
 // create the mock CallHandler for the interceptor
 
 import { createMock } from "@golevelup/ts-jest";
-import { ExecutionContext, CallHandler } from "@nestjs/common";
+import { CallHandler, ExecutionContext } from "@nestjs/common";
 import { Request } from "express";
+
 import { RequestSanitizerInterceptor } from "./request-sanitizer.interceptor";
 
 describe("RequestSanitizerInterceptor", () => {
@@ -33,6 +34,7 @@ describe("RequestSanitizerInterceptor", () => {
 	});
 
 	const mockNext = createMock<CallHandler>();
+
 	beforeEach(() => {
 		interceptor = new RequestSanitizerInterceptor();
 	});

@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
 import { Request } from "express";
-import { Observable } from "rxjs";
 import DOMPurify from "isomorphic-dompurify";
+import { Observable } from "rxjs";
 
 export class RequestSanitizerInterceptor implements NestInterceptor {
 	private except: Array<any> = ["password", "captcha"];
@@ -56,6 +56,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 		if (this.isString(value) && !this.except.includes(key)) {
 			return DOMPurify.sanitize(value.trim());
 		}
+
 		return value;
 	}
 
