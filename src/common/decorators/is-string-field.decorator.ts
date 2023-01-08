@@ -10,8 +10,13 @@ interface IsStringFieldOptions {
 	required?: boolean;
 	each?: boolean;
 }
+/**
+ * It's a decorator that validates a string field
+ * @param {IsStringFieldOptions} [ops] - IsStringFieldOptions
+ * @returns A function that returns a decorator.
+ */
 
-export function IsStringField(ops?: IsStringFieldOptions) {
+export const IsStringField = (ops?: IsStringFieldOptions) => {
 	const options = { min: 2, max: 500, required: true, each: false, ...ops };
 	const decoratorsToApply = [
 		IsString({
@@ -42,4 +47,4 @@ export function IsStringField(ops?: IsStringFieldOptions) {
 	}
 
 	return applyDecorators(...decoratorsToApply);
-}
+};

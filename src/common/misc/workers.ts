@@ -11,13 +11,13 @@ export const hashStringByThread = (value: string): Promise<string> =>
 		timeCost: 4,
 	});
 
-function workerFunction(data: { functionName: string; input: string }) {
+const workerFunction = (data: { functionName: string; input: string }) => {
 	if (data.functionName === "hashString") {
 		return hashStringByThread(data.input);
 	} else {
 		throw new Error("function not found");
 	}
-}
+};
 
 const threadWorker = new ThreadWorker(workerFunction, { async: true });
 

@@ -29,7 +29,7 @@ class IsDateInFormatConstraint implements ValidatorConstraintInterface {
 	}
 }
 
-export function IsDateInFormat(format: string, validationOptions?: ValidationOptions) {
+export const IsDateInFormat = (format: string, validationOptions?: ValidationOptions) => {
 	return function (object: Record<string, any>, propertyName: string): void {
 		registerDecorator({
 			target: object.constructor,
@@ -39,4 +39,4 @@ export function IsDateInFormat(format: string, validationOptions?: ValidationOpt
 			validator: IsDateInFormatConstraint,
 		});
 	};
-}
+};
