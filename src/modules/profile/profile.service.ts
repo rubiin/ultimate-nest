@@ -50,9 +50,9 @@ export class ProfileService {
 	 * @param {User} loggedInUser - User - The user that is currently logged in.
 	 * @param {string} usernameToFollow - The username of the user to follow.
 	 * @returns A profile object with the following properties:
-	 * 	following: true,
-	 * 	avatar: followingUser.avatar,
-	 * 	username: followingUser.username,
+	 *    following: true,
+	 *    avatar: followingUser.avatar,
+	 *    username: followingUser.username,
 	 */
 	follow(loggedInUser: User, usernameToFollow: string): Observable<IProfileData> {
 		if (!usernameToFollow) {

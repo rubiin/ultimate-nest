@@ -15,6 +15,7 @@ import { CreateChatDto } from "./dto/create-chat.dto";
 })
 export class ChatGateway {
 	@WebSocketServer() server: Namespace;
+
 	constructor(private readonly chatService: ChatService) {}
 
 	@SubscribeMessage("createChat")

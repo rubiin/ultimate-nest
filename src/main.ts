@@ -33,6 +33,7 @@ async function bootstrap() {
 	app.enable("trust proxy");
 	app.set("etag", "strong");
 	app.use(bodyParser.json({ limit: "10mb" }));
+	app.use(bodyParser.urlencoded({ limit: "10mb" }));
 	app.use(helmet());
 	app.enableCors({
 		credentials: true,
