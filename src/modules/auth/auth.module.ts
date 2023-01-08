@@ -10,6 +10,7 @@ import { PassportModule } from "@nestjs/passport";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies";
+
 @Module({
 	imports: [PassportModule, NestJwtModule, OrmModule, UserModule, NestCaslModule],
 	controllers: [AuthController],

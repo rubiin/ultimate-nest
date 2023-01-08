@@ -4,6 +4,7 @@ import { Server, ServerOptions } from "socket.io";
 
 export class SocketIOAdapter extends IoAdapter {
 	private readonly logger = new Logger(SocketIOAdapter.name);
+
 	constructor(private app: INestApplicationContext) {
 		super(app);
 	}

@@ -69,6 +69,11 @@ export class User extends BaseEntity {
 	@ManyToMany(() => User, u => u.followers)
 	followed = new Collection<User>(this);
 
+	constructor(data?: Pick<User, "idx">) {
+		super();
+		Object.assign(this, data);
+	}
+
 	toJSON() {
 		const o = wrap<User>(this).toObject();
 
@@ -85,10 +90,5 @@ export class User extends BaseEntity {
 		if (arguments_.changeSet.payload?.password) {
 			this.password = await hash(this.password);
 		}
-	}
-
-	constructor(data?: Pick<User, "idx">) {
-		super();
-		Object.assign(this, data);
 	}
 }
