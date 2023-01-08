@@ -10,7 +10,7 @@
 		"build": "nest build",
 		"format": "prettier --write --cache \"src/**/*.ts\" \"test/**/*.ts\"",
 		"start": "nest start",
-		"lint": "eslint '{src,test}/**/*.ts' --cache --fix",
+		"lint": "eslint_d '{src,test}/**/*.ts' --cache --fix",
 		"start:hmr": "nest build --watch --webpack --webpackPath webpack-hmr.js",
 		"test": "jest --verbose",
 		"start:dev": "nest start --watch",
@@ -120,7 +120,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.48.0",
 		"@typescript-eslint/parser": "^5.48.0",
 		"cz-conventional-changelog": "3.3.0",
-		"eslint": "^8.31.0",
+		"eslint_d": "^12.2.1",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-import-resolver-typescript": "^3.5.2",
 		"eslint-plugin-import": "^2.26.0",
@@ -180,7 +180,7 @@
 	},
 	"lint-staged": {
 		"*.{ts,tsx}": [
-			"eslint '{src,test}/**/*.ts' --cache --fix",
+			"eslint_d '{src,test}/**/*.ts' --cache --fix",
 			"prettier --cache --write"
 		],
 		"*.{json,md,yaml,yml}": [
