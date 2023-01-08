@@ -24,7 +24,7 @@ class IsAfterConstraint implements ValidatorConstraintInterface {
 	}
 }
 
-export function IsAfter(property: string, validationOptions?: ValidationOptions) {
+export const IsAfter = (property: string, validationOptions?: ValidationOptions) => {
 	return function (object: Record<string, any>, propertyName: string): void {
 		registerDecorator({
 			target: object.constructor,
@@ -34,4 +34,4 @@ export function IsAfter(property: string, validationOptions?: ValidationOptions)
 			validator: IsAfterConstraint,
 		});
 	};
-}
+};

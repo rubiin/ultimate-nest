@@ -11,13 +11,13 @@ import { IPaginationLinks, IPaginationMeta } from "./pagination-option.interface
  * @param {string} [route] - The route to the endpoint.
  * @returns A new instance of the Pagination class.
  */
-export function createPaginationObject<T>(
+export const createPaginationObject = <T>(
 	items: T[],
 	totalItems: number,
 	currentPage: number,
 	limit: number,
 	route = "/",
-): Pagination<T> {
+): Pagination<T> => {
 	const totalPages = Math.ceil(totalItems / limit);
 
 	const hasFirstPage = route;
@@ -43,4 +43,4 @@ export function createPaginationObject<T>(
 	};
 
 	return new Pagination(meta, items, route && routes);
-}
+};

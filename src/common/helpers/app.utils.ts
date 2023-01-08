@@ -73,7 +73,7 @@ export const AppUtils = {
 				authentication: true,
 				hostname: "nestify",
 				uriPath: "/stats",
-				onAuthenticate: function (_request: any, username: string, password: string) {
+				onAuthenticate: (_request: any, username: string, password: string) => {
 					// simple check for username and password
 					return username === user && password === pass;
 				},

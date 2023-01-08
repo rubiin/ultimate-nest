@@ -17,7 +17,7 @@ const logger = new Logger(Pagination.name);
  * @returns A function that takes in an array of items and an options object and returns a promise that
  * resolves to a pagination object.
  */
-export function paginate<T>(items: T[], options: IPaginationOptions): Pagination<T> {
+export const paginate = <T>(items: T[], options: IPaginationOptions): Pagination<T> => {
 	const [page, limit, route] = resolveOptions(options);
 
 	if (page < 1) {
@@ -25,21 +25,21 @@ export function paginate<T>(items: T[], options: IPaginationOptions): Pagination
 	}
 
 	return createPaginationObject<T>(items, items.length, page, limit, route);
-}
+};
 
-function resolveOptions(options: IPaginationOptions): [number, number, string] {
+const resolveOptions = (options: IPaginationOptions): [number, number, string] => {
 	const page = resolveNumericOption(options, "page", DEFAULT_PAGE);
 	const limit = resolveNumericOption(options, "limit", DEFAULT_LIMIT);
 	const route = options.route;
 
 	return [page, limit, route];
-}
+};
 
-function resolveNumericOption(
+const resolveNumericOption = (
 	options: IPaginationOptions,
 	key: "page" | "limit",
 	defaultValue: number,
-): number {
+): number => {
 	const value = options[key];
 	const resolvedValue = Number(value);
 
@@ -50,4 +50,4 @@ function resolveNumericOption(
 	);
 
 	return defaultValue;
-}
+};

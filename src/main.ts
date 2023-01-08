@@ -15,7 +15,7 @@ import { SocketIOAdapter } from "./socket-io.adapter";
 
 declare const module: any;
 
-async function bootstrap() {
+const bootstrap = async () => {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
 		httpsOptions: AppUtils.ssl(),
 		bufferLogs: true,
@@ -98,6 +98,6 @@ async function bootstrap() {
 	new Logger("Bootstrap").log(
 		`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
 	);
-}
+};
 
 (async () => await bootstrap())();
