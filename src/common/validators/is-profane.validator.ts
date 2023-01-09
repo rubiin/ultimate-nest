@@ -16,7 +16,7 @@ class IsProfaneConstraint implements ValidatorConstraintInterface {
 			return value.some(v => isProfane.check(v));
 		}
 
-		return isProfane.check(value);
+		return !isProfane.check(value);
 	}
 
 	defaultMessage(arguments_: ValidationArguments) {

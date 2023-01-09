@@ -33,6 +33,6 @@ export class NestFirebaseService implements INestFirebaseService {
 			}
 		}
 
-return this._firebaseConnection;
+		return this._firebaseConnection;
 	}
 }
