@@ -20,7 +20,7 @@ export class PostController {
 
 	@Get()
 	@ApiPaginatedResponse(PostEntity, "Post list")
-	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<PostEntity>> {
+	findAll(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<PostEntity>> {
 		return this.postService.findAll(pageOptionsDto);
 	}
 
@@ -56,7 +56,7 @@ export class PostController {
 		notFound: "Post doesn't exist.",
 		params: ["idx"],
 	})
-	editOne(@UUIDParam("idx") index: string, @Body() dto: EditPostDto): Observable<PostEntity> {
+	update(@UUIDParam("idx") index: string, @Body() dto: EditPostDto): Observable<PostEntity> {
 		return this.postService.update(index, dto);
 	}
 
@@ -66,7 +66,7 @@ export class PostController {
 		notFound: "Post doesn't exist.",
 		params: ["idx"],
 	})
-	deleteOne(@UUIDParam("idx") index: string): Observable<PostEntity> {
+	remove(@UUIDParam("idx") index: string): Observable<PostEntity> {
 		return this.postService.remove(index);
 	}
 

@@ -8,7 +8,7 @@ import { UserFactory } from "../factories/user.factory";
 role */
 export class AdminSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
-		await new UserFactory(em).createOne({
+		await new UserFactory(em).create({
 			email: "roobin.bhandari@gmail.com",
 			password: process.env.USER_PASSWORD,
 			firstName: "Rubin",
