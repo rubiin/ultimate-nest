@@ -40,15 +40,15 @@ import { ThrottlerStorageRedisService } from "nestjs-throttler-storage-redis";
 		NestPinoModule,
 		NestI18nModule,
 		ChatModule,
+		NestCacheModule,
+		NestCloudinaryModule,
+		NestSentryModule,
+		NestCaslModule,
 		HttpModule.register({
 			timeout: 5000,
 			maxRedirects: 5,
 			withCredentials: false,
 		}),
-		NestCacheModule,
-		NestCloudinaryModule,
-		NestSentryModule,
-		NestCaslModule,
 		ServeStaticModule.forRoot({
 			rootPath: join(__dirname, "resources"),
 			serveStaticOptions: {

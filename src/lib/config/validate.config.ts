@@ -5,6 +5,7 @@ export const validationSchema = Joi.object({
 	APP_PORT: Joi.number().required(),
 	APP_PREFIX: Joi.string().required(),
 	CLIENT_URL: Joi.string().required(),
+	ALLOWED_HOSTS: Joi.string().required(),
 	SWAGGER_USER: Joi.string().required(),
 	SWAGGER_PASSWORD: Joi.string().required(),
 	DB_HOST: Joi.string().required(),
