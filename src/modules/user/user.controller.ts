@@ -11,7 +11,7 @@ import { fileValidatorPipe } from "@common/misc";
 import { IFile } from "@common/types";
 import { Roles } from "@common/types/enums";
 import { User } from "@entities";
-import { Action, CheckPolicies, GenericPolicyHandler, UpdateUserPolicyHandler } from "@lib/casl";
+import { Action, CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Post, Put, Query, UploadedFile } from "@nestjs/common";
 import { Observable } from "rxjs";
@@ -81,7 +81,7 @@ export class UserController {
 		notFound: "User does not exist.",
 		params: ["idx"],
 	})
-	@CheckPolicies(new UpdateUserPolicyHandler())
+	@CheckPolicies(new GenericPolicyHandler(User, Action.Update))
 	editOne(@UUIDParam("idx") index: string, @Body() dto: EditUserDto): Observable<User> {
 		return this.userService.editOne(index, dto);
 	}

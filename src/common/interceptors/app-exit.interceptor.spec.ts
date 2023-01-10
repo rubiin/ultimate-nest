@@ -1,6 +1,7 @@
 import { createMock } from "@golevelup/ts-jest";
 import { CallHandler, ExecutionContext } from "@nestjs/common";
-import { of, throwError } from "rxjs";
+import { of } from "rxjs";
+
 import { ExitInterceptor } from "./app-exit.interceptor";
 
 describe("ExitInterceptor", () => {
@@ -18,8 +19,8 @@ describe("ExitInterceptor", () => {
 
 	describe("intercept", () => {
 		it("should pass", () => {
-			interceptor.intercept(mockContext, mockNext).subscribe(res => {
-				expect(res).toEqual({});
+			interceptor.intercept(mockContext, mockNext).subscribe(result => {
+				expect(result).toEqual({});
 			});
 		});
 	});

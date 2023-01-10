@@ -1,5 +1,5 @@
 import { JwtAuthGuard } from "@common/guards/jwt.guard";
-import { PoliciesGuard } from "@lib/casl/PoliciesGuard";
+import { PoliciesGuard } from "@lib/casl/policies.guard";
 import { applyDecorators, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiUnauthorizedResponse } from "@nestjs/swagger";
 

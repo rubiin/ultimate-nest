@@ -1,6 +1,7 @@
 import { createMock } from "@golevelup/ts-jest";
 import { CallHandler, ExecutionContext } from "@nestjs/common";
 import { of } from "rxjs";
+
 import { TimeoutInterceptor } from "./timeout.interceptor";
 
 describe("TimeoutInterceptor", () => {
@@ -18,8 +19,8 @@ describe("TimeoutInterceptor", () => {
 
 	describe("intercept", () => {
 		it("should pass", () => {
-			interceptor.intercept(mockContext, mockNext).subscribe(res => {
-				expect(res).toEqual({});
+			interceptor.intercept(mockContext, mockNext).subscribe(result => {
+				expect(result).toEqual({});
 			});
 		});
 	});
