@@ -6,7 +6,7 @@ import {
 	MongoAbility,
 } from "@casl/ability";
 import { Roles } from "@common/types/enums/permission.enum";
-import { Comment,Post, User } from "@entities";
+import { Comment, Post, User } from "@entities";
 import { Injectable } from "@nestjs/common";
 
 export type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment> | "all";

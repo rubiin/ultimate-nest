@@ -24,6 +24,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { ThrottlerModule } from "@nestjs/throttler";
+import { ThrottlerStorageRedisService } from "nestjs-throttler-storage-redis";
 
 @Module({
 	imports: [
@@ -53,6 +54,7 @@ import { ThrottlerModule } from "@nestjs/throttler";
 			serveStaticOptions: {
 				maxAge: 86_400, // 1 day
 			},
+			exclude: ["/v1*", "/api*", "/graphql", "/docs*", "/health*", "/swagger*"],
 		}),
 		ThrottlerModule.forRootAsync({
 			imports: [ConfigModule],
@@ -61,6 +63,7 @@ import { ThrottlerModule } from "@nestjs/throttler";
 				ttl: config.get("throttle.ttl"),
 				limit: config.get("throttle.limit"),
 				ignoreUserAgents: [/nestify/i],
+				storage: new ThrottlerStorageRedisService(config.get("redis.uri")),
 			}),
 		}),
 	],

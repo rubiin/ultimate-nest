@@ -18,7 +18,7 @@ import { from, map, Observable, switchMap } from "rxjs";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
-export class UserService implements CommonServiceInterface<User>{
+export class UserService implements CommonServiceInterface<User> {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
