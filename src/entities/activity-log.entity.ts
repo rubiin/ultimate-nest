@@ -33,4 +33,9 @@ export class ActivityLog extends BaseEntity {
 
 	@ManyToOne()
 	user!: Rel<User>;
+
+	constructor(partial?: Partial<ActivityLog>) {
+		super();
+		Object.assign(this, partial);
+	}
 }
