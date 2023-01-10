@@ -12,7 +12,7 @@ import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
-export class PostService implements CommonServiceInterface<Post>{
+export class PostService implements CommonServiceInterface<Post> {
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: BaseRepository<Post>,
