@@ -2,6 +2,7 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database/base.repository";
 import { EmailTemplateEnum } from "@common/types/enums/misc.enum";
 import { IFile } from "@common/types/interfaces";
+import { CommonServiceInterface } from "@common/types/interfaces/service.interface";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createPaginationObject, Pagination } from "@lib/pagination";
@@ -17,7 +18,7 @@ import { from, map, Observable, switchMap } from "rxjs";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
-export class UserService {
+export class UserService implements CommonServiceInterface<User>{
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
@@ -33,7 +34,7 @@ export class UserService {
 	 * @param {PageOptionsDto}  - PageOptionsDto - This is a DTO that contains the following properties:
 	 * @returns An observable of a pagination object.
 	 */
-	getMany({
+	findAll({
 		limit,
 		offset,
 		order,
@@ -66,7 +67,7 @@ export class UserService {
 	 * @param {string} index - string - the index of the user you want to get
 	 * @returns Observable<User>
 	 */
-	getOne(index: string): Observable<User> {
+	findOne(index: string): Observable<User> {
 		return from(
 			this.userRepository.findOne({
 				idx: index,
@@ -93,7 +94,7 @@ export class UserService {
 	 * @param dto - CreateUserDto & { image: IFile }
 	 * @returns The user object
 	 */
-	async createOne(dto: CreateUserDto & { image: IFile }): Promise<User> {
+	async create(dto: CreateUserDto & { image: IFile }): Promise<User> {
 		const { image, ...rest } = dto;
 		const user = this.userRepository.create(rest);
 
@@ -135,8 +136,8 @@ export class UserService {
 	 * @param {EditUserDto} dto - EditUserDto
 	 * @returns Observable<User>
 	 */
-	editOne(index: string, dto: EditUserDto): Observable<User> {
-		return this.getOne(index).pipe(
+	update(index: string, dto: EditUserDto): Observable<User> {
+		return this.findOne(index).pipe(
 			switchMap(user => {
 				this.userRepository.assign(user, dto);
 
@@ -152,8 +153,8 @@ export class UserService {
 	 * @param {string} index - string - The index of the user to delete.
 	 * @returns Observable<User>
 	 */
-	deleteOne(index: string): Observable<User> {
-		return this.getOne(index).pipe(
+	remove(index: string): Observable<User> {
+		return this.findOne(index).pipe(
 			switchMap(user => {
 				return from(this.userRepository.softRemoveAndFlush(user)).pipe(map(() => user));
 			}),
