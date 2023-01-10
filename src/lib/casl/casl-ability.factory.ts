@@ -6,10 +6,10 @@ import {
 	MongoAbility,
 } from "@casl/ability";
 import { Roles } from "@common/types/enums/permission.enum";
-import { Post, User } from "@entities";
+import { Comment,Post, User } from "@entities";
 import { Injectable } from "@nestjs/common";
 
-export type Subjects = InferSubjects<typeof User | typeof Post> | "all";
+export type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment> | "all";
 
 export enum Action {
 	Manage = "manage",
@@ -24,13 +24,29 @@ export type AppAbility = MongoAbility<[Action, Subjects]>;
 @Injectable()
 export class CaslAbilityFactory {
 	createForUser(user: User) {
-		const { can, build } = new AbilityBuilder<AppAbility>(createMongoAbility);
+		const { can, cannot, build } = new AbilityBuilder<AppAbility>(createMongoAbility);
+
+		/* Giving the user the ability to read and write to everything if they are an admin. */
 
 		if (user.roles.includes(Roles.ADMIN)) {
 			can(Action.Manage, "all"); // read-write access to everything
 		} else {
 			can(Action.Read, "all"); // read-only access to everything
 		}
+
+		// user specific permissions
+		can(Action.Update, User, { id: user.id });
+		cannot(Action.Delete, User);
+
+		// post specific permissions
+		can(Action.Delete, Post, { author: user });
+		can(Action.Update, Post, { author: user });
+		can(Action.Update, Post, { author: user });
+
+		// comment specific permissions
+		can(Action.Update, Comment, { author: user });
+		can(Action.Update, Comment, { author: user });
+		can(Action.Update, Comment, { author: user });
 
 		return build({
 			detectSubjectType: item => item.constructor as ExtractSubjectType<Subjects>,
