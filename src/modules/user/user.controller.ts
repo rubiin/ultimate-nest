@@ -26,7 +26,7 @@ export class UserController {
 	@ApiPaginatedResponse(User, "Users list")
 	@Get()
 	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<User>> {
-		return this.userService.getMany(pageOptionsDto);
+		return this.userService.findAll(pageOptionsDto);
 	}
 
 	@Public()
@@ -41,7 +41,7 @@ export class UserController {
 		@UploadedFile(fileValidatorPipe({}))
 		image: IFile,
 	) {
-		return this.userService.createOne({
+		return this.userService.create({
 			...dto,
 			roles: [Roles.AUTHOR],
 			image,
@@ -56,7 +56,7 @@ export class UserController {
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Read))
 	getOne(@UUIDParam("idx") index: string): Observable<User> {
-		return this.userService.getOne(index);
+		return this.userService.findOne(index);
 	}
 
 	@Post()
@@ -71,7 +71,7 @@ export class UserController {
 		@UploadedFile(fileValidatorPipe({}))
 		image: IFile,
 	) {
-		return this.userService.createOne({ ...dto, image });
+		return this.userService.create({ ...dto, image });
 	}
 
 	@Put(":idx")
@@ -83,7 +83,7 @@ export class UserController {
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Update))
 	editOne(@UUIDParam("idx") index: string, @Body() dto: EditUserDto): Observable<User> {
-		return this.userService.editOne(index, dto);
+		return this.userService.update(index, dto);
 	}
 
 	@Delete(":idx")
@@ -94,6 +94,6 @@ export class UserController {
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Delete))
 	deleteOne(@UUIDParam("idx") index: string): Observable<User> {
-		return this.userService.deleteOne(index);
+		return this.userService.remove(index);
 	}
 }

@@ -1,5 +1,6 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database/base.repository";
+import { CommonServiceInterface } from "@common/types/interfaces/service.interface";
 import { Comment, Post, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
@@ -11,7 +12,7 @@ import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
-export class PostService {
+export class PostService implements CommonServiceInterface<Post>{
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: BaseRepository<Post>,
@@ -29,7 +30,7 @@ export class PostService {
 	 * offset.
 	 * @returns An observable of a pagination object.
 	 */
-	getMany({
+	findAll({
 		page,
 		order,
 		limit,
@@ -59,7 +60,7 @@ export class PostService {
 	}
 
 	/* Finding a post by id, and then returning the comments of that post */
-	getById(index: string, populate: AutoPath<Post, keyof Post>[] = []): Observable<Post> {
+	findOne(index: string, populate: AutoPath<Post, keyof Post>[] = []): Observable<Post> {
 		return from(
 			this.postRepository.findOne(
 				{
@@ -90,7 +91,7 @@ export class PostService {
 	 * @param {User} author - User - this is the user that is currently logged in.
 	 * @returns The post object
 	 */
-	createOne(dto: CreatePostDto, author: User): Observable<Post> {
+	create(dto: CreatePostDto, author: User): Observable<Post> {
 		const post = this.postRepository.create({ ...dto, author });
 
 		return from(this.postRepository.persistAndFlush(post)).pipe(map(() => post));
@@ -103,8 +104,8 @@ export class PostService {
 	 * @param {EditPostDto} dto - EditPostDto
 	 * @returns Observable<Post>
 	 */
-	editOne(index: string, dto: EditPostDto): Observable<Post> {
-		return this.getById(index).pipe(
+	update(index: string, dto: EditPostDto): Observable<Post> {
+		return this.findOne(index).pipe(
 			switchMap(post => {
 				this.postRepository.assign(post, dto);
 
@@ -121,8 +122,8 @@ export class PostService {
 	 * @param {string} index - string - The index of the post to delete.
 	 * @returns Observable<Post>
 	 */
-	deleteOne(index: string): Observable<Post> {
-		return this.getById(index).pipe(
+	remove(index: string): Observable<Post> {
+		return this.findOne(index).pipe(
 			switchMap(post => {
 				return from(this.postRepository.softRemoveAndFlush(post)).pipe(map(() => post));
 			}),
@@ -222,7 +223,7 @@ export class PostService {
 	 * @returns Post
 	 */
 	addComment(userId: number, index: string, dto: CreateCommentDto): Observable<Post> {
-		const post$ = this.getById(index);
+		const post$ = this.findOne(index);
 		const user$ = from(this.userRepository.findOneOrFail(userId));
 
 		return forkJoin([post$, user$]).pipe(
@@ -242,7 +243,7 @@ export class PostService {
 	 * @param {string} index - string - The index of the post to delete the comment from.
 	 */
 	deleteComment(index: string) {
-		return this.getById(index, ["comments"]).pipe(
+		return this.findOne(index, ["comments"]).pipe(
 			switchMap(post => {
 				const comment = this.commentRepository.getReference(post.id);
 
