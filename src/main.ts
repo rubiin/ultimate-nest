@@ -25,6 +25,8 @@ const bootstrap = async () => {
 
 	const configService = app.get(ConfigService);
 
+	const logger = new Logger("Bootstrap");
+
 	// ======================================================
 	// security
 	// ======================================================
@@ -37,8 +39,9 @@ const bootstrap = async () => {
 	app.use(helmet());
 	app.enableCors({
 		credentials: true,
+		methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
 		maxAge: 3600,
-		origin: "*", // for development use only
+		origin: configService.get<string>("app.allowedHosts"),
 	});
 	// =====================================================
 	// configureNestGlobals
@@ -95,9 +98,8 @@ const bootstrap = async () => {
 
 	await app.listen(port);
 
-	new Logger("Bootstrap").log(
-		`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
-	);
+	logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+	logger.log(`Accepting request only from: ${configService.get<string>("app.allowedHosts")}`);
 };
 
 (async () => await bootstrap())();

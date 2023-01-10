@@ -1,7 +1,7 @@
+import { CustomThrottlerGuard } from "@common/guards";
 import { SharedModule } from "@modules/shared/shared.module";
 import { CacheInterceptor, Module } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
-import { ThrottlerGuard } from "@nestjs/throttler";
 import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 
 @Module({
@@ -17,7 +17,7 @@ import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 		},
 		{
 			provide: APP_GUARD,
-			useClass: ThrottlerGuard,
+			useClass: CustomThrottlerGuard,
 		},
 	],
 })
