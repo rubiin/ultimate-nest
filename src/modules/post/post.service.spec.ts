@@ -60,10 +60,10 @@ describe("PostService", () => {
 		expect(service).toBeDefined();
 	});
 
-	it("should getById", () => {
+	it("should findOne", () => {
 		const findOneSpy = mockPostRepo.findOne;
 
-		service.getById("postId").subscribe(result => {
+		service.findOne("postId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedPost, idx: "postId" });
 			expect(findOneSpy).toBeCalledWith(
 				{ idx: "postId", isObsolete: false, isActive: true },
@@ -78,7 +78,7 @@ describe("PostService", () => {
 			total: 100,
 		});
 
-		service.getMany(query).subscribe(result => {
+		service.findAll(query).subscribe(result => {
 			expect(result.meta).toBeDefined();
 			expect(result.links).toBeDefined();
 			expect(result.items).toStrictEqual([]);
@@ -87,7 +87,7 @@ describe("PostService", () => {
 	});
 
 	it("should remove post", () => {
-		service.deleteOne("postId").subscribe(result => {
+		service.remove("postId").subscribe(result => {
 			expect(result).toStrictEqual({
 				...mockedPost,
 				idx: "postId",
@@ -108,7 +108,7 @@ describe("PostService", () => {
 			return Object.assign(entity, data);
 		});
 
-		service.editOne("postId", { content: "new content" }).subscribe(result => {
+		service.update("postId", { content: "new content" }).subscribe(result => {
 			expect(result).toStrictEqual({
 				...mockedPost,
 				idx: "postId",
