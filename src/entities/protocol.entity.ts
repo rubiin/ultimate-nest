@@ -23,4 +23,9 @@ export class Protocol extends BaseEntity {
 
 	@Property()
 	mpinMaxRetry!: number;
+
+	constructor(partial?: Partial<Protocol>) {
+		super();
+		Object.assign(this, partial);
+	}
 }

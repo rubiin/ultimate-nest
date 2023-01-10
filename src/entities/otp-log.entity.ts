@@ -18,4 +18,9 @@ export class OtpLog extends BaseEntity {
 
 	@Property()
 	isUsed!: boolean;
+
+	constructor(partial?: Partial<OtpLog>) {
+		super();
+		Object.assign(this, partial);
+	}
 }

@@ -16,7 +16,7 @@ export interface ValidationArguments<
 	constraints: Constraints;
 }
 
-type IsUniqueValidationContext = ValidationArguments<Parameters<typeof IsUnique>>;
+export type IsUniqueValidationContext = ValidationArguments<Parameters<typeof IsUnique>>;
 
 export const IsUnique =
 	<Entity>(entityType: () => Type<Entity>, field: keyof Entity, options?: ValidationOptions) =>
@@ -38,9 +38,9 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
 		context: IsUniqueValidationContext,
 	): Promise<boolean> {
 		const [entityType, field] = context.constraints;
-		const result = await this.em.findOne(entityType(), { [field]: value });
+		const result = await this.em.count(entityType(), { [field]: value });
 
-		return !result;
+		return result === 0;
 	}
 
 	defaultMessage(context: IsUniqueValidationContext): string {
