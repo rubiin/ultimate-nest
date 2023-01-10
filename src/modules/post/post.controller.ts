@@ -21,7 +21,7 @@ export class PostController {
 	@Get()
 	@ApiPaginatedResponse(PostEntity, "Post list")
 	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<PostEntity>> {
-		return this.postService.getMany(pageOptionsDto);
+		return this.postService.findAll(pageOptionsDto);
 	}
 
 	@Get(":idx")
@@ -31,7 +31,7 @@ export class PostController {
 		params: ["idx"],
 	})
 	getById(@UUIDParam("idx") index: string): Observable<PostEntity> {
-		return this.postService.getById(index);
+		return this.postService.findOne(index);
 	}
 
 	@Get(":idx/comments")
@@ -47,7 +47,7 @@ export class PostController {
 	@Post()
 	@SwaggerResponse({ operation: "create post" })
 	async createPost(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
-		return this.postService.createOne(dto, author);
+		return this.postService.create(dto, author);
 	}
 
 	@Put(":idx")
@@ -57,7 +57,7 @@ export class PostController {
 		params: ["idx"],
 	})
 	editOne(@UUIDParam("idx") index: string, @Body() dto: EditPostDto): Observable<PostEntity> {
-		return this.postService.editOne(index, dto);
+		return this.postService.update(index, dto);
 	}
 
 	@Delete(":idx")
@@ -67,7 +67,7 @@ export class PostController {
 		params: ["idx"],
 	})
 	deleteOne(@UUIDParam("idx") index: string): Observable<PostEntity> {
-		return this.postService.deleteOne(index);
+		return this.postService.remove(index);
 	}
 
 	@Post(":idx/comments")
