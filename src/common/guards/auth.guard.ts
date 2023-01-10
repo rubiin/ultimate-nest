@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { TokenExpiredError } from "jsonwebtoken";
 
 /**
  *
@@ -28,7 +29,7 @@ export class AuthGuard implements CanActivate {
 			return true;
 		} catch (error_) {
 			const error =
-				error_?.name === "TokenExpiredError"
+				error_ instanceof TokenExpiredError
 					? new UnauthorizedException("The session has expired. Please re-login")
 					: new UnauthorizedException("Token malformed");
 

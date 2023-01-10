@@ -1,6 +1,7 @@
 import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
+import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {
@@ -20,9 +21,9 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
 
 	handleRequest(error: any, user: any, info: any) {
 		if (error || info || !user) {
-			if (info?.name === "TokenExpiredError") {
-				throw new UnauthorizedException("The session has expired. Please relogin");
-			} else if (info?.name === "JsonWebTokenError") {
+			if (info instanceof TokenExpiredError) {
+				throw new UnauthorizedException("The session has expired. Please login");
+			} else if (info instanceof JsonWebTokenError) {
 				throw new UnauthorizedException("Token malformed");
 			} else {
 				throw new UnauthorizedException(info?.message);

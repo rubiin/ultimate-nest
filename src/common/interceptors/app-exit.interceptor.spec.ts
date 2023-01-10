@@ -1,10 +1,10 @@
 import { createMock } from "@golevelup/ts-jest";
 import { CallHandler, ExecutionContext } from "@nestjs/common";
-import { of } from "rxjs";
-import { TimeoutInterceptor } from "./timeout.interceptor";
+import { of, throwError } from "rxjs";
+import { ExitInterceptor } from "./app-exit.interceptor";
 
-describe("TimeoutInterceptor", () => {
-	let interceptor: TimeoutInterceptor;
+describe("ExitInterceptor", () => {
+	let interceptor: ExitInterceptor;
 
 	const mockNext = createMock<CallHandler>({
 		handle: jest.fn(() => of({})),
@@ -13,7 +13,7 @@ describe("TimeoutInterceptor", () => {
 	const mockContext = createMock<ExecutionContext>({});
 
 	beforeEach(() => {
-		interceptor = new TimeoutInterceptor();
+		interceptor = new ExitInterceptor();
 	});
 
 	describe("intercept", () => {
