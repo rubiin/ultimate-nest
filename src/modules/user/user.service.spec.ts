@@ -62,10 +62,10 @@ describe("UserService", () => {
 		expect(service).toBeDefined();
 	});
 
-	it("should getById", () => {
+	it("should findOne", () => {
 		const findOneSpy = mockUserRepo.findOne;
 
-		service.getOne("userId").subscribe(result => {
+		service.findOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
 			expect(findOneSpy).toBeCalledWith({ idx: "userId", isObsolete: false, isActive: true });
 		});
@@ -79,7 +79,7 @@ describe("UserService", () => {
 				} as any),
 		);
 
-		const result = await service.createOne({ ...mockedUser, image: mockFile });
+		const result = await service.create({ ...mockedUser, image: mockFile });
 
 		expect(result).toStrictEqual({ ...mockedUser });
 		expect(createSpy).toBeCalledWith({ ...mockedUser });
@@ -89,7 +89,7 @@ describe("UserService", () => {
 	it("should edit user", async () => {
 		mockUserRepo.assign.mockImplementation((entity, dto) => Object.assign(entity, dto));
 
-		service.editOne("userId", { firstName: "updated" }).subscribe(result => {
+		service.update("userId", { firstName: "updated" }).subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
 			expect(mockUserRepo.assign).toBeCalled();
 			expect(mockUserRepo.flush).toBeCalled();
@@ -101,7 +101,7 @@ describe("UserService", () => {
 			total: 100,
 		});
 
-		service.getMany(query).subscribe(result => {
+		service.findAll(query).subscribe(result => {
 			expect(result.meta).toBeDefined();
 			expect(result.links).toBeDefined();
 			expect(result.items).toStrictEqual([]);
@@ -110,7 +110,7 @@ describe("UserService", () => {
 	});
 
 	it("should remove user", () => {
-		service.deleteOne("userId").subscribe(result => {
+		service.remove("userId").subscribe(result => {
 			expect(result).toStrictEqual({
 				...mockedUser,
 				idx: "userId",
