@@ -25,7 +25,7 @@ export class UserController {
 
 	@ApiPaginatedResponse(User, "Users list")
 	@Get()
-	getMany(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<User>> {
+	findAll(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<User>> {
 		return this.userService.findAll(pageOptionsDto);
 	}
 
@@ -55,7 +55,7 @@ export class UserController {
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Read))
-	getOne(@UUIDParam("idx") index: string): Observable<User> {
+	findOne(@UUIDParam("idx") index: string): Observable<User> {
 		return this.userService.findOne(index);
 	}
 
@@ -66,7 +66,7 @@ export class UserController {
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Create))
 	@ApiFile("avatar")
-	async createOne(
+	async create(
 		@Body() dto: CreateUserDto,
 		@UploadedFile(fileValidatorPipe({}))
 		image: IFile,
@@ -82,7 +82,7 @@ export class UserController {
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Update))
-	editOne(@UUIDParam("idx") index: string, @Body() dto: EditUserDto): Observable<User> {
+	update(@UUIDParam("idx") index: string, @Body() dto: EditUserDto): Observable<User> {
 		return this.userService.update(index, dto);
 	}
 
@@ -93,7 +93,7 @@ export class UserController {
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Delete))
-	deleteOne(@UUIDParam("idx") index: string): Observable<User> {
+	remove(@UUIDParam("idx") index: string): Observable<User> {
 		return this.userService.remove(index);
 	}
 }

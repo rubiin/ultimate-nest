@@ -130,7 +130,7 @@ export class UserService implements CommonServiceInterface<User>{
 	/**
 	 * "Get a user, assign the DTO to it, and then flush the changes to the database."
 	 *
-	 * The first thing we do is get the user. We do this by calling the `getOne` function we created
+	 * The first thing we do is get the user. We do this by calling the `findOne` function we created
 	 * earlier
 	 * @param {string} index - string - the index of the user to edit
 	 * @param {EditUserDto} dto - EditUserDto
@@ -149,7 +149,7 @@ export class UserService implements CommonServiceInterface<User>{
 	/**
 	 * "Get the user, then delete it."
 	 *
-	 * The first thing we do is get the user. We do this by calling the `getOne` function we just created
+	 * The first thing we do is get the user. We do this by calling the `findOne` function we just created
 	 * @param {string} index - string - The index of the user to delete.
 	 * @returns Observable<User>
 	 */
