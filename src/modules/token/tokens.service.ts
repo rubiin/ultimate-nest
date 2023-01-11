@@ -152,7 +152,7 @@ export class TokensService {
 	}
 
 	/**
-	 * It deletes the refresh token for the given user, and then returns the user
+	 * It deletes all the refresh token for the given user, and then returns the user
 	 * @param {User} user - The user object that we want to delete the refresh token for.
 	 * @returns The user object.
 	 */
@@ -194,7 +194,7 @@ export class TokensService {
 	 * @param {RefreshTokenPayload} payload - RefreshTokenPayload
 	 * @returns A user object
 	 */
-	private getUserFromRefreshTokenPayload(payload: RefreshTokenPayload): Observable<User> {
+	getUserFromRefreshTokenPayload(payload: RefreshTokenPayload): Observable<User> {
 		const subId = payload.sub;
 
 		if (!subId) {
@@ -218,7 +218,7 @@ export class TokensService {
 	 * @param {RefreshTokenPayload} payload - RefreshTokenPayload
 	 * @returns Observable<RefreshToken | null>
 	 */
-	private getStoredTokenFromRefreshTokenPayload(
+	getStoredTokenFromRefreshTokenPayload(
 		payload: RefreshTokenPayload,
 	): Observable<RefreshToken | null> {
 		const tokenId = payload.jti;
@@ -231,6 +231,6 @@ export class TokensService {
 			);
 		}
 
-		return from(this.refreshTokenRepo.findTokenByIdx(tokenId));
+		return this.refreshTokenRepo.findTokenById(tokenId);
 	}
 }
