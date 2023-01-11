@@ -8,6 +8,7 @@ import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
 import { of } from "rxjs";
+
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 describe("TokensService", () => {
@@ -68,7 +69,7 @@ describe("TokensService", () => {
 	it("should generate refresh token", () => {
 		mockJwtService.signAsync.mockResolvedValueOnce("jwt token");
 		mockRefreshRepo.createRefreshToken.mockImplementation(() => of(refreshToken));
-		service.generateRefreshToken(loggedInUser, 10000).subscribe(result => {
+		service.generateRefreshToken(loggedInUser, 10_000).subscribe(result => {
 			expect(result).toStrictEqual("jwt token");
 			expect(mockJwtService.signAsync).toBeCalledTimes(1);
 		});
@@ -132,9 +133,25 @@ describe("TokensService", () => {
 
 		service.getUserFromRefreshTokenPayload(refreshTokenPayload).subscribe(result => {
 			expect(mockUserRepo.findOne).toBeCalledTimes(1);
+			expect(result).toEqual(loggedInUser);
 			expect(mockUserRepo.findOne).toBeCalledWith({
 				id: refreshTokenPayload.sub,
 			});
+		});
+	});
+
+	it("should decode refresh token", () => {
+		mockJwtService.verifyAsync.mockResolvedValueOnce({
+			jti: 1,
+			sub: 1,
+		});
+		service.decodeRefreshToken("refreshTokenPayload").subscribe(result => {
+			expect(result).toStrictEqual({
+				jti: 1,
+				sub: 1,
+			});
+			expect(mockJwtService.verifyAsync).toBeCalledTimes(1);
+			expect(mockJwtService.verifyAsync).toBeCalledWith("refreshTokenPayload");
 		});
 	});
 });

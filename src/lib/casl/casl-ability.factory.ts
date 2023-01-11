@@ -9,7 +9,7 @@ import { Roles } from "@common/types/enums/permission.enum";
 import { Comment, Post, User } from "@entities";
 import { Injectable } from "@nestjs/common";
 
-export type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment> | "all";
+type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment> | "all";
 
 export enum Action {
 	Manage = "manage",

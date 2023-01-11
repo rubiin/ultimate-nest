@@ -55,7 +55,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * @param entity
 	 * @returns
 	 */
-	delete(entity: T) {
+	delete(entity: T): T {
 		this.remove(entity);
 
 		return entity;

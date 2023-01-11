@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 
 @Module({
-	exports: [JwtModule],
 	imports: [
 		JwtModule.registerAsync({
 			imports: [ConfigModule],
@@ -18,5 +17,6 @@ import { JwtModule } from "@nestjs/jwt";
 			inject: [ConfigService],
 		}),
 	],
+	exports: [JwtModule],
 })
 export class NestJwtModule {}
