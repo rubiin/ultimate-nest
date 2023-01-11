@@ -9,21 +9,13 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
 import { of } from "rxjs";
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
+
 describe("TokensService", () => {
 	let service: TokensService;
-
 	const mockI18n = createMock<I18nService>();
 	const mockUserRepo = createMock<BaseRepository<User>>();
 	const mockJwtService = createMock<JwtService>();
 	const mockRefreshRepo = createMock<RefreshTokensRepository>();
-
-	const loggedInUser = new User(mockedUser);
-
-	const refreshToken = new RefreshToken({
-		user: loggedInUser,
-		expiresIn: new Date(),
-		isRevoked: false,
-	});
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
@@ -44,6 +36,22 @@ describe("TokensService", () => {
 
 		service = module.get<TokensService>(TokensService);
 	});
+
+	// mocks
+
+	const loggedInUser = new User(mockedUser);
+
+	const refreshToken = new RefreshToken({
+		user: loggedInUser,
+		expiresIn: new Date(),
+		isRevoked: false,
+	});
+
+	mockUserRepo.findOne.mockImplementation(() =>
+		Promise.resolve({
+			...loggedInUser,
+		} as any),
+	);
 
 	it("should be defined", () => {
 		expect(service).toBeDefined();
@@ -78,11 +86,55 @@ describe("TokensService", () => {
 		});
 	});
 
-	it("should delete refresh token for user", () => {
+	it("should delete all refresh token for user", () => {
 		mockRefreshRepo.deleteTokensForUser.mockImplementation(() => of(true));
 		service.deleteRefreshTokenForUser(loggedInUser).subscribe(result => {
 			expect(result).toStrictEqual(loggedInUser);
 			expect(mockRefreshRepo.deleteTokensForUser).toBeCalledTimes(1);
+			expect(mockRefreshRepo.deleteTokensForUser).toBeCalledWith(loggedInUser);
+		});
+	});
+
+	it("should delete all refresh token for user", () => {
+		const refreshTokenPayload = {
+			jti: 1,
+			sub: 1,
+		};
+
+		mockRefreshRepo.findTokenById.mockImplementation(() => of(refreshToken));
+		service.getStoredTokenFromRefreshTokenPayload(refreshTokenPayload).subscribe(result => {
+			expect(result).toStrictEqual(refreshToken);
+			expect(mockRefreshRepo.findTokenById).toBeCalledTimes(1);
+			expect(mockRefreshRepo.findTokenById).toBeCalledWith(refreshTokenPayload.jti);
+		});
+	});
+
+	it("should get user from refresh token payload", () => {
+		const refreshTokenPayload = {
+			jti: 1,
+			sub: 1,
+		};
+
+		service.getUserFromRefreshTokenPayload(refreshTokenPayload).subscribe(result => {
+			expect(result).toEqual(loggedInUser);
+			expect(mockUserRepo.findOne).toBeCalledTimes(1);
+			expect(mockUserRepo.findOne).toBeCalledWith({
+				id: refreshTokenPayload.sub,
+			});
+		});
+	});
+
+	it("should get stored token from refresh token payload", () => {
+		const refreshTokenPayload = {
+			jti: 1,
+			sub: 1,
+		};
+
+		service.getUserFromRefreshTokenPayload(refreshTokenPayload).subscribe(result => {
+			expect(mockUserRepo.findOne).toBeCalledTimes(1);
+			expect(mockUserRepo.findOne).toBeCalledWith({
+				id: refreshTokenPayload.sub,
+			});
 		});
 	});
 });

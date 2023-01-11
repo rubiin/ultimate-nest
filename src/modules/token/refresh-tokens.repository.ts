@@ -38,7 +38,7 @@ export class RefreshTokensRepository {
 	 * @param {number} id - The id of the token to be found.
 	 * @returns Observable<RefreshToken>
 	 */
-	findTokenByIdx(id: number): Observable<RefreshToken> {
+	findTokenById(id: number): Observable<RefreshToken> {
 		return from(
 			this.refreshTokenRepository.findOne({
 				id,
