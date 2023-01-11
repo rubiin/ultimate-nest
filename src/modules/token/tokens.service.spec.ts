@@ -8,6 +8,7 @@ import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
 import { I18nService } from "nestjs-i18n";
 import { of } from "rxjs";
+import { TokenExpiredError } from "jsonwebtoken";
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 describe("TokensService", () => {
@@ -135,6 +136,21 @@ describe("TokensService", () => {
 			expect(mockUserRepo.findOne).toBeCalledWith({
 				id: refreshTokenPayload.sub,
 			});
+		});
+	});
+
+	it("should decode refresh token", () => {
+		mockJwtService.verifyAsync.mockResolvedValueOnce({
+			jti: 1,
+			sub: 1,
+		});
+		service.decodeRefreshToken("refreshTokenPayload").subscribe(result => {
+			expect(result).toStrictEqual({
+				jti: 1,
+				sub: 1,
+			});
+			expect(mockJwtService.verifyAsync).toBeCalledTimes(1);
+			expect(mockJwtService.verifyAsync).toBeCalledWith("refreshTokenPayload");
 		});
 	});
 });
