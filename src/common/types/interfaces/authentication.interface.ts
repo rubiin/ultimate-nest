@@ -1,4 +1,3 @@
-import { Roles } from "@common/types/enums/permission.enum";
 
 export interface IAuthenticationPayload {
 	user: {
@@ -9,12 +8,6 @@ export interface IAuthenticationPayload {
 		access_token: string;
 		refresh_token?: string;
 	};
-}
-
-export interface IJwtPayload {
-	username: string;
-	role: Roles;
-	iat?: Date;
 }
 
 export interface IOauthResponse {

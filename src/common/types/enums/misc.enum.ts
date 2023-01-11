@@ -19,16 +19,6 @@ export enum LoginType {
 	FACEBOOK = "FACEBOOK",
 }
 
-export enum Gender {
-	MALE = "MALE",
-	FEMALE = "FEMALE",
-}
-
-export enum Status {
-	ENABLED = "ENABLED",
-	DISABLED = "DISABLED",
-}
-
 export enum FileSizes {
 	IMAGE = 5 * 1024 * 1000, // 5mb
 }

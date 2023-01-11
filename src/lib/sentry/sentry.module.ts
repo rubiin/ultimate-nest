@@ -17,6 +17,5 @@ import { SentryModule } from "@ntegral/nestjs-sentry";
 		}),
 	],
 	exports: [SentryModule],
-	providers: [],
 })
 export class NestSentryModule {}
