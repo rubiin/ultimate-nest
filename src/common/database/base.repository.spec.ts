@@ -2,6 +2,7 @@ import { User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { mockedUser } from "@mocks";
+
 import { BaseRepository } from "./base.repository";
 
 describe("BaseRepository", () => {
@@ -19,12 +20,14 @@ describe("BaseRepository", () => {
 
 	it("should softremove and flush", async () => {
 		const result = await userRepo.softRemoveAndFlush(loggedInUser);
+
 		expect(result.isObsolete).toEqual(true);
 		expect(result.deletedAt).toBeInstanceOf(Date);
 	});
 
 	it("should softremove", () => {
-		const result = userRepo.softRemove(loggedInUser);
+		userRepo.softRemove(loggedInUser);
+
 		expect(loggedInUser.isObsolete).toEqual(true);
 	});
 });
