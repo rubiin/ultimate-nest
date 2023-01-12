@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations";
 
-export class Migration20221129141525 extends Migration {
+export class Migration20230112153517 extends Migration {
 	async up(): Promise<void> {
 		this.addSql(
 			'create table "protocol" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "login_attemptnumbererval" int not null, "loginnumbererval_unit" varchar(255) not null, "login_max_retry" int not null, "otp_expiry_in_minutes" int not null, "mpin_attempt_interval" int not null, "mpin_interval_unit" varchar(255) not null, "mpin_max_retry" int not null);',
@@ -22,7 +22,7 @@ export class Migration20221129141525 extends Migration {
 		);
 
 		this.addSql(
-			'create table "post" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null, "is_obsolete" boolean not null, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "slug" varchar(255) not null, "title" varchar(255) not null, "description" varchar(255) not null, "content" text not null, "tags" text[] not null, "author_id" int not null, "favorites_count" int not null);',
+			'create table "post" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "slug" varchar(255) null, "title" varchar(255) not null, "description" varchar(255) not null, "content" text not null, "tags" text[] not null, "state" text check ("state" in (\'DRAFT\', \'PUBLISHED\')) not null default \'DRAFT\', "reading_time" int not null default 0, "read_count" int not null default 0, "author_id" int not null, "favorites_count" int not null default 0);',
 		);
 
 		this.addSql(
