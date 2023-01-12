@@ -7,10 +7,11 @@ import {
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import { I18nService } from "nestjs-i18n";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {
-	constructor(private readonly reflector: Reflector) {
+	constructor(private readonly reflector: Reflector, private readonly i18nService: I18nService) {
 		super();
 	}
 
@@ -27,9 +28,17 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
 	handleRequest(error: any, user: any, info: any) {
 		if (error || info || !user) {
 			if (info instanceof TokenExpiredError) {
-				throw new ForbiddenException("The session has expired. Please login");
+				throw new ForbiddenException(
+					this.i18nService.t("exception.token", {
+						args: { error: "expired" },
+					}),
+				);
 			} else if (info instanceof JsonWebTokenError) {
-				throw new UnauthorizedException("Token malformed");
+				throw new UnauthorizedException(
+					this.i18nService.t("exception.token", {
+						args: { error: "malformed" },
+					}),
+				);
 			} else {
 				throw new UnauthorizedException(info?.message);
 			}
