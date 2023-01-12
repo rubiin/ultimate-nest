@@ -1,7 +1,7 @@
 import { BaseRepository } from "@common/database/base.repository";
 import { HelperService } from "@common/helpers/helpers.utils";
+import { IAuthenticationPayload } from "@common/types";
 import { EmailTemplateEnum, LoginType, RandomTypes } from "@common/types/enums/misc.enum";
-import { IAuthenticationPayload } from "@common/types/interfaces/authentication.interface";
 import { OtpLog, User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";

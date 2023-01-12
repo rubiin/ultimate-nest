@@ -1,12 +1,8 @@
+import { IsEnumFieldOptions } from "@common/types";
 import { applyDecorators } from "@nestjs/common";
 import { IsArray, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
-
-interface IsEnumFieldOptions {
-	required?: boolean;
-	each?: boolean;
-}
 
 /**
  * It's a decorator that validates that the field is an enum value

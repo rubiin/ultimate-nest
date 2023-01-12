@@ -1,6 +1,6 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database/base.repository";
-import { CommonServiceInterface } from "@common/types/interfaces/service.interface";
+import { CommonServiceInterface } from "@common/types";
 import { Comment, Post, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
