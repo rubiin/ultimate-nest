@@ -1,4 +1,3 @@
-
 export interface IAuthenticationPayload {
 	user: {
 		id: number;
