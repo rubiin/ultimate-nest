@@ -1,8 +1,8 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database/base.repository";
+import { CommonServiceInterface } from "@common/types";
 import { EmailTemplateEnum } from "@common/types/enums/misc.enum";
 import { IFile } from "@common/types/interfaces";
-import { CommonServiceInterface } from "@common/types/interfaces/service.interface";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createPaginationObject, Pagination } from "@lib/pagination";
