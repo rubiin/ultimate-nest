@@ -1,4 +1,3 @@
-
 import { FileSizes, FileTypes } from "@common/types/enums";
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
