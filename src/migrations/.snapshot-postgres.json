@@ -295,7 +295,6 @@
           "default": "'{AUTHOR}'",
           "enumItems": [
             "ADMIN",
-            "SUPERADMIN",
             "AUTHOR"
           ],
           "mappedType": "array"
@@ -519,6 +518,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "true",
           "mappedType": "boolean"
         },
         "is_obsolete": {
@@ -528,6 +528,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         },
         "deleted_at": {
@@ -566,7 +567,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "title": {
@@ -605,6 +606,40 @@
           "nullable": false,
           "mappedType": "array"
         },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'DRAFT'",
+          "enumItems": [
+            "DRAFT",
+            "PUBLISHED"
+          ],
+          "mappedType": "enum"
+        },
+        "reading_time": {
+          "name": "reading_time",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "integer"
+        },
+        "read_count": {
+          "name": "read_count",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "integer"
+        },
         "author_id": {
           "name": "author_id",
           "type": "int",
@@ -621,6 +656,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "0",
           "mappedType": "integer"
         }
       },

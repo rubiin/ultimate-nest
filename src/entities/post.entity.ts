@@ -1,8 +1,13 @@
 import { BaseEntity } from "@common/database/base-entity.entity";
+import { PostState } from "@common/types";
 import {
 	ArrayType,
+	BeforeCreate,
+	BeforeUpdate,
 	Collection,
 	Entity,
+	Enum,
+	EventArgs,
 	ManyToOne,
 	OneToMany,
 	Property,
@@ -16,7 +21,7 @@ import { User } from "./user.entity";
 @Entity()
 export class Post extends BaseEntity {
 	@Property()
-	slug!: string;
+	slug?: string;
 
 	@Property()
 	title!: string;
@@ -30,6 +35,15 @@ export class Post extends BaseEntity {
 	@Property({ type: ArrayType })
 	tags: string[];
 
+	@Enum({ items: () => PostState })
+	state = PostState.DRAFT;
+
+	@Property()
+	readingTime = 0;
+
+	@Property()
+	readCount = 0;
+
 	@ManyToOne({ eager: false })
 	author: Rel<User>;
 
@@ -42,9 +56,16 @@ export class Post extends BaseEntity {
 	@Property()
 	favoritesCount = 0;
 
+	@BeforeCreate()
+	@BeforeUpdate()
+	async hashPassword(arguments_: EventArgs<this>) {
+		if (arguments_.changeSet.payload?.title) {
+			this.slug = slugify(this.title);
+		}
+	}
+
 	constructor(partial?: Partial<Post>) {
 		super();
 		Object.assign(this, partial);
-		this.slug = slugify(partial.title);
 	}
 }

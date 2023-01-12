@@ -23,6 +23,11 @@ export enum FileSizes {
 	IMAGE = 5 * 1024 * 1000, // 5mb
 }
 
+export enum PostState {
+	DRAFT = "DRAFT",
+	PUBLISHED = "PUBLISHED",
+}
+
 export const FileTypes = {
 	IMAGE: /(jpg|jpeg|png|gif)$/i,
 };
