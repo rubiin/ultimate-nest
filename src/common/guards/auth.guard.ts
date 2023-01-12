@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TokenExpiredError } from "jsonwebtoken";
+import { I18nService } from "nestjs-i18n";
 
 /**
  *
@@ -10,7 +11,7 @@ import { TokenExpiredError } from "jsonwebtoken";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-	constructor(private readonly jwt: JwtService) {}
+	constructor(private readonly jwt: JwtService, private readonly i18nService: I18nService) {}
 
 	canActivate(context: ExecutionContext): boolean {
 		const request = context.switchToHttp().getRequest();
@@ -30,8 +31,16 @@ export class AuthGuard implements CanActivate {
 		} catch (error_) {
 			const error =
 				error_ instanceof TokenExpiredError
-					? new UnauthorizedException("The session has expired. Please re-login")
-					: new UnauthorizedException("Token malformed");
+					? new UnauthorizedException(
+							this.i18nService.t("exception.token", {
+								args: { error: "expired" },
+							}),
+					  )
+					: new UnauthorizedException(
+							this.i18nService.t("exception.token", {
+								args: { error: "malformed" },
+							}),
+					  );
 
 			throw error;
 		}

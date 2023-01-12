@@ -1,12 +1,14 @@
 import { createMock } from "@golevelup/ts-jest";
 import { ExecutionContext, HttpException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { I18nService } from "nestjs-i18n";
 
 import { AuthGuard } from "./auth.guard";
 
 describe("AuthenticatedGuard", () => {
 	let authenticatedGuard: AuthGuard;
 	const mockJwt = createMock<JwtService>();
+	const mockI18n = createMock<I18nService>();
 	const mockContext = createMock<ExecutionContext>({
 		switchToHttp: () => ({
 			getRequest: () => ({
@@ -18,7 +20,7 @@ describe("AuthenticatedGuard", () => {
 	});
 
 	beforeEach(() => {
-		authenticatedGuard = new AuthGuard(mockJwt);
+		authenticatedGuard = new AuthGuard(mockJwt, mockI18n);
 	});
 
 	it("should be defined", () => {
