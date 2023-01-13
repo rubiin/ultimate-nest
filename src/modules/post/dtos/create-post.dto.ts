@@ -1,4 +1,4 @@
-import { IsEnumField, IsStringField } from "@common/decorators";
+import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 import { PostState } from "@common/types";
 import { IsUnique } from "@common/validators";
 import { Post } from "@entities";
@@ -51,27 +51,7 @@ export class CreatePostDto {
 	 * Reading time of post
 	 * @example 100 (in minutes)
 	 */
-	@IsOptional()
-	@Type(() => Number)
-	@IsInt({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "number",
-		}),
-	})
-	@Min(1, { message: i18nValidationMessage("validation.min") })
+	@IsNumberField({required: false})
 	readingTime?: number;
 
-	/**
-	 * Read count of post
-	 * @example 10
-	 */
-	@IsOptional()
-	@Type(() => Number)
-	@IsInt({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "number",
-		}),
-	})
-	@Min(1, { message: i18nValidationMessage("validation.min") })
-	readCount?: number;
 }

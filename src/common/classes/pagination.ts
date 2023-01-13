@@ -1,3 +1,4 @@
+import { IsNumberField, Sanitize } from "@common/decorators";
 import { Order } from "@common/types/enums/misc.enum";
 import { Type } from "class-transformer";
 import { IsEnum, IsInt, IsOptional, Max, Min } from "class-validator";
@@ -8,28 +9,13 @@ export class PageOptionsDto {
 	/**
 	 * Results page you want to retrieve (0..N)
 	 */
-	@Type(() => Number)
-	@IsInt({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "number",
-		}),
-	})
-	@Min(1, { message: i18nValidationMessage("validation.min") })
-	@IsOptional()
+	@IsNumberField({ required: false })
 	readonly page?: number = 1;
 
 	/**
 	 * Number of results per page
 	 */
-	@Type(() => Number)
-	@IsInt({
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "number",
-		}),
-	})
-	@Min(1, { message: i18nValidationMessage("validation.min") })
-	@Max(50, { message: i18nValidationMessage("validation.max") })
-	@IsOptional()
+	@IsNumberField({ required: false , max: 50})
 	readonly limit?: number = 10;
 
 	/**
@@ -47,6 +33,7 @@ export class PageOptionsDto {
 	 * Sorting criteria
 	 */
 	@IsOptional()
+	@Sanitize()
 	readonly sort?: string = "createdAt";
 
 	/**
@@ -54,6 +41,7 @@ export class PageOptionsDto {
 	 * @example John
 	 */
 	@IsOptional()
+	@Sanitize()
 	readonly search?: string;
 
 	get offset(): number {
