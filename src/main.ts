@@ -66,10 +66,7 @@ const bootstrap = async () => {
 	// configureNestSwagger
 	// =========================================================
 
-	AppUtils.setupSwagger(app, {
-		user: configService.get("app.swaggerUser"),
-		pass: configService.get("app.swaggerPass"),
-	});
+	AppUtils.setupSwagger(app, configService);
 
 	// =========================================================
 	// configurePinoLogger
@@ -99,7 +96,7 @@ const bootstrap = async () => {
 	await app.listen(port);
 
 	logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
-	logger.log(`Accepting request only from: ${configService.get<string>("app.allowedHosts")}`);
+	logger.log(`🚦 Accepting request only from: ${configService.get<string>("app.allowedHosts")}`);
 };
 
 (async () => await bootstrap())();
