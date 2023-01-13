@@ -3,6 +3,8 @@ import fs from "node:fs";
 import { INestApplication, Logger } from "@nestjs/common";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import swaggerStats from "swagger-stats";
+import { ConfigService } from "@nestjs/config";
+import { SWAGGER_DESCRIPTION, SWAGGER_TITLE } from "@common/constant";
 
 export const AppUtils = {
 	/* A function that is called when the process receives a signal. */
@@ -11,10 +13,10 @@ export const AppUtils = {
 		const logger: Logger = new Logger("Graceful Shutdown");
 
 		setTimeout(() => process.exit(1), 5000);
-		logger.verbose(`signal received with code ${code}`);
-		logger.log("Closing http server...");
+		logger.verbose(`Signal received with code ${code} ⚡.`);
+		logger.log("⚠️ Closing http server with grace.");
 		app.close().then(() => {
-			logger.log("Http server closed.");
+			logger.log("✅ Http server closed.");
 			process.exit(0);
 		});
 	},
@@ -37,13 +39,15 @@ export const AppUtils = {
 			AppUtils.gracefulShutdown(app, "SIGTERM");
 		});
 	},
-	setupSwagger: (app: INestApplication, { user, pass }: { user: string; pass: string }): void => {
+	setupSwagger: (app: INestApplication, configService: ConfigService): void => {
+		const userName = configService.get("app.swaggerUser");
+		const passWord = configService.get("app.swaggerPass");
+		const appName = configService.get("app.name");
+
 		const options = new DocumentBuilder()
-			.setTitle("Api Documentation")
+			.setTitle(SWAGGER_TITLE)
 			.addBearerAuth()
-			.setDescription(
-				"The API description built using swagger OpenApi. You can find out more about Swagger at http://swagger.io",
-			)
+			.setDescription(SWAGGER_DESCRIPTION)
 			.setVersion("1.0")
 			.addBearerAuth({
 				type: "http",
@@ -71,11 +75,11 @@ export const AppUtils = {
 			swaggerStats.getMiddleware({
 				swaggerSpec: document,
 				authentication: true,
-				hostname: "nestify",
+				hostname: appName,
 				uriPath: "/stats",
 				onAuthenticate: (_request: any, username: string, password: string) => {
 					// simple check for username and password
-					return username === user && password === pass;
+					return username === userName && password === passWord;
 				},
 			}),
 		);
@@ -88,7 +92,7 @@ export const AppUtils = {
 				showRequestDuration: true,
 				persistAuthorization: true,
 			},
-			customSiteTitle: "Nestify API Documentation",
+			customSiteTitle: `${appName} API Documentation`,
 		});
 	},
 	ssl: (): { key: Buffer; cert: Buffer } | null => {
@@ -103,7 +107,7 @@ export const AppUtils = {
 		const isExist = fs.existsSync(keyPath) && fs.existsSync(certPath);
 
 		if (ssl && !isExist) {
-			logger.error("SSL is enabled but no key and certificate found");
+			logger.error("⚠️ SSL is enabled but no key and certificate found");
 		}
 
 		if (ssl && isExist) {
