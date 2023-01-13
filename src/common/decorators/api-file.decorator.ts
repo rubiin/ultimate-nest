@@ -1,17 +1,29 @@
 import { ImageMulterOption } from "@common/misc/file";
 import { applyDecorators, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { ApiConsumes } from "@nestjs/swagger";
+import { ApiBody, ApiConsumes } from "@nestjs/swagger";
 
 /**
  * It's a decorator that uses the Multer FileInterceptor to intercept a file upload and save it to the
  * server
- * @param [name=file] - The name of the file in the form.
+ * @param [fieldName=file] - The name of the file in the form.
  * @returns A function that returns a function that returns a function.
  */
-export const ApiFile = (name = "file") => {
+export const ApiFile = (fieldName = "file", required = false) => {
 	return applyDecorators(
-		UseInterceptors(FileInterceptor(name, ImageMulterOption)),
+		UseInterceptors(FileInterceptor(fieldName, ImageMulterOption)),
 		ApiConsumes("multipart/form-data"),
+		ApiBody({
+			schema: {
+				type: "object",
+				required: required ? [fieldName] : [],
+				properties: {
+					[fieldName]: {
+						type: "string",
+						format: "binary",
+					},
+				},
+			},
+		}),
 	);
 };

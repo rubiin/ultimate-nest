@@ -3,11 +3,39 @@
 	"version": "1.8.10",
 	"description": "NestJS + MikroORM blog example with batteries included",
 	"license": "MIT",
-	"author": "Rubin Bhandari",
+	"author": {
+    "name": "Rubin Bhandari",
+    "email": "roobin.bhandari@gmail.com",
+    "url": "https://rubiin.ml"
+  },
 	"repository": "https://github.com/rubiin/ultimate-nest",
+	"homepage": "https://github.com/rubiin/ultimate-nest#readme",
+	"bugs": "https://github.com/rubiin/ultimate-nest/issues",
+	"keywords": [
+		"nest",
+		"nestjs",
+		"nest.js",
+		"mikroorm",
+		"orm",
+		"nodejs",
+		"node.js",
+		"node",
+		"typescript",
+		"jwt",
+		"jsonwebtoken",
+		"passport",
+		"swagger",
+		"jest",
+		"casl",
+		"nestjs-boilerplate",
+    "nestjs-mikroorm",
+    "nestjs-starter-template",
+    "nestjs-template"
+],
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"build": "nest build",
+		"postinstall": "npm run build",
 		"format": "prettier --write --cache \"src/**/*.ts\" \"test/**/*.ts\"",
 		"start": "nest start",
 		"lint": "eslint_d '{src,test}/**/*.ts' --cache --fix",
@@ -26,11 +54,11 @@
 		"@aws-sdk/client-ses": "^3.245.0",
 		"@casl/ability": "^6.3.3",
 		"@golevelup/nestjs-rabbitmq": "^3.4.0",
-		"@mikro-orm/core": "^5.6.6",
-		"@mikro-orm/migrations": "^5.6.6",
+		"@mikro-orm/core": "^5.6.7",
+		"@mikro-orm/migrations": "^5.6.7",
 		"@mikro-orm/nestjs": "^5.1.6",
-		"@mikro-orm/postgresql": "^5.6.6",
-		"@mikro-orm/reflection": "^5.6.6",
+		"@mikro-orm/postgresql": "^5.6.7",
+		"@mikro-orm/reflection": "^5.6.7",
 		"@mikro-orm/sql-highlighter": "^1.0.1",
 		"@nestjs/axios": "^1.0.1",
 		"@nestjs/common": "9.2.1",
@@ -72,7 +100,6 @@
 		"nestjs-pino": "^3.1.2",
 		"nestjs-throttler-storage-redis": "^0.2.2",
 		"nodemailer": "^6.9.0",
-		"otplib": "^12.0.1",
 		"passport": "0.6.0",
 		"passport-facebook": "^3.0.0",
 		"passport-google-oauth20": "^2.0.0",
@@ -83,7 +110,6 @@
 		"preview-email": "^3.0.7",
 		"prom-client": "^14.1.1",
 		"pug": "^3.0.2",
-		"qrcode": "^1.5.1",
 		"reflect-metadata": "0.1.13",
 		"rxjs": "^7.8.0",
 		"sharp": "^0.31.3",
@@ -96,8 +122,8 @@
 		"@firebase/app-compat": "0.x",
 		"@firebase/app-types": "0.x",
 		"@golevelup/ts-jest": "^0.3.4",
-		"@mikro-orm/cli": "^5.6.6",
-		"@mikro-orm/seeder": "^5.6.6",
+		"@mikro-orm/cli": "^5.6.7",
+		"@mikro-orm/seeder": "^5.6.7",
 		"@nestjs/cli": "9.1.8",
 		"@nestjs/schematics": "9.0.4",
 		"@nestjs/testing": "9.2.1",
@@ -194,5 +220,10 @@
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
 		}
-	}
+	},
+	"pnpm": {
+    "overrides": {
+      "jsonwebtoken": "^9.0.0"
+    }
+  }
 }
