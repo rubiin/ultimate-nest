@@ -26,4 +26,4 @@ import { RabbitService } from "./rabbit.service";
 	providers: [RabbitService],
 	exports: [RabbitService, RabbitMQModule],
 })
-export class RabbitModule {}
+export class NestRabbitModule {}

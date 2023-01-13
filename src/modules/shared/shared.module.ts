@@ -8,6 +8,7 @@ import {
 	NestI18nModule,
 	NestMailModule,
 	NestPinoModule,
+	NestRabbitModule,
 	NestSentryModule,
 	NestServeStaticModule,
 	NestThrottlerModule,
@@ -18,7 +19,6 @@ import { ChatModule } from "@modules/chat/chat.module";
 import { HealthModule } from "@modules/health/health.module";
 import { PostModule } from "@modules/post/post.module";
 import { ProfileModule } from "@modules/profile/profile.module";
-import { RabbitModule } from "@modules/rabbit/rabbit.module";
 import { UserModule } from "@modules/user/user.module";
 import { Module } from "@nestjs/common";
 
@@ -31,7 +31,7 @@ import { Module } from "@nestjs/common";
 		UserModule,
 		ChatModule,
 		OrmModule,
-		RabbitModule,
+		NestRabbitModule,
 		NestMailModule,
 		NestConfigModule,
 		NestPinoModule,
