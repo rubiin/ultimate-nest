@@ -1,8 +1,5 @@
-import { IsNumberField, Sanitize } from "@common/decorators";
+import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 import { Order } from "@common/types/enums/misc.enum";
-import { IsEnum, IsOptional } from "class-validator";
-import { enumToString } from "helper-fns";
-import { i18nValidationMessage } from "nestjs-i18n";
 
 export class PageOptionsDto {
 	/**
@@ -20,27 +17,20 @@ export class PageOptionsDto {
 	/**
 	 * Sorting order
 	 */
-	@IsEnum(Order, {
-		message: i18nValidationMessage("validation.isEnum", {
-			values: enumToString(Order),
-		}),
-	})
-	@IsOptional()
+	@IsEnumField(Order, { required: false })
 	readonly order?: Order = Order.DESC;
 
 	/**
 	 * Sorting criteria
 	 */
-	@IsOptional()
-	@Sanitize()
+	@IsStringField({ required: false, max: 50 })
 	readonly sort?: string = "createdAt";
 
 	/**
 	 * Search query
 	 * @example John
 	 */
-	@IsOptional()
-	@Sanitize()
+	@IsStringField({ required: false, max: 50 })
 	readonly search?: string;
 
 	get offset(): number {

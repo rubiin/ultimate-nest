@@ -9,9 +9,9 @@ import {
 } from "@common/decorators";
 import { fileValidatorPipe } from "@common/misc";
 import { IFile } from "@common/types";
-import { Roles } from "@common/types/enums";
+import { Action, Roles } from "@common/types/enums";
 import { User } from "@entities";
-import { Action, CheckPolicies, GenericPolicyHandler } from "@lib/casl";
+import {CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Post, Put, Query, UploadedFile } from "@nestjs/common";
 import { Observable } from "rxjs";
@@ -23,6 +23,7 @@ import { UserService } from "./user.service";
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
+	@Public()
 	@ApiPaginatedResponse(User, "Users list")
 	@Get()
 	findAll(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<User>> {

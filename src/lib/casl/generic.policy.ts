@@ -1,7 +1,8 @@
+import { Action } from "@common/types/enums";
 import { Request } from "express";
 
-import { Action, AppAbility } from "./casl-ability.factory";
-import { IPolicyHandler } from "./IPolicyHandler";
+import { AppAbility } from "./casl-ability.factory";
+import { IPolicyHandler } from "./policy.interface";
 
 export class GenericPolicyHandler implements IPolicyHandler {
 	constructor(private readonly type: any, private readonly action: Action = Action.Read) {}

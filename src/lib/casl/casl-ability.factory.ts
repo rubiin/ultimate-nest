@@ -5,19 +5,12 @@ import {
 	InferSubjects,
 	MongoAbility,
 } from "@casl/ability";
-import { Roles } from "@common/types/enums/permission.enum";
+import { Action, Roles } from "@common/types/enums";
 import { Comment, Post, User } from "@entities";
 import { Injectable } from "@nestjs/common";
 
 type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment> | "all";
 
-export enum Action {
-	Manage = "manage",
-	Create = "create",
-	Read = "read",
-	Update = "update",
-	Delete = "delete",
-}
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
@@ -39,14 +32,10 @@ export class CaslAbilityFactory {
 		cannot(Action.Delete, User);
 
 		// post specific permissions
-		can(Action.Delete, Post, { author: user });
-		can(Action.Update, Post, { author: user });
-		can(Action.Update, Post, { author: user });
+		can([Action.Delete, Action.Update], Post, { author: user });
 
 		// comment specific permissions
-		can(Action.Update, Comment, { author: user });
-		can(Action.Update, Comment, { author: user });
-		can(Action.Update, Comment, { author: user });
+		can([Action.Update, Action.Delete, Action.Create], Comment, { author: user });
 
 		return build({
 			detectSubjectType: item => item.constructor as ExtractSubjectType<Subjects>,
