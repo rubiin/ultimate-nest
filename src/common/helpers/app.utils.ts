@@ -1,10 +1,10 @@
 import fs from "node:fs";
 
+import { SWAGGER_DESCRIPTION, SWAGGER_TITLE } from "@common/constant";
 import { INestApplication, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import swaggerStats from "swagger-stats";
-import { ConfigService } from "@nestjs/config";
-import { SWAGGER_DESCRIPTION, SWAGGER_TITLE } from "@common/constant";
 
 export const AppUtils = {
 	/* A function that is called when the process receives a signal. */
