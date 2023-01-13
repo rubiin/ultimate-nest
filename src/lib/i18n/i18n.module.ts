@@ -12,7 +12,7 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
 				watch: true,
 				includeSubfolders: true,
 			},
-			typesOutputPath: path.join(__dirname, '/generated/i18n.generated.ts'),
+			typesOutputPath: path.join(__dirname, "/generated/i18n.generated.ts"),
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,
