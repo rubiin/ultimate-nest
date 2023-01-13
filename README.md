@@ -2,7 +2,7 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://i.imgur.com/4xiI9Hu.png" width="620" alt="Nest Logo" /></a>
 </p>
 
-> ### Blog made using Nestjs + Mikro-orm codebase(backend) containing real world examples (CRUD, auth (password based and oauth), advanced patterns, etc)
+> ### Blog made using Nestjs + Mikro-orm codebase(backend) containing real world examples (CRUD, auth (password based and oauth), advanced patterns, etc) and batteries included
 
 <p align="center">
 <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/rubiin/ultimate-nest">
@@ -182,10 +182,49 @@ You need to have `docker` and `docker-compose` (not the compose plugin) installe
 
 The password for `redis` and `rabbitmq` is `Test@1234` can be changed in the make file under `deploy` script
 
-## sample env
-
-The sample env is generated using [sample-env](https://www.github.com/rubiin/sample-env)
-
 More docs found at `docs` folder
+
+
+
+<h2 align="center">Do you use this template?<br/>Don't be shy to give it a star! ★</h2>
+
+Also if you are into NestJS ecosystem you may be interested in one of my other libs:
+
+[nestjs-easyconfig](https://github.com/rubiin/nestjs-pino)
+
+[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-easyconfig?style=flat-square)](https://github.com/rubiin/nestjs-easyconfig)
+[![npm](https://img.shields.io/npm/dm/nestjs-easyconfig?style=flat-square)](https://www.npmjs.com/package/nestjs-easyconfig)
+
+Platform config manager for nestjs. It supports multiple config files and environment variables.
+
+---
+
+[nestjs-minio](https://github.com/rubiin/nestjs-minio)
+
+[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-minio?style=flat-square)](https://github.com/rubiin/nestjs-minio)
+[![npm](https://img.shields.io/npm/dm/nestjs-minio?style=flat-square)](https://www.npmjs.com/package/nestjs-sessminioion)
+
+This is a minio module for Nest.
+
+---
+
+
+[nestjs-cloudinary](https://github.com/rubiin/nestjs-cloudinary)
+
+[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-cloudinary?style=flat-square)](https://github.com/rubiin/nestjs-cloudinary)
+[![npm](https://img.shields.io/npm/dm/nestjs-cloudinary?style=flat-square)](https://www.npmjs.com/package/nestjs-cloudinary)
+
+This is a cloudinary module for Nest.
+
+---
+
+[nestjs-pgpromise](https://github.com/segmentstream/nestjs-injectable)
+
+[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-pgpromise?style=flat-square)](https://github.com/rubiin/nestjs-pgpromise)
+[![npm](https://img.shields.io/npm/dm/nestjs-pgpromise?style=flat-square)](https://www.npmjs.com/package/nestjs-pgpromise)
+
+A Module for Utilizing Pg-promise with NestJS
+
+---
 
 Made with ❤️ with opensource.
