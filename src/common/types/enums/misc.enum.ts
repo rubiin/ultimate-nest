@@ -20,7 +20,7 @@ export enum LoginType {
 }
 
 export enum FileSizes {
-	IMAGE = 5 * 1024 * 1000, // 5mb
+	IMAGE = 5 * 1024 * 1024, // 5mb
 }
 
 export enum PostState {
@@ -29,5 +29,5 @@ export enum PostState {
 }
 
 export const FileTypes = {
-	IMAGE: /(jpg|jpeg|png|gif)$/i,
+	IMAGE: /(jpg|jpeg|png|gif|svg)$/i,
 };

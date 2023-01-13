@@ -50,5 +50,4 @@ export class CreatePostDto {
 	 */
 	@IsNumberField({ required: false })
 	readingTime?: number;
-
 }

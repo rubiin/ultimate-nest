@@ -21,10 +21,8 @@ export const IsNumberField = (ops?: IsNumberFieldOptions) => {
 			each: options.each,
 		}),
 		Min(options.min, { message: i18nValidationMessage("validation.min") }),
-		Max(options.max, { message: i18nValidationMessage("validation.max") })
+		Max(options.max, { message: i18nValidationMessage("validation.max") }),
 	];
-
-
 
 	options.required
 		? decoratorsToApply.push(

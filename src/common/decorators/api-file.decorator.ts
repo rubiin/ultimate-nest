@@ -1,4 +1,4 @@
-import { ImageMulterOption } from "@common/misc/misc";
+import { ImageMulterOption } from "@common/misc/file";
 import { applyDecorators, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiConsumes } from "@nestjs/swagger";
