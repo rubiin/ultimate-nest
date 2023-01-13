@@ -10,11 +10,13 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
 			loaderOptions: {
 				path: path.join(__dirname, "../../resources/i18n/"),
 				watch: true,
+				includeSubfolders: true,
 			},
+			typesOutputPath: path.join(__dirname, '/generated/i18n.generated.ts'),
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,
-				{ use: QueryResolver, options: ["lang"] },
+				{ use: QueryResolver, options: ["lang","locale"] },
 			],
 		}),
 	],

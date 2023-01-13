@@ -3,7 +3,7 @@ import { Reflector } from "@nestjs/core";
 import { Request } from "express";
 
 import { AppAbility, CaslAbilityFactory } from "./casl-ability.factory";
-import { PolicyHandler } from "./IPolicyHandler";
+import { PolicyHandler } from "./policy.interface";
 import { CHECK_POLICIES_KEY } from "./policies.decorator";
 
 @Injectable()
