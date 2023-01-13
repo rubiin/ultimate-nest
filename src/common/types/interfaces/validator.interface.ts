@@ -10,3 +10,9 @@ export interface IsStringFieldOptions extends IBaseValidator {
 
 export type IsEnumFieldOptions = IBaseValidator;
 export type IsNumberFieldOptions = IsStringFieldOptions;
+
+export interface IFileValidator {
+	fileType?: RegExp | string;
+	fileSize?: number;
+	required?: boolean;
+}
