@@ -1,4 +1,5 @@
 import { MULTER_IMAGE_FILTER } from "@common/constant";
+import { IFileValidator } from "@common/types";
 import { FileSizes, FileTypes } from "@common/types/enums";
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
@@ -23,7 +24,7 @@ export const fileValidatorPipe = ({
 	fileType = FileTypes.IMAGE,
 	fileSize = FileSizes.IMAGE,
 	required = true,
-}) => {
+}: IFileValidator) => {
 	return new ParseFilePipeBuilder()
 		.addFileTypeValidator({
 			fileType,
