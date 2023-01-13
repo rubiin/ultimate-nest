@@ -14,7 +14,7 @@ export class PageOptionsDto {
 	/**
 	 * Number of results per page
 	 */
-	@IsNumberField({ required: false , max: 50})
+	@IsNumberField({ required: false, max: 50 })
 	readonly limit?: number = 10;
 
 	/**

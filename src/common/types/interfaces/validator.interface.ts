@@ -8,7 +8,5 @@ export interface IsStringFieldOptions extends IBaseValidator {
 	max?: number;
 }
 
-
-
 export type IsEnumFieldOptions = IBaseValidator;
 export type IsNumberFieldOptions = IsStringFieldOptions;

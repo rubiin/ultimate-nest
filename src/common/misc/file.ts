@@ -1,20 +1,18 @@
+import { MULTER_IMAGE_FILTER } from "@common/constant";
 import { FileSizes, FileTypes } from "@common/types/enums";
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { Request } from "express";
-import mime from "mime-types";
 import { memoryStorage } from "multer";
-
-const allowedExtensions = new Set(["png", "jpg", "jpeg"]);
 
 export const ImageMulterOption: MulterOptions = {
 	limits: {
-		fileSize: 5 * 1024 * 1024, // 5 mb
+		fileSize: FileSizes.IMAGE, // 5 mb
 	},
 	storage: memoryStorage(),
 	fileFilter: (_request: Request, file, callback) => {
-		if (!allowedExtensions.has(mime.extension(file.mimetype))) {
-			return callback(new Error("Only image files are allowed!"), false);
+		if (!FileTypes.IMAGE.test(file.mimetype)) {
+			return callback(new Error(MULTER_IMAGE_FILTER), false);
 		}
 
 		return callback(null, true);
