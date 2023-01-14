@@ -1,7 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { I18nTranslations } from "generated/i18n.generated";
 import { TokenExpiredError } from "jsonwebtoken";
-import { I18nService } from "nestjs-i18n";
+import { I18nContext } from "nestjs-i18n";
 
 /**
  *
@@ -11,7 +12,7 @@ import { I18nService } from "nestjs-i18n";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-	constructor(private readonly jwt: JwtService, private readonly i18nService: I18nService) {}
+	constructor(private readonly jwt: JwtService) {}
 
 	canActivate(context: ExecutionContext): boolean {
 		const request = context.switchToHttp().getRequest();
@@ -32,12 +33,12 @@ export class AuthGuard implements CanActivate {
 			const error =
 				error_ instanceof TokenExpiredError
 					? new UnauthorizedException(
-							this.i18nService.t("exception.token", {
+							I18nContext.current<I18nTranslations>().t("exception.token", {
 								args: { error: "expired" },
 							}),
 					  )
 					: new UnauthorizedException(
-							this.i18nService.t("exception.token", {
+							I18nContext.current<I18nTranslations>().t("exception.token", {
 								args: { error: "malformed" },
 							}),
 					  );

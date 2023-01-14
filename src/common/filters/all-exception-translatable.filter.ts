@@ -1,11 +1,9 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from "@nestjs/common";
 import { Response } from "express";
-import { I18nService } from "nestjs-i18n";
+import { I18nContext } from "nestjs-i18n";
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-	constructor(private readonly i18n: I18nService) {}
-
 	async catch(exception: HttpException, host: ArgumentsHost) {
 		const context = host.switchToHttp();
 		const response = context.getResponse<Response>();
@@ -16,7 +14,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 			args: Record<string, any>;
 		};
 
-		message = await this.i18n.translate(message.key, {
+		message = I18nContext.current().t(message.key, {
 			lang: host.switchToHttp().getRequest().i18nLang,
 			args: message.args,
 		});

@@ -4,9 +4,10 @@ import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService, JwtSignOptions } from "@nestjs/jwt";
+import { I18nTranslations } from "generated/i18n.generated";
 import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
-import { I18nService } from "nestjs-i18n";
+import { I18nContext } from "nestjs-i18n";
 import { catchError, from, map, Observable, switchMap } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
@@ -21,7 +22,6 @@ export class TokensService {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: EntityRepository<User>,
-		private readonly i18nService: I18nService,
 		private readonly refreshTokenRepo: RefreshTokensRepository,
 		private readonly jwt: JwtService,
 	) {}
@@ -74,17 +74,23 @@ export class TokensService {
 					switchMap(token => {
 						if (!token) {
 							throw new UnauthorizedException(
-								this.i18nService.t("exception.refreshToken", {
-									args: { error: "not found" },
-								}),
+								I18nContext.current<I18nTranslations>().t(
+									"exception.refreshToken",
+									{
+										args: { error: "not found" },
+									},
+								),
 							);
 						}
 
 						if (token.isRevoked) {
 							throw new UnauthorizedException(
-								this.i18nService.t("exception.refreshToken", {
-									args: { error: "revoked" },
-								}),
+								I18nContext.current<I18nTranslations>().t(
+									"exception.refreshToken",
+									{
+										args: { error: "revoked" },
+									},
+								),
 							);
 						}
 
@@ -92,9 +98,12 @@ export class TokensService {
 							map(user => {
 								if (!user) {
 									throw new UnauthorizedException(
-										this.i18nService.t("exception.refreshToken", {
-											args: { error: "malformed" },
-										}),
+										I18nContext.current<I18nTranslations>().t(
+											"exception.refreshToken",
+											{
+												args: { error: "malformed" },
+											},
+										),
 									);
 								}
 
@@ -136,14 +145,20 @@ export class TokensService {
 				const error =
 					error_ instanceof TokenExpiredError
 						? new UnauthorizedException(
-								this.i18nService.t("exception.refreshToken", {
-									args: { error: "expired" },
-								}),
+								I18nContext.current<I18nTranslations>().t(
+									"exception.refreshToken",
+									{
+										args: { error: "expired" },
+									},
+								),
 						  )
 						: new UnauthorizedException(
-								this.i18nService.t("exception.refreshToken", {
-									args: { error: "malformed" },
-								}),
+								I18nContext.current<I18nTranslations>().t(
+									"exception.refreshToken",
+									{
+										args: { error: "malformed" },
+									},
+								),
 						  );
 
 				throw error;
@@ -175,7 +190,7 @@ export class TokensService {
 
 		if (!tokenId) {
 			throw new UnauthorizedException(
-				this.i18nService.t("exception.refreshToken", {
+				I18nContext.current<I18nTranslations>().t("exception.refreshToken", {
 					args: { error: "malformed" },
 				}),
 			);
@@ -199,7 +214,7 @@ export class TokensService {
 
 		if (!subId) {
 			throw new UnauthorizedException(
-				this.i18nService.t("exception.refreshToken", {
+				I18nContext.current<I18nTranslations>().t("exception.refreshToken", {
 					args: { error: "malformed" },
 				}),
 			);
@@ -225,7 +240,7 @@ export class TokensService {
 
 		if (!tokenId) {
 			throw new UnauthorizedException(
-				this.i18nService.t("exception.refreshToken", {
+				I18nContext.current<I18nTranslations>().t("exception.refreshToken", {
 					args: { error: "malformed" },
 				}),
 			);

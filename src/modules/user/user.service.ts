@@ -10,9 +10,10 @@ import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { I18nTranslations } from "generated/i18n.generated";
 import { capitalize } from "helper-fns";
 import { CloudinaryService } from "nestjs-cloudinary";
-import { I18nService } from "nestjs-i18n";
+import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
@@ -23,7 +24,6 @@ export class UserService implements CommonServiceInterface<User> {
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
 		private readonly em: EntityManager,
-		private readonly i18nService: I18nService,
 		private readonly configService: ConfigService,
 		private readonly amqpConnection: AmqpConnection,
 		private readonly cloudinaryService: CloudinaryService,
@@ -78,7 +78,7 @@ export class UserService implements CommonServiceInterface<User> {
 			map(user => {
 				if (!user) {
 					throw new NotFoundException(
-						this.i18nService.t("exception.itemDoesNotExist", {
+						I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
 							args: { item: "User" },
 						}),
 					);

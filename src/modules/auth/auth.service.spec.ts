@@ -9,7 +9,6 @@ import { mockedOtpLog, mockedUser, mockResetPasswordDto } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
-import { I18nService } from "nestjs-i18n";
 import { of } from "rxjs";
 
 import { AuthService } from "./auth.service";
@@ -17,7 +16,6 @@ import { AuthService } from "./auth.service";
 describe("AuthService", () => {
 	let service: AuthService;
 
-	const mockI18n = createMock<I18nService>();
 	const mockMailService = createMock<MailerService>();
 	const mockConfigService = createMock<ConfigService>();
 	const mockTokenService = createMock<TokensService>();
@@ -54,7 +52,6 @@ describe("AuthService", () => {
 					provide: getRepositoryToken(OtpLog),
 					useValue: mockOtpLogRepo,
 				},
-				{ provide: I18nService, useValue: mockI18n },
 				{ provide: ConfigService, useValue: mockConfigService },
 				{ provide: MailerService, useValue: mockMailService },
 				{ provide: TokensService, useValue: mockTokenService },

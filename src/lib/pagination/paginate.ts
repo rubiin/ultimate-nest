@@ -46,7 +46,7 @@ const resolveNumericOption = (
 	if (Number.isInteger(resolvedValue) && resolvedValue >= 0) return resolvedValue;
 
 	logger.warn(
-		`⚠️ Query parameter "${key}" with value "${value}" was resolved as "${resolvedValue}", please validate your query input! Falling back to default "${defaultValue}".`,
+		`❗Query parameter "${key}" with value "${value}" was resolved as "${resolvedValue}", please validate your query input! Falling back to default "${defaultValue}".`,
 	);
 
 	return defaultValue;

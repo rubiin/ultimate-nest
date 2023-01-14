@@ -6,14 +6,12 @@ import { mockedUser } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
-import { I18nService } from "nestjs-i18n";
 import { of } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 describe("TokensService", () => {
 	let service: TokensService;
-	const mockI18n = createMock<I18nService>();
 	const mockUserRepo = createMock<BaseRepository<User>>();
 	const mockJwtService = createMock<JwtService>();
 	const mockRefreshRepo = createMock<RefreshTokensRepository>();
@@ -28,8 +26,6 @@ describe("TokensService", () => {
 					provide: getRepositoryToken(User),
 					useValue: mockUserRepo,
 				},
-
-				{ provide: I18nService, useValue: mockI18n },
 				{ provide: JwtService, useValue: mockJwtService },
 				{ provide: RefreshTokensRepository, useValue: mockRefreshRepo },
 			],
