@@ -4,10 +4,10 @@
 	"description": "NestJS + MikroORM blog example with batteries included",
 	"license": "MIT",
 	"author": {
-    "name": "Rubin Bhandari",
-    "email": "roobin.bhandari@gmail.com",
-    "url": "https://rubiin.ml"
-  },
+		"name": "Rubin Bhandari",
+		"email": "roobin.bhandari@gmail.com",
+		"url": "https://rubiin.ml"
+	},
 	"repository": "https://github.com/rubiin/ultimate-nest",
 	"homepage": "https://github.com/rubiin/ultimate-nest#readme",
 	"bugs": "https://github.com/rubiin/ultimate-nest/issues",
@@ -28,10 +28,10 @@
 		"jest",
 		"casl",
 		"nestjs-boilerplate",
-    "nestjs-mikroorm",
-    "nestjs-starter-template",
-    "nestjs-template"
-],
+		"nestjs-mikroorm",
+		"nestjs-starter-template",
+		"nestjs-template"
+	],
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"build": "nest build",
@@ -78,6 +78,7 @@
 		"@sentry/hub": "^7.30.0",
 		"@sentry/node": "^7.30.0",
 		"@sentry/types": "^7.30.0",
+		"@socket.io/redis-adapter": "^8.0.1",
 		"@supercharge/request-ip": "^1.2.0",
 		"argon2": "^0.30.3",
 		"cache-manager": "5.1.4",
@@ -110,9 +111,11 @@
 		"preview-email": "^3.0.7",
 		"prom-client": "^14.1.1",
 		"pug": "^3.0.2",
+		"redis": "^4.5.1",
 		"reflect-metadata": "0.1.13",
 		"rxjs": "^7.8.0",
 		"sharp": "^0.31.3",
+		"socket.io": "^4.5.4",
 		"swagger-stats": "^0.99.5",
 		"twilio": "3.84.1",
 		"unprofane": "^1.0.3",
@@ -222,8 +225,8 @@
 		}
 	},
 	"pnpm": {
-    "overrides": {
-      "jsonwebtoken": "^9.0.0"
-    }
-  }
+		"overrides": {
+			"jsonwebtoken": "^9.0.0"
+		}
+	}
 }

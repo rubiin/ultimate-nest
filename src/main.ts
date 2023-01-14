@@ -60,7 +60,15 @@ const bootstrap = async () => {
 
 	app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
 	app.setGlobalPrefix(globalPrefix);
-	app.useWebSocketAdapter(new SocketIOAdapter(app));
+
+	// =========================================================
+	// configureWebSocket
+	// =========================================================
+
+	const redisIoAdapter = new SocketIOAdapter(app, configService);
+
+	await redisIoAdapter.connectToRedis();
+	app.useWebSocketAdapter(redisIoAdapter);
 
 	// =========================================================
 	// configureNestSwagger

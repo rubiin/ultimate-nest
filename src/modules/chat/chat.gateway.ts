@@ -1,3 +1,4 @@
+import { Logger } from "@nestjs/common";
 import {
 	ConnectedSocket,
 	MessageBody,
@@ -15,8 +16,13 @@ import { CreateChatDto } from "./dto/create-chat.dto";
 })
 export class ChatGateway {
 	@WebSocketServer() server: Namespace;
+	private readonly logger = new Logger(ChatGateway.name);
 
 	constructor(private readonly chatService: ChatService) {}
+
+	afterInit(): void {
+		this.logger.log(`💬 Websocket Gateway initialized.`);
+	}
 
 	@SubscribeMessage("createChat")
 	async create(@MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() client: Socket) {
