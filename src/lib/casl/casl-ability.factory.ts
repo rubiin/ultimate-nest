@@ -11,7 +11,6 @@ import { Injectable } from "@nestjs/common";
 
 type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment> | "all";
 
-
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
 @Injectable()

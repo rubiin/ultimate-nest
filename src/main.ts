@@ -97,6 +97,7 @@ const bootstrap = async () => {
 
 	logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 	logger.log(`🚦 Accepting request only from: ${configService.get<string>("app.allowedHosts")}`);
+	logger.log(`📑 Swagger is running on: http://localhost:${port}/${globalPrefix}/docs`);
 };
 
 (async () => await bootstrap())();

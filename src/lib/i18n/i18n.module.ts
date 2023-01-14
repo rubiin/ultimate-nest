@@ -16,7 +16,7 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,
-				{ use: QueryResolver, options: ["lang","locale"] },
+				{ use: QueryResolver, options: ["lang", "locale"] },
 			],
 		}),
 	],
