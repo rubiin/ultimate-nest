@@ -11,7 +11,7 @@ import { fileValidatorPipe } from "@common/misc";
 import { IFile } from "@common/types";
 import { Action, Roles } from "@common/types/enums";
 import { User } from "@entities";
-import {CheckPolicies, GenericPolicyHandler } from "@lib/casl";
+import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Post, Put, Query, UploadedFile } from "@nestjs/common";
 import { Observable } from "rxjs";
