@@ -6,7 +6,8 @@ import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { I18nService } from "nestjs-i18n";
+import { I18nTranslations } from "generated/i18n.generated";
+import { I18nContext } from "nestjs-i18n";
 import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
@@ -20,7 +21,6 @@ export class PostService implements CommonServiceInterface<Post> {
 		private readonly userRepository: BaseRepository<User>,
 		@InjectRepository(User)
 		private readonly commentRepository: BaseRepository<Comment>,
-		private readonly i18nService: I18nService,
 	) {}
 
 	/**
@@ -74,7 +74,7 @@ export class PostService implements CommonServiceInterface<Post> {
 			map(post => {
 				if (!post) {
 					throw new NotFoundException(
-						this.i18nService.t("exception.itemDoesNotExist", {
+						I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
 							args: { item: "Post" },
 						}),
 					);

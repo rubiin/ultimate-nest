@@ -4,7 +4,8 @@ import { User } from "@entities";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { I18nService } from "nestjs-i18n";
+import { I18nTranslations } from "generated/i18n.generated";
+import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
 
 @Injectable()
@@ -12,7 +13,6 @@ export class ProfileService {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
-		private readonly i18nService: I18nService,
 	) {}
 
 	/* Finding a profile by username*/
@@ -33,7 +33,7 @@ export class ProfileService {
 			map(user => {
 				if (!user) {
 					throw new NotFoundException(
-						this.i18nService.t("exception.itemDoesNotExist", {
+						I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
 							args: { item: "Profile" },
 						}),
 					);
@@ -56,14 +56,18 @@ export class ProfileService {
 	 */
 	follow(loggedInUser: User, usernameToFollow: string): Observable<IProfileData> {
 		if (!usernameToFollow) {
-			throw new BadRequestException(this.i18nService.t("exception.usernameRequired"));
+			throw new BadRequestException(
+				I18nContext.current<I18nTranslations>().t("exception.usernameRequired"),
+			);
 		}
 
 		return this.getProfileByUsername(usernameToFollow, ["followers"]).pipe(
 			switchMap(followingUser => {
 				if (loggedInUser.username === usernameToFollow) {
 					throw new BadRequestException(
-						this.i18nService.t("exception.followerFollowingSame"),
+						I18nContext.current<I18nTranslations>().t(
+							"exception.followerFollowingSame",
+						),
 					);
 				}
 
@@ -91,7 +95,9 @@ export class ProfileService {
 	 */
 	unFollow(loggedInUser: User, username: string): Observable<IProfileData> {
 		if (!username) {
-			throw new BadRequestException(this.i18nService.t("exception.usernameRequired"));
+			throw new BadRequestException(
+				I18nContext.current<I18nTranslations>().t("exception.usernameRequired"),
+			);
 		}
 
 		return this.getProfileByUsername(username, ["followers"]).pipe(
@@ -100,7 +106,9 @@ export class ProfileService {
 
 				if (followingUser.id === loggedInUser.id) {
 					throw new BadRequestException(
-						this.i18nService.t("exception.followerFollowingSame"),
+						I18nContext.current<I18nTranslations>().t(
+							"exception.followerFollowingSame",
+						),
 					);
 				}
 

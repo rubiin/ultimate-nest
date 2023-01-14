@@ -16,8 +16,9 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { isAfter } from "date-fns";
+import { I18nTranslations } from "generated/i18n.generated";
 import { capitalize, omit } from "helper-fns";
-import { I18nService } from "nestjs-i18n";
+import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, of, switchMap, zip } from "rxjs";
 
 import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
@@ -34,7 +35,6 @@ export class AuthService {
 		private readonly tokenService: TokensService,
 		private readonly configService: ConfigService,
 		private readonly mailService: MailerService,
-		private readonly i18n: I18nService,
 		private readonly em: EntityManager,
 	) {}
 
@@ -57,14 +57,16 @@ export class AuthService {
 			switchMap(user => {
 				if (!user) {
 					throw new ForbiddenException(
-						this.i18n.t("exception.itemDoesNotExist", {
+						I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
 							args: { item: "Account" },
 						}),
 					);
 				}
 
 				if (!user.isActive) {
-					throw new ForbiddenException(this.i18n.t("exception.inactiveUser"));
+					throw new ForbiddenException(
+						I18nContext.current<I18nTranslations>().t("exception.inactiveUser"),
+					);
 				}
 
 				return user && loginType === LoginType.PASSWORD
@@ -74,7 +76,9 @@ export class AuthService {
 									return omit(user, ["password"]);
 								}
 								throw new BadRequestException(
-									this.i18n.t("exception.invalidCredentials"),
+									I18nContext.current<I18nTranslations>().t(
+										"exception.invalidCredentials",
+									),
 								);
 							}),
 					  )
@@ -94,7 +98,9 @@ export class AuthService {
 		return this.validateUser(loginDto.email, loginDto.password, loginType).pipe(
 			switchMap(user => {
 				if (!user)
-					throw new UnauthorizedException(this.i18n.t("exception.invalidCredentials"));
+					throw new UnauthorizedException(
+						I18nContext.current<I18nTranslations>().t("exception.invalidCredentials"),
+					);
 
 				return zip(
 					this.tokenService.generateAccessToken(user),
@@ -148,7 +154,7 @@ export class AuthService {
 
 		if (!userExists) {
 			throw new NotFoundException(
-				this.i18n.t("exception.itemDoesNotExist", {
+				I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
 					args: { item: "Account" },
 				}),
 			);
@@ -219,7 +225,7 @@ export class AuthService {
 
 		if (!codeDetails) {
 			throw new NotFoundException(
-				this.i18n.t("exception.itemDoesNotExist", {
+				I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
 					args: { item: "Otp" },
 				}),
 			);
@@ -229,7 +235,7 @@ export class AuthService {
 
 		if (isExpired) {
 			throw new BadRequestException(
-				this.i18n.t("exception.itemExpired", {
+				I18nContext.current<I18nTranslations>().t("exception.itemExpired", {
 					args: { item: "Otp" },
 				}),
 			);
@@ -272,7 +278,9 @@ export class AuthService {
 					switchMap(isValid => {
 						if (!isValid) {
 							throw new BadRequestException(
-								this.i18n.translate("exception.invalidCredentials"),
+								I18nContext.current<I18nTranslations>().translate(
+									"exception.invalidCredentials",
+								),
 							);
 						}
 						this.userRepository.assign(userDetails, {

@@ -14,7 +14,7 @@ export const AppUtils = {
 
 		setTimeout(() => process.exit(1), 5000);
 		logger.verbose(`Signal received with code ${code} ⚡.`);
-		logger.log("⚠️ Closing http server with grace.");
+		logger.log("❗Closing http server with grace.");
 		app.close().then(() => {
 			logger.log("✅ Http server closed.");
 			process.exit(0);
@@ -107,7 +107,7 @@ export const AppUtils = {
 		const isExist = fs.existsSync(keyPath) && fs.existsSync(certPath);
 
 		if (ssl && !isExist) {
-			logger.error("⚠️ SSL is enabled but no key and certificate found");
+			logger.error("❗SSL is enabled but no key and certificate found");
 		}
 
 		if (ssl && isExist) {

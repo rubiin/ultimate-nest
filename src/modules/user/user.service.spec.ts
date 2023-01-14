@@ -8,14 +8,11 @@ import { mockedUser, mockFile, query } from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { CloudinaryService } from "nestjs-cloudinary";
-import { I18nService } from "nestjs-i18n";
 
 import { UserService } from "./user.service";
 
 describe("UserService", () => {
 	let service: UserService;
-
-	const mockI18n = createMock<I18nService>();
 	const mockAmqConnection = createMock<AmqpConnection>();
 	const mockCloudinaryService = createMock<CloudinaryService>();
 	const mockConfigService = createMock<ConfigService>();
@@ -47,7 +44,6 @@ describe("UserService", () => {
 					provide: getRepositoryToken(User),
 					useValue: mockUserRepo,
 				},
-				{ provide: I18nService, useValue: mockI18n },
 				{ provide: ConfigService, useValue: mockConfigService },
 				{ provide: AmqpConnection, useValue: mockAmqConnection },
 				{ provide: CloudinaryService, useValue: mockCloudinaryService },

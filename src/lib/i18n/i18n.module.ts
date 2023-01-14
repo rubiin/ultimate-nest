@@ -7,12 +7,16 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
 	imports: [
 		I18nModule.forRoot({
 			fallbackLanguage: "en",
+			fallbacks: {
+				"np-*": "np",
+				"en-*": "en",
+			},
 			loaderOptions: {
 				path: path.join(__dirname, "../../resources/i18n/"),
 				watch: true,
 				includeSubfolders: true,
 			},
-			typesOutputPath: path.join(__dirname, "/generated/i18n.generated.ts"),
+			typesOutputPath: path.join(process.cwd() + "/src/generated/i18n.generated.ts"),
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,

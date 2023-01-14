@@ -4,14 +4,12 @@ import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { mockedUser } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
-import { I18nService } from "nestjs-i18n";
 
 import { ProfileService } from "./profile.service";
 
 describe("ProfileService", () => {
 	let service: ProfileService;
 
-	const mockI18n = createMock<I18nService>();
 	const mockUserRepo = createMock<BaseRepository<User>>();
 
 	// default mocks
@@ -32,7 +30,6 @@ describe("ProfileService", () => {
 					provide: getRepositoryToken(User),
 					useValue: mockUserRepo,
 				},
-				{ provide: I18nService, useValue: mockI18n },
 			],
 		}).compile();
 
