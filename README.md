@@ -49,8 +49,8 @@ Install dependencies (preferred: pnpm)
 
 ```sh
  npm install --legacy-peer-deps
- yarn install
  pnpm install --shamefully-hoist=true
+ yarn install
 ```
 
 ## Database
