@@ -1,6 +1,6 @@
 import { IsEnumField, IsStringField } from "@common/decorators";
 import { Roles } from "@common/types";
-import { IsPassword,IsUnique } from "@common/validators";
+import { IsPassword, IsUnique } from "@common/validators";
 import { User } from "@entities";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty } from "class-validator";

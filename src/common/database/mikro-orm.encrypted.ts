@@ -10,7 +10,7 @@ export class EncryptedType extends Type<string> {
 			throw ValidationError.invalidType(EncryptedType, value, "JS");
 		}
 
-		return encrypt(value.toString(), { key: this.encKey, iv: this.encIV });
+		return encrypt({text: value.toString(),config: { key: this.encKey, iv: this.encIV }});
 	}
 
 	convertToJSValue(value: string, _platform: Platform): string {
@@ -18,7 +18,7 @@ export class EncryptedType extends Type<string> {
 			return value;
 		}
 
-		return decrypt(value, { key: this.encKey, iv: this.encIV });
+		return decrypt({text: value,config: { key: this.encKey, iv: this.encIV }});
 	}
 
 	getColumnType(property: EntityProperty, _platform: Platform) {

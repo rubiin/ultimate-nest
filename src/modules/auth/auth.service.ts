@@ -1,6 +1,6 @@
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
-import { EmailTemplateEnum, IAuthenticationPayload,LoginType, RandomTypes } from "@common/types";
+import { EmailTemplateEnum, IAuthenticationPayload, LoginType } from "@common/types";
 import { OtpLog, User } from "@entities";
 import { I18nTranslations } from "@generated";
 import { MailerService } from "@lib/mailer/mailer.service";
@@ -12,17 +12,17 @@ import {
 	ForbiddenException,
 	Injectable,
 	NotFoundException,
-	UnauthorizedException,
+	UnauthorizedException
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { isAfter } from "date-fns";
-import { capitalize, omit } from "helper-fns";
+import { capitalize, omit, randomString } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, of, switchMap, zip } from "rxjs";
 
-import { OtpVerifyDto, SendOtpDto } from "./dtos/otp.dto";
-import { ChangePasswordDto, ResetPasswordDto } from "./dtos/reset-password";
-import { UserLoginDto } from "./dtos/user-login";
+import {
+	ChangePasswordDto, OtpVerifyDto, ResetPasswordDto, SendOtpDto, UserLoginDto
+} from "./dtos";
 
 @Injectable()
 export class AuthService {
@@ -159,7 +159,7 @@ export class AuthService {
 			);
 		}
 
-		const otpNumber = (await HelperService.getRandom(RandomTypes.NUMBER, 6)) as string; // random six digit otp
+		const otpNumber = randomString({length: 6, numbers: true}); // random six digit otp
 
 		const otpExpiry = 60 * 60 * 1000; // 1 hour
 

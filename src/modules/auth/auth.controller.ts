@@ -1,6 +1,6 @@
 import { Auth, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { JwtAuthGuard } from "@common/guards";
-import { IOauthResponse,LoginType } from "@common/types";
+import { IOauthResponse, LoginType } from "@common/types";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {

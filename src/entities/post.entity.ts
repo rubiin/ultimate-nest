@@ -11,7 +11,7 @@ import {
 	ManyToOne,
 	OneToMany,
 	Property,
-	Rel,
+	Rel
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
