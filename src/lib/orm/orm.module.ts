@@ -1,4 +1,4 @@
-import { BaseRepository } from "@common/database/base.repository";
+import { BaseRepository } from "@common/database";
 import * as Entities from "@entities";
 import { LoadStrategy } from "@mikro-orm/core";
 import { MikroOrmModule } from "@mikro-orm/nestjs";

@@ -1,4 +1,4 @@
-import { IOauthResponse } from "@common/types/interfaces";
+import { IOauthResponse } from "@common/types";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";

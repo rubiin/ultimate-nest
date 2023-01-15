@@ -1,8 +1,8 @@
-import { BaseRepository } from "@common/database/base.repository";
-import { HelperService } from "@common/helpers/helpers.utils";
-import { IAuthenticationPayload } from "@common/types";
-import { EmailTemplateEnum, LoginType, RandomTypes } from "@common/types/enums/misc.enum";
+import { BaseRepository } from "@common/database";
+import { HelperService } from "@common/helpers";
+import { EmailTemplateEnum, IAuthenticationPayload,LoginType, RandomTypes } from "@common/types";
 import { OtpLog, User } from "@entities";
+import { I18nTranslations } from "@generated";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -16,7 +16,6 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { isAfter } from "date-fns";
-import { I18nTranslations } from "generated/i18n.generated";
 import { capitalize, omit } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, of, switchMap, zip } from "rxjs";

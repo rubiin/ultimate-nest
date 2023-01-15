@@ -1,4 +1,4 @@
-import { BaseRepository } from "@common/database/base.repository";
+import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";

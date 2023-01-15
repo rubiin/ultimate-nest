@@ -1,5 +1,5 @@
-import { BaseEntity } from "@common/database/base-entity.entity";
-import { Roles } from "@common/types/enums/permission.enum";
+import { BaseEntity } from "@common/database";
+import { Roles } from "@common/types";
 import {
 	BeforeCreate,
 	BeforeUpdate,

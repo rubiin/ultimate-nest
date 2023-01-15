@@ -17,11 +17,12 @@
 		"skipLibCheck": true,
 		"allowUnreachableCode":false,
 		"paths": {
+			"@lib/*": ["./lib/*"],
 			"@common/*": ["./common/*"],
 			"@modules/*": ["./modules/*"],
 			"@entities": ["./entities/index"],
-			"@lib/*": ["./lib/*"],
-			"@mocks": ["./_mocks_/index"]
+			"@mocks": ["./_mocks_/index"],
+			"@generated": ["./generated/index"],
 		}
 	},
 	"include": ["test/**/*", "src/**/*"]

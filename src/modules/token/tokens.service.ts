@@ -1,10 +1,10 @@
 import { RefreshTokenPayload } from "@common/types";
 import { RefreshToken, User } from "@entities";
+import { I18nTranslations } from "@generated";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService, JwtSignOptions } from "@nestjs/jwt";
-import { I18nTranslations } from "generated/i18n.generated";
 import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
 import { I18nContext } from "nestjs-i18n";

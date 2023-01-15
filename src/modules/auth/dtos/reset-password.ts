@@ -1,5 +1,4 @@
-import { IsEqualTo } from "@common/validators/is-equal-to.validator";
-import { IsPassword } from "@common/validators/is-password.validator";
+import { IsEqualTo, IsPassword } from "@common/validators";
 import { PickType } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";

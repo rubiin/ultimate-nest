@@ -1,3 +1,4 @@
+import { I18nTranslations } from "@generated";
 import {
 	ExecutionContext,
 	ForbiddenException,
@@ -6,7 +7,6 @@ import {
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
-import { I18nTranslations } from "generated/i18n.generated";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { I18nContext } from "nestjs-i18n";
 

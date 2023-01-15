@@ -8,8 +8,7 @@ import {
 	UUIDParam,
 } from "@common/decorators";
 import { fileValidatorPipe } from "@common/misc";
-import { IFile } from "@common/types";
-import { Action, Roles } from "@common/types/enums";
+import { Action, IFile,Roles } from "@common/types";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Pagination } from "@lib/pagination";

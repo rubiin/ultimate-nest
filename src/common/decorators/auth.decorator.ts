@@ -1,4 +1,4 @@
-import { JwtAuthGuard } from "@common/guards/jwt.guard";
+import { JwtAuthGuard } from "@common/guards";
 import { PoliciesGuard } from "@lib/casl/policies.guard";
 import { applyDecorators, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiUnauthorizedResponse } from "@nestjs/swagger";

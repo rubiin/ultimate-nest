@@ -1,6 +1,5 @@
 import { PageOptionsDto } from "@common/classes/pagination";
-import { IFile } from "@common/types";
-import { Order, Roles } from "@common/types/enums";
+import { IFile,Order, Roles } from "@common/types";
 
 export const mockedUser = {
 	idx: "idx",

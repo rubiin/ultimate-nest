@@ -1,6 +1,5 @@
 import { MULTER_IMAGE_FILTER } from "@common/constant";
-import { IFileValidator } from "@common/types";
-import { FileSizes, FileTypes } from "@common/types/enums";
+import { FileSizes, FileTypes,IFileValidator } from "@common/types";
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { Request } from "express";

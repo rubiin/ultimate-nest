@@ -1,10 +1,10 @@
-import { BaseRepository } from "@common/database/base.repository";
-import { IProfileData } from "@common/types/interfaces";
+import { BaseRepository } from "@common/database";
+import { IProfileData } from "@common/types";
 import { User } from "@entities";
+import { I18nTranslations } from "@generated";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { I18nTranslations } from "generated/i18n.generated";
 import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
 
