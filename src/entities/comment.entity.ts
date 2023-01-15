@@ -1,4 +1,4 @@
-import { BaseEntity } from "@common/database/base-entity.entity";
+import { BaseEntity } from "@common/database";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
 
 import { Post, User } from "./index";

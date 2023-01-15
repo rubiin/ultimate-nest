@@ -1,6 +1,6 @@
+import { I18nTranslations } from "@generated";
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { I18nTranslations } from "generated/i18n.generated";
 import { TokenExpiredError } from "jsonwebtoken";
 import { I18nContext } from "nestjs-i18n";
 

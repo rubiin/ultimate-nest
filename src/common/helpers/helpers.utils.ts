@@ -1,5 +1,4 @@
-import { IAuthenticationPayload } from "@common/types";
-import { RandomTypes } from "@common/types/enums/misc.enum";
+import { IAuthenticationPayload, RandomTypes } from "@common/types";
 import { User } from "@entities";
 import { verify } from "argon2";
 import { pick, slugify } from "helper-fns";

@@ -1,4 +1,4 @@
-import { BaseRepository } from "@common/database/base.repository";
+import { BaseRepository } from "@common/database";
 import { Comment, Post, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";

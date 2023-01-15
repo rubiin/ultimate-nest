@@ -1,4 +1,4 @@
-import { BaseEntity } from "@common/database/base-entity.entity";
+import { BaseEntity } from "@common/database";
 import { PostState } from "@common/types";
 import {
 	ArrayType,

@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
@@ -11,8 +13,8 @@ module.exports = {
 		'@typescript-eslint/eslint-plugin',
 		'prettier',
 		'unicorn',
+		'simple-import-sort',
 		'import',
-		'simple-import-sort'
 	],
 	extends: [
 		'plugin:import/typescript',
@@ -28,7 +30,9 @@ module.exports = {
     "import/resolver": {
       "typescript": {
 				"alwaysTryTypes": true,
-				"project": './tsconfig.json'
+				"project":[
+					path.resolve(__dirname, '.tsconfig.json'),
+				]
 
 			}
     },
@@ -40,6 +44,11 @@ module.exports = {
 		browser: false,
 	},
 	rules: {
+		"simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
 		'no-duplicate-imports': 'error',
 		'no-param-reassign': 'error',
 		'unicorn/filename-case': 'off',

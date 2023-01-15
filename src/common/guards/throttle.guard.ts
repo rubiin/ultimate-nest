@@ -1,6 +1,7 @@
 import { THROTTLE_LIMIT_RESPONSE } from "@common/constant";
 import { Injectable } from "@nestjs/common";
 import { ThrottlerGuard } from "@nestjs/throttler";
+
 @Injectable()
 export class CustomThrottlerGuard extends ThrottlerGuard {
 	protected errorMessage = THROTTLE_LIMIT_RESPONSE;

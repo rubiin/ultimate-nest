@@ -1,4 +1,4 @@
-import { BaseRepository } from "@common/database/base.repository";
+import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";

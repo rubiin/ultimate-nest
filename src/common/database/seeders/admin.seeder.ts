@@ -1,4 +1,4 @@
-import { Roles } from "@common/types/enums/permission.enum";
+import { Roles } from "@common/types";
 import type { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
 

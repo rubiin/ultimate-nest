@@ -1,4 +1,4 @@
-import { Roles } from "@common/types/enums/permission.enum";
+import { Roles } from "@common/types";
 import { User } from "@entities";
 import { Factory, Faker } from "@mikro-orm/seeder";
 

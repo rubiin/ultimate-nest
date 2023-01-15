@@ -1,4 +1,4 @@
-import { BaseRepository } from "@common/database/base.repository";
+import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";

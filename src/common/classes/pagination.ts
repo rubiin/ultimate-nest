@@ -1,5 +1,5 @@
 import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
-import { Order } from "@common/types/enums/misc.enum";
+import { Order } from "@common/types";
 
 export class PageOptionsDto {
 	/**
