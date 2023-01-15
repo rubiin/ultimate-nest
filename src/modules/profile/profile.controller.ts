@@ -6,7 +6,6 @@ import { Observable } from "rxjs";
 
 import { ProfileService } from "./profile.service";
 
-
 @GenericController("profile")
 export class ProfileController {
 	constructor(private readonly profileService: ProfileService) {}
