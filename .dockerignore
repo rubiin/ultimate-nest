@@ -1,52 +1,62 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 # compiled output
-/dist
-/tmp
-/out-tsc
+dist
+tmp
 # dependencies
-/node_modules
+node_modules
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
 *.launch
 .settings/
 *.sublime-workspace
-# IDE VSCode
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+
+
+
+
 # misc
-/.sass-cache
-/connect.lock
+.sass-cache
+env
+collection.json
+connect.lock
 /coverage
-/libpeerconnection.log
+libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+typings
 # System Files
 .DS_Store
 Thumbs.db
 .env
-scripts/
-Docker/
+scripts
+docker
+docs
 .gitignore
-.huskyrc
-.github/
-.vscode/
+.gitattributes
+
+.github
 .editorconfig
 scheam.gql
-docker-compose.yml
+docker-compose*.yml
 .cache
 *.txt
 debug.json
 server.json
+.eslintcache
+.tools-versions
+
 nginx-local.conf
 *.svg
 LICENSE
 *.md
+.snyk
+.swcrc
 .git
+.husky
+.prettierrc
+makefile
+test
