@@ -12,7 +12,7 @@ import {
 	ForbiddenException,
 	Injectable,
 	NotFoundException,
-	UnauthorizedException
+	UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { isAfter } from "date-fns";
@@ -21,7 +21,11 @@ import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, of, switchMap, zip } from "rxjs";
 
 import {
-	ChangePasswordDto, OtpVerifyDto, ResetPasswordDto, SendOtpDto, UserLoginDto
+	ChangePasswordDto,
+	OtpVerifyDto,
+	ResetPasswordDto,
+	SendOtpDto,
+	UserLoginDto,
 } from "./dtos";
 
 @Injectable()
@@ -159,7 +163,7 @@ export class AuthService {
 			);
 		}
 
-		const otpNumber = randomString({length: 6, numbers: true}); // random six digit otp
+		const otpNumber = randomString({ length: 6, numbers: true }); // random six digit otp
 
 		const otpExpiry = 60 * 60 * 1000; // 1 hour
 

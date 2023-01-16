@@ -19,6 +19,7 @@ import { ChatModule } from "@modules/chat/chat.module";
 import { HealthModule } from "@modules/health/health.module";
 import { PostModule } from "@modules/post/post.module";
 import { ProfileModule } from "@modules/profile/profile.module";
+import { TwoFactorModule } from "@modules/twofa/twofa.module";
 import { UserModule } from "@modules/user/user.module";
 import { Module } from "@nestjs/common";
 
@@ -31,6 +32,7 @@ import { Module } from "@nestjs/common";
 		UserModule,
 		ChatModule,
 		OrmModule,
+		TwoFactorModule,
 		NestRabbitModule,
 		NestMailModule,
 		NestConfigModule,
