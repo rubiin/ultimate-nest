@@ -39,6 +39,12 @@ export class User extends BaseEntity {
 	@Property({ hidden: true })
 	password!: string;
 
+	@Property({ length: 255 })
+	twoFactorAuthenticationSecret?: string;
+
+	@Property()
+	isTwoFactorAuthenticationEnabled = false;
+
 	@Enum({ items: () => Roles, array: true, default: [Roles.AUTHOR] })
 	roles: Roles[] = [Roles.AUTHOR];
 
