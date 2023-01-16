@@ -24,7 +24,7 @@ export class TwoFactorAuthenticationController {
 	@Post("generate")
 	@UseGuards(JwtAuthGuard)
 	register(@Res() response: Response, @LoggedInUser() user: User) {
-		this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(user).pipe(
+		return this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(user).pipe(
 			switchMap(({ otpAuthUrl }) => {
 				return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpAuthUrl);
 			}),
