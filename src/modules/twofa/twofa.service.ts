@@ -6,6 +6,7 @@ import { ConfigService } from "@nestjs/config";
 import { Response } from "express";
 import { authenticator } from "otplib";
 import { toFileStream } from "qrcode";
+import { from, map, Observable } from "rxjs";
 
 @Injectable()
 export class TwoFactorAuthenticationService {
@@ -15,37 +16,41 @@ export class TwoFactorAuthenticationService {
 		private readonly configService: ConfigService,
 	) {}
 
-	async generateTwoFactorAuthenticationSecret(user: User) {
+	generateTwoFactorAuthenticationSecret(
+		user: User,
+	): Observable<{ secret: string; otpAuthUrl: string }> {
 		const secret = authenticator.generateSecret();
 
-		const otpauthUrl = authenticator.keyuri(
+		const otpAuthUrl = authenticator.keyuri(
 			user.email,
-			this.configService.get("TWO_FACTOR_AUTHENTICATION_APP_NAME"),
+			this.configService.get("app.name"),
 			secret,
 		);
 
 		this.userRepository.assign(user, { twoFactorAuthenticationSecret: secret });
 
-		await this.userRepository.flush();
-
-		return {
-			secret,
-			otpauthUrl,
-		};
+		return from(this.userRepository.flush()).pipe(
+			map(() => {
+				return { secret, otpAuthUrl };
+			}),
+		);
 	}
 
-	async pipeQrCodeStream(stream: Response, otpauthUrl: string) {
-		return toFileStream(stream, otpauthUrl);
+	pipeQrCodeStream(stream: Response, otpAuthUrl: string) {
+		return from(toFileStream(stream, otpAuthUrl));
 	}
 
-	public isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: User) {
+	isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: User): boolean {
 		return authenticator.verify({
 			token: twoFactorAuthenticationCode,
 			secret: user.twoFactorAuthenticationSecret,
 		});
 	}
 
-	async turnOnTwoFactorAuthentication(twoFactorAuthenticationCode: string, user: User) {
+	turnOnTwoFactorAuthentication(
+		twoFactorAuthenticationCode: string,
+		user: User,
+	): Observable<User> {
 		const isCodeValid = this.isTwoFactorAuthenticationCodeValid(
 			twoFactorAuthenticationCode,
 			user,
@@ -56,7 +61,7 @@ export class TwoFactorAuthenticationService {
 		}
 
 		this.userRepository.assign(user, { isTwoFactorAuthenticationEnabled: true });
-		
-return this.userRepository.flush();
+
+		return from(this.userRepository.flush()).pipe(map(() => user));
 	}
 }

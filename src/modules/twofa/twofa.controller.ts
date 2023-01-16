@@ -11,6 +11,7 @@ import {
 	UseInterceptors,
 } from "@nestjs/common";
 import { Response } from "express";
+import { switchMap } from "rxjs";
 
 import { CreateTwofaDto } from "./dto/create-twofa.dto";
 import { TwoFactorAuthenticationService } from "./twofa.service";
@@ -22,20 +23,21 @@ export class TwoFactorAuthenticationController {
 
 	@Post("generate")
 	@UseGuards(JwtAuthGuard)
-	async register(@Res() response: Response, @LoggedInUser() user: User) {
-		const { otpauthUrl } =
-			await this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(user);
-
-		return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpauthUrl);
+	register(@Res() response: Response, @LoggedInUser() user: User) {
+		this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(user).pipe(
+			switchMap(({ otpAuthUrl }) => {
+				return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpAuthUrl);
+			}),
+		);
 	}
 
 	@Post("turn-on")
 	@UseGuards(JwtAuthGuard)
-	async turnOnTwoFactorAuthentication(
+	turnOnTwoFactorAuthentication(
 		@LoggedInUser() user: User,
 		@Body() { twoFactorAuthenticationCode }: CreateTwofaDto,
 	) {
-		await this.twoFactorAuthenticationService.turnOnTwoFactorAuthentication(
+		return this.twoFactorAuthenticationService.turnOnTwoFactorAuthentication(
 			twoFactorAuthenticationCode,
 			user,
 		);
