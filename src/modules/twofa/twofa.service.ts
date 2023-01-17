@@ -45,13 +45,15 @@ export class TwoFactorService {
 		);
 	}
 
-	/**
-	 * It takes a response stream and an otpAuthUrl, and returns a file stream
-	 * @param {Response} stream - Response - The response from the HTTP request
-	 * @param {string} otpAuthUrl - The OTP Auth URL that you want to generate a QR code for.
-	 * @returns A promise that resolves to a file stream.
-	 */
-	pipeQrCodeStream(stream: Response, otpAuthUrl: string) {
+
+/**
+ * It takes a response stream and an OTP Auth URL, and returns an observable that emits the file path
+ * of the QR code image
+ * @param {Response} stream - Response - The response from the HTTP request.
+ * @param {string} otpAuthUrl - The OTP Auth URL that you want to generate a QR code for.
+ * @returns Observable<unknown>
+ */
+	pipeQrCodeStream(stream: Response, otpAuthUrl: string): Observable<unknown> {
 		return from(toFileStream(stream, otpAuthUrl));
 	}
 
