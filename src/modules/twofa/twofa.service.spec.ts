@@ -2,7 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 
 import { TwoFactorService } from "./twofa.service";
 
-describe("TwoFactorAuthenticationService", () => {
+describe("TwoFactorService", () => {
 	let service: TwoFactorService;
 
 	beforeEach(async () => {
