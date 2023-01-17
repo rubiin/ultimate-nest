@@ -1,10 +1,13 @@
+import { OrmModule } from "@lib/orm/orm.module";
+import { AuthModule } from "@modules/auth/auth.module";
 import { Module } from "@nestjs/common";
 
-import { TwoFactorAuthenticationController } from "./twofa.controller";
-import { TwoFactorAuthenticationService } from "./twofa.service";
+import { TwoFactorController } from "./twofa.controller";
+import { TwoFactorService } from "./twofa.service";
 
 @Module({
-	controllers: [TwoFactorAuthenticationController],
-	providers: [TwoFactorAuthenticationService],
+	imports: [OrmModule, AuthModule],
+	controllers: [TwoFactorController],
+	providers: [TwoFactorService],
 })
 export class TwoFactorModule {}

@@ -22,6 +22,6 @@ import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies";
 		GoogleStrategy,
 		FacebookStrategy,
 	],
-	exports: [NestJwtModule, AuthService, JwtStrategy],
+	exports: [NestJwtModule, AuthService, JwtStrategy, TokensService, RefreshTokensRepository],
 })
 export class AuthModule {}
