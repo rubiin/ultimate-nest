@@ -1,28 +1,24 @@
-import { LoggedInUser } from "@common/decorators";
-import { JwtAuthGuard } from "@common/guards";
+import { Auth, LoggedInUser } from "@common/decorators";
 import { User } from "@entities";
-import {
-	Body,
-	ClassSerializerInterceptor,
-	Controller,
-	Post,
-	Res,
-	UseGuards,
-	UseInterceptors,
-} from "@nestjs/common";
+import { AuthService } from "@modules/auth/auth.service";
+import { Body, Controller, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
 import { switchMap } from "rxjs";
 
-import { CreateTwofaDto } from "./dto/create-twofa.dto";
-import { TwoFactorAuthenticationService } from "./twofa.service";
+import { TwofaDto } from "./dto/twofa.dto";
+import { TwoFactorService } from "./twofa.service";
 
 @Controller("2fa")
-@UseInterceptors(ClassSerializerInterceptor)
-export class TwoFactorAuthenticationController {
-	constructor(private readonly twoFactorAuthenticationService: TwoFactorAuthenticationService) {}
+export class TwoFactorController {
+	constructor(
+		private readonly twoFactorAuthenticationService: TwoFactorService,
+		private readonly authService: AuthService,
+	) {}
 
 	@Post("generate")
-	@UseGuards(JwtAuthGuard)
+	@UseGuards(AuthGuard("jwt2fa"))
 	register(@Res() response: Response, @LoggedInUser() user: User) {
 		return this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(user).pipe(
 			switchMap(({ otpAuthUrl }) => {
@@ -31,15 +27,26 @@ export class TwoFactorAuthenticationController {
 		);
 	}
 
-	@Post("turn-on")
-	@UseGuards(JwtAuthGuard)
-	turnOnTwoFactorAuthentication(
-		@LoggedInUser() user: User,
-		@Body() { twoFactorAuthenticationCode }: CreateTwofaDto,
-	) {
-		return this.twoFactorAuthenticationService.turnOnTwoFactorAuthentication(
-			twoFactorAuthenticationCode,
+	// This function will be called if 2FA is on (activationOfTwoFa method)
+	@ApiBearerAuth()
+	@Post("authenticate")
+	@UseGuards(AuthGuard("jwt2fa"))
+	authenticate(@LoggedInUser() user: User, @Body() twoFaAuthDto: TwofaDto) {
+		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(
+			twoFaAuthDto.code,
 			user,
 		);
+
+		if (!isCodeValid) {
+			throw new UnauthorizedException();
+		}
+
+		return this.authService.login(user, true);
+	}
+
+	@Auth()
+	@Post("turn-on")
+	turnOnTwoFactorAuthentication(@LoggedInUser() user: User, @Body() dto: TwofaDto) {
+		return this.twoFactorAuthenticationService.turnOnTwoFactorAuthentication(dto.code, user);
 	}
 }
