@@ -1,6 +1,6 @@
 import { IsStringField } from "@common/decorators";
 
-export class CreateTwofaDto {
+export class TwofaDto {
 	@IsStringField({ min: 1, required: true })
-	twoFactorAuthenticationCode: string;
+	code: string;
 }

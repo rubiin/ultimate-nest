@@ -1,15 +1,17 @@
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
+import { I18nTranslations } from "@generated";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Response } from "express";
+import { I18nContext } from "nestjs-i18n";
 import { authenticator } from "otplib";
 import { toFileStream } from "qrcode";
 import { from, map, Observable } from "rxjs";
 
 @Injectable()
-export class TwoFactorAuthenticationService {
+export class TwoFactorService {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
@@ -34,7 +36,7 @@ export class TwoFactorAuthenticationService {
 			secret,
 		);
 
-		this.userRepository.assign(user, { twoFactorAuthenticationSecret: secret });
+		this.userRepository.assign(user, { twoFactorSecret: secret });
 
 		return from(this.userRepository.flush()).pipe(
 			map(() => {
@@ -62,7 +64,7 @@ export class TwoFactorAuthenticationService {
 	isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: User): boolean {
 		return authenticator.verify({
 			token: twoFactorAuthenticationCode,
-			secret: user.twoFactorAuthenticationSecret,
+			secret: user.twoFactorSecret,
 		});
 	}
 
@@ -83,10 +85,12 @@ export class TwoFactorAuthenticationService {
 		);
 
 		if (!isCodeValid) {
-			throw new UnauthorizedException("Wrong authentication code");
+			throw new UnauthorizedException(
+				I18nContext.current<I18nTranslations>().t("exception.inactiveUser"),
+			);
 		}
 
-		this.userRepository.assign(user, { isTwoFactorAuthenticationEnabled: true });
+		this.userRepository.assign(user, { isTwoFactorEnabled: true });
 
 		return from(this.userRepository.flush()).pipe(map(() => user));
 	}

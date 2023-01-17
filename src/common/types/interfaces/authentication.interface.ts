@@ -3,10 +3,8 @@ export interface IAuthenticationPayload {
 		id: number;
 		idx: string;
 	};
-	payload: {
-		access_token: string;
-		refresh_token?: string;
-	};
+	access_token: string;
+	refresh_token?: string;
 }
 
 export interface IOauthResponse {

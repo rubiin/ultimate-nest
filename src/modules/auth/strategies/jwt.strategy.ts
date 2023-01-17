@@ -10,7 +10,7 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 export class JwtStrategy extends PassportStrategy(Strategy) {
 	constructor(
 		@InjectRepository(User)
-		private readonly usersRepo: BaseRepository<User>,
+		private readonly userRepository: BaseRepository<User>,
 		private config: ConfigService,
 	) {
 		super({
@@ -33,6 +33,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
 		// Accept the JWT and attempt to validate it using the user service
 
-		return await this.usersRepo.findOne({ id });
+		return await this.userRepository.findOne({ id });
 	}
 }

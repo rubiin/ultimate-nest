@@ -1,6 +1,5 @@
 import { Auth, LoggedInUser, SwaggerResponse } from "@common/decorators";
-import { JwtAuthGuard } from "@common/guards";
-import { IOauthResponse, LoginType } from "@common/types";
+import { IOauthResponse } from "@common/types";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
@@ -49,7 +48,7 @@ export class AuthController {
 		description: "User name and password provided does not match.",
 	})
 	login(@Body() _loginDto: UserLoginDto) {
-		return this.authService.login(_loginDto, LoginType.PASSWORD);
+		return this.authService.login(_loginDto, true);
 	}
 
 	@Post("reset-password")
@@ -62,8 +61,8 @@ export class AuthController {
 		return this.authService.resetPassword(dto);
 	}
 
-	@Put("forgot-password")
 	@Auth()
+	@Put("forgot-password")
 	@SwaggerResponse({
 		operation: "Forgot password",
 		notFound: "Account doesn't exist.",
@@ -85,11 +84,11 @@ export class AuthController {
 		user: IOauthResponse,
 		@Res() response: Response,
 	) {
-		return this.authService.login({ email: user.email }, LoginType.GOOGLE).pipe(
+		return this.authService.login({ email: user.email }, false).pipe(
 			map(data => {
 				// client url
 				return response.redirect(
-					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.payload.access_token}`,
+					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.access_token}`,
 				);
 			}),
 		);
@@ -108,11 +107,11 @@ export class AuthController {
 		user: IOauthResponse,
 		@Res() response: Response,
 	) {
-		return this.authService.login({ email: user.email }, LoginType.FACEBOOK).pipe(
+		return this.authService.login({ email: user.email }, false).pipe(
 			map(data => {
 				// client url
 				return response.redirect(
-					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.payload.access_token}`,
+					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.access_token}`,
 				);
 			}),
 		);
@@ -134,8 +133,8 @@ export class AuthController {
 		return this.authService.verifyOtp(dto);
 	}
 
-	@Post("change-password")
 	@Auth()
+	@Post("change-password")
 	@SwaggerResponse({
 		operation: "Change password",
 		badRequest: "Username and password provided does not match.",
@@ -152,8 +151,8 @@ export class AuthController {
 			.pipe(map(token => ({ token })));
 	}
 
+	@Auth()
 	@ApiOperation({ summary: "Logout user" })
-	@UseGuards(JwtAuthGuard)
 	@Post("logout")
 	logout(
 		@LoggedInUser() user: User,

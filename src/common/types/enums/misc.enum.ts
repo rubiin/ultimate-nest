@@ -13,12 +13,6 @@ export enum EmailTemplateEnum {
 	"WELCOME_TEMPLATE" = "welcome",
 }
 
-export enum LoginType {
-	PASSWORD = "PASSWORD",
-	GOOGLE = "GOOGLE",
-	FACEBOOK = "FACEBOOK",
-}
-
 export enum FileSizes {
 	IMAGE = 5 * 1024 * 1024, // 5mb
 }

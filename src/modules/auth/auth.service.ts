@@ -1,6 +1,6 @@
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
-import { EmailTemplateEnum, IAuthenticationPayload, LoginType } from "@common/types";
+import { EmailTemplateEnum, IAuthenticationPayload } from "@common/types";
 import { OtpLog, User } from "@entities";
 import { I18nTranslations } from "@generated";
 import { MailerService } from "@lib/mailer/mailer.service";
@@ -42,15 +42,15 @@ export class AuthService {
 	) {}
 
 	/**
-	 * It takes an email, password, and login type, and returns an observable of the user if the user
-	 * exists, is active, and the password is correct
-	 * @param {string} email - The email address of the user
-	 * @param {string} pass - string - The password that the user entered
-	 * @param {LoginType} loginType - LoginType - This is an enum that we created in the auth.service.ts
-	 * file.
-	 * @returns return omit(user, ["password"]);
+	 * It takes an email and a password, and returns the user if the password is correct
+	 * @param {string} email - The email address of the user.
+	 * @param {string} pass - string - The password to be validated
+	 * @param {boolean} isPasswordLogin - boolean - This is a boolean value that determines whether the
+	 * user is logging in with a password or not.
+	 * @returns The user object without the password property.
 	 */
-	validateUser(email: string, pass: string, loginType: LoginType): Observable<any> {
+
+	validateUser(email: string, pass: string, isPasswordLogin: boolean): Observable<any> {
 		return from(
 			this.userRepository.findOne({
 				email,
@@ -72,7 +72,7 @@ export class AuthService {
 					);
 				}
 
-				return user && loginType === LoginType.PASSWORD
+				return user && isPasswordLogin
 					? HelperService.verifyHash(user.password, pass).pipe(
 							map(isValid => {
 								if (isValid) {
@@ -91,19 +91,28 @@ export class AuthService {
 	}
 
 	/**
-	 * It validates the user credentials, generates access and refresh tokens, and returns the payload
+	 * We validate the user, if the user is valid, we generate an access token and a refresh token
 	 * @param {UserLoginDto} loginDto - UserLoginDto - This is the DTO that we created earlier.
-	 * @param {LoginType} loginType - LoginType - This is an enum that we created to differentiate between
-	 * the different types of login.
+	 * @param {boolean} isPasswordLogin - boolean - This is a boolean value that tells the function whether
+	 * the user is logging in with a password or a refresh token.
 	 * @returns An observable of type IAuthenticationPayload
 	 */
-	login(loginDto: UserLoginDto, loginType: LoginType): Observable<IAuthenticationPayload> {
-		return this.validateUser(loginDto.email, loginDto.password, loginType).pipe(
+
+	login(loginDto: UserLoginDto, isPasswordLogin: boolean): Observable<IAuthenticationPayload> {
+		return this.validateUser(loginDto.email, loginDto.password, isPasswordLogin).pipe(
 			switchMap(user => {
 				if (!user)
 					throw new UnauthorizedException(
 						I18nContext.current<I18nTranslations>().t("exception.invalidCredentials"),
 					);
+
+				if (user.isTwoFactorEnabled) {
+					return this.tokenService.generateAccessToken(user).pipe(
+						map(accessToken => {
+							return HelperService.buildPayloadResponse(user, accessToken);
+						}),
+					);
+				}
 
 				return zip(
 					this.tokenService.generateAccessToken(user),
