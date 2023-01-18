@@ -17,5 +17,4 @@ export class CustomCacheInterceptor extends CacheInterceptor {
 
 		return cache || !ignoreCaching || request.method === "GET";
 	}
-
 }

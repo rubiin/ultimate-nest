@@ -25,5 +25,6 @@
 			"@generated": ["./generated/index"],
 		}
 	},
-	"include": ["test/**/*", "src/**/*"]
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist"]
 }
