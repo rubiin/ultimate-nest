@@ -19,7 +19,7 @@ import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 		{
 			provide: APP_INTERCEPTOR,
 			useClass: CustomCacheInterceptor,
-		}
+		},
 	],
 })
 export class AppModule {}

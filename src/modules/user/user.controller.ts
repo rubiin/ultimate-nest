@@ -5,7 +5,7 @@ import {
 	GenericController,
 	Public,
 	SwaggerResponse,
-	UUIDParam
+	UUIDParam,
 } from "@common/decorators";
 import { fileValidatorPipe } from "@common/misc";
 import { Action, IFile, Roles } from "@common/types";
@@ -21,8 +21,6 @@ import { UserService } from "./user.service";
 @GenericController("users")
 export class UserController {
 	constructor(private readonly userService: UserService) {}
-
-
 
 	@Public()
 	@ApiPaginatedResponse(User, "Users list")
