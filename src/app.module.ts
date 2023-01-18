@@ -1,6 +1,7 @@
-import { MyCacheInterceptor } from "@common/interceptors";
+import { CustomThrottlerGuard } from "@common/guards";
+import { CustomCacheInterceptor } from "@common/interceptors";
 import { SharedModule } from "@modules/shared/shared.module";
-import { CacheInterceptor, Module } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 
@@ -12,13 +13,13 @@ import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 			useValue: new SentryInterceptor(),
 		},
 		{
-			provide: APP_INTERCEPTOR,
-			useClass: CacheInterceptor,
+			provide: APP_GUARD,
+			useClass: CustomThrottlerGuard,
 		},
 		{
-			provide: APP_GUARD,
-			useClass: MyCacheInterceptor,
-		},
+			provide: APP_INTERCEPTOR,
+			useClass: CustomCacheInterceptor,
+		}
 	],
 })
 export class AppModule {}
