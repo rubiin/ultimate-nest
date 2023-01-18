@@ -1,14 +1,21 @@
-import { CacheInterceptor, ExecutionContext, Injectable } from "@nestjs/common";
+import { CacheInterceptor, ExecutionContext, Injectable, Logger } from "@nestjs/common";
 
 /* If the ignoreCaching metadata is set to true, then the request will not be cached. */
+
 @Injectable()
-export class MyCacheInterceptor extends CacheInterceptor {
+export class CustomCacheInterceptor extends CacheInterceptor {
 	protected isRequestCacheable(context: ExecutionContext): boolean {
+		const logger = new Logger("CacheInterceptor");
 		const http = context.switchToHttp();
 		const request = http.getRequest();
 
+		const cache = request.query?.cache === "true";
+
+		logger.error(`cache: ${cache}`);
+
 		const ignoreCaching: boolean = this.reflector.get("ignoreCaching", context.getHandler());
 
-		return !ignoreCaching || request.method === "GET";
+		return cache || !ignoreCaching || request.method === "GET";
 	}
+
 }
