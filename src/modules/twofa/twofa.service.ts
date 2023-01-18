@@ -25,9 +25,7 @@ export class TwoFactorService {
 	 * @returns An Observable that returns an object with a secret and otpAuthUrl.
 	 */
 
-	generateTwoFactorAuthenticationSecret(
-		user: User,
-	): Observable<{ secret: string; otpAuthUrl: string }> {
+	generateTwoFactorSecret(user: User): Observable<{ secret: string; otpAuthUrl: string }> {
 		const secret = authenticator.generateSecret();
 
 		const otpAuthUrl = authenticator.keyuri(
@@ -45,14 +43,13 @@ export class TwoFactorService {
 		);
 	}
 
-
-/**
- * It takes a response stream and an OTP Auth URL, and returns an observable that emits the file path
- * of the QR code image
- * @param {Response} stream - Response - The response from the HTTP request.
- * @param {string} otpAuthUrl - The OTP Auth URL that you want to generate a QR code for.
- * @returns Observable<unknown>
- */
+	/**
+	 * It takes a response stream and an OTP Auth URL, and returns an observable that emits the file path
+	 * of the QR code image
+	 * @param {Response} stream - Response - The response from the HTTP request.
+	 * @param {string} otpAuthUrl - The OTP Auth URL that you want to generate a QR code for.
+	 * @returns Observable<unknown>
+	 */
 	pipeQrCodeStream(stream: Response, otpAuthUrl: string): Observable<unknown> {
 		return from(toFileStream(stream, otpAuthUrl));
 	}
@@ -63,7 +60,7 @@ export class TwoFactorService {
 	 * @param {User} user - The user object that we're checking the two factor authentication code for.
 	 * @returns A boolean value.
 	 */
-	isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: User): boolean {
+	isTwoFactorCodeValid(twoFactorAuthenticationCode: string, user: User): boolean {
 		return authenticator.verify({
 			token: twoFactorAuthenticationCode,
 			secret: user.twoFactorSecret,
@@ -81,10 +78,7 @@ export class TwoFactorService {
 		twoFactorAuthenticationCode: string,
 		user: User,
 	): Observable<User> {
-		const isCodeValid = this.isTwoFactorAuthenticationCodeValid(
-			twoFactorAuthenticationCode,
-			user,
-		);
+		const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user);
 
 		if (!isCodeValid) {
 			throw new UnauthorizedException(

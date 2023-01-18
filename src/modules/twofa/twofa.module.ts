@@ -9,6 +9,6 @@ import { TwoFactorService } from "./twofa.service";
 @Module({
 	imports: [OrmModule, AuthModule],
 	controllers: [TwoFactorController],
-	providers: [TwoFactorService,JwtTwofaStrategy],
+	providers: [TwoFactorService, JwtTwofaStrategy],
 })
 export class TwoFactorModule {}
