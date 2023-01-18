@@ -9,6 +9,8 @@ export const mockedUser = {
 	lastName: "lastName",
 	email: "email",
 	avatar: "avatar",
+	twoFactorSecret: "someSecret",
+	isTwoFactorEnabled: true,
 	roles: [Roles.ADMIN],
 	mobileNumber: "mobileNumber",
 };

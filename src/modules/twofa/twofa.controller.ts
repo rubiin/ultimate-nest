@@ -20,7 +20,7 @@ export class TwoFactorController {
 	@Post("generate")
 	@UseGuards(AuthGuard("jwt2fa"))
 	register(@Res() response: Response, @LoggedInUser() user: User) {
-		return this.twoFactorAuthenticationService.generateTwoFactorAuthenticationSecret(user).pipe(
+		return this.twoFactorAuthenticationService.generateTwoFactorSecret(user).pipe(
 			switchMap(({ otpAuthUrl }) => {
 				return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpAuthUrl);
 			}),
@@ -32,7 +32,7 @@ export class TwoFactorController {
 	@Post("authenticate")
 	@UseGuards(AuthGuard("jwt2fa"))
 	authenticate(@LoggedInUser() user: User, @Body() twoFaAuthDto: TwofaDto) {
-		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorAuthenticationCodeValid(
+		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorCodeValid(
 			twoFaAuthDto.code,
 			user,
 		);
