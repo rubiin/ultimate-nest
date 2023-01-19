@@ -10,11 +10,11 @@ export class CustomCacheInterceptor extends CacheInterceptor {
 		const request = http.getRequest();
 
 		const cache = request.query?.cache === "true";
-
-		logger.error(`cache: ${cache}`);
-
 		const ignoreCaching: boolean = this.reflector.get("ignoreCaching", context.getHandler());
 
-		return cache || !ignoreCaching || request.method === "GET";
+		const isCacheable = cache || !ignoreCaching;
+
+		return isCacheable && request.method === "GET";
+
 	}
 }

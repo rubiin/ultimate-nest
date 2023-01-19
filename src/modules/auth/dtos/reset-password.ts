@@ -7,9 +7,18 @@ export class ResetPasswordDto {
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	otpCode!: string;
 
+	/**
+	 * New password of user
+	 * @example SomeThingNew7^#%
+	 */
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsPassword()
 	password!: string;
+
+	/**
+	 * New password of user
+	 * @example AVeryGoodPassword@&67t75
+	 */
 
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsEqualTo("password")
@@ -20,6 +29,10 @@ export class ChangePasswordDto extends PickType(ResetPasswordDto, [
 	"password",
 	"confirmPassword",
 ] as const) {
+	/**
+	 * Password of user
+	 * @example SomeThingNew7^#%
+	 */
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	currentPassword!: string;
 }
