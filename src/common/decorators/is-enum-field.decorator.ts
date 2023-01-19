@@ -1,6 +1,6 @@
 import { IsEnumFieldOptions } from "@common/types";
 import { applyDecorators } from "@nestjs/common";
-import { IsArray, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
 
@@ -25,6 +25,7 @@ export const IsEnumField = (entity: object, ops?: IsEnumFieldOptions) => {
 					message: i18nValidationMessage("validation.isNotEmpty"),
 					each: options.each,
 				}),
+				ArrayNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") }),
 		  )
 		: decoratorsToApply.push(IsOptional());
 

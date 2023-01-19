@@ -1,7 +1,7 @@
 import { IsNumberFieldOptions } from "@common/types";
 import { applyDecorators } from "@nestjs/common";
 import { Type } from "class-transformer";
-import { IsArray, IsInt, IsNotEmpty, IsOptional, Max, Min } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsOptional, Max, Min } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 /**
@@ -29,6 +29,7 @@ export const IsNumberField = (ops?: IsNumberFieldOptions) => {
 				IsNotEmpty({
 					message: i18nValidationMessage("validation.isNotEmpty"),
 				}),
+				ArrayNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") }),
 		  )
 		: decoratorsToApply.push(IsOptional());
 

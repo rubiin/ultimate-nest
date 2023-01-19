@@ -15,7 +15,15 @@ export class ProfileService {
 		private userRepository: BaseRepository<User>,
 	) {}
 
-	/* Finding a profile by username*/
+	/**
+	 * "Get a user by their username, and populate the specified fields."
+	 *
+	 * The first parameter is the username, which is a string. The second parameter is an array of fields
+	 * to populate
+	 * @param {string} username - string - The username of the user to get.
+	 * @param {AutoPath<User, keyof User>[]} populate - AutoPath<User, keyof User>[] = []
+	 * @returns Observable<User>
+	 */
 	getProfileByUsername(
 		username: string,
 		populate: AutoPath<User, keyof User>[] = [],
