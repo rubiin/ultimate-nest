@@ -1,4 +1,5 @@
 import { BaseRepository } from "@common/database";
+import { IJwtPayload } from "@common/types";
 import { User } from "@entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
@@ -28,8 +29,8 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
 	 *
 	 */
 
-	async validate(payload: any) {
-		const { sub: id, isTwoFaAuthenticated } = payload;
+	async validate(payload: IJwtPayload) {
+		const { sub: id, isTwoFactorEnabled } = payload;
 
 		// Accept the JWT and attempt to validate it using the user service
 		const user = await this.userRepository.findOne({ id });
@@ -41,7 +42,7 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
 		if (!user.isTwoFactorEnabled) {
 			return user;
 		}
-		if (isTwoFaAuthenticated) {
+		if (isTwoFactorEnabled) {
 			return user;
 		}
 	}

@@ -1,4 +1,5 @@
 import { BaseRepository } from "@common/database";
+import { IJwtPayload } from "@common/types";
 import { User } from "@entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
@@ -28,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 	 *
 	 */
 
-	async validate(payload: { sub: number }) {
+	async validate(payload: IJwtPayload) {
 		const { sub: id } = payload;
 
 		// Accept the JWT and attempt to validate it using the user service
