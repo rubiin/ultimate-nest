@@ -8,7 +8,4 @@ docker rmi -f $(docker images -f "dangling=true" -q)
 docker volume rm $(docker volume ls -qf dangling=true)
 
 git pull --no-edit
-pnpm i  --shamefully-hoist=true
-npm run build
-docker-compose -f ./docker-compose.dev.yml up --no-start $service -d &&
-docker-compose -f ./docker-compose.dev.yml restart $service
+docker-compose -f ./docker-compose.dev.yml up $service -d
