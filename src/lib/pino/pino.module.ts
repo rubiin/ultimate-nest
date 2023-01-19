@@ -22,15 +22,9 @@ import { LoggerModule } from "nestjs-pino";
 						redact: {
 							paths: ["req.headers.authorization"],
 						},
-						transport:
-							process.env.NODE_ENV === "production"
-								? undefined
-								: {
-										target: "pino-pretty",
-										options: {
-											forceColor: true,
-										},
-								  },
+						transport: process.env.NODE_ENV === "production"
+            ? undefined
+            : { target: "pino-pretty" },
 					},
 				};
 			},

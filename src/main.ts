@@ -1,5 +1,6 @@
 import { AppUtils } from "@common/helpers";
 import { ValidationPipe } from "@common/pipes";
+import { createLogger } from "@lib/pino/app.logger";
 import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory, repl } from "@nestjs/core";
@@ -18,7 +19,7 @@ declare const module: any;
 const bootstrap = async () => {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
 		httpsOptions: AppUtils.ssl(),
-		bufferLogs: true,
+		logger: await createLogger(),
 	});
 
 	AppUtils.killAppWithGrace(app);
@@ -75,12 +76,6 @@ const bootstrap = async () => {
 	// =========================================================
 
 	AppUtils.setupSwagger(app, configService);
-
-	// =========================================================
-	// configurePinoLogger
-	// =========================================================
-
-	app.useLogger(app.get(Logger));
 
 	// Starts listening for shutdown hooks
 
