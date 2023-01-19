@@ -99,8 +99,10 @@ Note: If you are using windows, `SET NODE_ENV=dev npm run start`
 
 -   `npm run start` - Start application
 -   `npm run start:dev` - Start application in watch mode
--   `npm run test` - run Jest test runner
--   `npm run start:prod` - Build application
+-   `npm run start:prod` - Start built application
+-   `npm run start:hmr` - Start application with hot module replacement
+
+All the scripts require `NODE_ENV` flag
 
 Additionally, you can also see the scripts in `makefile`
 
@@ -130,8 +132,7 @@ Seeding is used to insert data into the database. The seeding files are stored i
 
 ## Start application
 
--   `NODE_ENV=[env name] npm run start` (without ssl)
--   `NODE_ENV=[env name] SSL=true npm run start` (with ssl)
+-   `NODE_ENV=[env name] npm run start`
 -   Test api by browsing to `http://localhost:[port]/v1/user`
 -   View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
 -   View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and password is the values set in the env file under `SWAGGER_USERNAME` and `SWAGGER_PASS` respectively
