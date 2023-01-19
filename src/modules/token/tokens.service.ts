@@ -1,4 +1,4 @@
-import { RefreshTokenPayload } from "@common/types";
+import { IJwtPayload } from "@common/types";
 import { RefreshToken, User } from "@entities";
 import { I18nTranslations } from "@generated";
 import { EntityRepository } from "@mikro-orm/core";
@@ -37,7 +37,9 @@ export class TokensService {
 			subject: String(user.id),
 		};
 
-		return from(this.jwt.signAsync({ ...pick(user, ["idx", "email"]) }, options));
+		return from(
+			this.jwt.signAsync({ ...pick(user, ["roles", "isTwoFactorEnabled"]) }, options),
+		);
 	}
 
 	/**
@@ -138,7 +140,7 @@ export class TokensService {
 	 * @param {string} token - The refresh token to decode.
 	 * @returns The payload of the token.
 	 */
-	decodeRefreshToken(token: string): Observable<RefreshTokenPayload> {
+	decodeRefreshToken(token: string): Observable<IJwtPayload> {
 		return from(this.jwt.verifyAsync(token)).pipe(
 			map(payload => payload),
 			catchError(error_ => {
@@ -185,7 +187,7 @@ export class TokensService {
 	 * @param {RefreshTokenPayload} payload - The payload of the refresh token.
 	 * @returns The user object
 	 */
-	deleteRefreshToken(user: User, payload: RefreshTokenPayload): Observable<User> {
+	deleteRefreshToken(user: User, payload: IJwtPayload): Observable<User> {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
@@ -209,7 +211,7 @@ export class TokensService {
 	 * @param {RefreshTokenPayload} payload - RefreshTokenPayload
 	 * @returns A user object
 	 */
-	getUserFromRefreshTokenPayload(payload: RefreshTokenPayload): Observable<User> {
+	getUserFromRefreshTokenPayload(payload: IJwtPayload): Observable<User> {
 		const subId = payload.sub;
 
 		if (!subId) {
@@ -233,9 +235,7 @@ export class TokensService {
 	 * @param {RefreshTokenPayload} payload - RefreshTokenPayload
 	 * @returns Observable<RefreshToken | null>
 	 */
-	getStoredTokenFromRefreshTokenPayload(
-		payload: RefreshTokenPayload,
-	): Observable<RefreshToken | null> {
+	getStoredTokenFromRefreshTokenPayload(payload: IJwtPayload): Observable<RefreshToken | null> {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {

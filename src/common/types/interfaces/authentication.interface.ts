@@ -1,6 +1,5 @@
 export interface IAuthenticationPayload {
 	user: {
-		id: number;
 		idx: string;
 	};
 	access_token: string;
@@ -14,7 +13,13 @@ export interface IOauthResponse {
 	accessToken: string;
 }
 
-export interface RefreshTokenPayload {
-	jti: number;
+export interface IJwtPayload {
+	isTwoFactorEnabled?: boolean;
+	roles?: string[];
+	jti?: number;
 	sub: number;
+	iat: number;
+	exp: number;
+	aud: string;
+	iss: string;
 }
