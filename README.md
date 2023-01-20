@@ -64,13 +64,13 @@ The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres data
 Copy sample env file and adjust the connection settings and other settings(jwt,redis,mail,etc) respectively on sample env file
 
 `Note`: Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage']. The env file name
-should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as NODE_ENV=dev npm run dev
+should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as NODE_ENV=dev yarn dev
 
 Start local Postgres server and run `NODE_ENV=dev make migrate` to apply migrations
 
-Now you can start the application witt `NODE_ENV=dev npm run start`.
+Now you can start the application witt `NODE_ENV=dev yarn start`.
 
-Note: If you are using windows, `SET NODE_ENV=dev npm run start`
+Note: If you are using windows, `SET NODE_ENV=dev yarn start`
 
 ---
 
@@ -79,7 +79,7 @@ Note: If you are using windows, `SET NODE_ENV=dev npm run start`
 -   🌐 **I18n** - Internationalization
 -   🧵 **Stats** - swagger stats for common server metrics
 -   🧵 **Poolifier** - threads for cpu extensive tasks
--   💬 **Twillio** - sms support
+-   💬 **Twilio** - sms support
 -   📱 **NestJS** — latest version
 -   🎉 **TypeScript** - Type checking
 -   ⚙️ **Dotenv** - Supports environment variables
@@ -95,12 +95,18 @@ Note: If you are using windows, `SET NODE_ENV=dev npm run start`
 -   📏 **ESLint** — Pluggable JavaScript linter
 -   💖 **Prettier** - Opinionated Code Formatter
 
-## NPM scripts
+## Available Scripts
 
--   `npm run start` - Start application
--   `npm run start:dev` - Start application in watch mode
--   `npm run start:prod` - Start built application
--   `npm run start:hmr` - Start application with hot module replacement
+-   `yarn start` - Start application
+-   `yarn start:dev` - Start application in watch mode
+-   `yarn start:prod` - Start built application
+-   `yarn start:hmr` - Start application with hot module replacement
+-   `yarn format` - Formats all the files inside src using prettier with config provided in `.prettierrc`
+-   `yarn lint` - Uses eslint to lint all the files inside src with config provided in `.eslintrc.cjs`
+-   `yarn orm migration:create` - Uses Mikroorm to create a migration file
+-   `yarn orm migration:up` - This command is used to run availablexisting migration files.
+-   `yarn orm migration:down` - This command is used to rollback migration.
+-   `yarn orm seeder:run` - This command is used to run existing seeders in `src/common/database`.
 
 All the scripts require `NODE_ENV` flag
 
@@ -121,18 +127,18 @@ Additionally, you can also see the scripts in `makefile`
 Migrations are used to update the database schema. The migration files are stored in `migrations` directory.
 
 ```sh
-  env=dev make migrate # applies migration for dev env
+  NODE_ENV=dev yarn orm migration:up # applies migration for dev env
 ```
 
 Seeding is used to insert data into the database. The seeding files are stored in `common/database/seeders` directory.
 
 ```sh
-  env=dev make seed   # seeds data for dev env with user password set as Test@1234
+  USER_PASSWORD=Test@1234 NODE_ENV=dev yarn orm seeder:run   # seeds data for dev env with all user password set as Test@1234
 ```
 
 ## Start application
 
--   `NODE_ENV=[env name] npm run start`
+-   `NODE_ENV=[env name] yarn start`
 -   Test api by browsing to `http://localhost:[port]/v1/user`
 -   View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
 -   View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and password is the values set in the env file under `SWAGGER_USERNAME` and `SWAGGER_PASS` respectively
@@ -177,8 +183,8 @@ This applications uses JSON Web Token (JWT) to handle authentication. The token 
 You need to have `docker` and `docker-compose` (not the compose plugin) installed. Also since we are using `makefiles` for deployment, you need to have `make` installed.
 
 ```sh
-  env=dev make deploy    # deploys dev environment (.env.dev used)
-  env=prod make deploy   # deploys prod environment (.env.prod used)
+  ENV=dev sh ./scripts/deploy.sh   # deploys dev environment (.env.dev used)
+  ENV=prod sh ./scripts/deploy.sh   # deploys prod environment (.env.prod used)
 ```
 
 The password for `redis` and `rabbitmq` is `Test@1234` can be changed in the make file under `deploy` script
