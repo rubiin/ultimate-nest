@@ -30,7 +30,7 @@ services:
         networks:
             - nestify-network
         volumes:
-            - ".:/usr/src/app"
+            - .:/usr/src/app
             - /usr/src/app/node_modules
     traefik:
         image: "traefik:v2.9.6"
@@ -102,10 +102,10 @@ services:
         networks:
             - nestify-network
 volumes:
-    redis-data: null
-    rabbitmq-data: null
-    postgres_data: null
-    pgadmin-data: null
+    redis-data:
+    rabbitmq-data:
+    postgres_data:
+    pgadmin-data:
     
 networks:
     nestify-network:
