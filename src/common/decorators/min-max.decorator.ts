@@ -1,24 +1,24 @@
+import { IsMinMaxLengthOptions } from "@common/types";
 import { applyDecorators } from "@nestjs/common";
 import { MaxLength, MinLength } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
+
 /**
- * It's a decorator that takes a min and max value and returns a decorator that applies the MinLength
- * and MaxLength decorators to the property
- * @param {number} min - The minimum length of the string
- * @param {number} max - number - The maximum length of the string
- * @param [each=false] - If true, the validation will be applied to each element of the array.
- * @returns A function that takes a class and returns a class.
+ * It's a decorator that validates the length of a string to be between a minimum and maximum length
+ * @param {IsMinMaxLengthOptions} [ops] - IsMinMaxLengthOptions
+ * returns
  */
-export const MinMaxLength = (min: number, max: number, each = false) => {
+export const MinMaxLength = (ops?: IsMinMaxLengthOptions) => {
+	const options = { min: 2, max: 500, each: false, ...ops };
 	return applyDecorators(
-		MinLength(min, {
+		MinLength(options.min, {
 			message: i18nValidationMessage("validation.minLength"),
-			each,
+			each: options.each,
 		}),
-		MaxLength(max, {
+		MaxLength(options.max, {
 			message: i18nValidationMessage("validation.maxLength"),
-			each,
+			each: options.each,
 		}),
 	);
 };

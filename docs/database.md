@@ -1,0 +1,96 @@
+# Work with database
+
+In NestJS Boilerplate uses [Mikroorm](https://www.npmjs.com/package/mikrorm) and [PostgreSQL](https://www.postgresql.org/) for working with database, and all examples will for [PostgreSQL](https://www.postgresql.org/), but you can use any database.
+
+---
+
+## Table of Contents
+
+- [Working with database schema](#working-with-database-schema)
+  - [Generate migration](#generate-migration)
+  - [Run migration](#run-migration)
+  - [Revert migration](#revert-migration)
+  - [Drop the database and migrate up to the latest version](#drop-all-tables-in-database)
+- [Performance optimization](#performance-optimization)
+  - [Indexes and Foreign Keys](#indexes-and-foreign-keys)
+
+---
+
+## Working with database schema
+
+### Generate migration
+
+1. Create entity file with extension `.entity.ts`. For example `post.entity.ts`:
+
+    ```ts
+    // /src/entities/post.entity.ts
+    import { BaseEntity } from "@common/database";
+    import { Entity, Property } from "@mikro-orm/core";
+
+    @Entity()
+    export class Post extends BaseEntity {
+	@Property({
+		length: 50,
+	})
+	activityType?: string;
+
+	@Property({
+		length: 50,
+	})
+	loginType?: string;
+
+	@Property({
+		length: 50,
+	})
+	ipAddress?: string;
+
+	@Property({
+		length: 50,
+	})
+	deviceId?: string;
+
+	@Property()
+	status = true;
+
+      // Here any fields what you need
+    }
+    ```
+
+1. Next, generate migration file:
+
+    ```bash
+    NODE_ENV=dev yarn orm migration:create
+    ```
+
+1. Apply this migration to database via [yarn run orm migration:up](#run-migration).
+
+### Run migration
+
+```bash
+NODE_ENV=dev yarn orm migration:up
+```
+
+### Revert migration
+
+```bash
+NODE_ENV=dev yarn orm migration:down
+```
+
+### Drop the database and migrate up to the latest version
+
+```bash
+NODE_ENV=dev yarn orm migration:fresh
+```
+
+---
+
+
+## Performance optimization
+
+### Indexes and Foreign Keys
+
+Don't forget to create `indexes` on the Foreign Keys (FK) columns (if needed), because by default PostgreSQL [does not automatically add indexes to FK](https://stackoverflow.com/a/970605/18140714).
+
+---
+
+More info for the cli can be found at: https://mikro-orm.io/docs/migrations
