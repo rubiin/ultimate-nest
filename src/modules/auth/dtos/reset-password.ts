@@ -34,5 +34,5 @@ export class ChangePasswordDto extends PickType(ResetPasswordDto, [
 	 * @example SomeThingNew7^#%
 	 */
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	currentPassword!: string;
+	oldPassword!: string;
 }

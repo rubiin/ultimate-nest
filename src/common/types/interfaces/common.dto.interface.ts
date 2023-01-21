@@ -1,3 +1,3 @@
-export interface CommonDtoInterface {
+export interface ICommonDto {
 	[key: string]: any;
 }

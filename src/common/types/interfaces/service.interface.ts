@@ -3,15 +3,15 @@ import { User } from "@entities";
 import { Pagination } from "@lib/pagination";
 import { Observable } from "rxjs";
 
-import { CommonDtoInterface } from "./common.dto.interface";
+import { ICommonDto } from "./common.dto.interface";
 
 /**
  * common service interface that enforces common methods
  */
-export interface CommonServiceInterface<T> {
-	create(dto: CommonDtoInterface, user?: User): Promise<T> | Observable<T>;
+export interface ICommonService<T> {
+	create(dto: ICommonDto, user?: User): Promise<T> | Observable<T>;
 	findAll(dto: PageOptionsDto): Observable<Pagination<T>>;
 	findOne(id: string): Observable<T>;
-	update(id: string, dto: CommonDtoInterface): Observable<T>;
+	update(id: string, dto: ICommonDto): Observable<T>;
 	remove(id: string): Observable<T>;
 }
