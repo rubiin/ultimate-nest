@@ -3,7 +3,7 @@ import { applyDecorators } from "@nestjs/common";
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
-import { MinMax } from "./min-max.decorator";
+import { MinMaxLength } from "./min-max.decorator";
 
 /**
  * It's a decorator that validates a string field
@@ -20,7 +20,7 @@ export const IsStringField = (ops?: IsStringFieldOptions) => {
 			}),
 			each: options.each,
 		}),
-		MinMax(options.min, options.max, options.each),
+		MinMaxLength(options.min, options.max, options.each),
 	];
 
 	options.required

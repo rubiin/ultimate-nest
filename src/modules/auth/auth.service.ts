@@ -278,7 +278,7 @@ export class AuthService {
 	 * @returns Observable<User>
 	 */
 	changePassword(dto: ChangePasswordDto, user: User): Observable<User> {
-		const { password, currentPassword } = dto;
+		const { password, oldPassword } = dto;
 
 		return from(
 			this.userRepository.findOne({
@@ -286,7 +286,7 @@ export class AuthService {
 			}),
 		).pipe(
 			switchMap(userDetails => {
-				return HelperService.verifyHash(userDetails.password, currentPassword).pipe(
+				return HelperService.verifyHash(userDetails.password, oldPassword).pipe(
 					switchMap(isValid => {
 						if (!isValid) {
 							throw new BadRequestException(

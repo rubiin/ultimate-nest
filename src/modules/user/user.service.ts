@@ -1,6 +1,6 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database";
-import { CommonServiceInterface, EmailTemplateEnum, IFile } from "@common/types";
+import { EmailTemplateEnum, ICommonService, IFile } from "@common/types";
 import { User } from "@entities";
 import { I18nTranslations } from "@generated";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
@@ -17,7 +17,7 @@ import { from, map, Observable, switchMap } from "rxjs";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
-export class UserService implements CommonServiceInterface<User> {
+export class UserService implements ICommonService<User> {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,

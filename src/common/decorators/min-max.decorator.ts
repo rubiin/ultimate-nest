@@ -10,7 +10,7 @@ import { i18nValidationMessage } from "nestjs-i18n";
  * @param [each=false] - If true, the validation will be applied to each element of the array.
  * @returns A function that takes a class and returns a class.
  */
-export const MinMax = (min: number, max: number, each = false) => {
+export const MinMaxLength = (min: number, max: number, each = false) => {
 	return applyDecorators(
 		MinLength(min, {
 			message: i18nValidationMessage("validation.minLength"),

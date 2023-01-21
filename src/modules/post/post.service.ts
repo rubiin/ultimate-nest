@@ -1,6 +1,6 @@
 import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database";
-import { CommonServiceInterface } from "@common/types";
+import { ICommonService } from "@common/types";
 import { Comment, Post, User } from "@entities";
 import { I18nTranslations } from "@generated";
 import { createPaginationObject, Pagination } from "@lib/pagination";
@@ -13,7 +13,7 @@ import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
-export class PostService implements CommonServiceInterface<Post> {
+export class PostService implements ICommonService<Post> {
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: BaseRepository<Post>,
