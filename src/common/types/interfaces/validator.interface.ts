@@ -11,7 +11,7 @@ export interface IsStringFieldOptions extends IBaseValidator {
 export type IsEnumFieldOptions = IBaseValidator;
 export type IsNumberFieldOptions = IsStringFieldOptions;
 
-export interface IsMinMaxLengthOptions{
+export interface IsMinMaxLengthOptions {
 	min?: number;
 	max?: number;
 	each?: boolean;

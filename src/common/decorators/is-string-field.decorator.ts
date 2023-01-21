@@ -20,7 +20,7 @@ export const IsStringField = (ops?: IsStringFieldOptions) => {
 			}),
 			each: options.each,
 		}),
-		MinMaxLength({min: options.min, max: options.max, each: options.each}),
+		MinMaxLength({ min: options.min, max: options.max, each: options.each }),
 	];
 
 	options.required
