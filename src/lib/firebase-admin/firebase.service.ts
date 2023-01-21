@@ -7,7 +7,7 @@ import admin from "firebase-admin";
 import { FirebaseModuleOptions, MODULE_OPTIONS_TOKEN } from "./fire-base.module.definition";
 
 interface INestFirebaseService {
-	getFirebaseAdmin();
+	getFirebaseAdmin(): admin.app.App;
 }
 
 @Injectable()

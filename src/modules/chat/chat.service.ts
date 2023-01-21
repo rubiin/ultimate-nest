@@ -4,7 +4,7 @@ import { CreateChatDto } from "./dto/create-chat.dto";
 
 @Injectable()
 export class ChatService {
-	messages: any = [{ message: "hello", username: "rubiin" }];
+	messages = [{ message: "hello", username: "rubiin" }];
 	clientToUser = {};
 
 	identify(name: string, clientId: string) {
@@ -19,7 +19,7 @@ export class ChatService {
 			message: createChatDto.message,
 		};
 
-		this.messages.push(createChatDto);
+		this.messages.push(message);
 
 		return message;
 	}
