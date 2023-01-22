@@ -5,6 +5,7 @@ export * from "./jwt.config";
 export * from "./mail.config";
 export * from "./minio.config";
 export * from "./oauth2.config";
+export * from "./twilio.config";
 export * from "./rabbitmq.config";
 export * from "./redis.config";
 export * from "./throttle.config";

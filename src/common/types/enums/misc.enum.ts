@@ -3,10 +3,6 @@ export enum Order {
 	DESC = "DESC",
 }
 
-export enum RandomTypes {
-	NUMBER = "NUMBER",
-	STRING = "STRING",
-}
 
 export enum EmailTemplateEnum {
 	"RESET_PASSWORD_TEMPLATE" = "reset",
@@ -24,4 +20,4 @@ export enum PostState {
 
 export const FileTypes = {
 	IMAGE: /(jpg|jpeg|png|gif|svg)$/i,
-};
+} as const;

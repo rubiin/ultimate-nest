@@ -1,49 +1,15 @@
-import { MailModuleOptions } from "@lib/mailer/mailer.options";
-import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
-import { ConnectionOptions } from "@mikro-orm/core";
-
-interface Ouath {
-	clientId: string;
-	secret: string;
-	callbackUrl: string;
-}
+import { app, cloudinary, facebookOauth, googleOauth, jwt, mail, rabbitmq, redis, throttle, twilio ,database} from "./configs";
 
 export interface IConfig {
-	throttle: {
-		ttl: number;
-		limit: number;
-	};
-	redis: {
-		url: string;
-		ttl: number;
-	};
-	database: ConnectionOptions;
-	app: {
-		port: string;
-		prefix: string;
-		name: string;
-		clientUrl: string;
-		allowedHosts: string;
-		sentryDsn: string;
-		swaggerUser: string;
-		swaggerPass: string;
-	};
-	rabbitmq: {
-		url: string;
-		exchange: string;
-	};
-	jwt: {
-		secret: string;
-		accessExpiry: string;
-		refreshExpiry: string;
-	};
-	twilio: TwilioModuleOptions;
-	cloudinary: {
-		cloud_name: string;
-		api_key: string;
-		api_secret: string;
-	};
-	mail: MailModuleOptions & { senderEmail: string };
-	facebookOauth: Ouath;
-	googleOauth: Ouath;
+	throttle:ReturnType<typeof throttle>;
+	redis: ReturnType<typeof redis>;
+	database: ReturnType<typeof database>;
+	app: ReturnType<typeof app>;
+	rabbitmq: ReturnType<typeof rabbitmq>;
+	jwt: ReturnType<typeof jwt>;
+	twilio: ReturnType<typeof twilio>;
+	cloudinary: ReturnType<typeof cloudinary>;
+	mail: ReturnType<typeof mail>;
+	facebookOauth: ReturnType<typeof facebookOauth>;
+	googleOauth: ReturnType<typeof googleOauth>;
 }

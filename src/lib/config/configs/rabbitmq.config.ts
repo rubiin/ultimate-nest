@@ -2,7 +2,7 @@ import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 
 export const rabbitmq = registerAs("rabbitmq", () => ({
-	uri: process.env.RABBITMQ_URI,
+	url: process.env.RABBITMQ_URI,
 	exchange: process.env.RABBITMQ_EXCHANGE,
 }));
 
