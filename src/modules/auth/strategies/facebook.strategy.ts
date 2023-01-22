@@ -1,8 +1,10 @@
 import { IOauthResponse } from "@common/types";
+import { IConfig } from "@lib/config/config.interface";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Profile, Strategy } from "passport-facebook";
+import { VerifyCallback } from "passport-google-oauth20";
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
@@ -16,13 +18,13 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 	 *
 	 */
 
-	constructor(public readonly configService: ConfigService) {
+	constructor(public readonly configService: ConfigService<IConfig, true>) {
 		super({
+			clientID: configService.get("facebookOauth.clientId", { infer: true }),
+			clientSecret: configService.get("facebookOauth.secret", { infer: true }),
+			callbackURL: configService.get("facebookOauth.callbackUrl", { infer: true }),
 			scope: "email",
 			profileFields: ["emails", "name"],
-			clientID: configService.get("facebookOauth.clientId"),
-			clientSecret: configService.get("facebookOauth.secret"),
-			callbackURL: configService.get("facebookOauth.callbackUrl"),
 		});
 	}
 
@@ -30,7 +32,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 		accessToken: string,
 		_refreshToken: string,
 		profile: Profile,
-		done: (error: any, user: any, info?: any) => void,
+		done: VerifyCallback,
 	): Promise<any> {
 		const { name, emails } = profile;
 		const user: IOauthResponse = {

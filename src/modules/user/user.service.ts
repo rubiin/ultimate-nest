@@ -4,6 +4,7 @@ import { EmailTemplateEnum, ICommonService, IFile } from "@common/types";
 import { User } from "@entities";
 import { I18nTranslations } from "@generated";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import { IConfig } from "@lib/config/config.interface";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -22,7 +23,7 @@ export class UserService implements ICommonService<User> {
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
 		private readonly em: EntityManager,
-		private readonly configService: ConfigService,
+		private readonly configService: ConfigService<IConfig, true>,
 		private readonly amqpConnection: AmqpConnection,
 		private readonly cloudinaryService: CloudinaryService,
 	) {}
@@ -104,10 +105,10 @@ export class UserService implements ICommonService<User> {
 			user.avatar = url;
 
 			await em.persistAndFlush(user);
-			const link = this.configService.get("app.clientUrl");
+			const link = this.configService.get("app.clientUrl", { infer: true });
 
 			this.amqpConnection.publish(
-				this.configService.get("rabbit.exchange"),
+				this.configService.get("rabbitmq.exchange", { infer: true }),
 				"send-mail",
 				{
 					template: EmailTemplateEnum.WELCOME_TEMPLATE,
@@ -117,7 +118,7 @@ export class UserService implements ICommonService<User> {
 					},
 					to: user.email,
 					subject: "Welcome onboard",
-					from: this.configService.get("mail.senderEmail"),
+					from: this.configService.get("mail.senderEmail", { infer: true }),
 				},
 			);
 		});

@@ -1,3 +1,4 @@
+import { IConfig } from "@lib/config/config.interface";
 import { NestConfigModule } from "@lib/config/config.module";
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -8,11 +9,11 @@ import { TwilioModule } from "./twilio.module";
 	imports: [
 		TwilioModule.forRootAsync({
 			imports: [NestConfigModule],
-			useFactory: (configService: ConfigService) => ({
+			useFactory: (configService: ConfigService<IConfig, true>) => ({
 				isGlobal: true,
-				accountSid: configService.get("twilio.accountSid"),
-				authToken: configService.get("twilio.authToken"),
-				from: configService.get("twilio.from"),
+				accountSid: configService.get("twilio.accountSid", { infer: true }),
+				authToken: configService.get("twilio.authToken", { infer: true }),
+				from: configService.get("twilio.from", { infer: true }),
 			}),
 			inject: [ConfigService],
 		}),

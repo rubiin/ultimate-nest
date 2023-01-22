@@ -1,4 +1,5 @@
 import { IOauthResponse } from "@common/types";
+import { IConfig } from "@lib/config/config.interface";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
@@ -16,11 +17,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 	 *
 	 */
 
-	constructor(public readonly configService: ConfigService) {
+	constructor(public readonly configService: ConfigService<IConfig, true>) {
 		super({
-			clientID: configService.get("googleOauth.clientId"),
-			clientSecret: configService.get("googleOauth.secret"),
-			callbackURL: configService.get("googleOauth.callbackUrl"),
+			clientID: configService.get("googleOauth.clientId", { infer: true }),
+			clientSecret: configService.get("googleOauth.secret", { infer: true }),
+			callbackURL: configService.get("googleOauth.callbackUrl", { infer: true }),
 			scope: ["email", "profile"],
 		});
 	}

@@ -3,6 +3,7 @@ import { HelperService } from "@common/helpers";
 import { EmailTemplateEnum, IAuthenticationPayload } from "@common/types";
 import { OtpLog, User } from "@entities";
 import { I18nTranslations } from "@generated";
+import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -36,7 +37,7 @@ export class AuthService {
 		@InjectRepository(OtpLog)
 		private readonly otpRepository: BaseRepository<OtpLog>,
 		private readonly tokenService: TokensService,
-		private readonly configService: ConfigService,
+		private readonly configService: ConfigService<IConfig, true>,
 		private readonly mailService: MailerService,
 		private readonly em: EntityManager,
 	) {}
@@ -118,7 +119,7 @@ export class AuthService {
 					this.tokenService.generateAccessToken(user),
 					this.tokenService.generateRefreshToken(
 						user,
-						this.configService.get("jwt.refreshExpiry"),
+						this.configService.get("jwt.refreshExpiry", { infer: true }),
 					),
 				).pipe(
 					map(([accessToken, refreshToken]) => {
@@ -195,7 +196,7 @@ export class AuthService {
 				},
 				to: userExists.email,
 				subject: "Reset Password",
-				from: this.configService.get("mail.senderEmail"),
+				from: this.configService.get("mail.senderEmail", { infer: true }),
 			});
 		});
 

@@ -2,9 +2,9 @@ import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 
 export const cloudinary = registerAs("cloudinary", () => ({
-	cloudName: process.env.CLOUDINARY_CLOUD_NAME,
-	apiKey: process.env.CLOUDINARY_API_KEY,
-	apiSecret: process.env.CLOUDINARY_API_SECRET,
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
 }));
 
 export const cloudinaryConfigValidationSchema = {

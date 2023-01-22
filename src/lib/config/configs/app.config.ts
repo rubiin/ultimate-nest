@@ -10,8 +10,6 @@ export const app = registerAs("app", () => ({
 	sentryDsn: process.env.SENTRY_DSN,
 	swaggerUser: process.env.SWAGGER_USER,
 	swaggerPass: process.env.SWAGGER_PASSWORD,
-
-	SENTRY_DSN: Joi.string().required(),
 }));
 
 export const appConfigValidationSchema = {

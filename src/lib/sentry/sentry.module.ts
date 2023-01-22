@@ -1,3 +1,4 @@
+import { IConfig } from "@lib/config/config.interface";
 import { NestConfigModule } from "@lib/config/config.module";
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -7,8 +8,8 @@ import { SentryModule } from "@ntegral/nestjs-sentry";
 	imports: [
 		SentryModule.forRootAsync({
 			imports: [NestConfigModule],
-			useFactory: async (configService: ConfigService) => ({
-				dsn: configService.get("app.sentryDsn"),
+			useFactory: async (configService: ConfigService<IConfig, true>) => ({
+				dsn: configService.get("app.sentryDsn", { infer: true }),
 				debug: true,
 				environment: "development",
 				tracesSampleRate: 1,

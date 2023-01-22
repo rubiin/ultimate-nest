@@ -1,6 +1,7 @@
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { I18nTranslations } from "@generated";
+import { IConfig } from "@lib/config/config.interface";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -15,7 +16,7 @@ export class TwoFactorService {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
-		private readonly configService: ConfigService,
+		private readonly configService: ConfigService<IConfig, true>,
 	) {}
 
 	/**
@@ -30,7 +31,7 @@ export class TwoFactorService {
 
 		const otpAuthUrl = authenticator.keyuri(
 			user.email,
-			this.configService.get("app.name"),
+			this.configService.get("app.name", { infer: true }),
 			secret,
 		);
 

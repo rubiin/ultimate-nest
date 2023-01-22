@@ -18,7 +18,7 @@ const logger = new Logger("MikroORM");
 				host: configService.get("database.host"),
 				port: configService.get("database.port"),
 				password: configService.get("database.password"),
-				user: configService.get("database.username"),
+				user: configService.get("database.user"),
 				dbName: configService.get("database.dbName"),
 				entities: ["dist/entities/*.entity.js"],
 				entitiesTs: ["src/entities/*.entity.ts"],
