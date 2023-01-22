@@ -20,9 +20,9 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 		super({
 			scope: "email",
 			profileFields: ["emails", "name"],
-			clientID: configService.get<string>("facebookOauth.clientId"),
-			clientSecret: configService.get<string>("facebookOauth.secret"),
-			callbackURL: configService.get<string>("facebookOauth.callbackUrl"),
+			clientID: configService.get("facebookOauth.clientId"),
+			clientSecret: configService.get("facebookOauth.secret"),
+			callbackURL: configService.get("facebookOauth.callbackUrl"),
 		});
 	}
 

@@ -9,10 +9,10 @@ import { ThrottlerStorageRedisService } from "nestjs-throttler-storage-redis";
 			imports: [ConfigModule],
 			inject: [ConfigService],
 			useFactory: (config: ConfigService) => ({
-				ttl: config.get<number>("throttle.ttl"),
-				limit: config.get<number>("throttle.limit"),
+				ttl: config.get("throttle.ttl"),
+				limit: config.get("throttle.limit"),
 				ignoreUserAgents: [/nestify/i],
-				storage: new ThrottlerStorageRedisService(config.get<string>("redis.uri")),
+				storage: new ThrottlerStorageRedisService(config.get("redis.uri")),
 			}),
 		}),
 	],

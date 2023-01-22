@@ -40,9 +40,9 @@ export const AppUtils = {
 		});
 	},
 	setupSwagger: (app: INestApplication, configService: ConfigService): void => {
-		const userName = configService.get<string>("app.swaggerUser");
-		const passWord = configService.get<string>("app.swaggerPass");
-		const appName = configService.get<string>("app.name");
+		const userName = configService.get("app.swaggerUser");
+		const passWord = configService.get("app.swaggerPass");
+		const appName = configService.get("app.name");
 
 		const options = new DocumentBuilder()
 			.setTitle(SWAGGER_TITLE)
