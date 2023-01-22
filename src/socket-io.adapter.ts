@@ -14,7 +14,7 @@ export class SocketIOAdapter extends IoAdapter {
 	}
 
 	async connectToRedis(): Promise<void> {
-		const pubClient = createClient({ url: this.config.get("redis.uri") });
+		const pubClient = createClient({ url: this.config.get<string>("redis.uri") });
 		const subClient = pubClient.duplicate();
 
 		await Promise.all([pubClient.connect(), subClient.connect()]);

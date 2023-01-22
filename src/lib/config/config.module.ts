@@ -1,25 +1,33 @@
-import { Global, Module } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import Joi from "joi";
 
 import {
 	app,
+	appConfigValidationSchema,
 	cloudinary,
+	cloudinaryConfigValidationSchema,
 	database,
+	databaseConfigValidationSchema,
 	facebookOauth,
+	facebookOauthConfigValidationSchema,
 	googleOauth,
+	googleOauthConfigValidationSchema,
 	jwt,
 	mail,
-	rabbit,
+	mailConfigValidationSchema,
+	rabbitmq,
+	rabbitmqConfigValidationSchema,
 	redis,
+	redisConfigValidationSchema,
 	throttle,
+	throttleConfigValidationSchema,
 } from "./configs";
-import { validationSchema } from "./validate.config";
 
-@Global()
 @Module({
 	imports: [
 		ConfigModule.forRoot({
-			envFilePath: [`env/.env.${process.env.NODE_ENV}`],
+			envFilePath: [`${process.cwd()}/env/.env.${process.env.NODE_ENV}`],
 			load: [
 				app,
 				jwt,
@@ -27,7 +35,7 @@ import { validationSchema } from "./validate.config";
 				mail,
 				redis,
 				cloudinary,
-				rabbit,
+				rabbitmq,
 				googleOauth,
 				facebookOauth,
 				throttle,
@@ -35,7 +43,17 @@ import { validationSchema } from "./validate.config";
 			cache: true,
 			isGlobal: true,
 			expandVariables: true,
-			validationSchema: validationSchema,
+			validationSchema: Joi.object({
+				...appConfigValidationSchema,
+				...databaseConfigValidationSchema,
+				...mailConfigValidationSchema,
+				...redisConfigValidationSchema,
+				...cloudinaryConfigValidationSchema,
+				...rabbitmqConfigValidationSchema,
+				...googleOauthConfigValidationSchema,
+				...facebookOauthConfigValidationSchema,
+				...throttleConfigValidationSchema,
+			}),
 			validationOptions: {
 				abortEarly: true,
 				debug: true,

@@ -4,7 +4,7 @@ import { SWAGGER_DESCRIPTION, SWAGGER_TITLE } from "@common/constant";
 import { INestApplication, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
-import swaggerStats from "swagger-stats";
+import { getMiddleware } from "swagger-stats";
 
 export const AppUtils = {
 	/* A function that is called when the process receives a signal. */
@@ -40,9 +40,9 @@ export const AppUtils = {
 		});
 	},
 	setupSwagger: (app: INestApplication, configService: ConfigService): void => {
-		const userName = configService.get("app.swaggerUser");
-		const passWord = configService.get("app.swaggerPass");
-		const appName = configService.get("app.name");
+		const userName = configService.get<string>("app.swaggerUser");
+		const passWord = configService.get<string>("app.swaggerPass");
+		const appName = configService.get<string>("app.name");
 
 		const options = new DocumentBuilder()
 			.setTitle(SWAGGER_TITLE)
@@ -72,7 +72,7 @@ export const AppUtils = {
 		});
 
 		app.use(
-			swaggerStats.getMiddleware({
+			getMiddleware({
 				swaggerSpec: document,
 				authentication: true,
 				hostname: appName,
