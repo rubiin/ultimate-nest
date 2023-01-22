@@ -2,7 +2,7 @@ import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 
 export const redis = registerAs("redis", () => ({
-	uri: process.env.REDIS_URI,
+	url: process.env.REDIS_URI,
 	ttl: +process.env.REDIS_TTL,
 }));
 
