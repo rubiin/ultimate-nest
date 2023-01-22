@@ -10,6 +10,7 @@ import { i18nValidationMessage } from "nestjs-i18n";
  */
 export const MinMaxLength = (ops?: IsMinMaxLengthOptions) => {
 	const options = { min: 2, max: 500, each: false, ...ops };
+
 	return applyDecorators(
 		MinLength(options.min, {
 			message: i18nValidationMessage("validation.minLength"),

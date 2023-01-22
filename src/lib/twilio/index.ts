@@ -10,9 +10,9 @@ import { TwilioModule } from "./twilio.module";
 			imports: [NestConfigModule],
 			useFactory: (configService: ConfigService) => ({
 				isGlobal: true,
-				accountSid: configService.get("twilio.accountSid"),
-				authToken: configService.get("twilio.authToken"),
-				from: configService.get("twilio.from"),
+				accountSid: configService.get<string>("twilio.accountSid"),
+				authToken: configService.get<string>("twilio.authToken"),
+				from: configService.get<string>("twilio.from"),
 			}),
 			inject: [ConfigService],
 		}),

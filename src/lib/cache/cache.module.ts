@@ -12,7 +12,7 @@ import { CacheService } from "./cache.service";
 			isGlobal: true,
 			useFactory: async (configService: ConfigService) => {
 				const store = await redisStore({
-					url: configService.get("redis.uri"),
+					url: configService.get<string>("redis.uri"),
 					ttl: configService.get<number>("redis.ttl", 10),
 					database: 0,
 					isolationPoolOptions: {

@@ -104,7 +104,7 @@ export class UserService implements ICommonService<User> {
 			user.avatar = url;
 
 			await em.persistAndFlush(user);
-			const link = this.configService.get("app.clientUrl");
+			const link = this.configService.get<string>("app.clientUrl");
 
 			this.amqpConnection.publish(
 				this.configService.get<string>("rabbit.exchange"),
@@ -117,7 +117,7 @@ export class UserService implements ICommonService<User> {
 					},
 					to: user.email,
 					subject: "Welcome onboard",
-					from: this.configService.get("mail.senderEmail"),
+					from: this.configService.get<string>("mail.senderEmail"),
 				},
 			);
 		});
