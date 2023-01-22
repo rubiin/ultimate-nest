@@ -1,3 +1,4 @@
+import { IConfig } from "@lib/config/config.interface";
 import { NestConfigModule } from "@lib/config/config.module";
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -7,11 +8,11 @@ import { CloudinaryModule } from "nestjs-cloudinary";
 	imports: [
 		CloudinaryModule.forRootAsync({
 			imports: [NestConfigModule],
-			useFactory: (configService: ConfigService) => ({
+			useFactory: (configService: ConfigService<IConfig, true>) => ({
 				isGlobal: true,
-				cloud_name: configService.get("cloudinary.cloudName"),
-				api_key: configService.get("cloudinary.apiKey"),
-				api_secret: configService.get("cloudinary.apiSecret"),
+				cloud_name: configService.get("cloudinary.cloud_name", { infer: true }),
+				api_key: configService.get("cloudinary.api_key", { infer: true }),
+				api_secret: configService.get("cloudinary.api_secret", { infer: true }),
 			}),
 			inject: [ConfigService],
 		}),

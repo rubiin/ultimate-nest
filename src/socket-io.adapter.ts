@@ -1,3 +1,4 @@
+import { IConfig } from "@lib/config/config.interface";
 import { INestApplicationContext, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { IoAdapter } from "@nestjs/platform-socket.io";
@@ -9,12 +10,15 @@ export class SocketIOAdapter extends IoAdapter {
 	private readonly logger = new Logger(SocketIOAdapter.name);
 	private adapterConstructor: ReturnType<typeof createAdapter>;
 
-	constructor(private app: INestApplicationContext, private readonly config: ConfigService) {
+	constructor(
+		private app: INestApplicationContext,
+		private readonly config: ConfigService<IConfig, true>,
+	) {
 		super(app);
 	}
 
 	async connectToRedis(): Promise<void> {
-		const pubClient = createClient({ url: this.config.get("redis.uri") });
+		const pubClient = createClient({ url: this.config.get("redis.url", { infer: true }) });
 		const subClient = pubClient.duplicate();
 
 		await Promise.all([pubClient.connect(), subClient.connect()]);
@@ -23,7 +27,7 @@ export class SocketIOAdapter extends IoAdapter {
 	}
 
 	createIOServer(port: number, options?: ServerOptions) {
-		const clientUrl = this.config.get("app.clientUrl");
+		const clientUrl = this.config.get("app.clientUrl", { infer: true });
 
 		const cors = {
 			origin: [clientUrl],

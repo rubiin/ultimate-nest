@@ -1,3 +1,4 @@
+import { IConfig } from "@lib/config/config.interface";
 import { Controller, Get } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import {
@@ -17,7 +18,7 @@ export class HealthController {
 		private http: HttpHealthIndicator,
 		private disk: DiskHealthIndicator,
 		private memory: MemoryHealthIndicator,
-		private configService: ConfigService,
+		private configService: ConfigService<IConfig, true>,
 		private databaseHealth: DatabaseHealthIndicator,
 	) {}
 
@@ -33,14 +34,14 @@ export class HealthController {
 			() =>
 				this.http.pingCheck(
 					"swagger",
-					`https://localhost:${this.configService.get("app.port")}/doc`,
+					`https://localhost:${this.configService.get("app.port", { infer: true })}/doc`,
 				),
 			() =>
 				this.http.pingCheck(
 					"routes",
-					`https://localhost:${this.configService.get(
-						"app.port",
-					)}/${this.configService.get("app.prefix")}/health/test`,
+					`https://localhost:${this.configService.get("app.port", {
+						infer: true,
+					})}/${this.configService.get("app.prefix", { infer: true })}/health/test`,
 				),
 			() => this.databaseHealth.isHealthy(),
 			async () => this.memory.checkHeap("memory_heap", 200 * 1024 * 1024),

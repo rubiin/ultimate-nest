@@ -1,3 +1,4 @@
+import { IConfig } from "@lib/config/config.interface";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ThrottlerModule } from "@nestjs/throttler";
@@ -8,11 +9,11 @@ import { ThrottlerStorageRedisService } from "nestjs-throttler-storage-redis";
 		ThrottlerModule.forRootAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
-			useFactory: (config: ConfigService) => ({
-				ttl: config.get("throttle.ttl"),
-				limit: config.get("throttle.limit"),
+			useFactory: (config: ConfigService<IConfig, true>) => ({
+				ttl: config.get("throttle.ttl", { infer: true }),
+				limit: config.get("throttle.limit", { infer: true }),
 				ignoreUserAgents: [/nestify/i],
-				storage: new ThrottlerStorageRedisService(config.get("redis.uri")),
+				storage: new ThrottlerStorageRedisService(config.get("redis.url", { infer: true })),
 			}),
 		}),
 	],
