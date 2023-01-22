@@ -1,5 +1,6 @@
 import { AppUtils } from "@common/helpers";
 import { ValidationPipe } from "@common/pipes";
+import { IConfig } from "@lib/config/config.interface";
 import { createLogger } from "@lib/pino/app.logger";
 import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -24,7 +25,7 @@ const bootstrap = async () => {
 
 	AppUtils.killAppWithGrace(app);
 
-	const configService = app.get(ConfigService);
+	const configService = app.get(ConfigService<IConfig, true>);
 
 	const logger = new Logger("Bootstrap");
 
@@ -42,13 +43,13 @@ const bootstrap = async () => {
 		credentials: true,
 		methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
 		maxAge: 3600,
-		origin: configService.get("app.allowedHosts"),
+		origin: configService.get("app.allowedHosts", { infer: true }),
 	});
 	// =====================================================
 	// configureNestGlobals
 	// =====================================================
 
-	const globalPrefix = configService.get("app.prefix");
+	const globalPrefix = configService.get("app.prefix", { infer: true });
 
 	app.useGlobalPipes(
 		new ValidationPipe({
@@ -81,7 +82,7 @@ const bootstrap = async () => {
 
 	app.enableShutdownHooks();
 
-	const port = process.env.PORT || configService.get("app.port");
+	const port = process.env.PORT || configService.get("app.port", { infer: true });
 	const isRepl = process.env.REPL === "true";
 
 	// use nestjs repl to debug
@@ -99,7 +100,9 @@ const bootstrap = async () => {
 	await app.listen(port);
 
 	logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
-	logger.log(`🚦 Accepting request only from: ${configService.get("app.allowedHosts")}`);
+	logger.log(
+		`🚦 Accepting request only from: ${configService.get("app.allowedHosts", { infer: true })}`,
+	);
 	logger.log(`📑 Swagger is running on: http://localhost:${port}/${globalPrefix}/docs`);
 };
 

@@ -1,7 +1,19 @@
-import { app, cloudinary, facebookOauth, googleOauth, jwt, mail, rabbitmq, redis, throttle, twilio ,database} from "./configs";
+import {
+	app,
+	cloudinary,
+	database,
+	facebookOauth,
+	googleOauth,
+	jwt,
+	mail,
+	rabbitmq,
+	redis,
+	throttle,
+	twilio,
+} from "./configs";
 
 export interface IConfig {
-	throttle:ReturnType<typeof throttle>;
+	throttle: ReturnType<typeof throttle>;
 	redis: ReturnType<typeof redis>;
 	database: ReturnType<typeof database>;
 	app: ReturnType<typeof app>;

@@ -21,7 +21,7 @@ describe("UserService", () => {
 
 	// default mocks
 
-	mockUserRepo.findOne.mockImplementation((options: { idx: string }) =>
+	mockUserRepo.findOne.mockImplementation((options: any) =>
 		Promise.resolve({
 			...mockedUser,
 			idx: options.idx,

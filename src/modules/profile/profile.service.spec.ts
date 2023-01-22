@@ -14,7 +14,7 @@ describe("ProfileService", () => {
 
 	// default mocks
 
-	mockUserRepo.findOne.mockImplementation((options: { username: string }) =>
+	mockUserRepo.findOne.mockImplementation((options: any) =>
 		Promise.resolve({
 			...mockedUser,
 			username: options.username,
