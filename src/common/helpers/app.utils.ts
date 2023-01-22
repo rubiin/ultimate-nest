@@ -1,6 +1,7 @@
 import fs from "node:fs";
 
 import { SWAGGER_DESCRIPTION, SWAGGER_TITLE } from "@common/constant";
+import { IConfig } from "@lib/config/config.interface";
 import { INestApplication, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
@@ -39,10 +40,10 @@ export const AppUtils = {
 			AppUtils.gracefulShutdown(app, "SIGTERM");
 		});
 	},
-	setupSwagger: (app: INestApplication, configService: ConfigService): void => {
-		const userName = configService.get("app.swaggerUser");
-		const passWord = configService.get("app.swaggerPass");
-		const appName = configService.get("app.name");
+	setupSwagger: (app: INestApplication, configService: ConfigService<IConfig, true>): void => {
+		const userName = configService.get("app.swaggerUser", { infer: true });
+		const passWord = configService.get("app.swaggerPass", { infer: true });
+		const appName = configService.get("app.name", { infer: true });
 
 		const options = new DocumentBuilder()
 			.setTitle(SWAGGER_TITLE)

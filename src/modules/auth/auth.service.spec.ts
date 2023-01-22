@@ -70,7 +70,11 @@ describe("AuthService", () => {
 		mockTokenService.decodeRefreshToken.mockImplementation(() =>
 			of({
 				jti: 1,
-				sub: 1,
+				sub: 1_234_567_890,
+				iat: 1_516_239_022,
+				exp: 1_516_239_022,
+				aud: "12",
+				iss: "12",
 			}),
 		);
 
@@ -81,7 +85,11 @@ describe("AuthService", () => {
 			expect(mockTokenService.decodeRefreshToken).toBeCalledWith("refresh_token");
 			expect(mockTokenService.deleteRefreshToken).toBeCalledWith(loggedInUser, {
 				jti: 1,
-				sub: 1,
+				sub: 1_234_567_890,
+				iat: 1_516_239_022,
+				exp: 1_516_239_022,
+				aud: "12",
+				iss: "12",
 			});
 		});
 	});
@@ -112,7 +120,7 @@ describe("AuthService", () => {
 		const dto = {
 			password: "new_password",
 			confirmPassword: "confirm_password",
-			currentPassword: "current_password",
+			oldPassword: "old_password",
 		};
 
 		HelperService.verifyHash = jest.fn().mockImplementation(() => of(true));
