@@ -127,4 +127,5 @@ module.exports = {
 			},
 		],
 	},
+	"ignorePatterns": ["migrations", "src/generated"]
 };
