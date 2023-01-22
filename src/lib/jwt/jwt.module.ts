@@ -8,9 +8,9 @@ import { JwtModule } from "@nestjs/jwt";
 			imports: [ConfigModule],
 			useFactory: async (configService: ConfigService) => ({
 				isGlobal: true,
-				secret: configService.get<string>("jwt.secret"),
+				secret: configService.get("jwt.secret"),
 				signOptions: {
-					expiresIn: configService.get<string>("jwt.accessExpiry"),
+					expiresIn: configService.get("jwt.accessExpiry"),
 					algorithm: "HS256",
 				},
 			}),

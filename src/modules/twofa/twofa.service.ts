@@ -30,7 +30,7 @@ export class TwoFactorService {
 
 		const otpAuthUrl = authenticator.keyuri(
 			user.email,
-			this.configService.get<string>("app.name"),
+			this.configService.get("app.name"),
 			secret,
 		);
 

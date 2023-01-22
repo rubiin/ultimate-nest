@@ -42,13 +42,13 @@ const bootstrap = async () => {
 		credentials: true,
 		methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
 		maxAge: 3600,
-		origin: configService.get<string>("app.allowedHosts"),
+		origin: configService.get("app.allowedHosts"),
 	});
 	// =====================================================
 	// configureNestGlobals
 	// =====================================================
 
-	const globalPrefix = configService.get<string>("app.prefix");
+	const globalPrefix = configService.get("app.prefix");
 
 	app.useGlobalPipes(
 		new ValidationPipe({
@@ -81,7 +81,7 @@ const bootstrap = async () => {
 
 	app.enableShutdownHooks();
 
-	const port = process.env.PORT || configService.get<number>("app.port");
+	const port = process.env.PORT || configService.get("app.port");
 	const isRepl = process.env.REPL === "true";
 
 	// use nestjs repl to debug
@@ -99,7 +99,7 @@ const bootstrap = async () => {
 	await app.listen(port);
 
 	logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
-	logger.log(`🚦 Accepting request only from: ${configService.get<string>("app.allowedHosts")}`);
+	logger.log(`🚦 Accepting request only from: ${configService.get("app.allowedHosts")}`);
 	logger.log(`📑 Swagger is running on: http://localhost:${port}/${globalPrefix}/docs`);
 };
 

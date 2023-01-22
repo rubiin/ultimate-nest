@@ -33,14 +33,14 @@ export class HealthController {
 			() =>
 				this.http.pingCheck(
 					"swagger",
-					`https://localhost:${this.configService.get<string>("app.port")}/doc`,
+					`https://localhost:${this.configService.get("app.port")}/doc`,
 				),
 			() =>
 				this.http.pingCheck(
 					"routes",
-					`https://localhost:${this.configService.get<number>(
+					`https://localhost:${this.configService.get(
 						"app.port",
-					)}/${this.configService.get<string>("app.prefix")}/health/test`,
+					)}/${this.configService.get("app.prefix")}/health/test`,
 				),
 			() => this.databaseHealth.isHealthy(),
 			async () => this.memory.checkHeap("memory_heap", 200 * 1024 * 1024),

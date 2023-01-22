@@ -10,13 +10,13 @@ import { MailModule } from "./mailer.module";
 		MailModule.forRootAsync({
 			imports: [NestConfigModule],
 			useFactory: (configService: ConfigService) => ({
-				host: configService.get<string>("mail.host"),
-				port: configService.get<number>("mail.port"),
-				username: configService.get<string>("mail.username"),
-				password: configService.get<string>("mail.password"),
-				server: configService.get<string>("mail.server"),
+				host: configService.get("mail.host"),
+				port: configService.get("mail.port"),
+				username: configService.get("mail.username"),
+				password: configService.get("mail.password"),
+				server: configService.get("mail.server"),
 				previewEmail: configService.get<boolean>("mail.previewEmail", false),
-				templateDir: configService.get<string>("mail.templateDir"),
+				templateDir: configService.get("mail.templateDir"),
 				engine: {
 					adapter: "eta",
 					options: {

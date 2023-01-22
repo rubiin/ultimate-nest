@@ -9,9 +9,9 @@ import { CloudinaryModule } from "nestjs-cloudinary";
 			imports: [NestConfigModule],
 			useFactory: (configService: ConfigService) => ({
 				isGlobal: true,
-				cloud_name: configService.get<string>("cloudinary.cloudName"),
-				api_key: configService.get<string>("cloudinary.apiKey"),
-				api_secret: configService.get<string>("cloudinary.apiSecret"),
+				cloud_name: configService.get("cloudinary.cloudName"),
+				api_key: configService.get("cloudinary.apiKey"),
+				api_secret: configService.get("cloudinary.apiSecret"),
 			}),
 			inject: [ConfigService],
 		}),
