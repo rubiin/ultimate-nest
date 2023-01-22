@@ -1,9 +1,4 @@
 {
-  "extends": "./tsconfig.json",
-  "exclude": [
-    "node_modules",
-    "test",
-    "dist",
-    "**/*spec.ts"
-  ]
+	"extends": "./tsconfig.json",
+	"exclude": ["node_modules", "test", "dist", "**/*spec.ts", "./src/common/database/factories/*", "./src/common/database/seeders/*", "./src/_mocks_/*"]
 }

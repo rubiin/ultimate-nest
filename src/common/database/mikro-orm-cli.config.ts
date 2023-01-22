@@ -29,8 +29,8 @@ const config: Options = {
 	entitiesTs: ["src/**/*.entity.ts"],
 	host: process.env.DB_HOST,
 	migrations: {
-		path: "dist/migrations/",
-		pathTs: "src/migrations/",
+		path: "./dist/migrations",
+		pathTs: "./migrations",
 		tableName: "migrations",
 		transactional: true,
 		glob: "!(*.d).{js,ts}",

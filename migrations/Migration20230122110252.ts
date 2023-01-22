@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations";
 
-export class Migration20230118141928 extends Migration {
+export class Migration20230122110252 extends Migration {
 	async up(): Promise<void> {
 		this.addSql(
 			'create table "protocol" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "login_attemptnumbererval" int not null, "loginnumbererval_unit" varchar(255) not null, "login_max_retry" int not null, "otp_expiry_in_minutes" int not null, "mpin_attempt_interval" int not null, "mpin_interval_unit" varchar(255) not null, "mpin_max_retry" int not null);',
