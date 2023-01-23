@@ -83,7 +83,7 @@ export class TwoFactorService {
 
 		if (!isCodeValid) {
 			throw new UnauthorizedException(
-				I18nContext.current<I18nTranslations>().t("exception.inactiveUser"),
+				I18nContext.current<I18nTranslations>()!.t("exception.inactiveUser"),
 			);
 		}
 

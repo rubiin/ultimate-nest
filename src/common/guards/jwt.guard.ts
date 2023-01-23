@@ -30,13 +30,13 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
 		if (error || info || !user) {
 			if (info instanceof TokenExpiredError) {
 				throw new ForbiddenException(
-					I18nContext.current<I18nTranslations>().t("exception.token", {
+					I18nContext.current<I18nTranslations>()!.t("exception.token", {
 						args: { error: "expired" },
 					}),
 				);
 			} else if (info instanceof JsonWebTokenError) {
 				throw new UnauthorizedException(
-					I18nContext.current<I18nTranslations>().t("exception.token", {
+					I18nContext.current<I18nTranslations>()!.t("exception.token", {
 						args: { error: "malformed" },
 					}),
 				);

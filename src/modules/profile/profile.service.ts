@@ -41,7 +41,7 @@ export class ProfileService {
 			map(user => {
 				if (!user) {
 					throw new NotFoundException(
-						I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
+						I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
 							args: { item: "Profile" },
 						}),
 					);
@@ -65,7 +65,7 @@ export class ProfileService {
 	follow(loggedInUser: User, usernameToFollow: string): Observable<IProfileData> {
 		if (!usernameToFollow) {
 			throw new BadRequestException(
-				I18nContext.current<I18nTranslations>().t("exception.usernameRequired"),
+				I18nContext.current<I18nTranslations>()!.t("exception.usernameRequired"),
 			);
 		}
 
@@ -73,7 +73,7 @@ export class ProfileService {
 			switchMap(followingUser => {
 				if (loggedInUser.username === usernameToFollow) {
 					throw new BadRequestException(
-						I18nContext.current<I18nTranslations>().t(
+						I18nContext.current<I18nTranslations>()!.t(
 							"exception.followerFollowingSame",
 						),
 					);
@@ -104,7 +104,7 @@ export class ProfileService {
 	unFollow(loggedInUser: User, username: string): Observable<IProfileData> {
 		if (!username) {
 			throw new BadRequestException(
-				I18nContext.current<I18nTranslations>().t("exception.usernameRequired"),
+				I18nContext.current<I18nTranslations>()!.t("exception.usernameRequired"),
 			);
 		}
 
@@ -114,7 +114,7 @@ export class ProfileService {
 
 				if (followingUser.id === loggedInUser.id) {
 					throw new BadRequestException(
-						I18nContext.current<I18nTranslations>().t(
+						I18nContext.current<I18nTranslations>()!.t(
 							"exception.followerFollowingSame",
 						),
 					);

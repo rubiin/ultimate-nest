@@ -93,7 +93,7 @@ export class User extends BaseEntity {
 	@BeforeCreate()
 	@BeforeUpdate()
 	async hashPassword(arguments_: EventArgs<this>) {
-		if (arguments_.changeSet.payload?.password) {
+		if (arguments_.changeSet?.payload?.password) {
 			this.password = await hash(this.password);
 		}
 	}

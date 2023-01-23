@@ -76,7 +76,7 @@ export class TokensService {
 					switchMap(token => {
 						if (!token) {
 							throw new UnauthorizedException(
-								I18nContext.current<I18nTranslations>().t(
+								I18nContext.current<I18nTranslations>()!.t(
 									"exception.refreshToken",
 									{
 										args: { error: "not found" },
@@ -87,7 +87,7 @@ export class TokensService {
 
 						if (token.isRevoked) {
 							throw new UnauthorizedException(
-								I18nContext.current<I18nTranslations>().t(
+								I18nContext.current<I18nTranslations>()!.t(
 									"exception.refreshToken",
 									{
 										args: { error: "revoked" },
@@ -100,7 +100,7 @@ export class TokensService {
 							map(user => {
 								if (!user) {
 									throw new UnauthorizedException(
-										I18nContext.current<I18nTranslations>().t(
+										I18nContext.current<I18nTranslations>()!.t(
 											"exception.refreshToken",
 											{
 												args: { error: "malformed" },
@@ -147,7 +147,7 @@ export class TokensService {
 				const error =
 					error_ instanceof TokenExpiredError
 						? new UnauthorizedException(
-								I18nContext.current<I18nTranslations>().t(
+								I18nContext.current<I18nTranslations>()!.t(
 									"exception.refreshToken",
 									{
 										args: { error: "expired" },
@@ -155,7 +155,7 @@ export class TokensService {
 								),
 						  )
 						: new UnauthorizedException(
-								I18nContext.current<I18nTranslations>().t(
+								I18nContext.current<I18nTranslations>()!.t(
 									"exception.refreshToken",
 									{
 										args: { error: "malformed" },
@@ -192,7 +192,7 @@ export class TokensService {
 
 		if (!tokenId) {
 			throw new UnauthorizedException(
-				I18nContext.current<I18nTranslations>().t("exception.refreshToken", {
+				I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
 					args: { error: "malformed" },
 				}),
 			);
@@ -216,7 +216,7 @@ export class TokensService {
 
 		if (!subId) {
 			throw new UnauthorizedException(
-				I18nContext.current<I18nTranslations>().t("exception.refreshToken", {
+				I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
 					args: { error: "malformed" },
 				}),
 			);
@@ -240,7 +240,7 @@ export class TokensService {
 
 		if (!tokenId) {
 			throw new UnauthorizedException(
-				I18nContext.current<I18nTranslations>().t("exception.refreshToken", {
+				I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
 					args: { error: "malformed" },
 				}),
 			);

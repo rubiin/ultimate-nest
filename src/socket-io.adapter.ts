@@ -1,5 +1,5 @@
 import { IConfig } from "@lib/config/config.interface";
-import { INestApplicationContext, Logger } from "@nestjs/common";
+import { INestApplicationContext } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { IoAdapter } from "@nestjs/platform-socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
@@ -7,11 +7,10 @@ import { createClient } from "redis";
 import { Server, ServerOptions } from "socket.io";
 
 export class SocketIOAdapter extends IoAdapter {
-	private readonly logger = new Logger(SocketIOAdapter.name);
 	private adapterConstructor: ReturnType<typeof createAdapter>;
 
 	constructor(
-		private app: INestApplicationContext,
+		app: INestApplicationContext,
 		private readonly config: ConfigService<IConfig, true>,
 	) {
 		super(app);

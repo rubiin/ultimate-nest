@@ -13,7 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: BaseRepository<User>,
-		private config: ConfigService<IConfig, true>,
+		config: ConfigService<IConfig, true>,
 	) {
 		super({
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

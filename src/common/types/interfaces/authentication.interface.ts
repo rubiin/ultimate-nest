@@ -8,8 +8,8 @@ export interface IAuthenticationPayload {
 
 export interface IOauthResponse {
 	email: string;
-	firstName: string;
-	lastName: string;
+	firstName?: string;
+	lastName?: string;
 	accessToken: string;
 }
 
