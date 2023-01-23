@@ -19,6 +19,19 @@ NOTE: Starting April 18,2022 , the repo has ditched most promises for observable
 
 <br/>
 
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Installation](#installation)
+- [Database](#database)
+- [Features Covered](#features-covered)
+- [Available Scripts](#available-scripts)
+- [Setup](#setup)
+- [File Structure](#file-structure)
+- [Authentication](#authentication)
+- [Deployment](#deployment)
+
 
 ## Prerequisites
 
