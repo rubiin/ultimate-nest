@@ -4,6 +4,7 @@ import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 import { MinMaxLength } from "./min-max.decorator";
+import { Sanitize, Trim } from "./transform.decorator";
 
 /**
  * It's a decorator that validates a string field
@@ -12,7 +13,15 @@ import { MinMaxLength } from "./min-max.decorator";
  */
 
 export const IsStringField = (ops?: IsStringFieldOptions) => {
-	const options = { min: 2, max: 500, required: true, each: false, ...ops };
+	const options = {
+		min: 2,
+		max: 500,
+		required: true,
+		each: false,
+		sanitize: true,
+		trim: true,
+		...ops,
+	};
 	const decoratorsToApply = [
 		IsString({
 			message: i18nValidationMessage("validation.isDataType", {
@@ -22,6 +31,14 @@ export const IsStringField = (ops?: IsStringFieldOptions) => {
 		}),
 		MinMaxLength({ min: options.min, max: options.max, each: options.each }),
 	];
+
+	if (options.sanitize) {
+		decoratorsToApply.push(Sanitize());
+	}
+
+	if (options.trim) {
+		decoratorsToApply.push(Trim());
+	}
 
 	options.required
 		? decoratorsToApply.push(

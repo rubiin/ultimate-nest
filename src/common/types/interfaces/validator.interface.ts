@@ -4,12 +4,20 @@ interface IBaseValidator {
 }
 
 export interface IsStringFieldOptions extends IBaseValidator {
-	min?: number;
-	max?: number;
+	minLength?: number;
+	maxLength?: number;
+	sanitize?: boolean;
+	trim?: boolean;
 }
 
 export type IsEnumFieldOptions = IBaseValidator;
-export type IsNumberFieldOptions = IsStringFieldOptions;
+
+export interface IsNumberFieldOptions extends IBaseValidator {
+	min?: number;
+	max?: number;
+	int?: boolean;
+	positive?: boolean;
+}
 
 export interface IsMinMaxLengthOptions {
 	min?: number;
