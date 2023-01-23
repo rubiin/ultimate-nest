@@ -1,7 +1,17 @@
 import { IsNumberFieldOptions } from "@common/types";
 import { applyDecorators } from "@nestjs/common";
 import { Type } from "class-transformer";
-import { ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsOptional, Max, Min } from "class-validator";
+import {
+	ArrayNotEmpty,
+	IsArray,
+	IsInt,
+	IsNotEmpty,
+	IsNumber,
+	IsOptional,
+	IsPositive,
+	Max,
+	Min,
+} from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 /**
@@ -11,18 +21,54 @@ import { i18nValidationMessage } from "nestjs-i18n";
  */
 
 export const IsNumberField = (ops?: IsNumberFieldOptions) => {
-	const options = { min: 1, max: Number.POSITIVE_INFINITY, required: true, each: false, ...ops };
+	const options = {
+		min: 1,
+		max: Number.POSITIVE_INFINITY,
+		int: true,
+		positive: true,
+		required: true,
+		each: false,
+		...ops,
+	};
 	const decoratorsToApply = [
 		Type(() => Number),
-		IsInt({
-			message: i18nValidationMessage("validation.isDataType", {
-				type: "number",
-			}),
-			each: options.each,
-		}),
 		Min(options.min, { message: i18nValidationMessage("validation.min") }),
 		Max(options.max, { message: i18nValidationMessage("validation.max") }),
 	];
+
+	if (options.int) {
+		decoratorsToApply.push(
+			IsInt({
+				message: i18nValidationMessage("validation.isDataType", {
+					type: "integer number",
+				}),
+				each: options.each,
+			}),
+		);
+	} else {
+		decoratorsToApply.push(
+			IsNumber(
+				{},
+				{
+					message: i18nValidationMessage("validation.isDataType", {
+						type: "number",
+					}),
+					each: options.each,
+				},
+			),
+		);
+	}
+
+	if (options.positive) {
+		decoratorsToApply.push(
+			IsPositive({
+				message: i18nValidationMessage("validation.isDataType", {
+					type: "positive number",
+				}),
+				each: options.each,
+			}),
+		);
+	}
 
 	options.required
 		? decoratorsToApply.push(

@@ -52,6 +52,7 @@ module.exports = {
 		'no-duplicate-imports': 'error',
 		'no-param-reassign': 'error',
 		'unicorn/filename-case': 'off',
+		'@typescript-eslint/no-non-null-assertion': 'off',
 		'unicorn/no-process-exit': 'off',
 		'no-array-constructor': 'error',
 		'no-mixed-operators': 'error',

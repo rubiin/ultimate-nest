@@ -5,6 +5,6 @@ export class TwofaDto {
 	 * The code to verify
 	 * @example 123456
 	 */
-	@IsStringField({ min: 1, required: true })
+	@IsStringField({ minLength: 1, required: true })
 	code: string;
 }

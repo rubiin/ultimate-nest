@@ -19,6 +19,18 @@ NOTE: Starting April 18,2022 , the repo has ditched most promises for observable
 
 <br/>
 
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Database](#database)
+- [Features Covered](#features-covered)
+- [Available Scripts](#available-scripts)
+- [Setup](#setup)
+- [File Structure](#file-structure)
+- [Authentication](#authentication)
+- [Deployment](#deployment)
+
 
 ## Prerequisites
 
@@ -39,18 +51,25 @@ https://www.rabbitmq.com
 
 
 
-# Getting started
-
-Clone this repo. Edit the env file and pass in your credentials
-
-## Installation
-
-Install dependencies (preferred: pnpm)
+## Getting started
 
 ```sh
+
+# 1. Clone the repository or click on "Use this template" button.
+npx degit rubiin/ultimate-nest my-nest-app
+
+# 2. Enter your newly-cloned folder.
+cd ultimate-nest
+
+# 3. Create Environment variables file.
+cp .env/env.example env/.env.dev
+
+# 4. Install dependencies (preferred: pnpm)
+
  npm install --legacy-peer-deps
  pnpm install --shamefully-hoist=true
  yarn install
+ 
 ```
 
 ## Database

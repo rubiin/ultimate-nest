@@ -2,7 +2,7 @@ import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 
 export const app = registerAs("app", () => ({
-	port: parseInt(process.env.APP_PORT, 10),
+	port: Number.parseInt(process.env.APP_PORT, 10),
 	prefix: process.env.APP_PREFIX,
 	name: process.env.APP_NAME,
 	clientUrl: process.env.CLIENT_URL,
