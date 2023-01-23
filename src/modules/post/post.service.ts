@@ -74,7 +74,7 @@ export class PostService implements ICommonService<Post> {
 			map(post => {
 				if (!post) {
 					throw new NotFoundException(
-						I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
+						I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
 							args: { item: "Post" },
 						}),
 					);

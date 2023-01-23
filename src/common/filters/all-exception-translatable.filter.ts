@@ -14,7 +14,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 			args: Record<string, any>;
 		};
 
-		message = I18nContext.current().t(message.key, {
+		message = I18nContext.current()!.t(message.key, {
 			lang: host.switchToHttp().getRequest().i18nLang,
 			args: message.args,
 		});

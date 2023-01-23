@@ -61,7 +61,7 @@ export class AuthService {
 			switchMap(user => {
 				if (!user) {
 					throw new ForbiddenException(
-						I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
+						I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
 							args: { item: "Account" },
 						}),
 					);
@@ -69,7 +69,7 @@ export class AuthService {
 
 				if (!user.isActive) {
 					throw new ForbiddenException(
-						I18nContext.current<I18nTranslations>().t("exception.inactiveUser"),
+						I18nContext.current<I18nTranslations>()!.t("exception.inactiveUser"),
 					);
 				}
 
@@ -80,7 +80,7 @@ export class AuthService {
 									return omit(user, ["password"]);
 								}
 								throw new BadRequestException(
-									I18nContext.current<I18nTranslations>().t(
+									I18nContext.current<I18nTranslations>()!.t(
 										"exception.invalidCredentials",
 									),
 								);
@@ -104,7 +104,7 @@ export class AuthService {
 			switchMap(user => {
 				if (!user)
 					throw new UnauthorizedException(
-						I18nContext.current<I18nTranslations>().t("exception.invalidCredentials"),
+						I18nContext.current<I18nTranslations>()!.t("exception.invalidCredentials"),
 					);
 
 				if (user.isTwoFactorEnabled) {
@@ -167,7 +167,7 @@ export class AuthService {
 
 		if (!userExists) {
 			throw new NotFoundException(
-				I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
+				I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
 					args: { item: "Account" },
 				}),
 			);
@@ -238,7 +238,7 @@ export class AuthService {
 
 		if (!codeDetails) {
 			throw new NotFoundException(
-				I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
+				I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
 					args: { item: "Otp" },
 				}),
 			);
@@ -248,7 +248,7 @@ export class AuthService {
 
 		if (isExpired) {
 			throw new BadRequestException(
-				I18nContext.current<I18nTranslations>().t("exception.itemExpired", {
+				I18nContext.current<I18nTranslations>()!.t("exception.itemExpired", {
 					args: { item: "Otp" },
 				}),
 			);
@@ -291,7 +291,7 @@ export class AuthService {
 					switchMap(isValid => {
 						if (!isValid) {
 							throw new BadRequestException(
-								I18nContext.current<I18nTranslations>().translate(
+								I18nContext.current<I18nTranslations>()!.translate(
 									"exception.invalidCredentials",
 								),
 							);

@@ -77,7 +77,7 @@ export class UserService implements ICommonService<User> {
 			map(user => {
 				if (!user) {
 					throw new NotFoundException(
-						I18nContext.current<I18nTranslations>().t("exception.itemDoesNotExist", {
+						I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
 							args: { item: "User" },
 						}),
 					);

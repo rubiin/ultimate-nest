@@ -17,10 +17,18 @@
 		"skipLibCheck": true,
 		"noImplicitAny": false,
 		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"exactOptionalPropertyTypes": false,
+		"noImplicitReturns": true,
 		"alwaysStrict": true,
 		"strictBindCallApply": true,
 		"strictNullChecks": false,
 		"strictFunctionTypes": true,
+		"noUncheckedIndexedAccess": true,
 		"strictPropertyInitialization": false,
 		"useUnknownInCatchVariables": true,
 		"paths": {
@@ -30,8 +38,14 @@
 			"@entities": ["./entities/index"],
 			"@mocks": ["./_mocks_/index"],
 			"@generated": ["./generated/index"],
-		}
+		},
+		"typeRoots": [
+			"@types",
+			"./node_modules/@types",
+		]
 	},
 	"include": ["test/**/*", "src/**/*"],
-	"exclude": ["node_modules", "dist"]
+	"exclude": ["node_modules", "dist"],
+	"types": ["./src/common/types/global.d.ts"],
+
 }

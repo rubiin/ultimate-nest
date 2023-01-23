@@ -13,7 +13,7 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: BaseRepository<User>,
-		private config: ConfigService<IConfig, true>,
+		config: ConfigService<IConfig, true>,
 	) {
 		super({
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -31,7 +31,7 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
 	 */
 
 	async validate(payload: IJwtPayload) {
-		const { sub: id, isTwoFactorEnabled } = payload;
+		const { sub: id } = payload;
 
 		// Accept the JWT and attempt to validate it using the user service
 		const user = await this.userRepository.findOne({ id });
@@ -40,11 +40,6 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
 			throw new UnauthorizedException();
 		}
 
-		if (!user.isTwoFactorEnabled) {
-			return user;
-		}
-		if (isTwoFactorEnabled) {
-			return user;
-		}
+		return user;
 	}
 }

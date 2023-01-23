@@ -34,9 +34,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 	): Promise<any> {
 		const { name, emails } = profile;
 		const user: IOauthResponse = {
-			email: emails[0].value,
-			firstName: name.givenName,
-			lastName: name.familyName,
+			email: emails![0].value,
+			firstName: name?.givenName,
+			lastName: name?.familyName,
 			accessToken,
 		};
 

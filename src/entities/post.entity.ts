@@ -59,7 +59,7 @@ export class Post extends BaseEntity {
 	@BeforeCreate()
 	@BeforeUpdate()
 	async hashPassword(arguments_: EventArgs<this>) {
-		if (arguments_.changeSet.payload?.title) {
+		if (arguments_.changeSet?.payload?.title) {
 			this.slug = slugify(this.title);
 		}
 	}
