@@ -21,16 +21,15 @@ NOTE: Starting April 18,2022 , the repo has ditched most promises for observable
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Database](#database)
-- [Features Covered](#features-covered)
-- [Available Scripts](#available-scripts)
-- [Setup](#setup)
-- [File Structure](#file-structure)
-- [Authentication](#authentication)
-- [Deployment](#deployment)
-
+-   [Prerequisites](#prerequisites)
+-   [Getting Started](#getting-started)
+-   [Database](#database)
+-   [Features Covered](#features-covered)
+-   [Available Scripts](#available-scripts)
+-   [Setup](#setup)
+-   [File Structure](#file-structure)
+-   [Authentication](#authentication)
+-   [Deployment](#deployment)
 
 ## Prerequisites
 
@@ -48,8 +47,6 @@ https://redis.io/
 
 RabbitMQ
 https://www.rabbitmq.com
-
-
 
 ## Getting started
 
@@ -89,7 +86,7 @@ Start local Postgres server and run `NODE_ENV=dev make migrate` to apply migrati
 
 Now you can start the application witt `NODE_ENV=dev yarn start`.
 
-Note: If you are using windows, `SET NODE_ENV=dev yarn start`
+Note: If you are using windows, `SET NODE_ENV=dev yarn start` or install cross-env and use `cross-env NODE_ENV=dev yarn start`
 
 ---
 
@@ -129,7 +126,7 @@ Note: If you are using windows, `SET NODE_ENV=dev yarn start`
 
 All the scripts require `NODE_ENV` flag
 
-Additionally, you can also see the scripts in `makefile`
+Additionally, you can also see the scripts in `justfile` which is a cross platform task runner. You can use it by installing [just](https://github.com/casey/just#packages) and then running `just <script>
 
 ---
 
@@ -210,8 +207,6 @@ The password for `redis` and `rabbitmq` is `Test@1234` can be changed in the mak
 
 More docs found at `docs` folder
 
-
-
 <h2 align="center">Do you use this template?<br/>Don't be shy to give it a star! ★</h2>
 
 Also if you are into NestJS ecosystem you may be interested in one of my other libs:
@@ -233,7 +228,6 @@ Platform config manager for nestjs. It supports multiple config files and enviro
 This is a minio module for Nest.
 
 ---
-
 
 [nestjs-cloudinary](https://github.com/rubiin/nestjs-cloudinary)
 
