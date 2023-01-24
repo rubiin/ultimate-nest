@@ -38,7 +38,7 @@
 		"postinstall": "npm run build",
 		"format": "prettier --write --cache \"src/**/*.ts\" \"test/**/*.ts\"",
 		"lint": "eslint_d '{src,test}/**/*.ts' --cache",
-		"lint": "eslint_d '{src,test}/**/*.ts' --cache --fix",
+		"lint:fix": "eslint_d '{src,test}/**/*.ts' --cache --fix",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
 		"start:prod": "node dist/main",
