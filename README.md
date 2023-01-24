@@ -2,7 +2,7 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://i.imgur.com/4xiI9Hu.png" width="620" alt="Nest Logo" /></a>
 </p>
 
-> ### Blog made using Nestjs + Mikro-orm codebase(backend) containing real world examples (CRUD, auth (password based and oauth), advanced patterns, etc) and batteries included
+> ### Blog made using Nestjs + Mikro-orm codebase(backend) containing real world examples (CRUD, auth (password based and oauth), advanced patterns, etc) and batteries included and ever-evolving
 
 <p align="center">
 <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/rubiin/ultimate-nest">
@@ -69,7 +69,7 @@ cp .env/env.example env/.env.dev
  npm install --legacy-peer-deps
  pnpm install --shamefully-hoist=true
  yarn install
- 
+
 ```
 
 ## Database
