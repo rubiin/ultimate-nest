@@ -6,7 +6,9 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
+import { Action } from "@common/types";
 import { Comment, Post as PostEntity, User } from "@entities";
+import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Post, Put, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
@@ -46,6 +48,7 @@ export class PostController {
 
 	@Post()
 	@SwaggerResponse({ operation: "create post" })
+	@CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Create))
 	async createPost(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
 		return this.postService.create(dto, author);
 	}
@@ -56,6 +59,7 @@ export class PostController {
 		notFound: "Post doesn't exist.",
 		params: ["idx"],
 	})
+	@CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Update))
 	update(@UUIDParam("idx") index: string, @Body() dto: EditPostDto): Observable<PostEntity> {
 		return this.postService.update(index, dto);
 	}
@@ -66,6 +70,7 @@ export class PostController {
 		notFound: "Post doesn't exist.",
 		params: ["idx"],
 	})
+	@CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Delete))
 	remove(@UUIDParam("idx") index: string): Observable<PostEntity> {
 		return this.postService.remove(index);
 	}
