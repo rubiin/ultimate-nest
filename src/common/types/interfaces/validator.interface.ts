@@ -19,11 +19,9 @@ export interface IsNumberFieldOptions extends IBaseValidator {
 	positive?: boolean;
 }
 
-export interface IsMinMaxLengthOptions {
-	min?: number;
-	max?: number;
-	each?: boolean;
-}
+export interface IsMinMaxLengthOptions
+	extends Pick<IsStringFieldOptions, "each">,
+		Pick<IsStringFieldOptions, "minLength" | "maxLength"> {}
 
 export interface IFileValidator {
 	fileType?: RegExp | string;

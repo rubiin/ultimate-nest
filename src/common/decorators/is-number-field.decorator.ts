@@ -21,7 +21,7 @@ import { i18nValidationMessage } from "nestjs-i18n";
  */
 
 export const IsNumberField = (ops?: IsNumberFieldOptions) => {
-	const options = {
+	const options: IsNumberFieldOptions = {
 		min: 1,
 		max: Number.POSITIVE_INFINITY,
 		int: true,
