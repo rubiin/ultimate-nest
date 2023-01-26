@@ -10,7 +10,7 @@ export interface IsStringFieldOptions extends IBaseValidator {
 	trim?: boolean;
 }
 
-export type IsEnumFieldOptions = IBaseValidator
+export type IsEnumFieldOptions = IBaseValidator;
 
 export interface IsNumberFieldOptions extends IBaseValidator {
 	min?: number;
