@@ -10,7 +10,7 @@ export const Trim = (): PropertyDecorator => {
 		const value = parameters.value as string[] | string;
 
 		if (Array.isArray(value)) {
-			return value.map((v: any) => v.trim().replaceAll(/\s\s+/g, " "));
+			return value.map((v: string) => v.trim().replaceAll(/\s\s+/g, " "));
 		}
 
 		return value.trim().replaceAll(/\s\s+/g, " ");
@@ -46,7 +46,7 @@ export const ToBoolean = (): PropertyDecorator => {
  * @returns A decorator function that will be applied to the class.
  */
 
-export const Sanitize = () => {
+export const Sanitize = (): PropertyDecorator => {
 	return Transform(
 		({ value }) => {
 			if (Array.isArray(value)) {

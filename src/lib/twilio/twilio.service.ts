@@ -5,7 +5,7 @@ import twilio from "twilio";
 import {
 	MessageInstance,
 	MessageListInstanceCreateOptions,
-} from "twilio/lib/rest/api/v2010/account/message";
+} from "twilio/dist/lib/rest/api/v2010/account/message";
 
 import { MODULE_OPTIONS_TOKEN } from "./twilio.module-definition";
 
@@ -25,14 +25,16 @@ export class TwilioService {
 	 * @returns Observable<MessageInstance>
 	 */
 
-	sendSms(options: MessageListInstanceCreateOptions): Observable<MessageInstance> {
+	sendSms(
+		options: MessageListInstanceCreateOptions & { prefix: string },
+	): Observable<MessageInstance> {
 		const client = twilio(this.options.accountSid, this.options.authToken);
 
 		return from(
 			client.messages.create({
 				...options,
 				from: this.options.from,
-				to: `+977${options.to}`,
+				to: `${options.prefix}${options.to}`,
 			}),
 		).pipe(
 			tap(message => this.logger.log(`SMS sent to ${message.sid}`)),
