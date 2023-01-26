@@ -5,7 +5,7 @@ import { CreateChatDto } from "./dto/create-chat.dto";
 @Injectable()
 export class ChatService {
 	messages = [{ message: "hello", username: "rubiin" }];
-	clientToUser = {};
+	clientToUser : Map<string, string> = new Map();
 
 	identify(name: string, clientId: string) {
 		this.clientToUser[clientId] = name;

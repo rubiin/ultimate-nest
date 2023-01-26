@@ -5,6 +5,7 @@ import { TokensService } from "@modules/token/tokens.service";
 import {
 	Body,
 	Controller,
+	DefaultValuePipe,
 	Get,
 	ParseBoolPipe,
 	Post,
@@ -47,8 +48,8 @@ export class AuthController {
 		status: 400,
 		description: "User name and password provided does not match.",
 	})
-	login(@Body() _loginDto: UserLoginDto) {
-		return this.authService.login(_loginDto, true);
+	login(@Body() loginDto: UserLoginDto) {
+		return this.authService.login(loginDto, true);
 	}
 
 	@Post("reset-password")
@@ -156,8 +157,8 @@ export class AuthController {
 	@Post("logout")
 	logout(
 		@LoggedInUser() user: User,
+		@Query("from_all", new DefaultValuePipe(false),ParseBoolPipe) fromAll : boolean,
 		@Body() refreshToken?: RefreshTokenDto,
-		@Query("from_all", ParseBoolPipe) fromAll = false,
 	): Observable<any> {
 		return fromAll
 			? this.authService.logoutFromAll(user)
