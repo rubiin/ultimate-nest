@@ -1,8 +1,7 @@
 import { AppUtils } from "@common/helpers";
-import { ValidationPipe } from "@common/pipes";
 import { IConfig } from "@lib/config/config.interface";
 import { createLogger } from "@lib/pino/app.logger";
-import { Logger } from "@nestjs/common";
+import { Logger, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory, repl } from "@nestjs/core";
 import { ExpressAdapter, NestExpressApplication } from "@nestjs/platform-express";
