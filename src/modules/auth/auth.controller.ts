@@ -157,7 +157,7 @@ export class AuthController {
 	@Post("logout")
 	logout(
 		@LoggedInUser() user: User,
-		@Query("from_all", new DefaultValuePipe(false),ParseBoolPipe) fromAll : boolean,
+		@Query("from_all", new DefaultValuePipe(false), ParseBoolPipe) fromAll: boolean,
 		@Body() refreshToken?: RefreshTokenDto,
 	): Observable<any> {
 		return fromAll
