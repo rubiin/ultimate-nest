@@ -1,6 +1,6 @@
 {
 	"name": "ultimate-nest",
-	"version": "1.8.14",
+	"version": "1.8.16",
 	"description": "NestJS + MikroORM blog example with batteries included",
 	"license": "MIT",
 	"author": {
@@ -88,7 +88,7 @@
 		"cloudinary": "^1.33.0",
 		"compression": "^1.7.4",
 		"date-fns": "^2.29.3",
-		"eta": "^1.14.2",
+		"eta": "^2.0.0",
 		"firebase-admin": "^11.5.0",
 		"helmet": "^6.0.1",
 		"helper-fns": "^2.5.26",
@@ -100,7 +100,7 @@
 		"nestjs-minio": "^2.3.0",
 		"nestjs-pino": "^3.1.2",
 		"nestjs-throttler-storage-redis": "^0.3.0",
-		"nodemailer": "^6.9.0",
+		"nodemailer": "^6.9.1",
 		"passport": "0.6.0",
 		"passport-facebook": "^3.0.0",
 		"passport-google-oauth20": "^2.0.0",
@@ -111,7 +111,7 @@
 		"preview-email": "^3.0.7",
 		"prom-client": "^14.1.1",
 		"pug": "^3.0.2",
-		"redis": "^4.6.1",
+		"redis": "^4.6.2",
 		"reflect-metadata": "0.1.13",
 		"rxjs": "^7.8.0",
 		"sharp": "^0.31.3",
@@ -160,7 +160,7 @@
 		"eslint-import-resolver-typescript": "^3.5.3",
 		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-prettier": "^4.2.1",
-		"eslint-plugin-simple-import-sort": "^9.0.0",
+		"eslint-plugin-simple-import-sort": "^10.0.0",
 		"eslint-plugin-unicorn": "^45.0.2",
 		"eslint_d": "^12.2.1",
 		"husky": "^8.0.3",
@@ -228,11 +228,6 @@
 	"config": {
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
-		}
-	},
-	"pnpm": {
-		"overrides": {
-			"jsonwebtoken": "^9.0.0"
 		}
 	}
 }

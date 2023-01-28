@@ -1,8 +1,5 @@
 lockfileVersion: 5.4
 
-overrides:
-  jsonwebtoken: ^9.0.0
-
 specifiers:
   '@aws-sdk/client-ses': ^3.259.0
   '@casl/ability': ^6.3.3
@@ -78,10 +75,10 @@ specifiers:
   eslint-import-resolver-typescript: ^3.5.3
   eslint-plugin-import: ^2.27.5
   eslint-plugin-prettier: ^4.2.1
-  eslint-plugin-simple-import-sort: ^9.0.0
+  eslint-plugin-simple-import-sort: ^10.0.0
   eslint-plugin-unicorn: ^45.0.2
   eslint_d: ^12.2.1
-  eta: ^1.14.2
+  eta: ^2.0.0
   firebase-admin: ^11.5.0
   helmet: ^6.0.1
   helper-fns: ^2.5.26
@@ -96,7 +93,7 @@ specifiers:
   nestjs-minio: ^2.3.0
   nestjs-pino: ^3.1.2
   nestjs-throttler-storage-redis: ^0.3.0
-  nodemailer: ^6.9.0
+  nodemailer: ^6.9.1
   otplib: ^12.0.1
   passport: 0.6.0
   passport-facebook: ^3.0.0
@@ -110,7 +107,7 @@ specifiers:
   prom-client: ^14.1.1
   pug: ^3.0.2
   qrcode: ^1.5.1
-  redis: ^4.6.1
+  redis: ^4.6.2
   reflect-metadata: 0.1.13
   run-script-webpack-plugin: ^0.1.1
   rxjs: ^7.8.0
@@ -166,7 +163,7 @@ dependencies:
   cloudinary: 1.33.0
   compression: 1.7.4
   date-fns: 2.29.3
-  eta: 1.14.2
+  eta: 2.0.0
   firebase-admin: 11.5.0
   helmet: 6.0.1
   helper-fns: 2.5.26
@@ -178,7 +175,7 @@ dependencies:
   nestjs-minio: 2.3.0_hjcqpoaebdr7gdo5hgc22hthbe
   nestjs-pino: 3.1.2_sfapocvosrcjidgmqxjuhlo64q
   nestjs-throttler-storage-redis: 0.3.0_mlydjaadq2li7c4holtkbo7maa
-  nodemailer: 6.9.0
+  nodemailer: 6.9.1
   passport: 0.6.0
   passport-facebook: 3.0.0
   passport-google-oauth20: 2.0.0
@@ -189,7 +186,7 @@ dependencies:
   preview-email: 3.0.7
   prom-client: 14.1.1
   pug: 3.0.2
-  redis: 4.6.1
+  redis: 4.6.2
   reflect-metadata: 0.1.13
   rxjs: 7.8.0
   sharp: 0.31.3
@@ -238,7 +235,7 @@ devDependencies:
   eslint-import-resolver-typescript: 3.5.3_ps7hf4l2dvbuxvtusmrfhmzsba
   eslint-plugin-import: 2.27.5_tto3jvfrcbe7ndbi56p7uxhaki
   eslint-plugin-prettier: 4.2.1_cn4lalcyadplruoxa5mhp7j3dq
-  eslint-plugin-simple-import-sort: 9.0.0_eslint@8.32.0
+  eslint-plugin-simple-import-sort: 10.0.0_eslint@8.32.0
   eslint-plugin-unicorn: 45.0.2_eslint@8.32.0
   eslint_d: 12.2.1
   husky: 8.0.3
@@ -3200,16 +3197,16 @@ packages:
     dev: false
     optional: true
 
-  /@redis/bloom/1.2.0_@redis+client@1.5.2:
+  /@redis/bloom/1.2.0_@redis+client@1.5.3:
     resolution: {integrity: sha512-HG2DFjYKbpNmVXsa0keLHp/3leGJz1mjh09f2RLGGLQZzSHpkmZWuwJbAvo3QcRY8p80m5+ZdXZdYOSBLlp7Cg==}
     peerDependencies:
       '@redis/client': ^1.0.0
     dependencies:
-      '@redis/client': 1.5.2
+      '@redis/client': 1.5.3
     dev: false
 
-  /@redis/client/1.5.2:
-    resolution: {integrity: sha512-NHkrqvyreowlqxZvt9ufA//nEv0/voHohMAybn50S3e/+9Xbc47bXX4djb7QOX6Kupp16NdfG7St8CzhyYA3cg==}
+  /@redis/client/1.5.3:
+    resolution: {integrity: sha512-kPad3QmWyRcmFj1gnb+SkzjXBV7oPpyTJmasVA+ocgNClxqZaTJjLFReqxm9cZQiCtqZK9vrcTISNrgzQXFpLg==}
     engines: {node: '>=14'}
     dependencies:
       cluster-key-slot: 1.1.2
@@ -3217,36 +3214,36 @@ packages:
       yallist: 4.0.0
     dev: false
 
-  /@redis/graph/1.1.0_@redis+client@1.5.2:
+  /@redis/graph/1.1.0_@redis+client@1.5.3:
     resolution: {integrity: sha512-16yZWngxyXPd+MJxeSr0dqh2AIOi8j9yXKcKCwVaKDbH3HTuETpDVPcLujhFYVPtYrngSco31BUcSa9TH31Gqg==}
     peerDependencies:
       '@redis/client': ^1.0.0
     dependencies:
-      '@redis/client': 1.5.2
+      '@redis/client': 1.5.3
     dev: false
 
-  /@redis/json/1.0.4_@redis+client@1.5.2:
+  /@redis/json/1.0.4_@redis+client@1.5.3:
     resolution: {integrity: sha512-LUZE2Gdrhg0Rx7AN+cZkb1e6HjoSKaeeW8rYnt89Tly13GBI5eP4CwDVr+MY8BAYfCg4/N15OUrtLoona9uSgw==}
     peerDependencies:
       '@redis/client': ^1.0.0
     dependencies:
-      '@redis/client': 1.5.2
+      '@redis/client': 1.5.3
     dev: false
 
-  /@redis/search/1.1.1_@redis+client@1.5.2:
+  /@redis/search/1.1.1_@redis+client@1.5.3:
     resolution: {integrity: sha512-pqCXTc5e7wJJgUuJiC3hBgfoFRoPxYzwn0BEfKgejTM7M/9zP3IpUcqcjgfp8hF+LoV8rHZzcNTz7V+pEIY7LQ==}
     peerDependencies:
       '@redis/client': ^1.0.0
     dependencies:
-      '@redis/client': 1.5.2
+      '@redis/client': 1.5.3
     dev: false
 
-  /@redis/time-series/1.0.4_@redis+client@1.5.2:
+  /@redis/time-series/1.0.4_@redis+client@1.5.3:
     resolution: {integrity: sha512-ThUIgo2U/g7cCuZavucQTQzA9g9JbDDY2f64u3AbAoz/8vE2lt2U37LamDUVChhaDA3IRT9R6VvJwqnUfTJzng==}
     peerDependencies:
       '@redis/client': ^1.0.0
     dependencies:
-      '@redis/client': 1.5.2
+      '@redis/client': 1.5.3
     dev: false
 
   /@rushstack/ts-command-line/4.13.1:
@@ -4913,7 +4910,7 @@ packages:
     resolution: {integrity: sha512-o560kw+dFqusC9lQJhcm6L2F2fMKobJ5af+FoR2PdnMVdpQ3f3Bz6qzvObTGyvoazQJxjQNWgMQeChP4vRTuXQ==}
     engines: {node: '>= 16.18.0'}
     dependencies:
-      redis: 4.6.1
+      redis: 4.6.2
     dev: false
 
   /cache-manager/5.1.4:
@@ -6207,8 +6204,8 @@ packages:
       prettier-linter-helpers: 1.0.0
     dev: true
 
-  /eslint-plugin-simple-import-sort/9.0.0_eslint@8.32.0:
-    resolution: {integrity: sha512-PtrLjyXP8kjRneWT1n0b99y/2Fyup37we7FVoWsI61/O7x4ztLohzhep/pxI/cYlECr/cQ2j6utckdvWpVwXNA==}
+  /eslint-plugin-simple-import-sort/10.0.0_eslint@8.32.0:
+    resolution: {integrity: sha512-AeTvO9UCMSNzIHRkg8S6c3RPy5YEwKWSQPx3DYghLedo2ZQxowPFLGDN1AZ2evfg6r6mjBSZSLxLFsWSu3acsw==}
     peerDependencies:
       eslint: '>=5.0.0'
     dependencies:
@@ -6378,8 +6375,8 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
-  /eta/1.14.2:
-    resolution: {integrity: sha512-wZmJAV7EFUG5W8XNXSazIdichnWEhGB1OWg4tnXWPj0CPNUcFdgorGNO6N9p6WBUgoUe4P0OziJYn1+6zxP2aQ==}
+  /eta/2.0.0:
+    resolution: {integrity: sha512-NqE7S2VmVwgMS8yBxsH4VgNQjNjLq1gfGU0u9I6Cjh468nPRMoDfGdK9n1p/3Dvsw3ebklDkZsFAnKJ9sefjBA==}
     engines: {node: '>=6.0.0'}
     dev: false
 
@@ -9492,8 +9489,8 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: false
 
-  /nodemailer/6.9.0:
-    resolution: {integrity: sha512-jFaCEGTeT3E/m/5R2MHWiyQH3pSARECRUDM+1hokOYc3lQAAG7ASuy+2jIsYVf+RVa9zePopSQwKNVFH8DKUpA==}
+  /nodemailer/6.9.1:
+    resolution: {integrity: sha512-qHw7dOiU5UKNnQpXktdgQ1d3OFgRAekuvbJLcdG5dnEo/GtcTHRYM7+UfJARdOFU9WUQO8OiIamgWPmiSFHYAA==}
     engines: {node: '>=6.0.0'}
     dev: false
 
@@ -10226,7 +10223,7 @@ packages:
       display-notification: 2.0.0
       get-port: 5.1.1
       mailparser: 3.6.3
-      nodemailer: 6.9.0
+      nodemailer: 6.9.1
       open: 7.4.2
       p-event: 4.2.0
       p-wait-for: 3.2.0
@@ -10650,15 +10647,15 @@ packages:
       redis-errors: 1.2.0
     dev: false
 
-  /redis/4.6.1:
-    resolution: {integrity: sha512-cmmO3uqHHRWrvpsT0JrrYl/uqyz6/GNnXZnPbwzp5Hy0Y7z8WBTZnF6TQ8v/ryIverGm9azq5oqzNzpWh8Ab+w==}
+  /redis/4.6.2:
+    resolution: {integrity: sha512-Xoh7UyU6YnT458xA8svaZAJu6ZunKeW7Z/7GXrLWGGwhVLTsDX6pr3u7ENAoV+DHBPO+9LwIu45ClwUwpIjAxw==}
     dependencies:
-      '@redis/bloom': 1.2.0_@redis+client@1.5.2
-      '@redis/client': 1.5.2
-      '@redis/graph': 1.1.0_@redis+client@1.5.2
-      '@redis/json': 1.0.4_@redis+client@1.5.2
-      '@redis/search': 1.1.1_@redis+client@1.5.2
-      '@redis/time-series': 1.0.4_@redis+client@1.5.2
+      '@redis/bloom': 1.2.0_@redis+client@1.5.3
+      '@redis/client': 1.5.3
+      '@redis/graph': 1.1.0_@redis+client@1.5.3
+      '@redis/json': 1.0.4_@redis+client@1.5.3
+      '@redis/search': 1.1.1_@redis+client@1.5.3
+      '@redis/time-series': 1.0.4_@redis+client@1.5.3
     dev: false
 
   /reflect-metadata/0.1.13:

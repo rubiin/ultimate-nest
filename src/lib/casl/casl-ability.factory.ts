@@ -34,7 +34,7 @@ export class CaslAbilityFactory {
 		can([Action.Delete, Action.Update], Post, { author: user });
 
 		// comment specific permissions
-		can([Action.Update, Action.Delete, Action.Create], Comment, { author: user });
+		can([Action.Update, Action.Delete], Comment, { author: user });
 
 		return build({
 			detectSubjectType: item => item.constructor as ExtractSubjectType<Subjects>,
