@@ -35,7 +35,7 @@ export class UserController {
 		operation: "Create user",
 		badRequest: "User already registered with email.",
 	})
-	@ApiFile("avatar", true)
+	@ApiFile({ fieldName: "avatar", required: true })
 	async publicRegistration(
 		@Body() dto: UserRegistrationDto,
 		@UploadedFile(fileValidatorPipe({}))
@@ -65,7 +65,7 @@ export class UserController {
 		badRequest: "User already registered with email.",
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Create))
-	@ApiFile("avatar", true)
+	@ApiFile({ fieldName: "avatar", required: true })
 	async create(
 		@Body() dto: CreateUserDto,
 		@UploadedFile(fileValidatorPipe({}))

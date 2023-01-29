@@ -5,7 +5,7 @@ export * from "./controller.decorator";
 export * from "./is-enum-field.decorator";
 export * from "./is-number-field.decorator";
 export * from "./is-string-field.decorator";
-export * from "./min-max.decorator";
+export * from "./min-max-length.decorator";
 export * from "./nocache.decorator";
 export * from "./public.decorator";
 export * from "./swagger-api.decorator";
