@@ -1,19 +1,12 @@
-import { argon2d, hash } from "argon2";
+import { HelperService } from "@common/helpers";
 import { ThreadWorker } from "poolifier";
 
 // all expensive process goes here to avoid blocking the main thread
 
-export const hashStringByThread = (value: string): Promise<string> =>
-	hash(value, {
-		type: argon2d,
-		hashLength: 50,
-		saltLength: 32,
-		timeCost: 4,
-	});
 
 const workerFunction = (data: { functionName: string; input: string }) => {
 	if (data.functionName === "hashString") {
-		return hashStringByThread(data.input);
+		return HelperService.hashString(data.input);
 	} else {
 		throw new Error("function not found");
 	}

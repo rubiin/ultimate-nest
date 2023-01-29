@@ -1,15 +1,18 @@
 import { IAuthenticationPayload } from "@common/types";
 import { User } from "@entities";
-import { verify } from "argon2";
+import { argon2id, hash, Options as ArgonOptions,verify } from "argon2";
 import { pick } from "helper-fns";
 import { from, Observable } from "rxjs";
 import sharp from "sharp";
 
-export const HelperService = {
-	resourceLink: (resource: string, id: string) => {
-		return `${process.env.API_URL}/v1/${resource}/${id}`;
-	},
+const argonOptions: ArgonOptions & { raw?: false } = {
+	type: argon2id,
+	hashLength: 50,
+	saltLength: 32,
+	timeCost: 4,
+};
 
+export const HelperService = {
 	buildPayloadResponse: (
 		user: User,
 		accessToken: string,
@@ -26,7 +29,10 @@ export const HelperService = {
 
 	/* A function that returns an observable that resolves to a boolean. */
 	verifyHash: (userPassword: string, passwordToCompare: string): Observable<boolean> => {
-		return from(verify(userPassword, passwordToCompare));
+		return from(verify(userPassword, passwordToCompare, argonOptions));
+	},
+	hashString(string_: string): Promise<string> {
+		return hash(string_, argonOptions);
 	},
 
 	/* Generating a thumbnail from a buffer. */
