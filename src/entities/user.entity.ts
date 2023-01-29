@@ -1,4 +1,5 @@
 import { BaseEntity } from "@common/database";
+import { HelperService } from "@common/helpers";
 import { Roles } from "@common/types";
 import {
 	BeforeCreate,
@@ -11,9 +12,8 @@ import {
 	OneToMany,
 	Property,
 	Unique,
-	wrap,
+	wrap
 } from "@mikro-orm/core";
-import { hash } from "argon2";
 
 import { Post } from "./post.entity";
 
@@ -94,7 +94,7 @@ export class User extends BaseEntity {
 	@BeforeUpdate()
 	async hashPassword(arguments_: EventArgs<this>) {
 		if (arguments_.changeSet?.payload?.password) {
-			this.password = await hash(this.password);
+			this.password = await HelperService.hashString(this.password);
 		}
 	}
 }
