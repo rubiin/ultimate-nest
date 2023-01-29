@@ -3,6 +3,32 @@
 default:
 	just --list
 
+# make initial migration file for the first time
+makemigration-init env="dev":
+	NODE_ENV={{env}} npm run orm migration:create --initial
+
+# make migration file for the current changes
+makemigration env="dev":
+	NODE_ENV={{env}} npm run orm migration:create
+
+# run migration
+migrate env="dev":
+	NODE_ENV={{env}} npm run orm migration:up
+
+# revert migration
+unmigrate env="dev":
+	NODE_ENV={{env}} npm run orm migration:down
+
+# run seeders to populate database
+seed env="dev":
+	USER_PASSWORD=Test1234 NODE_ENV={{env}} npm run orm seeder:run
+
+# test e2e with jest
+test-e2e env="dev":
+	USER_PASSWORD=Test1234 NODE_ENV={{env}} yarn test:e2e
+
+
+
 # clean all auto generated files and generate initial migration file
 init: clean-files
 	makemigration-init
@@ -20,29 +46,6 @@ clean-files:
 	rm -rf dist
 	rm -rf uploads
 
-# make initial migration file for the first time
-makemigration-init:
-	NODE_ENV=$(env) npm run orm migration:create --initial
-
-# make migration file for the current changes
-makemigration:
-	NODE_ENV=$(env) npm run orm migration:create
-
-# run migration
-migrate:
-	NODE_ENV=$(env) npm run orm migration:up
-
-# revert migration
-unmigrate:
-	NODE_ENV=$(env) npm run orm migration:down
-
-# run seeders to populate database
-seed:
-	USER_PASSWORD=Test1234 NODE_ENV=$(env) npm run orm seeder:run
-
-# test e2e with jest
-test-e2e:
-	USER_PASSWORD=Test1234 NODE_ENV=$(env) yarn test:e2e
 
 # build code
 build:
@@ -53,7 +56,7 @@ encryption:
 	sh scripts/encryption.sh
 
 # run in shell mode
-shell:
+shell env="dev":
 	REPL=true npm run start:dev
 
 # run deploy script
@@ -61,9 +64,9 @@ deploy:
 	sh scripts/deploy.sh
 
 # stop deployed containers
-stop:
-	ENV=dev PASSWORD=Test1234  docker compose -f docker-compose.$(env).yml stop
+stop env="dev":
+	ENV=dev PASSWORD=Test1234  docker compose -f docker-compose.{{env}}.yml stop
 
 # remove deployed containers
-remove:
-	ENV=dev PASSWORD=Test1234 docker compose -f docker-compose.$(env).yml down
+remove env="dev":
+	ENV=dev PASSWORD=Test1234 docker compose -f docker-compose.{{env}}.yml down
