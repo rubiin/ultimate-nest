@@ -1,11 +1,11 @@
 import { IAuthenticationPayload } from "@common/types";
 import { User } from "@entities";
-import { argon2id, hash, Options as ArgonOptions,verify } from "argon2";
+import { argon2id,hash, Options as ArgonOptions, verify } from "argon2";
 import { pick } from "helper-fns";
 import { from, Observable } from "rxjs";
 import sharp from "sharp";
 
-const argonOptions: ArgonOptions & { raw?: false } = {
+const argon2Options: ArgonOptions & { raw?: false } = {
 	type: argon2id,
 	hashLength: 50,
 	saltLength: 32,
@@ -29,10 +29,12 @@ export const HelperService = {
 
 	/* A function that returns an observable that resolves to a boolean. */
 	verifyHash: (userPassword: string, passwordToCompare: string): Observable<boolean> => {
-		return from(verify(userPassword, passwordToCompare, argonOptions));
+		return from(verify(userPassword, passwordToCompare, argon2Options));
 	},
-	hashString(string_: string): Promise<string> {
-		return hash(string_, argonOptions);
+
+	/* A function that returns an observable that resolves to a boolean. */
+	hashString: (userPassword: string): Promise<string> => {
+		return hash(userPassword, argon2Options);
 	},
 
 	/* Generating a thumbnail from a buffer. */
