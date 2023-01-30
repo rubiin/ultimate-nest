@@ -21,11 +21,11 @@ unmigrate env="dev":
 
 # run seeders to populate database
 seed env="dev":
-	USER_PASSWORD=Test1234 NODE_ENV={{env}} npm run orm seeder:run
+	USER_PASSWORD=Test@1234 NODE_ENV={{env}} npm run orm seeder:run
 
 # test e2e with jest
 test-e2e env="dev":
-	USER_PASSWORD=Test1234 NODE_ENV={{env}} yarn test:e2e
+	USER_PASSWORD=Test@1234 NODE_ENV={{env}} yarn test:e2e
 
 
 
@@ -65,8 +65,8 @@ deploy:
 
 # stop deployed containers
 stop env="dev":
-	ENV=dev PASSWORD=Test1234  docker compose -f docker-compose.{{env}}.yml stop
+	ENV=dev PASSWORD=Test@1234  docker compose -f docker-compose.{{env}}.yml stop
 
 # remove deployed containers
 remove env="dev":
-	ENV=dev PASSWORD=Test1234 docker compose -f docker-compose.{{env}}.yml down
+	ENV=dev PASSWORD=Test@1234 docker compose -f docker-compose.{{env}}.yml down

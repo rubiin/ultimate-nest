@@ -3,7 +3,6 @@ import { ThreadWorker } from "poolifier";
 
 // all expensive process goes here to avoid blocking the main thread
 
-
 const workerFunction = (data: { functionName: string; input: string }) => {
 	if (data.functionName === "hashString") {
 		return HelperService.hashString(data.input);
