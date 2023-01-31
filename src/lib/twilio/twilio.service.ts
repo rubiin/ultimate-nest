@@ -37,7 +37,7 @@ export class TwilioService {
 				to: `${options.prefix}${options.to}`,
 			}),
 		).pipe(
-			tap(message => this.logger.log(`SMS sent to ${message.sid}`)),
+			tap(message => this.logger.debug(`SMS sent to ${message.sid}`)),
 			catchError(error => {
 				this.logger.error(error);
 

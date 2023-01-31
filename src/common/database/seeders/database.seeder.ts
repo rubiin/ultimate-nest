@@ -14,11 +14,11 @@ export class DatabaseSeeder extends Seeder {
 		const seeders = [AdminSeeder, UserSeeder];
 
 		logger.debug(
-			`Seeding database with seeders: ${chalk.blue(
+			`Seeding database with seeders: ${chalk.green(
 				seeders.map(s => s.name).join(", ") + "",
 			)}`,
 		);
-		logger.debug(`User password is set as : ${chalk.blue(process.env.USER_PASSWORD)}`);
+		logger.debug(`User password is set as : ${chalk.green(process.env.USER_PASSWORD)}`);
 
 		return this.call(em, seeders);
 	}
