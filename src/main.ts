@@ -6,6 +6,7 @@ import { ConfigService } from "@nestjs/config";
 import { NestFactory, repl } from "@nestjs/core";
 import { ExpressAdapter, NestExpressApplication } from "@nestjs/platform-express";
 import bodyParser from "body-parser";
+import chalk from "chalk";
 import { useContainer } from "class-validator";
 import compression from "compression";
 import helmet from "helmet";
@@ -98,11 +99,19 @@ const bootstrap = async () => {
 
 	await app.listen(port);
 
-	logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
-	logger.log(
-		`🚦 Accepting request only from: ${configService.get("app.allowedHosts", { infer: true })}`,
+	logger.debug(
+		`🚀 Application is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}`)}`,
 	);
-	logger.log(`📑 Swagger is running on: http://localhost:${port}/${globalPrefix}/docs`);
+	logger.debug(
+		`🚦 Accepting request only from: ${chalk.green(
+			`${configService.get("app.allowedHosts", { infer: true })}}`,
+		)}`,
+	);
+	logger.debug(
+		`📑 Swagger is running on: ${chalk.green(
+			`http://localhost:${port}/${globalPrefix}/api`,
+		)})}`,
+	);
 };
 
 (async () => await bootstrap())();

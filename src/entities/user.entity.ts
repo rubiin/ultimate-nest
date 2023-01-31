@@ -12,7 +12,7 @@ import {
 	OneToMany,
 	Property,
 	Unique,
-	wrap
+	wrap,
 } from "@mikro-orm/core";
 
 import { Post } from "./post.entity";

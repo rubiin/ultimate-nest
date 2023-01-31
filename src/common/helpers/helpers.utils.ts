@@ -1,6 +1,6 @@
 import { IAuthenticationPayload } from "@common/types";
 import { User } from "@entities";
-import { argon2id,hash, Options as ArgonOptions, verify } from "argon2";
+import { argon2id, hash, Options as ArgonOptions, verify } from "argon2";
 import { pick } from "helper-fns";
 import { from, Observable } from "rxjs";
 import sharp from "sharp";
