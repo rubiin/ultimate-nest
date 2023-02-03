@@ -76,12 +76,40 @@ NODE_ENV=dev yarn orm migration:up
 NODE_ENV=dev yarn orm migration:down
 ```
 
+More info for the migrations can be found at: https://mikro-orm.io/docs/migrations
+
 ### Drop the database and migrate up to the latest version
 
 ```bash
 NODE_ENV=dev yarn orm migration:fresh
 ```
 
+# Generate Seeds
+```bash
+NODE_ENV=dev yarn orm seeder:create AuthorSeeder  # generates the class AuthorSeeder under src/common/database/seeders
+```
+```bash
+import { EntityManager } from '@mikro-orm/core';
+import { Seeder } from '@mikro-orm/seeder';
+import { Author } from './author'
+
+export class AuthorSeeder extends Seeder {
+
+  async run(em: EntityManager): Promise<void> {
+    // will get persisted automatically
+    em.create(Author, {
+      name: 'John Snow',
+      email: 'snow@wall.st'
+    });
+  }
+}
+```
+
+To run the generated seeder:
+```bash
+NODE_ENV=dev yarn orm seeder:run AuthorSeeder  # runs the authorseeder
+```
+More info for the seeding can be found at: https://mikro-orm.io/docs/seeding
 ---
 
 
