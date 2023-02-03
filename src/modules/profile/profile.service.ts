@@ -1,7 +1,6 @@
 import { BaseRepository } from "@common/database";
 import { IProfileData } from "@common/types";
 import { User } from "@entities";
-
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";

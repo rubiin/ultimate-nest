@@ -23,6 +23,6 @@ export class RabbitService {
 			from: payload.from,
 		});
 
-		this.logger.debug(`✅ Sent mail to ${payload.to}`);
+		this.logger.log(`✅ Sent mail to ${payload.to}`);
 	}
 }

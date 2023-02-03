@@ -15,9 +15,9 @@ export const AppUtils = {
 
 		setTimeout(() => process.exit(1), 5000);
 		logger.verbose(`Signal received with code ${code} ⚡.`);
-		logger.debug("❗Closing http server with grace.");
+		logger.log("❗Closing http server with grace.");
 		app.close().then(() => {
-			logger.debug("✅ Http server closed.");
+			logger.log("✅ Http server closed.");
 			process.exit(0);
 		});
 	},

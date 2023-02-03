@@ -78,7 +78,7 @@ export class MailerService {
 		mailOptions.html = html;
 
 		if (this.options.previewEmail) {
-			previewEmail(mailOptions).then(this.logger.debug).catch(this.logger.error);
+			previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error);
 		}
 
 		return transporter.sendMail(mailOptions);

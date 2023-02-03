@@ -1,6 +1,5 @@
 import { IJwtPayload } from "@common/types";
 import { RefreshToken, User } from "@entities";
-
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
