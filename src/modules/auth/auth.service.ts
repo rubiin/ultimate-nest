@@ -2,7 +2,7 @@ import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { EmailTemplateEnum, IAuthenticationPayload } from "@common/types";
 import { OtpLog, User } from "@entities";
-import { I18nTranslations } from "@generated";
+
 import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";

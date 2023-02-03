@@ -1,6 +1,6 @@
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
-import { I18nTranslations } from "@generated";
+
 import { IConfig } from "@lib/config/config.interface";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
