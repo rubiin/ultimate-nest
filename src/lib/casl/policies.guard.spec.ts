@@ -6,26 +6,22 @@ import { CaslAbilityFactory } from "./casl-ability.factory";
 import { PoliciesGuard } from "./policies.guard";
 
 describe("PoliciesGuard", () => {
+	const mockReflector = createMock<Reflector>();
+	const mockExecutionContext = createMock<ExecutionContext>({
+		getHandler: jest.fn(),
+	});
+	const caslFactory = new CaslAbilityFactory();
 
+	const policiesGuard = new PoliciesGuard(mockReflector, caslFactory);
 
-  const mockReflector = createMock<Reflector>();
-  const mockExecutionContext = createMock<ExecutionContext>({
-    getHandler: jest.fn(),
-  });
-  const caslFactory = new CaslAbilityFactory();
+	it("should be defined", () => {
+		expect(policiesGuard).toBeDefined();
+	});
 
-  const policiesGuard = new PoliciesGuard(mockReflector, caslFactory);
+	it("should return true if isPublic is true", async () => {
+		mockReflector.get.mockReturnValue(true);
+		const result = await policiesGuard.canActivate(mockExecutionContext);
 
-  it("should be defined", () => {
-    expect(policiesGuard).toBeDefined();
-  });
-
-  it("should return true if isPublic is true", async() => {
-    mockReflector.get.mockReturnValue(true);
-    const result = await policiesGuard.canActivate(mockExecutionContext);
-
-    expect(result).toBe(true);
-
-  })
-
+		expect(result).toBe(true);
+	});
 });
