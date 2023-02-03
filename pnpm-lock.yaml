@@ -15,7 +15,7 @@ specifiers:
   '@mikro-orm/reflection': ^5.6.8
   '@mikro-orm/seeder': ^5.6.8
   '@mikro-orm/sql-highlighter': ^1.0.1
-  '@nestjs/axios': ^1.0.1
+  '@nestjs/axios': ^2.0.0
   '@nestjs/cli': 9.1.9
   '@nestjs/common': 9.3.1
   '@nestjs/config': ^2.3.0
@@ -136,7 +136,7 @@ dependencies:
   '@mikro-orm/postgresql': 5.6.8_37zihfcwtvjtcfyl4svfbh4ltu
   '@mikro-orm/reflection': 5.6.8_@mikro-orm+core@5.6.8
   '@mikro-orm/sql-highlighter': 1.0.1
-  '@nestjs/axios': 1.0.1_fipbdz7qhdiauthzsrt4bq6tsq
+  '@nestjs/axios': 2.0.0_fipbdz7qhdiauthzsrt4bq6tsq
   '@nestjs/common': 9.3.1_66pidaijumrtzyachnvfwzkz3e
   '@nestjs/config': 2.3.0_fipbdz7qhdiauthzsrt4bq6tsq
   '@nestjs/core': 9.3.1_nayfwkd2zspjp2aqaikg6ae7yq
@@ -147,7 +147,7 @@ dependencies:
   '@nestjs/platform-socket.io': 9.3.1_3gmtjz5znbp4cq2xlg4tvxvklu
   '@nestjs/serve-static': 3.0.0_22j2lmearpmfr73ppsmjho62xq
   '@nestjs/swagger': 6.1.4_25mb2iazsxw3kxf3c5hxmogl5q
-  '@nestjs/terminus': 9.1.4_xv76f5gnuxfgwsbf4v4x4ownye
+  '@nestjs/terminus': 9.1.4_v773ifdmzydcbawmzayarumc3i
   '@nestjs/throttler': 4.0.0_is44h33kwk6akmv6kgslbvdmwi
   '@nestjs/websockets': 9.3.1_xcvp4ddhilabgndlu3ad7btvzy
   '@ntegral/nestjs-sentry': 4.0.0_p7phjhw2xjtao63iadfyejovky
@@ -2619,19 +2619,17 @@ packages:
       ansi-colors: 4.1.3
     dev: false
 
-  /@nestjs/axios/1.0.1_fipbdz7qhdiauthzsrt4bq6tsq:
-    resolution: {integrity: sha512-TpoZM/0ZJ9xiC04qkRDFod93LCZ12TQARRU3ejDvBK2E8emvzM4HThOs5ePklVxce4Q1ZsnrIWqnImvoDmJYnQ==}
+  /@nestjs/axios/2.0.0_fipbdz7qhdiauthzsrt4bq6tsq:
+    resolution: {integrity: sha512-F6oceoQLEn031uun8NiommeMkRIojQqVryxQy/mK7fx0CI0KbgkJL3SloCQcsOD+agoEnqKJKXZpEvL6FNswJg==}
     peerDependencies:
       '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
+      axios: ^1.3.1
       reflect-metadata: ^0.1.12
       rxjs: ^6.0.0 || ^7.0.0
     dependencies:
       '@nestjs/common': 9.3.1_66pidaijumrtzyachnvfwzkz3e
-      axios: 1.2.1
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
-    transitivePeerDependencies:
-      - debug
     dev: false
 
   /@nestjs/cli/9.1.9_@swc+core@1.3.32:
@@ -2932,7 +2930,7 @@ packages:
       swagger-ui-dist: 4.15.5
     dev: false
 
-  /@nestjs/terminus/9.1.4_xv76f5gnuxfgwsbf4v4x4ownye:
+  /@nestjs/terminus/9.1.4_v773ifdmzydcbawmzayarumc3i:
     resolution: {integrity: sha512-VUkafKRK6uWzwyHPind3RejxQAFJxPaXjDtvHQRaNdJ5Pk9wVD4e6e8KLGhcrPGC8ZDorqBLZABnECIcGzkodA==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -2979,7 +2977,7 @@ packages:
     dependencies:
       '@mikro-orm/core': 5.6.8_senegxjvdcu2r6smj3pteqzpxy
       '@mikro-orm/nestjs': 5.1.6_6oet37cojj7l24ud4oyh25xp64
-      '@nestjs/axios': 1.0.1_fipbdz7qhdiauthzsrt4bq6tsq
+      '@nestjs/axios': 2.0.0_fipbdz7qhdiauthzsrt4bq6tsq
       '@nestjs/common': 9.3.1_66pidaijumrtzyachnvfwzkz3e
       '@nestjs/core': 9.3.1_nayfwkd2zspjp2aqaikg6ae7yq
       boxen: 5.1.2
@@ -4532,16 +4530,6 @@ packages:
     resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
     dependencies:
       follow-redirects: 1.15.2
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
-  /axios/1.2.1:
-    resolution: {integrity: sha512-I88cFiGu9ryt/tfVEi4kX2SITsvDddTajXTOFmt2uK1ZVA8LytjtdeyefdQWEf5PU8w+4SSJDoYnggflB5tW4A==}
-    dependencies:
-      follow-redirects: 1.15.2
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
