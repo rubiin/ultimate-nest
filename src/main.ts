@@ -85,7 +85,7 @@ const bootstrap = async () => {
 	const port = process.env.PORT || configService.get("app.port", { infer: true });
 	const isRepl = process.env.REPL === "true";
 
-	// use nestjs repl to debug
+	// use nestjs repl to verbose
 	if (isRepl) {
 		await repl(AppModule);
 	}
@@ -99,18 +99,18 @@ const bootstrap = async () => {
 
 	await app.listen(port);
 
-	logger.debug(
+	logger.log(
 		`🚀 Application is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}`)}`,
 	);
-	logger.debug(
+	logger.log(
 		`🚦 Accepting request only from: ${chalk.green(
-			`${configService.get("app.allowedHosts", { infer: true })}}`,
+			`${configService.get("app.allowedHosts", { infer: true })}`,
 		)}`,
 	);
-	logger.debug(
+	logger.log(
 		`📑 Swagger is running on: ${chalk.green(
 			`http://localhost:${port}/${globalPrefix}/api`,
-		)})}`,
+		)}`,
 	);
 };
 
