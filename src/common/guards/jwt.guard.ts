@@ -1,4 +1,3 @@
-import { I18nTranslations } from "@generated";
 import {
 	ExecutionContext,
 	ForbiddenException,

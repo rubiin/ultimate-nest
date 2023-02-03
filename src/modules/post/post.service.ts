@@ -2,7 +2,7 @@ import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database";
 import { ICommonService } from "@common/types";
 import { Comment, Post, User } from "@entities";
-import { I18nTranslations } from "@generated";
+
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";

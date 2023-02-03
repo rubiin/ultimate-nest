@@ -1,4 +1,5 @@
 import { User } from "@entities";
+import { I18nTranslations as I18nTranslationTypes } from "@generated";
 
 declare global {
 	namespace Express {
@@ -6,4 +7,5 @@ declare global {
 			user?: User;
 		}
 	}
+	export type I18nTranslations = I18nTranslationTypes;
 }
