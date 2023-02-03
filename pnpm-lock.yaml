@@ -16,7 +16,7 @@ specifiers:
   '@mikro-orm/seeder': ^5.6.8
   '@mikro-orm/sql-highlighter': ^1.0.1
   '@nestjs/axios': ^1.0.1
-  '@nestjs/cli': 9.1.9
+  '@nestjs/cli': 9.2.0
   '@nestjs/common': 9.3.1
   '@nestjs/config': ^2.3.0
   '@nestjs/core': 9.3.1
@@ -202,7 +202,7 @@ devDependencies:
   '@golevelup/ts-jest': 0.3.4
   '@mikro-orm/cli': 5.6.8_senegxjvdcu2r6smj3pteqzpxy
   '@mikro-orm/seeder': 5.6.8_@mikro-orm+core@5.6.8
-  '@nestjs/cli': 9.1.9_@swc+core@1.3.32
+  '@nestjs/cli': 9.2.0_@swc+core@1.3.32
   '@nestjs/schematics': 9.0.4_typescript@4.9.4
   '@nestjs/testing': 9.3.1_lqms3jbt4jegwm4cog6ibtl4mu
   '@sentry/types': 7.36.0
@@ -297,13 +297,30 @@ packages:
       source-map: 0.7.4
     dev: true
 
-  /@angular-devkit/schematics-cli/15.0.4_chokidar@3.5.3:
-    resolution: {integrity: sha512-rEzkpjiQcJqCgbZ1Ns8jn1BL4724jcj+YFS7Qw5d4v6yQYA8iSLz12HDTH0TiNEv7u5S55fYuRz2QreI0QUT8A==}
+  /@angular-devkit/core/15.1.4_chokidar@3.5.3:
+    resolution: {integrity: sha512-PW5MRmd9DHJR4FaXchwQtj9pXnsghSTnwRvfZeCRNYgU2sv0DKyTV+YTSJB+kNXnoPNG1Je6amDEkiXecpspXg==}
+    engines: {node: ^14.20.0 || ^16.13.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
+    peerDependencies:
+      chokidar: ^3.5.2
+    peerDependenciesMeta:
+      chokidar:
+        optional: true
+    dependencies:
+      ajv: 8.12.0
+      ajv-formats: 2.1.1
+      chokidar: 3.5.3
+      jsonc-parser: 3.2.0
+      rxjs: 6.6.7
+      source-map: 0.7.4
+    dev: true
+
+  /@angular-devkit/schematics-cli/15.1.4_chokidar@3.5.3:
+    resolution: {integrity: sha512-qkM5Mfs28jZzNcJnSM6RlyrKkYvzhQmWFTxBXnn15k5T4EnSs1gI6O054Xn7jo/senfwNNt7h2Mlz2OmBLo6+w==}
     engines: {node: ^14.20.0 || ^16.13.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     hasBin: true
     dependencies:
-      '@angular-devkit/core': 15.0.4_chokidar@3.5.3
-      '@angular-devkit/schematics': 15.0.4_chokidar@3.5.3
+      '@angular-devkit/core': 15.1.4_chokidar@3.5.3
+      '@angular-devkit/schematics': 15.1.4_chokidar@3.5.3
       ansi-colors: 4.1.3
       inquirer: 8.2.4
       symbol-observable: 4.0.0
@@ -332,6 +349,19 @@ packages:
       '@angular-devkit/core': 15.0.4_chokidar@3.5.3
       jsonc-parser: 3.2.0
       magic-string: 0.26.7
+      ora: 5.4.1
+      rxjs: 6.6.7
+    transitivePeerDependencies:
+      - chokidar
+    dev: true
+
+  /@angular-devkit/schematics/15.1.4_chokidar@3.5.3:
+    resolution: {integrity: sha512-jpddxo9Qd2yRQ1t9FLhAx5S+luz6HkyhDytq0LFKbxf9ikf1J4oy9riPBFl4pRmrNARWcHZ6GbD20/Ky8PjmXQ==}
+    engines: {node: ^14.20.0 || ^16.13.0 || >=18.10.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
+    dependencies:
+      '@angular-devkit/core': 15.1.4_chokidar@3.5.3
+      jsonc-parser: 3.2.0
+      magic-string: 0.27.0
       ora: 5.4.1
       rxjs: 6.6.7
     transitivePeerDependencies:
@@ -1431,13 +1461,13 @@ packages:
       '@types/node': 18.11.18
       chalk: 4.1.2
       cosmiconfig: 8.0.0
-      cosmiconfig-typescript-loader: 4.3.0_bxtyj3et3xbsdyxhh3oblnfbj4
+      cosmiconfig-typescript-loader: 4.3.0_nww3gwtks3ghjaektoxywfmuuy
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
       resolve-from: 5.0.0
-      ts-node: 10.9.1_fb6jszhvgyujiy23wa3f3b4jdy
-      typescript: 4.9.4
+      ts-node: 10.9.1_c6iq24r6qipxnhi5yfaqmthude
+      typescript: 4.9.5
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -2634,31 +2664,31 @@ packages:
       - debug
     dev: false
 
-  /@nestjs/cli/9.1.9_@swc+core@1.3.32:
-    resolution: {integrity: sha512-oRiJArvQcYUJRO0jRWG99KkXuw+HafSnlfWcO4028gTDb4IanRwbl6fw4mELTEAaXAwDGOcuk8R0QY8H3muyiQ==}
+  /@nestjs/cli/9.2.0_@swc+core@1.3.32:
+    resolution: {integrity: sha512-6B1IjDcJbrOu55oMF67L1x5lDUOZ3Zs9l7bKCBH9D78965m8wq/2rlEWl/gJto5TABLQWy3hVvV/s8VzUlRMxw==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
     dependencies:
-      '@angular-devkit/core': 15.0.4_chokidar@3.5.3
-      '@angular-devkit/schematics': 15.0.4_chokidar@3.5.3
-      '@angular-devkit/schematics-cli': 15.0.4_chokidar@3.5.3
-      '@nestjs/schematics': 9.0.4_bpd7edbl7imd2lxcmdt57tn7ne
+      '@angular-devkit/core': 15.1.4_chokidar@3.5.3
+      '@angular-devkit/schematics': 15.1.4_chokidar@3.5.3
+      '@angular-devkit/schematics-cli': 15.1.4_chokidar@3.5.3
+      '@nestjs/schematics': 9.0.4_n7i3t5jmyrdrkypb5pvfihcmg4
       chalk: 3.0.0
       chokidar: 3.5.3
       cli-table3: 0.6.3
       commander: 4.1.1
-      fork-ts-checker-webpack-plugin: 7.2.14_3fkjkrd3audxnith3e7fo4fnxi
+      fork-ts-checker-webpack-plugin: 7.3.0_hhrrucqyg4eysmfpujvov2ym5u
       inquirer: 7.3.3
       node-emoji: 1.11.0
       ora: 5.4.1
       os-name: 4.0.1
-      rimraf: 3.0.2
+      rimraf: 4.1.2
       shelljs: 0.8.5
       source-map-support: 0.5.21
       tree-kill: 1.2.2
-      tsconfig-paths: 4.1.1
+      tsconfig-paths: 4.1.2
       tsconfig-paths-webpack-plugin: 4.0.0
-      typescript: 4.9.4
+      typescript: 4.9.5
       webpack: 5.75.0_@swc+core@1.3.32
       webpack-node-externals: 3.0.0
     transitivePeerDependencies:
@@ -2862,7 +2892,7 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@nestjs/schematics/9.0.4_bpd7edbl7imd2lxcmdt57tn7ne:
+  /@nestjs/schematics/9.0.4_n7i3t5jmyrdrkypb5pvfihcmg4:
     resolution: {integrity: sha512-egurCfAc4e5i1r2TmeAF0UrOKejFmT5oTdv4b7HcOVPupc3QGU7CbEfGleL3mkM5AjrixTQeMxU9bJ00ttAbGg==}
     peerDependencies:
       typescript: ^4.3.5
@@ -2872,7 +2902,7 @@ packages:
       fs-extra: 11.1.0
       jsonc-parser: 3.2.0
       pluralize: 8.0.0
-      typescript: 4.9.4
+      typescript: 4.9.5
     transitivePeerDependencies:
       - chokidar
     dev: true
@@ -5392,7 +5422,7 @@ packages:
       object-assign: 4.1.1
       vary: 1.1.2
 
-  /cosmiconfig-typescript-loader/4.3.0_bxtyj3et3xbsdyxhh3oblnfbj4:
+  /cosmiconfig-typescript-loader/4.3.0_nww3gwtks3ghjaektoxywfmuuy:
     resolution: {integrity: sha512-NTxV1MFfZDLPiBMjxbHRwSh5LaLcPMwNdCutmnHJCKoVnlvldPWlllonKwrsRJ5pYZBIBGRWWU2tfvzxgeSW5Q==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
@@ -5403,8 +5433,8 @@ packages:
     dependencies:
       '@types/node': 18.11.18
       cosmiconfig: 8.0.0
-      ts-node: 10.9.1_fb6jszhvgyujiy23wa3f3b4jdy
-      typescript: 4.9.4
+      ts-node: 10.9.1_c6iq24r6qipxnhi5yfaqmthude
+      typescript: 4.9.5
     dev: true
     optional: true
 
@@ -6792,8 +6822,8 @@ packages:
     dependencies:
       is-callable: 1.2.7
 
-  /fork-ts-checker-webpack-plugin/7.2.14_3fkjkrd3audxnith3e7fo4fnxi:
-    resolution: {integrity: sha512-Tg2feh/n8k486KX0EbXVUfJj3j0xnnbKYTJw0fnIb2QdV0+lblOYZSal5ed9hARoWVwKeOC7sYE2EakSRLo5ZA==}
+  /fork-ts-checker-webpack-plugin/7.3.0_hhrrucqyg4eysmfpujvov2ym5u:
+    resolution: {integrity: sha512-IN+XTzusCjR5VgntYFgxbxVx3WraPRnKehBFrf00cMSrtUuW9MsG9dhL6MWpY6MkjC3wVwoujfCDgZZCQwbswA==}
     engines: {node: '>=12.13.0', yarn: '>=1.0.0'}
     peerDependencies:
       typescript: '>3.6.0'
@@ -6815,7 +6845,7 @@ packages:
       schema-utils: 3.1.1
       semver: 7.3.8
       tapable: 2.2.1
-      typescript: 4.9.4
+      typescript: 4.9.5
       webpack: 5.75.0_@swc+core@1.3.32
     dev: true
 
@@ -9009,6 +9039,13 @@ packages:
       sourcemap-codec: 1.4.8
     dev: true
 
+  /magic-string/0.27.0:
+    resolution: {integrity: sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.14
+    dev: true
+
   /mailparser/3.6.3:
     resolution: {integrity: sha512-Yi6poKSsZsmjEcUexv3H4w4+TIeyN9u3+TCdC43VK7fe4rUOGDJ3wL4kMhNLiTOScCA1Rpzldv1hcf6g1MLtZQ==}
     dependencies:
@@ -10791,6 +10828,12 @@ packages:
     dependencies:
       glob: 7.2.3
 
+  /rimraf/4.1.2:
+    resolution: {integrity: sha512-BlIbgFryTbw3Dz6hyoWFhKk+unCcHMSkZGrTFVAx2WmttdBSonsdtRlwiuTbDqTKr+UlXIUqJVS4QT5tUzGENQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
   /ripemd160/2.0.2:
     resolution: {integrity: sha512-ii4iagi25WusVoiC4B4lq7pbXfAp3D9v5CwfkY33vffw2+pkDjY1D8GaN7spsxvCSx8dkPqOZCEZyfxcmJG2IA==}
     dependencies:
@@ -11756,6 +11799,39 @@ packages:
       code-block-writer: 11.0.3
     dev: false
 
+  /ts-node/10.9.1_c6iq24r6qipxnhi5yfaqmthude:
+    resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@swc/core': 1.3.32
+      '@tsconfig/node10': 1.0.9
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.3
+      '@types/node': 18.11.18
+      acorn: 8.8.2
+      acorn-walk: 8.2.0
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 4.9.5
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    dev: true
+    optional: true
+
   /ts-node/10.9.1_fb6jszhvgyujiy23wa3f3b4jdy:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
@@ -11802,15 +11878,6 @@ packages:
     dependencies:
       '@types/json5': 0.0.29
       json5: 1.0.2
-      minimist: 1.2.7
-      strip-bom: 3.0.0
-    dev: true
-
-  /tsconfig-paths/4.1.1:
-    resolution: {integrity: sha512-VgPrtLKpRgEAJsMj5Q/I/mXouC6A/7eJ/X4Nuk6o0cRPwBtznYxTCU4FodbexbzH9somBPEXYi0ZkUViUpJ21Q==}
-    engines: {node: '>=6'}
-    dependencies:
-      json5: 2.2.3
       minimist: 1.2.7
       strip-bom: 3.0.0
     dev: true
@@ -11932,6 +11999,12 @@ packages:
 
   /typescript/4.9.4:
     resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+    dev: true
+
+  /typescript/4.9.5:
+    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
