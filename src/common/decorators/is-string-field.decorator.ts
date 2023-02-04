@@ -1,6 +1,6 @@
 import { IsStringFieldOptions } from "@common/types";
 import { applyDecorators } from "@nestjs/common";
-import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 import { MinMaxLength } from "./min-max-length.decorator";
@@ -44,13 +44,24 @@ export const IsStringField = (ops?: IsStringFieldOptions) => {
 		decoratorsToApply.push(Trim());
 	}
 
-	options.required
-		? decoratorsToApply.push(
-				IsNotEmpty({
+	if (options.required) {
+		decoratorsToApply.push(
+			IsNotEmpty({
+				message: i18nValidationMessage("validation.isNotEmpty"),
+				each: options.each,
+			}),
+		);
+
+		if (options.each) {
+			decoratorsToApply.push(
+				ArrayNotEmpty({
 					message: i18nValidationMessage("validation.isNotEmpty"),
 				}),
-		  )
-		: decoratorsToApply.push(IsOptional());
+			);
+		}
+	} else {
+		decoratorsToApply.push(IsOptional());
+	}
 
 	if (options.each) {
 		decoratorsToApply.push(

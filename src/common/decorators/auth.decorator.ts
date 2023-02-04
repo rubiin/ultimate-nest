@@ -1,7 +1,13 @@
+import { API_UNAUTHORISED_RESPONSE } from "@common/constant";
 import { JwtAuthGuard } from "@common/guards";
 import { PoliciesGuard } from "@lib/casl/policies.guard";
 import { applyDecorators, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiUnauthorizedResponse } from "@nestjs/swagger";
+
+interface IAuthGuard {
+	guards: any;
+	unauthorizedResponse?: string;
+}
 
 /**
  * It's a decorator that uses the JwtAuthGuard and PoliciesGuard guards, and returns an unauthorized
@@ -9,10 +15,18 @@ import { ApiBearerAuth, ApiUnauthorizedResponse } from "@nestjs/swagger";
  * @returns A function that returns a function
  *
  */
-export const Auth = () => {
-	return applyDecorators(
-		UseGuards(JwtAuthGuard, PoliciesGuard),
+
+export const Auth = (options_?: IAuthGuard) => {
+	const options: IAuthGuard = {
+		guards: [JwtAuthGuard, PoliciesGuard],
+		unauthorizedResponse: API_UNAUTHORISED_RESPONSE,
+		...options_,
+	};
+
+	
+return applyDecorators(
+		UseGuards(...options.guards),
 		ApiBearerAuth(),
-		ApiUnauthorizedResponse({ description: "No auth token" }),
+		ApiUnauthorizedResponse({ description: options.unauthorizedResponse }),
 	);
 };
