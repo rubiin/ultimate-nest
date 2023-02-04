@@ -8,7 +8,7 @@ export const ApiPaginatedResponse = <TModel extends Type<any>>(
 	return applyDecorators(
 		ApiOperation({ summary: operation }),
 		ApiOkResponse({
-			description: "Successfully received model list",
+			description: `Successfully received ${model.name.toLowerCase()} list`,
 			schema: {
 				allOf: [
 					{

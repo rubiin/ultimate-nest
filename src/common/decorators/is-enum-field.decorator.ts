@@ -19,15 +19,24 @@ export const IsEnumField = (entity: object, ops?: IsEnumFieldOptions) => {
 		}),
 	];
 
-	options.required
-		? decoratorsToApply.push(
-				IsNotEmpty({
+	if (options.required) {
+		decoratorsToApply.push(
+			IsNotEmpty({
+				message: i18nValidationMessage("validation.isNotEmpty"),
+				each: options.each,
+			}),
+		);
+
+		if (options.each) {
+			decoratorsToApply.push(
+				ArrayNotEmpty({
 					message: i18nValidationMessage("validation.isNotEmpty"),
-					each: options.each,
 				}),
-				ArrayNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") }),
-		  )
-		: decoratorsToApply.push(IsOptional());
+			);
+		}
+	} else {
+		decoratorsToApply.push(IsOptional());
+	}
 
 	if (options.each) {
 		decoratorsToApply.push(
