@@ -24,12 +24,10 @@ import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 	],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(RealIpMiddleware)
-      .forRoutes({
-				path: "*",
-				method: RequestMethod.ALL,
-			});
-  }
+	configure(consumer: MiddlewareConsumer) {
+		consumer.apply(RealIpMiddleware).forRoutes({
+			path: "*",
+			method: RequestMethod.ALL,
+		});
+	}
 }

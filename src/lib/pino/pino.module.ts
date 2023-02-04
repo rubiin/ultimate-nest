@@ -11,18 +11,17 @@ import { LoggerModule } from "nestjs-pino";
 						serializers: {
 							req(request) {
 								request.body = request.raw.body;
-								
-return request;
+
+								return request;
 							},
 						},
 						level: process.env.NODE_ENV.startsWith("prod") ? "info" : "debug",
 						redact: {
 							paths: ["req.headers.authorization"],
 						},
-						transport:
-						process.env.NODE_ENV.startsWith("prod")
-								? undefined
-								: { target: "pino-pretty" },
+						transport: process.env.NODE_ENV.startsWith("prod")
+							? undefined
+							: { target: "pino-pretty" },
 					},
 					exclude: [{ method: RequestMethod.ALL, path: "doc" }],
 				};
