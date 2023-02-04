@@ -8,7 +8,7 @@ import { LoggerModule } from "nestjs-pino";
 				return {
 					pinoHttp: {
 						name: "ultimate-nest",
-						customProps: (_req, _res) => ({
+						customProps: (_request, _response) => ({
 							context: "HTTP",
 						}),
 						serializers: {
