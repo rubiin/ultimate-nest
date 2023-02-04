@@ -8,6 +8,9 @@ import { LoggerModule } from "nestjs-pino";
 				return {
 					pinoHttp: {
 						name: "ultimate-nest",
+						customProps: (_req, _res) => ({
+							context: "HTTP",
+						}),
 						serializers: {
 							req(request) {
 								request.body = request.raw.body;
@@ -21,7 +24,15 @@ import { LoggerModule } from "nestjs-pino";
 						},
 						transport: process.env.NODE_ENV.startsWith("prod")
 							? undefined
-							: { target: "pino-pretty" },
+							: {
+									target: "pino-pretty",
+									options: {
+										colorize: true,
+										translateTime: true,
+										ignore: "pid,hostname",
+										singleLine: true,
+									},
+							  },
 					},
 					exclude: [{ method: RequestMethod.ALL, path: "doc" }],
 				};
