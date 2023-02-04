@@ -11,13 +11,13 @@ export const AppUtils = {
 	/* A function that is called when the process receives a signal. */
 
 	gracefulShutdown(app: INestApplication, code: string): void {
-		const logger: Logger = new Logger("Graceful Shutdown");
+		const logger = new Logger("Graceful Shutdown");
 
 		setTimeout(() => process.exit(1), 5000);
 		logger.verbose(`Signal received with code ${code} ⚡.`);
-		logger.log("❗Closing http server with grace.");
+		logger.debug("❗Closing http server with grace.");
 		app.close().then(() => {
-			logger.log("✅ Http server closed.");
+			logger.debug("✅ Http server closed.");
 			process.exit(0);
 		});
 	},

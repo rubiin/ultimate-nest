@@ -21,7 +21,7 @@ export class ChatGateway {
 	constructor(private readonly chatService: ChatService) {}
 
 	afterInit(): void {
-		this.logger.log(`💬 Websocket Gateway initialized.`);
+		this.logger.debug(`💬 Websocket Gateway initialized.`);
 	}
 
 	@SubscribeMessage("createChat")

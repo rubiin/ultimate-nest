@@ -99,15 +99,15 @@ const bootstrap = async () => {
 
 	await app.listen(port);
 
-	logger.log(
+	logger.debug(
 		`🚀 Application is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}`)}`,
 	);
-	logger.log(
+	logger.debug(
 		`🚦 Accepting request only from: ${chalk.green(
 			`${configService.get("app.allowedHosts", { infer: true })}`,
 		)}`,
 	);
-	logger.log(
+	logger.debug(
 		`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}/api`)}`,
 	);
 };

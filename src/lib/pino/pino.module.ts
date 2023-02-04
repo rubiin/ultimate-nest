@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, RequestMethod } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
 
 @Module({
@@ -7,26 +7,17 @@ import { LoggerModule } from "nestjs-pino";
 			useFactory: () => {
 				return {
 					pinoHttp: {
-						serializers: {
-							req(request) {
-								request.body = request.raw.body;
-
-								return request;
-							},
-						},
-						autoLogging: {
-							ignore(request) {
-								return ["/doc"].includes(request.url);
-							},
-						},
+						name: "ultimate-nest",
+						level: process.env.NODE_ENV.startsWith("prod") ? "info" : "debug",
 						redact: {
 							paths: ["req.headers.authorization"],
 						},
 						transport:
-							process.env.NODE_ENV === "production"
+						process.env.NODE_ENV.startsWith("prod")
 								? undefined
 								: { target: "pino-pretty" },
 					},
+					exclude: [{ method: RequestMethod.ALL, path: "doc" }],
 				};
 			},
 		}),
