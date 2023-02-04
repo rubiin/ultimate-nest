@@ -108,7 +108,7 @@ const bootstrap = async () => {
 		)}`,
 	);
 	logger.debug(
-		`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}/api`)}`,
+		`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}/doc`)}`,
 	);
 };
 
