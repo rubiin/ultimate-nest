@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from "express";
 @Injectable()
 export class RealIpMiddleware implements NestMiddleware {
 	use(request: Request, _response: Response, next: NextFunction) {
-		console.log(getClientIp(request));
+		request.realIp = getClientIp(request);
 		next();
 	}
 }
