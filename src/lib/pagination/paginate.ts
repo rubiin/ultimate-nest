@@ -27,6 +27,12 @@ export const paginate = <T>(items: T[], options: IPaginationOptions): Pagination
 	return createPaginationObject<T>(items, items.length, page, limit, route);
 };
 
+/**
+ * It takes an object with three properties, and returns an array with three values
+ * @param {IPaginationOptions} options - IPaginationOptions - The options object that is passed to the
+ * paginate function.
+ * @returns An array of three elements.
+ */
 const resolveOptions = (options: IPaginationOptions): [number, number, string] => {
 	const page = resolveNumericOption(options, "page", DEFAULT_PAGE);
 	const limit = resolveNumericOption(options, "limit", DEFAULT_LIMIT);
