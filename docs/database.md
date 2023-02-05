@@ -121,4 +121,5 @@ Don't forget to create `indexes` on the Foreign Keys (FK) columns (if needed), b
 
 ---
 
+
 More info for the cli can be found at: https://mikro-orm.io/docs/migrations
