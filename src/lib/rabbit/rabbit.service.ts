@@ -10,9 +10,10 @@ export class RabbitService {
 	constructor(private readonly mailService: MailerService) {}
 
 	@RabbitSubscribe({
-		exchange: "nestify",
 		routingKey: "send-mail",
-		queue: "mail-queue",
+		exchange: process.env.RABBITMQ_EXCHANGE,
+		queue: process.env.RABBITMQ_QUEUE,
+		createQueueIfNotExists: true,
 	})
 	public async sendMail(payload: IMailPayload) {
 		await this.mailService.sendMail({
