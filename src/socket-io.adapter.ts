@@ -7,7 +7,7 @@ import { createClient } from "redis";
 import { Server, ServerOptions } from "socket.io";
 
 export class SocketIOAdapter extends IoAdapter {
-	private adapterConstructor: ReturnType<typeof createAdapter>;
+	private adapterConstructor: any;
 
 	constructor(
 		app: INestApplicationContext,
@@ -25,7 +25,7 @@ export class SocketIOAdapter extends IoAdapter {
 		this.adapterConstructor = createAdapter(pubClient, subClient);
 	}
 
-	createIOServer(port: number, options?: ServerOptions) {
+	createIOServer(port: number, options?: ServerOptions): any {
 		const clientUrl = this.config.get("app.clientUrl", { infer: true });
 
 		const cors = {
