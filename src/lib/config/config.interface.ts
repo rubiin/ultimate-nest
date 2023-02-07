@@ -1,3 +1,5 @@
+import { ConfigType } from "@nestjs/config";
+
 import {
 	app,
 	cloudinary,
@@ -13,15 +15,15 @@ import {
 } from "./configs";
 
 export interface IConfig {
-	throttle: ReturnType<typeof throttle>;
-	redis: ReturnType<typeof redis>;
-	database: ReturnType<typeof database>;
-	app: ReturnType<typeof app>;
-	rabbitmq: ReturnType<typeof rabbitmq>;
-	jwt: ReturnType<typeof jwt>;
-	twilio: ReturnType<typeof twilio>;
-	cloudinary: ReturnType<typeof cloudinary>;
-	mail: ReturnType<typeof mail>;
-	facebookOauth: ReturnType<typeof facebookOauth>;
-	googleOauth: ReturnType<typeof googleOauth>;
+	throttle: ConfigType<typeof throttle>;
+	redis: ConfigType<typeof redis>;
+	database: ConfigType<typeof database>;
+	app: ConfigType<typeof app>;
+	rabbitmq: ConfigType<typeof rabbitmq>;
+	jwt: ConfigType<typeof jwt>;
+	twilio: ConfigType<typeof twilio>;
+	cloudinary: ConfigType<typeof cloudinary>;
+	mail: ConfigType<typeof mail>;
+	facebookOauth: ConfigType<typeof facebookOauth>;
+	googleOauth: ConfigType<typeof googleOauth>;
 }
