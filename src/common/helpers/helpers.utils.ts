@@ -12,6 +12,9 @@ const argon2Options: ArgonOptions & { raw?: false } = {
 	timeCost: 4,
 };
 
+export const dynamicImport = async (packageName: string) =>
+	new Function(`return import('${packageName}')`)();
+
 export const HelperService = {
 	buildPayloadResponse: (
 		user: User,

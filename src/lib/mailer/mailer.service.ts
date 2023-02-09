@@ -6,7 +6,8 @@ import { createTransport, SendMailOptions, Transporter } from "nodemailer";
 import { SentMessageInfo } from "nodemailer/lib/ses-transport";
 import previewEmail from "preview-email";
 
-import { EtaAdapter, PugAdapter } from "./adapters";
+import { EtaAdapter, HandlebarsAdapter, PugAdapter } from "./adapters";
+import { IAdapter } from "./adapters/abstract.adapter";
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
 import { MailModuleOptions } from "./mailer.options";
 
@@ -62,12 +63,27 @@ export class MailerService {
 			});
 		}
 
+		let adapter: IAdapter;
+
 		// render template
 
-		const adapter =
-			this.options.engine.adapter === "eta"
-				? new EtaAdapter(this.options.engine.options)
-				: new PugAdapter(this.options.engine.options);
+		switch (this.options.engine.adapter) {
+			case "pug": {
+				adapter = new PugAdapter(this.options.engine.options);
+				break;
+			}
+			case "eta": {
+				adapter = new EtaAdapter(this.options.engine.options);
+				break;
+			}
+			case "hbs": {
+				adapter = new HandlebarsAdapter(this.options.engine.options);
+				break;
+			}
+			default: {
+				throw new Error("Invalid template engine");
+			}
+		}
 
 		const templatePath = resolve(
 			`${__dirname}/../../${this.options.templateDir}/${mailOptions.template}.${this.options.engine.adapter}`,
