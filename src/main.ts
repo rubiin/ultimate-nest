@@ -45,6 +45,7 @@ const bootstrap = async () => {
 		maxAge: 3600,
 		origin: configService.get("app.allowedHosts", { infer: true }),
 	});
+
 	// =====================================================
 	// configureNestGlobals
 	// =====================================================

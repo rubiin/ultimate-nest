@@ -14,8 +14,11 @@
 <a href="https://www.buymeacoffee.com/XbgWxt567" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 </p>
 <br/>
+
 NOTE: Starting April 18,2022 , the repo has ditched most promises for observables. You can check the latest promised version code at
 [commit](https://github.com/rubiin/ultimate-nest/tree/fb06b34f7d36f36195880e600f8f1b5b86f71213)
+
+More on why observables are better than promises can be read [here](https://betterprogramming.pub/observables-vs-promises-which-one-should-you-use-c19aef53c680)
 
 <br/>
 
@@ -75,7 +78,7 @@ cp .env/env.example env/.env.dev
   <a href="https://mikro-orm.io/" target="blank"><img src="https://raw.githubusercontent.com/mikro-orm/mikro-orm/master/docs/static/img/logo-readme.svg?sanitize=true" width="320" alt="Mikro Orm" /></a>
 </p>
 
-The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres database.
+The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres database. Why `Mikroorm`? It is a modern ORM for Node.js based on Data Mapper, Unit of Work and Identity Map patterns. It is fully compatible with TypeScript and provides additional features like support for enums, custom types, MongoDB, transactions, caching, migrations, change tracking, advanced queries, lazy/eager relations and much more.
 
 Copy sample env file and adjust the connection settings and other settings(jwt,redis,mail,etc) respectively on sample env file
 

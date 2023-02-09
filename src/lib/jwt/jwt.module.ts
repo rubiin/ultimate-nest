@@ -1,12 +1,13 @@
 import { IConfig } from "@lib/config/config.interface";
+import { NestConfigModule } from "@lib/config/config.module";
 import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 
 @Module({
 	imports: [
 		JwtModule.registerAsync({
-			imports: [ConfigModule],
+			imports: [NestConfigModule],
 			useFactory: async (configService: ConfigService<IConfig, true>) => ({
 				isGlobal: true,
 				secret: configService.get("jwt.secret", { infer: true }),

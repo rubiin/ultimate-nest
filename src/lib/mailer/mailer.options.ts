@@ -17,5 +17,9 @@ export interface MailModuleOptions {
 		| {
 				adapter: "pug";
 				options: Partial<PugOptions>;
+		  }
+		| {
+				adapter: "hbs";
+				options: Partial<CompileOptions>;
 		  };
 }

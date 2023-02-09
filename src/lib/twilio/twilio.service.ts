@@ -5,13 +5,13 @@ import twilio from "twilio";
 import {
 	MessageInstance,
 	MessageListInstanceCreateOptions,
-} from "twilio/dist/lib/rest/api/v2010/account/message";
+} from "twilio/lib/rest/api/v2010/account/message";
 
 import { MODULE_OPTIONS_TOKEN } from "./twilio.module-definition";
 
 @Injectable()
 export class TwilioService {
-	private readonly logger: Logger = new Logger(TwilioService.name);
+	private readonly logger = new Logger(TwilioService.name);
 
 	constructor(
 		@Inject(MODULE_OPTIONS_TOKEN)
