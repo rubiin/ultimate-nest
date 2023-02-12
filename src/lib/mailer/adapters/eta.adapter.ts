@@ -1,5 +1,5 @@
 import { renderFile } from "eta";
-import type { EtaConfig } from "eta/dist/types/config"
+import type { EtaConfig } from "eta/dist/types/config";
 
 import { IAdapter } from "./abstract.adapter";
 
