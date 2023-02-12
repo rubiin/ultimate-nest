@@ -8,7 +8,6 @@ export class HandlebarsAdapter implements IAdapter {
 	compile(template: string, data: Record<string, any>): Promise<string> {
 		const compiledTemplate = compile(template, this.options);
 
-		
-return Promise.resolve(compiledTemplate(data));
+		return Promise.resolve(compiledTemplate(data));
 	}
 }
