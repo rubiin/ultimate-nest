@@ -77,7 +77,7 @@ services:
         volumes:
             - "rabbitmq-data:/var/lib/rabbitmq/mnesia/"
     db:
-        image: "postgres:15.1-alpine"
+        image: "postgres:15.2-alpine"
         restart: unless-stopped
         volumes:
             - "postgres_data:/var/lib/postgresql/data/"
