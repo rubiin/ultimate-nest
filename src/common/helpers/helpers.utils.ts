@@ -1,4 +1,4 @@
-import { IAuthenticationPayload } from "@common/types";
+import { IAuthenticationResponse } from "@common/types";
 import { User } from "@entities";
 import { argon2id, hash, Options as ArgonOptions, verify } from "argon2";
 import { pick } from "helper-fns";
@@ -20,7 +20,7 @@ export const HelperService = {
 		user: User,
 		accessToken: string,
 		refreshToken?: string,
-	): IAuthenticationPayload => {
+	): IAuthenticationResponse => {
 		return {
 			user: {
 				...pick(user, ["id", "idx"]),

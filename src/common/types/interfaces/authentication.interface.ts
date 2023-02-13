@@ -1,4 +1,4 @@
-export interface IAuthenticationPayload {
+export interface IAuthenticationResponse {
 	user: {
 		idx: string;
 	};

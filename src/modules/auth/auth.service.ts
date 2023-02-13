@@ -1,6 +1,6 @@
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
-import { EmailTemplateEnum, IAuthenticationPayload } from "@common/types";
+import { EmailTemplateEnum, IAuthenticationResponse } from "@common/types";
 import { OtpLog, User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";
@@ -95,10 +95,10 @@ export class AuthService {
 	 * @param {UserLoginDto} loginDto - UserLoginDto - This is the DTO that we created earlier.
 	 * @param {boolean} isPasswordLogin - boolean - This is a boolean value that tells the function whether
 	 * the user is logging in with a password or a refresh token.
-	 * @returns An observable of type IAuthenticationPayload
+	 * @returns An observable of type IAuthenticationResponse
 	 */
 
-	login(loginDto: UserLoginDto, isPasswordLogin: boolean): Observable<IAuthenticationPayload> {
+	login(loginDto: UserLoginDto, isPasswordLogin: boolean): Observable<IAuthenticationResponse> {
 		return this.validateUser(loginDto.email, loginDto.password, isPasswordLogin).pipe(
 			switchMap(user => {
 				if (!user)
@@ -229,7 +229,7 @@ export class AuthService {
 	 * It verifies the OTP code and marks the user as verified
 	 * @param {OtpVerifyDto} otpDto - OtpVerifyDto - This is the DTO that we created earlier.
 	 */
-	async verifyOtp(otpDto: OtpVerifyDto) {
+	async verifyOtp(otpDto: OtpVerifyDto): Promise<User> {
 		const { otpCode } = otpDto;
 		const codeDetails = await this.otpRepository.findOne({
 			otpCode,
@@ -268,6 +268,8 @@ export class AuthService {
 
 			em.flush();
 		});
+
+		return codeDetails.user;
 	}
 
 	/**

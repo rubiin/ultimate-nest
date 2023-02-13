@@ -1,6 +1,6 @@
 import { Auth, LoggedInUser, SwaggerResponse } from "@common/decorators";
-import { IOauthResponse } from "@common/types";
-import { User } from "@entities";
+import { IAuthenticationResponse, IOauthResponse } from "@common/types";
+import { OtpLog, User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
 	Body,
@@ -13,10 +13,10 @@ import {
 	Query,
 	Req,
 	Res,
-	UseGuards,
+	UseGuards
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { map, Observable } from "rxjs";
 
@@ -27,7 +27,7 @@ import {
 	RefreshTokenDto,
 	ResetPasswordDto,
 	SendOtpDto,
-	UserLoginDto,
+	UserLoginDto
 } from "./dtos";
 
 @ApiTags("auth")
@@ -40,25 +40,17 @@ export class AuthController {
 
 	@Post("login")
 	@ApiOperation({ summary: "User Login" })
-	@ApiResponse({
-		status: 403,
-		description: "You account has not been activated yet!",
-	})
-	@ApiResponse({
-		status: 400,
-		description: "User name and password provided does not match.",
-	})
-	login(@Body() loginDto: UserLoginDto) {
+	login(@Body() loginDto: UserLoginDto): Observable<IAuthenticationResponse> {
 		return this.authService.login(loginDto, true);
 	}
 
 	@Post("reset-password")
 	@SwaggerResponse({
 		operation: "Reset password",
-		notFound: "Otp doesn't exist.",
-		badRequest: "Otp is expired.",
+		notFounds: ["Otp doesn't exist."],
+		badRequests: ["Otp is expired."],
 	})
-	resetUserPassword(@Body() dto: ResetPasswordDto) {
+	resetUserPassword(@Body() dto: ResetPasswordDto):Observable<User> {
 		return this.authService.resetPassword(dto);
 	}
 
@@ -66,9 +58,9 @@ export class AuthController {
 	@Put("forgot-password")
 	@SwaggerResponse({
 		operation: "Forgot password",
-		notFound: "Account doesn't exist.",
+		notFounds: ["Account doesn't exist."],
 	})
-	async forgotPassword(@Body() dto: SendOtpDto) {
+	async forgotPassword(@Body() dto: SendOtpDto): Promise<OtpLog> {
 		return this.authService.forgotPassword(dto);
 	}
 
@@ -127,10 +119,10 @@ export class AuthController {
 	@Post("verify-otp")
 	@SwaggerResponse({
 		operation: "Verify otp",
-		notFound: "Otp doesn't exist.",
-		badRequest: "Otp is expired.",
+		notFounds: ["Otp doesn't exist."],
+		badRequests: ["Otp is expired."],
 	})
-	async verifyOtp(@Body() dto: OtpVerifyDto) {
+	async verifyOtp(@Body() dto: OtpVerifyDto) : Promise<User>{
 		return this.authService.verifyOtp(dto);
 	}
 
@@ -138,9 +130,9 @@ export class AuthController {
 	@Post("change-password")
 	@SwaggerResponse({
 		operation: "Change password",
-		badRequest: "Username and password provided does not match.",
+		badRequests: ["Username and password provided does not match."],
 	})
-	changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User) {
+	changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User): Observable<User> {
 		return this.authService.changePassword(dto, user);
 	}
 
@@ -159,7 +151,7 @@ export class AuthController {
 		@LoggedInUser() user: User,
 		@Query("from_all", new DefaultValuePipe(false), ParseBoolPipe) fromAll: boolean,
 		@Body() refreshToken?: RefreshTokenDto,
-	): Observable<any> {
+	): Observable<User> {
 		return fromAll
 			? this.authService.logoutFromAll(user)
 			: this.authService.logout(user, refreshToken.refreshToken);

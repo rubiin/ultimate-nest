@@ -1,6 +1,13 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 
+interface ISwaggerResponseOptions {
+	operation: string;
+	notFounds?: string[];
+	badRequests?: string[];
+	params?: string[];
+}
+
 /**
  * It takes in a string for the operation summary, a string for the not found response, a string for
  * the bad request response, and an array of strings for the parameters, and returns a function that
@@ -10,15 +17,10 @@ import { ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
  */
 export const SwaggerResponse = ({
 	operation,
-	notFound,
-	badRequest,
+	notFounds,
+	badRequests,
 	params,
-}: {
-	operation: string;
-	notFound?: string;
-	badRequest?: string;
-	params?: string[];
-}) => {
+}: ISwaggerResponseOptions) => {
 	const decsToApply = [ApiOperation({ summary: operation })];
 
 	if (params) {
@@ -27,12 +29,16 @@ export const SwaggerResponse = ({
 		}
 	}
 
-	if (badRequest) {
-		decsToApply.push(ApiResponse({ status: 400, description: badRequest }));
+	if (badRequests) {
+		for (const badRequest of badRequests) {
+			decsToApply.push(ApiResponse({ status: 400, description: badRequest }));
+		}
 	}
 
-	if (notFound) {
-		decsToApply.push(ApiResponse({ status: 404, description: notFound }));
+	if (notFounds) {
+		for (const notFound of notFounds) {
+			decsToApply.push(ApiResponse({ status: 404, description: notFound }));
+		}
 	}
 
 	return applyDecorators(...decsToApply);

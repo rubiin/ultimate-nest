@@ -39,8 +39,8 @@ export class ValidatorFieldBuilder {
 				each: this.options.each,
 			}),
 		);
-		
-return this;
+
+		return this;
 	}
 
 	enum(entity: object) {
@@ -50,8 +50,8 @@ return this;
 				message: `must be a valid enum value,${enumToString(entity)}`,
 			}),
 		);
-		
-return this;
+
+		return this;
 	}
 
 	addSanitize() {
@@ -77,8 +77,8 @@ return this;
 				maxLength: this.options.maxLength,
 				each: this.options.each,
 			});
-		
-return this;
+
+		return this;
 	}
 
 	addRequired() {
@@ -92,8 +92,8 @@ return this;
 		} else {
 			this.decoratorsToApply.push(IsOptional());
 		}
-		
-return this;
+
+		return this;
 	}
 
 	addEach() {
@@ -114,8 +114,8 @@ return this;
 				}),
 			);
 		}
-		
-return this;
+
+		return this;
 	}
 
 	build() {
