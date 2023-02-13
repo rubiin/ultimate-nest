@@ -2,5 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
-  ]
+  ],
+  "assignees": ["rubiin"],
+  "semanticCommitScope": "deps",
+  "automergeType": "pr",
+  "prCreation": "immediate"
 }
