@@ -29,7 +29,7 @@ export class PostController {
 	@Get(":idx")
 	@SwaggerResponse({
 		operation: "Post fetch",
-		notFound: "Post doesn't exist.",
+		notFounds: ["Post doesn't exist."],
 		params: ["idx"],
 	})
 	getById(@UUIDParam("idx") index: string): Observable<PostEntity> {
@@ -39,7 +39,7 @@ export class PostController {
 	@Get(":idx/comments")
 	@SwaggerResponse({
 		operation: "Post comment fetch",
-		notFound: "Post doesn't exist.",
+		notFounds: ["Post doesn't exist."],
 		params: ["idx"],
 	})
 	findComments(@UUIDParam("idx") index: string): Observable<Comment[]> {
@@ -56,7 +56,7 @@ export class PostController {
 	@Put(":idx")
 	@SwaggerResponse({
 		operation: "Post update",
-		notFound: "Post doesn't exist.",
+		notFounds: ["Post doesn't exist."],
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Update))
@@ -67,7 +67,7 @@ export class PostController {
 	@Delete(":idx")
 	@SwaggerResponse({
 		operation: "Post delete",
-		notFound: "Post doesn't exist.",
+		notFounds: ["Post doesn't exist."],
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Delete))
@@ -78,7 +78,7 @@ export class PostController {
 	@Post(":idx/comments")
 	@SwaggerResponse({
 		operation: "Post comment create",
-		notFound: "Post doesn't exist.",
+		notFounds: ["Post doesn't exist."],
 		params: ["idx"],
 	})
 	async createComment(
@@ -93,7 +93,7 @@ export class PostController {
 	@Delete(":idx/comments")
 	@SwaggerResponse({
 		operation: "Post comment delete",
-		notFound: "Post doesn't exist.",
+		notFounds: ["Post doesn't exist."],
 		params: ["idx"],
 	})
 	deleteComment(@UUIDParam("idx") index: string) {
@@ -103,7 +103,7 @@ export class PostController {
 	@Post(":idx/favorite")
 	@SwaggerResponse({
 		operation: "Post favorite",
-		notFound: "Post doesn't exist.",
+		notFounds: ["Post doesn't exist."],
 		params: ["idx"],
 	})
 	favorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {
@@ -113,7 +113,7 @@ export class PostController {
 	@Delete(":idx/favorite")
 	@SwaggerResponse({
 		operation: "Post unfavorite",
-		notFound: "Post doesn't exist.",
+		notFounds: ["Post doesn't exist."],
 		params: ["idx"],
 	})
 	async unFavorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {

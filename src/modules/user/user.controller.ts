@@ -33,7 +33,7 @@ export class UserController {
 	@Post("register")
 	@SwaggerResponse({
 		operation: "Create user",
-		badRequest: "User already registered with email.",
+		badRequests:[ "User already registered with email."],
 	})
 	@ApiFile({ fieldName: "avatar", required: true })
 	async publicRegistration(
@@ -51,7 +51,7 @@ export class UserController {
 	@Get(":idx")
 	@SwaggerResponse({
 		operation: "User fetch",
-		notFound: "User does not exist.",
+		notFounds: ["User does not exist."],
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Read))
@@ -62,7 +62,7 @@ export class UserController {
 	@Post()
 	@SwaggerResponse({
 		operation: "User fetch",
-		badRequest: "User already registered with email.",
+		badRequests: ["User already registered with email."],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Create))
 	@ApiFile({ fieldName: "avatar", required: true })
@@ -77,8 +77,8 @@ export class UserController {
 	@Put(":idx")
 	@SwaggerResponse({
 		operation: "User fetch",
-		badRequest: "User already registered with email.",
-		notFound: "User does not exist.",
+		badRequests: ["User already registered with email."],
+		notFounds: ["User does not exist."],
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Update))
@@ -89,7 +89,7 @@ export class UserController {
 	@Delete(":idx")
 	@SwaggerResponse({
 		operation: "User fetch",
-		notFound: "User does not exist.",
+		notFounds:[ "User does not exist."],
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Delete))
