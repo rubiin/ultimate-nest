@@ -5,7 +5,7 @@ export const rabbitmq = registerAs("rabbitmq", () => ({
 	url: process.env.RABBITMQ_URI,
 	exchange: process.env.RABBITMQ_EXCHANGE,
 	queue: process.env.RABBITMQ_QUEUE,
-	prefetchCount: Number.parseInt(process.env.RABBITMQ_DEFAULT_PREFETCH ,10) 
+	prefetchCount: Number.parseInt(process.env.RABBITMQ_DEFAULT_PREFETCH, 10),
 }));
 
 export const rabbitmqConfigValidationSchema = {

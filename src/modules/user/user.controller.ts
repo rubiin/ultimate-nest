@@ -1,4 +1,3 @@
-import { PageOptionsDto } from "@common/classes/pagination";
 import {
 	ApiFile,
 	ApiPaginatedResponse,
@@ -7,6 +6,7 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
+import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { fileValidatorPipe } from "@common/misc";
 import { Action, IFile, Roles } from "@common/types";
 import { User } from "@entities";
@@ -33,7 +33,7 @@ export class UserController {
 	@Post("register")
 	@SwaggerResponse({
 		operation: "Create user",
-		badRequests:[ "User already registered with email."],
+		badRequests: ["User already registered with email."],
 	})
 	@ApiFile({ fieldName: "avatar", required: true })
 	async publicRegistration(
@@ -89,7 +89,7 @@ export class UserController {
 	@Delete(":idx")
 	@SwaggerResponse({
 		operation: "User fetch",
-		notFounds:[ "User does not exist."],
+		notFounds: ["User does not exist."],
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Delete))

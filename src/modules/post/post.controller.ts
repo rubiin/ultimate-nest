@@ -1,4 +1,3 @@
-import { PageOptionsDto } from "@common/classes/pagination";
 import {
 	ApiPaginatedResponse,
 	GenericController,
@@ -6,6 +5,7 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
+import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { Action } from "@common/types";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";

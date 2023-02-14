@@ -1,5 +1,5 @@
-import { PageOptionsDto } from "@common/classes/pagination";
 import { BaseRepository } from "@common/database";
+import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { ICommonService } from "@common/types";
 import { Comment, Post, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
