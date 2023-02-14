@@ -1,4 +1,4 @@
-import { PageOptionsDto } from "@common/classes/pagination";
+import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { IFile, Order, Roles } from "@common/types";
 
 export const mockedUser = {

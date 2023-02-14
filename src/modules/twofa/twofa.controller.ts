@@ -7,7 +7,7 @@ import { ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
 import { switchMap } from "rxjs";
 
-import { TwofaDto } from "./dto/twofa.dto";
+import { TwofaDto } from "./dtos/twofa.dto";
 import { TwoFactorService } from "./twofa.service";
 
 @Controller("2fa")

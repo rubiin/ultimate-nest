@@ -13,7 +13,7 @@ import {
 	Query,
 	Req,
 	Res,
-	UseGuards
+	UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
@@ -27,7 +27,7 @@ import {
 	RefreshTokenDto,
 	ResetPasswordDto,
 	SendOtpDto,
-	UserLoginDto
+	UserLoginDto,
 } from "./dtos";
 
 @ApiTags("auth")
@@ -50,7 +50,7 @@ export class AuthController {
 		notFounds: ["Otp doesn't exist."],
 		badRequests: ["Otp is expired."],
 	})
-	resetUserPassword(@Body() dto: ResetPasswordDto):Observable<User> {
+	resetUserPassword(@Body() dto: ResetPasswordDto): Observable<User> {
 		return this.authService.resetPassword(dto);
 	}
 
@@ -122,7 +122,7 @@ export class AuthController {
 		notFounds: ["Otp doesn't exist."],
 		badRequests: ["Otp is expired."],
 	})
-	async verifyOtp(@Body() dto: OtpVerifyDto) : Promise<User>{
+	async verifyOtp(@Body() dto: OtpVerifyDto): Promise<User> {
 		return this.authService.verifyOtp(dto);
 	}
 

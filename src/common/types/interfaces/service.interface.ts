@@ -1,4 +1,4 @@
-import { PageOptionsDto } from "@common/classes/pagination";
+import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { User } from "@entities";
 import { Pagination } from "@lib/pagination";
 import { Observable } from "rxjs";
