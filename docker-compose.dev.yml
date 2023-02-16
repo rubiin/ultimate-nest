@@ -33,7 +33,7 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
     traefik:
-        image: "traefik:v2.9.7"
+        image: "traefik:v2.9.8"
         container_name: traefik
         command:
             - "--providers.docker=true"
