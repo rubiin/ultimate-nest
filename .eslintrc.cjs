@@ -70,7 +70,10 @@ module.exports = {
 			"\\.spec*",
 			"\\.decorator*",
 			"\\*idx*",
-		]
+		],
+		"allowList": {
+			"ProcessEnv": true
+		}
 	}
 		],
 		'import/namespace': 'off',

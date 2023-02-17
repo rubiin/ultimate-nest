@@ -44,9 +44,9 @@ const config: Options = {
 		emit: "ts", // seeder generation mode
 	},
 	password: process.env.DB_PASSWORD,
-	port: Number.parseInt(process.env.DB_PORT, 10),
+	port: process.env.DB_PORT,
 	type: "postgresql",
-	logger: logger.log.bind(logger),
+	logger: logger.debug.bind(logger),
 	highlighter: new SqlHighlighter(),
 	user: process.env.DB_USERNAME,
 	metadataProvider: TsMorphMetadataProvider,
