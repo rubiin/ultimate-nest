@@ -40,7 +40,7 @@ export class UserService implements ICommonService<User> {
 		page,
 		search,
 	}: PageOptionsDto): Observable<Pagination<User>> {
-		const qb = this.userRepository.createQueryBuilder("u").select("u.*");
+		const qb = this.userRepository.qb("u").select("u.*");
 
 		if (search) {
 			qb.andWhere({ firstName: { $ilike: `%${search}%` } });
