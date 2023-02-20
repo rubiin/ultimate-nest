@@ -1,5 +1,6 @@
-import { EntityManager, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
+import { EntityDTO, EntityManager, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
 import { EntityRepository } from "@mikro-orm/postgresql";
+import { BadRequestException } from "@nestjs/common";
 
 import { BaseEntity } from "./base-entity.entity";
 
@@ -59,5 +60,48 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		this.remove(entity);
 
 		return entity;
+	}
+
+	/**
+	 * It finds an entity by the given `where` clause, and then updates it with the given `update` object
+	 * @param where - FilterQuery<T>
+	 * @param update - Partial<EntityDTO<Loaded<T>>>
+	 * @returns The entity that was updated
+	 */
+	async findAndUpdate(where: FilterQuery<T>, update: Partial<EntityDTO<Loaded<T>>>): Promise<T> {
+		const entity = await this.findOne(where);
+		if (!entity) {
+			throw new BadRequestException("Entity not found");
+		}
+		this.em.assign(entity, update);
+		await this.persistAndFlush(entity);
+		return entity;
+	}
+
+	/**
+	 * It finds an entity by the given `where` clause, and if it exists, it deletes it
+	 * @param where - FilterQuery<T>
+	 * @returns The entity that was deleted
+	 */
+	async findAndDelete(where: FilterQuery<T>): Promise<T> {
+		const entity = await this.findOne(where);
+		if (!entity) {
+			throw new BadRequestException("Entity not found");
+		}
+		this.remove(entity);
+		return entity;
+	}
+
+/**
+ * It finds an entity by the given `where` clause, and if it exists, it soft deletes it
+ * @param where - FilterQuery<T>
+ * @returns The entity that was soft deleted.
+ */
+	async findAndSoftDelete(where: FilterQuery<T>): Promise<T> {
+		const entity = await this.findOne(where);
+		if (!entity) {
+			throw new BadRequestException("Entity not found");
+		}
+		return this.softRemoveAndFlush(entity);
 	}
 }

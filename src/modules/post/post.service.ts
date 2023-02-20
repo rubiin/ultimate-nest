@@ -37,7 +37,7 @@ export class PostService implements ICommonService<Post> {
 		offset,
 		search,
 	}: PageOptionsDto): Observable<Pagination<Post>> {
-		const qb = this.postRepository.createQueryBuilder("p").select("p.*");
+		const qb = this.postRepository.qb("p").select("p.*");
 
 		qb.where({ isObsolete: false, isActive: true });
 
