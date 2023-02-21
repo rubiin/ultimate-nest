@@ -1,4 +1,4 @@
-import { IMailPayload } from "@common/types";
+import { IMailPayload } from "@common/@types";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { Injectable, Logger } from "@nestjs/common";

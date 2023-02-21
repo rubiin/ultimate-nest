@@ -1,4 +1,4 @@
-import { IsNumberFieldOptions } from "@common/types";
+import { IsNumberFieldOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
 import { Type } from "class-transformer";
 import {

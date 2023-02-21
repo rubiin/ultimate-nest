@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { Roles } from "@common/types";
+import { Roles } from "@common/@types";
 import { faker } from "@mikro-orm/seeder";
 import { pick } from "helper-fns";
 import request from "supertest";

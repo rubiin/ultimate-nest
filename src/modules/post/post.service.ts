@@ -1,6 +1,6 @@
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
-import { ICommonService } from "@common/types";
+import { IBaseService } from "@common/@types";
 import { Comment, Post, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
@@ -12,7 +12,7 @@ import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
-export class PostService implements ICommonService<Post> {
+export class PostService implements IBaseService<Post> {
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: BaseRepository<Post>,

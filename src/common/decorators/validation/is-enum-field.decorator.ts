@@ -1,4 +1,4 @@
-import { IsEnumFieldOptions } from "@common/types";
+import { IsEnumFieldOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
 import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import { enumToString } from "helper-fns";

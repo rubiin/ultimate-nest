@@ -1,4 +1,4 @@
-import { IJwtPayload } from "@common/types";
+import { IJwtPayload } from "@common/@types";
 import { RefreshToken, User } from "@entities";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";

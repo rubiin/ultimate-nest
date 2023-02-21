@@ -1,6 +1,6 @@
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
-import { EmailTemplateEnum, ICommonService, IFile } from "@common/types";
+import { EmailTemplateEnum, IBaseService, IFile } from "@common/@types";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";
@@ -17,7 +17,7 @@ import { from, map, Observable, switchMap } from "rxjs";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
-export class UserService implements ICommonService<User> {
+export class UserService implements IBaseService<User> {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
