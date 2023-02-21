@@ -1,17 +1,20 @@
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { User } from "@entities";
 import { Pagination } from "@lib/pagination";
+import { AnyEntity, EntityData } from "@mikro-orm/core";
 import { Observable } from "rxjs";
 
-import { ICommonDto } from "./common.dto.interface";
 
 /**
  * common service interface that enforces common methods
  */
-export interface IBaseService<T> {
-	create(dto: ICommonDto, user?: User): Promise<T> | Observable<T>;
-	findAll(dto: PageOptionsDto): Observable<Pagination<T>>;
-	findOne(index: string): Observable<T>;
-	update(index: string, dto: ICommonDto): Observable<T>;
-	remove(index: string): Observable<T>;
+export interface IBaseService<Entity extends AnyEntity = AnyEntity,
+CreateDto extends EntityData<Entity> = EntityData<Entity>,
+UpdateDto extends EntityData<Entity> = EntityData<Entity>
+> {
+	create(dto: CreateDto, user?: User): Promise<Entity> | Observable<Entity>;
+	findAll(dto: PageOptionsDto): Observable<Pagination<Entity>>;
+	findOne(index: string): Observable<Entity>;
+	update(index: string, dto: UpdateDto): Observable<Entity>;
+	remove(index: string): Observable<Entity>;
 }
