@@ -1,4 +1,4 @@
-import { IAuthenticationResponse } from "@common/types";
+import { IAuthenticationResponse } from "@common/@types";
 import { User } from "@entities";
 import { argon2id, hash, Options as ArgonOptions, verify } from "argon2";
 import { pick } from "helper-fns";

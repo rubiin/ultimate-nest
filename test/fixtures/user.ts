@@ -1,4 +1,4 @@
-import { Roles } from "@common/types";
+import { Roles } from "@common/@types";
 import { faker } from "@mikro-orm/seeder";
 
 export const user: Record<string, { email: string; password: string }> = {

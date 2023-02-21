@@ -1,5 +1,5 @@
 import { BaseRepository } from "@common/database";
-import { IJwtPayload } from "@common/types";
+import { IJwtPayload } from "@common/@types";
 import { User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { InjectRepository } from "@mikro-orm/nestjs";

@@ -1,4 +1,4 @@
-import { IsMinMaxLengthOptions } from "@common/types";
+import { IsMinMaxLengthOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
 import { MaxLength, MinLength } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";

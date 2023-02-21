@@ -5,7 +5,7 @@ import {
 	InferSubjects,
 	MongoAbility,
 } from "@casl/ability";
-import { Action, Roles } from "@common/types";
+import { Action, Roles } from "@common/@types";
 import { Comment, Post, User } from "@entities";
 import { Injectable } from "@nestjs/common";
 

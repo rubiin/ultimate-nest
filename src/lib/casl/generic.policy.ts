@@ -1,4 +1,4 @@
-import { Action } from "@common/types";
+import { Action } from "@common/@types";
 import { Request } from "express";
 
 import { AppAbility } from "./casl-ability.factory";
