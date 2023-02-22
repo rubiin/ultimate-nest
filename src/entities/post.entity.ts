@@ -1,5 +1,5 @@
-import { BaseEntity } from "@common/database";
 import { PostState } from "@common/@types";
+import { BaseEntity } from "@common/database";
 import {
 	ArrayType,
 	BeforeCreate,

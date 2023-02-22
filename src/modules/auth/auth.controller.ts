@@ -1,5 +1,5 @@
-import { Auth, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { IAuthenticationResponse, IOauthResponse } from "@common/@types";
+import { Auth, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { OtpLog, User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
