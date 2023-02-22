@@ -65,8 +65,8 @@ deploy:
 
 # stop deployed containers
 stop env="dev":
-	ENV=dev PASSWORD=Test@1234  docker compose -f docker-compose.{{env}}.yml stop
+	ENV=dev docker compose -f docker-compose.{{env}}.yml stop
 
 # remove deployed containers
 remove env="dev":
-	ENV=dev PASSWORD=Test@1234 docker compose -f docker-compose.{{env}}.yml down
+	ENV=dev docker compose -f docker-compose.{{env}}.yml down
