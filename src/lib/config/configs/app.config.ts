@@ -13,7 +13,7 @@ export const app = registerAs("app", () => ({
 }));
 
 export const appConfigValidationSchema = {
-	NODE_ENV: Joi.string().valid("dev", "prod", "stage", "test").required(),
+	NODE_ENV: Joi.string().valid("dev", "prod", "stage", "test","production").required(),
 	APP_PORT: Joi.number().required(),
 	APP_PREFIX: Joi.string().required(),
 	APP_NAME: Joi.string().required(),

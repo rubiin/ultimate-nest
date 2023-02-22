@@ -1,6 +1,6 @@
+import { Roles } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import { HelperService } from "@common/helpers";
-import { Roles } from "@common/@types";
 import {
 	BeforeCreate,
 	BeforeUpdate,

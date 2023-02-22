@@ -50,7 +50,13 @@ export const Sanitize = (): PropertyDecorator => {
 	return Transform(
 		({ value }) => {
 			if (Array.isArray(value)) {
-				return value.map(v => DOMPurify.sanitize(v));
+				return value.map(v => {
+					if (typeof v === "string") {
+						return DOMPurify.sanitize(v);
+					}
+					
+return v;
+				});
 			}
 
 			return DOMPurify.sanitize(value);

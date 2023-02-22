@@ -1,6 +1,6 @@
+import { EmailTemplateEnum, IBaseService, IFile } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
-import { EmailTemplateEnum, IBaseService, IFile } from "@common/@types";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";

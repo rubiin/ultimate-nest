@@ -1,5 +1,5 @@
-import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 import { PostState } from "@common/@types";
+import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 import { IsUnique } from "@common/validators";
 import { Post } from "@entities";
 

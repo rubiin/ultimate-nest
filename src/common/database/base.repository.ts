@@ -70,11 +70,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 */
 	async findAndUpdate(where: FilterQuery<T>, update: Partial<EntityDTO<Loaded<T>>>): Promise<T> {
 		const entity = await this.findOne(where);
+
 		if (!entity) {
 			throw new BadRequestException("Entity not found");
 		}
 		this.em.assign(entity, update);
 		await this.persistAndFlush(entity);
+
 		return entity;
 	}
 
@@ -85,23 +87,27 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 */
 	async findAndDelete(where: FilterQuery<T>): Promise<T> {
 		const entity = await this.findOne(where);
+
 		if (!entity) {
 			throw new BadRequestException("Entity not found");
 		}
 		this.remove(entity);
+
 		return entity;
 	}
 
-/**
- * It finds an entity by the given `where` clause, and if it exists, it soft deletes it
- * @param where - FilterQuery<T>
- * @returns The entity that was soft deleted.
- */
+	/**
+	 * It finds an entity by the given `where` clause, and if it exists, it soft deletes it
+	 * @param where - FilterQuery<T>
+	 * @returns The entity that was soft deleted.
+	 */
 	async findAndSoftDelete(where: FilterQuery<T>): Promise<T> {
 		const entity = await this.findOne(where);
+
 		if (!entity) {
 			throw new BadRequestException("Entity not found");
 		}
+
 		return this.softRemoveAndFlush(entity);
 	}
 }

@@ -1,5 +1,5 @@
-import { IsEnumField, IsStringField } from "@common/decorators";
 import { Roles } from "@common/@types";
+import { IsEnumField, IsStringField } from "@common/decorators";
 import { IsPassword, IsUnique } from "@common/validators";
 import { User } from "@entities";
 import { ApiProperty } from "@nestjs/swagger";
