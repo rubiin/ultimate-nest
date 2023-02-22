@@ -1,3 +1,5 @@
+import "@total-typescript/ts-reset";
+
 import { AppUtils } from "@common/helpers";
 import { IConfig } from "@lib/config/config.interface";
 import { createLogger } from "@lib/pino/app.logger";

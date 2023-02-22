@@ -1,6 +1,6 @@
+import { EmailTemplateEnum, IAuthenticationResponse } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
-import { EmailTemplateEnum, IAuthenticationResponse } from "@common/@types";
 import { OtpLog, User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";

@@ -1,5 +1,5 @@
-import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 import { Order } from "@common/@types";
+import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 
 export class PageOptionsDto {
 	/**
