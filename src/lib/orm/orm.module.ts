@@ -35,7 +35,7 @@ const baseOptions = {
 		MikroOrmModule.forRootAsync({
 			imports: [ConfigModule],
 			useFactory: (configService: ConfigService<IConfig, true>) =>
-			process.env.NODE_ENV.startsWith("prod")
+				process.env.NODE_ENV.startsWith("prod")
 					? definePGConfig({
 							host: configService.get("database.host", { infer: true }),
 							port: configService.get("database.port", { infer: true }),

@@ -49,18 +49,17 @@ const baseOptions = {
 	debug: true,
 };
 
-const config: Options =
-	process.env.NODE_ENV.startsWith("prod")
-		? definePGConfig({
-				...baseOptions,
-				dbName: process.env.DB_DATABASE,
-				password: process.env.DB_PASSWORD,
-				port: process.env.DB_PORT,
-				user: process.env.DB_USERNAME,
-		  })
-		: defineSqliteConfig({
-				...baseOptions,
-				dbName: ":memory:",
-		  });
+const config: Options = process.env.NODE_ENV.startsWith("prod")
+	? definePGConfig({
+			...baseOptions,
+			dbName: process.env.DB_DATABASE,
+			password: process.env.DB_PASSWORD,
+			port: process.env.DB_PORT,
+			user: process.env.DB_USERNAME,
+	  })
+	: defineSqliteConfig({
+			...baseOptions,
+			dbName: ":memory:",
+	  });
 
 export default config;
