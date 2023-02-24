@@ -54,8 +54,8 @@ export const Sanitize = (): PropertyDecorator => {
 					if (typeof v === "string") {
 						return DOMPurify.sanitize(v);
 					}
-					
-return v;
+
+					return v;
 				});
 			}
 

@@ -49,7 +49,7 @@ export class PostController {
 	@Post()
 	@SwaggerResponse({ operation: "create post" })
 	@CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Create))
-	async createPost(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
+	async create(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
 		return this.postService.create(dto, author);
 	}
 
