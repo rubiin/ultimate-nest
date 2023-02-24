@@ -1,4 +1,4 @@
-import { EntityDTO, EntityManager, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
+import { EntityData, EntityManager, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
 import { EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException } from "@nestjs/common";
 
@@ -68,7 +68,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * @param update - Partial<EntityDTO<Loaded<T>>>
 	 * @returns The entity that was updated
 	 */
-	async findAndUpdate(where: FilterQuery<T>, update: Partial<EntityDTO<Loaded<T>>>): Promise<T> {
+	async findAndUpdate(where: FilterQuery<T>, update: EntityData<T>): Promise<T> {
 		const entity = await this.findOne(where);
 
 		if (!entity) {

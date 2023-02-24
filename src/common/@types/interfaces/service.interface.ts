@@ -1,15 +1,16 @@
+import { BaseEntity } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { User } from "@entities";
 import { Pagination } from "@lib/pagination";
-import { AnyEntity, EntityData } from "@mikro-orm/core";
+import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { Observable } from "rxjs";
 
 /**
  * common service interface that enforces common methods
  */
 export interface IBaseService<
-	Entity extends AnyEntity = AnyEntity,
-	CreateDto extends EntityData<Entity> = EntityData<Entity>,
+	Entity extends BaseEntity = BaseEntity,
+	CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
 	UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > {
 	create(dto: CreateDto, user?: User): Promise<Entity> | Observable<Entity>;
