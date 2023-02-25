@@ -106,7 +106,7 @@ export class UserService implements IBaseService<User> {
 			await em.persistAndFlush(user);
 			const link = this.configService.get("app.clientUrl", { infer: true });
 
-			this.amqpConnection.publish(
+			await this.amqpConnection.publish(
 				this.configService.get("rabbitmq.exchange", { infer: true }),
 				"send-mail",
 				{
