@@ -7,7 +7,7 @@ import { defineConfig as definePGConfig } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { defineConfig as defineSqliteConfig } from "@mikro-orm/sqlite";
-import { Logger, Module } from "@nestjs/common";
+import { Logger, Module, NotFoundException } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
 const logger = new Logger("MikroORM");
@@ -21,6 +21,9 @@ const baseOptions = {
 	metadataProvider: TsMorphMetadataProvider,
 	entityRepository: BaseRepository,
 	allowGlobalContext: true,
+  findOneOrFailHandler: (entityName: string) => {
+    return new NotFoundException(`${entityName} not found!`);
+  },
 	registerRequestContext: false,
 	pool: { min: 2, max: 10 },
 	logger: logger.debug.bind(logger),

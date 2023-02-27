@@ -234,21 +234,24 @@ export class PostService implements IBaseService<Post> {
 		);
 	}
 
-	/**
-	 * "Delete a comment from a post."
-	 *
-	 * The first thing we do is to get the post from the database. We use the `findOneOrFail` method to get
-	 * the post. We also use the `populate` option to get the author of the post
-	 * @param {string} index - string - The index of the post to delete the comment from.
-	 */
-	deleteComment(index: string) {
-		return this.findOne(index, ["comments"]).pipe(
-			switchMap(post => {
-				const comment = this.commentRepository.getReference(post.id);
 
-				if (post.comments.contains(comment)) {
-					post.comments.remove(comment);
-					from(this.commentRepository.removeAndFlush(comment)).pipe(map(() => post));
+	/**
+	 * It finds a post and a comment, removes the comment from the post, and then deletes the comment
+	 * @param {string} postIdx - string - The id of the post
+	 * @param {string} commentIdx - The id of the comment to be deleted
+	 * @returns A post with the comment removed.
+	 */
+	deleteComment(postIndex: string, commentIndex: string): Observable<Post> {
+		return forkJoin([
+			this.findOne(postIndex),
+			from(this.commentRepository.findOneOrFail({ idx: commentIndex })),
+		]).pipe(
+			switchMap(([post, comment]) => {
+				const commentReference = this.commentRepository.getReference(comment.id);
+
+				if (post.comments.contains(commentReference)) {
+					post.comments.remove(commentReference);
+					from(this.commentRepository.removeAndFlush(commentReference)).pipe(map(() => post));
 				}
 
 				return of(post);
