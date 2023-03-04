@@ -18,7 +18,7 @@ export const ApiFile = (options_?: IApiFileOptions) => {
 	const options: IApiFileOptions = { fieldName: "file", required: false, ...options_ };
 
 	return applyDecorators(
-		UseInterceptors(FileInterceptor(options.fieldName, ImageMulterOption)),
+		UseInterceptors(FileInterceptor(options.fieldName)),
 		ApiConsumes("multipart/form-data"),
 		ApiBody({
 			schema: {

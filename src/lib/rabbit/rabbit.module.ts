@@ -25,7 +25,7 @@ const logger = new Logger("RabbitMQ");
 				logger: logger,
 				channels: {
 					"channel-1": {
-						prefetchCount: configService.get("rabbitmq.prefetchCount", { infer: true }),
+						prefetchCount: +configService.get("rabbitmq.prefetchCount", { infer: true }),
 						default: true,
 					},
 					"channel-2": {
@@ -36,7 +36,6 @@ const logger = new Logger("RabbitMQ");
 			inject: [ConfigService],
 		}),
 	],
-	controllers: [],
 	providers: [RabbitService],
 	exports: [RabbitService, RabbitMQModule],
 })
