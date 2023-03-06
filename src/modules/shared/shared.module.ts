@@ -47,8 +47,8 @@ import { DevtoolsModule } from "@nestjs/devtools-integration";
 		NestHttpModule,
 		NestServeStaticModule,
 		DevtoolsModule.register({
-      http: process.env.NODE_ENV.startsWith("prod"),
-    }),
+			http: process.env.NODE_ENV.startsWith("prod"),
+		}),
 	],
 	providers: [IsUniqueConstraint],
 })

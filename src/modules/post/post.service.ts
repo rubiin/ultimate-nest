@@ -234,7 +234,6 @@ export class PostService implements IBaseService<Post> {
 		);
 	}
 
-
 	/**
 	 * It finds a post and a comment, removes the comment from the post, and then deletes the comment
 	 * @param {string} postIdx - string - The id of the post
@@ -251,7 +250,9 @@ export class PostService implements IBaseService<Post> {
 
 				if (post.comments.contains(commentReference)) {
 					post.comments.remove(commentReference);
-					from(this.commentRepository.removeAndFlush(commentReference)).pipe(map(() => post));
+					from(this.commentRepository.removeAndFlush(commentReference)).pipe(
+						map(() => post),
+					);
 				}
 
 				return of(post);

@@ -92,10 +92,13 @@ export class PostController {
 	@Delete(":idx/comments/:commentIdx")
 	@SwaggerResponse({
 		operation: "Post comment delete",
-		notFounds: ["Post doesn't exist.","Comment doesn't exist."],
+		notFounds: ["Post doesn't exist.", "Comment doesn't exist."],
 		params: ["idx", "commentIdx"],
 	})
-	deleteComment(@UUIDParam("idx") postIndex: string, @UUIDParam("commentIdx") commentIndex: string) {
+	deleteComment(
+		@UUIDParam("idx") postIndex: string,
+		@UUIDParam("commentIdx") commentIndex: string,
+	) {
 		return this.postService.deleteComment(postIndex, commentIndex);
 	}
 
