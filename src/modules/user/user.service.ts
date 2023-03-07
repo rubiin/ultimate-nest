@@ -16,6 +16,10 @@ import { from, map, Observable, switchMap } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
+type CreateWithFile<T, K = IFile> = T & {
+	files: K;
+};
+
 @Injectable()
 export class UserService implements IBaseService<User> {
 	constructor(
@@ -89,15 +93,15 @@ export class UserService implements IBaseService<User> {
 
 	/**
 	 * It creates a user and sends a welcome email
-	 * @param dto - CreateUserDto & { image: IFile }
+	 * @param dto - CreateWithFile<CreateUserDto>
 	 * @returns The user object
 	 */
-	async create(dto: CreateUserDto & { image: IFile }): Promise<User> {
-		const { image, ...rest } = dto;
+	async create(dto: CreateWithFile<CreateUserDto>): Promise<User> {
+		const { files, ...rest } = dto;
 		const user = this.userRepository.create(rest);
 
 		await this.em.transactional(async em => {
-			const { url } = await this.cloudinaryService.uploadFile(image);
+			const { url } = await this.cloudinaryService.uploadFile(files);
 
 			// cloudinary gives a url key on response that is the full url to file
 

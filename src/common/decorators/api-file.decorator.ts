@@ -87,30 +87,30 @@ export const ApiFiles = (options_?: IApiFilesOptions) => {
 /**
  * It takes an array of MulterFields and returns a decorator that will add the appropriate OpenAPI
  * schema to the endpoint
- * @param {(MulterField & { required?: boolean })[]} uploadFields - An array of MulterFields.
+ * @param {(MulterField & { required?: boolean })[]} options - An array of MulterFields.
  * @param {MulterOptions} [localOptions] - MulterOptions - These are the options that are passed to
  * multer.
  */
 
 export const ApiFileFields = (
-	uploadFields: (MulterField & { required?: boolean })[],
+	options: (MulterField & { required?: boolean })[],
 	localOptions?: MulterOptions,
 ) => {
 	const bodyProperties: Record<string, SchemaObject | ReferenceObject> = Object.assign(
 		{},
-		...uploadFields.map(field => {
+		...options.map(field => {
 			return { [field.name]: { type: "string", format: "binary" } };
 		}),
 	);
 
 	return applyDecorators(
-		UseInterceptors(FileFieldsInterceptor(uploadFields, localOptions)),
+		UseInterceptors(FileFieldsInterceptor(options, localOptions)),
 		ApiConsumes("multipart/form-data"),
 		ApiBody({
 			schema: {
 				type: "object",
 				properties: bodyProperties,
-				required: uploadFields.filter(f => f.required).map(f => f.name),
+				required: options.filter(f => f.required).map(f => f.name),
 			},
 		}),
 	);
