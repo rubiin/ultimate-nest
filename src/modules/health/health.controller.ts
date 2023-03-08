@@ -1,5 +1,5 @@
 import { IConfig } from "@lib/config/config.interface";
-import { Controller, Get } from "@nestjs/common";
+import { Get } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import {
 	DiskHealthIndicator,
@@ -9,9 +9,10 @@ import {
 	MemoryHealthIndicator,
 } from "@nestjs/terminus";
 
+import { GenericController } from "@common/decorators";
 import { DatabaseHealthIndicator } from "./database.health";
 
-@Controller("health")
+@GenericController("health",false)
 export class HealthController {
 	constructor(
 		private health: HealthCheckService,

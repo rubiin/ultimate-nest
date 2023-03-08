@@ -1,10 +1,9 @@
 import { IAuthenticationResponse, IOauthResponse } from "@common/@types";
-import { Auth, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { OtpLog, User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
 	Body,
-	Controller,
 	DefaultValuePipe,
 	Get,
 	ParseBoolPipe,
@@ -13,12 +12,12 @@ import {
 	Query,
 	Req,
 	Res,
-	UseGuards,
+	UseGuards
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiOperation } from "@nestjs/swagger";
 import { Request, Response } from "express";
-import { map, Observable } from "rxjs";
+import { Observable, map } from "rxjs";
 
 import { AuthService } from "./auth.service";
 import {
@@ -30,8 +29,7 @@ import {
 	UserLoginDto,
 } from "./dtos";
 
-@ApiTags("auth")
-@Controller("auth")
+@GenericController("auth",false)
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
