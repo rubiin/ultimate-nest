@@ -1,7 +1,7 @@
 import { IBaseService } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
-import { Comment, Post, User } from "@entities";
+import { Comment, Post, Tag, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -20,6 +20,8 @@ export class PostService implements IBaseService<Post> {
 		private readonly userRepository: BaseRepository<User>,
 		@InjectRepository(User)
 		private readonly commentRepository: BaseRepository<Comment>,
+		@InjectRepository(Tag)
+		private readonly tagRepository: BaseRepository<Comment>,
 	) {}
 
 	/**
@@ -38,8 +40,6 @@ export class PostService implements IBaseService<Post> {
 		search,
 	}: PageOptionsDto): Observable<Pagination<Post>> {
 		const qb = this.postRepository.qb("p").select("p.*");
-
-		qb.where({ isObsolete: false, isActive: true });
 
 		if (search) {
 			qb.andWhere({ title: { $ilike: `%${search}%` } });
@@ -64,8 +64,6 @@ export class PostService implements IBaseService<Post> {
 			this.postRepository.findOne(
 				{
 					idx: index,
-					isObsolete: false,
-					isActive: true,
 				},
 				{ populate },
 			),
@@ -91,6 +89,15 @@ export class PostService implements IBaseService<Post> {
 	 * @returns The post object
 	 */
 	create(dto: CreatePostDto, author: User): Observable<Post> {
+
+		return from().pipe(
+			switchMap(post => {
+				this.postRepository.assign(post, dto);
+
+				return from(this.postRepository.flush()).pipe(map(() => post));
+			}),
+		);
+
 		const post = this.postRepository.create({ ...dto, author });
 
 		return from(this.postRepository.persistAndFlush(post)).pipe(map(() => post));
@@ -144,7 +151,7 @@ export class PostService implements IBaseService<Post> {
 		const post$ = from(this.postRepository.findOneOrFail({ idx: postIndex }));
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id: userId, isObsolete: false, isActive: true },
+				{ id: userId },
 				{
 					populate: ["favorites"],
 				},
@@ -181,7 +188,7 @@ export class PostService implements IBaseService<Post> {
 		);
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id: userId, isObsolete: false, isActive: true },
+				{ id: userId },
 				{
 					populate: ["favorites"],
 				},
@@ -206,12 +213,9 @@ export class PostService implements IBaseService<Post> {
 	 * @returns An array of comments
 	 */
 	findComments(index: string): Observable<Comment[]> {
-		return from(
-			this.postRepository.findOne(
-				{ idx: index, isObsolete: false, isActive: true },
-				{ populate: ["comments"] },
-			),
-		).pipe(map(post => post.comments.getItems()));
+		return from(this.postRepository.findOne({ idx: index }, { populate: ["comments"] })).pipe(
+			map(post => post.comments.getItems()),
+		);
 	}
 
 	/**

@@ -5,9 +5,10 @@ import { SharedModule } from "@modules/shared/shared.module";
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { SentryInterceptor } from "@ntegral/nestjs-sentry";
+import { TagsModule } from "./modules/tags/tags.module";
 
 @Module({
-	imports: [SharedModule],
+	imports: [SharedModule, TagsModule],
 	providers: [
 		{
 			provide: APP_INTERCEPTOR,
