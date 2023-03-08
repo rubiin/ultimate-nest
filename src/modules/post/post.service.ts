@@ -1,4 +1,3 @@
-import { IBaseService } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { Comment, Post, Tag, User } from "@entities";
@@ -10,9 +9,10 @@ import { I18nContext } from "nestjs-i18n";
 import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
+import { omit } from "helper-fns";
 
 @Injectable()
-export class PostService implements IBaseService<Post> {
+export class PostService {
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: BaseRepository<Post>,
@@ -89,18 +89,17 @@ export class PostService implements IBaseService<Post> {
 	 * @returns The post object
 	 */
 	create(dto: CreatePostDto, author: User): Observable<Post> {
+		return from(
+			this.tagRepository.find({
+				idx: dto.tags,
+			}),
+		).pipe(
+			switchMap(tags => {
+				const post = this.postRepository.create({ ...omit(dto, ["tags"]), author, tags });
 
-		return from().pipe(
-			switchMap(post => {
-				this.postRepository.assign(post, dto);
-
-				return from(this.postRepository.flush()).pipe(map(() => post));
+				return from(this.postRepository.persistAndFlush(post)).pipe(map(() => post));
 			}),
 		);
-
-		const post = this.postRepository.create({ ...dto, author });
-
-		return from(this.postRepository.persistAndFlush(post)).pipe(map(() => post));
 	}
 
 	/**
@@ -113,7 +112,19 @@ export class PostService implements IBaseService<Post> {
 	update(index: string, dto: EditPostDto): Observable<Post> {
 		return this.findOne(index).pipe(
 			switchMap(post => {
-				this.postRepository.assign(post, dto);
+				if (dto.tags) {
+					return from(
+						this.tagRepository.find({
+							idx: dto.tags,
+						}),
+					).pipe(
+						switchMap(tags => {
+							this.postRepository.assign(post, { ...omit(dto, ["tags"]), tags });
+							return from(this.postRepository.flush()).pipe(map(() => post));
+						}),
+					);
+				}
+				this.postRepository.assign(post, omit(dto, ["tags"]));
 
 				return from(this.postRepository.flush()).pipe(map(() => post));
 			}),

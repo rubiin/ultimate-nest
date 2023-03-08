@@ -7,7 +7,6 @@ export class CreateTagDto {
 	@IsStringField()
 	description: string;
 
-  @IsStringField()
-  tags: string[];
-
+	@IsStringField()
+	tags: string[];
 }

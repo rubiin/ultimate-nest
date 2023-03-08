@@ -1,10 +1,11 @@
 import { Tag } from "@entities";
 import { BaseController } from "@modules/base/base.controller";
-import { Controller } from "@nestjs/common";
 import { TagsService } from "./tags.service";
+import { GenericController } from "@common/decorators";
 
-@Controller("tags")
+@GenericController("tags")
 export class TagsController extends BaseController<Tag> {
+	// @ts-ignore
 	constructor(private readonly _tagsService: TagsService) {
 		super(_tagsService);
 	}
