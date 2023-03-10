@@ -16,7 +16,7 @@ import {
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
-import { Tag, User, Comment } from "./index";
+import { Comment,Tag, User } from "./index";
 
 @Filter({
 	name: "default",

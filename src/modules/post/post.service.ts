@@ -5,11 +5,11 @@ import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { omit } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
 import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
-import { omit } from "helper-fns";
 
 @Injectable()
 export class PostService {
@@ -120,7 +120,8 @@ export class PostService {
 					).pipe(
 						switchMap(tags => {
 							this.postRepository.assign(post, { ...omit(dto, ["tags"]), tags });
-							return from(this.postRepository.flush()).pipe(map(() => post));
+							
+return from(this.postRepository.flush()).pipe(map(() => post));
 						}),
 					);
 				}

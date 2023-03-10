@@ -1,3 +1,4 @@
+import { GenericController } from "@common/decorators";
 import { IConfig } from "@lib/config/config.interface";
 import { Get } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -9,7 +10,6 @@ import {
 	MemoryHealthIndicator,
 } from "@nestjs/terminus";
 
-import { GenericController } from "@common/decorators";
 import { DatabaseHealthIndicator } from "./database.health";
 
 @GenericController("health",false)

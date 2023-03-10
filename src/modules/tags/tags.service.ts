@@ -6,8 +6,7 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class TagsService extends BaseService<Tag> {
-	// @ts-ignore
-	constructor(@InjectRepository(Tag) private readonly _tagRepository: BaseRepository<Tag>) {
-		super(_tagRepository);
+	constructor(@InjectRepository(Tag) private tagRepository: BaseRepository<Tag>) {
+		super(tagRepository);
 	}
 }

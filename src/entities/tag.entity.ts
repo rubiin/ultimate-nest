@@ -9,6 +9,7 @@ import {
 	Property,
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
+
 import { Post } from "./post.entity";
 
 @Entity()
