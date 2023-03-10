@@ -1,13 +1,14 @@
 import { PostState } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import {
-	ArrayType,
 	BeforeCreate,
 	BeforeUpdate,
 	Collection,
 	Entity,
 	Enum,
 	EventArgs,
+	Filter,
+	ManyToMany,
 	ManyToOne,
 	OneToMany,
 	Property,
@@ -15,9 +16,13 @@ import {
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
-import { Comment } from "./comment.entity";
-import { User } from "./user.entity";
+import { Comment,Tag, User } from "./index";
 
+@Filter({
+	name: "default",
+	cond: { isObsolete: { $eq: false }, isActive: { $eq: true } },
+	default: true,
+})
 @Entity()
 export class Post extends BaseEntity {
 	@Property()
@@ -32,8 +37,8 @@ export class Post extends BaseEntity {
 	@Property({ type: "text" })
 	content!: string;
 
-	@Property({ type: ArrayType })
-	tags: string[];
+	@ManyToMany(() => Tag, "posts", { owner: true })
+	tags = new Collection<Tag>(this);
 
 	@Enum({ items: () => PostState })
 	state = PostState.DRAFT;
@@ -58,7 +63,7 @@ export class Post extends BaseEntity {
 
 	@BeforeCreate()
 	@BeforeUpdate()
-	async hashPassword(arguments_: EventArgs<this>) {
+	async generateSlug(arguments_: EventArgs<this>) {
 		if (arguments_.changeSet?.payload?.title) {
 			this.slug = slugify(this.title);
 		}

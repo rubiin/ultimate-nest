@@ -1,7 +1,7 @@
-import { Auth, LoggedInUser } from "@common/decorators";
+import { Auth, GenericController, LoggedInUser } from "@common/decorators";
 import { User } from "@entities";
 import { AuthService } from "@modules/auth/auth.service";
-import { Body, Controller, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { Body, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
@@ -10,7 +10,7 @@ import { switchMap } from "rxjs";
 import { TwofaDto } from "./dtos/twofa.dto";
 import { TwoFactorService } from "./twofa.service";
 
-@Controller("2fa")
+@GenericController("2fa",false)
 export class TwoFactorController {
 	constructor(
 		private readonly twoFactorAuthenticationService: TwoFactorService,

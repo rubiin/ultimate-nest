@@ -31,8 +31,6 @@ export class ProfileService {
 			this.userRepository.findOne(
 				{
 					username,
-					isObsolete: false,
-					isActive: true,
 				},
 				{ populate },
 			),

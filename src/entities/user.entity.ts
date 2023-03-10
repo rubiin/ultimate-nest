@@ -8,6 +8,7 @@ import {
 	Entity,
 	Enum,
 	EventArgs,
+	Filter,
 	ManyToMany,
 	OneToMany,
 	Property,
@@ -17,6 +18,11 @@ import {
 
 import { Post } from "./post.entity";
 
+@Filter({
+	name: "default",
+	cond: { isObsolete: { $eq: false }, isActive: { $eq: true } },
+	default: true,
+})
 @Entity()
 export class User extends BaseEntity {
 	@Property({ length: 255 })
