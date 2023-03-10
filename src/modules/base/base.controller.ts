@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database";
-import { LoggedInUser, SwaggerResponse, UUIDParam } from "@common/decorators";
+import { LoggedInUser, UUIDParam } from "@common/decorators";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { User } from "@entities";
 import { Pagination } from "@lib/pagination";
