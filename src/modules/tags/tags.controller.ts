@@ -6,7 +6,7 @@ import { TagsService } from "./tags.service";
 
 @GenericController("tags")
 export class TagsController extends BaseController<Tag> {
-
+	// @ts-expect-error: Unused import error
 	constructor(private tagsService: TagsService) {
 		super(tagsService);
 	}
