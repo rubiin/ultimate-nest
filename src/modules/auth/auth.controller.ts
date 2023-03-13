@@ -12,12 +12,12 @@ import {
 	Query,
 	Req,
 	Res,
-	UseGuards
+	UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation } from "@nestjs/swagger";
 import { Request, Response } from "express";
-import { map,Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 
 import { AuthService } from "./auth.service";
 import {
@@ -29,7 +29,7 @@ import {
 	UserLoginDto,
 } from "./dtos";
 
-@GenericController("auth",false)
+@GenericController("auth", false)
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
