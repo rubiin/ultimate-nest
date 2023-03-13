@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 
-import aws from "@aws-sdk/client-ses";
+import * as aws from "@aws-sdk/client-ses";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { createTransport, SendMailOptions, Transporter } from "nodemailer";
 import { SentMessageInfo } from "nodemailer/lib/ses-transport";

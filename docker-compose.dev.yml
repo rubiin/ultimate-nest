@@ -14,9 +14,12 @@ services:
         restart: unless-stopped
         command: npm run start:dev
         labels:
-            - traefik.enable=true
-            - traefik.http.routers.nestify.rule=Host(`api.localhost`)
-            - traefik.http.services.nestify.loadbalancer.server.port=8000
+            - "traefik.enable=true"
+            - "traefik.http.routers.nestify.rule=Host(`takeo.ai`)"
+            - "traefik.http.services.nestify.loadbalancer.server.port=3000"
+            - "traefik.http.routers.nestify.entrypoints=websecure"
+            - "traefik.http.routers.nestify.tls=true"
+            - "traefik.http.routers.nestify.tls.certresolver=myresolver"
             - traefik.http.middlewares.test-ratelimit.ratelimit.average=100
             - traefik.http.middlewares.test-ratelimit.ratelimit.burst=50
             - traefik.http.middlewares.test-ratelimit.ratelimit.period=1m
