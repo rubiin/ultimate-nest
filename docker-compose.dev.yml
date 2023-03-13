@@ -11,15 +11,17 @@ services:
             - traefik
             - redis
             - rabbitmq
+            - database
+            
         restart: unless-stopped
         command: npm run start:dev
         labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.nestify.rule=Host(`takeo.ai`)"
-            - "traefik.http.services.nestify.loadbalancer.server.port=3000"
-            - "traefik.http.routers.nestify.entrypoints=websecure"
-            - "traefik.http.routers.nestify.tls=true"
-            - "traefik.http.routers.nestify.tls.certresolver=myresolver"
+            - traefik.enable=true
+            - traefik.http.routers.nestify.rule=Host(`takeo.ai`)
+            - traefik.http.services.nestify.loadbalancer.server.port=3000
+            - traefik.http.routers.nestify.entrypoints=websecure
+            - traefik.http.routers.nestify.tls=true
+            - traefik.http.routers.nestify.tls.certresolver=myresolver
             - traefik.http.middlewares.test-ratelimit.ratelimit.average=100
             - traefik.http.middlewares.test-ratelimit.ratelimit.burst=50
             - traefik.http.middlewares.test-ratelimit.ratelimit.period=1m
@@ -68,9 +70,9 @@ services:
             # Redirect HTTP requests to HTTPS
             - --providers.middlewares.httpsredirect.redirectscheme.scheme=https
             # Enable basic authentication for Traefik dashboard
-            - "--api.dashboard.auth.basic.users=user:$$apr1$$<encrypted-password-here>"
+            - --api.dashboard.auth.basic.users=user:$$apr1$$<encrypted-password-here>
+            # Enable Let's Encrypt staging environment for local development , remove this line for production
             - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-
 
         labels:
             - traefik.enable=true
@@ -113,7 +115,7 @@ services:
         volumes:
             - rabbitmq-data:/var/lib/rabbitmq/mnesia/
 
-    db:
+    database:
         image: postgres:15.2-alpine
         restart: unless-stopped
         volumes:
@@ -126,6 +128,8 @@ services:
             - POSTGRES_DB=${DB_DATABASE}
         networks:
             - nestify-network
+        ports:
+            - "5432:5432"
 
     pgadmin:
         container_name: pgadmin4_container

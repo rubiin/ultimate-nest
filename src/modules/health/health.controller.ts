@@ -12,7 +12,7 @@ import {
 
 import { DatabaseHealthIndicator } from "./database.health";
 
-@GenericController("health",false)
+@GenericController("health", false)
 export class HealthController {
 	constructor(
 		private health: HealthCheckService,

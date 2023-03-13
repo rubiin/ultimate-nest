@@ -16,7 +16,7 @@ import {
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
-import { Comment,Tag, User } from "./index";
+import { Comment, Tag, User } from "./index";
 
 @Filter({
 	name: "default",
@@ -31,7 +31,7 @@ export class Post extends BaseEntity {
 	@Property()
 	title!: string;
 
-	@Property()
+	@Property({ type: "text" })
 	description!: string;
 
 	@Property({ type: "text" })
@@ -67,6 +67,13 @@ export class Post extends BaseEntity {
 		if (arguments_.changeSet?.payload?.title) {
 			this.slug = slugify(this.title);
 		}
+		this.readingTime = this.getReadingTime(this.content);
+	}
+
+	getReadingTime(content: string) {
+		const avgWordsPerMin = 250;
+		let count = content.match(/\w+/g).length;
+		return Math.ceil(count / avgWordsPerMin);
 	}
 
 	constructor(partial?: Partial<Post>) {

@@ -10,7 +10,7 @@ import { switchMap } from "rxjs";
 import { TwofaDto } from "./dtos/twofa.dto";
 import { TwoFactorService } from "./twofa.service";
 
-@GenericController("2fa",false)
+@GenericController("2fa", false)
 export class TwoFactorController {
 	constructor(
 		private readonly twoFactorAuthenticationService: TwoFactorService,
