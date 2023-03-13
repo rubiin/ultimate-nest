@@ -120,8 +120,8 @@ export class PostService {
 					).pipe(
 						switchMap(tags => {
 							this.postRepository.assign(post, { ...omit(dto, ["tags"]), tags });
-							
-return from(this.postRepository.flush()).pipe(map(() => post));
+
+							return from(this.postRepository.flush()).pipe(map(() => post));
 						}),
 					);
 				}
