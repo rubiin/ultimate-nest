@@ -8,7 +8,6 @@ import { Param, ParseUUIDPipe, PipeTransform, Type } from "@nestjs/common";
  * @param pipes - Array<Type<PipeTransform> | PipeTransform>
  * @returns A ParameterDecorator
  */
-//eslint-disable-next-line unicorn/prevent-abbreviations
 export const UUIDParam = (
 	property: string,
 	...pipes: Array<Type<PipeTransform> | PipeTransform>

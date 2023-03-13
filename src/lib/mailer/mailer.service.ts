@@ -34,13 +34,14 @@ export class MailerService {
 		let transporter: Transporter<SentMessageInfo>;
 
 		// create Nodemailer SES transporter
+
 		if (this.options.server === "SES") {
 			const ses = new aws.SES({
 				apiVersion: "2010-12-01",
-				region: "ap-southeast-2",
+				region: this.options.sesRegion,
 				credentials: {
-					accessKeyId: this.options.username,
-					secretAccessKey: this.options.password,
+					accessKeyId: this.options.sesKey,
+					secretAccessKey: this.options.sesAccessKey,
 				},
 			});
 

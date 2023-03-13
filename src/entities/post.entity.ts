@@ -72,7 +72,8 @@ export class Post extends BaseEntity {
 
 	getReadingTime(content: string) {
 		const avgWordsPerMin = 250;
-		let count = content.match(/\w+/g).length;
+		const count = content.match(/\w+/g).length;
+
 		return Math.ceil(count / avgWordsPerMin);
 	}
 
