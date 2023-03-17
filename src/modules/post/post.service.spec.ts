@@ -1,5 +1,5 @@
 import { BaseRepository } from "@common/database";
-import { Comment, Post, User } from "@entities";
+import { Comment, Post, Tag, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { mockedPost, query } from "@mocks";
@@ -13,10 +13,11 @@ describe("PostService", () => {
 	const mockPostRepo = createMock<BaseRepository<Post>>();
 	const mockUserRepo = createMock<BaseRepository<User>>();
 	const mockCommentRepo = createMock<BaseRepository<Comment>>();
+	const mockTagsRepo = createMock<BaseRepository<Tag>>();
 
 	// default mocks
 
-	mockPostRepo.findOne.mockImplementation((options: { idx: string }) =>
+	mockPostRepo.findOne.mockImplementation((options: any) =>
 		Promise.resolve({
 			...mockedPost,
 			idx: options.idx,
@@ -42,6 +43,10 @@ describe("PostService", () => {
 				{
 					provide: getRepositoryToken(User),
 					useValue: mockUserRepo,
+				},
+				{
+					provide: getRepositoryToken(Tag),
+					useValue: mockTagsRepo,
 				},
 				{
 					provide: getRepositoryToken(Comment),

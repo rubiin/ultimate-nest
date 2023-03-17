@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 
-import aws from "@aws-sdk/client-ses";
+import * as aws from "@aws-sdk/client-ses";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { createTransport, SendMailOptions, Transporter } from "nodemailer";
 import { SentMessageInfo } from "nodemailer/lib/ses-transport";
@@ -34,13 +34,14 @@ export class MailerService {
 		let transporter: Transporter<SentMessageInfo>;
 
 		// create Nodemailer SES transporter
+
 		if (this.options.server === "SES") {
 			const ses = new aws.SES({
 				apiVersion: "2010-12-01",
-				region: "ap-southeast-2",
+				region: this.options.sesRegion,
 				credentials: {
-					accessKeyId: this.options.username,
-					secretAccessKey: this.options.password,
+					accessKeyId: this.options.sesKey,
+					secretAccessKey: this.options.sesAccessKey,
 				},
 			});
 

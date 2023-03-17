@@ -54,7 +54,7 @@ services:
             - "./letsencrypt:/letsencrypt"
             - "/var/run/docker.sock:/var/run/docker.sock:ro"
     redis:
-        image: "redis:7.0.8-alpine"
+        image: "redis:7.0.9-alpine"
         restart: always
         depends_on:
             - traefik
@@ -67,7 +67,7 @@ services:
             - "redis-data:/data"
     rabbitmq:
         container_name: rabbitmq
-        image: "rabbitmq:3.11.9-management-alpine"
+        image: "rabbitmq:3.11.10-management-alpine"
         networks:
             - nestify-network
         depends_on:
@@ -95,7 +95,7 @@ services:
             - nestify-network
     pgadmin:
         container_name: pgadmin4_container
-        image: "dpage/pgadmin4:6.20"
+        image: "dpage/pgadmin4:6.21"
         restart: unless-stopped
         environment:
             - PGADMIN_DEFAULT_EMAIL=admin@admin.com

@@ -1,13 +1,11 @@
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { EntityManager } from "@mikro-orm/postgresql";
-import { mockedUser } from "@mocks";
+import { loggedInUser } from "@mocks";
 
 import { BaseRepository } from "./base.repository";
 
 describe("BaseRepository", () => {
-	const loggedInUser = new User(mockedUser);
-
 	const mockEm = createMock<EntityManager>({
 		findAndCount: jest.fn().mockResolvedValue([[], 0]),
 	});

@@ -23,6 +23,7 @@ const bootstrap = async () => {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
 		httpsOptions: AppUtils.ssl(),
 		logger: await createLogger(),
+		snapshot: true,
 	});
 
 	AppUtils.killAppWithGrace(app);

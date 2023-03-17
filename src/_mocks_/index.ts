@@ -1,5 +1,6 @@
 import { IFile, Order, Roles } from "@common/@types";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
+import { User } from "@entities";
 
 export const mockedUser = {
 	idx: "idx",
@@ -51,3 +52,5 @@ export const mockResetPasswordDto = {
 	confirmPassword: "Password@1234",
 	otpCode: "123456",
 };
+
+export const loggedInUser = new User(mockedUser);
