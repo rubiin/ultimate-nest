@@ -63,14 +63,17 @@ export const AppUtils = {
 		const document = SwaggerModule.createDocument(app, options, {});
 
 		/** check if there is Public decorator for each path (action) and its method (findMany / findOne) on each controller */
-		/* eslint-disable unicorn/no-array-for-each */
-		Object.values((document as OpenAPIObject).paths).forEach((path: any) => {
-			Object.values(path).forEach((method: any) => {
+		const paths = Object.values((document as OpenAPIObject).paths);
+
+		for (const path of paths) {
+			const methods = Object.values(path);
+
+			for (const method of methods) {
 				if (Array.isArray(method.security) && method.security.includes("isPublic")) {
 					method.security = [];
 				}
-			});
-		});
+			}
+		}
 
 		app.use(
 			getMiddleware({

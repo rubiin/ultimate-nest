@@ -75,7 +75,7 @@ describe("UserService", () => {
 				} as any),
 		);
 
-		const result = await service.create({ ...mockedUser, image: mockFile });
+		const result = await service.create({ ...mockedUser, files: mockFile });
 
 		expect(result).toStrictEqual({ ...mockedUser });
 		expect(createSpy).toBeCalledWith({ ...mockedUser });

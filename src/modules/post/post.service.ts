@@ -1,18 +1,18 @@
-import { IBaseService } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
-import { Comment, Post, User } from "@entities";
+import { Comment, Post, Tag, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { omit } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
 import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
-export class PostService implements IBaseService<Post> {
+export class PostService {
 	constructor(
 		@InjectRepository(Post)
 		private readonly postRepository: BaseRepository<Post>,
@@ -20,6 +20,8 @@ export class PostService implements IBaseService<Post> {
 		private readonly userRepository: BaseRepository<User>,
 		@InjectRepository(User)
 		private readonly commentRepository: BaseRepository<Comment>,
+		@InjectRepository(Tag)
+		private readonly tagRepository: BaseRepository<Comment>,
 	) {}
 
 	/**
@@ -38,8 +40,6 @@ export class PostService implements IBaseService<Post> {
 		search,
 	}: PageOptionsDto): Observable<Pagination<Post>> {
 		const qb = this.postRepository.qb("p").select("p.*");
-
-		qb.where({ isObsolete: false, isActive: true });
 
 		if (search) {
 			qb.andWhere({ title: { $ilike: `%${search}%` } });
@@ -64,8 +64,6 @@ export class PostService implements IBaseService<Post> {
 			this.postRepository.findOne(
 				{
 					idx: index,
-					isObsolete: false,
-					isActive: true,
 				},
 				{ populate },
 			),
@@ -91,9 +89,17 @@ export class PostService implements IBaseService<Post> {
 	 * @returns The post object
 	 */
 	create(dto: CreatePostDto, author: User): Observable<Post> {
-		const post = this.postRepository.create({ ...dto, author });
+		return from(
+			this.tagRepository.find({
+				idx: dto.tags,
+			}),
+		).pipe(
+			switchMap(tags => {
+				const post = this.postRepository.create({ ...omit(dto, ["tags"]), author, tags });
 
-		return from(this.postRepository.persistAndFlush(post)).pipe(map(() => post));
+				return from(this.postRepository.persistAndFlush(post)).pipe(map(() => post));
+			}),
+		);
 	}
 
 	/**
@@ -106,7 +112,20 @@ export class PostService implements IBaseService<Post> {
 	update(index: string, dto: EditPostDto): Observable<Post> {
 		return this.findOne(index).pipe(
 			switchMap(post => {
-				this.postRepository.assign(post, dto);
+				if (dto.tags) {
+					return from(
+						this.tagRepository.find({
+							idx: dto.tags,
+						}),
+					).pipe(
+						switchMap(tags => {
+							this.postRepository.assign(post, { ...omit(dto, ["tags"]), tags });
+
+							return from(this.postRepository.flush()).pipe(map(() => post));
+						}),
+					);
+				}
+				this.postRepository.assign(post, omit(dto, ["tags"]));
 
 				return from(this.postRepository.flush()).pipe(map(() => post));
 			}),
@@ -144,7 +163,7 @@ export class PostService implements IBaseService<Post> {
 		const post$ = from(this.postRepository.findOneOrFail({ idx: postIndex }));
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id: userId, isObsolete: false, isActive: true },
+				{ id: userId },
 				{
 					populate: ["favorites"],
 				},
@@ -181,7 +200,7 @@ export class PostService implements IBaseService<Post> {
 		);
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id: userId, isObsolete: false, isActive: true },
+				{ id: userId },
 				{
 					populate: ["favorites"],
 				},
@@ -206,12 +225,9 @@ export class PostService implements IBaseService<Post> {
 	 * @returns An array of comments
 	 */
 	findComments(index: string): Observable<Comment[]> {
-		return from(
-			this.postRepository.findOne(
-				{ idx: index, isObsolete: false, isActive: true },
-				{ populate: ["comments"] },
-			),
-		).pipe(map(post => post.comments.getItems()));
+		return from(this.postRepository.findOne({ idx: index }, { populate: ["comments"] })).pipe(
+			map(post => post.comments.getItems()),
+		);
 	}
 
 	/**
@@ -235,20 +251,24 @@ export class PostService implements IBaseService<Post> {
 	}
 
 	/**
-	 * "Delete a comment from a post."
-	 *
-	 * The first thing we do is to get the post from the database. We use the `findOneOrFail` method to get
-	 * the post. We also use the `populate` option to get the author of the post
-	 * @param {string} index - string - The index of the post to delete the comment from.
+	 * It finds a post and a comment, removes the comment from the post, and then deletes the comment
+	 * @param {string} postIdx - string - The id of the post
+	 * @param {string} commentIdx - The id of the comment to be deleted
+	 * @returns A post with the comment removed.
 	 */
-	deleteComment(index: string) {
-		return this.findOne(index, ["comments"]).pipe(
-			switchMap(post => {
-				const comment = this.commentRepository.getReference(post.id);
+	deleteComment(postIndex: string, commentIndex: string): Observable<Post> {
+		return forkJoin([
+			this.findOne(postIndex),
+			from(this.commentRepository.findOneOrFail({ idx: commentIndex })),
+		]).pipe(
+			switchMap(([post, comment]) => {
+				const commentReference = this.commentRepository.getReference(comment.id);
 
-				if (post.comments.contains(comment)) {
-					post.comments.remove(comment);
-					from(this.commentRepository.removeAndFlush(comment)).pipe(map(() => post));
+				if (post.comments.contains(commentReference)) {
+					post.comments.remove(commentReference);
+					from(this.commentRepository.removeAndFlush(commentReference)).pipe(
+						map(() => post),
+					);
 				}
 
 				return of(post);

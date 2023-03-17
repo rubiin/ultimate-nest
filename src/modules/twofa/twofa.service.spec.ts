@@ -4,7 +4,6 @@ import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { mockedUser } from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Response } from "express";
@@ -12,14 +11,13 @@ import { authenticator } from "otplib";
 import qrCode from "qrcode";
 
 import { TwoFactorService } from "./twofa.service";
+import { loggedInUser } from "@mocks";
 
 describe("TwoFactorService", () => {
 	let service: TwoFactorService;
 	const mockConfigService = createMock<ConfigService>();
 	const mockResponse = createMock<Response>();
 	const mockUserRepo = createMock<BaseRepository<User>>();
-
-	const loggedInUser = new User(mockedUser);
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
