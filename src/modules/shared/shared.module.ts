@@ -22,6 +22,7 @@ import { ProfileModule } from "@modules/profile/profile.module";
 import { TwoFactorModule } from "@modules/twofa/twofa.module";
 import { UserModule } from "@modules/user/user.module";
 import { Module } from "@nestjs/common";
+import { DevtoolsModule } from "@nestjs/devtools-integration";
 
 @Module({
 	imports: [
@@ -45,6 +46,9 @@ import { Module } from "@nestjs/common";
 		NestThrottlerModule,
 		NestHttpModule,
 		NestServeStaticModule,
+		DevtoolsModule.register({
+			http: process.env.NODE_ENV.startsWith("prod"),
+		}),
 	],
 	providers: [IsUniqueConstraint],
 })

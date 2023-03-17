@@ -5,7 +5,7 @@ import { createMock } from "@golevelup/ts-jest";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { mockedOtpLog, mockedUser, mockResetPasswordDto } from "@mocks";
+import { loggedInUser, mockedOtpLog, mockedUser, mockResetPasswordDto } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -22,8 +22,6 @@ describe("AuthService", () => {
 	const mockEm = createMock<EntityManager>();
 	const mockUserRepo = createMock<BaseRepository<User>>();
 	const mockOtpLogRepo = createMock<BaseRepository<OtpLog>>();
-
-	const loggedInUser = new User(mockedUser);
 
 	// default mocks
 

@@ -1,5 +1,5 @@
 import { PostState } from "@common/@types";
-import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
+import { IsEnumField, IsStringField } from "@common/decorators";
 import { IsUnique } from "@common/validators";
 import { Post } from "@entities";
 
@@ -43,11 +43,4 @@ export class CreatePostDto {
 	 */
 	@IsEnumField(PostState)
 	state: PostState;
-
-	/**
-	 * Reading time of post
-	 * @example 100 (in minutes)
-	 */
-	@IsNumberField({ required: false })
-	readingTime?: number;
 }

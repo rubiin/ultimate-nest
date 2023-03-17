@@ -44,7 +44,7 @@ export class UserController {
 		return this.userService.create({
 			...dto,
 			roles: [Roles.AUTHOR],
-			image,
+			files: image,
 		});
 	}
 
@@ -71,7 +71,7 @@ export class UserController {
 		@UploadedFile(fileValidatorPipe({}))
 		image: IFile,
 	) {
-		return this.userService.create({ ...dto, image });
+		return this.userService.create({ ...dto, files: image });
 	}
 
 	@Put(":idx")

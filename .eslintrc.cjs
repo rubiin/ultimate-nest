@@ -72,7 +72,8 @@ module.exports = {
 			"\\*idx*",
 		],
 		"allowList": {
-			"ProcessEnv": true
+			"ProcessEnv": true,
+			"UUIDParam": true,
 		}
 	}
 		],

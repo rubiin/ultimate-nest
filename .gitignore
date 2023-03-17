@@ -10,6 +10,12 @@ env/*
 
 uploads/*
 
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# IDE - VSCode
 /.idea
 .project
 .classpath
@@ -17,13 +23,26 @@ uploads/*
 *.launch
 .settings/
 *.sublime-workspace
-
-# IDE - VSCode
+/.awcache
+/.vscode
+/.devcontainer
+*.code-workspace
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+
+
+letsencrypt/*
 
 
 ### Linux ###
@@ -135,7 +154,7 @@ dist
 .cache/
 # Comment in the  line in if your project uses Gatsby and not Next.js
 # https://nextjs.org/blog/next-9-1#-directory-support
-# 
+#
 
 # vuepress build output
 .vuepress/dist
