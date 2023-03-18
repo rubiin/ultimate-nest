@@ -11,9 +11,7 @@ describe("IsUnique", () => {
 	const username = "tester";
 
 	const arguments_: IsUniqueValidationContext = {
-		object: {
-			username,
-		},
+		object: { username },
 		constraints: [() => User, "username" as never],
 		value: username,
 		targetName: "",
@@ -30,7 +28,6 @@ describe("IsUnique", () => {
 
 	it("should pass if there are no duplicates", async () => {
 		mockEm.count.mockResolvedValue(0);
-
 		const result = await isUnique.validate<User, "username">(username, arguments_);
 
 		expect(result).toBeTruthy();
@@ -39,7 +36,6 @@ describe("IsUnique", () => {
 
 	it("should fail if there are  duplicates", async () => {
 		mockEm.count.mockResolvedValue(1);
-
 		const result = await isUnique.validate<User, "username">(username, arguments_);
 
 		expect(result).toBeFalsy();

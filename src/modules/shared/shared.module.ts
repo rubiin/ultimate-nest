@@ -21,8 +21,9 @@ import { PostModule } from "@modules/post/post.module";
 import { ProfileModule } from "@modules/profile/profile.module";
 import { TwoFactorModule } from "@modules/twofa/twofa.module";
 import { UserModule } from "@modules/user/user.module";
-import { Module } from "@nestjs/common";
 import { DevtoolsModule } from "@nestjs/devtools-integration";
+import { Module } from "@nestjs/common";
+
 
 @Module({
 	imports: [
