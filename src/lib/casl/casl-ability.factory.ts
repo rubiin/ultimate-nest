@@ -6,10 +6,10 @@ import {
 	MongoAbility,
 } from "@casl/ability";
 import { Action, Roles } from "@common/@types";
-import { Comment, Post, User } from "@entities";
+import { Comment, Post, Tag, User } from "@entities";
 import { Injectable } from "@nestjs/common";
 
-type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment> | "all";
+type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment | typeof Tag> | "all";
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
