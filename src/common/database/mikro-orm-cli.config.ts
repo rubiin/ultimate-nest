@@ -2,7 +2,7 @@ import { LoadStrategy, Options } from "@mikro-orm/core";
 import { defineConfig as definePGConfig } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
-import { defineConfig as defineSqliteConfig } from "@mikro-orm/sqlite";
+import { defineConfig as defineSqliteConfig } from "@mikro-orm/better-sqlite";
 import { Logger, NotFoundException } from "@nestjs/common";
 import dotenv from "dotenv";
 import dotEnvExpand from "dotenv-expand";
@@ -14,17 +14,20 @@ import { BaseRepository } from "./base.repository";
  * `MikroOrmConfig` is a configuration object for `MikroORM` that is used to
  * This is required to run mikro-orm cli
  *
+ * @see https://mikro-orm.io/docs/configuration
+ * @see https://mikro-orm.io/docs/cli
+ *
  */
 
 const logger = new Logger("MikroORM");
 
-const myEnvironment = dotenv.config({
+const environment = dotenv.config({
 	path: `${process.cwd()}/env/.env.${process.env.NODE_ENV}`,
 });
 
-dotEnvExpand.expand(myEnvironment);
+dotEnvExpand.expand(environment);
 
-logger.debug(`🛠️  Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
+logger.debug(`🛠️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
 
 export const baseOptions = {
 	entities: ["dist/entities/*.entity.js"],
@@ -32,20 +35,24 @@ export const baseOptions = {
 	findOneOrFailHandler: (entityName: string, key: any) => {
 		return new NotFoundException(`${entityName} not found for ${key}`);
 	},
+	filters: {
+		default: {
+			cond: { isObsolete: { $eq: false }, isActive: { $eq: true } },
+			entity: ["Post", "User", "Comment", "Tag"],
+		},
+	},
 	migrations: {
 		path: "./dist/migrations",
 		pathTs: "./migrations",
 		tableName: "migrations",
 		transactional: true,
 		glob: "!(*.d).{js,ts}",
-		//	emit: "ts",
 	},
 	seeder: {
 		path: "dist/common/database/seeders/", // path to the folder with seeders
 		pathTs: "src/common/database/seeders/", // path to the folder with seeders
 		defaultSeeder: "DatabaseSeeder", // default seeder class name
 		glob: "!(*.d).{js,ts}", // how to match seeder files (all .js and .ts files, but not .d.ts)
-		//	emit: "ts", // seeder generation mode
 	},
 	logger: logger.debug.bind(logger),
 	metadataProvider: TsMorphMetadataProvider,
