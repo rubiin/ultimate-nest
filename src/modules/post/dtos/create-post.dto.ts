@@ -1,8 +1,7 @@
 import { PostState } from "@common/@types";
 import { IsEnumField, IsStringField } from "@common/decorators";
-import { IsUnique } from "@common/validators";
-import { Post } from "@entities";
-import { IsUUID } from "class-validator";
+import { IsNotEmpty, IsUUID } from "class-validator";
+import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreatePostDto {
 	/**
@@ -11,7 +10,6 @@ export class CreatePostDto {
 	 */
 
 	@IsStringField()
-	@IsUnique(() => Post, "title")
 	title!: string;
 
 	/**
@@ -35,13 +33,20 @@ export class CreatePostDto {
 	 * @example ["c84ab664-d9a9-4b00-b412-bc31b50c7c50","c84ab664-d9a9-4b00-b412-bc31b50c7c50"]
 	 */
 
-	@IsUUID("4", { each: true })
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsUUID("4", {
+		each: true,
+		message: i18nValidationMessage("validation.isDataType", {
+			type: "uuid",
+		}),
+	})
 	tags!: string[];
 
 	/**
 	 * State of post
 	 * @example DRAFT
 	 */
+
 	@IsEnumField(PostState, { required: false })
 	state: PostState;
 }

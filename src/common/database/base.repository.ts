@@ -2,7 +2,7 @@ import { EntityData, EntityManager, FilterQuery, FindOptions, Loaded } from "@mi
 import { EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException } from "@nestjs/common";
 
-import { BaseEntity } from "./base-entity.entity";
+import { BaseEntity } from "./base.entity";
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	/**
@@ -72,7 +72,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		const entity = await this.findOne(where);
 
 		if (!entity) {
-			throw new BadRequestException("Entity not found");
+			throw new BadRequestException("Entity not found.");
 		}
 		this.em.assign(entity, update);
 		await this.persistAndFlush(entity);
@@ -89,7 +89,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		const entity = await this.findOne(where);
 
 		if (!entity) {
-			throw new BadRequestException("Entity not found");
+			throw new BadRequestException("Entity not found.");
 		}
 		this.remove(entity);
 
@@ -105,7 +105,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		const entity = await this.findOne(where);
 
 		if (!entity) {
-			throw new BadRequestException("Entity not found");
+			throw new BadRequestException("Entity not found.");
 		}
 
 		return this.softRemoveAndFlush(entity);

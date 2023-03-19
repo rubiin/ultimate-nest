@@ -15,7 +15,7 @@ import { Sanitize, Trim } from "./transform.decorator";
 export const IsStringField = (ops?: IsStringFieldOptions) => {
 	const options: IsStringFieldOptions = {
 		minLength: 2,
-		maxLength: 500,
+		maxLength: 1000,
 		required: true,
 		each: false,
 		sanitize: true,
