@@ -11,9 +11,9 @@ export class PostFactory extends Factory<Post> {
 			title: faker.lorem.words(randomNumber(1, 10)),
 			content: faker.lorem.paragraph(randomNumber(2, 4)),
 			description: faker.lorem.words(randomNumber(10, 20)),
-			tags: faker.lorem.words(randomNumber(1, 4)).split(" "),
 			readingTime: randomNumber(10, 100),
-			readCount: randomNumber(1, 100),
+			favoritesCount: randomNumber(1, 100),
+			readCount: randomNumber(10, 100),
 		};
 	}
 }

@@ -3,7 +3,7 @@ import * as Entities from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { defineConfig as definePgConfig } from "@mikro-orm/postgresql";
-import { defineConfig as defineSqliteConfig } from "@mikro-orm/sqlite";
+import { defineConfig as defineSqliteConfig } from "@mikro-orm/better-sqlite";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 

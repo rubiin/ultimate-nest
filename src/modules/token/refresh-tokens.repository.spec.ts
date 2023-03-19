@@ -1,8 +1,8 @@
-import { RefreshToken, User } from "@entities";
+import { RefreshToken } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { EntityRepository } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { loggedInUser, mockedUser } from "@mocks";
+import { loggedInUser } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";

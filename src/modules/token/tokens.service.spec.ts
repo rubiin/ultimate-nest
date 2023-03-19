@@ -2,7 +2,7 @@ import { BaseRepository } from "@common/database";
 import { RefreshToken, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { loggedInUser, mockedUser } from "@mocks";
+import { loggedInUser } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";

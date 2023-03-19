@@ -19,7 +19,6 @@ export abstract class BaseEntity {
 	/**
 	 *  To enable or disable the entity
 	 */
-
 	@Property()
 	isActive = true;
 

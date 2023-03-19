@@ -7,7 +7,6 @@ import {
 	Entity,
 	Enum,
 	EventArgs,
-	Filter,
 	ManyToMany,
 	ManyToOne,
 	OneToMany,
@@ -18,11 +17,6 @@ import { slugify } from "helper-fns";
 
 import { Comment, Tag, User } from "./index";
 
-@Filter({
-	name: "default",
-	cond: { isObsolete: { $eq: false }, isActive: { $eq: true } },
-	default: true,
-})
 @Entity()
 export class Post extends BaseEntity {
 	@Property()
@@ -37,9 +31,6 @@ export class Post extends BaseEntity {
 	@Property({ type: "text" })
 	content!: string;
 
-	@ManyToMany(() => Tag, "posts", { owner: true })
-	tags = new Collection<Tag>(this);
-
 	@Enum({ items: () => PostState })
 	state = PostState.DRAFT;
 
@@ -48,6 +39,9 @@ export class Post extends BaseEntity {
 
 	@Property()
 	readCount = 0;
+
+	@Property()
+	favoritesCount = 0;
 
 	@ManyToOne({ eager: false })
 	author: Rel<User>;
@@ -58,8 +52,8 @@ export class Post extends BaseEntity {
 	})
 	comments = new Collection<Comment>(this);
 
-	@Property()
-	favoritesCount = 0;
+	@ManyToMany(() => Tag, "posts", { owner: true })
+	tags = new Collection<Tag>(this);
 
 	@BeforeCreate()
 	@BeforeUpdate()
