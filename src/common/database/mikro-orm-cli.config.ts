@@ -2,7 +2,7 @@ import { LoadStrategy, Options } from "@mikro-orm/core";
 import { defineConfig as definePGConfig } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
-import { defineConfig as defineSqliteConfig } from "@mikro-orm/sqlite";
+import { defineConfig as defineSqliteConfig } from "@mikro-orm/better-sqlite";
 import { Logger, NotFoundException } from "@nestjs/common";
 import dotenv from "dotenv";
 import dotEnvExpand from "dotenv-expand";
