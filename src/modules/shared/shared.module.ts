@@ -23,7 +23,6 @@ import { TagsModule } from "@modules/tags/tags.module";
 import { TwoFactorModule } from "@modules/twofa/twofa.module";
 import { UserModule } from "@modules/user/user.module";
 import { Module } from "@nestjs/common";
-import { DevtoolsModule } from "@nestjs/devtools-integration";
 
 @Module({
 	imports: [
@@ -48,9 +47,6 @@ import { DevtoolsModule } from "@nestjs/devtools-integration";
 		NestThrottlerModule,
 		NestHttpModule,
 		NestServeStaticModule,
-		DevtoolsModule.register({
-			http: process.env.NODE_ENV.startsWith("prod"),
-		}),
 	],
 	providers: [IsUniqueConstraint],
 })
