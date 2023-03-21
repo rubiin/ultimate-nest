@@ -67,7 +67,7 @@ services:
             - "redis-data:/data"
     rabbitmq:
         container_name: rabbitmq
-        image: "rabbitmq:3.11.10-management-alpine"
+        image: "rabbitmq:3.11.11-management-alpine"
         networks:
             - nestify-network
         depends_on:
