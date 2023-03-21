@@ -40,8 +40,7 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
 		const [entityType, field] = context.constraints;
 		const result = await this.em.count(entityType(), { [field]: value });
 
-		
-return result === 0;
+		return result === 0;
 	}
 
 	defaultMessage(context: IsUniqueValidationContext): string {

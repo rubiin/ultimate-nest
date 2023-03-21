@@ -1,6 +1,7 @@
 interface IBaseValidator {
 	required?: boolean;
 	each?: boolean;
+	message?: string;
 }
 
 export interface IsStringFieldOptions extends IBaseValidator {
