@@ -16,7 +16,7 @@ import {
 // this just exports all the config validation schemas as one type to add to processEnv for intellisense
 
 
-export type AllEnv = typeof appConfigValidationSchema &
+export type AllEnvironment = typeof appConfigValidationSchema &
 	typeof databaseConfigValidationSchema &
 	typeof mailConfigValidationSchema &
 	typeof redisConfigValidationSchema &

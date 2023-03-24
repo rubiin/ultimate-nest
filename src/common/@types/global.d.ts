@@ -1,7 +1,8 @@
 import { User } from "@entities";
 import { I18nTranslations as I18nTranslationTypes } from "@generated";
+import { AllEnvironment } from "@lib/config/configs/allenv";
+
 import { JoiTypeToInterFace } from "./types";
-import { AllEnv } from "@lib/config/configs/allenv";
 
 export {};
 
@@ -14,7 +15,7 @@ declare global {
 	}
 
 	namespace NodeJS {
-		interface ProcessEnv extends JoiTypeToInterFace<AllEnv> {}
+		type ProcessEnv = JoiTypeToInterFace<AllEnvironment>
 	}
 
 	export type I18nTranslations = I18nTranslationTypes;
