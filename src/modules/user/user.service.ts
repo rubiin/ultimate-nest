@@ -1,4 +1,5 @@
-import { EmailTemplateEnum, IBaseService, IFile } from "@common/@types";
+import { EmailTemplateEnum, IBaseService } from "@common/@types";
+import { DtoWithFile } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { User } from "@entities";
@@ -16,9 +17,6 @@ import { from, map, Observable, switchMap } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
-type CreateWithFile<T, K = IFile> = T & {
-	files: K;
-};
 
 @Injectable()
 export class UserService implements IBaseService<User> {
@@ -94,7 +92,7 @@ export class UserService implements IBaseService<User> {
 	 * @param dto - CreateWithFile<CreateUserDto>
 	 * @returns The user object
 	 */
-	async create(dto: CreateWithFile<CreateUserDto>): Promise<User> {
+	async create(dto: DtoWithFile<CreateUserDto>): Promise<User> {
 		const { files, ...rest } = dto;
 		const user = this.userRepository.create(rest);
 
