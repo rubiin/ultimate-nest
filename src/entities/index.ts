@@ -1,5 +1,7 @@
 export * from "./activity-log.entity";
 export * from "./comment.entity";
+export * from "./conversation.entity";
+export * from "./message.entity";
 export * from "./otp-log.entity";
 export * from "./post.entity";
 export * from "./protocol.entity";
