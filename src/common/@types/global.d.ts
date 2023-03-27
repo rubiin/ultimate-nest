@@ -49,7 +49,8 @@ declare global {
 			MAIL_USERNAME: string;
 			MAIL_PORT: number;
 			MAIL_SERVER: string;
-			MAIL_PREVIEW_EMAIL: string;
+			MAIL_PREVIEW_EMAIL: boolean;
+			MAIL_BCC_LIST?: string;
 			MAIL_SENDER_EMAIL: string;
 			MAIL_TEMPLATE_DIR: string;
 
