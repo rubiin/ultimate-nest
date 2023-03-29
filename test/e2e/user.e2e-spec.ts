@@ -19,7 +19,7 @@ describe("UserController (e2e)", () => {
 			.post("/auth/login")
 			.send(user.admin)
 			.then(({ body }) => {
-				adminJwtToken = body.payload.access_token;
+				adminJwtToken = body.payload.accessToken;
 			});
 	});
 
