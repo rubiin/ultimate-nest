@@ -25,7 +25,7 @@ export const HelperService = {
 			user: {
 				...pick(user, ["id", "idx"]),
 			},
-			access_token: accessToken,
+			accessToken: accessToken,
 			...(refreshToken ? { refresh_token: refreshToken } : {}),
 		};
 	},

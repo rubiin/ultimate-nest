@@ -9,7 +9,7 @@ import { PassportModule } from "@nestjs/passport";
 
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies";
+import { FacebookStrategy, GoogleStrategy, JwtStrategy, MagicLoginStrategy } from "./strategies";
 
 @Module({
 	imports: [PassportModule, NestJwtModule, OrmModule, UserModule, NestCaslModule],
@@ -21,6 +21,7 @@ import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies";
 		JwtStrategy,
 		GoogleStrategy,
 		FacebookStrategy,
+		MagicLoginStrategy,
 	],
 	exports: [NestJwtModule, AuthService, JwtStrategy, TokensService, RefreshTokensRepository],
 })

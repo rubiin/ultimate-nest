@@ -17,7 +17,6 @@ import { from, map, Observable, switchMap } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
-
 @Injectable()
 export class UserService implements IBaseService<User> {
 	constructor(

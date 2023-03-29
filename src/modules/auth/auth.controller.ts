@@ -17,29 +17,46 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation } from "@nestjs/swagger";
 import { Request, Response } from "express";
-import { map, Observable } from "rxjs";
+import { map, Observable, of, switchMap } from "rxjs";
 
 import { AuthService } from "./auth.service";
 import {
 	ChangePasswordDto,
+	MagicLinkLogin,
 	OtpVerifyDto,
 	RefreshTokenDto,
 	ResetPasswordDto,
 	SendOtpDto,
 	UserLoginDto,
 } from "./dtos";
+import { MagicLoginStrategy } from "./strategies";
 
 @GenericController("auth", false)
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
 		private readonly tokenService: TokensService,
+		private readonly magicStrategy: MagicLoginStrategy,
 	) {}
 
 	@Post("login")
 	@ApiOperation({ summary: "User Login" })
 	login(@Body() loginDto: UserLoginDto): Observable<IAuthenticationResponse> {
-		return this.authService.login(loginDto, true);
+		return this.authService.login(loginDto);
+	}
+
+	@Post("login/magic")
+	@ApiOperation({ summary: "User Login with magic link" })
+	loginByMagicLink(
+		@Req() request: Request,
+		@Res() response: Response,
+		@Body() dto: MagicLinkLogin,
+	): Observable<void> {
+		return this.authService.validateUser(false, dto.destination).pipe(
+			switchMap(_user => {
+				return of(this.magicStrategy.send(request, response));
+			}),
+		);
 	}
 
 	@Post("reset-password")
@@ -62,13 +79,26 @@ export class AuthController {
 		return this.authService.forgotPassword(dto);
 	}
 
+	@UseGuards(AuthGuard("magicLogin"))
+	@Get("magic-link/callback")
+	magicCallback(@LoggedInUser() user: User, @Res() response: Response): Observable<void> {
+		return this.tokenService.generateAccessToken(user).pipe(
+			map(data => {
+				// client url
+				return response.redirect(
+					`${process.env.API_URL}/v1/auth/magic-login/login?token=${data}`,
+				);
+			}),
+		);
+	}
+
 	@Get("google")
 	@UseGuards(AuthGuard("google"))
 	googleAuth(@Req() _request: Request) {
 		// the google auth redirect will be handled by passport
 	}
 
-	@Get("google/redirect")
+	@Get("google/callback")
 	@UseGuards(AuthGuard("google"))
 	googleAuthRedirect(
 		@LoggedInUser()
@@ -79,7 +109,7 @@ export class AuthController {
 			map(data => {
 				// client url
 				return response.redirect(
-					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.access_token}`,
+					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.accessToken}`,
 				);
 			}),
 		);
@@ -91,7 +121,7 @@ export class AuthController {
 		// the facebook auth redirect will be handled by passport
 	}
 
-	@Get("facebook/redirect")
+	@Get("facebook/callback")
 	@UseGuards(AuthGuard("facebook"))
 	facebookAuthRedirect(
 		@LoggedInUser()
@@ -102,7 +132,7 @@ export class AuthController {
 			map(data => {
 				// client url
 				return response.redirect(
-					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.access_token}`,
+					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.accessToken}`,
 				);
 			}),
 		);
