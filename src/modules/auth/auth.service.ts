@@ -43,14 +43,14 @@ export class AuthService {
 
 	/**
 	 * It takes an email and a password, and returns the user if the password is correct
+	 * @param {boolean} isPasswordLogin - boolean - This is a boolean value that determines whether the
 	 * @param {string} email - The email address of the user.
 	 * @param {string} pass - string - The password to be validated
-	 * @param {boolean} isPasswordLogin - boolean - This is a boolean value that determines whether the
 	 * user is logging in with a password or not.
 	 * @returns The user object without the password property.
 	 */
 
-	validateUser(email: string, pass: string, isPasswordLogin: boolean): Observable<any> {
+	validateUser(isPasswordLogin: boolean, email: string, pass?: string): Observable<any> {
 		return from(
 			this.userRepository.findOne({
 				email,
@@ -94,12 +94,12 @@ export class AuthService {
 	 * We validate the user, if the user is valid, we generate an access token and a refresh token
 	 * @param {UserLoginDto} loginDto - UserLoginDto - This is the DTO that we created earlier.
 	 * @param {boolean} isPasswordLogin - boolean - This is a boolean value that tells the function whether
-	 * the user is logging in with a password or a refresh token.
+	 * the user is logging in with a password or oauth
 	 * @returns An observable of type IAuthenticationResponse
 	 */
 
-	login(loginDto: UserLoginDto, isPasswordLogin: boolean): Observable<IAuthenticationResponse> {
-		return this.validateUser(loginDto.email, loginDto.password, isPasswordLogin).pipe(
+	login(loginDto: UserLoginDto, isPasswordLogin = false): Observable<IAuthenticationResponse> {
+		return this.validateUser(isPasswordLogin, loginDto.email, loginDto.password).pipe(
 			switchMap(user => {
 				if (!user)
 					throw new UnauthorizedException(

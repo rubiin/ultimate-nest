@@ -100,7 +100,7 @@ export const AppUtils = {
 		});
 	},
 	ssl: (): { key: Buffer; cert: Buffer } | null => {
-		let httpsOptions: { key: Buffer; cert: Buffer; };
+		let httpsOptions: { key: Buffer; cert: Buffer };
 
 		const logger = new Logger("ssl");
 
