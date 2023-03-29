@@ -6,7 +6,7 @@ export const mail = registerAs("mail", () => ({
 	username: process.env.MAIL_USERNAME,
 	password: process.env.MAIL_PASSWORD,
 	host: process.env.MAIL_HOST,
-	port: process.env.MAIL_PORT ?? +process.env.MAIL_PORT ,
+	port: process.env.MAIL_PORT ?? +process.env.MAIL_PORT,
 	server: process.env.MAIL_SERVER,
 	previewEmail: process.env.MAIL_PREVIEW_EMAIL,
 	bccList: process.env?.MAIL_BCC_LIST.split(",") || [],

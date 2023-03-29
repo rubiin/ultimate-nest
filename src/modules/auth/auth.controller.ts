@@ -17,29 +17,46 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation } from "@nestjs/swagger";
 import { Request, Response } from "express";
-import { map, Observable } from "rxjs";
+import { Observable, map, of, switchMap } from "rxjs";
 
 import { AuthService } from "./auth.service";
 import {
 	ChangePasswordDto,
+	MagicLinkLogin,
 	OtpVerifyDto,
 	RefreshTokenDto,
 	ResetPasswordDto,
 	SendOtpDto,
 	UserLoginDto,
 } from "./dtos";
+import { MagicLoginStrategy } from "./strategies";
 
 @GenericController("auth", false)
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
 		private readonly tokenService: TokensService,
+		private readonly magicStrategy: MagicLoginStrategy,
 	) {}
 
 	@Post("login")
 	@ApiOperation({ summary: "User Login" })
 	login(@Body() loginDto: UserLoginDto): Observable<IAuthenticationResponse> {
-		return this.authService.login(loginDto, true);
+		return this.authService.login(loginDto);
+	}
+
+	@Post("login/magic")
+	@ApiOperation({ summary: "User Login with magic link" })
+	loginByMagicLink(
+		@Req() req: Request,
+		@Res() res: Response,
+		@Body() dto: MagicLinkLogin,
+	): Observable<void> {
+		return this.authService.validateUser(false, dto.destination).pipe(
+			switchMap(_user => {
+				return of(this.magicStrategy.send(req, res));
+			}),
+		);
 	}
 
 	@Post("reset-password")
