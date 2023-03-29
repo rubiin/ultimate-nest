@@ -8,7 +8,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import Strategy from "passport-magic-login";
 
 @Injectable()
-export class MagicLoginStrategy extends PassportStrategy(Strategy) {
+export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin") {
 	logger = new Logger(MagicLoginStrategy.name);
 	constructor(
 		@InjectRepository(User)
