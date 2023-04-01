@@ -4,9 +4,10 @@ import { IConfig } from "@lib/config/config.interface";
 import { defineConfig as defineSqliteConfig } from "@mikro-orm/better-sqlite";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { defineConfig as definePgConfig } from "@mikro-orm/postgresql";
-import { Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
+@Global()
 @Module({
 	imports: [
 		MikroOrmModule.forRootAsync({
