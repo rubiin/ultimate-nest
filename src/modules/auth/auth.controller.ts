@@ -62,8 +62,8 @@ export class AuthController {
 	@Post("reset-password")
 	@SwaggerResponse({
 		operation: "Reset password",
-		notFounds: ["Otp doesn't exist."],
-		badRequests: ["Otp is expired."],
+		notFound: "Otp doesn't exist.",
+		badRequest: "Otp is expired.",
 	})
 	resetUserPassword(@Body() dto: ResetPasswordDto): Observable<User> {
 		return this.authService.resetPassword(dto);
@@ -73,7 +73,7 @@ export class AuthController {
 	@Put("forgot-password")
 	@SwaggerResponse({
 		operation: "Forgot password",
-		notFounds: ["Account doesn't exist."],
+		notFound: "Account doesn't exist.",
 	})
 	async forgotPassword(@Body() dto: SendOtpDto): Promise<OtpLog> {
 		return this.authService.forgotPassword(dto);
@@ -147,8 +147,8 @@ export class AuthController {
 	@Post("verify-otp")
 	@SwaggerResponse({
 		operation: "Verify otp",
-		notFounds: ["Otp doesn't exist."],
-		badRequests: ["Otp is expired."],
+		notFound: "Otp doesn't exist.",
+		badRequest: "Otp is expired.",
 	})
 	async verifyOtp(@Body() dto: OtpVerifyDto): Promise<User> {
 		return this.authService.verifyOtp(dto);
@@ -158,7 +158,7 @@ export class AuthController {
 	@Post("change-password")
 	@SwaggerResponse({
 		operation: "Change password",
-		badRequests: ["Username and password provided does not match."],
+		badRequest: "Username and password provided does not match.",
 	})
 	changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User): Observable<User> {
 		return this.authService.changePassword(dto, user);
