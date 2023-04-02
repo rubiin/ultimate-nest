@@ -6,16 +6,16 @@ import { ClearCacheMiddleware } from "./cache.middleware";
 
 describe("ClearCacheMiddleware", () => {
 	let middleware: ClearCacheMiddleware;
-  const mockCacheService = createMock<CacheService>();
+	const mockCacheService = createMock<CacheService>();
 
 	beforeEach(() => {
 		middleware = new ClearCacheMiddleware(mockCacheService);
 	});
 	const mockRequest = createMock<Request>({
-    query: {
-      clearCache: "true"
-    }
-  });
+		query: {
+			clearCache: "true",
+		},
+	});
 	const mockResponse = createMock<Response>();
 
 	it("should be defined", () => {
@@ -23,7 +23,7 @@ describe("ClearCacheMiddleware", () => {
 	});
 
 	describe("use", () => {
-		it("should clear cache", async() => {
+		it("should clear cache", async () => {
 			mockCacheService.resetCache.mockReturnValue(Promise.resolve());
 
 			const mockNext = jest.fn();

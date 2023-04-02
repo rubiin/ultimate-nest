@@ -2,7 +2,7 @@ import { BaseRepository } from "@common/database";
 import { Comment, Post, Tag, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { mockedPost, query } from "@mocks";
+import { mockedPost, queryDto } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { PostService } from "./post.service";
@@ -67,10 +67,7 @@ describe("PostService", () => {
 
 		service.findOne("postId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedPost, idx: "postId" });
-			expect(findOneSpy).toBeCalledWith(
-				{ idx: "postId", isObsolete: false, isActive: true },
-				{ populate: [] },
-			);
+			expect(findOneSpy).toBeCalledWith({ idx: "postId" }, { populate: [] });
 		});
 	});
 
@@ -80,7 +77,7 @@ describe("PostService", () => {
 			total: 100,
 		});
 
-		service.findAll(query).subscribe(result => {
+		service.findAll(queryDto).subscribe(result => {
 			expect(result.meta).toBeDefined();
 			expect(result.links).toBeDefined();
 			expect(result.items).toStrictEqual([]);
@@ -96,10 +93,7 @@ describe("PostService", () => {
 				isObsolete: true,
 				deletedAt: expect.any(Date),
 			});
-			expect(mockPostRepo.findOne).toBeCalledWith(
-				{ idx: "postId", isObsolete: false, isActive: true },
-				{ populate: [] },
-			);
+			expect(mockPostRepo.findOne).toBeCalledWith({ idx: "postId" }, { populate: [] });
 
 			expect(mockPostRepo.softRemoveAndFlush).toBeCalled();
 		});
@@ -116,10 +110,7 @@ describe("PostService", () => {
 				idx: "postId",
 				content: "new content",
 			});
-			expect(mockPostRepo.findOne).toBeCalledWith(
-				{ idx: "postId", isObsolete: false, isActive: true },
-				{ populate: [] },
-			);
+			expect(mockPostRepo.findOne).toBeCalledWith({ idx: "postId" }, { populate: [] });
 		});
 	});
 });

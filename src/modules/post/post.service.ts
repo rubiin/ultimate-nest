@@ -166,6 +166,9 @@ export class PostService {
 				{ id: userId },
 				{
 					populate: ["favorites"],
+					populateWhere: {
+						favorites: { isActive: true, isObsolete: false },
+					},
 				},
 			),
 		);
@@ -203,6 +206,9 @@ export class PostService {
 				{ id: userId },
 				{
 					populate: ["favorites"],
+					populateWhere: {
+						favorites: { isActive: true, isObsolete: false },
+					},
 				},
 			),
 		);
