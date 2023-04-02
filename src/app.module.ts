@@ -7,8 +7,10 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/c
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 
+import { NestCacheModule } from "./lib";
+
 @Module({
-	imports: [SharedModule],
+	imports: [SharedModule, NestCacheModule],
 	providers: [
 		{
 			provide: APP_INTERCEPTOR,

@@ -1,6 +1,5 @@
 import { IsUniqueConstraint } from "@common/validators";
 import {
-	NestCacheModule,
 	NestCaslModule,
 	NestCloudinaryModule,
 	NestConfigModule,
@@ -40,7 +39,6 @@ import { Module } from "@nestjs/common";
 		NestConfigModule,
 		NestPinoModule,
 		NestI18nModule,
-		NestCacheModule,
 		NestCloudinaryModule,
 		NestSentryModule,
 		NestCaslModule,
