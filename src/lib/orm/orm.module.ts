@@ -15,16 +15,16 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 			useFactory: (configService: ConfigService<IConfig, true>) =>
 				process.env.NODE_ENV.startsWith("prod")
 					? definePgConfig({
+							...baseOptions,
 							host: configService.get("database.host", { infer: true }),
 							port: configService.get("database.port", { infer: true }),
 							password: configService.get("database.password", { infer: true }),
 							user: configService.get("database.user", { infer: true }),
 							dbName: configService.get("database.dbName", { infer: true }),
-							...baseOptions,
 					  })
 					: defineSqliteConfig({
 							...baseOptions,
-							dbName: ":memory:",
+							dbName: configService.get("database.dbName", { infer: true }), // :memory: for in-memory
 					  }),
 			inject: [ConfigService],
 		}),
