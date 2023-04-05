@@ -8,7 +8,7 @@ export class TagFactory extends Factory<Tag> {
 
 	definition(faker: Faker): Partial<Tag> {
 		return {
-			title: faker.lorem.words(randomNumber(4, 8)),
+			title: faker.lorem.words(4),
 			description: faker.lorem.paragraphs(randomNumber(1, 3)),
 		};
 	}

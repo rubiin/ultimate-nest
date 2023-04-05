@@ -35,6 +35,8 @@ export const HelperService = {
 		return from(verify(userPassword, passwordToCompare, argon2Options));
 	},
 
+	isDev: () => process.env.NODE_ENV.startsWith("dev"),
+
 	/* A function that returns an observable that resolves to a boolean. */
 	hashString: (userPassword: string): Promise<string> => {
 		return hash(userPassword, argon2Options);

@@ -76,7 +76,7 @@ const config: Options = process.env.NODE_ENV.startsWith("prod")
 	  })
 	: defineSqliteConfig({
 			...baseOptions,
-			dbName: ":memory:",
+			dbName: process.env.DB_DATABASE,
 	  });
 
 export default config;
