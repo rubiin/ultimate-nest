@@ -9,12 +9,15 @@ export class UserFactory extends Factory<User> {
 	definition(faker: Faker): Partial<User> {
 		return {
 			firstName: faker.name.firstName(),
-			lastName: faker.name.firstName(),
+			middleName: faker.name.middleName(),
+			lastName: faker.name.lastName(),
+			bio: faker.lorem.paragraph(),
 			username: faker.internet.userName(),
 			avatar: faker.image.avatar(),
 			email: faker.internet.email(),
 			roles: [Roles.AUTHOR],
 			password: process.env.USER_PASSWORD,
+			lastLogin: faker.date.past(1, new Date()),
 		};
 	}
 }
