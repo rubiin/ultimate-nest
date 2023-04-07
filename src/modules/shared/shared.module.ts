@@ -1,6 +1,5 @@
 import { IsUniqueConstraint } from "@common/validators";
 import {
-	NestCacheModule,
 	NestCaslModule,
 	NestCloudinaryModule,
 	NestConfigModule,
@@ -15,6 +14,7 @@ import {
 	OrmModule,
 } from "@lib/index";
 import { AuthModule } from "@modules/auth/auth.module";
+import { CategoryModule } from "@modules/category/category.module";
 import { ChatModule } from "@modules/chat/chat.module";
 import { HealthModule } from "@modules/health/health.module";
 import { PostModule } from "@modules/post/post.module";
@@ -33,6 +33,7 @@ import { Module } from "@nestjs/common";
 		UserModule,
 		ChatModule,
 		TagsModule,
+		CategoryModule,
 		OrmModule,
 		TwoFactorModule,
 		NestRabbitModule,
@@ -40,7 +41,6 @@ import { Module } from "@nestjs/common";
 		NestConfigModule,
 		NestPinoModule,
 		NestI18nModule,
-		NestCacheModule,
 		NestCloudinaryModule,
 		NestSentryModule,
 		NestCaslModule,

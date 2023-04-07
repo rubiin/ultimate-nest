@@ -25,7 +25,7 @@ export const HelperService = {
 			user: {
 				...pick(user, ["id", "idx"]),
 			},
-			access_token: accessToken,
+			accessToken: accessToken,
 			...(refreshToken ? { refresh_token: refreshToken } : {}),
 		};
 	},
@@ -34,6 +34,8 @@ export const HelperService = {
 	verifyHash: (userPassword: string, passwordToCompare: string): Observable<boolean> => {
 		return from(verify(userPassword, passwordToCompare, argon2Options));
 	},
+
+	isDev: () => process.env.NODE_ENV.startsWith("dev"),
 
 	/* A function that returns an observable that resolves to a boolean. */
 	hashString: (userPassword: string): Promise<string> => {

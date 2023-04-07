@@ -3,9 +3,9 @@ import { ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 
 interface ISwaggerResponseOptions {
 	operation: string;
-	notFounds?: string[];
-	badRequests?: string[];
 	params?: string[];
+	notFound?: string;
+	badRequest?: string;
 }
 
 /**
@@ -17,8 +17,8 @@ interface ISwaggerResponseOptions {
  */
 export const SwaggerResponse = ({
 	operation,
-	notFounds,
-	badRequests,
+	notFound,
+	badRequest,
 	params,
 }: ISwaggerResponseOptions) => {
 	const decsToApply = [ApiOperation({ summary: operation })];
@@ -29,16 +29,12 @@ export const SwaggerResponse = ({
 		}
 	}
 
-	if (badRequests) {
-		for (const badRequest of badRequests) {
-			decsToApply.push(ApiResponse({ status: 400, description: badRequest }));
-		}
+	if (badRequest) {
+		decsToApply.push(ApiResponse({ status: 400, description: badRequest }));
 	}
 
-	if (notFounds) {
-		for (const notFound of notFounds) {
-			decsToApply.push(ApiResponse({ status: 404, description: notFound }));
-		}
+	if (notFound) {
+		decsToApply.push(ApiResponse({ status: 404, description: notFound }));
 	}
 
 	return applyDecorators(...decsToApply);

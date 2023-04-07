@@ -9,7 +9,7 @@ export const mail = registerAs("mail", () => ({
 	port: process.env.MAIL_PORT ?? +process.env.MAIL_PORT,
 	server: process.env.MAIL_SERVER,
 	previewEmail: process.env.MAIL_PREVIEW_EMAIL,
-	bccList: process.env?.MAIL_BCC_LIST.split(",") || [],
+	bccList: process.env?.MAIL_BCC_LIST ? process.env.MAIL_BCC_LIST.split(",") : [],
 	templateDir: process.env.MAIL_TEMPLATE_DIR,
 	senderEmail: process.env.MAIL_SENDER_EMAIL,
 	sesKey: process.env.MAIL_SES_KEY,

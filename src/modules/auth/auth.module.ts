@@ -1,6 +1,4 @@
-import { NestCaslModule } from "@lib/casl/casl.module";
 import { NestJwtModule } from "@lib/jwt/jwt.module";
-import { OrmModule } from "@lib/orm/orm.module";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
 import { TokensService } from "@modules/token/tokens.service";
 import { UserModule } from "@modules/user/user.module";
@@ -9,10 +7,10 @@ import { PassportModule } from "@nestjs/passport";
 
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies";
+import { FacebookStrategy, GoogleStrategy, JwtStrategy, MagicLoginStrategy } from "./strategies";
 
 @Module({
-	imports: [PassportModule, NestJwtModule, OrmModule, UserModule, NestCaslModule],
+	imports: [PassportModule, NestJwtModule, UserModule],
 	controllers: [AuthController],
 	providers: [
 		AuthService,
@@ -21,6 +19,7 @@ import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies";
 		JwtStrategy,
 		GoogleStrategy,
 		FacebookStrategy,
+		MagicLoginStrategy,
 	],
 	exports: [NestJwtModule, AuthService, JwtStrategy, TokensService, RefreshTokensRepository],
 })

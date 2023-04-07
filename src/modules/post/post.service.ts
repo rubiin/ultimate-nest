@@ -1,13 +1,13 @@
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
-import { Comment, Post, Tag, User } from "@entities";
+import { Category, Comment, Post, Tag, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { omit } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
-import { forkJoin, from, map, Observable, of, switchMap } from "rxjs";
+import { forkJoin, from, map, Observable, of, switchMap, zip } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
@@ -18,10 +18,12 @@ export class PostService {
 		private readonly postRepository: BaseRepository<Post>,
 		@InjectRepository(User)
 		private readonly userRepository: BaseRepository<User>,
-		@InjectRepository(User)
+		@InjectRepository(Comment)
 		private readonly commentRepository: BaseRepository<Comment>,
 		@InjectRepository(Tag)
-		private readonly tagRepository: BaseRepository<Comment>,
+		private readonly tagRepository: BaseRepository<Tag>,
+		@InjectRepository(Category)
+		private readonly categoryRepository: BaseRepository<Category>,
 	) {}
 
 	/**
@@ -89,13 +91,21 @@ export class PostService {
 	 * @returns The post object
 	 */
 	create(dto: CreatePostDto, author: User): Observable<Post> {
-		return from(
+		return zip(
 			this.tagRepository.find({
 				idx: dto.tags,
 			}),
+			this.categoryRepository.find({
+				idx: dto.categories,
+			}),
 		).pipe(
-			switchMap(tags => {
-				const post = this.postRepository.create({ ...omit(dto, ["tags"]), author, tags });
+			switchMap(([tags, categories]) => {
+				const post = this.postRepository.create({
+					...omit(dto, ["tags", "categories"]),
+					author,
+					categories,
+					tags,
+				});
 
 				return from(this.postRepository.persistAndFlush(post)).pipe(map(() => post));
 			}),
@@ -119,13 +129,16 @@ export class PostService {
 						}),
 					).pipe(
 						switchMap(tags => {
-							this.postRepository.assign(post, { ...omit(dto, ["tags"]), tags });
+							this.postRepository.assign(post, {
+								...omit(dto, ["tags", "categories"]),
+								tags,
+							});
 
 							return from(this.postRepository.flush()).pipe(map(() => post));
 						}),
 					);
 				}
-				this.postRepository.assign(post, omit(dto, ["tags"]));
+				this.postRepository.assign(post, omit(dto, ["tags", "categories"]));
 
 				return from(this.postRepository.flush()).pipe(map(() => post));
 			}),
@@ -166,6 +179,9 @@ export class PostService {
 				{ id: userId },
 				{
 					populate: ["favorites"],
+					populateWhere: {
+						favorites: { isActive: true, isObsolete: false },
+					},
 				},
 			),
 		);
@@ -203,6 +219,9 @@ export class PostService {
 				{ id: userId },
 				{
 					populate: ["favorites"],
+					populateWhere: {
+						favorites: { isActive: true, isObsolete: false },
+					},
 				},
 			),
 		);
