@@ -1,13 +1,15 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230308134823 extends Migration {
+export class Migration20230407124240 extends Migration {
 
   async up(): Promise<void> {
+    this.addSql('create table `category` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `name` text not null, `description` text not null);');
+
     this.addSql('create table `protocol` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `login_attemptnumbererval` integer not null, `loginnumbererval_unit` text not null, `login_max_retry` integer not null, `otp_expiry_in_minutes` integer not null, `mpin_attempt_interval` integer not null, `mpin_interval_unit` text not null, `mpin_max_retry` integer not null);');
 
     this.addSql('create table `tag` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `title` text not null, `description` text not null, `slug` text null);');
 
-    this.addSql('create table `user` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `first_name` text not null default \'\', `last_name` text not null default \'\', `username` text not null, `email` text not null, `avatar` text not null, `password` text not null, `two_factor_secret` text null, `is_two_factor_enabled` integer not null default false, `roles` text not null default \'AUTHOR\', `mobile_number` text null, `is_verified` integer not null default false);');
+    this.addSql('create table `user` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `first_name` text not null, `middle_name` text null, `last_name` text not null, `username` text not null, `email` text not null, `bio` text not null, `avatar` text not null, `password` text not null, `two_factor_secret` text null, `is_two_factor_enabled` integer not null default false, `roles` text not null default \'AUTHOR\', `mobile_number` text null, `is_verified` integer not null default false, `last_login` datetime not null);');
     this.addSql('create unique index `user_username_unique` on `user` (`username`);');
     this.addSql('create unique index `user_email_unique` on `user` (`email`);');
     this.addSql('create unique index `user_mobile_number_unique` on `user` (`mobile_number`);');
@@ -15,12 +17,16 @@ export class Migration20230308134823 extends Migration {
     this.addSql('create table `refresh_token` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `expires_in` datetime not null, `user_id` integer not null, `is_revoked` integer not null default false, constraint `refresh_token_user_id_foreign` foreign key(`user_id`) references `user`(`id`) on update cascade);');
     this.addSql('create index `refresh_token_user_id_index` on `refresh_token` (`user_id`);');
 
-    this.addSql('create table `post` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `slug` text null, `title` text not null, `description` text not null, `content` text not null, `state` text check (`state` in (\'DRAFT\', \'PUBLISHED\')) not null default \'DRAFT\', `reading_time` integer not null default 0, `read_count` integer not null default 0, `author_id` integer not null, `favorites_count` integer not null default 0, constraint `post_author_id_foreign` foreign key(`author_id`) references `user`(`id`) on update cascade);');
+    this.addSql('create table `post` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `slug` text null, `title` text not null, `description` text not null, `content` text not null, `state` text check (`state` in (\'DRAFT\', \'PUBLISHED\')) not null default \'DRAFT\', `reading_time` integer not null default 0, `read_count` integer not null default 0, `favorites_count` integer not null default 0, `author_id` integer not null, constraint `post_author_id_foreign` foreign key(`author_id`) references `user`(`id`) on update cascade);');
     this.addSql('create index `post_author_id_index` on `post` (`author_id`);');
 
     this.addSql('create table `post_tags` (`post_id` integer not null, `tag_id` integer not null, constraint `post_tags_post_id_foreign` foreign key(`post_id`) references `post`(`id`) on delete cascade on update cascade, constraint `post_tags_tag_id_foreign` foreign key(`tag_id`) references `tag`(`id`) on delete cascade on update cascade, primary key (`post_id`, `tag_id`));');
     this.addSql('create index `post_tags_post_id_index` on `post_tags` (`post_id`);');
     this.addSql('create index `post_tags_tag_id_index` on `post_tags` (`tag_id`);');
+
+    this.addSql('create table `post_categories` (`post_id` integer not null, `category_id` integer not null, constraint `post_categories_post_id_foreign` foreign key(`post_id`) references `post`(`id`) on delete cascade on update cascade, constraint `post_categories_category_id_foreign` foreign key(`category_id`) references `category`(`id`) on delete cascade on update cascade, primary key (`post_id`, `category_id`));');
+    this.addSql('create index `post_categories_post_id_index` on `post_categories` (`post_id`);');
+    this.addSql('create index `post_categories_category_id_index` on `post_categories` (`category_id`);');
 
     this.addSql('create table `otp_log` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `expires_in` datetime not null, `otp_code` text null, `user_id` integer not null, `is_used` integer not null, constraint `otp_log_user_id_foreign` foreign key(`user_id`) references `user`(`id`) on update cascade);');
     this.addSql('create index `otp_log_user_id_index` on `otp_log` (`user_id`);');

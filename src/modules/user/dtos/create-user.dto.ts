@@ -24,14 +24,13 @@ export class CreateUserDto {
 	@IsStringField()
 	firstName!: string;
 
-
-		/**
+	/**
 	 * Middlename of user
 	 * @example Vonn
 	 */
 
-		@IsStringField({ required: false})
-		middleName?: string;
+	@IsStringField({ required: false })
+	middleName?: string;
 
 	/**
 	 * Lastname of user

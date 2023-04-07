@@ -36,7 +36,6 @@ export class User extends BaseEntity {
 	@Property()
 	email!: string;
 
-
 	@Property()
 	bio!: string;
 
