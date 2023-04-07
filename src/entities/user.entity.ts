@@ -19,27 +19,33 @@ import { Message, Conversation, Post } from "@entities";
 
 @Entity()
 export class User extends BaseEntity {
-	@Property({ length: 255 })
-	firstName = "";
+	@Property()
+	firstName!: string;
 
-	@Property({ length: 255 })
-	lastName = "";
+	@Property()
+	middleName?: string;
+
+	@Property()
+	lastName!: string;
 
 	@Unique()
-	@Property({ length: 255 })
+	@Property()
 	username!: string;
 
 	@Unique()
-	@Property({ length: 255 })
+	@Property()
 	email!: string;
 
-	@Property({ length: 255 })
+	@Property()
+	bio!: string;
+
+	@Property()
 	avatar!: string;
 
 	@Property({ hidden: true })
 	password!: string;
 
-	@Property({ length: 255 })
+	@Property()
 	twoFactorSecret?: string;
 
 	@Property()
@@ -103,4 +109,7 @@ export class User extends BaseEntity {
 			this.password = await HelperService.hashString(this.password);
 		}
 	}
+
+	@Property()
+	lastLogin = new Date();
 }

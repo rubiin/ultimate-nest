@@ -71,6 +71,110 @@
           "length": 0,
           "mappedType": "datetime"
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "category",
+      "indexes": [
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "idx": {
+          "name": "idx",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "integer"
+        },
+        "is_obsolete": {
+          "name": "is_obsolete",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "integer"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
         "login_attemptnumbererval": {
           "name": "login_attemptnumbererval",
           "type": "integer",
@@ -341,8 +445,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "default": "''",
+          "mappedType": "text"
+        },
+        "middle_name": {
+          "name": "middle_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "last_name": {
@@ -352,8 +463,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "default": "''",
           "mappedType": "text"
         },
         "username": {
@@ -363,7 +472,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
           "mappedType": "text"
         },
         "email": {
@@ -373,7 +481,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
+          "mappedType": "text"
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
           "mappedType": "text"
         },
         "avatar": {
@@ -383,7 +499,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
           "mappedType": "text"
         },
         "password": {
@@ -402,7 +517,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 255,
           "mappedType": "text"
         },
         "is_two_factor_enabled": {
@@ -447,6 +561,16 @@
           "nullable": false,
           "default": "false",
           "mappedType": "integer"
+        },
+        "last_login": {
+          "name": "last_login",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
         }
       },
       "name": "user",
@@ -768,15 +892,6 @@
           "default": "0",
           "mappedType": "integer"
         },
-        "author_id": {
-          "name": "author_id",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
         "favorites_count": {
           "name": "favorites_count",
           "type": "integer",
@@ -785,6 +900,15 @@
           "primary": false,
           "nullable": false,
           "default": "0",
+          "mappedType": "integer"
+        },
+        "author_id": {
+          "name": "author_id",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
           "mappedType": "integer"
         }
       },
@@ -902,6 +1026,88 @@
             "id"
           ],
           "referencedTableName": "tag",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "post_id": {
+          "name": "post_id",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "category_id": {
+          "name": "category_id",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        }
+      },
+      "name": "post_categories",
+      "indexes": [
+        {
+          "columnNames": [
+            "post_id"
+          ],
+          "composite": false,
+          "keyName": "post_categories_post_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "category_id"
+          ],
+          "composite": false,
+          "keyName": "post_categories_category_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "post_id",
+            "category_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "post_categories_post_id_foreign": {
+          "constraintName": "post_categories_post_id_foreign",
+          "columnNames": [
+            "post_id"
+          ],
+          "localTableName": "post_categories",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "post",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "post_categories_category_id_foreign": {
+          "constraintName": "post_categories_category_id_foreign",
+          "columnNames": [
+            "category_id"
+          ],
+          "localTableName": "post_categories",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "category",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -1286,7 +1492,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 50,
           "mappedType": "text"
         },
         "login_type": {
@@ -1296,7 +1501,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 50,
           "mappedType": "text"
         },
         "ip_address": {
@@ -1306,7 +1510,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 50,
           "mappedType": "text"
         },
         "device_id": {
@@ -1316,7 +1519,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 50,
           "mappedType": "text"
         },
         "status": {
