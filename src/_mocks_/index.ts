@@ -1,6 +1,6 @@
 import { IFile, Order, Roles } from "@common/@types";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
-import { User } from "@entities";
+import { RefreshToken, User } from "@entities";
 
 export const mockedUser = {
 	idx: "idx",
@@ -11,9 +11,9 @@ export const mockedUser = {
 	email: "email",
 	avatar: "avatar",
 	twoFactorSecret: "someSecret",
+	mobileNumber: "0123456789",
 	isTwoFactorEnabled: true,
 	roles: [Roles.ADMIN],
-	mobileNumber: "mobileNumber",
 };
 
 export const mockedPost = {
@@ -21,7 +21,6 @@ export const mockedPost = {
 	title: "title",
 	description: "description",
 	content: "content",
-	tags: ["tag1", "tag2"],
 };
 
 export const queryDto: PageOptionsDto = {
@@ -54,3 +53,9 @@ export const mockResetPasswordDto = {
 };
 
 export const loggedInUser = new User(mockedUser);
+
+export const refreshToken = new RefreshToken({
+	user: loggedInUser,
+	expiresIn: new Date(),
+	isRevoked: false,
+});
