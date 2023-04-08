@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import { SWAGGER_DESCRIPTION, SWAGGER_TITLE } from "@common/constant";
+import { SWAGGER_API_CURRENT_VERSION, SWAGGER_API_ENDPOINT, SWAGGER_DESCRIPTION, SWAGGER_TITLE } from "@common/constant";
 import { swaggerOptions } from "@common/swagger/swagger.plugin";
 import { IConfig } from "@lib/config/config.interface";
 import { INestApplication, Logger } from "@nestjs/common";
@@ -48,8 +48,9 @@ export const AppUtils = {
 		const options = new DocumentBuilder()
 			.setTitle(SWAGGER_TITLE)
 			.addBearerAuth()
+			.setLicense("MIT", "https://opensource.org/licenses/MIT")
 			.setDescription(SWAGGER_DESCRIPTION)
-			.setVersion("1.0")
+			.setVersion(SWAGGER_API_CURRENT_VERSION)
 			.addBearerAuth({
 				type: "http",
 				scheme: "Bearer",
@@ -88,10 +89,9 @@ export const AppUtils = {
 			}),
 		);
 
-		SwaggerModule.setup("doc", app, document, {
+		SwaggerModule.setup(SWAGGER_API_ENDPOINT, app, document, {
 			explorer: true,
 			swaggerOptions,
-			customSiteTitle: `${appName} API Documentation`,
 		});
 	},
 	ssl: (): { key: Buffer; cert: Buffer } | null => {
