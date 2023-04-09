@@ -2,7 +2,7 @@ import { RefreshToken } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { EntityRepository } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { loggedInUser } from "@mocks";
+import { loggedInUser, refreshToken } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
@@ -24,12 +24,6 @@ describe("RefreshTokensRepository", () => {
 	});
 
 	// defining mocks
-
-	const refreshToken = new RefreshToken({
-		user: loggedInUser,
-		expiresIn: new Date(),
-		isRevoked: false,
-	});
 
 	mockRefreshRepo.findOne.mockImplementation(() =>
 		Promise.resolve({

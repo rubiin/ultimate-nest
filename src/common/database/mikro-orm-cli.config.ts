@@ -38,7 +38,7 @@ export const baseOptions = {
 	filters: {
 		default: {
 			cond: { isObsolete: { $eq: false }, isActive: { $eq: true } },
-			entity: ["Post", "User", "Comment", "Tag"],
+			entity: ["Post", "User", "Comment", "Tag","Category"],
 		},
 	},
 	migrations: {
@@ -60,6 +60,7 @@ export const baseOptions = {
 	debug: true,
 	loadStrategy: LoadStrategy.JOINED,
 	entityRepository: BaseRepository,
+	forceUtcTimezone: true,
 	allowGlobalContext: true,
 	registerRequestContext: false,
 	pool: { min: 2, max: 10 },
