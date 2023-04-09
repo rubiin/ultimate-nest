@@ -3,7 +3,7 @@ import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
@@ -34,7 +34,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		const { sub: id } = payload;
 
 		// Accept the JWT and attempt to validate it using the user service
+		const user = await this.userRepository.findOne({ id });
 
-		return await this.userRepository.findOne({ id });
+		if (!user) {
+			throw new UnauthorizedException();
+		}
+
+		return user;
 	}
 }

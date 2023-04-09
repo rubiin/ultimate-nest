@@ -18,7 +18,6 @@ export class UserSeeder extends Seeder {
 				const comments = new CommentFactory(em).make(randomNumber(2, 4), {
 					author: user,
 				});
-				
 
 				const tags = new TagFactory(em).make(randomNumber(2, 4));
 

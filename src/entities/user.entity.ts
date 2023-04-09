@@ -1,6 +1,7 @@
 import { Roles } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import { HelperService } from "@common/helpers";
+import { Conversation, Message, Post } from "@entities";
 import {
 	BeforeCreate,
 	BeforeUpdate,
@@ -14,8 +15,6 @@ import {
 	Unique,
 	wrap,
 } from "@mikro-orm/core";
-
-import { Message, Conversation, Post } from "@entities";
 
 @Entity()
 export class User extends BaseEntity {
