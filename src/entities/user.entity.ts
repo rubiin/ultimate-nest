@@ -15,7 +15,7 @@ import {
 	wrap,
 } from "@mikro-orm/core";
 
-import { Post } from "./post.entity";
+import { Message, Conversation, Post } from "@entities";
 
 @Entity()
 export class User extends BaseEntity {
@@ -63,6 +63,12 @@ export class User extends BaseEntity {
 
 	@OneToMany(() => Post, post => post.author)
 	posts = new Collection<Post>(this);
+
+	@ManyToMany(() => Conversation, "users", { owner: true })
+	conversations = new Collection<Conversation>(this);
+
+	@OneToMany(() => Message, message => message.user)
+	messages = new Collection<Message>(this);
 
 	@ManyToMany({ hidden: true })
 	favorites = new Collection<Post>(this);
