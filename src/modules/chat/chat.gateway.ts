@@ -1,4 +1,5 @@
-import { Logger } from "@nestjs/common";
+import { WsAuthGuard } from "@common/guards";
+import { Logger, UseGuards } from "@nestjs/common";
 import {
 	ConnectedSocket,
 	MessageBody,
@@ -14,7 +15,7 @@ import { CreateChatDto } from "./dto/create-chat.dto";
 // TODO: create one to one chat
 // Add auth guard
 // Add generic basic templates
-
+@UseGuards(WsAuthGuard)
 @WebSocketGateway({
 	namespace: "chat",
 })
