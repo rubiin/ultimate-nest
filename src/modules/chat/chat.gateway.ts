@@ -11,6 +11,9 @@ import { Namespace, Socket } from "socket.io";
 import { ChatService } from "./chat.service";
 import { CreateChatDto } from "./dto/create-chat.dto";
 
+// TODO: create one to one chat
+// Add auth guard
+
 @WebSocketGateway({
 	namespace: "chat",
 })

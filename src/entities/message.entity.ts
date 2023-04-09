@@ -1,7 +1,7 @@
 import { BaseEntity } from "@common/database";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
 
-import { Post, User } from "./index";
+import { User } from "./index";
 
 @Entity()
 export class Message extends BaseEntity {
@@ -9,13 +9,16 @@ export class Message extends BaseEntity {
 	body!: string;
 
 	@ManyToOne()
-	post!: Rel<Post>;
-
-	@ManyToOne()
 	user!: Rel<User>;
 
 	@ManyToOne()
 	conversation!: Rel<User>;
+
+	@Property()
+	isRead: boolean = false
+
+	@Property()
+	readAt?: Date;
 
 	constructor(partial?: Partial<Comment>) {
 		super();
