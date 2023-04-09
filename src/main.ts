@@ -1,6 +1,6 @@
 import "@total-typescript/ts-reset";
 
-import { AppUtils } from "@common/helpers";
+import { AppUtils, HelperService } from "@common/helpers";
 import { IConfig } from "@lib/config/config.interface";
 import { createLogger } from "@lib/pino/app.logger";
 import { Logger, ValidationPipe } from "@nestjs/common";
@@ -60,6 +60,7 @@ const bootstrap = async () => {
 			whitelist: true,
 			transform: true,
 			forbidUnknownValues: false,
+			enableDebugMessages: HelperService.isDev(),
 			exceptionFactory: i18nValidationErrorFactory,
 		}),
 	);

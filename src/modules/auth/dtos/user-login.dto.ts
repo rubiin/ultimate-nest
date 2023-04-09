@@ -16,3 +16,12 @@ export class UserLoginDto {
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	password?: string;
 }
+
+export class MagicLinkLogin {
+	/**
+	 * Email of user
+	 * @example someone@something.com
+	 */
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	destination!: string;
+}

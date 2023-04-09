@@ -1,18 +1,17 @@
 import fs from "node:fs";
 
 import { SWAGGER_DESCRIPTION, SWAGGER_TITLE } from "@common/constant";
+import { swaggerOptions } from "@common/swagger/swagger.plugin";
 import { IConfig } from "@lib/config/config.interface";
 import { INestApplication, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
 import { getMiddleware } from "swagger-stats";
 
+const logger = new Logger("App:Utils");
+
 export const AppUtils = {
-	/* A function that is called when the process receives a signal. */
-
 	gracefulShutdown(app: INestApplication, code: string): void {
-		const logger = new Logger("Graceful Shutdown");
-
 		setTimeout(() => process.exit(1), 5000);
 		logger.verbose(`Signal received with code ${code} ⚡.`);
 		logger.debug("❗Closing http server with grace.");
@@ -21,6 +20,7 @@ export const AppUtils = {
 			process.exit(0);
 		});
 	},
+
 	/**
 	 *
 	 *
@@ -90,19 +90,12 @@ export const AppUtils = {
 
 		SwaggerModule.setup("doc", app, document, {
 			explorer: true,
-			swaggerOptions: {
-				docExpansion: "list",
-				filter: true,
-				showRequestDuration: true,
-				persistAuthorization: true,
-			},
+			swaggerOptions,
 			customSiteTitle: `${appName} API Documentation`,
 		});
 	},
 	ssl: (): { key: Buffer; cert: Buffer } | null => {
-		let httpsOptions: { key: Buffer; cert: Buffer; };
-
-		const logger = new Logger("ssl");
+		let httpsOptions: { key: Buffer; cert: Buffer };
 
 		const keyPath = `${__dirname}/../../resources/ssl/key.pem`;
 		const certPath = `${__dirname}/../../resources/ssl/certificate.pem`;
@@ -111,7 +104,7 @@ export const AppUtils = {
 		const isExist = fs.existsSync(keyPath) && fs.existsSync(certPath);
 
 		if (ssl && !isExist) {
-			logger.error("❗SSL is enabled but no key and certificate found");
+			logger.error("❗SSL is enabled but no key and certificate found.");
 		}
 
 		if (ssl && isExist) {

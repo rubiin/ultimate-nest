@@ -24,7 +24,7 @@ export const mockedPost = {
 	tags: ["tag1", "tag2"],
 };
 
-export const query: PageOptionsDto = {
+export const queryDto: PageOptionsDto = {
 	page: 1,
 	limit: 10,
 	offset: 5,
