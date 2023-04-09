@@ -16,6 +16,8 @@
 			"mobileNumber": { "name": "mobileNumber", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
 			"isVerified": { "name": "isVerified", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
 			"posts": { "name": "posts", "reference": "1:m", "cascade": ["persist"], "type": "Post", "array": false },
+			"conversations": { "name": "conversations", "reference": "m:n", "cascade": ["persist"], "owner": true, "inversedBy": "users", "type": "Conversation", "fixedOrder": false, "array": false },
+			"messages": { "name": "messages", "reference": "1:m", "cascade": ["persist"], "type": "Message", "array": false },
 			"favorites": { "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true, "array": false },
 			"followers": {
 				"name": "followers",
@@ -48,6 +50,8 @@
 			{ "name": "mobileNumber", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
 			{ "name": "isVerified", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
 			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "type": "Post", "array": false },
+			{ "name": "conversations", "reference": "m:n", "cascade": ["persist"], "owner": true, "inversedBy": "users", "type": "Conversation", "fixedOrder": false, "array": false },
+			{ "name": "messages", "reference": "1:m", "cascade": ["persist"], "type": "Message", "array": false },
 			{ "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true, "array": false },
 			{
 				"name": "followers",
@@ -82,6 +86,8 @@
 		"useCache": true,
 		"relations": [
 			{ "name": "posts", "reference": "1:m", "cascade": ["persist"], "type": "Post", "array": false },
+			{ "name": "conversations", "reference": "m:n", "cascade": ["persist"], "owner": true, "inversedBy": "users", "type": "Conversation", "fixedOrder": false, "array": false },
+			{ "name": "messages", "reference": "1:m", "cascade": ["persist"], "type": "Message", "array": false },
 			{ "name": "favorites", "reference": "m:n", "cascade": ["persist"], "hidden": true, "type": "Post", "fixedOrder": false, "owner": true, "array": false },
 			{
 				"name": "followers",
@@ -101,6 +107,6 @@
 		"collection": "user"
 	},
 	"origin": "./src/entities/user.entity.ts",
-	"hash": "6ba958937a6c59caba5691b78fb2600d",
+	"hash": "f5734627dc04bfeb842c0866aaf6435e",
 	"version": "5.6.16"
 }

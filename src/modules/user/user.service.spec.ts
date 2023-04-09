@@ -62,7 +62,7 @@ describe("UserService", () => {
 
 		service.findOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
-			expect(findOneSpy).toBeCalledWith({ idx: "userId" });
+			expect(findOneSpy).toBeCalledWith({ idx: "userId", isActive: true, isObsolete: false });
 		});
 	});
 
@@ -114,6 +114,8 @@ describe("UserService", () => {
 			});
 			expect(mockUserRepo.findOne).toBeCalledWith({
 				idx: "userId",
+				isActive: true,
+				isObsolete: false,
 			});
 
 			expect(mockUserRepo.softRemoveAndFlush).toBeCalled();

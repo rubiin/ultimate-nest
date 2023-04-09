@@ -173,6 +173,99 @@
 					"length": 0,
 					"mappedType": "datetime"
 				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "text"
+				}
+			},
+			"name": "conversation",
+			"indexes": [
+				{
+					"keyName": "primary",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"checks": [],
+			"foreignKeys": {}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "integer",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "text",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "text"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "integer",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "integer"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "integer",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "integer"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "datetime",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 0,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"length": 0,
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "datetime",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 0,
+					"mappedType": "datetime"
+				},
 				"login_attemptnumbererval": {
 					"name": "login_attemptnumbererval",
 					"type": "integer",
@@ -1264,6 +1357,168 @@
 					"nullable": false,
 					"mappedType": "text"
 				},
+				"user_id": {
+					"name": "user_id",
+					"type": "integer",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"conversation_id": {
+					"name": "conversation_id",
+					"type": "integer",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"is_read": {
+					"name": "is_read",
+					"type": "integer",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "integer"
+				},
+				"read_at": {
+					"name": "read_at",
+					"type": "datetime",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 0,
+					"mappedType": "datetime"
+				}
+			},
+			"name": "message",
+			"indexes": [
+				{
+					"columnNames": ["user_id"],
+					"composite": false,
+					"keyName": "message_user_id_index",
+					"primary": false,
+					"unique": false
+				},
+				{
+					"columnNames": ["conversation_id"],
+					"composite": false,
+					"keyName": "message_conversation_id_index",
+					"primary": false,
+					"unique": false
+				},
+				{
+					"keyName": "primary",
+					"columnNames": ["id"],
+					"composite": false,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"checks": [],
+			"foreignKeys": {
+				"message_user_id_foreign": {
+					"constraintName": "message_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "message",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "user",
+					"updateRule": "cascade"
+				},
+				"message_conversation_id_foreign": {
+					"constraintName": "message_conversation_id_foreign",
+					"columnNames": ["conversation_id"],
+					"localTableName": "message",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "conversation",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "integer",
+					"unsigned": true,
+					"autoincrement": true,
+					"primary": true,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"idx": {
+					"name": "idx",
+					"type": "text",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "text"
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "integer",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "true",
+					"mappedType": "integer"
+				},
+				"is_obsolete": {
+					"name": "is_obsolete",
+					"type": "integer",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"default": "false",
+					"mappedType": "integer"
+				},
+				"deleted_at": {
+					"name": "deleted_at",
+					"type": "datetime",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 0,
+					"mappedType": "datetime"
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"length": 0,
+					"mappedType": "datetime"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "datetime",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": true,
+					"length": 0,
+					"mappedType": "datetime"
+				},
+				"body": {
+					"name": "body",
+					"type": "text",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "text"
+				},
 				"post_id": {
 					"name": "post_id",
 					"type": "integer",
@@ -1488,6 +1743,73 @@
 					"localTableName": "activity_log",
 					"referencedColumnNames": ["id"],
 					"referencedTableName": "user",
+					"updateRule": "cascade"
+				}
+			}
+		},
+		{
+			"columns": {
+				"user_id": {
+					"name": "user_id",
+					"type": "integer",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				},
+				"conversation_id": {
+					"name": "conversation_id",
+					"type": "integer",
+					"unsigned": false,
+					"autoincrement": false,
+					"primary": false,
+					"nullable": false,
+					"mappedType": "integer"
+				}
+			},
+			"name": "user_conversations",
+			"indexes": [
+				{
+					"columnNames": ["user_id"],
+					"composite": false,
+					"keyName": "user_conversations_user_id_index",
+					"primary": false,
+					"unique": false
+				},
+				{
+					"columnNames": ["conversation_id"],
+					"composite": false,
+					"keyName": "user_conversations_conversation_id_index",
+					"primary": false,
+					"unique": false
+				},
+				{
+					"keyName": "primary",
+					"columnNames": ["user_id", "conversation_id"],
+					"composite": true,
+					"primary": true,
+					"unique": true
+				}
+			],
+			"checks": [],
+			"foreignKeys": {
+				"user_conversations_user_id_foreign": {
+					"constraintName": "user_conversations_user_id_foreign",
+					"columnNames": ["user_id"],
+					"localTableName": "user_conversations",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "user",
+					"deleteRule": "cascade",
+					"updateRule": "cascade"
+				},
+				"user_conversations_conversation_id_foreign": {
+					"constraintName": "user_conversations_conversation_id_foreign",
+					"columnNames": ["conversation_id"],
+					"localTableName": "user_conversations",
+					"referencedColumnNames": ["id"],
+					"referencedTableName": "conversation",
+					"deleteRule": "cascade",
 					"updateRule": "cascade"
 				}
 			}

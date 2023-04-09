@@ -1,9 +1,13 @@
 import { Migration } from "@mikro-orm/migrations";
 
-export class Migration20230407124240 extends Migration {
+export class Migration20230409104607 extends Migration {
 	async up(): Promise<void> {
 		this.addSql(
 			"create table `category` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `name` text not null, `description` text not null);",
+		);
+
+		this.addSql(
+			"create table `conversation` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `name` text not null);",
 		);
 
 		this.addSql(
@@ -53,6 +57,14 @@ export class Migration20230407124240 extends Migration {
 		this.addSql("create index `otp_log_user_id_index` on `otp_log` (`user_id`);");
 
 		this.addSql(
+			"create table `message` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `body` text not null, `user_id` integer not null, `conversation_id` integer not null, `is_read` integer not null default false, `read_at` datetime null, constraint `message_user_id_foreign` foreign key(`user_id`) references `user`(`id`) on update cascade, constraint `message_conversation_id_foreign` foreign key(`conversation_id`) references `conversation`(`id`) on update cascade);",
+		);
+		this.addSql("create index `message_user_id_index` on `message` (`user_id`);");
+		this.addSql(
+			"create index `message_conversation_id_index` on `message` (`conversation_id`);",
+		);
+
+		this.addSql(
 			"create table `comment` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `body` text not null, `post_id` integer not null, `author_id` integer not null, constraint `comment_post_id_foreign` foreign key(`post_id`) references `post`(`id`) on update cascade, constraint `comment_author_id_foreign` foreign key(`author_id`) references `user`(`id`) on update cascade);",
 		);
 		this.addSql("create index `comment_post_id_index` on `comment` (`post_id`);");
@@ -62,6 +74,16 @@ export class Migration20230407124240 extends Migration {
 			"create table `activity_log` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `activity_type` text null, `login_type` text null, `ip_address` text null, `device_id` text null, `status` integer not null default true, `login_status` integer not null default true, `user_id` integer not null, constraint `activity_log_user_id_foreign` foreign key(`user_id`) references `user`(`id`) on update cascade);",
 		);
 		this.addSql("create index `activity_log_user_id_index` on `activity_log` (`user_id`);");
+
+		this.addSql(
+			"create table `user_conversations` (`user_id` integer not null, `conversation_id` integer not null, constraint `user_conversations_user_id_foreign` foreign key(`user_id`) references `user`(`id`) on delete cascade on update cascade, constraint `user_conversations_conversation_id_foreign` foreign key(`conversation_id`) references `conversation`(`id`) on delete cascade on update cascade, primary key (`user_id`, `conversation_id`));",
+		);
+		this.addSql(
+			"create index `user_conversations_user_id_index` on `user_conversations` (`user_id`);",
+		);
+		this.addSql(
+			"create index `user_conversations_conversation_id_index` on `user_conversations` (`conversation_id`);",
+		);
 
 		this.addSql(
 			"create table `user_favorites` (`user_id` integer not null, `post_id` integer not null, constraint `user_favorites_user_id_foreign` foreign key(`user_id`) references `user`(`id`) on delete cascade on update cascade, constraint `user_favorites_post_id_foreign` foreign key(`post_id`) references `post`(`id`) on delete cascade on update cascade, primary key (`user_id`, `post_id`));",

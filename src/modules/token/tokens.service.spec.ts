@@ -1,8 +1,8 @@
 import { BaseRepository } from "@common/database";
-import { RefreshToken, User } from "@entities";
+import { User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { loggedInUser } from "@mocks";
+import { loggedInUser, refreshToken } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -35,12 +35,6 @@ describe("TokensService", () => {
 	});
 
 	// mocks
-
-	const refreshToken = new RefreshToken({
-		user: loggedInUser,
-		expiresIn: new Date(),
-		isRevoked: false,
-	});
 
 	const refreshTokenPayload = {
 		jti: 1,
@@ -82,9 +76,9 @@ describe("TokensService", () => {
 		jest.spyOn(service, "resolveRefreshToken").mockImplementation(() =>
 			of({ user: loggedInUser, token: refreshToken }),
 		);
-		jest.spyOn(service, "generateAccessToken").mockImplementation(() => of("refresh token"));
-		service.createAccessTokenFromRefreshToken("refresh token").subscribe(result => {
-			expect(result).toStrictEqual({ token: "refresh token", user: loggedInUser });
+		jest.spyOn(service, "generateAccessToken").mockImplementation(() => of("refreshToken"));
+		service.createAccessTokenFromRefreshToken("refreshToken").subscribe(result => {
+			expect(result).toStrictEqual({ token: "refreshToken", user: loggedInUser });
 			expect(service.resolveRefreshToken).toBeCalledTimes(1);
 			expect(service.generateAccessToken).toBeCalledTimes(1);
 		});

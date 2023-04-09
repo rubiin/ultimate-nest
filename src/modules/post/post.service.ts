@@ -66,6 +66,8 @@ export class PostService {
 			this.postRepository.findOne(
 				{
 					idx: index,
+					isActive: true,
+					isObsolete: false,
 				},
 				{ populate },
 			),
@@ -94,6 +96,13 @@ export class PostService {
 		return zip(
 			this.tagRepository.find({
 				idx: dto.tags,
+				isActive: true,
+				isObsolete: false,
+			}),
+			this.categoryRepository.find({
+				idx: dto.categories,
+				isActive: true,
+				isObsolete: false,
 			}),
 			this.categoryRepository.find({
 				idx: dto.categories,
@@ -126,6 +135,8 @@ export class PostService {
 					return from(
 						this.tagRepository.find({
 							idx: dto.tags,
+							isActive: true,
+							isObsolete: false,
 						}),
 					).pipe(
 						switchMap(tags => {
@@ -168,7 +179,7 @@ export class PostService {
 	 * The first thing we do is create two observables, one for the post and one for the user. We use the
 	 * `findOneOrFail` method to find the post and user. The `findOneOrFail` method will throw an error if
 	 * the post or user is not found
-	 * @param {number} userId - number - The id of the user who is favoriting the post.
+	 * @param {number} userId - number - The id of the user who favorite the post.
 	 * @param {string} postIndex - The index of the post to be favorited.
 	 * @returns A post object
 	 */
@@ -176,7 +187,7 @@ export class PostService {
 		const post$ = from(this.postRepository.findOneOrFail({ idx: postIndex }));
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id: userId },
+				{ id: userId, isActive: true, isObsolete: false },
 				{
 					populate: ["favorites"],
 					populateWhere: {
@@ -202,7 +213,7 @@ export class PostService {
 	 * It finds a post and a user, checks if the user has favorited the post, if so, it removes the post
 	 * from the user's favorites and decrements the post's favorites count, then it saves the changes to
 	 * the database and returns the post
-	 * @param {number} userId - number - The id of the user who is favoriting the post.
+	 * @param {number} userId - number - The id of the user who favorite the post.
 	 * @param {string} postIndex - The index of the post to be favorited.
 	 * @returns A post object
 	 */
@@ -216,7 +227,7 @@ export class PostService {
 		);
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id: userId },
+				{ id: userId, isActive: true, isObsolete: false },
 				{
 					populate: ["favorites"],
 					populateWhere: {
@@ -244,9 +255,17 @@ export class PostService {
 	 * @returns An array of comments
 	 */
 	findComments(index: string): Observable<Comment[]> {
-		return from(this.postRepository.findOne({ idx: index }, { populate: ["comments"] })).pipe(
-			map(post => post.comments.getItems()),
-		);
+		return from(
+			this.postRepository.findOne(
+				{ idx: index, isActive: true, isObsolete: false },
+				{
+					populate: ["comments"],
+					populateWhere: {
+						comments: { isActive: true, isObsolete: false },
+					},
+				},
+			),
+		).pipe(map(post => post.comments.getItems()));
 	}
 
 	/**
@@ -271,8 +290,8 @@ export class PostService {
 
 	/**
 	 * It finds a post and a comment, removes the comment from the post, and then deletes the comment
-	 * @param {string} postIdx - string - The id of the post
-	 * @param {string} commentIdx - The id of the comment to be deleted
+	 * @param {string} postIndex - string - The id of the post
+	 * @param {string} commentIndex - The id of the comment to be deleted
 	 * @returns A post with the comment removed.
 	 */
 	deleteComment(postIndex: string, commentIndex: string): Observable<Post> {

@@ -9,6 +9,16 @@ import Strategy from "passport-magic-login";
 
 @Injectable()
 export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin") {
+	/**
+	 * It's a PassportStrategy that uses the MagicLoginStrategy  to authenticate users
+	 * More at
+	 * https://passportjs.org/docs/strategies/magic-login/
+	 *
+	 * The callback url should match whats specified in the callbackURL section
+	 *
+	 *
+	 */
+
 	logger = new Logger(MagicLoginStrategy.name);
 	constructor(
 		@InjectRepository(User)
@@ -22,7 +32,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 			},
 			// The authentication callback URL
 			callbackUrl: "/auth/magiclogin/callback",
-			sendMagicLink: async (destination, href) => {
+			sendMagicLink: async (destination: any, href: any) => {
 				this.logger.log(`Sending magic link to ${destination} with href ${href}`);
 			},
 			verify: (payload, callback) => {
