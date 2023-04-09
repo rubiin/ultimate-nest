@@ -1,13 +1,16 @@
 import { CustomThrottlerGuard } from "@common/guards";
 import { CustomCacheInterceptor } from "@common/interceptors";
+import { ClearCacheMiddleware } from "@common/middlewares";
 import { RealIpMiddleware } from "@common/middlewares/ip.middleware";
 import { SharedModule } from "@modules/shared/shared.module";
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 
+import { NestCacheModule } from "./lib";
+
 @Module({
-	imports: [SharedModule],
+	imports: [SharedModule, NestCacheModule],
 	providers: [
 		{
 			provide: APP_INTERCEPTOR,
@@ -25,9 +28,16 @@ import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 })
 export class AppModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
-		consumer.apply(RealIpMiddleware).forRoutes({
-			path: "*",
-			method: RequestMethod.ALL,
-		});
+		consumer
+			.apply(RealIpMiddleware)
+			.forRoutes({
+				path: "*",
+				method: RequestMethod.ALL,
+			})
+			.apply(ClearCacheMiddleware)
+			.forRoutes({
+				path: "*",
+				method: RequestMethod.GET,
+			});
 	}
 }

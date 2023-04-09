@@ -15,7 +15,7 @@ import {
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
-import { Comment, Tag, User } from "./index";
+import { Category, Comment, Tag, User } from "./index";
 
 @Entity()
 export class Post extends BaseEntity {
@@ -54,6 +54,9 @@ export class Post extends BaseEntity {
 
 	@ManyToMany(() => Tag, "posts", { owner: true })
 	tags = new Collection<Tag>(this);
+
+	@ManyToMany(() => Category, "posts", { owner: true })
+	categories = new Collection<Category>(this);
 
 	@BeforeCreate()
 	@BeforeUpdate()

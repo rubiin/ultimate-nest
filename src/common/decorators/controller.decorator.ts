@@ -12,7 +12,10 @@ import { Auth } from "./auth.decorator";
  * @returns A function that takes in a class and returns a class.
  */
 export const GenericController = (name: string, secured = true) => {
-	const decsToApply = [ApiTags(capitalize(name)), Controller(name)];
+	const decsToApply: (ClassDecorator | MethodDecorator | PropertyDecorator)[] = [
+		ApiTags(capitalize(name)),
+		Controller(name),
+	];
 
 	if (secured) {
 		decsToApply.push(Auth());

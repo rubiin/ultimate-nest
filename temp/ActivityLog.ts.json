@@ -1,1 +1,43 @@
-{"data":{"propertyOrder":{},"properties":{"activityType":{"name":"activityType","reference":"scalar","length":50,"getter":false,"setter":false,"type":"string","array":false,"optional":true},"loginType":{"name":"loginType","reference":"scalar","length":50,"getter":false,"setter":false,"type":"string","array":false,"optional":true},"ipAddress":{"name":"ipAddress","reference":"scalar","length":50,"getter":false,"setter":false,"type":"string","array":false,"optional":true},"deviceId":{"name":"deviceId","reference":"scalar","length":50,"getter":false,"setter":false,"type":"string","array":false,"optional":true},"status":{"name":"status","reference":"scalar","getter":false,"setter":false,"type":"boolean","array":false},"loginStatus":{"name":"loginStatus","reference":"scalar","getter":false,"setter":false,"type":"boolean","array":false},"user":{"name":"user","reference":"m:1","cascade":["persist"],"type":"User","owner":true,"array":false}},"props":[{"name":"activityType","reference":"scalar","length":50,"getter":false,"setter":false,"type":"string","array":false,"optional":true},{"name":"loginType","reference":"scalar","length":50,"getter":false,"setter":false,"type":"string","array":false,"optional":true},{"name":"ipAddress","reference":"scalar","length":50,"getter":false,"setter":false,"type":"string","array":false,"optional":true},{"name":"deviceId","reference":"scalar","length":50,"getter":false,"setter":false,"type":"string","array":false,"optional":true},{"name":"status","reference":"scalar","getter":false,"setter":false,"type":"boolean","array":false},{"name":"loginStatus","reference":"scalar","getter":false,"setter":false,"type":"boolean","array":false},{"name":"user","reference":"m:1","cascade":["persist"],"type":"User","owner":true,"array":false}],"primaryKeys":[],"filters":{},"hooks":{},"indexes":[],"uniques":[],"checks":[],"concurrencyCheckKeys":{},"className":"ActivityLog","path":"./src/entities/activity-log.entity.ts","name":"ActivityLog","abstract":false,"constructorParams":["partial"],"toJsonParams":[],"extends":"BaseEntity","useCache":true,"relations":[{"name":"user","reference":"m:1","cascade":["persist"],"type":"User","owner":true,"array":false}],"collection":"activity_log"},"origin":"./src/entities/activity-log.entity.ts","hash":"f745d46fcbf52c80d4753c27c63af151","version":"5.6.13"}
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"activityType": { "name": "activityType", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
+			"loginType": { "name": "loginType", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
+			"ipAddress": { "name": "ipAddress", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
+			"deviceId": { "name": "deviceId", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
+			"status": { "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
+			"loginStatus": { "name": "loginStatus", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
+			"user": { "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "owner": true, "array": false }
+		},
+		"props": [
+			{ "name": "activityType", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
+			{ "name": "loginType", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
+			{ "name": "ipAddress", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
+			{ "name": "deviceId", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false, "optional": true },
+			{ "name": "status", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
+			{ "name": "loginStatus", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
+			{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "owner": true, "array": false }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "ActivityLog",
+		"path": "./src/entities/activity-log.entity.ts",
+		"name": "ActivityLog",
+		"abstract": false,
+		"constructorParams": ["partial"],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [{ "name": "user", "reference": "m:1", "cascade": ["persist"], "type": "User", "owner": true, "array": false }],
+		"collection": "activity_log"
+	},
+	"origin": "./src/entities/activity-log.entity.ts",
+	"hash": "f6bd6b52c6659caf7b462d570d4184c1",
+	"version": "5.6.16"
+}

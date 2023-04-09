@@ -32,7 +32,15 @@ export class ProfileService {
 				{
 					username,
 				},
-				{ populate },
+				{
+					populate,
+					populateWhere: {
+						favorites: { isActive: true, isObsolete: false },
+						followers: { isActive: true, isObsolete: false },
+						followed: { isActive: true, isObsolete: false },
+						posts: { isActive: true, isObsolete: false },
+					},
+				},
 			),
 		).pipe(
 			map(user => {

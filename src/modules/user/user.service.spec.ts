@@ -4,7 +4,7 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { mockedUser, mockFile, query } from "@mocks";
+import { mockedUser, mockFile, queryDto } from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { CloudinaryService } from "nestjs-cloudinary";
@@ -39,7 +39,6 @@ describe("UserService", () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				UserService,
-
 				{
 					provide: getRepositoryToken(User),
 					useValue: mockUserRepo,
@@ -63,7 +62,7 @@ describe("UserService", () => {
 
 		service.findOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
-			expect(findOneSpy).toBeCalledWith({ idx: "userId", isObsolete: false, isActive: true });
+			expect(findOneSpy).toBeCalledWith({ idx: "userId" });
 		});
 	});
 
@@ -97,7 +96,7 @@ describe("UserService", () => {
 			total: 100,
 		});
 
-		service.findAll(query).subscribe(result => {
+		service.findAll(queryDto).subscribe(result => {
 			expect(result.meta).toBeDefined();
 			expect(result.links).toBeDefined();
 			expect(result.items).toStrictEqual([]);
@@ -115,8 +114,6 @@ describe("UserService", () => {
 			});
 			expect(mockUserRepo.findOne).toBeCalledWith({
 				idx: "userId",
-				isObsolete: false,
-				isActive: true,
 			});
 
 			expect(mockUserRepo.softRemoveAndFlush).toBeCalled();

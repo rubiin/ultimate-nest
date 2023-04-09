@@ -1,6 +1,7 @@
 import { Roles } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import { HelperService } from "@common/helpers";
+import { Conversation, Message, Post } from "@entities";
 import {
 	BeforeCreate,
 	BeforeUpdate,
@@ -15,31 +16,35 @@ import {
 	wrap,
 } from "@mikro-orm/core";
 
-import { Post } from "./post.entity";
-
 @Entity()
 export class User extends BaseEntity {
-	@Property({ length: 255 })
-	firstName = "";
+	@Property()
+	firstName!: string;
 
-	@Property({ length: 255 })
-	lastName = "";
+	@Property()
+	middleName?: string;
+
+	@Property()
+	lastName!: string;
 
 	@Unique()
-	@Property({ length: 255 })
+	@Property()
 	username!: string;
 
 	@Unique()
-	@Property({ length: 255 })
+	@Property()
 	email!: string;
 
-	@Property({ length: 255 })
+	@Property()
+	bio!: string;
+
+	@Property()
 	avatar!: string;
 
 	@Property({ hidden: true })
 	password!: string;
 
-	@Property({ length: 255 })
+	@Property()
 	twoFactorSecret?: string;
 
 	@Property()
@@ -57,6 +62,12 @@ export class User extends BaseEntity {
 
 	@OneToMany(() => Post, post => post.author)
 	posts = new Collection<Post>(this);
+
+	@ManyToMany(() => Conversation, "users", { owner: true })
+	conversations = new Collection<Conversation>(this);
+
+	@OneToMany(() => Message, message => message.user)
+	messages = new Collection<Message>(this);
 
 	@ManyToMany({ hidden: true })
 	favorites = new Collection<Post>(this);
@@ -97,4 +108,7 @@ export class User extends BaseEntity {
 			this.password = await HelperService.hashString(this.password);
 		}
 	}
+
+	@Property()
+	lastLogin = new Date();
 }

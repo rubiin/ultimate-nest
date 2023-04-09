@@ -5,24 +5,16 @@ import { User } from "./user.entity";
 
 @Entity()
 export class ActivityLog extends BaseEntity {
-	@Property({
-		length: 50,
-	})
+	@Property()
 	activityType?: string;
 
-	@Property({
-		length: 50,
-	})
+	@Property()
 	loginType?: string;
 
-	@Property({
-		length: 50,
-	})
+	@Property()
 	ipAddress?: string;
 
-	@Property({
-		length: 50,
-	})
+	@Property()
 	deviceId?: string;
 
 	@Property()
