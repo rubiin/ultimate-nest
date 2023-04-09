@@ -1,6 +1,11 @@
 import fs from "node:fs";
 
-import { SWAGGER_API_CURRENT_VERSION, SWAGGER_API_ENDPOINT, SWAGGER_DESCRIPTION, SWAGGER_TITLE } from "@common/constant";
+import {
+	SWAGGER_API_CURRENT_VERSION,
+	SWAGGER_API_ENDPOINT,
+	SWAGGER_DESCRIPTION,
+	SWAGGER_TITLE,
+} from "@common/constant";
 import { swaggerOptions } from "@common/swagger/swagger.plugin";
 import { IConfig } from "@lib/config/config.interface";
 import { INestApplication, Logger } from "@nestjs/common";

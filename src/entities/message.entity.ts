@@ -15,7 +15,7 @@ export class Message extends BaseEntity {
 	conversation!: Rel<User>;
 
 	@Property()
-	isRead: boolean = false
+	isRead = false;
 
 	@Property()
 	readAt?: Date;
