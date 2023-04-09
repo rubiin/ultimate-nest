@@ -1,13 +1,14 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
+		"declaration": true,
+		"resolveJsonModule": true,
+		"removeComments": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true,
+		"target": "ES2021",
+		"sourceMap": true,
 		"jsx": "react",
 		"esModuleInterop": true,
 		"moduleResolution": "node",
@@ -37,15 +38,11 @@
 			"@modules/*": ["./modules/*"],
 			"@entities": ["./entities/index"],
 			"@mocks": ["./_mocks_/index"],
-			"@generated": ["./generated/index"],
+			"@generated": ["./generated/index"]
 		},
-		"typeRoots": [
-			"@types",
-			"./node_modules/@types",
-		]
+		"typeRoots": ["@types", "./node_modules/@types"]
 	},
 	"include": ["test/**/*", "src/**/*"],
 	"exclude": ["node_modules", "dist"],
-	"types": ["./src/common/types/global.d.ts"],
-
+	"types": ["./src/common/types/global.d.ts"]
 }

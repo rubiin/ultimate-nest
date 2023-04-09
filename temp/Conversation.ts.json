@@ -1,0 +1,38 @@
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"name": { "name": "name", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			"users": { "name": "users", "reference": "m:n", "cascade": ["persist"], "type": "User", "fixedOrder": false, "array": false },
+			"messages": { "name": "messages", "reference": "1:m", "cascade": ["persist"], "type": "Message", "array": false }
+		},
+		"props": [
+			{ "name": "name", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			{ "name": "users", "reference": "m:n", "cascade": ["persist"], "type": "User", "fixedOrder": false, "array": false },
+			{ "name": "messages", "reference": "1:m", "cascade": ["persist"], "type": "Message", "array": false }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "Conversation",
+		"path": "./src/entities/conversation.entity.ts",
+		"name": "Conversation",
+		"abstract": false,
+		"constructorParams": ["partial"],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [
+			{ "name": "users", "reference": "m:n", "cascade": ["persist"], "type": "User", "fixedOrder": false, "array": false },
+			{ "name": "messages", "reference": "1:m", "cascade": ["persist"], "type": "Message", "array": false }
+		],
+		"collection": "conversation"
+	},
+	"origin": "./src/entities/conversation.entity.ts",
+	"hash": "cf699246a281e5a28d74a0e86d0dccd5",
+	"version": "5.6.16"
+}

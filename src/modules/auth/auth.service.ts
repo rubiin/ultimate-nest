@@ -54,6 +54,7 @@ export class AuthService {
 		return from(
 			this.userRepository.findOne({
 				email,
+				isActive: true,
 				isObsolete: false,
 			}),
 		).pipe(
@@ -162,6 +163,7 @@ export class AuthService {
 		const userExists = await this.userRepository.findOne({
 			email,
 			isObsolete: false,
+			isActive: true,
 		});
 
 		if (!userExists) {
@@ -215,6 +217,8 @@ export class AuthService {
 		return from(
 			this.otpRepository.findOne({
 				otpCode,
+				isActive: true,
+				isObsolete: false,
 			}),
 		).pipe(
 			switchMap(details => {
@@ -233,6 +237,8 @@ export class AuthService {
 		const { otpCode } = otpDto;
 		const codeDetails = await this.otpRepository.findOne({
 			otpCode,
+			isActive: true,
+			isObsolete: false,
 		});
 
 		if (!codeDetails) {
@@ -285,6 +291,8 @@ export class AuthService {
 		return from(
 			this.userRepository.findOne({
 				id: user.id,
+				isActive: true,
+				isObsolete: false,
 			}),
 		).pipe(
 			switchMap(userDetails => {

@@ -198,7 +198,9 @@ Procfile          text
 
 # do not merge these files
 dist/**/*.js -diff
+temp/*.json
 
 # I prefer -diff for mistakes prevention
 yarn.lock merge=theirs
+pnpm-lock.yaml merge=theirs
 package-lock.json merge=theirs
