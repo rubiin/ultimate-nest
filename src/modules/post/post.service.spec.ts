@@ -1,5 +1,5 @@
 import { BaseRepository } from "@common/database";
-import { Comment, Post, Tag, User } from "@entities";
+import { Category, Comment, Post, Tag, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { mockedPost, queryDto } from "@mocks";
@@ -14,6 +14,7 @@ describe("PostService", () => {
 	const mockUserRepo = createMock<BaseRepository<User>>();
 	const mockCommentRepo = createMock<BaseRepository<Comment>>();
 	const mockTagsRepo = createMock<BaseRepository<Tag>>();
+	const mockCategoryRepo = createMock<BaseRepository<Category>>();
 
 	// default mocks
 
@@ -52,6 +53,10 @@ describe("PostService", () => {
 					provide: getRepositoryToken(Comment),
 					useValue: mockCommentRepo,
 				},
+				{
+					provide: getRepositoryToken(Category),
+					useValue: mockCategoryRepo,
+				},
 			],
 		}).compile();
 
@@ -67,7 +72,14 @@ describe("PostService", () => {
 
 		service.findOne("postId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedPost, idx: "postId" });
-			expect(findOneSpy).toBeCalledWith({ idx: "postId" }, { populate: [] });
+			expect(findOneSpy).toBeCalledWith(
+				{
+					idx: "postId",
+					isActive: true,
+					isObsolete: false,
+				},
+				{ populate: [] },
+			);
 		});
 	});
 
@@ -93,7 +105,10 @@ describe("PostService", () => {
 				isObsolete: true,
 				deletedAt: expect.any(Date),
 			});
-			expect(mockPostRepo.findOne).toBeCalledWith({ idx: "postId" }, { populate: [] });
+			expect(mockPostRepo.findOne).toBeCalledWith(
+				{ idx: "postId", isActive: true, isObsolete: false },
+				{ populate: [] },
+			);
 
 			expect(mockPostRepo.softRemoveAndFlush).toBeCalled();
 		});

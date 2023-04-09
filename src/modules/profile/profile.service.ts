@@ -31,6 +31,8 @@ export class ProfileService {
 			this.userRepository.findOne(
 				{
 					username,
+					isActive: true,
+					isObsolete: false,
 				},
 				{
 					populate,
@@ -65,7 +67,7 @@ export class ProfileService {
 	 * @returns A profile object with the following properties:
 	 *    following: true,
 	 *    avatar: followingUser.avatar,
-	 *    username: followingUser.username,
+	 *    username: followingUser.username
 	 */
 	follow(loggedInUser: User, usernameToFollow: string): Observable<IProfileData> {
 		if (!usernameToFollow) {

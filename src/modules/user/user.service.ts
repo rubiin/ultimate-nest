@@ -70,6 +70,8 @@ export class UserService implements IBaseService<User> {
 		return from(
 			this.userRepository.findOne({
 				idx: index,
+				isActive: true,
+				isObsolete: false,
 			}),
 		).pipe(
 			map(user => {
