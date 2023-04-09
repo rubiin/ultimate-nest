@@ -1,6 +1,5 @@
 import { Tag } from "@entities";
 import { Factory, Faker } from "@mikro-orm/seeder";
-import { randomNumber } from "helper-fns";
 
 /* `TagFactory` is a factory that creates `Tag` instances */
 export class TagFactory extends Factory<Tag> {
@@ -8,8 +7,8 @@ export class TagFactory extends Factory<Tag> {
 
 	definition(faker: Faker): Partial<Tag> {
 		return {
-			title: faker.lorem.words(4),
-			description: faker.lorem.paragraphs(randomNumber(1, 3)),
+			title: faker.lorem.words(1),
+			description: faker.lorem.paragraphs(1),
 		};
 	}
 }

@@ -1,5 +1,6 @@
 import { IGNORE_CACHING_META } from "@common/constant";
-import { CacheInterceptor, ExecutionContext, Injectable } from "@nestjs/common";
+import { CacheInterceptor } from "@nestjs/cache-manager";
+import {ExecutionContext, Injectable } from "@nestjs/common";
 
 /* If the ignoreCaching metadata is set to true, then the request will not be cached. */
 

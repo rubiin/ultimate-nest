@@ -45,8 +45,6 @@ export abstract class BaseService<
 	}: PageOptionsDto): Observable<Pagination<Entity>> {
 		const qb = this.repository.qb("p").select("p.*");
 
-		qb.where({ isObsolete: false, isActive: true });
-
 		if (search) {
 			qb.andWhere({ name: { $ilike: `%${search}%` } });
 		}
@@ -69,7 +67,7 @@ export abstract class BaseService<
 	 * @param {string} index - The name of the index to search.
 	 */
 	findOne(index: string): Observable<Entity> {
-		return from(this.repository.findOneOrFail(index as any));
+		return from(this.repository.findOneOrFail({idx: index} as any));
 	}
 
 	/**

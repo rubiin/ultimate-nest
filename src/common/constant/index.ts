@@ -1,6 +1,7 @@
-import { name } from "../../../package.json";
+import { capitalize } from "helper-fns";
 
-export const APP_NAME = name;
+
+export const APP_NAME = "nestify";
 
 export const THROTTLE_LIMIT_RESPONSE = "Too many requests, please try again later.";
 export const MULTER_IMAGE_FILTER = "Only image files are allowed!.";
@@ -13,11 +14,8 @@ export const IS_PUBLIC_KEY_META = "isPublic";
 export const CHECK_POLICIES_KEY_META = "checkPolicy";
 
 // swagger constants
-export const SWAGGER_TITLE = `${APP_NAME} API Documentation`;
+export const SWAGGER_TITLE = `${capitalize(APP_NAME)} API Documentation`;
 
 export const SWAGGER_API_ENDPOINT = "doc";
-
-export {
-	version as SWAGGER_API_CURRENT_VERSION,
-	description as SWAGGER_DESCRIPTION,
-} from "../../../package.json";
+export const SWAGGER_API_CURRENT_VERSION = "1.9.6";
+export const SWAGGER_DESCRIPTION = "NestJS + MikroORM blog example with batteries included";

@@ -26,10 +26,9 @@ export class SocketIOAdapter extends IoAdapter {
 	}
 
 	createIOServer(port: number, options?: ServerOptions): any {
-		const clientUrl = this.config.get("app.clientUrl", { infer: true });
 
 		const cors = {
-			origin: [clientUrl],
+			origin: ["*"],
 		};
 
 		const optionsWithCORS: ServerOptions = {
