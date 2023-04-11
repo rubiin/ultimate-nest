@@ -26,7 +26,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 		@InjectRepository(User)
 		private readonly userRepository: BaseRepository<User>,
 		private readonly mailService: MailerService,
-		private readonly configService: ConfigService<IConfig,true>,
+		private readonly configService: ConfigService<IConfig, true>,
 		config: ConfigService<IConfig, true>,
 	) {
 		super({
@@ -41,7 +41,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 				await this.mailService.sendMail({
 					template: EmailTemplateEnum.MAGIC_LOGIN,
 					replacements: {
-						link: `${this.configService.get("app.url", { infer: true })}/v1/${href}`
+						link: `${this.configService.get("app.url", { infer: true })}/v1/${href}`,
 					},
 					to: destination,
 					subject: "Magic login",
