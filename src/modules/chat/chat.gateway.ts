@@ -1,6 +1,6 @@
 import { WsJwtGuard } from "@common/guards";
 import { AuthService } from "@modules/auth/auth.service";
-import { Logger, OnModuleDestroy, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { Logger, OnModuleInit, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import {
 	ConnectedSocket,
@@ -21,7 +21,9 @@ import { SocketConnectionService } from "./socket-connection.service";
 @WebSocketGateway({
 	namespace: "chat",
 })
-export class ChatGateway implements OnGatewayConnection, OnGatewayInit,OnGatewayDisconnect, OnModuleDestroy {
+export class ChatGateway
+	implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect, OnModuleInit
+{
 	@WebSocketServer() server: Namespace;
 	private readonly logger = new Logger(ChatGateway.name);
 
@@ -31,6 +33,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit,OnGateway
 		private readonly jwtService: JwtService,
 	) {}
 
+	onModuleInit() {
+		// delete all connection when app is stopped
+		return this.connectionService.deleteAllConnection();
+	}
 
 	async handleConnection(client: Socket) {
 		// validate user, disconnect if unidentified
@@ -50,8 +56,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit,OnGateway
 			});
 
 			this.logger.debug(`🔗 Client connected: ${user.firstName} `);
-			
-return this.server.to(client.id).emit("welcome", savedConnection);
+
+			return this.server.to(client.id).emit("welcome", savedConnection);
 		} catch {
 			return this.handleDisconnect(client);
 		}
@@ -72,20 +78,11 @@ return this.server.to(client.id).emit("welcome", savedConnection);
 		socket.disconnect();
 	}
 
-	@SubscribeMessage("chat")
+	@SubscribeMessage("send")
 	async create(@MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() _client: Socket) {
-		// TODO: check why this is not working
-		if (createChatDto.to) {
-			this.server.to(createChatDto.to).emit("receive", createChatDto.message);
-		} else {
-			this.server.emit("receive", createChatDto.message);
-		}
+		// send message to the receiver default room
+		_client.to(createChatDto.to).emit("receive", createChatDto.message);
 
 		return createChatDto;
-	}
-
-	async onModuleDestroy() {
-		// delete all connection when app is stopped
-		return this.connectionService.deleteAllConnection();
 	}
 }

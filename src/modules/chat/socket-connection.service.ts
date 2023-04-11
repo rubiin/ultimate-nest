@@ -19,8 +19,8 @@ export class SocketConnectionService {
 		const socketConnection = this.socketConnectionRepository.create(connection);
 
 		await this.socketConnectionRepository.persistAndFlush(socketConnection);
-		
-return socketConnection;
+
+		return socketConnection;
 	}
 
 	async deleteAllConnection() {
