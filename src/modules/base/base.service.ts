@@ -67,7 +67,7 @@ export abstract class BaseService<
 	 * @param {string} index - The name of the index to search.
 	 */
 	findOne(index: string): Observable<Entity> {
-		return from(this.repository.findOneOrFail({idx: index} as any));
+		return from(this.repository.findOneOrFail({ idx: index } as any));
 	}
 
 	/**

@@ -8,7 +8,6 @@ export class MessageFactory extends Factory<Message> {
 	definition(faker: Faker): Partial<Message> {
 		return {
 			body: faker.commerce.productDescription(),
-			
 		};
 	}
 }

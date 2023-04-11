@@ -315,4 +315,12 @@ export class AuthService {
 			}),
 		);
 	}
+
+	async findUser(id: number): Promise<User> {
+		return this.userRepository.findOne({
+			id,
+			isActive: true,
+			isObsolete: false,
+		});
+	}
 }
