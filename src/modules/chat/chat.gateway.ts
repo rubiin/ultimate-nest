@@ -1,6 +1,6 @@
 import { WsJwtGuard } from "@common/guards";
 import { AuthService } from "@modules/auth/auth.service";
-import { Logger, UseGuards } from "@nestjs/common";
+import { Logger, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import {
 	ConnectedSocket,
@@ -31,14 +31,27 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit {
 	) {}
 
 	async handleConnection(client: Socket) {
-		const payload = await this.jwtService.verify(client.handshake.headers.authorization);
-		const user = await this.authService.findUser(payload.sub);
 
-		if (user) {
-			this.chatService.identify(`${user.firstName} ${user.lastName}`, user.idx, client.id);
+		// validate user, disconnect if unidentified
+		try {
+			const payload = await this.jwtService.verify(client.handshake.headers.authorization);
+			const user = await this.authService.findUser(payload.sub);
+
+			if (!user) {
+				throw new Error('User doesnt exist');
+			}
+			this.chatService.identify(
+				`${user.firstName} ${user.lastName}`,
+				user.idx,
+				client.id,
+			);
+			this.logger.debug(`🔗 Client connected: ${user.firstName} `);
+			return this.server.to(client.id).emit("welcome", `Welcome ${user}`)
+		} catch (e) {
+			return this.handleDisconnect(client);
 		}
-		this.logger.debug(`🔗 Client connected: ${user.firstName} `);
 	}
+
 	afterInit() {
 		this.logger.debug(`💬 Websocket Gateway initialized ${this.server.name} `);
 	}
@@ -65,5 +78,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit {
 		const name = this.chatService.getClientName(client.id);
 
 		client.broadcast.emit("typing", { name, isTyping });
+	}
+
+	private handleDisconnect(client: Socket) {
+		client.emit("disconnect", new UnauthorizedException());
+		client.disconnect();
 	}
 }
