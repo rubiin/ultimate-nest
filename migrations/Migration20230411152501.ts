@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230411081438 extends Migration {
+export class Migration20230411152501 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table `category` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `name` text not null, `description` text not null);');
@@ -15,6 +15,9 @@ export class Migration20230411081438 extends Migration {
     this.addSql('create unique index `user_username_unique` on `user` (`username`);');
     this.addSql('create unique index `user_email_unique` on `user` (`email`);');
     this.addSql('create unique index `user_mobile_number_unique` on `user` (`mobile_number`);');
+
+    this.addSql('create table `socket_connection` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `socket_id` text not null, `connected_user_id` integer not null, constraint `socket_connection_connected_user_id_foreign` foreign key(`connected_user_id`) references `user`(`id`) on update cascade);');
+    this.addSql('create index `socket_connection_connected_user_id_index` on `socket_connection` (`connected_user_id`);');
 
     this.addSql('create table `refresh_token` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `expires_in` datetime not null, `user_id` integer not null, `is_revoked` integer not null default false, constraint `refresh_token_user_id_foreign` foreign key(`user_id`) references `user`(`id`) on update cascade);');
     this.addSql('create index `refresh_token_user_id_index` on `refresh_token` (`user_id`);');
