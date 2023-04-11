@@ -6,6 +6,7 @@ export enum Order {
 export enum EmailTemplateEnum {
 	"RESET_PASSWORD_TEMPLATE" = "reset",
 	"WELCOME_TEMPLATE" = "welcome",
+	"MAGIC_LOGIN" = "magiclogin",
 }
 
 export enum FileSizes {

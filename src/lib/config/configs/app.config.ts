@@ -3,8 +3,9 @@ import Joi from "joi";
 
 export const app = registerAs("app", () => ({
 	port: process.env.APP_PORT,
-	env: process.env.NODE_ENV,
 	prefix: process.env.APP_PREFIX,
+	env: process.env.NODE_ENV,
+	url: process.env.API_URL,
 	name: process.env.APP_NAME,
 	clientUrl: process.env.CLIENT_URL,
 	allowedHosts: process.env.ALLOWED_HOSTS,
@@ -18,6 +19,7 @@ export const appConfigValidationSchema = {
 		.valid("dev", "prod", "development", "staging", "testing", "stage", "test", "production")
 		.required(),
 	APP_PORT: Joi.number().required(),
+	API_URL: Joi.string().required(),
 	APP_PREFIX: Joi.string().required(),
 	APP_NAME: Joi.string().required(),
 	CLIENT_URL: Joi.string().required(),

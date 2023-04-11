@@ -94,7 +94,7 @@ export class MailerService {
 
 		mailOptions.html = html;
 
-		if (this.options.previewEmail) {
+		if (this.options.previewEmail === true) {
 			previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error);
 		}
 
