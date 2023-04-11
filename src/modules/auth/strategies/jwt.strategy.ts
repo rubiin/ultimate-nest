@@ -1,20 +1,15 @@
 import { IJwtPayload } from "@common/@types";
-import { BaseRepository } from "@common/database";
-import { User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
-import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
+import { AuthService } from "../auth.service";
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-	constructor(
-		@InjectRepository(User)
-		private readonly userRepository: BaseRepository<User>,
-		config: ConfigService<IConfig, true>,
-	) {
+	constructor(private readonly authService: AuthService, config: ConfigService<IConfig, true>) {
 		super({
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 			secretOrKey: config.get("jwt.secret", { infer: true }),
@@ -34,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		const { sub: id } = payload;
 
 		// Accept the JWT and attempt to validate it using the user service
-		const user = await this.userRepository.findOne({ id });
+		const user = await this.authService.findUser(id);
 
 		if (!user) {
 			throw new UnauthorizedException();

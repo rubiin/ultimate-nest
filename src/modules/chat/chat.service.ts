@@ -2,15 +2,25 @@ import { Injectable } from "@nestjs/common";
 
 import { CreateChatDto } from "./dto/create-chat.dto";
 
+interface IClentIdentity {
+	name: string;
+	idx: string;
+	clientId: string;
+}
+
 @Injectable()
 export class ChatService {
-	messages = [{ message: "hello", username: "rubiin" }];
-	clientToUser: Map<string, string> = new Map();
+	messages: any[] = [];
+	clientToUser: IClentIdentity[] = [];
 
-	identify(name: string, clientId: string) {
-		this.clientToUser[clientId] = name;
+	identify(name: string, index: string, clientId: string) {
+		const client = {
+			name,
+			idx: index,
+			clientId,
+		};
 
-		return Object.values(this.clientToUser);
+		this.clientToUser.push(client);
 	}
 
 	create(createChatDto: CreateChatDto, clientId: string) {

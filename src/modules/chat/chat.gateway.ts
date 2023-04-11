@@ -1,8 +1,12 @@
-import { WsAuthGuard } from "@common/guards";
+import { WsJwtGuard } from "@common/guards";
+import { AuthService } from "@modules/auth/auth.service";
 import { Logger, UseGuards } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import {
 	ConnectedSocket,
 	MessageBody,
+	OnGatewayConnection,
+	OnGatewayInit,
 	SubscribeMessage,
 	WebSocketGateway,
 	WebSocketServer,
@@ -12,30 +16,43 @@ import { Namespace, Socket } from "socket.io";
 import { ChatService } from "./chat.service";
 import { CreateChatDto } from "./dto/create-chat.dto";
 
-// TODO: create one to one chat
-// Add auth guard
-// Add generic basic templates
-@UseGuards(WsAuthGuard)
+@UseGuards(WsJwtGuard)
 @WebSocketGateway({
 	namespace: "chat",
 })
-export class ChatGateway {
+export class ChatGateway implements OnGatewayConnection, OnGatewayInit {
 	@WebSocketServer() server: Namespace;
 	private readonly logger = new Logger(ChatGateway.name);
 
-	constructor(private readonly chatService: ChatService) {}
+	constructor(
+		private readonly chatService: ChatService,
+		private readonly authService: AuthService,
+		private readonly jwtService: JwtService,
+	) {}
 
-	afterInit(): void {
-		this.logger.debug(`💬 Websocket Gateway initialized.`);
+	async handleConnection(client: Socket) {
+		const payload = await this.jwtService.verify(client.handshake.headers.authorization);
+		const user = await this.authService.findUser(payload.sub);
+
+		if (user) {
+			this.chatService.identify(`${user.firstName} ${user.lastName}`, user.idx, client.id);
+		}
+		this.logger.debug(`🔗 Client connected: ${user.firstName} `);
+	}
+	afterInit() {
+		this.logger.debug(`💬 Websocket Gateway initialized ${this.server.name} `);
 	}
 
-	@SubscribeMessage("createChat")
-	async create(@MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() client: Socket) {
-		const message = this.chatService.create(createChatDto, client.id);
+	@SubscribeMessage("chat")
+	async create(@MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() _client: Socket) {
+		// TODO: check why this is not working
+		if (createChatDto.to) {
+			this.server.to(createChatDto.to).emit("receive", createChatDto.message);
+		} else {
+			this.server.emit("receive", createChatDto.message);
+		}
 
-		this.server.emit("message", message);
-
-		return message;
+		return createChatDto;
 	}
 
 	@SubscribeMessage("findAllChat")
@@ -48,10 +65,5 @@ export class ChatGateway {
 		const name = this.chatService.getClientName(client.id);
 
 		client.broadcast.emit("typing", { name, isTyping });
-	}
-
-	@SubscribeMessage("join")
-	joinRoom(@MessageBody("username") username: string, @ConnectedSocket() client: Socket) {
-		return this.chatService.identify(username, client.id);
 	}
 }

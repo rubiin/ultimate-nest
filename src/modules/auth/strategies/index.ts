@@ -5,4 +5,3 @@ export * from "./google.strategy";
 export * from "./jwt.strategy";
 export * from "./jwt-2fa.strategy";
 export * from "./magic-login.strategy";
-export * from "./ws.strategy";

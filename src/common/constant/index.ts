@@ -1,6 +1,5 @@
 import { capitalize } from "helper-fns";
 
-
 export const APP_NAME = "nestify";
 
 export const THROTTLE_LIMIT_RESPONSE = "Too many requests, please try again later.";
