@@ -123,7 +123,7 @@ export class AuthService {
 						this.configService.get("jwt.refreshExpiry", { infer: true }),
 					),
 				).pipe(
-					map(([_,accessToken, refreshToken]) => {
+					map(([_, accessToken, refreshToken]) => {
 						return HelperService.buildPayloadResponse(user, accessToken, refreshToken);
 					}),
 				);

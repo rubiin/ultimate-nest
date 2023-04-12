@@ -54,14 +54,12 @@ export class ChatGateway
 
 			// save the connection of user to db
 
-			const savedConnection = await this.connectionService.saveConnection({
+			await this.connectionService.saveConnection({
 				connectedUser: user,
 				socketId: client.id,
 			});
 
 			this.logger.debug(`🔗 Client connected: ${user.firstName} `);
-
-			return this.server.to(client.id).emit("welcome", savedConnection);
 		} catch {
 			return this.handleDisconnect(client);
 		}
@@ -83,17 +81,18 @@ export class ChatGateway
 	}
 
 	@SubscribeMessage("send")
-	async create(@MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() _client: Socket, @LoggedInUser() user: User) {
-
-		
+	async create(
+		@MessageBody() createChatDto: CreateChatDto,
+		@ConnectedSocket() _client: Socket,
+		@LoggedInUser() user: User,
+	) {
 		// send message to the receiver default room
 		const receiver = await this.connectionService.findBySocketId(createChatDto.to);
 
 		await this.chatService.createMessage({
 			message: createChatDto.message,
 			users: [user, receiver.connectedUser],
-			name: `Chat between ${user.firstName} and ${receiver.connectedUser.firstName}`,
-		})
+		});
 		_client.to(createChatDto.to).emit("receive", createChatDto.message);
 
 		return createChatDto;

@@ -1,12 +1,15 @@
 import { BaseEntity } from "@common/database";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
 
-import { Conversation } from "./index";
+import { Conversation, User } from "./index";
 
 @Entity()
 export class Message extends BaseEntity {
 	@Property()
 	body!: string;
+
+	@ManyToOne()
+	sender: Rel<User>;
 
 	@ManyToOne()
 	conversation!: Rel<Conversation>;
