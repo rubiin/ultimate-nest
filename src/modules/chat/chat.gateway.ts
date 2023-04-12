@@ -1,4 +1,6 @@
+import { LoggedInUser } from "@common/decorators";
 import { WsJwtGuard } from "@common/guards";
+import { User } from "@entities";
 import { AuthService } from "@modules/auth/auth.service";
 import { Logger, OnModuleInit, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
@@ -14,6 +16,7 @@ import {
 } from "@nestjs/websockets";
 import { Namespace, Socket } from "socket.io";
 
+import { ChatService } from "./chat.service";
 import { CreateChatDto } from "./dto/create-chat.dto";
 import { SocketConnectionService } from "./socket-connection.service";
 
@@ -29,6 +32,7 @@ export class ChatGateway
 
 	constructor(
 		private readonly connectionService: SocketConnectionService,
+		private readonly chatService: ChatService,
 		private readonly authService: AuthService,
 		private readonly jwtService: JwtService,
 	) {}
@@ -79,8 +83,17 @@ export class ChatGateway
 	}
 
 	@SubscribeMessage("send")
-	async create(@MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() _client: Socket) {
+	async create(@MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() _client: Socket, @LoggedInUser() user: User) {
+
+		
 		// send message to the receiver default room
+		const receiver = await this.connectionService.findBySocketId(createChatDto.to);
+
+		await this.chatService.createMessage({
+			message: createChatDto.message,
+			users: [user, receiver.connectedUser],
+			name: `Chat between ${user.firstName} and ${receiver.connectedUser.firstName}`,
+		})
 		_client.to(createChatDto.to).emit("receive", createChatDto.message);
 
 		return createChatDto;

@@ -1,11 +1,14 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230411152501 extends Migration {
+export class Migration20230412072025 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table `category` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `name` text not null, `description` text not null);');
 
     this.addSql('create table `conversation` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `name` text not null);');
+
+    this.addSql('create table `message` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `body` text not null, `conversation_id` integer not null, `is_read` integer not null default false, `read_at` datetime null, constraint `message_conversation_id_foreign` foreign key(`conversation_id`) references `conversation`(`id`) on update cascade);');
+    this.addSql('create index `message_conversation_id_index` on `message` (`conversation_id`);');
 
     this.addSql('create table `protocol` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `login_attemptnumbererval` integer not null, `loginnumbererval_unit` text not null, `login_max_retry` integer not null, `otp_expiry_in_minutes` integer not null, `mpin_attempt_interval` integer not null, `mpin_interval_unit` text not null, `mpin_max_retry` integer not null);');
 
@@ -35,10 +38,6 @@ export class Migration20230411152501 extends Migration {
 
     this.addSql('create table `otp_log` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `expires_in` datetime not null, `otp_code` text null, `user_id` integer not null, `is_used` integer not null, constraint `otp_log_user_id_foreign` foreign key(`user_id`) references `user`(`id`) on update cascade);');
     this.addSql('create index `otp_log_user_id_index` on `otp_log` (`user_id`);');
-
-    this.addSql('create table `message` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `body` text not null, `user_id` integer not null, `conversation_id` integer not null, `is_read` integer not null default false, `read_at` datetime null, constraint `message_user_id_foreign` foreign key(`user_id`) references `user`(`id`) on update cascade, constraint `message_conversation_id_foreign` foreign key(`conversation_id`) references `conversation`(`id`) on update cascade);');
-    this.addSql('create index `message_user_id_index` on `message` (`user_id`);');
-    this.addSql('create index `message_conversation_id_index` on `message` (`conversation_id`);');
 
     this.addSql('create table `comment` (`id` integer not null primary key autoincrement, `idx` text not null, `is_active` integer not null default true, `is_obsolete` integer not null default false, `deleted_at` datetime null, `created_at` datetime not null, `updated_at` datetime null, `body` text not null, `post_id` integer not null, `author_id` integer not null, constraint `comment_post_id_foreign` foreign key(`post_id`) references `post`(`id`) on update cascade, constraint `comment_author_id_foreign` foreign key(`author_id`) references `user`(`id`) on update cascade);');
     this.addSql('create index `comment_post_id_index` on `comment` (`post_id`);');

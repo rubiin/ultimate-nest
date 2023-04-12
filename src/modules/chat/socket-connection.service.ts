@@ -33,6 +33,12 @@ export class SocketConnectionService {
 		});
 	}
 
+	async findBySocketId(id: string) {
+		return this.socketConnectionRepository.findOne({
+			socketId: id,
+		});
+	}
+
 	async deleteBySocketId(id: string) {
 		return this.socketConnectionRepository.findAndDelete({
 			socketId: id,
