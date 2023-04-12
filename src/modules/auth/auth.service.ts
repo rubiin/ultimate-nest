@@ -116,13 +116,14 @@ export class AuthService {
 				}
 
 				return zip(
+					this.userRepository.nativeUpdate({ id: user.id }, { lastLogin: new Date() }),
 					this.tokenService.generateAccessToken(user),
 					this.tokenService.generateRefreshToken(
 						user,
 						this.configService.get("jwt.refreshExpiry", { infer: true }),
 					),
 				).pipe(
-					map(([accessToken, refreshToken]) => {
+					map(([_,accessToken, refreshToken]) => {
 						return HelperService.buildPayloadResponse(user, accessToken, refreshToken);
 					}),
 				);
