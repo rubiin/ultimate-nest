@@ -9,6 +9,7 @@ import { User } from "./user.entity";
 export class SocketConnection extends BaseEntity {
 	@Property()
 	socketId: string;
+	
 
 	@ManyToOne()
 	connectedUser!: Rel<User>;

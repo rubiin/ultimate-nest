@@ -1,7 +1,7 @@
 import { Roles } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import { HelperService } from "@common/helpers";
-import { Conversation, Message, Post } from "@entities";
+import { Conversation, Post } from "@entities";
 import {
 	BeforeCreate,
 	BeforeUpdate,
@@ -66,8 +66,6 @@ export class User extends BaseEntity {
 	@ManyToMany(() => Conversation, "users", { owner: true })
 	conversations = new Collection<Conversation>(this);
 
-	@OneToMany(() => Message, message => message.user)
-	messages = new Collection<Message>(this);
 
 	@ManyToMany({ hidden: true })
 	favorites = new Collection<Post>(this);
