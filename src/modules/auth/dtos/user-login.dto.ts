@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsEmail, IsNotEmpty } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class UserLoginDto {
@@ -23,5 +23,6 @@ export class MagicLinkLogin {
 	 * @example someone@something.com
 	 */
 	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsEmail({}, { message: i18nValidationMessage("validation.isEmail") })
 	destination!: string;
 }

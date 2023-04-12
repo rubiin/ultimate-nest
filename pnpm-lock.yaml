@@ -61,6 +61,9 @@ dependencies:
   '@nestjs/platform-socket.io':
     specifier: ^9.4.0
     version: 9.4.0(@nestjs/common@9.4.0)(@nestjs/websockets@9.4.0)(rxjs@7.8.0)
+  '@nestjs/schedule':
+    specifier: ^2.2.1
+    version: 2.2.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13)
   '@nestjs/serve-static':
     specifier: ^3.0.1
     version: 3.0.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)
@@ -3024,6 +3027,20 @@ packages:
       - supports-color
       - utf-8-validate
 
+  /@nestjs/schedule@2.2.1(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-7jev9Q3aFnRajKAi/At+9rzwflZNN10SA5PcdCvxc35GFfTdM2a6O5GA7tiIbLuOOzdjPYPbC3RxP4tpXOHVWw==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
+      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0
+      reflect-metadata: ^0.1.12
+    dependencies:
+      '@nestjs/common': 9.4.0(cache-manager@5.2.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
+      '@nestjs/core': 9.4.0(@nestjs/common@9.4.0)(@nestjs/platform-express@9.4.0)(@nestjs/websockets@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
+      cron: 2.3.0
+      reflect-metadata: 0.1.13
+      uuid: 9.0.0
+    dev: false
+
   /@nestjs/schematics@9.1.0(chokidar@3.5.3)(typescript@4.9.5):
     resolution: {integrity: sha512-/7CyMTnPJSK9/xD9CkCqwuHPOlHVlLC2RDnbdCJ7mIO07SdbBbY14msTqtYW9VRQtsjZPLh1GTChf7ryJUImwA==}
     peerDependencies:
@@ -5704,6 +5721,12 @@ packages:
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: true
+
+  /cron@2.3.0:
+    resolution: {integrity: sha512-ZN5HP8zDY41sJolMsbc+GksRATcbvkPKF5wR/qc8FrV4NBVi9ORQa1HmYa5GydaysUB80X9XpRlRkooa5uEtTA==}
+    dependencies:
+      luxon: 3.3.0
+    dev: false
 
   /cross-spawn@6.0.5:
     resolution: {integrity: sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==}
@@ -9264,6 +9287,11 @@ packages:
 
   /lru_map@0.3.3:
     resolution: {integrity: sha512-Pn9cox5CsMYngeDbmChANltQl+5pi6XmTrraMSzhPmMBbmgcxmqWry0U3PGapCU1yB4/LqCcom7qhHZiF/jGfQ==}
+    dev: false
+
+  /luxon@3.3.0:
+    resolution: {integrity: sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==}
+    engines: {node: '>=12'}
     dev: false
 
   /macos-release@2.5.0:

@@ -16,11 +16,15 @@ export class SocketConnectionService {
 	) {}
 
 	async saveConnection(connection: ISocketConnection) {
-		const socketConnection = this.socketConnectionRepository.create(connection);
+		// Check if the connection already exists
+		const socketConnectionExists = this.findByUserId(connection.connectedUser.id);
 
-		await this.socketConnectionRepository.persistAndFlush(socketConnection);
+		// If the connection does not exist, create it
+		if (socketConnectionExists) {
+			const socketConnection = this.socketConnectionRepository.create(connection);
 
-		return socketConnection;
+			await this.socketConnectionRepository.persistAndFlush(socketConnection);
+		}
 	}
 
 	async deleteAllConnection() {
