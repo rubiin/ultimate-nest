@@ -14,7 +14,7 @@ export class ChatService {
 		@InjectRepository(Conversation)
 		private readonly conversationRepository: BaseRepository<Conversation>,
 		@InjectRepository(Message) private readonly messageRepository: BaseRepository<Message>,
-	) {}
+	) { }
 
 	async createConversation(conversation: IConversation) {
 		const conversationNew = this.conversationRepository.create(conversation);
@@ -49,6 +49,7 @@ export class ChatService {
 	async getConversations(sender: User, receiver: User) {
 		return this.conversationRepository.findOne({ users: [sender, receiver] });
 	}
+	
 
 	async getConversationById(id: number) {
 		return this.conversationRepository.findOne(id);

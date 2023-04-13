@@ -1,4 +1,4 @@
-import { User } from "@entities";
+import { User as UserEntity } from "@entities";
 import { I18nTranslations as I18nTranslationTypes } from "@generated";
 
 export {};
@@ -6,7 +6,7 @@ export {};
 declare global {
 	namespace Express {
 		export interface Request {
-			user?: User;
+			user?: UserEntity;
 			realIp: string;
 		}
 	}
