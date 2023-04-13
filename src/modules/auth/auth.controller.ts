@@ -81,8 +81,15 @@ export class AuthController {
 
 	@UseGuards(AuthGuard("magicLogin"))
 	@Get("magiclogin/callback")
-	magicCallback(@Req() _request: Request) {
-		// the google auth redirect will be handled by passport
+	magicCallback(@LoggedInUser() user: User, @Res() response: Response) {
+		return this.authService.login({ email: user.email}, false).pipe(
+			map(data => {
+				// client url
+				return response.redirect(
+					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.accessToken}`,
+				);
+			}),
+		);
 	}
 
 	@Get("google")

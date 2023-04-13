@@ -9,6 +9,14 @@ import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import Strategy from "passport-magic-login";
 
+
+interface IMagicLoginPayload {
+    destination: string;
+    code: string;
+    iat: number;
+    exp: number;
+}
+
 @Injectable()
 export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin") {
 	/**
@@ -48,9 +56,9 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 					from: this.configService.get("mail.senderEmail", { infer: true }),
 				});
 			},
-			verify: (payload, callback) => {
+			verify: (payload: IMagicLoginPayload, callback) => {
 				// Get or create a user with the provided email from the database
-				callback(null, this.validate(payload));
+				callback(null, this.validate(payload.destination));
 			},
 		});
 	}
