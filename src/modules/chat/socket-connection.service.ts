@@ -1,6 +1,4 @@
-import { BaseRepository } from "@common/database";
-import { SocketConnection, User } from "@entities";
-import { InjectRepository } from "@mikro-orm/nestjs";
+import { User } from "@entities";
 import { Injectable } from "@nestjs/common";
 
 interface ISocketConnection {
@@ -10,42 +8,33 @@ interface ISocketConnection {
 
 @Injectable()
 export class SocketConnectionService {
-	constructor(
-		@InjectRepository(SocketConnection)
-		private readonly socketConnectionRepository: BaseRepository<SocketConnection>,
-	) {}
+	private readonly socketConnections = new Map<string, User>();
 
-	async saveConnection(connection: ISocketConnection) {
-		// Check if the connection already exists
-		const socketConnectionExists = this.findByUserId(connection.connectedUser.id);
+	getAllOnlineUSers() {
+		return [...this.socketConnections.values()];
+	}
 
-		// If the connection does not exist, create it
-		if (socketConnectionExists) {
-			const socketConnection = this.socketConnectionRepository.create(connection);
+	saveConnection(connection: ISocketConnection) {
+		return this.socketConnections.set(connection.socketId, connection.connectedUser);
+	}
 
-			await this.socketConnectionRepository.persistAndFlush(socketConnection);
+	findByUserId(id: number) {
+		let user: User = null;
+
+		for (const value of this.socketConnections.values()) {
+			if (value.id === id) {
+				user = value;
+			}
 		}
+
+		return user;
 	}
 
-	async deleteAllConnection() {
-		return this.socketConnectionRepository.nativeDelete({});
+	findBySocketId(id: string) {
+		return this.socketConnections.get(id);
 	}
 
-	async findByUserId(id: number) {
-		return this.socketConnectionRepository.findOne({
-			connectedUser: id,
-		});
-	}
-
-	async findBySocketId(id: string) {
-		return this.socketConnectionRepository.findOne({
-			socketId: id,
-		});
-	}
-
-	async deleteBySocketId(id: string) {
-		return this.socketConnectionRepository.findAndDelete({
-			socketId: id,
-		});
+	deleteBySocketId(id: string) {
+		return this.socketConnections.delete(id);
 	}
 }

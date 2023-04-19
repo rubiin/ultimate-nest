@@ -5,5 +5,4 @@ export class CreateNewsLetterDto {
 	@IsNotEmpty()
 	@IsEmail({}, { message: i18nValidationMessage("validation.isEmail") })
 	email!: string;
-
 }

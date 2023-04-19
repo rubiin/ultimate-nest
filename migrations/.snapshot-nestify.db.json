@@ -174,6 +174,15 @@
           "nullable": true,
           "length": 0,
           "mappedType": "datetime"
+        },
+        "chat_name": {
+          "name": "chat_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         }
       },
       "name": "conversation",
@@ -795,132 +804,6 @@
       ],
       "checks": [],
       "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "idx": {
-          "name": "idx",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "is_active": {
-          "name": "is_active",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "true",
-          "mappedType": "integer"
-        },
-        "is_obsolete": {
-          "name": "is_obsolete",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "false",
-          "mappedType": "integer"
-        },
-        "deleted_at": {
-          "name": "deleted_at",
-          "type": "datetime",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 0,
-          "mappedType": "datetime"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "datetime",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 0,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "datetime",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 0,
-          "mappedType": "datetime"
-        },
-        "socket_id": {
-          "name": "socket_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
-        "connected_user_id": {
-          "name": "connected_user_id",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        }
-      },
-      "name": "socket_connection",
-      "indexes": [
-        {
-          "columnNames": [
-            "connected_user_id"
-          ],
-          "composite": false,
-          "keyName": "socket_connection_connected_user_id_index",
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "primary",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "socket_connection_connected_user_id_foreign": {
-          "constraintName": "socket_connection_connected_user_id_foreign",
-          "columnNames": [
-            "connected_user_id"
-          ],
-          "localTableName": "socket_connection",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "user",
-          "updateRule": "cascade"
-        }
-      }
     },
     {
       "columns": {

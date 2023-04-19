@@ -3,18 +3,18 @@ import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";
+import { Loaded } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, Logger, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import Strategy from "passport-magic-login";
 
-
 interface IMagicLoginPayload {
-    destination: string;
-    code: string;
-    iat: number;
-    exp: number;
+	destination: string;
+	code: string;
+	iat: number;
+	exp: number;
 }
 
 @Injectable()
@@ -22,7 +22,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 	/**
 	 * It's a PassportStrategy that uses the MagicLoginStrategy  to authenticate users
 	 * More at
-	 * https://passportjs.org/docs/strategies/magic-login/
+	 * https://passportjs.org/docs/strategies/passport-magic-login
 	 *
 	 * The callback url should match whats specified in the callbackURL section
 	 *
@@ -40,8 +40,9 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 		super({
 			secret: config.get("jwt.secret", { infer: true }),
 			jwtOptions: {
-				expiresIn: "5m",
+				expiresIn: config.get("jwt.magicLinkExpiry", { infer: true }),
 			},
+			algorithms: ["HS256"],
 			// The authentication callback URL
 			callbackUrl: "auth/magiclogin/callback",
 			sendMagicLink: async (destination: string, href: string) => {
@@ -56,7 +57,10 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 					from: this.configService.get("mail.senderEmail", { infer: true }),
 				});
 			},
-			verify: (payload: IMagicLoginPayload, callback) => {
+			verify: (
+				payload: IMagicLoginPayload,
+				callback: (argument0: null, argument1: Promise<Loaded<User, never>>) => void,
+			) => {
 				// Get or create a user with the provided email from the database
 				callback(null, this.validate(payload.destination));
 			},

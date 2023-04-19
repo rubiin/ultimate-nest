@@ -5,7 +5,6 @@ import { Message, User } from "./index";
 
 @Entity()
 export class Conversation extends BaseEntity {
-
 	@Property()
 	chatName: string;
 
