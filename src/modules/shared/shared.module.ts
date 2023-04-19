@@ -50,7 +50,7 @@ import { ScheduleModule } from "@nestjs/schedule";
 		NestThrottlerModule,
 		NestHttpModule,
 		NestServeStaticModule,
-		ScheduleModule.forRoot()
+		ScheduleModule.forRoot(),
 	],
 	providers: [IsUniqueConstraint],
 })

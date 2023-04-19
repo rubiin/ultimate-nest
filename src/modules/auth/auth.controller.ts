@@ -82,7 +82,7 @@ export class AuthController {
 	@UseGuards(AuthGuard("magicLogin"))
 	@Get("magiclogin/callback")
 	magicCallback(@LoggedInUser() user: User, @Res() response: Response) {
-		return this.authService.login({ email: user.email}, false).pipe(
+		return this.authService.login({ email: user.email }, false).pipe(
 			map(data => {
 				// client url
 				return response.redirect(

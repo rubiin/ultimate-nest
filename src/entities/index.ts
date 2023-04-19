@@ -3,7 +3,6 @@
 export * from "./activity-log.entity";
 export * from "./category.entity";
 export * from "./comment.entity";
-export * from "./connection.entity";
 export * from "./conversation.entity";
 export * from "./message.entity";
 export * from "./news-letter.entity";

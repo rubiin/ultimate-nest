@@ -3,7 +3,8 @@ import Joi from "joi";
 
 /**
  * NOTE:
- * JWT_ACCESS_EXPIRY can be either number or string
+ * Expiry can be either number or string
+ * A numeric value is interpreted as a seconds count
  * if number, parse to string
  *
  */
@@ -13,11 +14,17 @@ export const jwt = registerAs("jwt", () => ({
 	accessExpiry: /^\d+$/.test(process.env.JWT_ACCESS_EXPIRY)
 		? +process.env.JWT_ACCESS_EXPIRY
 		: process.env.JWT_ACCESS_EXPIRY,
-	refreshExpiry: +process.env.JWT_REFRESH_EXPIRY,
+	refreshExpiry: /^\d+$/.test(process.env.JWT_REFRESH_EXPIRY)
+		? +process.env.JWT_REFRESH_EXPIRY
+		: process.env.JWT_REFRESH_EXPIRY,
+	magicLinkExpiry: /^\d+$/.test(process.env.MAGIC_LINK_EXPIRY)
+		? +process.env.MAGIC_LINK_EXPIRY
+		: process.env.MAGIC_LINK_EXPIRY,
 }));
 
 export const jwtConfigValidationSchema = {
 	JWT_SECRET: Joi.string().required().min(8),
-	JWT_REFRESH_EXPIRY: Joi.number().required(),
+	JWT_REFRESH_EXPIRY: Joi.string().required(),
 	JWT_ACCESS_EXPIRY: Joi.string().required(),
+	MAGIC_LINK_EXPIRY: Joi.string().required(),
 };
