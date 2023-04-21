@@ -1,5 +1,6 @@
 import { Module, RequestMethod } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
+import { IncomingMessage } from "node:http";
 
 @Module({
 	imports: [
@@ -12,26 +13,41 @@ import { LoggerModule } from "nestjs-pino";
 							context: "HTTP",
 						}),
 						serializers: {
-							req(request) {
-								request.body = request.raw.body;
-
-								return request;
+							req(request: IncomingMessage) {
+								return {
+									method: request.method,
+									url: request.url,
+								};
 							},
 						},
-						level: process.env.NODE_ENV.startsWith("prod") ? "info" : "debug",
+
 						redact: {
 							paths: ["req.headers.authorization"],
 						},
 						transport: process.env.NODE_ENV.startsWith("prod")
-							? undefined
+							? {
+									target: "pino/file",
+									level: "error", // log only errors to file
+									options: { destination: 'app.log' },
+							  }
 							: {
-									target: "pino-pretty",
-									options: {
-										colorize: true,
-										translateTime: true,
-										ignore: "pid,hostname",
-										singleLine: true,
-									},
+									targets: [
+										{
+											target: "pino-pretty",
+											level: "info", // log only info and above to console
+											options: {
+												colorize: true,
+												translateTime: true,
+												ignore: "pid,hostname",
+												singleLine: true,
+											},
+										},
+										{
+											target: "pino/file",
+											level: "error", // log only errors to file
+											options: { destination: 'app.log' },
+										},
+									],
 							  },
 					},
 					exclude: [{ method: RequestMethod.ALL, path: "doc" }],

@@ -27,7 +27,7 @@ const environment = dotenv.config({
 
 dotEnvExpand.expand(environment);
 
-logger.debug(`🛠️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
+logger.log(`🛠️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
 
 export const baseOptions = {
 	entities: ["dist/entities/*.entity.js"],
@@ -54,7 +54,7 @@ export const baseOptions = {
 		defaultSeeder: "DatabaseSeeder", // default seeder class name
 		glob: "!(*.d).{js,ts}", // how to match seeder files (all .js and .ts files, but not .d.ts)
 	},
-	logger: logger.debug.bind(logger),
+	logger: logger.log.bind(logger),
 	metadataProvider: TsMorphMetadataProvider,
 	highlighter: new SqlHighlighter(),
 	debug: true,

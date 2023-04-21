@@ -16,6 +16,8 @@ import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestj
 
 import { AppModule } from "./app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
+import { join } from "node:path";
+import { existsSync, mkdirSync } from "node:fs";
 
 declare const module: any;
 
@@ -92,7 +94,16 @@ const bootstrap = async () => {
 
 	// use nestjs repl to verbose
 	if (isRepl) {
-		await repl(AppModule);
+		const replServer = await repl(AppModule);
+		const logger = new Logger();
+
+		// sets up history file
+		const cacheDir = join('node_modules', '.cache');
+		if (!existsSync(cacheDir)) mkdirSync(cacheDir);
+
+		replServer.setupHistory(join(cacheDir, '.nestjs_repl_history'), (err) => {
+			if (err) logger.error(err);
+		});
 	}
 
 	useContainer(app.select(AppModule), { fallbackOnErrors: true });
@@ -104,17 +115,18 @@ const bootstrap = async () => {
 
 	await app.listen(port);
 
-	logger.debug(
+	logger.log(
 		`🚀 Application is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}`)}`,
 	);
-	logger.debug(
+	logger.log(
 		`🚦 Accepting request only from: ${chalk.green(
 			`${configService.get("app.allowedHosts", { infer: true })}`,
 		)}`,
 	);
-	logger.debug(
+	logger.log(
 		`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}/doc`)}`,
 	);
+	logger.log(`Server is up. ${chalk.yellow(`+${performance.now() | 0}ms`)}`)
 };
 
 (async () => await bootstrap())();

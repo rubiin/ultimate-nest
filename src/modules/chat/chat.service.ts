@@ -81,7 +81,7 @@ export class ChatService {
 				readAt: new Date(),
 			},
 		);
-		
-return conversation;
+
+		return conversation;
 	}
 }
