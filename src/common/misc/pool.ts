@@ -7,5 +7,5 @@ const logger = new Logger("ThreadPool");
 /* Creating a new thread pool with 7 threads and a maximum of 20 threads. */
 export const pool = new DynamicThreadPool(7, 20, path.resolve(__dirname, "workers.js"), {
 	errorHandler: error => logger.error(error),
-	onlineHandler: () => logger.debug("✅ Worker is online"),
+	onlineHandler: () => logger.log("✅ Worker is online"),
 });

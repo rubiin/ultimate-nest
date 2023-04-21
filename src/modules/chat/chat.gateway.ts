@@ -53,16 +53,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
 				socketId: client.id,
 			});
 
-			this.logger.debug(`🔗 Client connected: ${user.firstName}`);
-			
-return this.server.emit("onlineUsers", this.connectionService.getAllOnlineUSers());
+			this.logger.log(`🔗 Client connected: ${user.firstName}`);
+
+			return this.server.emit("onlineUsers", this.connectionService.getAllOnlineUSers());
 		} catch {
 			return this.handleDisconnect(client);
 		}
 	}
 
 	afterInit() {
-		this.logger.debug(`💬 Websocket Gateway initialized ${this.server.name} `);
+		this.logger.log(`💬 Websocket Gateway initialized ${this.server.name} `);
 	}
 
 	handleDisconnect(client: Socket) {

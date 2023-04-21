@@ -15,11 +15,11 @@ export class DatabaseSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
 		const seeders = [AdminSeeder, UserSeeder];
 
-		this.logger.debug(
+		this.logger.log(
 			`Seeding database with seeders: ${chalk.green(seeders.map(s => s.name).join(", "))}`,
 		);
 
-		this.logger.debug(`User password is set as : ${chalk.green(process.env.USER_PASSWORD)}`);
+		this.logger.log(`User password is set as : ${chalk.green(process.env.USER_PASSWORD)}`);
 
 		return this.call(em, seeders);
 	}
