@@ -133,7 +133,7 @@ services:
 
     pgadmin:
         container_name: pgadmin4_container
-        image: dpage/pgadmin4:6.21
+        image: dpage/pgadmin4:7.0
         restart: unless-stopped
         environment:
             - PGADMIN_DEFAULT_EMAIL=admin@admin.com
