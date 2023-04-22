@@ -10,5 +10,5 @@ export const twilio = registerAs("twilio", () => ({
 export const twilioConfigValidationSchema = {
 	TWILIO_ACCOUNT_SID: Joi.string().required(),
 	TWILIO_AUTH_TOKEN: Joi.string().required(),
-	TWILIO_FROM: Joi.string().required(),
+	TWILIO_FROM: Joi.string().email().required(),
 };

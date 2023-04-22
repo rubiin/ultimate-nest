@@ -7,6 +7,6 @@ export const throttle = registerAs("throttle", () => ({
 }));
 
 export const throttleConfigValidationSchema = {
-	THROTTLE_TTL: Joi.number().required(),
+	THROTTLE_TTL: Joi.number().min(1).required(),
 	THROTTLE_LIMIT: Joi.number().required(),
 };

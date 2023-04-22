@@ -19,12 +19,19 @@ export const appConfigValidationSchema = {
 		.valid("dev", "prod", "development", "staging", "testing", "stage", "test", "production")
 		.required(),
 	APP_PORT: Joi.number().required(),
-	API_URL: Joi.string().required(),
-	APP_PREFIX: Joi.string().required(),
+	API_URL: Joi.string().uri().required(),
+	APP_PREFIX: Joi.string().required().pattern(/^v\d+/).required().messages({
+		"string.pattern.base": 'Version must start with "v" followed by a number',
+	}),
 	APP_NAME: Joi.string().required(),
-	CLIENT_URL: Joi.string().required(),
+	CLIENT_URL: Joi.string().uri().required(),
 	ALLOWED_HOSTS: Joi.string().required(),
 	SWAGGER_USER: Joi.string().required(),
 	SWAGGER_PASSWORD: Joi.string().required(),
-	SENTRY_DSN: Joi.string().required(),
+	SENTRY_DSN: Joi.string()
+		.pattern(/https:\/\/[\da-f]{32}@o\d+\.ingest\.sentry\.io\/\d+/)
+		.required()
+		.messages({
+			"string.pattern.base": "dsn must follow .ingest.sentry.io format",
+		}),
 };

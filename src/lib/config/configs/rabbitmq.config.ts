@@ -8,8 +8,14 @@ export const rabbitmq = registerAs("rabbitmq", () => ({
 	prefetchCount: process.env.RABBITMQ_DEFAULT_PREFETCH,
 }));
 
+
 export const rabbitmqConfigValidationSchema = {
-	RABBITMQ_URI: Joi.string().required(),
+
+	RABBITMQ_URI: Joi.string()
+		.pattern(
+			/^(amqps?):\/\/(?:[^:@]+:[^:@]+@)?[^/:?]+(?::\d+)?(?:\/[^/?]+)?(?:\?.*)?$/,
+		)
+		.required(),
 	RABBITMQ_EXCHANGE: Joi.string().required(),
 	RABBITMQ_QUEUE: Joi.string().required(),
 	RABBITMQ_DEFAULT_PREFETCH: Joi.number().required(),

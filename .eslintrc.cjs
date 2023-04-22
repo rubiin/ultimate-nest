@@ -22,7 +22,7 @@ module.exports = {
 		'plugin:@typescript-eslint/recommended',
 		'plugin:import/recommended',
 		'plugin:import/errors',
-		'plugin:unicorn/all',
+		'plugin:unicorn/recommended',
 		'prettier',
 	],
 	root: true,
