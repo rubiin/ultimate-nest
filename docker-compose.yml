@@ -17,7 +17,7 @@ services:
         command: npm run start:dev
         labels:
             - traefik.enable=true
-            - traefik.http.routers.nestify.rule=Host(`takeo.ai`)
+            - traefik.http.routers.nestify.rule=Host(`${API_URL}`)
             - traefik.http.services.nestify.loadbalancer.server.port=3000
             - traefik.http.routers.nestify.entrypoints=websecure
             - traefik.http.routers.nestify.tls=true
@@ -88,6 +88,7 @@ services:
 
     redis:
         image: redis:7.0.11-alpine
+        env_file: env/.env.${ENV}
         restart: always
         depends_on:
             - traefik
@@ -102,6 +103,7 @@ services:
     rabbitmq:
         container_name: rabbitmq
         image: rabbitmq:3.11.13-management-alpine
+        env_file: env/.env.${ENV}
         networks:
             - nestify-network
         depends_on:
@@ -118,6 +120,7 @@ services:
     database:
         image: postgres:15.2-alpine
         restart: unless-stopped
+        env_file: env/.env.${ENV}
         volumes:
             - postgres_data:/var/lib/postgresql/data/
         depends_on:
@@ -134,6 +137,7 @@ services:
     pgadmin:
         container_name: pgadmin4_container
         image: dpage/pgadmin4:7.0
+        env_file: env/.env.${ENV}
         restart: unless-stopped
         environment:
             - PGADMIN_DEFAULT_EMAIL=admin@admin.com
@@ -150,7 +154,7 @@ services:
         labels:
             - traefik.enable=true
             # Set routing rule for HTTPS requests
-            - traefik.http.routers.web.rule=Host(`example.com`)
+            - traefik.http.routers.web.rule=Host(`${API_URL}`)
             # Use HTTPS entrypoint for this service
             - traefik.http.routers.web.entrypoints=websecure
             # Enable TLS for this service

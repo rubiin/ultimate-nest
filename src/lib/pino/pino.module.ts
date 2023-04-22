@@ -21,15 +21,16 @@ const basePinoOptions = {
 							context: "HTTP",
 						}),
 						serializers: {
-							req(req) {
-								req.body = req.raw.body;
-								return req;
+							req(request) {
+								request.body = request.raw.body;
+
+								return request;
 							},
 						},
 
 						redact: {
 							paths: redactFields,
-							censor: '**GDPR COMPLIANT**'
+							censor: "**GDPR COMPLIANT**",
 						},
 						transport: process.env.NODE_ENV.startsWith("prod")
 							? {

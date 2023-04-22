@@ -7,6 +7,8 @@ export const redis = registerAs("redis", () => ({
 }));
 
 export const redisConfigValidationSchema = {
-	REDIS_URI: Joi.string().required(),
+	REDIS_URI: Joi.string()
+		.pattern(/^redis:\/\/(?:([^:@]+):([^:@]+)@)?([^/:]+)(?::(\d+))?(?:\/(\d+))?$/)
+		.required(),
 	REDIS_TTL: Joi.number().required(),
 };

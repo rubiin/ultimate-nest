@@ -16,11 +16,11 @@ export const facebookOauth = registerAs("facebookOauth", () => ({
 export const facebookOauthConfigValidationSchema = {
 	FACEBOOK_CLIENT_ID: Joi.string().required(),
 	FACEBOOK_CLIENT_SECRET: Joi.string().required(),
-	FACEBOOK_CALLBACK_URL: Joi.string().required(),
+	FACEBOOK_CALLBACK_URL: Joi.string().uri().required(),
 };
 
 export const googleOauthConfigValidationSchema = {
 	GOOGLE_CLIENT_ID: Joi.string().required(),
 	GOOGLE_CLIENT_SECRET: Joi.string().required(),
-	GOOGLE_CALLBACK_URL: Joi.string().required(),
+	GOOGLE_CALLBACK_URL: Joi.string().uri().required(),
 };

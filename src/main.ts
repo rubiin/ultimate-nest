@@ -1,5 +1,8 @@
 import "@total-typescript/ts-reset";
 
+import { existsSync, mkdirSync } from "node:fs";
+import { join } from "node:path";
+
 import { AppUtils, HelperService } from "@common/helpers";
 import { IConfig } from "@lib/config/config.interface";
 import { createLogger } from "@lib/pino/app.logger";
@@ -16,8 +19,6 @@ import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestj
 
 import { AppModule } from "./app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
-import { join } from "node:path";
-import { existsSync, mkdirSync } from "node:fs";
 
 declare const module: any;
 
@@ -98,11 +99,12 @@ const bootstrap = async () => {
 		const logger = new Logger();
 
 		// sets up history file for repl
-		const cacheDir = join("node_modules", ".cache");
-		if (!existsSync(cacheDir)) mkdirSync(cacheDir);
+		const cacheDirectory = join("node_modules", ".cache");
 
-		replServer.setupHistory(join(cacheDir, ".nestjs_repl_history"), err => {
-			if (err) logger.error(err);
+		if (!existsSync(cacheDirectory)) mkdirSync(cacheDirectory);
+
+		replServer.setupHistory(join(cacheDirectory, ".nestjs_repl_history"), error => {
+			if (error) logger.error(error);
 		});
 	}
 
@@ -126,7 +128,7 @@ const bootstrap = async () => {
 	logger.log(
 		`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}/doc`)}`,
 	);
-	logger.log(`Server is up. ${chalk.yellow(`+${performance.now() | 0}ms`)}`);
+	logger.log(`Server is up. ${chalk.yellow(`+${Math.trunc(performance.now())}ms`)}`);
 };
 
 (async () => await bootstrap())();
