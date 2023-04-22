@@ -98,10 +98,10 @@ const bootstrap = async () => {
 		const logger = new Logger();
 
 		// sets up history file
-		const cacheDir = join('node_modules', '.cache');
+		const cacheDir = join("node_modules", ".cache");
 		if (!existsSync(cacheDir)) mkdirSync(cacheDir);
 
-		replServer.setupHistory(join(cacheDir, '.nestjs_repl_history'), (err) => {
+		replServer.setupHistory(join(cacheDir, ".nestjs_repl_history"), err => {
 			if (err) logger.error(err);
 		});
 	}
@@ -126,7 +126,7 @@ const bootstrap = async () => {
 	logger.log(
 		`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}/doc`)}`,
 	);
-	logger.log(`Server is up. ${chalk.yellow(`+${performance.now() | 0}ms`)}`)
+	logger.log(`Server is up. ${chalk.yellow(`+${performance.now() | 0}ms`)}`);
 };
 
 (async () => await bootstrap())();

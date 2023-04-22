@@ -1,6 +1,13 @@
 import { Module, RequestMethod } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
-import { IncomingMessage } from "node:http";
+
+// Fields to redact from logs
+const redactFields = ["req.headers.authorization", "req.body.password", "req.body.confirmPassword"];
+const basePinoOptions = {
+	translateTime: true,
+	ignore: "pid,hostname",
+	singleLine: true,
+};
 
 @Module({
 	imports: [
@@ -9,26 +16,31 @@ import { IncomingMessage } from "node:http";
 				return {
 					pinoHttp: {
 						name: "ultimate-nest",
+
 						customProps: (_request, _response) => ({
 							context: "HTTP",
 						}),
 						serializers: {
-							req(request: IncomingMessage) {
-								return {
-									method: request.method,
-									url: request.url,
-								};
+							req(req) {
+								req.body = req.raw.body;
+								return req;
 							},
 						},
 
 						redact: {
-							paths: ["req.headers.authorization"],
+							paths: redactFields,
+							censor: '**GDPR COMPLIANT**'
 						},
 						transport: process.env.NODE_ENV.startsWith("prod")
 							? {
 									target: "pino/file",
 									level: "error", // log only errors to file
-									options: { destination: 'app.log' },
+									options: {
+										...basePinoOptions,
+										destination: "app.log",
+										mkdir: true,
+										sync: false,
+									},
 							  }
 							: {
 									targets: [
@@ -36,16 +48,19 @@ import { IncomingMessage } from "node:http";
 											target: "pino-pretty",
 											level: "info", // log only info and above to console
 											options: {
+												...basePinoOptions,
 												colorize: true,
-												translateTime: true,
-												ignore: "pid,hostname",
-												singleLine: true,
 											},
 										},
 										{
 											target: "pino/file",
 											level: "error", // log only errors to file
-											options: { destination: 'app.log' },
+											options: {
+												...basePinoOptions,
+												destination: "app.log",
+												mkdir: true,
+												sync: false,
+											},
 										},
 									],
 							  },
