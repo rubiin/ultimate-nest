@@ -97,7 +97,7 @@ const bootstrap = async () => {
 		const replServer = await repl(AppModule);
 		const logger = new Logger();
 
-		// sets up history file
+		// sets up history file for repl
 		const cacheDir = join("node_modules", ".cache");
 		if (!existsSync(cacheDir)) mkdirSync(cacheDir);
 
