@@ -1,3 +1,4 @@
+import { REDIS_URI_REGEX } from "@common/constant";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 
@@ -7,8 +8,6 @@ export const redis = registerAs("redis", () => ({
 }));
 
 export const redisConfigValidationSchema = {
-	REDIS_URI: Joi.string()
-		.pattern(/^redis:\/\/(?:([^:@]+):([^:@]+)@)?([^/:]+)(?::(\d+))?(?:\/(\d+))?$/)
-		.required(),
+	REDIS_URI: Joi.string().pattern(REDIS_URI_REGEX).required(),
 	REDIS_TTL: Joi.number().required(),
 };

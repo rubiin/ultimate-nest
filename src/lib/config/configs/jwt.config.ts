@@ -1,3 +1,4 @@
+import { JWT_EXPIRY_REGEX } from "@common/constant";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 
@@ -24,7 +25,7 @@ export const jwt = registerAs("jwt", () => ({
 
 export const jwtConfigValidationSchema = {
 	JWT_SECRET: Joi.string().required().min(8),
-	JWT_REFRESH_EXPIRY: Joi.string().required(),
-	JWT_ACCESS_EXPIRY: Joi.string().required(),
-	MAGIC_LINK_EXPIRY: Joi.string().required(),
+	JWT_REFRESH_EXPIRY: Joi.string().regex(JWT_EXPIRY_REGEX).required(),
+	JWT_ACCESS_EXPIRY: Joi.string().regex(JWT_EXPIRY_REGEX).required(),
+	MAGIC_LINK_EXPIRY: Joi.string().regex(JWT_EXPIRY_REGEX).required(),
 };

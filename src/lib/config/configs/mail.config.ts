@@ -1,4 +1,5 @@
 /* eslint-disable unicorn/no-thenable  */
+import { sesRegions } from "@common/constant";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 
@@ -29,5 +30,7 @@ export const mailConfigValidationSchema = {
 	MAIL_SENDER_EMAIL: Joi.string().required(),
 	MAIL_SES_KEY: Joi.string().when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
 	MAIL_SES_ACCESS_KEY: Joi.string().when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
-	MAIL_SES_REGION: Joi.string().when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
+	MAIL_SES_REGION: Joi.string()
+		.valid(...sesRegions)
+		.when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
 };
