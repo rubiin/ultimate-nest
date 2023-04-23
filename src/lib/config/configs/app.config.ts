@@ -1,3 +1,4 @@
+import { environments,SENTRY_DSN_REGEX, VERSION_VALIDATION_MESSAGE } from "@common/constant";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 
@@ -16,22 +17,17 @@ export const app = registerAs("app", () => ({
 
 export const appConfigValidationSchema = {
 	NODE_ENV: Joi.string()
-		.valid("dev", "prod", "development", "staging", "testing", "stage", "test", "production")
+		.valid(...environments)
 		.required(),
 	APP_PORT: Joi.number().required(),
 	API_URL: Joi.string().uri().required(),
 	APP_PREFIX: Joi.string().required().pattern(/^v\d+/).required().messages({
-		"string.pattern.base": 'Version must start with "v" followed by a number',
+		"string.pattern.base": VERSION_VALIDATION_MESSAGE,
 	}),
 	APP_NAME: Joi.string().required(),
 	CLIENT_URL: Joi.string().uri().required(),
 	ALLOWED_HOSTS: Joi.string().required(),
 	SWAGGER_USER: Joi.string().required(),
 	SWAGGER_PASSWORD: Joi.string().required(),
-	SENTRY_DSN: Joi.string()
-		.pattern(/https:\/\/[\da-f]{32}@o\d+\.ingest\.sentry\.io\/\d+/)
-		.required()
-		.messages({
-			"string.pattern.base": "dsn must follow .ingest.sentry.io format",
-		}),
+	SENTRY_DSN: Joi.string().pattern(SENTRY_DSN_REGEX).required(),
 };

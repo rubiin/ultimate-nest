@@ -86,7 +86,7 @@ export class AuthController {
 			map(data => {
 				// client url
 				return response.redirect(
-					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.accessToken}`,
+					`${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
 				);
 			}),
 		);
@@ -109,7 +109,7 @@ export class AuthController {
 			map(data => {
 				// client url
 				return response.redirect(
-					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.accessToken}`,
+					`${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
 				);
 			}),
 		);
@@ -132,7 +132,7 @@ export class AuthController {
 			map(data => {
 				// client url
 				return response.redirect(
-					`${process.env.API_URL}/v1/auth/oauth/login?token=${data.accessToken}`,
+					`${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
 				);
 			}),
 		);
