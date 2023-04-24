@@ -1,4 +1,4 @@
-import { environments,SENTRY_DSN_REGEX, VERSION_VALIDATION_MESSAGE } from "@common/constant";
+import { environments, SENTRY_DSN_REGEX, VERSION_VALIDATION_MESSAGE } from "@common/constant";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 
