@@ -1,9 +1,9 @@
 import { IConfig } from "@lib/config/config.interface";
 import { NestConfigModule } from "@lib/config/config.module";
-import { CacheModule } from "@nestjs/cache-manager";
+import { CacheModule, CacheStore } from "@nestjs/cache-manager";
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { redisStore } from "cache-manager-redis-store";
+import { redisStore } from "cache-manager-redis-yet";
 
 import { CacheService } from "./cache.service";
 
@@ -15,7 +15,7 @@ import { CacheService } from "./cache.service";
 			useFactory: async (configService: ConfigService<IConfig, true>) => {
 				const store = await redisStore({
 					url: configService.get("redis.url", { infer: true }),
-					ttl: configService.get("redis.ttl", { infer: true }),
+
 					database: 0,
 					isolationPoolOptions: {
 						min: 1,
@@ -24,7 +24,8 @@ import { CacheService } from "./cache.service";
 				});
 
 				return {
-					store: () => store,
+					store: store as unknown as CacheStore,
+					ttl: configService.get("redis.ttl", { infer: true }), // 3 minutes (milliseconds)
 				};
 			},
 			inject: [ConfigService],
