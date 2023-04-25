@@ -11,7 +11,7 @@ export class MailModule extends ConfigurableModuleClass implements OnModuleInit 
 	constructor(private readonly mailService: MailerService) {
 		super();
 	}
-	async onModuleInit() {
+	onModuleInit() {
 		this.mailService.checkConnection();
 	}
 }

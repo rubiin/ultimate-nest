@@ -1,4 +1,4 @@
-import { IsUniqueConstraint } from "@common/validators";
+import { IsUniqueConstraint } from "@common/decorators/validation";
 import {
 	NestCaslModule,
 	NestCloudinaryModule,

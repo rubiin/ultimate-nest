@@ -17,14 +17,14 @@ declare global {
 			APP_PREFIX: string;
 			APP_NAME: string;
 			NODE_ENV:
-				| "development"
-				| "production"
-				| "test"
 				| "dev"
-				| "prod"
-				| "staging"
+				| "development"
 				| "stage"
-				| "local";
+				| "staging"
+				| "test"
+				| "testing"
+				| "prod"
+				| "production";
 			API_URL: string;
 			CLIENT_URL: string;
 			SWAGGER_USER: string;

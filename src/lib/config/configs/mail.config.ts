@@ -1,7 +1,24 @@
 /* eslint-disable unicorn/no-thenable  */
-import { sesRegions } from "@common/constant";
+import { SES_REGIONS } from "@common/constant";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
+
+export const mailConfigValidationSchema = {
+	MAIL_SERVER: Joi.string().required().valid("SMTP", "SES"),
+	MAIL_USERNAME: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
+	MAIL_PASSWORD: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
+	MAIL_HOST: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
+	MAIL_PORT: Joi.number().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
+	MAIL_PREVIEW_EMAIL: Joi.boolean().default(false).optional(),
+	MAIL_BCC_LIST: Joi.string().optional(),
+	MAIL_TEMPLATE_DIR: Joi.string().required(),
+	MAIL_SENDER_EMAIL: Joi.string().required(),
+	MAIL_SES_KEY: Joi.string().when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
+	MAIL_SES_ACCESS_KEY: Joi.string().when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
+	MAIL_SES_REGION: Joi.string()
+		.valid(...SES_REGIONS)
+		.when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
+};
 
 export const mail = registerAs("mail", () => ({
 	username: process.env.MAIL_USERNAME,
@@ -17,20 +34,3 @@ export const mail = registerAs("mail", () => ({
 	sesAccessKey: process.env.MAIL_SES_ACCESS_KEY,
 	sesRegion: process.env.MAIL_SES_REGION,
 }));
-
-export const mailConfigValidationSchema = {
-	MAIL_SERVER: Joi.string().required().valid("SMTP", "SES"),
-	MAIL_USERNAME: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
-	MAIL_PASSWORD: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
-	MAIL_HOST: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
-	MAIL_PORT: Joi.number().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
-	MAIL_PREVIEW_EMAIL: Joi.boolean().default(false).optional(),
-	MAIL_BCC_LIST: Joi.string().optional(),
-	MAIL_TEMPLATE_DIR: Joi.string().required(),
-	MAIL_SENDER_EMAIL: Joi.string().required(),
-	MAIL_SES_KEY: Joi.string().when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
-	MAIL_SES_ACCESS_KEY: Joi.string().when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
-	MAIL_SES_REGION: Joi.string()
-		.valid(...sesRegions)
-		.when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
-};
