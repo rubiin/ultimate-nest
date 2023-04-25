@@ -35,12 +35,16 @@ export class HealthController {
 			() =>
 				this.http.pingCheck(
 					"swagger",
-					`https://localhost:${this.configService.get("app.port", { infer: true })}/doc`,
+					`${this.configService.get("app.url", {
+						infer: true,
+					})}:${this.configService.get("app.port", { infer: true })}/doc`,
 				),
 			() =>
 				this.http.pingCheck(
 					"routes",
-					`https://localhost:${this.configService.get("app.port", {
+					`${this.configService.get("app.url", {
+						infer: true,
+					})}:${this.configService.get("app.port", {
 						infer: true,
 					})}/${this.configService.get("app.prefix", { infer: true })}/health/test`,
 				),

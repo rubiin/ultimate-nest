@@ -2,8 +2,7 @@ import { resolve } from "node:path";
 
 import * as aws from "@aws-sdk/client-ses";
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { createTransport, SendMailOptions, Transporter } from "nodemailer";
-import { SentMessageInfo } from "nodemailer/lib/ses-transport";
+import { createTransport, SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
 import previewEmail from "preview-email";
 
 import { EtaAdapter, HandlebarsAdapter, PugAdapter } from "./adapters";
@@ -20,18 +19,32 @@ interface IMailOptions extends Partial<SendMailOptions> {
 export class MailerService {
 	private readonly logger: Logger = new Logger(MailerService.name);
 
+	readonly transporter: Transporter<SentMessageInfo> | Transporter<SentMessageInfo>;
+	private readonly adapter: IAdapter;
+
 	constructor(
 		@Inject(MODULE_OPTIONS_TOKEN)
 		private readonly options: MailModuleOptions,
-	) {}
+	) {
+		// render template
 
-	/**
-	 * It takes a mailOptions object, renders the template, and sends the email
-	 * @param {IMailOptions} mailOptions - IMailOptions
-	 * @returns A promise that resolves to a boolean.
-	 */
-	async sendMail(mailOptions: IMailOptions) {
-		let transporter: Transporter<SentMessageInfo>;
+		switch (this.options.engine.adapter) {
+			case "pug": {
+				this.adapter = new PugAdapter(this.options.engine.options);
+				break;
+			}
+			case "eta": {
+				this.adapter = new EtaAdapter(this.options.engine.options);
+				break;
+			}
+			case "hbs": {
+				this.adapter = new HandlebarsAdapter(this.options.engine.options);
+				break;
+			}
+			default: {
+				throw new Error("Invalid template engine");
+			}
+		}
 
 		// create Nodemailer SES transporter
 
@@ -45,11 +58,13 @@ export class MailerService {
 				},
 			});
 
-			transporter = createTransport({
+			this.transporter = createTransport({
 				SES: { ses, aws },
 			});
 		} else {
-			transporter = createTransport({
+			this.transporter = createTransport({
+				pool: true,
+				maxConnections: 5,
 				host: this.options.host,
 				port: this.options.port,
 				secure: true,
@@ -63,34 +78,19 @@ export class MailerService {
 				},
 			});
 		}
+	}
 
-		let adapter: IAdapter;
-
-		// render template
-
-		switch (this.options.engine.adapter) {
-			case "pug": {
-				adapter = new PugAdapter(this.options.engine.options);
-				break;
-			}
-			case "eta": {
-				adapter = new EtaAdapter(this.options.engine.options);
-				break;
-			}
-			case "hbs": {
-				adapter = new HandlebarsAdapter(this.options.engine.options);
-				break;
-			}
-			default: {
-				throw new Error("Invalid template engine");
-			}
-		}
-
+	/**
+	 * It takes a mailOptions object, renders the template, and sends the email
+	 * @param {IMailOptions} mailOptions - IMailOptions
+	 * @returns A promise that resolves to a boolean.
+	 */
+	async sendMail(mailOptions: IMailOptions) {
 		const templatePath = resolve(
 			`${__dirname}/../../${this.options.templateDir}/${mailOptions.template}.${this.options.engine.adapter}`,
 		);
 
-		const html = await adapter.compile(templatePath, mailOptions.replacements);
+		const html = await this.adapter.compile(templatePath, mailOptions.replacements);
 
 		mailOptions.html = html;
 
@@ -98,6 +98,16 @@ export class MailerService {
 			previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error);
 		}
 
-		return transporter.sendMail(mailOptions);
+		return this.transporter.sendMail(mailOptions);
+	}
+
+	async checkConnection() {
+		return this.transporter.verify((error, _success) => {
+			if (error) {
+				this.logger.log(error);
+			} else {
+				this.logger.log("Mail server is ready to take our messages");
+			}
+		});
 	}
 }
