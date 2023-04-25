@@ -29,7 +29,7 @@ redact: An object that specifies fields to be redacted from the logs. In this ex
 transport: Specifies the target transports for logging. In this example, it uses different targets for different environments. In production environment, it logs only errors to a file using the pino/file target, and in other environments, it logs info and above to console using the pino-pretty target, and errors to a file using the pino/file target.
 Import the NestPinoModule in your application's root module or any other module where you want to use logging. For example:
 3. Import the NestPinoModule in your application's root module or any other module where you want to use logging. For example:
-4.
+
 ```ts
 import { Module } from '@nestjs/common';
 import { NestPinoModule } from './nest-pino.module';
@@ -41,7 +41,7 @@ export class AppModule {}
 
 
 ```
-4.You can now use the LoggerService provided by nestjs-pino in your application's components, services, or controllers to log messages. For example:
+4. You can now use the LoggerService provided by nestjs-pino in your application's components, services, or controllers to log messages. For example:
 
 ```ts
 import { Logger } from '@nestjs/common';
