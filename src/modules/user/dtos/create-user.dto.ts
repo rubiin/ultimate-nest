@@ -1,6 +1,6 @@
 import { Roles } from "@common/@types";
 import { IsEnumField, IsStringField } from "@common/decorators";
-import { IsPassword, IsUnique } from "@common/validators";
+import { IsPassword, IsUnique, IsUsername } from "@common/decorators/validation";
 import { User } from "@entities";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty } from "class-validator";
@@ -12,7 +12,8 @@ export class CreateUserDto {
 	 * @example rubiin
 	 */
 
-	@IsStringField()
+	@IsStringField({ minLength: 5, maxLength: 20 })
+	@IsUsername()
 	@IsUnique(() => User, "username")
 	username!: string;
 
@@ -21,7 +22,7 @@ export class CreateUserDto {
 	 * @example John
 	 */
 
-	@IsStringField()
+	@IsStringField({ maxLength: 50 })
 	firstName!: string;
 
 	/**
@@ -29,7 +30,7 @@ export class CreateUserDto {
 	 * @example Vonn
 	 */
 
-	@IsStringField({ required: false })
+	@IsStringField({ required: false, maxLength: 50 })
 	middleName?: string;
 
 	/**
@@ -37,7 +38,7 @@ export class CreateUserDto {
 	 * @example Doe
 	 */
 
-	@IsStringField()
+	@IsStringField({ maxLength: 50 })
 	lastName!: string;
 
 	/**
@@ -67,7 +68,7 @@ export class CreateUserDto {
 	 * @example SomePassword@123
 	 */
 
-	@IsStringField()
+	@IsStringField({ minLength: 8, maxLength: 50 })
 	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
 	password!: string;
 

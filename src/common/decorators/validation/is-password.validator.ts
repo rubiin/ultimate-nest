@@ -1,3 +1,4 @@
+import { PASSWORD_REGEX } from "@common/constant";
 import {
 	registerDecorator,
 	ValidationArguments,
@@ -9,11 +10,7 @@ import {
 @ValidatorConstraint({ async: true })
 class IsPasswordConstraint implements ValidatorConstraintInterface {
 	async validate(value: string, _arguments: ValidationArguments) {
-		const passwordRegex = new RegExp(
-			"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\\d)(?=.*?[#?!@$%^&*-]).{8,}$",
-		);
-
-		return passwordRegex.test(value);
+		return PASSWORD_REGEX.test(value);
 	}
 
 	defaultMessage(arguments_: ValidationArguments) {
