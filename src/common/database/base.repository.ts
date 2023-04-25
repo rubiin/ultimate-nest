@@ -15,7 +15,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	softRemove(entity: T): EntityManager {
 		entity.deletedAt = new Date();
 		entity.isObsolete = true;
-		this.persist(entity);
+		this.em.persist(entity);
 
 		return this.em;
 	}
@@ -30,7 +30,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	async softRemoveAndFlush(entity: T): Promise<T> {
 		entity.deletedAt = new Date();
 		entity.isObsolete = true;
-		await this.persistAndFlush(entity);
+		await this.em.persistAndFlush(entity);
 
 		return entity;
 	}
@@ -57,7 +57,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * @returns
 	 */
 	delete(entity: T): T {
-		this.remove(entity);
+		this.em.remove(entity);
 
 		return entity;
 	}
@@ -75,7 +75,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 			throw new BadRequestException("Entity not found.");
 		}
 		this.em.assign(entity, update);
-		await this.persistAndFlush(entity);
+		await this.em.persistAndFlush(entity);
 
 		return entity;
 	}
@@ -91,7 +91,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		if (!entity) {
 			throw new BadRequestException("Entity not found.");
 		}
-		this.remove(entity);
+		this.em.remove(entity);
 
 		return entity;
 	}

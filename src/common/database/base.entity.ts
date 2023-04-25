@@ -11,7 +11,7 @@ export abstract class BaseEntity {
 	id!: number;
 
 	/**
-	 * The unique id of the entity
+	 *  The unique id of the entity
 	 */
 	@Property()
 	idx: string = randomUUID();
@@ -29,19 +29,19 @@ export abstract class BaseEntity {
 	isObsolete = false;
 
 	/**
-	 * The date that the entity was soft-deleted. Nullable because it's not set until the entity is soft-deleted.
+	 *  The date that the entity was soft-deleted. Nullable because it's not set until the entity is soft-deleted.
 	 */
 	@Property()
 	deletedAt?: Date | null;
 
 	/**
-	 * The date that the entity was created
+	 *  The date that the entity was created
 	 */
 	@Property()
 	createdAt = new Date();
 
 	/**
-	 * The date that the entity was last updated
+	 *  The date that the entity was last updated
 	 */
 	@Property({
 		onUpdate: () => new Date(),

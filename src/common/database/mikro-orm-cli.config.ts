@@ -47,6 +47,7 @@ export const baseOptions = {
 		tableName: "migrations",
 		transactional: true,
 		glob: "!(*.d).{js,ts}",
+		allOrNothing: true,
 	},
 	seeder: {
 		path: "dist/common/database/seeders/", // path to the folder with seeders
