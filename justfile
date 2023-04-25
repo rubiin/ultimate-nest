@@ -3,10 +3,6 @@
 default:
 	just --list
 
-# make initial migration file for the first time
-makemigration-init env="dev":
-	NODE_ENV={{env}} npm run orm migration:create --initial
-
 # make migration file for the current changes
 makemigration env="dev":
 	NODE_ENV={{env}} npm run orm migration:create
@@ -28,20 +24,18 @@ test-e2e env="dev":
 	USER_PASSWORD=Test@1234 NODE_ENV={{env}} yarn test:e2e
 
 
-
 # clean all auto generated files and generate initial migration file
-init: clean-files
-	makemigration-init
+init: clean-files makemigration
 
 # clean all auto generated files and run migration
-clean-db: unmigrate
-	migrate
-	seed
+clean-db: unmigrate migrate seed
 
 # clean all auto generated files
 clean-files:
 	rm -rf temp
 	rm -rf ./migrations
+	rm -rf *.log
+	rm -rf *.db
 	rm -rf logs
 	rm -rf dist
 	rm -rf uploads
