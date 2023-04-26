@@ -42,12 +42,19 @@ export const baseOptions = {
 		},
 	},
 	migrations: {
-		path: "./dist/migrations",
-		pathTs: "./migrations",
-		tableName: "migrations",
-		transactional: true,
-		glob: "!(*.d).{js,ts}",
-		allOrNothing: true,
+		migrations: {
+			fileName: (timestamp: string, name?: string) => {
+				if (!name) return `Migration${timestamp}`;
+				return `Migration${timestamp}_${name}`;
+			},
+		},
+		tableName: "migrations", // name of database table with log of executed transactions
+		path: "./dist/migrations", // path to the folder with migrations
+		pathTs: "./migrations", // path to the folder with TS migrations (if used, we should put path to compiled files in `path`)
+		glob: "!(*.d).{js,ts}", // how to match migration files (all .js and .ts files, but not .d.ts)
+		transactional: true, // wrap each migration in a transaction
+		allOrNothing: true, // wrap all migrations in master transaction
+		snapshot: true, // save snapshot when creating new migrations
 	},
 	seeder: {
 		path: "dist/common/database/seeders/", // path to the folder with seeders
