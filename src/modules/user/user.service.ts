@@ -1,6 +1,7 @@
 import { EmailTemplateEnum, IBaseService } from "@common/@types";
 import { DtoWithFile } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
+import { SearchOptionsDto } from "@common/dtos/search.dto";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";
@@ -9,14 +10,13 @@ import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
-import { SearchOptionsDto } from "@common/dtos/search.dto";
-import { createId } from "@paralleldrive/cuid2";
 
 @Injectable()
 export class UserService implements IBaseService<User> {
@@ -162,10 +162,12 @@ export class UserService implements IBaseService<User> {
 	}
 
 	generateUsername(name: string): Observable<string> {
-		const pointSlug = slugify(`${name} ${createId().substring(0, 6)}`, {
+		const pointSlug = slugify(`${name} ${createId().slice(0, 6)}`, {
 			lowercase: true,
 		});
-		return from(
+
+		
+return from(
 			this.userRepository.count({
 				username: {
 					$like: `${pointSlug}%`,

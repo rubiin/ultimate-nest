@@ -2,11 +2,11 @@ import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { mockedUser } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { ProfileService } from "./profile.service";
-import { EntityManager } from "@mikro-orm/postgresql";
 
 describe("ProfileService", () => {
 	let service: ProfileService;

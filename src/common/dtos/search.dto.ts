@@ -1,4 +1,5 @@
 import { IsStringField } from "@common/decorators";
+
 import { PageOptionsDto } from "./pagination.dto";
 
 export abstract class SearchOptionsDto extends PageOptionsDto {
