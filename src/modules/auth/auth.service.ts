@@ -4,8 +4,8 @@ import { HelperService } from "@common/helpers";
 import { OtpLog, User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { TokensService } from "@modules/token/tokens.service";
 import {
 	BadRequestException,
@@ -225,7 +225,7 @@ export class AuthService {
 			switchMap(details => {
 				this.userRepository.assign(details.user, { password });
 
-				return from(this.userRepository.flush()).pipe(map(() => details.user));
+				return from(this.em.flush()).pipe(map(() => details.user));
 			}),
 		);
 	}
