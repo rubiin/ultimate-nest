@@ -2,6 +2,7 @@ import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Response } from "express";
@@ -16,6 +17,7 @@ export class TwoFactorService {
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
 		private readonly configService: ConfigService<IConfig, true>,
+		private readonly em: EntityManager,
 	) {}
 
 	/**
@@ -36,7 +38,7 @@ export class TwoFactorService {
 
 		this.userRepository.assign(user, { twoFactorSecret: secret });
 
-		return from(this.userRepository.flush()).pipe(
+		return from(this.em.flush()).pipe(
 			map(() => {
 				return { secret, otpAuthUrl };
 			}),
@@ -88,6 +90,6 @@ export class TwoFactorService {
 
 		this.userRepository.assign(user, { isTwoFactorEnabled: true });
 
-		return from(this.userRepository.flush()).pipe(map(() => user));
+		return from(this.em.flush()).pipe(map(() => user));
 	}
 }

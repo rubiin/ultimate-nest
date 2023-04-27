@@ -87,7 +87,7 @@ describe("UserService", () => {
 		service.update("userId", { firstName: "updated" }).subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
 			expect(mockUserRepo.assign).toBeCalled();
-			expect(mockUserRepo.flush).toBeCalled();
+			expect(mockEm.flush).toBeCalled();
 		});
 	});
 	it("should get user list", () => {

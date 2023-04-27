@@ -1,6 +1,6 @@
 import { IBaseService } from "@common/@types";
 import { BaseEntity, BaseRepository } from "@common/database";
-import { PageOptionsDto } from "@common/dtos/pagination.dto";
+import { SearchOptionsDto } from "@common/dtos/search.dto";
 import { User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
@@ -31,8 +31,8 @@ export abstract class BaseService<
 	}
 
 	/**
-	 * It takes in a PageOptionsDto object, and returns an Observable of a Pagination object
-	 * @param {PageOptionsDto}  - PageOptionsDto - This is a class that contains the following properties:
+	 * It takes in a SearchOptionsDto object, and returns an Observable of a Pagination object
+	 * @param {SearchOptionsDto}  - SearchOptionsDto - This is a class that contains the following properties:
 	 * @returns An observable of a pagination object.
 	 */
 	findAll({
@@ -42,7 +42,7 @@ export abstract class BaseService<
 		sort,
 		offset,
 		search,
-	}: PageOptionsDto): Observable<Pagination<Entity>> {
+	}: SearchOptionsDto): Observable<Pagination<Entity>> {
 		const qb = this.repository.qb("p").select("p.*");
 
 		if (search) {

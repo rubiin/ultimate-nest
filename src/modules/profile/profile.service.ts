@@ -3,6 +3,7 @@ import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
@@ -12,6 +13,7 @@ export class ProfileService {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
+		private readonly em: EntityManager,
 	) {}
 
 	/**
@@ -94,7 +96,7 @@ export class ProfileService {
 					username: followingUser.username,
 				};
 
-				return from(this.userRepository.flush()).pipe(map(() => profile));
+				return from(this.em.flush()).pipe(map(() => profile));
 			}),
 		);
 	}
@@ -135,7 +137,7 @@ export class ProfileService {
 					username: followingUser.username,
 				};
 
-				return from(this.userRepository.flush()).pipe(map(() => profile));
+				return from(this.em.flush()).pipe(map(() => profile));
 			}),
 		);
 	}

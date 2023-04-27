@@ -1,6 +1,7 @@
 import { BaseRepository } from "@common/database";
 import { Conversation, Message, User } from "@entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 
 interface IConversation {
@@ -11,6 +12,7 @@ interface IConversation {
 @Injectable()
 export class ChatService {
 	constructor(
+		private readonly em: EntityManager,
 		@InjectRepository(Conversation)
 		private readonly conversationRepository: BaseRepository<Conversation>,
 		@InjectRepository(Message) private readonly messageRepository: BaseRepository<Message>,
@@ -19,7 +21,7 @@ export class ChatService {
 	async createConversation(conversation: IConversation) {
 		const conversationNew = this.conversationRepository.create(conversation);
 
-		await this.conversationRepository.persistAndFlush(conversationNew);
+		await this.em.persistAndFlush(conversationNew);
 	}
 
 	async sendMessage(data: IConversation) {
@@ -34,10 +36,7 @@ export class ChatService {
 			messageNew.conversation = conversationExists;
 			conversationExists.messages.add(messageNew);
 
-			await Promise.all([
-				this.messageRepository.persistAndFlush(messageNew),
-				this.conversationRepository.flush(),
-			]);
+			await Promise.all([this.em.persistAndFlush(messageNew), this.em.flush()]);
 		} else {
 			const conversationNew = this.conversationRepository.create({
 				users: data.users,
@@ -47,13 +46,13 @@ export class ChatService {
 			messageNew.conversation = conversationNew;
 
 			await Promise.all([
-				this.messageRepository.persistAndFlush(messageNew),
-				this.conversationRepository.persistAndFlush(conversationNew),
+				this.em.persistAndFlush(messageNew),
+				this.em.persistAndFlush(conversationNew),
 			]);
 		}
 	}
 
-	async getConversation(sender: number, receiver: number) {
+	async getConversation(sender: number, receiver: number): Promise<Conversation> {
 		return this.conversationRepository.findOne({ users: [sender, receiver] });
 	}
 

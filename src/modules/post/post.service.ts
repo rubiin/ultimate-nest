@@ -1,5 +1,4 @@
 import { BaseRepository } from "@common/database";
-import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { createPaginationObject, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
@@ -10,10 +9,13 @@ import { I18nContext } from "nestjs-i18n";
 import { forkJoin, from, map, Observable, of, switchMap, zip } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
+import { SearchOptionsDto } from "@common/dtos/search.dto";
+import { EntityManager } from "@mikro-orm/postgresql";
 
 @Injectable()
 export class PostService {
 	constructor(
+		private readonly em: EntityManager,
 		@InjectRepository(Post)
 		private readonly postRepository: BaseRepository<Post>,
 		@InjectRepository(User)
@@ -29,7 +31,7 @@ export class PostService {
 	/**
 	 * It returns an observable of a pagination object, which is created from the results of a query to the
 	 * database
-	 * @param {PageOptionsDto}  - PageOptionsDto: This is a DTO that contains the page, order, limit, and
+	 * @param {SearchOptionsDto}  - SearchOptionsDto: This is a DTO that contains the page, order, limit, and
 	 * offset.
 	 * @returns An observable of a pagination object.
 	 */
@@ -40,7 +42,7 @@ export class PostService {
 		sort,
 		offset,
 		search,
-	}: PageOptionsDto): Observable<Pagination<Post>> {
+	}: SearchOptionsDto): Observable<Pagination<Post>> {
 		const qb = this.postRepository.qb("p").select("p.*");
 
 		if (search) {
@@ -145,13 +147,13 @@ export class PostService {
 								tags,
 							});
 
-							return from(this.postRepository.flush()).pipe(map(() => post));
+							return from(this.em.flush()).pipe(map(() => post));
 						}),
 					);
 				}
 				this.postRepository.assign(post, omit(dto, ["tags", "categories"]));
 
-				return from(this.postRepository.flush()).pipe(map(() => post));
+				return from(this.em.flush()).pipe(map(() => post));
 			}),
 		);
 	}
@@ -204,7 +206,7 @@ export class PostService {
 					post.favoritesCount += 1;
 				}
 
-				return from(this.postRepository.flush()).pipe(map(() => post));
+				return from(this.em.flush()).pipe(map(() => post));
 			}),
 		);
 	}
@@ -283,7 +285,7 @@ export class PostService {
 			switchMap(([post, user]) => {
 				const comment = new Comment({ body: dto.body, author: user, post });
 
-				return from(this.commentRepository.persistAndFlush(comment)).pipe(map(() => post));
+				return from(this.em.persistAndFlush(comment)).pipe(map(() => post));
 			}),
 		);
 	}
@@ -304,9 +306,7 @@ export class PostService {
 
 				if (post.comments.contains(commentReference)) {
 					post.comments.remove(commentReference);
-					from(this.commentRepository.removeAndFlush(commentReference)).pipe(
-						map(() => post),
-					);
+					from(this.em.removeAndFlush(commentReference)).pipe(map(() => post));
 				}
 
 				return of(post);

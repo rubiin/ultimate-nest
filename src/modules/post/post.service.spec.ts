@@ -6,6 +6,7 @@ import { mockedPost, queryDto } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { PostService } from "./post.service";
+import { EntityManager } from "@mikro-orm/postgresql";
 
 describe("PostService", () => {
 	let service: PostService;
@@ -15,6 +16,7 @@ describe("PostService", () => {
 	const mockCommentRepo = createMock<BaseRepository<Comment>>();
 	const mockTagsRepo = createMock<BaseRepository<Tag>>();
 	const mockCategoryRepo = createMock<BaseRepository<Category>>();
+	const mockEm = createMock<EntityManager>();
 
 	// default mocks
 
@@ -36,6 +38,7 @@ describe("PostService", () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				PostService,
+				{ provide: EntityManager, useValue: mockEm },
 
 				{
 					provide: getRepositoryToken(Post),

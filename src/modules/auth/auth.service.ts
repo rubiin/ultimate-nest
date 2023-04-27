@@ -310,7 +310,7 @@ export class AuthService {
 							password,
 						});
 
-						return from(this.userRepository.flush()).pipe(map(() => userDetails));
+						return from(this.em.flush()).pipe(map(() => userDetails));
 					}),
 				);
 			}),
