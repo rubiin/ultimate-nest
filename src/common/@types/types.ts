@@ -12,7 +12,6 @@ export type DtoWithFile<T, K = IFile> = T & {
 	files: K;
 };
 
-
 export const isArray = <T>(value: unknown): value is T[] => {
-  return Array.isArray(value);
+	return Array.isArray(value);
 };

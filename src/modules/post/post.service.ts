@@ -118,7 +118,7 @@ export class PostService {
 					tags,
 				});
 
-				return from(this.postRepository.persistAndFlush(post)).pipe(map(() => post));
+				return from(this.em.persistAndFlush(post)).pipe(map(() => post));
 			}),
 		);
 	}
@@ -246,7 +246,7 @@ export class PostService {
 					post.favoritesCount -= 1;
 				}
 
-				return from(this.postRepository.flush()).pipe(map(() => post));
+				return from(this.em.flush()).pipe(map(() => post));
 			}),
 		);
 	}
