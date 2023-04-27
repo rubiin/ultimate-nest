@@ -8,10 +8,14 @@ export class Comment extends BaseEntity {
 	@Property()
 	body!: string;
 
-	@ManyToOne()
+	@ManyToOne({
+		eager: false,
+	})
 	post!: Rel<Post>;
 
-	@ManyToOne()
+	@ManyToOne({
+		eager: false,
+	})
 	author!: Rel<User>;
 
 	constructor(partial?: Partial<Comment>) {

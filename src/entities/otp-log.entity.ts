@@ -13,7 +13,9 @@ export class OtpLog extends BaseEntity {
 	})
 	otpCode?: string;
 
-	@ManyToOne()
+	@ManyToOne({
+		eager: false,
+	})
 	user: Rel<User>;
 
 	@Property()

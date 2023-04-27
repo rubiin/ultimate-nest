@@ -8,7 +8,9 @@ export class RefreshToken extends BaseEntity {
 	@Property()
 	expiresIn!: Date;
 
-	@ManyToOne()
+	@ManyToOne({
+		eager: false,
+	})
 	user: Rel<User>;
 
 	@Property()

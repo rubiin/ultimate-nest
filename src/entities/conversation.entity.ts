@@ -11,7 +11,10 @@ export class Conversation extends BaseEntity {
 	@ManyToMany(() => User, user => user.conversations)
 	users = new Collection<User>(this);
 
-	@OneToMany(() => Message, message => message.conversation)
+	@OneToMany(() => Message, message => message.conversation, {
+		orphanRemoval: true,
+		nullable: true,
+	})
 	messages = new Collection<Message>(this);
 
 	constructor(partial?: Partial<Comment>) {

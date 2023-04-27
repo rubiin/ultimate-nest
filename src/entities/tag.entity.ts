@@ -7,11 +7,13 @@ import {
 	EventArgs,
 	ManyToMany,
 	Property,
+	Unique,
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
 import { Post } from "./post.entity";
 
+@Unique({ properties: ["title"] })
 @Entity()
 export class Tag extends BaseEntity {
 	@Property({
