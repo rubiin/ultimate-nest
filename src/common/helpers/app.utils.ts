@@ -1,5 +1,6 @@
 import fs from "node:fs";
 
+import { isArray } from "@common/@types/types";
 import {
 	SWAGGER_API_CURRENT_VERSION,
 	SWAGGER_API_ENDPOINT,
@@ -75,7 +76,7 @@ export const AppUtils = {
 			const methods = Object.values(path);
 
 			for (const method of methods) {
-				if (Array.isArray(method.security) && method.security.includes("isPublic")) {
+				if (isArray(method.security) && method.security.includes("isPublic")) {
 					method.security = [];
 				}
 			}
