@@ -1,7 +1,6 @@
 import { EmailTemplateEnum, IBaseService } from "@common/@types";
 import { DtoWithFile } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
-import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";
@@ -10,12 +9,14 @@ import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { capitalize } from "helper-fns";
+import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, switchMap } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
+import { SearchOptionsDto } from "@common/dtos/search.dto";
+import { createId } from "@paralleldrive/cuid2";
 
 @Injectable()
 export class UserService implements IBaseService<User> {
@@ -30,7 +31,7 @@ export class UserService implements IBaseService<User> {
 
 	/**
 	 * It returns an observable of a pagination object of users
-	 * @param {PageOptionsDto}  - PageOptionsDto - This is a DTO that contains the following properties:
+	 * @param {SearchOptionsDto}  - SearchOptionsDto - This is a DTO that contains the following properties:
 	 * @returns An observable of a pagination object.
 	 */
 	findAll({
@@ -40,7 +41,7 @@ export class UserService implements IBaseService<User> {
 		sort,
 		page,
 		search,
-	}: PageOptionsDto): Observable<Pagination<User>> {
+	}: SearchOptionsDto): Observable<Pagination<User>> {
 		const qb = this.userRepository.qb("u").select("u.*");
 
 		if (search) {
@@ -140,7 +141,7 @@ export class UserService implements IBaseService<User> {
 			switchMap(user => {
 				this.userRepository.assign(user, dto);
 
-				return from(this.userRepository.flush()).pipe(map(() => user));
+				return from(this.em.flush()).pipe(map(() => user));
 			}),
 		);
 	}
@@ -156,6 +157,27 @@ export class UserService implements IBaseService<User> {
 		return this.findOne(index).pipe(
 			switchMap(user => {
 				return from(this.userRepository.softRemoveAndFlush(user)).pipe(map(() => user));
+			}),
+		);
+	}
+
+	generateUsername(name: string): Observable<string> {
+		const pointSlug = slugify(`${name} ${createId().substring(0, 6)}`, {
+			lowercase: true,
+		});
+		return from(
+			this.userRepository.count({
+				username: {
+					$like: `${pointSlug}%`,
+				},
+			}),
+		).pipe(
+			map(count => {
+				if (count > 0) {
+					return `${pointSlug}${count}`;
+				}
+
+				return pointSlug;
 			}),
 		);
 	}

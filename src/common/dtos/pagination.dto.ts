@@ -1,7 +1,7 @@
 import { Order } from "@common/@types";
 import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 
-export class PageOptionsDto {
+export abstract class PageOptionsDto {
 	/**
 	 * Results page you want to retrieve (0..N)
 	 */
@@ -25,13 +25,6 @@ export class PageOptionsDto {
 	 */
 	@IsStringField({ required: false, maxLength: 50 })
 	readonly sort: string = "createdAt";
-
-	/**
-	 * Search query
-	 * @example John
-	 */
-	@IsStringField({ required: false, maxLength: 50 })
-	readonly search?: string;
 
 	get offset(): number {
 		return (this.page - 1) * this.limit;

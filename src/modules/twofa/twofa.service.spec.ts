@@ -12,17 +12,20 @@ import { authenticator } from "otplib";
 import qrCode from "qrcode";
 
 import { TwoFactorService } from "./twofa.service";
+import { EntityManager } from "@mikro-orm/postgresql";
 
 describe("TwoFactorService", () => {
 	let service: TwoFactorService;
 	const mockConfigService = createMock<ConfigService>();
 	const mockResponse = createMock<Response>();
 	const mockUserRepo = createMock<BaseRepository<User>>();
+	const mockEm = createMock<EntityManager>();
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				TwoFactorService,
+				{ provide: EntityManager, useValue: mockEm },
 
 				{
 					provide: getRepositoryToken(User),
@@ -64,7 +67,7 @@ describe("TwoFactorService", () => {
 			expect(result).toBeDefined();
 			expect(twoFactorValidSpy).toBeCalled();
 			expect(mockUserRepo.assign).toBeCalled();
-			expect(mockUserRepo.flush).toBeCalled();
+			expect(mockEm.flush).toBeCalled();
 			expect(twoFactorValidSpy).toBeCalledWith({
 				token: "some code",
 				secret: loggedInUser.twoFactorSecret,
@@ -81,7 +84,7 @@ describe("TwoFactorService", () => {
 			expect(authenticator.generateSecret).toBeCalled();
 			expect(authenticator.keyuri).toBeCalled();
 			expect(mockUserRepo.assign).toBeCalled();
-			expect(mockUserRepo.flush).toBeCalled();
+			expect(mockEm.flush).toBeCalled();
 			expect(twoFactorValidSpy).toBeCalledWith({
 				token: "some code",
 				secret: loggedInUser.twoFactorSecret,

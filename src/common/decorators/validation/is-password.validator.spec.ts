@@ -13,9 +13,10 @@ describe("IsPassword", () => {
 	it("if password satisfies then it should succeed (one uppercase,one lowercase, one number and one symbol and more than 8 characters)", () => {
 		const model = new MyClass();
 
-		model.password = "Test@1234";
+		model.password = "Test-1234";
 
 		return validator.validate(model).then(errors => {
+			console.log(errors);
 			expect(errors.length).toEqual(0);
 		});
 	});

@@ -1,12 +1,14 @@
 import { RefreshToken, User } from "@entities";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 import { from, map, Observable } from "rxjs";
 
 @Injectable()
 export class RefreshTokensRepository {
 	constructor(
+		private readonly em: EntityManager,
 		@InjectRepository(RefreshToken)
 		private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
 	) {}
@@ -30,7 +32,7 @@ export class RefreshTokensRepository {
 			expiresIn: expiration,
 		});
 
-		return from(this.refreshTokenRepository.persistAndFlush(token)).pipe(map(() => token));
+		return from(this.em.persistAndFlush(token)).pipe(map(() => token));
 	}
 
 	/**

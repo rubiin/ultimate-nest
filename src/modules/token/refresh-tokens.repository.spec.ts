@@ -6,16 +6,19 @@ import { loggedInUser, refreshToken } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
+import { EntityManager } from "@mikro-orm/postgresql";
 
 describe("RefreshTokensRepository", () => {
 	let service: RefreshTokensRepository;
 	const mockRefreshRepo = createMock<EntityRepository<RefreshToken>>();
+	const mockEm = createMock<EntityManager>();
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				RefreshTokensRepository,
+				{ provide: EntityManager, useValue: mockEm },
 				{ provide: getRepositoryToken(RefreshToken), useValue: mockRefreshRepo },
 			],
 		}).compile();
@@ -48,7 +51,7 @@ describe("RefreshTokensRepository", () => {
 	it("should create refresh token", () => {
 		service.createRefreshToken(loggedInUser, 1000).subscribe(result => {
 			expect(result).toEqual(refreshToken);
-			expect(mockRefreshRepo.persistAndFlush).toBeCalledTimes(1);
+			expect(mockEm.persistAndFlush).toBeCalledTimes(1);
 		});
 	});
 

@@ -9,11 +9,13 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { of } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
+import { EntityManager } from "@mikro-orm/postgresql";
 
 describe("TokensService", () => {
 	let service: TokensService;
 	const mockUserRepo = createMock<BaseRepository<User>>();
 	const mockJwtService = createMock<JwtService>();
+	const mockEm = createMock<EntityManager>();
 	const mockRefreshRepo = createMock<RefreshTokensRepository>();
 
 	beforeEach(async () => {
@@ -21,6 +23,7 @@ describe("TokensService", () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				TokensService,
+				{ provide: EntityManager, useValue: mockEm },
 
 				{
 					provide: getRepositoryToken(User),

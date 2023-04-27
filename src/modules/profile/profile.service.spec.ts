@@ -6,10 +6,11 @@ import { mockedUser } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { ProfileService } from "./profile.service";
+import { EntityManager } from "@mikro-orm/postgresql";
 
 describe("ProfileService", () => {
 	let service: ProfileService;
-
+	const mockEm = createMock<EntityManager>();
 	const mockUserRepo = createMock<BaseRepository<User>>();
 
 	// default mocks
@@ -25,6 +26,7 @@ describe("ProfileService", () => {
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				ProfileService,
+				{ provide: EntityManager, useValue: mockEm },
 
 				{
 					provide: getRepositoryToken(User),
