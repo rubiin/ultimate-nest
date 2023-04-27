@@ -12,11 +12,13 @@ import {
 	OneToMany,
 	Property,
 	Rel,
+	Unique,
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
 import { Category, Comment, Tag, User } from "./index";
 
+@Unique({ properties: ["title"] })
 @Entity()
 export class Post extends BaseEntity {
 	@Property()
@@ -43,12 +45,15 @@ export class Post extends BaseEntity {
 	@Property()
 	favoritesCount = 0;
 
-	@ManyToOne({ eager: false })
+	@ManyToOne({
+		eager: false,
+	})
 	author: Rel<User>;
 
 	@OneToMany(() => Comment, comment => comment.post, {
 		eager: false,
 		orphanRemoval: true,
+		nullable: true,
 	})
 	comments = new Collection<Comment>(this);
 

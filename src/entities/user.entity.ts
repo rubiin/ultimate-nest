@@ -16,6 +16,7 @@ import {
 	wrap,
 } from "@mikro-orm/core";
 
+@Unique({ properties: ["email", "mobileNumber"] })
 @Entity()
 export class User extends BaseEntity {
 	@Property()
@@ -60,7 +61,11 @@ export class User extends BaseEntity {
 	@Property()
 	isVerified = false;
 
-	@OneToMany(() => Post, post => post.author)
+	@OneToMany(() => Post, post => post.author, {
+		orphanRemoval: true,
+		eager: false,
+		nullable: true,
+	})
 	posts = new Collection<Post>(this);
 
 	@ManyToMany(() => Conversation, "users", { owner: true })

@@ -166,8 +166,7 @@ export class UserService implements IBaseService<User> {
 			lowercase: true,
 		});
 
-		
-return from(
+		return from(
 			this.userRepository.count({
 				username: {
 					$like: `${pointSlug}%`,

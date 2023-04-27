@@ -23,7 +23,9 @@ export class ActivityLog extends BaseEntity {
 	@Property()
 	loginStatus = true;
 
-	@ManyToOne()
+	@ManyToOne({
+		eager: false,
+	})
 	user!: Rel<User>;
 
 	constructor(partial?: Partial<ActivityLog>) {

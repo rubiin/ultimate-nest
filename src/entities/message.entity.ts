@@ -8,10 +8,14 @@ export class Message extends BaseEntity {
 	@Property()
 	body!: string;
 
-	@ManyToOne()
+	@ManyToOne({
+		eager: false,
+	})
 	sender: Rel<User>;
 
-	@ManyToOne()
+	@ManyToOne({
+		eager: false,
+	})
 	conversation!: Rel<Conversation>;
 
 	@Property()
