@@ -16,7 +16,6 @@ describe("IsPassword", () => {
 		model.password = "Test-1234";
 
 		return validator.validate(model).then(errors => {
-			console.log(errors);
 			expect(errors.length).toEqual(0);
 		});
 	});

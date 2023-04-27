@@ -2,11 +2,11 @@ import { RefreshToken } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { EntityRepository } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { loggedInUser, refreshToken } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
-import { EntityManager } from "@mikro-orm/postgresql";
 
 describe("RefreshTokensRepository", () => {
 	let service: RefreshTokensRepository;

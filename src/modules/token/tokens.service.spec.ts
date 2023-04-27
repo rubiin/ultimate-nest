@@ -2,6 +2,7 @@ import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { loggedInUser, refreshToken } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { JwtService } from "@nestjs/jwt";
@@ -9,7 +10,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { of } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
-import { EntityManager } from "@mikro-orm/postgresql";
 
 describe("TokensService", () => {
 	let service: TokensService;

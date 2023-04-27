@@ -2,11 +2,11 @@ import { BaseRepository } from "@common/database";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { mockedPost, queryDto } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { PostService } from "./post.service";
-import { EntityManager } from "@mikro-orm/postgresql";
 
 describe("PostService", () => {
 	let service: PostService;
