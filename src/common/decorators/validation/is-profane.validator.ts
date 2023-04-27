@@ -1,3 +1,4 @@
+import { isArray } from "@common/@types/types";
 import {
 	registerDecorator,
 	ValidationArguments,
@@ -12,7 +13,7 @@ class IsProfaneConstraint implements ValidatorConstraintInterface {
 	async validate(value: string | Array<string>) {
 		const isProfane = new unprofane({ lang: "all" });
 
-		if (Array.isArray(value)) {
+		if (isArray(value)) {
 			return value.some(v => isProfane.check(v));
 		}
 

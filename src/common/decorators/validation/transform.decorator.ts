@@ -1,3 +1,4 @@
+import { isArray } from "@common/@types/types";
 import { Transform } from "class-transformer";
 import DOMPurify from "isomorphic-dompurify";
 
@@ -9,7 +10,7 @@ export const Trim = (): PropertyDecorator => {
 	return Transform(parameters => {
 		const value = parameters.value as string[] | string;
 
-		if (Array.isArray(value)) {
+		if (isArray(value)) {
 			return value.map((v: string) => v.trim().replaceAll(/\s\s+/g, " "));
 		}
 
