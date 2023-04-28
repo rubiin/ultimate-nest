@@ -74,11 +74,11 @@ describe("UserService", () => {
 				} as any),
 		);
 
-		const result = await service.create({ ...mockedUser, files: mockFile });
-
-		expect(result).toStrictEqual({ ...mockedUser });
-		expect(createSpy).toBeCalledWith({ ...mockedUser });
-		expect(mockEm.transactional).toBeCalled();
+		service.create({ ...mockedUser, files: mockFile }).subscribe(result => {
+			expect(result).toStrictEqual({ ...mockedUser });
+			expect(createSpy).toBeCalledWith({ ...mockedUser });
+			expect(mockEm.transactional).toBeCalled();
+		});
 	});
 
 	it("should edit user", async () => {

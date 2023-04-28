@@ -27,7 +27,7 @@ export abstract class BaseController<
 	}
 
 	@Post()
-	async create(@Body() dto: CreateDto, @LoggedInUser() author: User) {
+	create(@Body() dto: CreateDto, @LoggedInUser() author: User) {
 		return this.service.create(dto, author);
 	}
 
