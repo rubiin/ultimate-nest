@@ -3,7 +3,7 @@ import { HelperService } from "@common/helpers";
 import { OtpLog, User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { EntityManager } from "@mikro-orm/core";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { loggedInUser, mockedOtpLog, mockedUser, mockResetPasswordDto } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
@@ -28,6 +28,13 @@ describe("AuthService", () => {
 	mockUserRepo.findOne.mockImplementation((options: any) =>
 		Promise.resolve({
 			...mockedUser,
+			idx: options.idx,
+		} as any),
+	);
+
+	mockOtpLogRepo.findOne.mockImplementation((options: any) =>
+		Promise.resolve({
+			user: loggedInUser,
 			idx: options.idx,
 		} as any),
 	);
@@ -116,9 +123,9 @@ describe("AuthService", () => {
 
 	it("should change password", () => {
 		const dto = {
-			password: "new_password",
-			confirmPassword: "confirm_password",
-			oldPassword: "old_password",
+			password: "newPassword",
+			confirmPassword: "confirmPassword",
+			oldPassword: "oldPassword",
 		};
 
 		HelperService.verifyHash = jest.fn().mockImplementation(() => of(true));

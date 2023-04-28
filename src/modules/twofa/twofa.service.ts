@@ -9,7 +9,7 @@ import { Response } from "express";
 import { I18nContext } from "nestjs-i18n";
 import { authenticator } from "otplib";
 import { toFileStream } from "qrcode";
-import { from, map, Observable } from "rxjs";
+import { from, map, Observable, throwError } from "rxjs";
 
 @Injectable()
 export class TwoFactorService {
@@ -83,8 +83,10 @@ export class TwoFactorService {
 		const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user);
 
 		if (!isCodeValid) {
-			throw new UnauthorizedException(
-				I18nContext.current<I18nTranslations>()!.t("exception.inactiveUser"),
+			return throwError(() =>
+				I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
+					args: { error: "malformed" },
+				}),
 			);
 		}
 

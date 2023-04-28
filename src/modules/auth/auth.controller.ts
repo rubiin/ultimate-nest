@@ -75,7 +75,7 @@ export class AuthController {
 		operation: "Forgot password",
 		notFound: "Account doesn't exist.",
 	})
-	async forgotPassword(@Body() dto: SendOtpDto): Promise<OtpLog> {
+	forgotPassword(@Body() dto: SendOtpDto): Observable<OtpLog> {
 		return this.authService.forgotPassword(dto);
 	}
 
@@ -150,7 +150,7 @@ export class AuthController {
 		notFound: "Otp doesn't exist.",
 		badRequest: "Otp is expired.",
 	})
-	async verifyOtp(@Body() dto: OtpVerifyDto): Promise<User> {
+	verifyOtp(@Body() dto: OtpVerifyDto): Observable<User> {
 		return this.authService.verifyOtp(dto);
 	}
 

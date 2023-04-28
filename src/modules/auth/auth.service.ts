@@ -12,13 +12,12 @@ import {
 	ForbiddenException,
 	Injectable,
 	NotFoundException,
-	UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { isAfter } from "date-fns";
 import { capitalize, omit, randomString } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, Observable, of, switchMap, zip } from "rxjs";
+import { Observable, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
 import {
 	ChangePasswordDto,
@@ -60,16 +59,27 @@ export class AuthService {
 		).pipe(
 			switchMap(user => {
 				if (!user) {
-					throw new ForbiddenException(
-						I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
-							args: { item: "Account" },
-						}),
+					return throwError(
+						() =>
+							new ForbiddenException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemDoesNotExist",
+									{
+										args: { item: "Account" },
+									},
+								),
+							),
 					);
 				}
 
 				if (!user.isActive) {
-					throw new ForbiddenException(
-						I18nContext.current<I18nTranslations>()!.t("exception.inactiveUser"),
+					return throwError(
+						() =>
+							new ForbiddenException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.inactiveUser",
+								),
+							),
 					);
 				}
 
@@ -79,10 +89,14 @@ export class AuthService {
 								if (isValid) {
 									return omit(user, ["password"]);
 								}
-								throw new BadRequestException(
-									I18nContext.current<I18nTranslations>()!.t(
-										"exception.invalidCredentials",
-									),
+
+								return throwError(
+									() =>
+										new BadRequestException(
+											I18nContext.current<I18nTranslations>()!.t(
+												"exception.invalidCredentials",
+											),
+										),
 								);
 							}),
 					  )
@@ -102,10 +116,16 @@ export class AuthService {
 	login(loginDto: UserLoginDto, isPasswordLogin = false): Observable<IAuthenticationResponse> {
 		return this.validateUser(isPasswordLogin, loginDto.email, loginDto.password).pipe(
 			switchMap(user => {
-				if (!user)
-					throw new UnauthorizedException(
-						I18nContext.current<I18nTranslations>()!.t("exception.invalidCredentials"),
+				if (!user) {
+					return throwError(
+						() =>
+							new BadRequestException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.invalidCredentials",
+								),
+							),
 					);
+				}
 
 				if (user.isTwoFactorEnabled) {
 					return this.tokenService.generateAccessToken(user).pipe(
@@ -159,50 +179,64 @@ export class AuthService {
 	 * @param {SendOtpDto} sendOtp - SendOtpDto
 	 * @returns OtpLog
 	 */
-	async forgotPassword(sendOtp: SendOtpDto): Promise<OtpLog> {
+
+	forgotPassword(sendOtp: SendOtpDto): Observable<OtpLog> {
 		const { email } = sendOtp;
-		const userExists = await this.userRepository.findOne({
-			email,
-			isObsolete: false,
-			isActive: true,
-		});
 
-		if (!userExists) {
-			throw new NotFoundException(
-				I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
-					args: { item: "Account" },
-				}),
-			);
-		}
+		return from(
+			this.userRepository.findOne({
+				email,
+				isObsolete: false,
+				isActive: true,
+			}),
+		).pipe(
+			mergeMap(userExists => {
+				if (!userExists) {
+					return throwError(
+						() =>
+							new NotFoundException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemDoesNotExist",
+									{
+										args: { item: "Account" },
+									},
+								),
+							),
+					);
+				}
 
-		const otpNumber = randomString({ length: 6, numbers: true }); // random six digit otp
+				const otpNumber = randomString({ length: 6, numbers: true }); // random six digit otp
 
-		const otpExpiry = 60 * 60 * 1000; // 1 hour
+				const otpExpiry = 60 * 60 * 1000; // 1 hour
 
-		const otp = this.otpRepository.create({
-			user: userExists,
-			otpCode: otpNumber,
-			expiresIn: new Date(Date.now() + otpExpiry),
-			isUsed: false,
-		});
+				const otp = this.otpRepository.create({
+					user: userExists,
+					otpCode: otpNumber,
+					expiresIn: new Date(Date.now() + otpExpiry),
+					isUsed: false,
+				});
 
-		await this.em.transactional(async em => {
-			await em.persistAndFlush(otp);
+				return from(
+					this.em.transactional(async em => {
+						await em.persistAndFlush(otp);
 
-			await this.mailService.sendMail({
-				template: EmailTemplateEnum.RESET_PASSWORD_TEMPLATE,
-				replacements: {
-					firstName: capitalize(userExists.firstName),
-					lastName: capitalize(userExists.lastName),
-					otp: otpNumber,
-				},
-				to: userExists.email,
-				subject: "Reset Password",
-				from: this.configService.get("mail.senderEmail", { infer: true }),
-			});
-		});
+						await this.mailService.sendMail({
+							template: EmailTemplateEnum.RESET_PASSWORD_TEMPLATE,
+							replacements: {
+								firstName: capitalize(userExists.firstName),
+								lastName: capitalize(userExists.lastName),
+								otp: otpNumber,
+							},
+							to: userExists.email,
+							subject: "Reset Password",
+							from: this.configService.get("mail.senderEmail", { infer: true }),
+						});
 
-		return otp;
+						return otp;
+					}),
+				);
+			}),
+		);
 	}
 
 	/**
@@ -231,52 +265,71 @@ export class AuthService {
 	}
 
 	/**
-	 * It verifies the OTP code and marks the user as verified
-	 * @param {OtpVerifyDto} otpDto - OtpVerifyDto - This is the DTO that we created earlier.
+	 * This function verifies an OTP code and updates the user's verification status if the code is valid
+	 * and not expired.
+	 * @param {OtpVerifyDto} otpDto - The `otpDto` parameter is an object of type `OtpVerifyDto` which
+	 * contains the OTP code that needs to be verified.
+	 * @returns The `verifyOtp` function returns an Observable of type `User`.
 	 */
-	async verifyOtp(otpDto: OtpVerifyDto): Promise<User> {
+	verifyOtp(otpDto: OtpVerifyDto): Observable<User> {
 		const { otpCode } = otpDto;
-		const codeDetails = await this.otpRepository.findOne({
-			otpCode,
-			isActive: true,
-			isObsolete: false,
-		});
+		return from(
+			this.otpRepository.findOne({
+				otpCode,
+				isActive: true,
+				isObsolete: false,
+			}),
+		).pipe(
+			switchMap(codeDetails => {
+				if (!codeDetails) {
+					return throwError(
+						() =>
+							new NotFoundException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemDoesNotExist",
+									{
+										args: { item: "Otp" },
+									},
+								),
+							),
+					);
+				}
 
-		if (!codeDetails) {
-			throw new NotFoundException(
-				I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
-					args: { item: "Otp" },
-				}),
-			);
-		}
+				const isExpired = isAfter(new Date(), new Date(codeDetails.expiresIn));
 
-		const isExpired = isAfter(new Date(), new Date(codeDetails.expiresIn));
+				if (isExpired) {
+					return throwError(
+						() =>
+							new BadRequestException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemExpired",
+									{
+										args: { item: "Otp" },
+									},
+								),
+							),
+					);
+				}
 
-		if (isExpired) {
-			throw new BadRequestException(
-				I18nContext.current<I18nTranslations>()!.t("exception.itemExpired", {
-					args: { item: "Otp" },
-				}),
-			);
-		}
+				return from(
+					this.em.transactional(async em => {
+						this.otpRepository.assign(codeDetails, {
+							isUsed: true,
+						});
 
-		await this.em.transactional(async em => {
-			this.otpRepository.assign(codeDetails, {
-				isUsed: true,
-			});
+						em.nativeUpdate(
+							User,
+							{
+								id: codeDetails.user.id,
+							},
+							{ isVerified: true },
+						);
 
-			em.nativeUpdate(
-				User,
-				{
-					id: codeDetails.user.id,
-				},
-				{ isVerified: true },
-			);
-
-			em.flush();
-		});
-
-		return codeDetails.user;
+						await em.flush();
+					}),
+				).pipe(map(() => codeDetails.user));
+			}),
+		);
 	}
 
 	/**
@@ -300,10 +353,13 @@ export class AuthService {
 				return HelperService.verifyHash(userDetails.password, oldPassword).pipe(
 					switchMap(isValid => {
 						if (!isValid) {
-							throw new BadRequestException(
-								I18nContext.current<I18nTranslations>()!.translate(
-									"exception.invalidCredentials",
-								),
+							return throwError(
+								() =>
+									new BadRequestException(
+										I18nContext.current<I18nTranslations>()!.t(
+											"exception.invalidCredentials",
+										),
+									),
 							);
 						}
 						this.userRepository.assign(userDetails, {
@@ -317,6 +373,13 @@ export class AuthService {
 		);
 	}
 
+	/**
+	 * This function finds a user by their ID, ensuring that they are active and not obsolete.
+	 * @param {number} id - The id parameter is a number that represents the unique identifier of the user
+	 * we want to find.
+	 * @returns A Promise that resolves to a User object that matches the given id and has isActive set to
+	 * true and isObsolete set to false.
+	 */
 	async findUser(id: number): Promise<User> {
 		return this.userRepository.findOne({
 			id,
