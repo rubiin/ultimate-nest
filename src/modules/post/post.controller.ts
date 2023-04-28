@@ -49,7 +49,7 @@ export class PostController {
 	@Post()
 	@SwaggerResponse({ operation: "create post" })
 	@CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Create))
-	async create(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
+	create(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
 		return this.postService.create(dto, author);
 	}
 
@@ -81,7 +81,8 @@ export class PostController {
 		notFound: "Post doesn't exist.",
 		params: ["idx"],
 	})
-	async createComment(
+	@CheckPolicies(new GenericPolicyHandler(Comment, Action.Create))
+	createComment(
 		@LoggedInUser("id") user: number,
 		@UUIDParam("idx") index: string,
 		@Body() commentData: CreateCommentDto,
@@ -89,12 +90,15 @@ export class PostController {
 		return this.postService.addComment(user, index, commentData);
 	}
 
+	// to: edit comment
+
 	@Delete(":idx/comments/:commentIdx")
 	@SwaggerResponse({
 		operation: "Post comment delete",
 		notFound: "Post doesn't exist.",
 		params: ["idx", "commentIdx"],
 	})
+	@CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
 	deleteComment(
 		@UUIDParam("idx") postIndex: string,
 		@UUIDParam("commentIdx") commentIndex: string,
@@ -118,7 +122,7 @@ export class PostController {
 		notFound: "Post doesn't exist.",
 		params: ["idx"],
 	})
-	async unFavorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {
+	unFavorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {
 		return this.postService.unFavorite(userId, index);
 	}
 }

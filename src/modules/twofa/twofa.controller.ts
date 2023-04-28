@@ -6,7 +6,7 @@ import { Body, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/commo
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
-import { Observable, switchMap } from "rxjs";
+import { Observable, switchMap, throwError } from "rxjs";
 
 import { TwofaDto } from "./dtos/twofa.dto";
 import { TwoFactorService } from "./twofa.service";
@@ -41,7 +41,7 @@ export class TwoFactorController {
 		);
 
 		if (!isCodeValid) {
-			throw new UnauthorizedException();
+			return throwError(() => new UnauthorizedException());
 		}
 
 		return this.authService.login(user, true);

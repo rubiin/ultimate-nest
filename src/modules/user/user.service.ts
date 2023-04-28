@@ -5,16 +5,16 @@ import { SearchOptionsDto } from "@common/dtos/search.dto";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";
-import { createPaginationObject, Pagination } from "@lib/pagination";
+import { createPaginationObject,Pagination } from "@lib/pagination";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, Observable, switchMap } from "rxjs";
+import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
@@ -27,7 +27,7 @@ export class UserService implements IBaseService<User> {
 		private readonly configService: ConfigService<IConfig, true>,
 		private readonly amqpConnection: AmqpConnection,
 		private readonly cloudinaryService: CloudinaryService,
-	) {}
+	) { }
 
 	/**
 	 * It returns an observable of a pagination object of users
@@ -75,16 +75,16 @@ export class UserService implements IBaseService<User> {
 				isObsolete: false,
 			}),
 		).pipe(
-			map(user => {
+			mergeMap(user => {
 				if (!user) {
-					throw new NotFoundException(
+					return throwError(() =>
 						I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
 							args: { item: "User" },
 						}),
 					);
 				}
 
-				return user;
+				return of(user);
 			}),
 		);
 	}
@@ -94,37 +94,37 @@ export class UserService implements IBaseService<User> {
 	 * @param dto - CreateWithFile<CreateUserDto>
 	 * @returns The user object
 	 */
-	async create(dto: DtoWithFile<CreateUserDto>): Promise<User> {
+	create(dto: DtoWithFile<CreateUserDto>): Observable<User> {
 		const { files, ...rest } = dto;
 		const user = this.userRepository.create(rest);
 
-		await this.em.transactional(async em => {
-			const { url } = await this.cloudinaryService.uploadFile(files);
+		return from(
+			this.em.transactional(async em => {
+				const { url } = await this.cloudinaryService.uploadFile(files);
 
-			// cloudinary gives a url key on response that is the full url to file
+				// cloudinary gives a url key on response that is the full url to file
 
-			user.avatar = url;
+				user.avatar = url;
 
-			await em.persistAndFlush(user);
-			const link = this.configService.get("app.clientUrl", { infer: true });
+				await em.persistAndFlush(user);
+				const link = this.configService.get("app.clientUrl", { infer: true });
 
-			await this.amqpConnection.publish(
-				this.configService.get("rabbitmq.exchange", { infer: true }),
-				"send-mail",
-				{
-					template: EmailTemplateEnum.WELCOME_TEMPLATE,
-					replacements: {
-						firstName: capitalize(user.firstName),
-						link,
+				await this.amqpConnection.publish(
+					this.configService.get("rabbitmq.exchange", { infer: true }),
+					"send-mail",
+					{
+						template: EmailTemplateEnum.WELCOME_TEMPLATE,
+						replacements: {
+							firstName: capitalize(user.firstName),
+							link,
+						},
+						to: user.email,
+						subject: "Welcome onboard",
+						from: this.configService.get("mail.senderEmail", { infer: true }),
 					},
-					to: user.email,
-					subject: "Welcome onboard",
-					from: this.configService.get("mail.senderEmail", { infer: true }),
-				},
-			);
-		});
-
-		return user;
+				);
+			}),
+		).pipe(map(() => user));
 	}
 
 	/**
@@ -161,6 +161,13 @@ export class UserService implements IBaseService<User> {
 		);
 	}
 
+	/**
+	 * This function generates a unique username based on a given name and a random ID, and checks if it
+	 * already exists in the database before returning it.
+	 * @param {string} name - The `name` parameter is a string representing the name of the user for whom
+	 * a username is being generated.
+	 * @returns An Observable of type string is being returned.
+	 */
 	generateUsername(name: string): Observable<string> {
 		const pointSlug = slugify(`${name} ${createId().slice(0, 6)}`, {
 			lowercase: true,

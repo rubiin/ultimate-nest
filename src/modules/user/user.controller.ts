@@ -36,11 +36,11 @@ export class UserController {
 		badRequest: "User already registered with email.",
 	})
 	@ApiFile({ fieldName: "avatar", required: true })
-	async publicRegistration(
+	publicRegistration(
 		@Body() dto: UserRegistrationDto,
 		@UploadedFile(fileValidatorPipe({}))
 		image: IFile,
-	) {
+	): Observable<User> {
 		return this.userService.create({
 			...dto,
 			roles: [Roles.AUTHOR],
@@ -66,11 +66,11 @@ export class UserController {
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Create))
 	@ApiFile({ fieldName: "avatar", required: true })
-	async create(
+	create(
 		@Body() dto: CreateUserDto,
 		@UploadedFile(fileValidatorPipe({}))
 		image: IFile,
-	) {
+	): Observable<User> {
 		return this.userService.create({ ...dto, files: image });
 	}
 

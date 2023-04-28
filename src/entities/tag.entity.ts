@@ -32,7 +32,7 @@ export class Tag extends BaseEntity {
 
 	@BeforeCreate()
 	@BeforeUpdate()
-	async generateSlug(arguments_: EventArgs<this>) {
+	generateSlug(arguments_: EventArgs<this>) {
 		if (arguments_.changeSet?.payload?.title) {
 			this.slug = slugify(this.title);
 		}

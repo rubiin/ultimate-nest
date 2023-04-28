@@ -6,7 +6,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, Observable, switchMap } from "rxjs";
+import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 @Injectable()
 export class ProfileService {
@@ -47,16 +47,22 @@ export class ProfileService {
 				},
 			),
 		).pipe(
-			map(user => {
+			mergeMap(user => {
 				if (!user) {
-					throw new NotFoundException(
-						I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
-							args: { item: "Profile" },
-						}),
+					return throwError(
+						() =>
+							new NotFoundException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemDoesNotExist",
+									{
+										args: { item: "Profile" },
+									},
+								),
+							),
 					);
 				}
 
-				return user;
+				return of(user);
 			}),
 		);
 	}
@@ -73,18 +79,24 @@ export class ProfileService {
 	 */
 	follow(loggedInUser: User, usernameToFollow: string): Observable<IProfileData> {
 		if (!usernameToFollow) {
-			throw new BadRequestException(
-				I18nContext.current<I18nTranslations>()!.t("exception.usernameRequired"),
+			return throwError(
+				() =>
+					new BadRequestException(
+						I18nContext.current<I18nTranslations>()!.t("exception.usernameRequired"),
+					),
 			);
 		}
 
 		return this.getProfileByUsername(usernameToFollow, ["followers"]).pipe(
 			switchMap(followingUser => {
 				if (loggedInUser.username === usernameToFollow) {
-					throw new BadRequestException(
-						I18nContext.current<I18nTranslations>()!.t(
-							"exception.followerFollowingSame",
-						),
+					return throwError(
+						() =>
+							new BadRequestException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.followerFollowingSame",
+								),
+							),
 					);
 				}
 
@@ -112,8 +124,11 @@ export class ProfileService {
 	 */
 	unFollow(loggedInUser: User, username: string): Observable<IProfileData> {
 		if (!username) {
-			throw new BadRequestException(
-				I18nContext.current<I18nTranslations>()!.t("exception.usernameRequired"),
+			return throwError(
+				() =>
+					new BadRequestException(
+						I18nContext.current<I18nTranslations>()!.t("exception.usernameRequired"),
+					),
 			);
 		}
 
@@ -122,10 +137,13 @@ export class ProfileService {
 				const followerUser = this.userRepository.getReference(loggedInUser.id);
 
 				if (followingUser.id === loggedInUser.id) {
-					throw new BadRequestException(
-						I18nContext.current<I18nTranslations>()!.t(
-							"exception.followerFollowingSame",
-						),
+					return throwError(
+						() =>
+							new BadRequestException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.followerFollowingSame",
+								),
+							),
 					);
 				}
 

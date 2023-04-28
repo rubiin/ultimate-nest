@@ -24,10 +24,12 @@ export abstract class BaseService<
 	 * @returns Observable<Entity>
 	 */
 
-	create(dto: CreateDto, _user?: User): Promise<Entity> | Observable<Entity> {
+	create(dto: CreateDto, _user?: User): Observable<Entity> {
 		const entity = this.repository.create(dto);
 
-		return from(this.repository.getEntityManager().persistAndFlush(entity)).pipe(map(() => entity));
+		return from(this.repository.getEntityManager().persistAndFlush(entity)).pipe(
+			map(() => entity),
+		);
 	}
 
 	/**

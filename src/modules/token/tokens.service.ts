@@ -7,7 +7,7 @@ import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
 import { I18nContext } from "nestjs-i18n";
-import { catchError, from, map, Observable, switchMap } from "rxjs";
+import { catchError, from, map, Observable, switchMap, throwError } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
@@ -74,37 +74,46 @@ export class TokensService {
 				return this.getStoredTokenFromRefreshTokenPayload(payload).pipe(
 					switchMap(token => {
 						if (!token) {
-							throw new UnauthorizedException(
-								I18nContext.current<I18nTranslations>()!.t(
-									"exception.refreshToken",
-									{
-										args: { error: "not found" },
-									},
-								),
+							throwError(
+								() =>
+									new UnauthorizedException(
+										I18nContext.current<I18nTranslations>()!.t(
+											"exception.refreshToken",
+											{
+												args: { error: "not found" },
+											},
+										),
+									),
 							);
 						}
 
 						if (token.isRevoked) {
-							throw new UnauthorizedException(
-								I18nContext.current<I18nTranslations>()!.t(
-									"exception.refreshToken",
-									{
-										args: { error: "revoked" },
-									},
-								),
+							throwError(
+								() =>
+									new UnauthorizedException(
+										I18nContext.current<I18nTranslations>()!.t(
+											"exception.refreshToken",
+											{
+												args: { error: "revoked" },
+											},
+										),
+									),
 							);
 						}
 
 						return this.getUserFromRefreshTokenPayload(payload).pipe(
 							map(user => {
 								if (!user) {
-									throw new UnauthorizedException(
-										I18nContext.current<I18nTranslations>()!.t(
-											"exception.refreshToken",
-											{
-												args: { error: "malformed" },
-											},
-										),
+									throwError(
+										() =>
+											new UnauthorizedException(
+												I18nContext.current<I18nTranslations>()!.t(
+													"exception.refreshToken",
+													{
+														args: { error: "malformed" },
+													},
+												),
+											),
 									);
 								}
 
@@ -190,10 +199,13 @@ export class TokensService {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
-			throw new UnauthorizedException(
-				I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
-					args: { error: "malformed" },
-				}),
+			return throwError(
+				() =>
+					new UnauthorizedException(
+						I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
+							args: { error: "malformed" },
+						}),
+					),
 			);
 		}
 
@@ -214,10 +226,13 @@ export class TokensService {
 		const subId = payload.sub;
 
 		if (!subId) {
-			throw new UnauthorizedException(
-				I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
-					args: { error: "malformed" },
-				}),
+			return throwError(
+				() =>
+					new UnauthorizedException(
+						I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
+							args: { error: "malformed" },
+						}),
+					),
 			);
 		}
 
@@ -238,10 +253,13 @@ export class TokensService {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
-			throw new UnauthorizedException(
-				I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
-					args: { error: "malformed" },
-				}),
+			return throwError(
+				() =>
+					new UnauthorizedException(
+						I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
+							args: { error: "malformed" },
+						}),
+					),
 			);
 		}
 
