@@ -1,7 +1,7 @@
 import { BaseRepository } from "@common/database";
 import { SearchOptionsDto } from "@common/dtos/search.dto";
 import { Category, Comment, Post, Tag, User } from "@entities";
-import { createPaginationObject, Pagination } from "@lib/pagination";
+import { PageMetaDto, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
@@ -35,14 +35,8 @@ export class PostService {
 	 * offset.
 	 * @returns An observable of a pagination object.
 	 */
-	findAll({
-		page,
-		order,
-		limit,
-		sort,
-		offset,
-		search,
-	}: SearchOptionsDto): Observable<Pagination<Post>> {
+	findAll(pageOptionsDto: SearchOptionsDto): Observable<Pagination<Post>> {
+		const { order, limit, sort, offset, search } = pageOptionsDto;
 		const qb = this.postRepository.qb("p").select("p.*");
 
 		if (search) {
@@ -56,8 +50,10 @@ export class PostService {
 		const pagination$ = from(qb.getResultAndCount());
 
 		return pagination$.pipe(
-			map(([results, total]) => {
-				return createPaginationObject<Post>(results, total, page, limit, "posts");
+			map(([results, itemCount]) => {
+				const pageMetaDto = new PageMetaDto({ pageOptionsDto, itemCount });
+
+				return new Pagination(results, pageMetaDto);
 			}),
 		);
 	}

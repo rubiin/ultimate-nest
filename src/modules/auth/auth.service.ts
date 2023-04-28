@@ -274,8 +274,7 @@ export class AuthService {
 	verifyOtp(otpDto: OtpVerifyDto): Observable<User> {
 		const { otpCode } = otpDto;
 
-		
-return from(
+		return from(
 			this.otpRepository.findOne({
 				otpCode,
 				isActive: true,

@@ -7,6 +7,7 @@ export const MULTER_IMAGE_FILTER = "Only image files are allowed!.";
 export const API_UNAUTHORISED_RESPONSE = "No auth token.";
 export const REQUEST_ID_TOKEN_HEADER = "x-request-id";
 export const VERSION_VALIDATION_MESSAGE = 'Version must start with "v" followed by a number.';
+export const TOKEN_NOT_FOUND = "Token not found in request";
 
 // swagger constants
 export const SWAGGER_TITLE = `${capitalize(APP_NAME)} API Documentation`;

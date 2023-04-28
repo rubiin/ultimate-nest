@@ -4,6 +4,7 @@ import * as aws from "@aws-sdk/client-ses";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { createTransport, SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
 import previewEmail from "preview-email";
+import { from, switchMap } from "rxjs";
 
 import { EtaAdapter, HandlebarsAdapter, PugAdapter } from "./adapters";
 import { IAdapter } from "./adapters/abstract.adapter";
@@ -85,20 +86,22 @@ export class MailerService {
 	 * @param {IMailOptions} mailOptions - IMailOptions
 	 * @returns A promise that resolves to a boolean.
 	 */
-	async sendMail(mailOptions: IMailOptions) {
+	sendMail(mailOptions: IMailOptions) {
 		const templatePath = resolve(
 			`${__dirname}/../../${this.options.templateDir}/${mailOptions.template}.${this.options.engine.adapter}`,
 		);
 
-		const html = await this.adapter.compile(templatePath, mailOptions.replacements);
+		return from(this.adapter.compile(templatePath, mailOptions.replacements)).pipe(
+			switchMap(html => {
+				mailOptions.html = html;
 
-		mailOptions.html = html;
+				if (this.options.previewEmail === true) {
+					previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error);
+				}
 
-		if (this.options.previewEmail === true) {
-			previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error);
-		}
-
-		return this.transporter.sendMail(mailOptions);
+				return from(this.transporter.sendMail(mailOptions));
+			}),
+		);
 	}
 
 	async checkConnection() {

@@ -5,7 +5,7 @@ import { SearchOptionsDto } from "@common/dtos/search.dto";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";
-import { createPaginationObject,Pagination } from "@lib/pagination";
+import { PageMetaDto, Pagination } from "@lib/pagination";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
@@ -27,21 +27,15 @@ export class UserService implements IBaseService<User> {
 		private readonly configService: ConfigService<IConfig, true>,
 		private readonly amqpConnection: AmqpConnection,
 		private readonly cloudinaryService: CloudinaryService,
-	) { }
+	) {}
 
 	/**
 	 * It returns an observable of a pagination object of users
 	 * @param {SearchOptionsDto}  - SearchOptionsDto - This is a DTO that contains the following properties:
 	 * @returns An observable of a pagination object.
 	 */
-	findAll({
-		limit,
-		offset,
-		order,
-		sort,
-		page,
-		search,
-	}: SearchOptionsDto): Observable<Pagination<User>> {
+	findAll(pageOptionsDto: SearchOptionsDto): Observable<Pagination<User>> {
+		const { limit, offset, order, sort, search } = pageOptionsDto;
 		const qb = this.userRepository.qb("u").select("u.*");
 
 		if (search) {
@@ -55,8 +49,10 @@ export class UserService implements IBaseService<User> {
 		const pagination$ = from(qb.getResultAndCount());
 
 		return pagination$.pipe(
-			map(([results, total]) => {
-				return createPaginationObject<User>(results, total, page, limit, "users");
+			map(([results, itemCount]) => {
+				const pageMetaDto = new PageMetaDto({ pageOptionsDto, itemCount });
+
+				return new Pagination(results, pageMetaDto);
 			}),
 		);
 	}

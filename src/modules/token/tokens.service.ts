@@ -7,7 +7,7 @@ import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
 import { I18nContext } from "nestjs-i18n";
-import { catchError, from, map, Observable, switchMap, throwError } from "rxjs";
+import { catchError, from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
@@ -74,7 +74,7 @@ export class TokensService {
 				return this.getStoredTokenFromRefreshTokenPayload(payload).pipe(
 					switchMap(token => {
 						if (!token) {
-							throwError(
+							return throwError(
 								() =>
 									new UnauthorizedException(
 										I18nContext.current<I18nTranslations>()!.t(
@@ -88,7 +88,7 @@ export class TokensService {
 						}
 
 						if (token.isRevoked) {
-							throwError(
+							return throwError(
 								() =>
 									new UnauthorizedException(
 										I18nContext.current<I18nTranslations>()!.t(
@@ -102,9 +102,9 @@ export class TokensService {
 						}
 
 						return this.getUserFromRefreshTokenPayload(payload).pipe(
-							map(user => {
+							mergeMap(user => {
 								if (!user) {
-									throwError(
+									return throwError(
 										() =>
 											new UnauthorizedException(
 												I18nContext.current<I18nTranslations>()!.t(
@@ -117,7 +117,7 @@ export class TokensService {
 									);
 								}
 
-								return { user, token };
+								return of({ user, token });
 							}),
 						);
 					}),
