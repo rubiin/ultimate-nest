@@ -2,6 +2,7 @@ import fs from "node:fs";
 
 import { isArray } from "@common/@types/types";
 import {
+	IS_PUBLIC_KEY_META,
 	SWAGGER_API_CURRENT_VERSION,
 	SWAGGER_API_ENDPOINT,
 	SWAGGER_DESCRIPTION,
@@ -76,7 +77,7 @@ export const AppUtils = {
 			const methods = Object.values(path);
 
 			for (const method of methods) {
-				if (isArray(method.security) && method.security.includes("isPublic")) {
+				if (isArray(method.security) && method.security.includes(IS_PUBLIC_KEY_META)) {
 					method.security = [];
 				}
 			}
