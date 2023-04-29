@@ -1,12 +1,11 @@
 import { createMock } from "@golevelup/ts-jest";
-import { CacheService } from "@lib/cache/cache.service";
-import { Request, Response } from "express";
+import { mockCacheService, mockResponse } from "@mocks";
+import { Request } from "express";
 
 import { ClearCacheMiddleware } from "./cache.middleware";
 
 describe("ClearCacheMiddleware", () => {
 	let middleware: ClearCacheMiddleware;
-	const mockCacheService = createMock<CacheService>();
 
 	beforeEach(() => {
 		middleware = new ClearCacheMiddleware(mockCacheService);
@@ -16,7 +15,6 @@ describe("ClearCacheMiddleware", () => {
 			clearCache: "true",
 		},
 	});
-	const mockResponse = createMock<Response>();
 
 	it("should be defined", () => {
 		expect(middleware).toBeDefined();

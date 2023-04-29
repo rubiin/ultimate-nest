@@ -66,8 +66,8 @@ cp env/.env.example env/.env.dev
 
 # 4. Install dependencies (preferred: pnpm)
 
- npm install --legacy-peer-deps
- pnpm install --shamefully-hoist=true
+ npm install
+ pnpm install
  yarn install
 
 ```

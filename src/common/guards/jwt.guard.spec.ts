@@ -1,12 +1,12 @@
 import { createMock } from "@golevelup/ts-jest";
+import { mockReflector } from "@mocks";
 import { ExecutionContext } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
 
 import { JwtAuthGuard } from "./jwt.guard";
 
 describe("JwtAuthGuard", () => {
 	let authenticatedGuard: JwtAuthGuard;
-	const mockReflector = createMock<Reflector>();
+
 	const mockContext = createMock<ExecutionContext>({
 		switchToHttp: () => ({
 			getRequest: () => ({
