@@ -1,37 +1,22 @@
-import { BaseRepository } from "@common/database";
 import { Category, Comment, Post, Tag, User } from "@entities";
-import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
-import { mockedPost, queryDto } from "@mocks";
+import {
+	mockCategoryRepo,
+	mockCommentRepo,
+	mockedPost,
+	mockEm,
+	mockPostRepo,
+	mockTagsRepo,
+	mockUserRepo,
+	queryDto,
+} from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { PostService } from "./post.service";
 
 describe("PostService", () => {
 	let service: PostService;
-
-	const mockPostRepo = createMock<BaseRepository<Post>>();
-	const mockUserRepo = createMock<BaseRepository<User>>();
-	const mockCommentRepo = createMock<BaseRepository<Comment>>();
-	const mockTagsRepo = createMock<BaseRepository<Tag>>();
-	const mockCategoryRepo = createMock<BaseRepository<Category>>();
-	const mockEm = createMock<EntityManager>();
-
-	// default mocks
-
-	mockPostRepo.findOne.mockImplementation((options: any) =>
-		Promise.resolve({
-			...mockedPost,
-			idx: options.idx,
-		} as any),
-	);
-
-	mockPostRepo.softRemoveAndFlush.mockImplementation(entity => {
-		Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
-
-		return Promise.resolve(entity);
-	});
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
@@ -94,8 +79,7 @@ describe("PostService", () => {
 
 		service.findAll(queryDto).subscribe(result => {
 			expect(result.meta).toBeDefined();
-			expect(result.links).toBeDefined();
-			expect(result.items).toStrictEqual([]);
+			expect(result.data).toStrictEqual([]);
 			expect(findmanySpy).toHaveBeenCalled();
 		});
 	});

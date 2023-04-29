@@ -1,10 +1,17 @@
-import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { createMock } from "@golevelup/ts-jest";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { mockedUser, mockFile, queryDto } from "@mocks";
+import {
+	mockAmqConnection,
+	mockCloudinaryService,
+	mockConfigService,
+	mockedUser,
+	mockEm,
+	mockFile,
+	mockUserRepo,
+	queryDto,
+} from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
 import { CloudinaryService } from "nestjs-cloudinary";
@@ -13,11 +20,6 @@ import { UserService } from "./user.service";
 
 describe("UserService", () => {
 	let service: UserService;
-	const mockAmqConnection = createMock<AmqpConnection>();
-	const mockCloudinaryService = createMock<CloudinaryService>();
-	const mockConfigService = createMock<ConfigService>();
-	const mockEm = createMock<EntityManager>();
-	const mockUserRepo = createMock<BaseRepository<User>>();
 
 	// default mocks
 
@@ -98,8 +100,7 @@ describe("UserService", () => {
 
 		service.findAll(queryDto).subscribe(result => {
 			expect(result.meta).toBeDefined();
-			expect(result.links).toBeDefined();
-			expect(result.items).toStrictEqual([]);
+			expect(result.data).toStrictEqual([]);
 			expect(findmanySpy).toHaveBeenCalled();
 		});
 	});

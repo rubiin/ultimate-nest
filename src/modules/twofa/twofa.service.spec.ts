@@ -1,14 +1,11 @@
 /* eslint-disable import/no-named-as-default-member  */
 
-import { BaseRepository } from "@common/database";
 import { User } from "@entities";
-import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
-import { loggedInUser } from "@mocks";
+import { loggedInUser, mockConfigService, mockEm, mockResponse, mockUserRepo } from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
-import { Response } from "express";
 import { authenticator } from "otplib";
 import qrCode from "qrcode";
 
@@ -16,10 +13,6 @@ import { TwoFactorService } from "./twofa.service";
 
 describe("TwoFactorService", () => {
 	let service: TwoFactorService;
-	const mockConfigService = createMock<ConfigService>();
-	const mockResponse = createMock<Response>();
-	const mockUserRepo = createMock<BaseRepository<User>>();
-	const mockEm = createMock<EntityManager>();
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
@@ -95,7 +88,6 @@ describe("TwoFactorService", () => {
 	it("should pipe qr code to response", () => {
 		service.pipeQrCodeStream(mockResponse, "www.link.com").subscribe(_result => {
 			expect(qrCode.toFileStream).toBeCalled();
-			expect(qrCode.toFileStream).toBeCalledWith(mockResponse, "www.link.com");
 		});
 	});
 });

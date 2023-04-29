@@ -1,11 +1,20 @@
-import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, User } from "@entities";
-import { createMock } from "@golevelup/ts-jest";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
-import { loggedInUser, mockedOtpLog, mockedUser, mockResetPasswordDto } from "@mocks";
+import {
+	loggedInUser,
+	mockConfigService,
+	mockedOtpLog,
+	mockedUser,
+	mockEm,
+	mockMailService,
+	mockOtpLogRepo,
+	mockResetPasswordDto,
+	mockTokenService,
+	mockUserRepo,
+} from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -16,13 +25,6 @@ import { AuthService } from "./auth.service";
 describe("AuthService", () => {
 	let service: AuthService;
 
-	const mockMailService = createMock<MailerService>();
-	const mockConfigService = createMock<ConfigService>();
-	const mockTokenService = createMock<TokensService>();
-	const mockEm = createMock<EntityManager>();
-	const mockUserRepo = createMock<BaseRepository<User>>();
-	const mockOtpLogRepo = createMock<BaseRepository<OtpLog>>();
-
 	// default mocks
 
 	mockUserRepo.findOne.mockImplementation((options: any) =>
@@ -31,17 +33,6 @@ describe("AuthService", () => {
 			idx: options.idx,
 		} as any),
 	);
-
-	mockOtpLogRepo.findOne.mockImplementation((options: any) =>
-		Promise.resolve({
-			user: loggedInUser,
-			idx: options.idx,
-		} as any),
-	);
-
-	mockUserRepo.assign.mockImplementation((entity, dto) => {
-		return Object.assign(entity, dto);
-	});
 
 	beforeEach(async () => {
 		jest.clearAllMocks();

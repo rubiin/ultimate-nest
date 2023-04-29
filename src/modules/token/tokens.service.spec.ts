@@ -1,9 +1,15 @@
-import { BaseRepository } from "@common/database";
 import { User } from "@entities";
-import { createMock } from "@golevelup/ts-jest";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
-import { loggedInUser, refreshToken } from "@mocks";
+import {
+	loggedInUser,
+	mockEm,
+	mockJwtService,
+	mockRefreshRepo,
+	mockUserRepo,
+	refreshToken,
+	refreshTokenPayload,
+} from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -13,10 +19,6 @@ import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 describe("TokensService", () => {
 	let service: TokensService;
-	const mockUserRepo = createMock<BaseRepository<User>>();
-	const mockJwtService = createMock<JwtService>();
-	const mockEm = createMock<EntityManager>();
-	const mockRefreshRepo = createMock<RefreshTokensRepository>();
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
@@ -38,15 +40,6 @@ describe("TokensService", () => {
 	});
 
 	// mocks
-
-	const refreshTokenPayload = {
-		jti: 1,
-		sub: 1,
-		iat: 1,
-		exp: 1,
-		aud: "nestify",
-		iss: "nestify",
-	};
 
 	mockUserRepo.findOne.mockImplementation(() =>
 		Promise.resolve({

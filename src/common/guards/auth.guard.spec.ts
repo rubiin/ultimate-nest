@@ -1,12 +1,11 @@
 import { createMock } from "@golevelup/ts-jest";
+import { mockJwtService } from "@mocks";
 import { ExecutionContext, HttpException } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
 
 import { AuthGuard } from "./auth.guard";
 
 describe("AuthenticatedGuard", () => {
 	let authenticatedGuard: AuthGuard;
-	const mockJwt = createMock<JwtService>();
 	const mockContext = createMock<ExecutionContext>({
 		switchToHttp: () => ({
 			getRequest: () => ({
@@ -18,7 +17,7 @@ describe("AuthenticatedGuard", () => {
 	});
 
 	beforeEach(() => {
-		authenticatedGuard = new AuthGuard(mockJwt);
+		authenticatedGuard = new AuthGuard(mockJwtService);
 	});
 
 	it("should be defined", () => {
@@ -27,7 +26,7 @@ describe("AuthenticatedGuard", () => {
 
 	describe("canActivate", () => {
 		it("should return authorization", () => {
-			mockJwt.verify.mockImplementationOnce(() => {
+			mockJwtService.verify.mockImplementationOnce(() => {
 				return { idx: "idx" };
 			});
 			expect(authenticatedGuard.canActivate(mockContext)).toBe(true);
@@ -36,7 +35,7 @@ describe("AuthenticatedGuard", () => {
 		// fix this test
 
 		it.skip("should throw error when invalid token", () => {
-			mockJwt.verify.mockImplementationOnce(() => {
+			mockJwtService.verify.mockImplementationOnce(() => {
 				throw new Error("Invalid token");
 			});
 

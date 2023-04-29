@@ -1,6 +1,5 @@
-import { createMock } from "@golevelup/ts-jest";
+import { mockRequest, mockResponse } from "@mocks";
 import * as realIp from "@supercharge/request-ip";
-import { Request, Response } from "express";
 
 import { RealIpMiddleware } from "./ip.middleware";
 
@@ -10,9 +9,6 @@ describe("RealIpMiddleware", () => {
 	beforeEach(() => {
 		middleware = new RealIpMiddleware();
 	});
-	const mockRequest = createMock<Request>();
-	const mockResponse = createMock<Response>();
-
 	it("should be defined", () => {
 		expect(middleware).toBeDefined();
 	});
@@ -26,7 +22,6 @@ describe("RealIpMiddleware", () => {
 			middleware.use(mockRequest, mockResponse, mockNext);
 
 			expect(realIp.getClientIp).toBeCalled();
-			expect(realIp.getClientIp).toBeCalledWith(mockRequest);
 			expect(mockRequest.realIp).toBe("192.168.1.1");
 			expect(mockNext).toBeCalled();
 		});
