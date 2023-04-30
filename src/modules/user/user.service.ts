@@ -152,7 +152,7 @@ export class UserService implements IBaseService<User> {
 	remove(index: string): Observable<User> {
 		return this.findOne(index).pipe(
 			switchMap(user => {
-				return from(this.userRepository.softRemoveAndFlush(user)).pipe(map(() => user));
+				return this.userRepository.softRemoveAndFlush(user).pipe(map(() => user));
 			}),
 		);
 	}

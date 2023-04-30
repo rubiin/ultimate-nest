@@ -9,16 +9,8 @@ import { ProfileService } from "./profile.service";
 describe("ProfileService", () => {
 	let service: ProfileService;
 
-	// default mocks
-
-	mockUserRepo.findOne.mockImplementation((options: any) =>
-		Promise.resolve({
-			...mockedUser,
-			username: options.username,
-		} as any),
-	);
-
 	beforeEach(async () => {
+		jest.clearAllMocks();
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				ProfileService,

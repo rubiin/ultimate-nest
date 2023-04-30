@@ -85,7 +85,23 @@ export const refreshToken = new RefreshToken({
 });
 
 export const mockEm = createMock<EntityManager>();
-export const mockRequest = createMock<Request>();
+export const mockRequest = createMock<Request>({
+	query: {
+		test: "test",
+		clearCache: "true",
+		xss: "<option><iframe></select><b><script>alert(1)</script>",
+	},
+	params: {
+		test: "test",
+		xss: "<option><iframe></select><b><script>alert(1)</script>",
+	},
+
+	body: {
+		test: "test",
+		xss: "<option><iframe></select><b><script>alert(1)</script>",
+		password: "<option><iframe></select><b><script>alert(1)</script>",
+	},
+});
 export const mockResponse = createMock<Response>();
 export const mockAmqConnection = createMock<AmqpConnection>();
 export const mockCloudinaryService = createMock<CloudinaryService>();
@@ -93,7 +109,8 @@ export const mockConfigService = createMock<ConfigService>();
 export const mockCacheService = createMock<CacheService>();
 export const mockUserRepo = createMock<BaseRepository<User>>();
 export const mockJwtService = createMock<JwtService>();
-export const mockRefreshRepo = createMock<RefreshTokensRepository>();
+export const mockRefreshRepo = createMock<BaseRepository<RefreshToken>>();
+export const mockRefreshTokenRepo = createMock<RefreshTokensRepository>();
 export const mockPostRepo = createMock<BaseRepository<Post>>();
 export const mockCommentRepo = createMock<BaseRepository<Comment>>();
 export const mockTagsRepo = createMock<BaseRepository<Tag>>();
@@ -113,22 +130,64 @@ mockUserRepo.assign.mockImplementation((entity, dto) => {
 	return Object.assign(entity, dto);
 });
 
-mockPostRepo.findOne.mockImplementation((options: any) =>
-	Promise.resolve({
+mockUserRepo.softRemoveAndFlush.mockImplementation(entity => {
+	Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
+
+	return of(entity);
+});
+
+mockUserRepo.findOne.mockImplementation((options: any) => {
+	if (options.idx) {
+		return Promise.resolve({
+			user: mockedUser,
+			idx: options.idx,
+		} as any);
+	}
+
+	if (options.username) {
+		return Promise.resolve({
+			...mockedUser,
+			username: options.username,
+		} as any);
+	}
+
+	return Promise.resolve({
+		...mockedUser,
+	} as any);
+});
+
+mockPostRepo.findOne.mockImplementation((options: any) => {
+	return Promise.resolve({
+		user: mockedUser,
 		...mockedPost,
 		idx: options.idx,
+	} as any);
+});
+
+mockRefreshRepo.findOne.mockImplementation(() =>
+	Promise.resolve({
+		...refreshToken,
 	} as any),
 );
+
+mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(1);
 
 mockPostRepo.softRemoveAndFlush.mockImplementation(entity => {
 	Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
 
-	return Promise.resolve(entity);
+	return of(entity);
 });
 
 mockOtpLogRepo.findOne.mockImplementation((options: any) =>
 	Promise.resolve({
-		user: loggedInUser,
+		user: mockedUser,
 		idx: options.idx,
 	} as any),
+);
+
+mockUserRepo.findAndPaginate.mockImplementation(() =>
+	of({
+		results: [],
+		total: 100,
+	}),
 );

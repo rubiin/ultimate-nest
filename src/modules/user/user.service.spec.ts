@@ -21,21 +21,6 @@ import { UserService } from "./user.service";
 describe("UserService", () => {
 	let service: UserService;
 
-	// default mocks
-
-	mockUserRepo.findOne.mockImplementation((options: any) =>
-		Promise.resolve({
-			...mockedUser,
-			idx: options.idx,
-		} as any),
-	);
-
-	mockUserRepo.softRemoveAndFlush.mockImplementation(entity => {
-		Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
-
-		return Promise.resolve(entity);
-	});
-
 	beforeEach(async () => {
 		jest.clearAllMocks();
 		const module: TestingModule = await Test.createTestingModule({
@@ -60,11 +45,13 @@ describe("UserService", () => {
 	});
 
 	it("should findOne", () => {
-		const findOneSpy = mockUserRepo.findOne;
-
 		service.findOne("userId").subscribe(result => {
 			expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
-			expect(findOneSpy).toBeCalledWith({ idx: "userId", isActive: true, isObsolete: false });
+			expect(mockUserRepo.findOne).toBeCalledWith({
+				idx: "userId",
+				isActive: true,
+				isObsolete: false,
+			});
 		});
 	});
 
@@ -93,15 +80,10 @@ describe("UserService", () => {
 		});
 	});
 	it("should get user list", () => {
-		const findmanySpy = mockUserRepo.findAndPaginate.mockResolvedValue({
-			results: [],
-			total: 100,
-		});
-
 		service.findAll(queryDto).subscribe(result => {
 			expect(result.meta).toBeDefined();
 			expect(result.data).toStrictEqual([]);
-			expect(findmanySpy).toHaveBeenCalled();
+			expect(mockUserRepo.findAndPaginate).toHaveBeenCalled();
 		});
 	});
 

@@ -7,7 +7,6 @@ import {
 	loggedInUser,
 	mockConfigService,
 	mockedOtpLog,
-	mockedUser,
 	mockEm,
 	mockMailService,
 	mockOtpLogRepo,
@@ -24,15 +23,6 @@ import { AuthService } from "./auth.service";
 
 describe("AuthService", () => {
 	let service: AuthService;
-
-	// default mocks
-
-	mockUserRepo.findOne.mockImplementation((options: any) =>
-		Promise.resolve({
-			...mockedUser,
-			idx: options.idx,
-		} as any),
-	);
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
