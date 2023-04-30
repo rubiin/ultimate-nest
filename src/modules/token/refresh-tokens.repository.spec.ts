@@ -1,17 +1,13 @@
 import { RefreshToken } from "@entities";
-import { createMock } from "@golevelup/ts-jest";
-import { EntityRepository } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
-import { loggedInUser, refreshToken } from "@mocks";
+import { loggedInUser, mockEm, mockRefreshRepo, refreshToken } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 describe("RefreshTokensRepository", () => {
 	let service: RefreshTokensRepository;
-	const mockRefreshRepo = createMock<EntityRepository<RefreshToken>>();
-	const mockEm = createMock<EntityManager>();
 
 	beforeEach(async () => {
 		jest.clearAllMocks();
@@ -25,16 +21,6 @@ describe("RefreshTokensRepository", () => {
 
 		service = module.get<RefreshTokensRepository>(RefreshTokensRepository);
 	});
-
-	// defining mocks
-
-	mockRefreshRepo.findOne.mockImplementation(() =>
-		Promise.resolve({
-			...refreshToken,
-		} as any),
-	);
-
-	mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(1);
 
 	it("should be defined", () => {
 		expect(service).toBeDefined();

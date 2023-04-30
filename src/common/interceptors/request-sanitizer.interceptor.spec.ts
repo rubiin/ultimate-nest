@@ -1,30 +1,13 @@
-// create the mock CallHandler for the interceptor
-
 import { createMock } from "@golevelup/ts-jest";
+import { mockRequest } from "@mocks";
 import { CallHandler, ExecutionContext } from "@nestjs/common";
-import { Request } from "express";
 
 import { RequestSanitizerInterceptor } from "./request-sanitizer.interceptor";
 
 describe("RequestSanitizerInterceptor", () => {
 	let interceptor: RequestSanitizerInterceptor;
-	const mockRequest = createMock<Request>({
-		query: {
-			test: "test",
-			xss: "<option><iframe></select><b><script>alert(1)</script>",
-		},
-		params: {
-			test: "test",
-			xss: "<option><iframe></select><b><script>alert(1)</script>",
-		},
 
-		body: {
-			test: "test",
-			xss: "<option><iframe></select><b><script>alert(1)</script>",
-			password: "<option><iframe></select><b><script>alert(1)</script>",
-		},
-	});
-
+	// create the mock CallHandler for the interceptor
 	const mockContext = createMock<ExecutionContext>({
 		switchToHttp: () => ({
 			getRequest: () => ({

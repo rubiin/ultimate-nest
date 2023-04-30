@@ -56,13 +56,13 @@ describe("TwoFactorService", () => {
 	it("should if turn on two factor authentication for logged in user", () => {
 		const twoFactorValidSpy = jest.spyOn(service, "isTwoFactorCodeValid").mockReturnValue(true);
 
-		service.turnOnTwoFactorAuthentication("some code", loggedInUser).subscribe(result => {
+		service.turnOnTwoFactorAuthentication("someCode", loggedInUser).subscribe(result => {
 			expect(result).toBeDefined();
 			expect(twoFactorValidSpy).toBeCalled();
 			expect(mockUserRepo.assign).toBeCalled();
 			expect(mockEm.flush).toBeCalled();
 			expect(twoFactorValidSpy).toBeCalledWith({
-				token: "some code",
+				token: "someCode",
 				secret: loggedInUser.twoFactorSecret,
 			});
 		});
@@ -71,7 +71,7 @@ describe("TwoFactorService", () => {
 	it("should generate two factor secret", () => {
 		const twoFactorValidSpy = jest.spyOn(service, "isTwoFactorCodeValid").mockReturnValue(true);
 
-		service.turnOnTwoFactorAuthentication("some code", loggedInUser).subscribe(result => {
+		service.turnOnTwoFactorAuthentication("someCode", loggedInUser).subscribe(result => {
 			expect(result).toBeDefined();
 			expect(twoFactorValidSpy).toBeCalled();
 			expect(authenticator.generateSecret).toBeCalled();
@@ -79,7 +79,7 @@ describe("TwoFactorService", () => {
 			expect(mockUserRepo.assign).toBeCalled();
 			expect(mockEm.flush).toBeCalled();
 			expect(twoFactorValidSpy).toBeCalledWith({
-				token: "some code",
+				token: "someCode",
 				secret: loggedInUser.twoFactorSecret,
 			});
 		});

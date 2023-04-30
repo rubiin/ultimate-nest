@@ -5,6 +5,7 @@ import {
 	mockCategoryRepo,
 	mockCommentRepo,
 	mockedPost,
+	mockedUser,
 	mockEm,
 	mockPostRepo,
 	mockTagsRepo,
@@ -59,7 +60,7 @@ describe("PostService", () => {
 		const findOneSpy = mockPostRepo.findOne;
 
 		service.findOne("postId").subscribe(result => {
-			expect(result).toStrictEqual({ ...mockedPost, idx: "postId" });
+			expect(result).toStrictEqual({ ...mockedPost, user: mockedUser, idx: "postId" });
 			expect(findOneSpy).toBeCalledWith(
 				{
 					idx: "postId",
@@ -72,15 +73,10 @@ describe("PostService", () => {
 	});
 
 	it("should get post list", () => {
-		const findmanySpy = mockPostRepo.findAndPaginate.mockResolvedValue({
-			results: [],
-			total: 100,
-		});
-
-		service.findAll(queryDto).subscribe(result => {
+		-service.findAll(queryDto).subscribe(result => {
 			expect(result.meta).toBeDefined();
 			expect(result.data).toStrictEqual([]);
-			expect(findmanySpy).toHaveBeenCalled();
+			expect(mockUserRepo.findAndPaginate).toHaveBeenCalled();
 		});
 	});
 

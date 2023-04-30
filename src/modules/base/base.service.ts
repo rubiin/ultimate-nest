@@ -83,6 +83,6 @@ export abstract class BaseService<
 	 * @returns An observable of the entity that was removed.
 	 */
 	remove(index: string): Observable<Entity> {
-		return from(this.repository.softRemoveAndFlush(index as any)).pipe(map(entity => entity));
+		return this.repository.softRemoveAndFlush(index as any).pipe(map(entity => entity));
 	}
 }

@@ -3,6 +3,7 @@ import { BaseEntity } from "@common/database";
 import {
 	BeforeCreate,
 	BeforeUpdate,
+	BeforeUpsert,
 	Collection,
 	Entity,
 	Enum,
@@ -63,6 +64,7 @@ export class Post extends BaseEntity {
 	@ManyToMany(() => Category, "posts", { owner: true })
 	categories = new Collection<Category>(this);
 
+	@BeforeUpsert()
 	@BeforeCreate()
 	@BeforeUpdate()
 	async generateSlug(arguments_: EventArgs<this>) {

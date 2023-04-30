@@ -17,10 +17,10 @@ describe("BaseRepository", () => {
 	});
 
 	it("should softremove and flush", async () => {
-		const result = await userRepo.softRemoveAndFlush(loggedInUser);
-
-		expect(result.isObsolete).toEqual(true);
-		expect(result.deletedAt).toBeInstanceOf(Date);
+		userRepo.softRemoveAndFlush(loggedInUser).subscribe(result => {
+			expect(result.isObsolete).toEqual(true);
+			expect(result.deletedAt).toBeInstanceOf(Date);
+		});
 	});
 
 	it("should softremove", () => {

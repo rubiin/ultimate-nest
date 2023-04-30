@@ -172,7 +172,7 @@ export class PostService {
 	remove(index: string): Observable<Post> {
 		return this.findOne(index).pipe(
 			switchMap(post => {
-				return from(this.postRepository.softRemoveAndFlush(post)).pipe(map(() => post));
+				return this.postRepository.softRemoveAndFlush(post).pipe(map(() => post));
 			}),
 		);
 	}

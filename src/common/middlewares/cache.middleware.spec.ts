@@ -8,6 +8,7 @@ describe("ClearCacheMiddleware", () => {
 	let middleware: ClearCacheMiddleware;
 
 	beforeEach(() => {
+		jest.clearAllMocks();
 		middleware = new ClearCacheMiddleware(mockCacheService);
 	});
 	const mockRequest = createMock<Request>({

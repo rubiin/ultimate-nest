@@ -1,6 +1,7 @@
 import { EntityData, EntityManager, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
 import { EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException } from "@nestjs/common";
+import { from, map, Observable, of, switchMap, throwError } from "rxjs";
 
 import { BaseEntity } from "./base.entity";
 
@@ -27,12 +28,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * @return {*}  {Promise<T>}
 	 * @memberof BaseRepositroy
 	 */
-	async softRemoveAndFlush(entity: T): Promise<T> {
+	softRemoveAndFlush(entity: T): Observable<T> {
 		entity.deletedAt = new Date();
 		entity.isObsolete = true;
-		await this.em.persistAndFlush(entity);
 
-		return entity;
+		return from(this.em.persistAndFlush(entity)).pipe(map(() => entity));
 	}
 
 	/**
@@ -42,13 +42,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * @param options
 	 * @returns
 	 */
-	async findAndPaginate<Populate extends string = never>(
+	findAndPaginate<Populate extends string = never>(
 		where: FilterQuery<T>,
 		options?: FindOptions<T, Populate>,
-	): Promise<{ total: number; results: Loaded<T, Populate>[] }> {
-		const [results, total] = await this.findAndCount(where, options);
-
-		return { total, results };
+	): Observable<{ total: number; results: Loaded<T, Populate>[] }> {
+		return from(this.findAndCount(where, options)).pipe(
+			map(([results, total]) => ({ total, results })),
+		);
 	}
 
 	/**
@@ -68,16 +68,17 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * @param update - Partial<EntityDTO<Loaded<T>>>
 	 * @returns The entity that was updated
 	 */
-	async findAndUpdate(where: FilterQuery<T>, update: EntityData<T>): Promise<T> {
-		const entity = await this.findOne(where);
+	findAndUpdate(where: FilterQuery<T>, update: EntityData<T>): Observable<T> {
+		return from(this.findOne(where)).pipe(
+			switchMap(entity => {
+				if (!entity) {
+					return throwError(() => new BadRequestException("Entity not found."));
+				}
+				this.em.assign(entity, update);
 
-		if (!entity) {
-			throw new BadRequestException("Entity not found.");
-		}
-		this.em.assign(entity, update);
-		await this.em.persistAndFlush(entity);
-
-		return entity;
+				return from(this.em.persistAndFlush(entity)).pipe(map(() => entity));
+			}),
+		);
 	}
 
 	/**
@@ -85,15 +86,17 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * @param where - FilterQuery<T>
 	 * @returns The entity that was deleted
 	 */
-	async findAndDelete(where: FilterQuery<T>): Promise<T> {
-		const entity = await this.findOne(where);
+	findAndDelete(where: FilterQuery<T>): Observable<T> {
+		return from(this.findOne(where)).pipe(
+			switchMap(entity => {
+				if (!entity) {
+					return throwError(() => new BadRequestException("Entity not found."));
+				}
+				this.em.remove(entity);
 
-		if (!entity) {
-			throw new BadRequestException("Entity not found.");
-		}
-		this.em.remove(entity);
-
-		return entity;
+				return of(entity);
+			}),
+		);
 	}
 
 	/**
@@ -101,13 +104,15 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * @param where - FilterQuery<T>
 	 * @returns The entity that was soft deleted.
 	 */
-	async findAndSoftDelete(where: FilterQuery<T>): Promise<T> {
-		const entity = await this.findOne(where);
+	findAndSoftDelete(where: FilterQuery<T>): Observable<T> {
+		return from(this.findOne(where)).pipe(
+			switchMap(entity => {
+				if (!entity) {
+					return throwError(() => new BadRequestException("Entity not found."));
+				}
 
-		if (!entity) {
-			throw new BadRequestException("Entity not found.");
-		}
-
-		return this.softRemoveAndFlush(entity);
+				return this.softRemoveAndFlush(entity);
+			}),
+		);
 	}
 }

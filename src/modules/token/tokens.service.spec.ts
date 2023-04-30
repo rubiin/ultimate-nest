@@ -5,7 +5,7 @@ import {
 	loggedInUser,
 	mockEm,
 	mockJwtService,
-	mockRefreshRepo,
+	mockRefreshTokenRepo,
 	mockUserRepo,
 	refreshToken,
 	refreshTokenPayload,
@@ -32,20 +32,12 @@ describe("TokensService", () => {
 					useValue: mockUserRepo,
 				},
 				{ provide: JwtService, useValue: mockJwtService },
-				{ provide: RefreshTokensRepository, useValue: mockRefreshRepo },
+				{ provide: RefreshTokensRepository, useValue: mockRefreshTokenRepo },
 			],
 		}).compile();
 
 		service = module.get<TokensService>(TokensService);
 	});
-
-	// mocks
-
-	mockUserRepo.findOne.mockImplementation(() =>
-		Promise.resolve({
-			...loggedInUser,
-		} as any),
-	);
 
 	it("should be defined", () => {
 		expect(service).toBeDefined();
@@ -61,7 +53,7 @@ describe("TokensService", () => {
 
 	it("should generate refresh token", () => {
 		mockJwtService.signAsync.mockResolvedValueOnce("jwt token");
-		mockRefreshRepo.createRefreshToken.mockImplementation(() => of(refreshToken));
+		mockRefreshTokenRepo.createRefreshToken.mockImplementation(() => of(refreshToken));
 		service.generateRefreshToken(loggedInUser, 10_000).subscribe(result => {
 			expect(result).toStrictEqual("jwt token");
 			expect(mockJwtService.signAsync).toBeCalledTimes(1);
@@ -81,20 +73,20 @@ describe("TokensService", () => {
 	});
 
 	it("should delete all refresh token for user", () => {
-		mockRefreshRepo.deleteTokensForUser.mockImplementation(() => of(true));
+		mockRefreshTokenRepo.deleteTokensForUser.mockImplementation(() => of(true));
 		service.deleteRefreshTokenForUser(loggedInUser).subscribe(result => {
 			expect(result).toStrictEqual(loggedInUser);
-			expect(mockRefreshRepo.deleteTokensForUser).toBeCalledTimes(1);
-			expect(mockRefreshRepo.deleteTokensForUser).toBeCalledWith(loggedInUser);
+			expect(mockRefreshTokenRepo.deleteTokensForUser).toBeCalledTimes(1);
+			expect(mockRefreshTokenRepo.deleteTokensForUser).toBeCalledWith(loggedInUser);
 		});
 	});
 
 	it("should delete all refresh token for user", () => {
-		mockRefreshRepo.findTokenById.mockImplementation(() => of(refreshToken));
+		mockRefreshTokenRepo.findTokenById.mockImplementation(() => of(refreshToken));
 		service.getStoredTokenFromRefreshTokenPayload(refreshTokenPayload).subscribe(result => {
 			expect(result).toStrictEqual(refreshToken);
-			expect(mockRefreshRepo.findTokenById).toBeCalledTimes(1);
-			expect(mockRefreshRepo.findTokenById).toBeCalledWith(refreshTokenPayload.jti);
+			expect(mockRefreshTokenRepo.findTokenById).toBeCalledTimes(1);
+			expect(mockRefreshTokenRepo.findTokenById).toBeCalledWith(refreshTokenPayload.jti);
 		});
 	});
 

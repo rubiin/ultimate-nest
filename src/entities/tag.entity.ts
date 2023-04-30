@@ -2,6 +2,7 @@ import { BaseEntity } from "@common/database";
 import {
 	BeforeCreate,
 	BeforeUpdate,
+	BeforeUpsert,
 	Collection,
 	Entity,
 	EventArgs,
@@ -31,6 +32,7 @@ export class Tag extends BaseEntity {
 	posts = new Collection<Post>(this);
 
 	@BeforeCreate()
+	@BeforeUpsert()
 	@BeforeUpdate()
 	generateSlug(arguments_: EventArgs<this>) {
 		if (arguments_.changeSet?.payload?.title) {
