@@ -142,9 +142,7 @@ mockUserRepo.findOne.mockImplementation((options: any) => {
 			user: mockedUser,
 			idx: options.idx,
 		} as any);
-	}
-
-	if (options.username) {
+	} else if (options.username) {
 		return Promise.resolve({
 			...mockedUser,
 			username: options.username,

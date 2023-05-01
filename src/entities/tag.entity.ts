@@ -6,6 +6,7 @@ import {
 	Collection,
 	Entity,
 	EventArgs,
+	Index,
 	ManyToMany,
 	Property,
 	Unique,
@@ -17,6 +18,7 @@ import { Post } from "./post.entity";
 @Unique({ properties: ["title"] })
 @Entity()
 export class Tag extends BaseEntity {
+	@Index()
 	@Property({
 		length: 50,
 	})
@@ -25,6 +27,7 @@ export class Tag extends BaseEntity {
 	@Property()
 	description!: string;
 
+	@Index()
 	@Property()
 	slug?: string;
 

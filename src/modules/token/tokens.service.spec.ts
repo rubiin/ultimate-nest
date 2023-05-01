@@ -52,10 +52,10 @@ describe("TokensService", () => {
 	});
 
 	it("should generate refresh token", () => {
-		mockJwtService.signAsync.mockResolvedValueOnce("jwt token");
+		mockJwtService.signAsync.mockResolvedValueOnce("jwtToken");
 		mockRefreshTokenRepo.createRefreshToken.mockImplementation(() => of(refreshToken));
 		service.generateRefreshToken(loggedInUser, 10_000).subscribe(result => {
-			expect(result).toStrictEqual("jwt token");
+			expect(result).toStrictEqual("jwtToken");
 			expect(mockJwtService.signAsync).toBeCalledTimes(1);
 		});
 	});

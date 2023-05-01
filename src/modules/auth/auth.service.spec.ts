@@ -53,30 +53,23 @@ describe("AuthService", () => {
 	});
 
 	it("should logout", () => {
-		mockTokenService.decodeRefreshToken.mockImplementation(() =>
-			of({
-				jti: 1,
-				sub: 1_234_567_890,
-				iat: 1_516_239_022,
-				exp: 1_516_239_022,
-				aud: "12",
-				iss: "12",
-			}),
-		);
+		const decodedToken = {
+			jti: 1,
+			sub: 1_234_567_890,
+			iat: 1_516_239_022,
+			exp: 1_516_239_022,
+			aud: "12",
+			iss: "12",
+		};
+
+		mockTokenService.decodeRefreshToken.mockImplementation(() => of(decodedToken));
 
 		mockTokenService.deleteRefreshToken.mockImplementation(() => of(loggedInUser));
 
-		service.logout(loggedInUser, "refresh_token").subscribe(result => {
+		service.logout(loggedInUser, "refreshToken").subscribe(result => {
 			expect(result).toStrictEqual(loggedInUser);
-			expect(mockTokenService.decodeRefreshToken).toBeCalledWith("refresh_token");
-			expect(mockTokenService.deleteRefreshToken).toBeCalledWith(loggedInUser, {
-				jti: 1,
-				sub: 1_234_567_890,
-				iat: 1_516_239_022,
-				exp: 1_516_239_022,
-				aud: "12",
-				iss: "12",
-			});
+			expect(mockTokenService.decodeRefreshToken).toBeCalledWith("refreshToken");
+			expect(mockTokenService.deleteRefreshToken).toBeCalledWith(loggedInUser, decodedToken);
 		});
 	});
 

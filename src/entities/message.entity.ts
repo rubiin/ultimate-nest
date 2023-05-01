@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database";
-import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
+import { Entity, Index, ManyToOne, Property, Rel } from "@mikro-orm/core";
 
 import { Conversation, User } from "./index";
 
@@ -8,11 +8,13 @@ export class Message extends BaseEntity {
 	@Property()
 	body!: string;
 
+	@Index()
 	@ManyToOne({
 		eager: false,
 	})
 	sender: Rel<User>;
 
+	@Index()
 	@ManyToOne({
 		eager: false,
 	})
