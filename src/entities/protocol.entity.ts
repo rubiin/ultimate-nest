@@ -1,6 +1,9 @@
 import { BaseEntity } from "@common/database";
 import { Entity, Property } from "@mikro-orm/core";
 
+
+// use this model to store the protocol
+
 @Entity()
 export class Protocol extends BaseEntity {
 	@Property()
@@ -14,15 +17,6 @@ export class Protocol extends BaseEntity {
 
 	@Property()
 	otpExpiryInMinutes!: number;
-
-	@Property()
-	mpinAttemptInterval!: number;
-
-	@Property()
-	mpinIntervalUnit!: string;
-
-	@Property()
-	mpinMaxRetry!: number;
 
 	constructor(partial?: Partial<Protocol>) {
 		super();
