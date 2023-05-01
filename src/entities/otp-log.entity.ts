@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database";
-import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
+import { Entity, Index, ManyToOne, Property, Rel } from "@mikro-orm/core";
 
 import { User } from "./user.entity";
 
@@ -8,6 +8,7 @@ export class OtpLog extends BaseEntity {
 	@Property()
 	expiresIn!: Date;
 
+	@Index()
 	@Property({
 		length: 20,
 	})

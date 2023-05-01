@@ -10,6 +10,7 @@ import {
 	Entity,
 	Enum,
 	EventArgs,
+	Index,
 	ManyToMany,
 	OneToMany,
 	Property,
@@ -29,10 +30,12 @@ export class User extends BaseEntity {
 	@Property()
 	lastName!: string;
 
+	@Index()
 	@Unique()
 	@Property()
 	username!: string;
 
+	@Index()
 	@Unique()
 	@Property()
 	email!: string;

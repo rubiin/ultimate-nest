@@ -15,6 +15,7 @@ describe("TwoFactorService", () => {
 	let service: TwoFactorService;
 
 	beforeEach(async () => {
+		jest.clearAllMocks();
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				TwoFactorService,
@@ -43,12 +44,12 @@ describe("TwoFactorService", () => {
 	});
 
 	it("should if two factor authentication code is valid", () => {
-		const response = service.isTwoFactorCodeValid("some code", loggedInUser);
+		const response = service.isTwoFactorCodeValid("someCode", loggedInUser);
 
 		expect(response).toBeDefined();
 		expect(response).toBeTruthy();
 		expect(authenticator.verify).toBeCalledWith({
-			token: "some code",
+			token: "someCode",
 			secret: loggedInUser.twoFactorSecret,
 		});
 	});

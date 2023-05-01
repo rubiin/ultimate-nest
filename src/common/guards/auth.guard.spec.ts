@@ -32,8 +32,6 @@ describe("AuthenticatedGuard", () => {
 			expect(authenticatedGuard.canActivate(mockContext)).toBe(true);
 		});
 
-		// fix this test
-
 		it.skip("should throw error when invalid token", () => {
 			mockJwtService.verify.mockImplementationOnce(() => {
 				throw new Error("Invalid token");

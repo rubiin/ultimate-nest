@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database";
-import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
+import { Entity, Index, ManyToOne, Property, Rel } from "@mikro-orm/core";
 
 import { User } from "./user.entity";
 
@@ -23,6 +23,7 @@ export class ActivityLog extends BaseEntity {
 	@Property()
 	loginStatus = true;
 
+	@Index()
 	@ManyToOne({
 		eager: false,
 	})

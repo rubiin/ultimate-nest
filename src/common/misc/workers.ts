@@ -7,10 +7,12 @@ const enum ThreadFunctions {
 
 // all expensive process goes here to avoid blocking the main thread
 const workerFunction = (data: { functionName: string; input: string }) => {
-	if (data.functionName === ThreadFunctions.HashString) {
-		return HelperService.hashString(data.input);
-	} else {
-		throw new Error("function not found");
+	switch (data.functionName) {
+		case ThreadFunctions.HashString:
+			return HelperService.hashString(data.input);
+
+		default:
+			throw new Error("Invalid function name");
 	}
 };
 
