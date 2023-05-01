@@ -8,9 +8,8 @@ import {
 	HealthCheckService,
 	HttpHealthIndicator,
 	MemoryHealthIndicator,
+	MikroOrmHealthIndicator
 } from "@nestjs/terminus";
-
-import { DatabaseHealthIndicator } from "./database.health";
 
 @GenericController("health", false)
 export class HealthController {
@@ -20,7 +19,7 @@ export class HealthController {
 		private disk: DiskHealthIndicator,
 		private memory: MemoryHealthIndicator,
 		private configService: ConfigService<IConfig, true>,
-		private databaseHealth: DatabaseHealthIndicator,
+		private databaseHealth: MikroOrmHealthIndicator,
 	) {}
 
 	@Get("test")
@@ -48,7 +47,7 @@ export class HealthController {
 						infer: true,
 					})}/${this.configService.get("app.prefix", { infer: true })}/health/test`,
 				),
-			() => this.databaseHealth.isHealthy(),
+			async () => this.databaseHealth.pingCheck('mikroOrm'),
 			async () => this.memory.checkHeap("memory_heap", 200 * 1024 * 1024),
 			async () => this.memory.checkRSS("memory_rss", 3000 * 1024 * 1024),
 			// The used disk storage should not exceed 50% of the full disk size
