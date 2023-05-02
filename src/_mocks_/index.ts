@@ -1,7 +1,7 @@
 import { IFile, Order, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
-import { Category, Comment, OtpLog, Post, RefreshToken, Tag, User } from "@entities";
+import { Category, Comment, OtpLog, Post, Protocol, RefreshToken, Tag, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
 import { CacheService } from "@lib/cache/cache.service";
@@ -47,6 +47,13 @@ export const mockedPost = {
 	content: "content",
 };
 
+export const mockedProtocol = {
+	loginMaxRetry: 5,
+	loginAttemptnumbererval: 5,
+	loginnumberervalUnit: "m",
+	otpExpiryInMinutes: 5,
+};
+
 export const queryDto: PageOptionsDto = {
 	page: 1,
 	limit: 10,
@@ -84,6 +91,8 @@ export const refreshToken = new RefreshToken({
 	isRevoked: false,
 });
 
+export const protocol = new Protocol(mockedProtocol);
+
 export const mockEm = createMock<EntityManager>();
 export const mockRequest = createMock<Request>({
 	query: {
@@ -118,6 +127,7 @@ export const mockCategoryRepo = createMock<BaseRepository<Category>>();
 export const mockMailService = createMock<MailerService>();
 export const mockTokenService = createMock<TokensService>();
 export const mockOtpLogRepo = createMock<BaseRepository<OtpLog>>();
+export const mockProtocolRepo = createMock<BaseRepository<Protocol>>();
 export const mockContext = createMock<ExecutionContext>({});
 export const mockReflector = createMock<Reflector>();
 export const mockNext = createMock<CallHandler>({
@@ -179,6 +189,13 @@ mockPostRepo.softRemoveAndFlush.mockImplementation(entity => {
 mockOtpLogRepo.findOne.mockImplementation((options: any) =>
 	Promise.resolve({
 		user: mockedUser,
+		idx: options.idx,
+	} as any),
+);
+
+mockProtocolRepo.findOne.mockImplementation((options: any) =>
+	Promise.resolve({
+		...mockedProtocol,
 		idx: options.idx,
 	} as any),
 );

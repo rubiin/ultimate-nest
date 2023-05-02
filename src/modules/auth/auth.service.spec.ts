@@ -1,5 +1,5 @@
 import { HelperService } from "@common/helpers";
-import { OtpLog, User } from "@entities";
+import { OtpLog, Protocol, User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
@@ -7,6 +7,7 @@ import {
 	loggedInUser,
 	mockConfigService,
 	mockedOtpLog,
+	mockedProtocol,
 	mockEm,
 	mockMailService,
 	mockOtpLogRepo,
@@ -37,6 +38,10 @@ describe("AuthService", () => {
 				{
 					provide: getRepositoryToken(OtpLog),
 					useValue: mockOtpLogRepo,
+				},
+				{
+					provide: getRepositoryToken(Protocol),
+					useValue: mockedProtocol,
 				},
 				{ provide: ConfigService, useValue: mockConfigService },
 				{ provide: MailerService, useValue: mockMailService },

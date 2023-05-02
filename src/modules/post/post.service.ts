@@ -64,8 +64,6 @@ export class PostService {
 			this.postRepository.findOne(
 				{
 					idx: index,
-					isActive: true,
-					isObsolete: false,
 				},
 				{ populate },
 			),

@@ -1,7 +1,7 @@
 import { EmailTemplateEnum, IAuthenticationResponse } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
-import { OtpLog, User } from "@entities";
+import { OtpLog, Protocol, User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -32,6 +32,8 @@ export class AuthService {
 	constructor(
 		@InjectRepository(User)
 		private readonly userRepository: BaseRepository<User>,
+		@InjectRepository(Protocol)
+		private readonly protocolRepository: BaseRepository<Protocol>,
 		@InjectRepository(OtpLog)
 		private readonly otpRepository: BaseRepository<OtpLog>,
 		private readonly tokenService: TokensService,
@@ -205,34 +207,36 @@ export class AuthService {
 					);
 				}
 
-				const otpNumber = randomString({ length: 6, numbers: true }); // random six digit otp
+				return from(this.protocolRepository.findOne({})).pipe(
+					switchMap(protocol => {
+						const otpNumber = randomString({ length: 6, numbers: true }); // random six digit otp
 
-				const otpExpiry = 60 * 60 * 1000; // 1 hour
-
-				const otp = this.otpRepository.create({
-					user: userExists,
-					otpCode: otpNumber,
-					expiresIn: new Date(Date.now() + otpExpiry),
-					isUsed: false,
-				});
-
-				return from(
-					this.em.transactional(async em => {
-						await em.persistAndFlush(otp);
-
-						await this.mailService.sendMail({
-							template: EmailTemplateEnum.RESET_PASSWORD_TEMPLATE,
-							replacements: {
-								firstName: capitalize(userExists.firstName),
-								lastName: capitalize(userExists.lastName),
-								otp: otpNumber,
-							},
-							to: userExists.email,
-							subject: "Reset Password",
-							from: this.configService.get("mail.senderEmail", { infer: true }),
+						const otp = this.otpRepository.create({
+							user: userExists,
+							otpCode: otpNumber,
+							expiresIn: new Date(Date.now() + protocol.otpExpiryInMinutes * 60_000),
+							isUsed: false,
 						});
 
-						return otp;
+						return from(
+							this.em.transactional(async em => {
+								await em.persistAndFlush(otp);
+
+								return this.mailService.sendMail({
+									template: EmailTemplateEnum.RESET_PASSWORD_TEMPLATE,
+									replacements: {
+										firstName: capitalize(userExists.firstName),
+										lastName: capitalize(userExists.lastName),
+										otp: otpNumber,
+									},
+									to: userExists.email,
+									subject: "Reset Password",
+									from: this.configService.get("mail.senderEmail", {
+										infer: true,
+									}),
+								});
+							}),
+						).pipe(map(() => otp));
 					}),
 				);
 			}),

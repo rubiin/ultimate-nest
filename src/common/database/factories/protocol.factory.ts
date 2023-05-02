@@ -7,10 +7,10 @@ export class ProtocolFactory extends Factory<Protocol> {
 
 	definition(_faker: Faker): Partial<Protocol> {
 		return {
-      loginAttemptnumbererval : 10,
-      loginnumberervalUnit: "m",
-      loginMaxRetry: 10,
-      otpExpiryInMinutes: 5
+			loginAttemptnumbererval: 10,
+			loginnumberervalUnit: "m",
+			loginMaxRetry: 10,
+			otpExpiryInMinutes: 5,
 		};
 	}
 }
