@@ -21,14 +21,14 @@ import { LoggerModule } from "nestjs-pino";
 export class NestPinoModule {}
 ```
 
-2. Configure the Pino logger options using the forRootAsync() method. In the provided factory function, you can specify various options for the Pino logger, such as name, customProps, serializers, redact, and transport. Here's a breakdown of the options used in the given code:
+1. Configure the Pino logger options using the forRootAsync() method. In the provided factory function, you can specify various options for the Pino logger, such as name, customProps, serializers, redact, and transport. Here's a breakdown of the options used in the given code:
 name: Specifies the name of the logger, which will be used as a prefix in log messages.
 customProps: A function that receives the request and response objects, and can be used to add custom properties to the logs. In this example, it adds a context property with the value "HTTP".
 serializers: A mapping of serializers that can be used to customize the serialization of log data. In this example, it modifies the req object to include the raw.body property for logging request body.
 redact: An object that specifies fields to be redacted from the logs. In this example, it redacts fields such as req.headers.authorization, req.body.password, and req.body.confirmPassword from the logs and replaces them with the string "GDPR COMPLIANT".
 transport: Specifies the target transports for logging. In this example, it uses different targets for different environments. In production environment, it logs only errors to a file using the pino/file target, and in other environments, it logs info and above to console using the pino-pretty target, and errors to a file using the pino/file target.
 Import the NestPinoModule in your application's root module or any other module where you want to use logging. For example:
-3. Import the NestPinoModule in your application's root module or any other module where you want to use logging. For example:
+2. Import the NestPinoModule in your application's root module or any other module where you want to use logging. For example:
 
 ```ts
 import { Module } from '@nestjs/common';
@@ -41,7 +41,7 @@ export class AppModule {}
 
 
 ```
-4. You can now use the LoggerService provided by nestjs-pino in your application's components, services, or controllers to log messages. For example:
+1. You can now use the LoggerService provided by nestjs-pino in your application's components, services, or controllers to log messages. For example:
 
 ```ts
 import { Logger } from '@nestjs/common';
@@ -49,19 +49,21 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class MyService {
-  private readonly logger = new Logger(MyService.name);
+    private readonly logger = new Logger(MyService.name);
 
-  public doSomething() {
-    // Log info level message
-    this.logger.log('This is
+    public doSomething() {
+        // Log info level message
+        this.logger.log('This is an info level');
 // Log error level message
-this.logger.error('This is an error level log message.');
+        this.logger.error('This is an error level log message.');
 
 // Log warning level message
-this.logger.warn('This is a warning level log message.');
+        this.logger.warn('This is a warning level log message.');
 
 // Log debug level message
-this.logger.debug('This is a debug level log message.');
+        this.logger.debug('This is a debug level log message.');
+    }
+}
 
 
 ```

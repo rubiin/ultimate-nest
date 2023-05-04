@@ -17,8 +17,7 @@ import {
 import { Namespace, Socket } from "socket.io";
 
 import { ChatService } from "./chat.service";
-import { MessageSeenDto } from "./dto";
-import { CreateChatDto } from "./dto/create-chat.dto";
+import { CreateChatDto, MessageSeenDto } from "./dto";
 import { SocketConnectionService } from "./socket-connection.service";
 
 @UseGuards(WsJwtGuard)
@@ -71,11 +70,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
 		this.disconnect(client);
 	}
 
-	private disconnect(socket: Socket) {
-		socket.emit("Error", new UnauthorizedException());
-		socket.disconnect();
-	}
-
 	@SubscribeMessage("send")
 	async create(
 		@MessageBody() createChatDto: CreateChatDto,
@@ -104,5 +98,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
 		const receiver = this.connectionService.findBySocketId(markAsSeenDto.receiver);
 
 		await this.chatService.markMessagesAsSeen(sender.id, receiver.id);
+	}
+
+	private disconnect(socket: Socket) {
+		socket.emit("Error", new UnauthorizedException());
+		socket.disconnect();
 	}
 }

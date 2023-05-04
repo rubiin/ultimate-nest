@@ -107,7 +107,7 @@ export const AppUtils = {
 		const keyPath = `${__dirname}/../../resources/ssl/key.pem`;
 		const certPath = `${__dirname}/../../resources/ssl/certificate.pem`;
 
-		const ssl = process.env.SSL === "true" ? true : false;
+		const ssl = process.env.SSL === "true";
 		const isExist = fs.existsSync(keyPath) && fs.existsSync(certPath);
 
 		if (ssl && !isExist) {

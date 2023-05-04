@@ -57,15 +57,13 @@ export class ChatService {
 	}
 
 	async getConversationForUser(user: User) {
-		const conversations = await this.conversationRepository
+		return await this.conversationRepository
 			.qb("c")
 			.select("c.*")
 			.leftJoinAndSelect("c.messages", "m")
 			.join("user_conversation", "uc", "c.id = uc.conversation_id")
 			.where("uc.user_id = ?", [user.id])
 			.execute();
-
-		return conversations;
 	}
 
 	async markMessagesAsSeen(sender: number, receiver: number): Promise<Conversation> {

@@ -1,4 +1,4 @@
-import { EmailTemplateEnum, IBaseService } from "@common/@types";
+import { EmailSubjects, EmailTemplateEnum, IBaseService } from "@common/@types";
 import { DtoWithFile } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
 import { SearchOptionsDto } from "@common/dtos/search.dto";
@@ -31,7 +31,6 @@ export class UserService implements IBaseService<User> {
 
 	/**
 	 * It returns an observable of a pagination object of users
-	 * @param {SearchOptionsDto}  - SearchOptionsDto - This is a DTO that contains the following properties:
 	 * @returns An observable of a pagination object.
 	 */
 	findAll(pageOptionsDto: SearchOptionsDto): Observable<Pagination<User>> {
@@ -115,7 +114,7 @@ export class UserService implements IBaseService<User> {
 							link,
 						},
 						to: user.email,
-						subject: "Welcome onboard",
+						subject: EmailSubjects.WELCOME,
 						from: this.configService.get("mail.senderEmail", { infer: true }),
 					},
 				);

@@ -34,6 +34,11 @@ export class Tag extends BaseEntity {
 	@ManyToMany(() => Post, post => post.tags)
 	posts = new Collection<Post>(this);
 
+	constructor(partial?: Partial<Tag>) {
+		super();
+		Object.assign(this, partial);
+	}
+
 	@BeforeCreate()
 	@BeforeUpsert()
 	@BeforeUpdate()
@@ -41,10 +46,5 @@ export class Tag extends BaseEntity {
 		if (arguments_.changeSet?.payload?.title) {
 			this.slug = slugify(this.title);
 		}
-	}
-
-	constructor(partial?: Partial<Tag>) {
-		super();
-		Object.assign(this, partial);
 	}
 }

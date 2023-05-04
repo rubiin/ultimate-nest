@@ -91,6 +91,8 @@ export class User extends BaseEntity {
 
 	@ManyToMany(() => User, u => u.followers)
 	followed = new Collection<User>(this);
+	@Property()
+	lastLogin = new Date();
 
 	constructor(data?: Pick<User, "idx">) {
 		super();
@@ -115,7 +117,4 @@ export class User extends BaseEntity {
 			this.password = await HelperService.hashString(this.password);
 		}
 	}
-
-	@Property()
-	lastLogin = new Date();
 }

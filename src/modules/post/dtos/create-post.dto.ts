@@ -1,6 +1,7 @@
 import { PostState } from "@common/@types";
 import { IsEnumField, IsStringField } from "@common/decorators";
-import { IsNotEmpty, IsUUID } from "class-validator";
+import { ToBoolean } from "@common/decorators/validation";
+import { IsBoolean, IsNotEmpty, IsUUID } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreatePostDto {
@@ -63,4 +64,12 @@ export class CreatePostDto {
 
 	@IsEnumField(PostState, { required: false })
 	state: PostState;
+
+	@IsBoolean({
+		message: i18nValidationMessage("validation.isDataType", {
+			type: "boolean",
+		}),
+	})
+	@ToBoolean()
+	published?: boolean;
 }

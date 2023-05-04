@@ -68,6 +68,11 @@ export class Post extends BaseEntity {
 	@ManyToMany(() => Category, "posts", { owner: true })
 	categories = new Collection<Category>(this);
 
+	constructor(partial?: Partial<Post>) {
+		super();
+		Object.assign(this, partial);
+	}
+
 	@BeforeUpsert()
 	@BeforeCreate()
 	@BeforeUpdate()
@@ -83,10 +88,5 @@ export class Post extends BaseEntity {
 		const count = content.match(/\w+/g).length;
 
 		return Math.ceil(count / avgWordsPerMin);
-	}
-
-	constructor(partial?: Partial<Post>) {
-		super();
-		Object.assign(this, partial);
 	}
 }

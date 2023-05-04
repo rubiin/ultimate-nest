@@ -152,26 +152,17 @@ export class TokensService {
 		return from(this.jwt.verifyAsync(token)).pipe(
 			map(payload => payload),
 			catchError(error_ => {
-				const error =
-					error_ instanceof TokenExpiredError
-						? new UnauthorizedException(
-								I18nContext.current<I18nTranslations>()!.t(
-									"exception.refreshToken",
-									{
-										args: { error: "expired" },
-									},
-								),
-						  )
-						: new UnauthorizedException(
-								I18nContext.current<I18nTranslations>()!.t(
-									"exception.refreshToken",
-									{
-										args: { error: "malformed" },
-									},
-								),
-						  );
-
-				throw error;
+				throw error_ instanceof TokenExpiredError
+					? new UnauthorizedException(
+							I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
+								args: { error: "expired" },
+							}),
+					  )
+					: new UnauthorizedException(
+							I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
+								args: { error: "malformed" },
+							}),
+					  );
 			}),
 		);
 	}
@@ -192,7 +183,7 @@ export class TokensService {
 	/**
 	 * It deletes the refresh token from the database and returns the user
 	 * @param {User} user - The user object that was returned from the validateUser method.
-	 * @param {RefreshTokenPayload} payload - The payload of the refresh token.
+	 * @param {IJwtPayload} payload - The payload of the refresh token.
 	 * @returns The user object
 	 */
 	deleteRefreshToken(user: User, payload: IJwtPayload): Observable<User> {
@@ -219,7 +210,7 @@ export class TokensService {
 	/**
 	 * It takes a refresh token payload, extracts the user ID from it, and then returns an observable of
 	 * the user with that ID
-	 * @param {RefreshTokenPayload} payload - RefreshTokenPayload
+	 * @param {IJwtPayload} payload - IJwtPayload
 	 * @returns A user object
 	 */
 	getUserFromRefreshTokenPayload(payload: IJwtPayload): Observable<User> {
@@ -246,7 +237,7 @@ export class TokensService {
 	/**
 	 * It takes a refresh token payload, extracts the token ID from it, and then uses that token ID to
 	 * find the corresponding refresh token in the database
-	 * @param {RefreshTokenPayload} payload - RefreshTokenPayload
+	 * @param {IJwtPayload} payload - IJwtPayload
 	 * @returns Observable<RefreshToken | null>
 	 */
 	getStoredTokenFromRefreshTokenPayload(payload: IJwtPayload): Observable<RefreshToken | null> {

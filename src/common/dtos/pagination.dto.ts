@@ -1,5 +1,5 @@
-import { Order } from "@common/@types";
 import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
+import { QueryOrder } from "@mikro-orm/core/enums";
 
 export abstract class PageOptionsDto {
 	/**
@@ -17,8 +17,8 @@ export abstract class PageOptionsDto {
 	/**
 	 * Sorting order
 	 */
-	@IsEnumField(Order, { required: false })
-	readonly order: Order = Order.DESC;
+	@IsEnumField(QueryOrder, { required: false })
+	readonly order: QueryOrder = QueryOrder.DESC;
 
 	/**
 	 * Sorting criteria
