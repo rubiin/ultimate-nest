@@ -18,9 +18,8 @@ interface IMailOptions extends Partial<SendMailOptions> {
 
 @Injectable()
 export class MailerService {
+	readonly transporter: Transporter<SentMessageInfo>;
 	private readonly logger: Logger = new Logger(MailerService.name);
-
-	readonly transporter: Transporter<SentMessageInfo> | Transporter<SentMessageInfo>;
 	private readonly adapter: IAdapter;
 
 	constructor(

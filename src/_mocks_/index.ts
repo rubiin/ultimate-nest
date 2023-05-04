@@ -1,4 +1,4 @@
-import { IFile, Order, Roles } from "@common/@types";
+import { IFile, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { Category, Comment, OtpLog, Post, Protocol, RefreshToken, Tag, User } from "@entities";
@@ -6,6 +6,7 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
 import { CacheService } from "@lib/cache/cache.service";
 import { MailerService } from "@lib/mailer/mailer.service";
+import { QueryOrder } from "@mikro-orm/core/enums";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
 import { TokensService } from "@modules/token/tokens.service";
@@ -59,13 +60,12 @@ export const queryDto: PageOptionsDto = {
 	limit: 10,
 	offset: 5,
 	sort: "createdAt",
-	order: Order.DESC,
+	order: QueryOrder.DESC,
 };
 
 export const mockFile = {
 	fieldname: "file",
 	originalname: "test.png",
-	encoding: "8bit",
 	mimetype: "text/png",
 	buffer: Buffer.from(__dirname + "/../../test/test.png", "utf8"),
 	size: 13_148,

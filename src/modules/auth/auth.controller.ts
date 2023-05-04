@@ -17,7 +17,7 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation } from "@nestjs/swagger";
 import { Request, Response } from "express";
-import { map, Observable, of, switchMap } from "rxjs";
+import { map, Observable } from "rxjs";
 
 import { AuthService } from "./auth.service";
 import {
@@ -53,8 +53,8 @@ export class AuthController {
 		@Body() dto: MagicLinkLogin,
 	): Observable<void> {
 		return this.authService.validateUser(false, dto.destination).pipe(
-			switchMap(_user => {
-				return of(this.magicStrategy.send(request, response));
+			map(_user => {
+				this.magicStrategy.send(request, response);
 			}),
 		);
 	}

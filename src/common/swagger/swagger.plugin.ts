@@ -1,4 +1,4 @@
-export const CaseInsensitiveFilterPlugin = () => {
+const CaseInsensitiveFilterPlugin = () => {
 	return {
 		fn: {
 			opsFilter: (taggedOps, phrase) => {

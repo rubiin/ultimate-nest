@@ -13,6 +13,7 @@ interface INestFirebaseService {
 @Injectable()
 export class NestFirebaseService implements INestFirebaseService {
 	private _firebaseConnection: any;
+
 	constructor(
 		@Inject(MODULE_OPTIONS_TOKEN) private _NestFirebaseOptions: FirebaseModuleOptions,
 	) {}

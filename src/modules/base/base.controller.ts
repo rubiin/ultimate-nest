@@ -14,7 +14,7 @@ export abstract class BaseController<
 	CreateDto extends RequiredEntityData<T> = RequiredEntityData<T>,
 	UpdateDto extends EntityData<T> = EntityData<T>,
 > {
-	constructor(private readonly service: BaseService<T>) {}
+	protected constructor(private readonly service: BaseService<T>) {}
 
 	@Get()
 	findAll(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<T>> {

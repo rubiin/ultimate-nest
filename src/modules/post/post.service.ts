@@ -31,9 +31,9 @@ export class PostService {
 	/**
 	 * It returns an observable of a pagination object, which is created from the results of a query to the
 	 * database
-	 * @param {SearchOptionsDto}  - SearchOptionsDto: This is a DTO that contains the page, order, limit, and
 	 * offset.
 	 * @returns An observable of a pagination object.
+	 * @param pageOptionsDto
 	 */
 	findAll(pageOptionsDto: SearchOptionsDto): Observable<Pagination<Post>> {
 		const { order, limit, sort, offset, search } = pageOptionsDto;

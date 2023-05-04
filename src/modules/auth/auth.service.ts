@@ -1,9 +1,10 @@
-import { EmailTemplateEnum, IAuthenticationResponse } from "@common/@types";
+import { EmailSubjects, EmailTemplateEnum, IAuthenticationResponse } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";
+import { FilterQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { TokensService } from "@modules/token/tokens.service";
@@ -207,7 +208,12 @@ export class AuthService {
 					);
 				}
 
-				return from(this.protocolRepository.findOne({})).pipe(
+				return from(
+					this.protocolRepository.findOne({
+						isActive: true,
+						isObsolete: false,
+					}),
+				).pipe(
 					switchMap(protocol => {
 						const otpNumber = randomString({ length: 6, numbers: true }); // random six digit otp
 
@@ -230,7 +236,7 @@ export class AuthService {
 										otp: otpNumber,
 									},
 									to: userExists.email,
-									subject: "Reset Password",
+									subject: EmailSubjects.RESET_PASSWORD,
 									from: this.configService.get("mail.senderEmail", {
 										infer: true,
 									}),
@@ -378,18 +384,7 @@ export class AuthService {
 		);
 	}
 
-	/**
-	 * This function finds a user by their ID, ensuring that they are active and not obsolete.
-	 * @param {number} id - The id parameter is a number that represents the unique identifier of the user
-	 * we want to find.
-	 * @returns A Promise that resolves to a User object that matches the given id and has isActive set to
-	 * true and isObsolete set to false.
-	 */
-	async findUser(id: number): Promise<User> {
-		return this.userRepository.findOne({
-			id,
-			isActive: true,
-			isObsolete: false,
-		});
+	async findUser(condition: FilterQuery<User>): Promise<User> {
+		return this.userRepository.findOne(condition);
 	}
 }

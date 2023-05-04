@@ -10,7 +10,7 @@ In NestJS Boilerplate uses [Mikroorm](https://www.npmjs.com/package/mikrorm) and
   - [Generate migration](#generate-migration)
   - [Run migration](#run-migration)
   - [Revert migration](#revert-migration)
-  - [Drop the database and migrate up to the latest version](#drop-all-tables-in-database)
+  - [Drop the database and migrate up to the latest version](#drop-the-database-and-migrate-up-to-the-latest-version)
 - [Performance optimization](#performance-optimization)
   - [Indexes and Foreign Keys](#indexes-and-foreign-keys)
 
@@ -29,40 +29,40 @@ In NestJS Boilerplate uses [Mikroorm](https://www.npmjs.com/package/mikrorm) and
 
     @Entity()
     export class Post extends BaseEntity {
-	@Property({
-		length: 50,
-	})
-	activityType?: string;
+    @Property({
+        length: 50,
+    })
+    activityType?: string;
 
-	@Property({
-		length: 50,
-	})
-	loginType?: string;
+    @Property({
+        length: 50,
+    })
+    loginType?: string;
 
-	@Property({
-		length: 50,
-	})
-	ipAddress?: string;
+    @Property({
+        length: 50,
+    })
+    ipAddress?: string;
 
-	@Property({
-		length: 50,
-	})
-	deviceId?: string;
+    @Property({
+        length: 50,
+    })
+    deviceId?: string;
 
-	@Property()
-	status = true;
+    @Property()
+    status = true;
 
       // Here any fields what you need
     }
     ```
 
-1. Next, generate migration file:
+2. Next, generate migration file:
 
     ```bash
     NODE_ENV=dev yarn orm migration:create
     ```
 
-1. Apply this migration to database via [yarn run orm migration:up](#run-migration).
+3. Apply this migration to database via [yarn run orm migration:up](#run-migration).
 
 ### Run migration
 

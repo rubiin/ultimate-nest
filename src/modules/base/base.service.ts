@@ -3,7 +3,7 @@ import { BaseEntity, BaseRepository } from "@common/database";
 import { SearchOptionsDto } from "@common/dtos/search.dto";
 import { User } from "@entities";
 import { PageMetaDto, Pagination } from "@lib/pagination";
-import { EntityData, RequiredEntityData } from "@mikro-orm/core";
+import { EntityData, QBFilterQuery, RequiredEntityData } from "@mikro-orm/core";
 import { from, map, Observable } from "rxjs";
 
 export abstract class BaseService<
@@ -12,14 +12,15 @@ export abstract class BaseService<
 	UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > implements IBaseService
 {
-	constructor(private readonly repository: BaseRepository<Entity>) {}
+	protected search: QBFilterQuery<Entity> = null;
+	protected constructor(private readonly repository: BaseRepository<Entity>) {}
 
 	/**
 	 * "Create a new entity from the given DTO, persist it, and return it."
 	 *
 	 * The first line creates a new entity from the given DTO. The second line persists the entity and
 	 * returns a promise. The third line maps the promise to the entity
-	 * @param {CreateDto} dto - CreateDto - The DTO that will be used to create the entity.
+	 * @param dto - The DTO that will be used to create the entity.
 	 * @param {User} [_user] - The user that is making the request.
 	 * @returns Observable<Entity>
 	 */
@@ -34,8 +35,8 @@ export abstract class BaseService<
 
 	/**
 	 * It takes in a SearchOptionsDto object, and returns an Observable of a Pagination object
-	 * @param {SearchOptionsDto}  - SearchOptionsDto - This is a class that contains the following properties:
 	 * @returns An observable of a pagination object.
+	 * @param pageOptionsDto
 	 */
 	findAll(pageOptionsDto: SearchOptionsDto): Observable<Pagination<Entity>> {
 		const { order, limit, sort, offset, search } = pageOptionsDto;

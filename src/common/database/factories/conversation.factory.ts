@@ -8,7 +8,7 @@ export class ConversationFactory extends Factory<Conversation> {
 
 	definition(faker: Faker): Partial<Conversation> {
 		return {
-			name: faker.lorem.words(randomNumber(1, 10)),
+			chatName: faker.lorem.words(randomNumber(1, 5)),
 		};
 	}
 }

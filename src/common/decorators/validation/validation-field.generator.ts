@@ -1,3 +1,4 @@
+import { MinMaxLength } from "@common/decorators";
 import { Type } from "class-transformer";
 import {
 	ArrayNotEmpty,
@@ -12,7 +13,6 @@ import {
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
 
-import { MinMaxLength } from "./min-max-length.decorator";
 import { Sanitize, Trim } from "./transform.decorator";
 
 export class ValidatorFieldBuilder {

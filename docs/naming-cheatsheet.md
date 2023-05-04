@@ -138,7 +138,7 @@ prefix? + action (A) + high context (HC) + low context? (LC)
 Take a look at how this pattern may be applied in the table below.
 
 | Name                   | Prefix   | Action (A) | High context (HC) | Low context (LC) |
-|------------------------|----------|------------| ----------------- | ---------------- |
+|------------------------|----------|------------|-------------------|------------------|
 | `getUser`              |          | `get`      | `User`            |                  |
 | `getUserMessages`      |          | `get`      | `User`            | `Messages`       |
 | `shouldDisplayMessage` | `should` | `Display`  | `Message`         |                  |

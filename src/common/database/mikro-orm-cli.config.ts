@@ -1,6 +1,5 @@
-import { defineConfig as defineSqliteConfig } from "@mikro-orm/better-sqlite";
 import { LoadStrategy, Options } from "@mikro-orm/core";
-import { defineConfig as definePGConfig } from "@mikro-orm/postgresql";
+import { defineConfig } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { Logger, NotFoundException } from "@nestjs/common";
@@ -75,18 +74,13 @@ export const baseOptions = {
 	pool: { min: 2, max: 10 },
 };
 
-const config: Options = process.env.NODE_ENV.startsWith("prod")
-	? definePGConfig({
-			...baseOptions,
-			dbName: process.env.DB_DATABASE,
-			password: process.env.DB_PASSWORD,
-			port: process.env.DB_PORT,
-			user: process.env.DB_USERNAME,
-			host: process.env.DB_HOST,
-	  })
-	: defineSqliteConfig({
-			...baseOptions,
-			dbName: process.env.DB_DATABASE,
-	  });
+const config: Options = defineConfig({
+	...baseOptions,
+	dbName: process.env.DB_DATABASE,
+	password: process.env.DB_PASSWORD,
+	port: process.env.DB_PORT,
+	user: process.env.DB_USERNAME,
+	host: process.env.DB_HOST,
+});
 
 export default config;

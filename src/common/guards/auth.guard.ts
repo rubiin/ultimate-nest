@@ -30,20 +30,17 @@ export class AuthGuard implements CanActivate {
 
 			return true;
 		} catch (error_) {
-			const error =
-				error_ instanceof TokenExpiredError
-					? new UnauthorizedException(
-							I18nContext.current<I18nTranslations>()!.t("exception.token", {
-								args: { error: "expired" },
-							}),
-					  )
-					: new UnauthorizedException(
-							I18nContext.current<I18nTranslations>()!.t("exception.token", {
-								args: { error: "malformed" },
-							}),
-					  );
-
-			throw error;
+			throw error_ instanceof TokenExpiredError
+				? new UnauthorizedException(
+						I18nContext.current<I18nTranslations>()!.t("exception.token", {
+							args: { error: "expired" },
+						}),
+				  )
+				: new UnauthorizedException(
+						I18nContext.current<I18nTranslations>()!.t("exception.token", {
+							args: { error: "malformed" },
+						}),
+				  );
 		}
 	}
 }
