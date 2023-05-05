@@ -1,19 +1,26 @@
 import { BaseRepository } from "@common/database";
-import { SearchOptionsDto } from "@common/dtos/search.dto";
+import { SearchDto } from "@common/dtos/search.dto";
 import { Category, Comment, Post, Tag, User } from "@entities";
-import { PageMetaDto, Pagination } from "@lib/pagination";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { omit } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
-import { forkJoin, from, map, mergeMap, Observable, of, switchMap, throwError, zip } from "rxjs";
+import { Observable, forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
+import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
+import { IPaginated } from "@common/@types/interfaces/pagination.interface";
+import { isNull, isUndefined } from "@common/@types/types";
+import { CommonService } from "@common/helpers/common.service";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
 export class PostService {
+
+		private readonly queryName = 'p';
+
+
 	constructor(
 		private readonly em: EntityManager,
 		@InjectRepository(Post)
@@ -26,6 +33,7 @@ export class PostService {
 		private readonly tagRepository: BaseRepository<Tag>,
 		@InjectRepository(Category)
 		private readonly categoryRepository: BaseRepository<Category>,
+				private readonly commonService: CommonService,
 	) {}
 
 	/**
@@ -33,29 +41,31 @@ export class PostService {
 	 * database
 	 * offset.
 	 * @returns An observable of a pagination object.
-	 * @param pageOptionsDto
+	 * @param SearchDto - The search dto.
 	 */
-	findAll(pageOptionsDto: SearchOptionsDto): Observable<Pagination<Post>> {
-		const { order, limit, sort, offset, search } = pageOptionsDto;
-		const qb = this.postRepository.qb("p").select("p.*");
+	findAll(dto: SearchDto): Observable<IPaginated<Post>> {
+    const { search, first, after } = dto;
+    const qb = this.postRepository.createQueryBuilder(this.queryName).where({
+      confirmed: true,
+    });
 
-		if (search) {
-			qb.andWhere({ title: { $ilike: `%${search}%` } });
-		}
+    if (!isUndefined(search) && !isNull(search)) {
+      qb.andWhere({
+        name: {
+          $ilike: this.commonService.formatSearch(search),
+        },
+      });
+    }
 
-		qb.orderBy({ [sort]: order.toLowerCase() })
-			.limit(limit)
-			.offset(offset);
-
-		const pagination$ = from(qb.getResultAndCount());
-
-		return pagination$.pipe(
-			map(([results, itemCount]) => {
-				const pageMetaDto = new PageMetaDto({ pageOptionsDto, itemCount });
-
-				return new Pagination(results, pageMetaDto);
-			}),
-		);
+    return from(this.commonService.queryBuilderPagination(
+      this.queryName,
+      'title',
+      CursorTypeEnum.STRING,
+      first,
+      QueryOrderEnum.ASC,
+      qb,
+      after,
+    ))
 	}
 
 	/* Finding a post by id, and then returning the comments of that post */

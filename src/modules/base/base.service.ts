@@ -1,8 +1,10 @@
-import { IBaseService } from "@common/@types";
+import { CursorTypeEnum, IBaseService, QueryOrderEnum } from "@common/@types";
+import { IPaginated } from "@common/@types/interfaces/pagination.interface";
+import { isNull, isUndefined } from "@common/@types/types";
 import { BaseEntity, BaseRepository } from "@common/database";
-import { SearchOptionsDto } from "@common/dtos/search.dto";
+import { SearchDto } from "@common/dtos/search.dto";
+import { CommonService } from "@common/helpers/common.service";
 import { User } from "@entities";
-import { PageMetaDto, Pagination } from "@lib/pagination";
 import { EntityData, QBFilterQuery, RequiredEntityData } from "@mikro-orm/core";
 import { from, map, Observable } from "rxjs";
 
@@ -13,7 +15,12 @@ export abstract class BaseService<
 > implements IBaseService
 {
 	protected search: QBFilterQuery<Entity> = null;
-	protected constructor(private readonly repository: BaseRepository<Entity>) {}
+	protected queryName = 'b';
+	private readonly commonService: CommonService;
+
+	protected constructor(private readonly repository: BaseRepository<Entity>,
+
+		) {}
 
 	/**
 	 * "Create a new entity from the given DTO, persist it, and return it."
@@ -36,29 +43,31 @@ export abstract class BaseService<
 	/**
 	 * It takes in a SearchOptionsDto object, and returns an Observable of a Pagination object
 	 * @returns An observable of a pagination object.
-	 * @param pageOptionsDto
+	 * @param PaginationDto
 	 */
-	findAll(pageOptionsDto: SearchOptionsDto): Observable<Pagination<Entity>> {
-		const { order, limit, sort, offset, search } = pageOptionsDto;
-		const qb = this.repository.qb("p").select("p.*");
+	findAll(dto: SearchDto): Observable<IPaginated<Entity>> {
+  const { search, first, after } = dto;
+    const qb = this.repository.createQueryBuilder(this.queryName).where({
+      confirmed: true,
+    });
 
-		if (search) {
-			qb.andWhere({ name: { $ilike: `%${search}%` } });
-		}
+    if (!isUndefined(search) && !isNull(search)) {
+      qb.andWhere({
+        name: {
+          $ilike: this.commonService.formatSearch(search),
+        },
+      });
+    }
 
-		qb.orderBy({ [sort]: order.toLowerCase() })
-			.limit(limit)
-			.offset(offset);
-
-		const pagination$ = from(qb.getResultAndCount());
-
-		return pagination$.pipe(
-			map(([results, itemCount]) => {
-				const pageMetaDto = new PageMetaDto({ pageOptionsDto, itemCount });
-
-				return new Pagination(results, pageMetaDto);
-			}),
-		);
+    return from(this.commonService.queryBuilderPagination(
+      this.queryName,
+      'id',
+      CursorTypeEnum.STRING,
+      first,
+      QueryOrderEnum.ASC,
+      qb,
+      after,
+    ))
 	}
 
 	/**

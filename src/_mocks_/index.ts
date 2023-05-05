@@ -1,12 +1,12 @@
 import { IFile, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
-import { PageOptionsDto } from "@common/dtos/pagination.dto";
+import { PaginationDto } from "@common/dtos/pagination.dto";
 import { Category, Comment, OtpLog, Post, Protocol, RefreshToken, Tag, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
 import { CacheService } from "@lib/cache/cache.service";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { QueryOrder } from "@mikro-orm/core/enums";
+import { QueryOrder } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
 import { TokensService } from "@modules/token/tokens.service";
@@ -55,7 +55,7 @@ export const mockedProtocol = {
 	otpExpiryInMinutes: 5,
 };
 
-export const queryDto: PageOptionsDto = {
+export const queryDto: PaginationDto = {
 	page: 1,
 	limit: 10,
 	offset: 5,

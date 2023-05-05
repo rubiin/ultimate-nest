@@ -321,22 +321,22 @@ export class AuthService {
 							),
 					);
 				}
+				this.otpRepository.assign(codeDetails, {
+					isUsed: true,
+				});
 
 				return from(
 					this.em.transactional(async em => {
-						this.otpRepository.assign(codeDetails, {
-							isUsed: true,
-						});
-
-						em.nativeUpdate(
-							User,
-							{
-								id: codeDetails.user.id,
-							},
-							{ isVerified: true },
-						);
-
-						await em.flush();
+						await Promise.all([
+							em.nativeUpdate(
+								User,
+								{
+									id: codeDetails.user.id,
+								},
+								{ isVerified: true },
+							),
+							em.flush(),
+						]);
 					}),
 				).pipe(map(() => codeDetails.user));
 			}),

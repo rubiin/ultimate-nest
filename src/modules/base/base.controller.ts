@@ -1,13 +1,13 @@
 import { BaseEntity } from "@common/database";
 import { LoggedInUser, UUIDParam } from "@common/decorators";
-import { PageOptionsDto } from "@common/dtos/pagination.dto";
+import { PaginationDto } from "@common/dtos/pagination.dto";
 import { User } from "@entities";
-import { Pagination } from "@lib/pagination";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { Body, Delete, Get, Post, Put, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
 
 import { BaseService } from "./base.service";
+import { IPaginated } from "@common/@types/interfaces/pagination.interface";
 
 export abstract class BaseController<
 	T extends BaseEntity,
@@ -17,8 +17,8 @@ export abstract class BaseController<
 	protected constructor(private readonly service: BaseService<T>) {}
 
 	@Get()
-	findAll(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<T>> {
-		return this.service.findAll(pageOptionsDto);
+	findAll(@Query() PaginationDto: PaginationDto): Observable<IPaginated<T>> {
+		return this.service.findAll(PaginationDto);
 	}
 
 	@Get(":idx")

@@ -6,13 +6,13 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
-import { PageOptionsDto } from "@common/dtos/pagination.dto";
+import { PaginationDto } from "@common/dtos/pagination.dto";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
-import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Post, Put, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
 
+import { IPaginated } from "@common/@types/interfaces/pagination.interface";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
@@ -22,8 +22,8 @@ export class PostController {
 
 	@Get()
 	@ApiPaginatedResponse(PostEntity, "Post list")
-	findAll(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<PostEntity>> {
-		return this.postService.findAll(pageOptionsDto);
+	findAll(@Query() PaginationDto: PaginationDto): Observable<IPaginated<PostEntity>> {
+		return this.postService.findAll(PaginationDto);
 	}
 
 	@Get(":idx")

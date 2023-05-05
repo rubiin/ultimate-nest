@@ -1,11 +1,9 @@
-import { EmailSubjects, EmailTemplateEnum, IBaseService } from "@common/@types";
-import { DtoWithFile } from "@common/@types/types";
+import { CursorTypeEnum, EmailSubjects, EmailTemplateEnum, IBaseService, QueryOrderEnum } from "@common/@types";
+import { DtoWithFile, isNull, isUndefined } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
-import { SearchOptionsDto } from "@common/dtos/search.dto";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";
-import { PageMetaDto, Pagination } from "@lib/pagination";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
@@ -14,12 +12,19 @@ import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
+import { Observable, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
+import { IPaginated } from "@common/@types/interfaces/pagination.interface";
+import { SearchDto } from "@common/dtos/search.dto";
+import { CommonService } from "@common/helpers/common.service";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
 export class UserService implements IBaseService<User> {
+
+
+	private readonly queryName = 'u';
+
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
@@ -27,33 +32,33 @@ export class UserService implements IBaseService<User> {
 		private readonly configService: ConfigService<IConfig, true>,
 		private readonly amqpConnection: AmqpConnection,
 		private readonly cloudinaryService: CloudinaryService,
+		private readonly commonService: CommonService,
 	) {}
 
-	/**
-	 * It returns an observable of a pagination object of users
-	 * @returns An observable of a pagination object.
-	 */
-	findAll(pageOptionsDto: SearchOptionsDto): Observable<Pagination<User>> {
-		const { limit, offset, order, sort, search } = pageOptionsDto;
-		const qb = this.userRepository.qb("u").select("u.*");
 
-		if (search) {
-			qb.andWhere({ firstName: { $ilike: `%${search}%` } });
-		}
+	findAll(dto: SearchDto): Observable<IPaginated<User>> {
+    const { search, first, after } = dto;
+    const qb = this.userRepository.createQueryBuilder(this.queryName).where({
+      confirmed: true,
+    });
 
-		qb.orderBy({ [sort]: order.toLowerCase() })
-			.limit(limit)
-			.offset(offset);
+    if (!isUndefined(search) && !isNull(search)) {
+      qb.andWhere({
+        name: {
+          $ilike: this.commonService.formatSearch(search),
+        },
+      });
+    }
 
-		const pagination$ = from(qb.getResultAndCount());
-
-		return pagination$.pipe(
-			map(([results, itemCount]) => {
-				const pageMetaDto = new PageMetaDto({ pageOptionsDto, itemCount });
-
-				return new Pagination(results, pageMetaDto);
-			}),
-		);
+    return from(this.commonService.queryBuilderPagination(
+      this.queryName,
+      'username',
+      CursorTypeEnum.STRING,
+      first,
+      QueryOrderEnum.ASC,
+      qb,
+      after,
+    ))
 	}
 
 	/**
