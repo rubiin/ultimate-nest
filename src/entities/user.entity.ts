@@ -40,13 +40,13 @@ export class User extends BaseEntity {
 	@Property()
 	email!: string;
 
-	@Property()
+	@Property({ length: 1000 })
 	bio!: string;
 
-	@Property()
+	@Property({ length: 1000 })
 	avatar!: string;
 
-	@Property({ hidden: true })
+	@Property({ hidden: true, length: 1000 })
 	password!: string;
 
 	@Property()

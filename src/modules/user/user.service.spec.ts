@@ -1,3 +1,4 @@
+import { CommonService } from "@common/helpers/common.service";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { EntityManager } from "@mikro-orm/core";
@@ -5,6 +6,7 @@ import { getRepositoryToken } from "@mikro-orm/nestjs";
 import {
 	mockAmqConnection,
 	mockCloudinaryService,
+	mockCommonService,
 	mockConfigService,
 	mockedUser,
 	mockEm,
@@ -31,6 +33,7 @@ describe("UserService", () => {
 					useValue: mockUserRepo,
 				},
 				{ provide: ConfigService, useValue: mockConfigService },
+				{ provide: CommonService, useValue: mockCommonService },
 				{ provide: AmqpConnection, useValue: mockAmqConnection },
 				{ provide: CloudinaryService, useValue: mockCloudinaryService },
 				{ provide: EntityManager, useValue: mockEm },
@@ -81,9 +84,9 @@ describe("UserService", () => {
 	});
 	it("should get user list", () => {
 		service.findAll(queryDto).subscribe(result => {
-			expect(result.meta).toBeDefined();
-			expect(result.data).toStrictEqual([]);
-			expect(mockUserRepo.findAndPaginate).toHaveBeenCalled();
+			expect(result.pageInfo).toBeDefined();
+			expect(result.edges).toStrictEqual([]);
+			expect(mockCommonService.queryBuilderPagination).toHaveBeenCalled();
 		});
 	});
 

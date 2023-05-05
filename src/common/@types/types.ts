@@ -1,7 +1,7 @@
 import { AnySchema } from "joi";
 
-import { IFile } from "./interfaces";
 import { CursorTypeEnum, EmailTemplateEnum, QueryCursorEnum, QueryOrderEnum } from "./enums";
+import { IFile } from "./interfaces";
 
 // This function is used to convert a joi schema to typescript interface.
 export type JoiTypeToInterFace<T> = {
@@ -21,11 +21,10 @@ export const isArray = <T>(value: unknown): value is T[] => {
 };
 
 export const isUndefined = (value: unknown): value is undefined => {
-  return typeof value === 'undefined';
+	return value === undefined;
 };
 
 export const isNull = (value: unknown): value is null => value === null;
-
 
 export const getCursorType = (cursor: QueryCursorEnum): CursorTypeEnum =>
 	cursor === QueryCursorEnum.DATE ? CursorTypeEnum.NUMBER : CursorTypeEnum.STRING;

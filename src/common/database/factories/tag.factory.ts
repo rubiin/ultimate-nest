@@ -5,10 +5,12 @@ import { Factory, Faker } from "@mikro-orm/seeder";
 export class TagFactory extends Factory<Tag> {
 	model = Tag;
 
+	count = 0;
+
 	definition(faker: Faker): Partial<Tag> {
 		return {
-			title: faker.lorem.words(1),
-			description: faker.lorem.paragraphs(1),
+			title: faker.helpers.unique(faker.system.fileName) + faker.datatype.number(100),
+			description: faker.lorem.sentence(1),
 		};
 	}
 }

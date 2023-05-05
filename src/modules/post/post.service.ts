@@ -1,5 +1,9 @@
+import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
+import { Paginated } from "@common/@types/pagination.class";
+import { isNull, isUndefined } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
+import { CommonService } from "@common/helpers/common.service";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -7,19 +11,13 @@ import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { omit } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
-import { Observable, forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
+import { forkJoin, from, map, mergeMap, Observable, of, switchMap, throwError, zip } from "rxjs";
 
-import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
-import { IPaginated } from "@common/@types/interfaces/pagination.interface";
-import { isNull, isUndefined } from "@common/@types/types";
-import { CommonService } from "@common/helpers/common.service";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
 export class PostService {
-
-		private readonly queryName = 'p';
-
+	private readonly queryName = "p";
 
 	constructor(
 		private readonly em: EntityManager,
@@ -33,7 +31,7 @@ export class PostService {
 		private readonly tagRepository: BaseRepository<Tag>,
 		@InjectRepository(Category)
 		private readonly categoryRepository: BaseRepository<Category>,
-				private readonly commonService: CommonService,
+		private readonly commonService: CommonService,
 	) {}
 
 	/**
@@ -43,29 +41,31 @@ export class PostService {
 	 * @returns An observable of a pagination object.
 	 * @param SearchDto - The search dto.
 	 */
-	findAll(dto: SearchDto): Observable<IPaginated<Post>> {
-    const { search, first, after } = dto;
-    const qb = this.postRepository.createQueryBuilder(this.queryName).where({
-      confirmed: true,
-    });
+	findAll(dto: SearchDto): Observable<Paginated<Post>> {
+		const { search, first, after } = dto;
+		const qb = this.postRepository.createQueryBuilder(this.queryName).where({
+			isActive: true,
+		});
 
-    if (!isUndefined(search) && !isNull(search)) {
-      qb.andWhere({
-        name: {
-          $ilike: this.commonService.formatSearch(search),
-        },
-      });
-    }
+		if (!isUndefined(search) && !isNull(search)) {
+			qb.andWhere({
+				title: {
+					$ilike: this.commonService.formatSearch(search),
+				},
+			});
+		}
 
-    return from(this.commonService.queryBuilderPagination(
-      this.queryName,
-      'title',
-      CursorTypeEnum.STRING,
-      first,
-      QueryOrderEnum.ASC,
-      qb,
-      after,
-    ))
+		return from(
+			this.commonService.queryBuilderPagination(
+				this.queryName,
+				"title",
+				CursorTypeEnum.STRING,
+				first,
+				QueryOrderEnum.ASC,
+				qb,
+				after,
+			),
+		);
 	}
 
 	/* Finding a post by id, and then returning the comments of that post */
@@ -80,7 +80,6 @@ export class PostService {
 		).pipe(
 			mergeMap(post => {
 				if (!post) {
-					// convert to rxjs error
 					return throwError(
 						() =>
 							new NotFoundException(
@@ -109,13 +108,6 @@ export class PostService {
 		return zip(
 			this.tagRepository.find({
 				idx: dto.tags,
-				isActive: true,
-				isObsolete: false,
-			}),
-			this.categoryRepository.find({
-				idx: dto.categories,
-				isActive: true,
-				isObsolete: false,
 			}),
 			this.categoryRepository.find({
 				idx: dto.categories,

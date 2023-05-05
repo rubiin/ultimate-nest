@@ -8,7 +8,7 @@ export class PostFactory extends Factory<Post> {
 
 	definition(faker: Faker): Partial<Post> {
 		return {
-			title: faker.lorem.words(randomNumber(1, 4)),
+			title: faker.music.songName() + faker.finance.currencyCode(),
 			content: faker.lorem.paragraph(randomNumber(2, 4)),
 			description: faker.lorem.words(randomNumber(10, 20)),
 			readingTime: randomNumber(10, 100),
