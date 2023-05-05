@@ -7,7 +7,7 @@ import { memoryStorage } from "multer";
 
 export const ImageMulterOption: MulterOptions = {
 	limits: {
-		fileSize: FileSizes.IMAGE, // 5 mb
+		fileSize: FileSizes.IMAGE, // 5 MB
 	},
 	storage: memoryStorage(),
 	fileFilter: (_request: Request, file, callback) => {

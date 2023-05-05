@@ -7,14 +7,14 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
-import { PageOptionsDto } from "@common/dtos/pagination.dto";
 import { fileValidatorPipe } from "@common/misc";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
-import { Pagination } from "@lib/pagination";
 import { Body, Delete, Get, Post, Put, Query, UploadedFile } from "@nestjs/common";
 import { Observable } from "rxjs";
 
+import { IPaginated } from "@common/@types/interfaces/pagination.interface";
+import { SearchDto } from "@common/dtos/search.dto";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
@@ -25,8 +25,8 @@ export class UserController {
 	@Public()
 	@ApiPaginatedResponse(User, "Users list")
 	@Get()
-	findAll(@Query() pageOptionsDto: PageOptionsDto): Observable<Pagination<User>> {
-		return this.userService.findAll(pageOptionsDto);
+	findAll(@Query() PaginationDto: SearchDto): Observable<IPaginated<User>> {
+		return this.userService.findAll(PaginationDto);
 	}
 
 	@Public()

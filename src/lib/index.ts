@@ -8,7 +8,6 @@ export * from "./i18n/i18n.module";
 export * from "./jwt/jwt.module";
 export * from "./mailer";
 export * from "./orm/orm.module";
-export * from "./pagination";
 export * from "./pino/pino.module";
 export * from "./rabbit/rabbit.module";
 export * from "./sentry/sentry.module";

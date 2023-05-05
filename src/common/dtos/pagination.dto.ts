@@ -1,32 +1,15 @@
-import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
-import { QueryOrder } from "@mikro-orm/core/enums";
+import { IsBase64, IsInt, IsOptional, IsString, Max, Min } from "class-validator";
 
-export abstract class PageOptionsDto {
-	/**
-	 * Results page you want to retrieve (0..N)
-	 */
-	@IsNumberField({ required: false })
-	readonly page: number = 1;
+export abstract class PaginationDto {
 
-	/**
-	 * Number of results per page
-	 */
-	@IsNumberField({ required: false, max: 50 })
-	readonly limit: number = 10;
+  @IsString()
+  @IsBase64()
+  @IsOptional()
+  public after?: string;
 
-	/**
-	 * Sorting order
-	 */
-	@IsEnumField(QueryOrder, { required: false })
-	readonly order: QueryOrder = QueryOrder.DESC;
+  @IsInt()
+  @Min(1)
+  @Max(50)
+  public first = 10;
 
-	/**
-	 * Sorting criteria
-	 */
-	@IsStringField({ required: false, maxLength: 50 })
-	readonly sort: string = "createdAt";
-
-	get offset(): number {
-		return (this.page - 1) * this.limit;
-	}
 }
