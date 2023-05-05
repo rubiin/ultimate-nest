@@ -1,4 +1,5 @@
 import { Action, IFile, Roles } from "@common/@types";
+import { Paginated } from "@common/@types/pagination.class";
 import {
 	ApiFile,
 	ApiPaginatedResponse,
@@ -7,14 +8,13 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
+import { SearchDto } from "@common/dtos/search.dto";
 import { fileValidatorPipe } from "@common/misc";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Body, Delete, Get, Post, Put, Query, UploadedFile } from "@nestjs/common";
 import { Observable } from "rxjs";
 
-import { IPaginated } from "@common/@types/interfaces/pagination.interface";
-import { SearchDto } from "@common/dtos/search.dto";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
@@ -25,7 +25,7 @@ export class UserController {
 	@Public()
 	@ApiPaginatedResponse(User, "Users list")
 	@Get()
-	findAll(@Query() PaginationDto: SearchDto): Observable<IPaginated<User>> {
+	findAll(@Query() PaginationDto: SearchDto): Observable<Paginated<User>> {
 		return this.userService.findAll(PaginationDto);
 	}
 

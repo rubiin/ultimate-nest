@@ -1,5 +1,5 @@
 import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
-import { IEdge, IPaginated } from "@common/@types/interfaces/pagination.interface";
+import { Edge, Paginated } from "@common/@types/pagination.class";
 import { getOppositeOrder, getQueryOrder, tOppositeOrder, tOrderEnum } from "@common/@types/types";
 import { Dictionary, FilterQuery } from "@mikro-orm/core";
 import { EntityRepository, QueryBuilder } from "@mikro-orm/postgresql";
@@ -7,20 +7,16 @@ import { BadRequestException, Injectable, InternalServerErrorException } from "@
 
 @Injectable()
 export class CommonService {
-	constructor() {}
+	/**
+	 * Takes a string trims it and makes it lower case to be used in ILike
+	 */
+	public formatSearch(search: string): string {
+		return `%${search.trim().replace(/\n/g, " ").replace(/\s\s+/g, " ").toLowerCase()}%`;
+	}
 
-
-	  /**
-   * Takes a string trims it and makes it lower case to be used in ILike
-   */
-  public formatSearch(search: string): string {
-    return `%${search
-      .trim()
-      .replace(/\n/g, ' ')
-      .replace(/\s\s+/g, ' ')
-      .toLowerCase()}%`;
-  }
-
+	/**
+	 * Gets the where clause filter logic for the query builder pagination
+	 */
 	private static getFilters<T>(
 		cursor: keyof T,
 		decoded: string | number | Date,
@@ -42,48 +38,60 @@ export class CommonService {
 			  };
 	}
 
+	/**
+	 * Takes a base64 cursor and returns the string or number value
+	 */
 	public decodeCursor(
 		cursor: string,
 		cursorType: CursorTypeEnum = CursorTypeEnum.STRING,
 	): string | number | Date {
-		const str = Buffer.from(cursor, "base64").toString("utf-8");
+		const string_ = Buffer.from(cursor, "base64").toString("utf8");
 
 		switch (cursorType) {
-			case CursorTypeEnum.DATE:
-				const millisUnix = parseInt(str, 10);
+			case CursorTypeEnum.DATE: {
+				const millisUnix = Number.parseInt(string_, 10);
 
-				if (isNaN(millisUnix))
+				if (Number.isNaN(millisUnix))
 					throw new BadRequestException("Cursor does not reference a valid date");
 
 				return new Date(millisUnix);
-			case CursorTypeEnum.NUMBER:
-				const num = parseInt(str, 10);
+			}
+			case CursorTypeEnum.NUMBER: {
+				const number_ = Number.parseInt(string_, 10);
 
-				if (isNaN(num))
+				if (Number.isNaN(number_))
 					throw new BadRequestException("Cursor does not reference a valid number");
 
-				return num;
-			case CursorTypeEnum.STRING:
-			default:
-				return str;
+				return number_;
+			}
+			default: {
+				return string_;
+			}
 		}
 	}
+	/**
+	 * Takes a date, string or number and returns the base64
+	 * representation of it
+	 */
+	private static encodeCursor(value: Date | string | number): string {
+		let string_: string;
 
-	private static encodeCursor(val: Date | string | number): string {
-		let str: string;
-
-		if (val instanceof Date) {
-			str = val.getTime().toString();
-		} else if (typeof val === "number" || typeof val === "bigint") {
-			str = val.toString();
+		if (value instanceof Date) {
+			string_ = value.getTime().toString();
+		} else if (typeof value === "number" || typeof value === "bigint") {
+			string_ = value.toString();
 		} else {
-			str = val;
+			string_ = value;
 		}
 
-		return Buffer.from(str, "utf-8").toString("base64");
+		return Buffer.from(string_, "utf8").toString("base64");
 	}
 
-	private static createEdge<T>(instance: T, cursor: keyof T, innerCursor?: string): IEdge<T> {
+	/**
+	 * Takes an instance, the cursor key and a innerCursor,
+	 * and generates a GraphQL edge
+	 */
+	private static createEdge<T>(instance: T, cursor: keyof T, innerCursor?: string): Edge<T> {
 		try {
 			return {
 				node: instance,
@@ -91,11 +99,14 @@ export class CommonService {
 					innerCursor ? instance[cursor][innerCursor] : instance[cursor],
 				),
 			};
-		} catch (_) {
+		} catch {
 			throw new InternalServerErrorException("The given cursor is invalid");
 		}
 	}
 
+	/**
+	 * Makes the order by query for MikroORM orderBy method.
+	 */
 	private static getOrderBy<T>(
 		cursor: keyof T,
 		order: QueryOrderEnum,
@@ -112,6 +123,9 @@ export class CommonService {
 			  };
 	}
 
+	/**
+	 * Takes a query builder and returns the entities paginated
+	 */
 	public async queryBuilderPagination<T extends Dictionary>(
 		alias: string,
 		cursor: keyof T,
@@ -121,19 +135,23 @@ export class CommonService {
 		qb: QueryBuilder<T>,
 		after?: string,
 		innerCursor?: string,
-	): Promise<IPaginated<T>> {
-		const strCursor = String(cursor); // because of runtime issues
-		const aliasCursor = `${alias}.${strCursor}`;
-		let prevCount = 0;
+	): Promise<Paginated<T>> {
+		const stringCursor = String(cursor); // because of runtime issues
+		const aliasCursor = `${alias}.${stringCursor}`;
+		let previousCount = 0;
 
 		if (after) {
 			const decoded = this.decodeCursor(after, cursorType);
 			const oppositeOd = getOppositeOrder(order);
-			const tempQb = qb.clone();
-			tempQb.andWhere(CommonService.getFilters(cursor, decoded, oppositeOd, innerCursor));
-			prevCount = await tempQb.count(aliasCursor, true);
+			const temporaryQb = qb.clone();
+
+			temporaryQb.andWhere(
+				CommonService.getFilters(cursor, decoded, oppositeOd, innerCursor),
+			);
+			previousCount = await temporaryQb.count(aliasCursor, true);
 
 			const normalOd = getQueryOrder(order);
+
 			qb.andWhere(CommonService.getFilters(cursor, decoded, normalOd, innerCursor));
 		}
 
@@ -149,7 +167,7 @@ export class CommonService {
 			]),
 		);
 
-		return this.paginate(entities, count, prevCount, cursor, first, innerCursor);
+		return this.paginate(entities, count, previousCount, cursor, first, innerCursor);
 	}
 
 	/**
@@ -174,8 +192,8 @@ export class CommonService {
 		cursor: keyof T,
 		first: number,
 		innerCursor?: string,
-	): IPaginated<T> {
-		const pages: IPaginated<T> = {
+	): Paginated<T> {
+		const pages: Paginated<T> = {
 			currentCount,
 			previousCount,
 			edges: [],
@@ -186,14 +204,14 @@ export class CommonService {
 				hasNextPage: false,
 			},
 		};
-		const len = instances.length;
+		const length = instances.length;
 
-		if (len > 0) {
-			for (let i = 0; i < len; i++) {
-				pages.edges.push(CommonService.createEdge(instances[i], cursor, innerCursor));
+		if (length > 0) {
+			for (let index = 0; index < length; index++) {
+				pages.edges.push(CommonService.createEdge(instances[index], cursor, innerCursor));
 			}
 			pages.pageInfo.startCursor = pages.edges[0].cursor;
-			pages.pageInfo.endCursor = pages.edges[len - 1].cursor;
+			pages.pageInfo.endCursor = pages.edges[length - 1].cursor;
 			pages.pageInfo.hasNextPage = currentCount > first;
 			pages.pageInfo.hasPreviousPage = previousCount > 0;
 		}
@@ -201,58 +219,45 @@ export class CommonService {
 		return pages;
 	}
 
+	/**
+	 * Takes an entity repository and a FilterQuery and returns the paginated
+	 * entities
+	 */
+	public async findAndCountPagination<T extends Dictionary>(
+		cursor: keyof T,
+		first: number,
+		order: QueryOrderEnum,
+		repo: EntityRepository<T>,
+		where: FilterQuery<T>,
+		after?: string,
+		afterCursor: CursorTypeEnum = CursorTypeEnum.STRING,
+		innerCursor?: string,
+	): Promise<Paginated<T>> {
+		let previousCount = 0;
 
-    /**
-   * Takes an entity repository and a FilterQuery and returns the paginated
-   * entities
-   */
-  public async findAndCountPagination<T extends Dictionary>(
-    cursor: keyof T,
-    first: number,
-    order: QueryOrderEnum,
-    repo: EntityRepository<T>,
-    where: FilterQuery<T>,
-    after?: string,
-    afterCursor: CursorTypeEnum = CursorTypeEnum.STRING,
-    innerCursor?: string,
-  ): Promise<IPaginated<T>> {
-    let previousCount = 0;
+		if (after) {
+			const decoded = this.decodeCursor(after, afterCursor);
+			const queryOrder = getQueryOrder(order);
+			const oppositeOrder = getOppositeOrder(order);
+			const countWhere = where;
 
-    if (after) {
-      const decoded = this.decodeCursor(after, afterCursor);
-      const queryOrder = getQueryOrder(order);
-      const oppositeOrder = getOppositeOrder(order);
-      const countWhere = where;
-      countWhere['$and'] = CommonService.getFilters(
-        'createdAt',
-        decoded,
-        oppositeOrder,
-        innerCursor,
-      );
-      previousCount = await repo.count(countWhere);
-      where['$and'] = CommonService.getFilters(
-        'createdAt',
-        decoded,
-        queryOrder,
-        innerCursor,
-      );
-    }
+			countWhere["$and"] = CommonService.getFilters(
+				"createdAt",
+				decoded,
+				oppositeOrder,
+				innerCursor,
+			);
+			previousCount = await repo.count(countWhere);
+			where["$and"] = CommonService.getFilters("createdAt", decoded, queryOrder, innerCursor);
+		}
 
-    const [entities, count] = await this.throwInternalError(
-      repo.findAndCount(where, {
-        orderBy: CommonService.getOrderBy(cursor, order, innerCursor),
-        limit: first,
-      }),
-    );
+		const [entities, count] = await this.throwInternalError(
+			repo.findAndCount(where, {
+				orderBy: CommonService.getOrderBy(cursor, order, innerCursor),
+				limit: first,
+			}),
+		);
 
-    return this.paginate(
-      entities,
-      count,
-      previousCount,
-      cursor,
-      first,
-      innerCursor,
-    );
-  }
-
+		return this.paginate(entities, count, previousCount, cursor, first, innerCursor);
+	}
 }

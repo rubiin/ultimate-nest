@@ -1,12 +1,12 @@
 import { IFile, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { PaginationDto } from "@common/dtos/pagination.dto";
+import { CommonService } from "@common/helpers/common.service";
 import { Category, Comment, OtpLog, Post, Protocol, RefreshToken, Tag, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
 import { CacheService } from "@lib/cache/cache.service";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { QueryOrder } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
 import { TokensService } from "@modules/token/tokens.service";
@@ -56,11 +56,7 @@ export const mockedProtocol = {
 };
 
 export const queryDto: PaginationDto = {
-	page: 1,
-	limit: 10,
-	offset: 5,
-	sort: "createdAt",
-	order: QueryOrder.DESC,
+	first: 10,
 };
 
 export const mockFile = {
@@ -115,6 +111,7 @@ export const mockResponse = createMock<Response>();
 export const mockAmqConnection = createMock<AmqpConnection>();
 export const mockCloudinaryService = createMock<CloudinaryService>();
 export const mockConfigService = createMock<ConfigService>();
+export const mockCommonService = createMock<CommonService>();
 export const mockCacheService = createMock<CacheService>();
 export const mockUserRepo = createMock<BaseRepository<User>>();
 export const mockJwtService = createMock<JwtService>();
@@ -206,3 +203,17 @@ mockUserRepo.findAndPaginate.mockImplementation(() =>
 		total: 100,
 	}),
 );
+
+mockCommonService.queryBuilderPagination.mockImplementation((_variables: any) => {
+	return Promise.resolve({
+		previousCount: 0,
+		currentCount: 0,
+		edges: [],
+		pageInfo: {
+			endCursor: "string",
+			startCursor: "string",
+			hasNextPage: false,
+			hasPreviousPage: false,
+		},
+	});
+});

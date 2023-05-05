@@ -1,12 +1,11 @@
-import { IsOptional, IsString, Length } from "class-validator";
+import { IsStringField } from "@common/decorators";
+
 import { PaginationDto } from "./pagination.dto";
 
 export abstract class SearchDto extends PaginationDto {
-
-  @IsString()
-  @Length(1, 100, {
-    message: 'Search needs to be between 1 and 100 characters',
-  })
-  @IsOptional()
-  public search?: string;
+	/**
+	 *  The search query
+	 */
+	@IsStringField({ required: false, minLength: 1, maxLength: 100 })
+	public search?: string;
 }

@@ -1,6 +1,15 @@
-import { CursorTypeEnum, EmailSubjects, EmailTemplateEnum, IBaseService, QueryOrderEnum } from "@common/@types";
+import {
+	CursorTypeEnum,
+	EmailSubjects,
+	EmailTemplateEnum,
+	IBaseService,
+	QueryOrderEnum,
+} from "@common/@types";
+import { Paginated } from "@common/@types/pagination.class";
 import { DtoWithFile, isNull, isUndefined } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
+import { SearchDto } from "@common/dtos/search.dto";
+import { CommonService } from "@common/helpers/common.service";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";
@@ -12,18 +21,13 @@ import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { I18nContext } from "nestjs-i18n";
-import { Observable, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
-import { IPaginated } from "@common/@types/interfaces/pagination.interface";
-import { SearchDto } from "@common/dtos/search.dto";
-import { CommonService } from "@common/helpers/common.service";
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
 export class UserService implements IBaseService<User> {
-
-
-	private readonly queryName = 'u';
+	private readonly queryName = "u";
 
 	constructor(
 		@InjectRepository(User)
@@ -35,30 +39,31 @@ export class UserService implements IBaseService<User> {
 		private readonly commonService: CommonService,
 	) {}
 
+	findAll(dto: SearchDto): Observable<Paginated<User>> {
+		const { search, first, after } = dto;
+		const qb = this.userRepository.createQueryBuilder(this.queryName).where({
+			isActive: true,
+		});
 
-	findAll(dto: SearchDto): Observable<IPaginated<User>> {
-    const { search, first, after } = dto;
-    const qb = this.userRepository.createQueryBuilder(this.queryName).where({
-      confirmed: true,
-    });
+		if (!isUndefined(search) && !isNull(search)) {
+			qb.andWhere({
+				name: {
+					$ilike: this.commonService.formatSearch(search),
+				},
+			});
+		}
 
-    if (!isUndefined(search) && !isNull(search)) {
-      qb.andWhere({
-        name: {
-          $ilike: this.commonService.formatSearch(search),
-        },
-      });
-    }
-
-    return from(this.commonService.queryBuilderPagination(
-      this.queryName,
-      'username',
-      CursorTypeEnum.STRING,
-      first,
-      QueryOrderEnum.ASC,
-      qb,
-      after,
-    ))
+		return from(
+			this.commonService.queryBuilderPagination(
+				this.queryName,
+				"username",
+				CursorTypeEnum.STRING,
+				first,
+				QueryOrderEnum.ASC,
+				qb,
+				after,
+			),
+		);
 	}
 
 	/**

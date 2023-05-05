@@ -1,4 +1,5 @@
 import { Action } from "@common/@types";
+import { Paginated } from "@common/@types/pagination.class";
 import {
 	ApiPaginatedResponse,
 	GenericController,
@@ -12,7 +13,6 @@ import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Body, Delete, Get, Post, Put, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
 
-import { IPaginated } from "@common/@types/interfaces/pagination.interface";
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 import { PostService } from "./post.service";
 
@@ -22,8 +22,8 @@ export class PostController {
 
 	@Get()
 	@ApiPaginatedResponse(PostEntity, "Post list")
-	findAll(@Query() PaginationDto: PaginationDto): Observable<IPaginated<PostEntity>> {
-		return this.postService.findAll(PaginationDto);
+	findAll(@Query() dto: PaginationDto): Observable<Paginated<PostEntity>> {
+		return this.postService.findAll(dto);
 	}
 
 	@Get(":idx")

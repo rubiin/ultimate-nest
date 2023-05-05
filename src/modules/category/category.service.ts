@@ -6,6 +6,7 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class CategoryService extends BaseService<Tag> {
+	readonly queryName = "c";
 	// @ts-expect-error: Unused import error
 	constructor(@InjectRepository(Tag) private tagRepository: BaseRepository<Tag>) {
 		super(tagRepository);

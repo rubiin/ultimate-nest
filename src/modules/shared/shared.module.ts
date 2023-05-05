@@ -1,4 +1,5 @@
 import { IsUniqueConstraint } from "@common/decorators/validation";
+import { CommonModule } from "@common/helpers/common.module";
 import {
 	NestCaslModule,
 	NestCloudinaryModule,
@@ -36,6 +37,7 @@ import { ScheduleModule } from "@nestjs/schedule";
 		UserModule,
 		ChatModule,
 		TagsModule,
+		CommonModule,
 		CategoryModule,
 		OrmModule,
 		TwoFactorModule,

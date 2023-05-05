@@ -19,7 +19,7 @@ export class UserSeeder extends Seeder {
 					author: user,
 				});
 
-				const tags = new TagFactory(em).make(randomNumber(2, 4));
+				const tags = new TagFactory(em).makeOne();
 
 				const posts = await new PostFactory(em).create(randomNumber(2, 4), {
 					author: user,
@@ -29,6 +29,6 @@ export class UserSeeder extends Seeder {
 
 				user.posts.set(posts);
 			})
-			.make(randomNumber(2, 5));
+			.make(50);
 	}
 }

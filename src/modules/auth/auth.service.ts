@@ -220,7 +220,7 @@ export class AuthService {
 						const otp = this.otpRepository.create({
 							user: userExists,
 							otpCode: otpNumber,
-							expiresIn: new Date(Date.now() + protocol.otpExpiryInMinutes * 60_000),
+							expiresIn: new Date(Date.now() + (protocol.otpExpiryInMinutes * 60_000)), //prettier-ignore
 							isUsed: false,
 						});
 

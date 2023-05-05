@@ -1,8 +1,7 @@
 import { CursorTypeEnum, IBaseService, QueryOrderEnum } from "@common/@types";
-import { IPaginated } from "@common/@types/interfaces/pagination.interface";
-import { isNull, isUndefined } from "@common/@types/types";
+import { Paginated } from "@common/@types/pagination.class";
 import { BaseEntity, BaseRepository } from "@common/database";
-import { SearchDto } from "@common/dtos/search.dto";
+import { PaginationDto } from "@common/dtos/pagination.dto";
 import { CommonService } from "@common/helpers/common.service";
 import { User } from "@entities";
 import { EntityData, QBFilterQuery, RequiredEntityData } from "@mikro-orm/core";
@@ -15,12 +14,10 @@ export abstract class BaseService<
 > implements IBaseService
 {
 	protected search: QBFilterQuery<Entity> = null;
-	protected queryName = 'b';
+	protected queryName = "b";
 	private readonly commonService: CommonService;
 
-	protected constructor(private readonly repository: BaseRepository<Entity>,
-
-		) {}
+	protected constructor(private readonly repository: BaseRepository<Entity>) {}
 
 	/**
 	 * "Create a new entity from the given DTO, persist it, and return it."
@@ -45,29 +42,25 @@ export abstract class BaseService<
 	 * @returns An observable of a pagination object.
 	 * @param PaginationDto
 	 */
-	findAll(dto: SearchDto): Observable<IPaginated<Entity>> {
-  const { search, first, after } = dto;
-    const qb = this.repository.createQueryBuilder(this.queryName).where({
-      confirmed: true,
-    });
+	findAll(dto: PaginationDto): Observable<Paginated<Entity>> {
+		const { first, after } = dto;
+		const qb = this.repository.createQueryBuilder(this.queryName).where({
+			isActive: true,
+		});
 
-    if (!isUndefined(search) && !isNull(search)) {
-      qb.andWhere({
-        name: {
-          $ilike: this.commonService.formatSearch(search),
-        },
-      });
-    }
+		// by default, the id is used as cursor
 
-    return from(this.commonService.queryBuilderPagination(
-      this.queryName,
-      'id',
-      CursorTypeEnum.STRING,
-      first,
-      QueryOrderEnum.ASC,
-      qb,
-      after,
-    ))
+		return from(
+			this.commonService.queryBuilderPagination(
+				this.queryName,
+				"id",
+				CursorTypeEnum.STRING,
+				first,
+				QueryOrderEnum.ASC,
+				qb,
+				after,
+			),
+		);
 	}
 
 	/**

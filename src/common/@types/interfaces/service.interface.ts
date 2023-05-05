@@ -3,7 +3,8 @@ import { PaginationDto } from "@common/dtos/pagination.dto";
 import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { Observable } from "rxjs";
-import { IPaginated } from "./pagination.interface";
+
+import { Paginated } from "../pagination.class";
 
 /**
  * common service interface that enforces common methods
@@ -15,7 +16,7 @@ export interface IBaseService<
 > {
 	create(dto: CreateDto, user?: User): Promise<Entity> | Observable<Entity>;
 
-	findAll(dto: PaginationDto): Observable<IPaginated<Entity>>;
+	findAll(dto: PaginationDto): Observable<Paginated<Entity>>;
 
 	findOne(index: string): Observable<Entity>;
 

@@ -1,15 +1,17 @@
-import { IsBase64, IsInt, IsOptional, IsString, Max, Min } from "class-validator";
+import { IsNumberField, IsStringField } from "@common/decorators";
+import { IsBase64 } from "class-validator";
 
 export abstract class PaginationDto {
+	/**
+	 * The cursor of the page you are requesting
+	 */
+	@IsStringField({ required: false })
+	@IsBase64()
+	public after?: string;
 
-  @IsString()
-  @IsBase64()
-  @IsOptional()
-  public after?: string;
-
-  @IsInt()
-  @Min(1)
-  @Max(50)
-  public first = 10;
-
+	/**
+	 * Results page you want to retrieve (0..N)
+	 */
+	@IsNumberField({ required: false })
+	public first = 10;
 }

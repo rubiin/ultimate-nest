@@ -1,29 +1,18 @@
-
+import { Paginated } from "@common/@types/pagination.class";
 import { applyDecorators, Type } from "@nestjs/common";
-import { ApiOperation } from "@nestjs/swagger";
+import { ApiExtraModels, ApiOkResponse, ApiOperation, getSchemaPath } from "@nestjs/swagger";
 
+// optimize this to list node
 
-// fix me
-
-export const ApiPaginatedResponse = <TModel extends Type>(_model: TModel, operation: string) => {
+export const ApiPaginatedResponse = <TModel extends Type>(model: TModel, operation: string) => {
 	return applyDecorators(
 		ApiOperation({ summary: operation }),
-		// ApiExtraModels(IPaginated),
-		// ApiOkResponse({
-		// 	description: `Successfully received ${model.name.toLowerCase()} list`,
-		// 	schema: {
-		// 		allOf: [
-		// 			{ $ref: getSchemaPath(IPaginated) },
-		// 			{
-		// 				properties: {
-		// 					data: {
-		// 						type: "array",
-		// 						items: { $ref: getSchemaPath(model) },
-		// 					},
-		// 				},
-		// 			},
-		// 		],
-		// 	},
-		// }),
+		ApiExtraModels(Paginated),
+		ApiOkResponse({
+			description: `Successfully received ${model.name.toLowerCase()} list`,
+			schema: {
+				allOf: [{ $ref: getSchemaPath(Paginated) }],
+			},
+		}),
 	);
 };
