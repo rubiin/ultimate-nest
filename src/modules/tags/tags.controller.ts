@@ -4,7 +4,7 @@ import { BaseController } from "@modules/base/base.controller";
 
 import { TagsService } from "./tags.service";
 
-@GenericController("tags")
+@GenericController("tags", false)
 export class TagsController extends BaseController<Tag> {
 	// @ts-expect-error: Unused import error
 	constructor(private tagsService: TagsService) {

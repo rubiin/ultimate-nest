@@ -15,9 +15,11 @@ export abstract class BaseService<
 {
 	protected search: QBFilterQuery<Entity> = null;
 	protected queryName = "b";
-	private readonly commonService: CommonService;
 
-	protected constructor(private readonly repository: BaseRepository<Entity>) {}
+	protected constructor(
+		private readonly repository: BaseRepository<Entity>,
+		readonly commonService: CommonService,
+	) {}
 
 	/**
 	 * "Create a new entity from the given DTO, persist it, and return it."

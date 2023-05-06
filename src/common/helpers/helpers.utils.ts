@@ -33,6 +33,7 @@ export const HelperService = {
 	},
 
 	isDev: () => process.env.NODE_ENV.startsWith("dev"),
+	isProd: () => process.env.NODE_ENV.startsWith("prod"),
 
 	/* A function that returns an observable that resolves to a boolean. */
 	hashString: (userPassword: string): Promise<string> => {
