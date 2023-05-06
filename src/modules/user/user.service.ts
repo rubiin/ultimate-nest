@@ -15,7 +15,7 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
@@ -82,10 +82,16 @@ export class UserService implements IBaseService<User> {
 		).pipe(
 			mergeMap(user => {
 				if (!user) {
-					return throwError(() =>
-						I18nContext.current<I18nTranslations>()!.t("exception.itemDoesNotExist", {
-							args: { item: "User" },
-						}),
+					return throwError(
+						() =>
+							new NotFoundException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemDoesNotExist",
+									{
+										args: { item: "User" },
+									},
+								),
+							),
 					);
 				}
 
