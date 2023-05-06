@@ -1,9 +1,12 @@
 import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
 import { Edge, Paginated } from "@common/@types/pagination.class";
 import { getOppositeOrder, getQueryOrder, tOppositeOrder, tOrderEnum } from "@common/@types/types";
+import { CURSOR_INVALID, CURSOR_INVALID_DATE, CURSOR_INVALID_NUMBER } from "@common/constant";
 import { Dictionary, FilterQuery } from "@mikro-orm/core";
 import { EntityRepository, QueryBuilder } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
+
+
 
 @Injectable()
 export class CommonService {
@@ -51,16 +54,14 @@ export class CommonService {
 			case CursorTypeEnum.DATE: {
 				const millisUnix = Number.parseInt(string_, 10);
 
-				if (Number.isNaN(millisUnix))
-					throw new BadRequestException("Cursor does not reference a valid date");
+				if (Number.isNaN(millisUnix)) throw new BadRequestException(CURSOR_INVALID_NUMBER);
 
 				return new Date(millisUnix);
 			}
 			case CursorTypeEnum.NUMBER: {
 				const number_ = Number.parseInt(string_, 10);
 
-				if (Number.isNaN(number_))
-					throw new BadRequestException("Cursor does not reference a valid number");
+				if (Number.isNaN(number_)) throw new BadRequestException(CURSOR_INVALID_DATE);
 
 				return number_;
 			}
@@ -74,17 +75,13 @@ export class CommonService {
 	 * representation of it
 	 */
 	private static encodeCursor(value: Date | string | number): string {
-		let string_: string;
+		let string = value.toString();
 
 		if (value instanceof Date) {
-			string_ = value.getTime().toString();
-		} else if (typeof value === "number" || typeof value === "bigint") {
-			string_ = value.toString();
-		} else {
-			string_ = value;
+			string = value.getTime().toString();
 		}
 
-		return Buffer.from(string_, "utf8").toString("base64");
+		return Buffer.from(string, "utf8").toString("base64");
 	}
 
 	/**
@@ -100,7 +97,7 @@ export class CommonService {
 				),
 			};
 		} catch {
-			throw new InternalServerErrorException("The given cursor is invalid");
+			throw new InternalServerErrorException(CURSOR_INVALID);
 		}
 	}
 
