@@ -209,7 +209,7 @@ mockCommonService.queryBuilderPagination.mockImplementation((_variables: any) =>
 		previousCount: 0,
 		currentCount: 0,
 		edges: [],
-		pageInfo: {
+		meta: {
 			endCursor: "string",
 			startCursor: "string",
 			hasNextPage: false,

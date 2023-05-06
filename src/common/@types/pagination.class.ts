@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class PageInfo {
+export class Meta {
 	@ApiProperty()
 	endCursor: string;
 
@@ -32,6 +32,6 @@ export class Paginated<T> {
 	@ApiProperty({ isArray: true, type: () => Edge })
 	edges: Edge<T>[];
 
-	@ApiProperty({ type: () => PageInfo })
-	pageInfo: PageInfo;
+	@ApiProperty({ type: () => Meta })
+	meta: Meta;
 }

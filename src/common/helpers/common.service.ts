@@ -1,19 +1,17 @@
 import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
 import { Edge, Paginated } from "@common/@types/pagination.class";
 import { getOppositeOrder, getQueryOrder, tOppositeOrder, tOrderEnum } from "@common/@types/types";
-import { CURSOR_INVALID, CURSOR_INVALID_DATE, CURSOR_INVALID_NUMBER } from "@common/constant";
 import { Dictionary, FilterQuery } from "@mikro-orm/core";
 import { EntityRepository, QueryBuilder } from "@mikro-orm/postgresql";
-import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
-
-
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { I18nContext } from "nestjs-i18n";
 
 @Injectable()
 export class CommonService {
 	/**
 	 * Takes a string trims it and makes it lower case to be used in ILike
 	 */
-	public formatSearch(search: string): string {
+	formatSearch(search: string): string {
 		return `%${search.trim().replace(/\n/g, " ").replace(/\s\s+/g, " ").toLowerCase()}%`;
 	}
 
@@ -28,23 +26,23 @@ export class CommonService {
 	): FilterQuery<Dictionary<T>> {
 		return innerCursor
 			? {
-					[cursor]: {
-						[innerCursor]: {
-							[order]: decoded,
-						},
-					},
-			  }
-			: {
-					[cursor]: {
+				[cursor]: {
+					[innerCursor]: {
 						[order]: decoded,
 					},
-			  };
+				},
+			}
+			: {
+				[cursor]: {
+					[order]: decoded,
+				},
+			};
 	}
 
 	/**
 	 * Takes a base64 cursor and returns the string or number value
 	 */
-	public decodeCursor(
+	decodeCursor(
 		cursor: string,
 		cursorType: CursorTypeEnum = CursorTypeEnum.STRING,
 	): string | number | Date {
@@ -54,14 +52,20 @@ export class CommonService {
 			case CursorTypeEnum.DATE: {
 				const millisUnix = Number.parseInt(string_, 10);
 
-				if (Number.isNaN(millisUnix)) throw new BadRequestException(CURSOR_INVALID_NUMBER);
+				if (Number.isNaN(millisUnix))
+					throw new BadRequestException(
+						I18nContext.current<I18nTranslations>()!.t("exception.cursorInvalidDate"),
+					);
 
 				return new Date(millisUnix);
 			}
 			case CursorTypeEnum.NUMBER: {
 				const number_ = Number.parseInt(string_, 10);
 
-				if (Number.isNaN(number_)) throw new BadRequestException(CURSOR_INVALID_DATE);
+				if (Number.isNaN(number_))
+					throw new BadRequestException(
+						I18nContext.current<I18nTranslations>()!.t("exception.cursorInvalidNumber"),
+					);
 
 				return number_;
 			}
@@ -97,7 +101,9 @@ export class CommonService {
 				),
 			};
 		} catch {
-			throw new InternalServerErrorException(CURSOR_INVALID);
+			throw new BadRequestException(
+				I18nContext.current<I18nTranslations>()!.t("exception.invalidCursor"),
+			);
 		}
 	}
 
@@ -111,19 +117,19 @@ export class CommonService {
 	): Record<string, QueryOrderEnum | Record<string, QueryOrderEnum>> {
 		return innerCursor
 			? {
-					[cursor]: {
-						[innerCursor]: order,
-					},
-			  }
+				[cursor]: {
+					[innerCursor]: order,
+				},
+			}
 			: {
-					[cursor]: order,
-			  };
+				[cursor]: order,
+			};
 	}
 
 	/**
 	 * Takes a query builder and returns the entities paginated
 	 */
-	public async queryBuilderPagination<T extends Dictionary>(
+	async queryBuilderPagination<T extends Dictionary>(
 		alias: string,
 		cursor: keyof T,
 		cursorType: CursorTypeEnum,
@@ -152,37 +158,20 @@ export class CommonService {
 			qb.andWhere(CommonService.getFilters(cursor, decoded, normalOd, innerCursor));
 		}
 
-		const cqb = qb.clone();
-		const [count, entities]: [number, T[]] = await this.throwInternalError(
-			Promise.all([
-				cqb.count(aliasCursor, true),
-				qb
-					.select(`${alias}.*`)
-					.orderBy(CommonService.getOrderBy(cursor, order, innerCursor))
-					.limit(first)
-					.getResult(),
-			]),
-		);
+		const [entities, count]: [T[], number] = await qb
+			.select(`${alias}.*`)
+			.orderBy(CommonService.getOrderBy(cursor, order, innerCursor))
+			.limit(first)
+			.getResultAndCount();
 
 		return this.paginate(entities, count, previousCount, cursor, first, innerCursor);
-	}
-
-	/**
-	 * Function to abstract throwing internal server exception
-	 */
-	public async throwInternalError<T>(promise: Promise<T>): Promise<T> {
-		try {
-			return await promise;
-		} catch (error) {
-			throw new InternalServerErrorException(error);
-		}
 	}
 
 	/**
 	 * Takes an entity array and returns the paginated type of that entity array
 	 * It uses cursor pagination as recommended in https://relay.dev/graphql/connections.htm
 	 */
-	public paginate<T>(
+	paginate<T>(
 		instances: T[],
 		currentCount: number,
 		previousCount: number,
@@ -194,7 +183,7 @@ export class CommonService {
 			currentCount,
 			previousCount,
 			edges: [],
-			pageInfo: {
+			meta: {
 				endCursor: "",
 				startCursor: "",
 				hasPreviousPage: false,
@@ -207,10 +196,10 @@ export class CommonService {
 			for (let index = 0; index < length; index++) {
 				pages.edges.push(CommonService.createEdge(instances[index], cursor, innerCursor));
 			}
-			pages.pageInfo.startCursor = pages.edges[0].cursor;
-			pages.pageInfo.endCursor = pages.edges[length - 1].cursor;
-			pages.pageInfo.hasNextPage = currentCount > first;
-			pages.pageInfo.hasPreviousPage = previousCount > 0;
+			pages.meta.startCursor = pages.edges[0].cursor;
+			pages.meta.endCursor = pages.edges[length - 1].cursor;
+			pages.meta.hasNextPage = currentCount > first;
+			pages.meta.hasPreviousPage = previousCount > 0;
 		}
 
 		return pages;
@@ -220,7 +209,7 @@ export class CommonService {
 	 * Takes an entity repository and a FilterQuery and returns the paginated
 	 * entities
 	 */
-	public async findAndCountPagination<T extends Dictionary>(
+	async findAndCountPagination<T extends Dictionary>(
 		cursor: keyof T,
 		first: number,
 		order: QueryOrderEnum,
@@ -248,12 +237,10 @@ export class CommonService {
 			where["$and"] = CommonService.getFilters("createdAt", decoded, queryOrder, innerCursor);
 		}
 
-		const [entities, count] = await this.throwInternalError(
-			repo.findAndCount(where, {
-				orderBy: CommonService.getOrderBy(cursor, order, innerCursor),
-				limit: first,
-			}),
-		);
+		const [entities, count] = await repo.findAndCount(where, {
+			orderBy: CommonService.getOrderBy(cursor, order, innerCursor),
+			limit: first,
+		});
 
 		return this.paginate(entities, count, previousCount, cursor, first, innerCursor);
 	}
