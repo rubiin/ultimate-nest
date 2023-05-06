@@ -31,7 +31,6 @@ export type I18nTranslations = {
         "invalidCursor": string;
         "cursorInvalidDate": string;
         "cursorInvalidNumber": string;
-        "tokenNotFound": string;
         "apiUnauthorizedResponse": string;
         "tooManyRequest": string;
     };

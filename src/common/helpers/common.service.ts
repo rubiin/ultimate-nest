@@ -26,17 +26,17 @@ export class CommonService {
 	): FilterQuery<Dictionary<T>> {
 		return innerCursor
 			? {
-				[cursor]: {
-					[innerCursor]: {
+					[cursor]: {
+						[innerCursor]: {
+							[order]: decoded,
+						},
+					},
+			  }
+			: {
+					[cursor]: {
 						[order]: decoded,
 					},
-				},
-			}
-			: {
-				[cursor]: {
-					[order]: decoded,
-				},
-			};
+			  };
 	}
 
 	/**
@@ -117,13 +117,13 @@ export class CommonService {
 	): Record<string, QueryOrderEnum | Record<string, QueryOrderEnum>> {
 		return innerCursor
 			? {
-				[cursor]: {
-					[innerCursor]: order,
-				},
-			}
+					[cursor]: {
+						[innerCursor]: order,
+					},
+			  }
 			: {
-				[cursor]: order,
-			};
+					[cursor]: order,
+			  };
 	}
 
 	/**
