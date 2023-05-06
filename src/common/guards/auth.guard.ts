@@ -1,4 +1,3 @@
-import { TOKEN_NOT_FOUND } from "@common/constant";
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TokenExpiredError } from "jsonwebtoken";
@@ -20,7 +19,9 @@ export class AuthGuard implements CanActivate {
 		const token = request.headers.authorization;
 
 		if (!token) {
-			throw new UnauthorizedException(TOKEN_NOT_FOUND);
+			throw new UnauthorizedException(
+				I18nContext.current<I18nTranslations>()!.t("exception.apiUnauthorizedResponse"),
+			);
 		}
 
 		try {

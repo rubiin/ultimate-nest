@@ -22,12 +22,18 @@ export type I18nTranslations = {
         "unsupportedFileType": string;
         "incorrectOldPassword": string;
         "badRequest": string;
-        "tooManyRequest": string;
         "invalidRefreshToken": string;
         "deleteDefaultError": string;
         "tooManyTries": string;
         "refreshToken": string;
         "token": string;
+        "tooManyRequests": string;
+        "invalidCursor": string;
+        "cursorInvalidDate": string;
+        "cursorInvalidNumber": string;
+        "tokenNotFound": string;
+        "apiUnauthorizedResponse": string;
+        "tooManyRequest": string;
     };
     "validation": {
         "isNotEmpty": string;

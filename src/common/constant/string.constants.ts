@@ -1,20 +1,14 @@
 import { capitalize } from "helper-fns";
 
 export const APP_NAME = "nestify";
-
+export const REQUEST_ID_TOKEN_HEADER = "x-request-id";
+export const VERSION_VALIDATION_MESSAGE = 'Version must start with "v" followed by a number.';
 
 // TODO: Move messages to a i18n file
 
 export const THROTTLE_LIMIT_RESPONSE = "Too many requests, please try again later.";
 export const MULTER_IMAGE_FILTER = "Only image files are allowed!.";
-export const API_UNAUTHORISED_RESPONSE = "No auth token.";
-export const REQUEST_ID_TOKEN_HEADER = "x-request-id";
-export const VERSION_VALIDATION_MESSAGE = 'Version must start with "v" followed by a number.';
-export const TOKEN_NOT_FOUND = "Token not found in request";
-export const CURSOR_INVALID_NUMBER = "Cursor does not reference a valid date";
-export const CURSOR_INVALID_DATE = "Cursor does not reference a valid number";
-export const CURSOR_INVALID = "The given cursor is invalid";
-
+export const API_UNAUTHORISED_RESPONSE = "No auth token in request.";
 
 // swagger constants
 export const SWAGGER_TITLE = `${capitalize(APP_NAME)} API Documentation`;

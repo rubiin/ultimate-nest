@@ -77,7 +77,7 @@ describe("PostService", () => {
 
 	it("should get post list", () => {
 		service.findAll(queryDto).subscribe(result => {
-			expect(result.pageInfo).toBeDefined();
+			expect(result.meta).toBeDefined();
 			expect(result.edges).toStrictEqual([]);
 			expect(mockCommonService.queryBuilderPagination).toHaveBeenCalled();
 		});
