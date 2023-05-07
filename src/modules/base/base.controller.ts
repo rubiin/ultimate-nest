@@ -9,6 +9,8 @@ import { Observable } from "rxjs";
 
 import { BaseService } from "./base.service";
 
+// TODO: add validation for the DTOs
+
 export abstract class BaseController<
 	T extends BaseEntity,
 	CreateDto extends RequiredEntityData<T> = RequiredEntityData<T>,
