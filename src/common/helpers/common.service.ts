@@ -12,7 +12,7 @@ export class CommonService {
 	 * Takes a string trims it and makes it lower case to be used in ILike
 	 */
 	formatSearch(search: string): string {
-		return `%${search.trim().replace(/\n/g, " ").replace(/\s\s+/g, " ").toLowerCase()}%`;
+		return `%${search.trim().replaceAll("\n", " ").replaceAll(/\s\s+/g, " ").toLowerCase()}%`;
 	}
 
 	/**

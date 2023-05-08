@@ -125,9 +125,7 @@ const bootstrap = async () => {
 			`${configService.get("app.allowedHosts", { infer: true })}`,
 		)}`,
 	);
-	logger.log(
-		`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}/doc`)}`,
-	);
+	logger.log(`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/doc`)}`);
 	logger.log(`Server is up. ${chalk.yellow(`+${Math.trunc(performance.now())}ms`)}`);
 };
 
