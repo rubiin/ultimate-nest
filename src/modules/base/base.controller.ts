@@ -1,13 +1,13 @@
 import { Paginated } from "@common/@types/pagination.class";
 import { BaseEntity } from "@common/database";
 import { LoggedInUser, UUIDParam } from "@common/decorators";
-import { PaginationDto } from "@common/dtos/pagination.dto";
 import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { Body, Delete, Get, Post, Put, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
 
 import { BaseService } from "./base.service";
+import { SearchDto } from "@common/dtos/search.dto";
 
 // TODO: add validation for the DTOs
 
@@ -16,10 +16,10 @@ export abstract class BaseController<
 	CreateDto extends RequiredEntityData<T> = RequiredEntityData<T>,
 	UpdateDto extends EntityData<T> = EntityData<T>,
 > {
-	protected constructor(private readonly service: BaseService<T>) {}
+	protected constructor(private readonly service: BaseService<T>) { }
 
 	@Get()
-	findAll(@Query() dto: PaginationDto): Observable<Paginated<T>> {
+	findAll(@Query() dto: SearchDto): Observable<Paginated<T>> {
 		return this.service.findAll(dto);
 	}
 

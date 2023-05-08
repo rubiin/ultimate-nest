@@ -7,7 +7,8 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class TagsService extends BaseService<Tag> {
-	readonly queryName = "t";
+	protected readonly queryName = "t";         // the name of the query used in the pagination
+	protected readonly searchField = 'title';  // the field to search for when searching for tags
 	constructor(
 		// @ts-expect-error: Unused import error
 		@InjectRepository(Tag) private tagRepository: BaseRepository<Tag>,
