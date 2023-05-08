@@ -7,5 +7,5 @@ export abstract class SearchDto extends PaginationDto {
 	 *  The search query
 	 */
 	@IsStringField({ required: false, minLength: 1, maxLength: 100 })
-	public search?: string;
+	search?: string;
 }

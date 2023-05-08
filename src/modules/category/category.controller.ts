@@ -1,14 +1,13 @@
 import { GenericController } from "@common/decorators";
-import { Tag } from "@entities";
+import { Category } from "@entities";
 import { BaseController } from "@modules/base/base.controller";
 
 import { CategoryService } from "./category.service";
-import { CreateCategoryDto, EditCategoryDto } from "./dto";
 
-@GenericController("categories", false)
-export class CategoryController extends BaseController<Tag, CreateCategoryDto, EditCategoryDto> {
+@GenericController("categories")
+export class CategoryController extends BaseController<Category> {
 	// @ts-expect-error: Unused import error
-	constructor(private tagsService: CategoryService) {
-		super(tagsService);
+	constructor(private categoryService: CategoryService) {
+		super(categoryService);
 	}
 }

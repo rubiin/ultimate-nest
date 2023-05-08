@@ -1,11 +1,11 @@
 import { CursorTypeEnum, IBaseService, QueryOrderEnum } from "@common/@types";
 import { Paginated } from "@common/@types/pagination.class";
 import { BaseEntity, BaseRepository } from "@common/database";
-import { PaginationDto } from "@common/dtos/pagination.dto";
+import { SearchDto } from "@common/dtos/search.dto";
 import { CommonService } from "@common/helpers/common.service";
 import { User } from "@entities";
-import { EntityData, QBFilterQuery, RequiredEntityData } from "@mikro-orm/core";
-import { from, map, Observable } from "rxjs";
+import { EntityData, RequiredEntityData } from "@mikro-orm/core";
+import { Observable, from, map } from "rxjs";
 
 export abstract class BaseService<
 	Entity extends BaseEntity = BaseEntity,
@@ -13,8 +13,11 @@ export abstract class BaseService<
 	UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > implements IBaseService
 {
-	protected search: QBFilterQuery<Entity> = null;
+
+	protected searchField: keyof Entity = null;
 	protected queryName = "b";
+
+
 
 	protected constructor(
 		private readonly repository: BaseRepository<Entity>,
@@ -42,13 +45,22 @@ export abstract class BaseService<
 	/**
 	 * It takes in a SearchOptionsDto object, and returns an Observable of a Pagination object
 	 * @returns An observable of a pagination object.
-	 * @param PaginationDto
+	 * @param SearchDto - The DTO that will be used to search for the entities.
 	 */
-	findAll(dto: PaginationDto): Observable<Paginated<Entity>> {
+	findAll(dto: SearchDto): Observable<Paginated<Entity>> {
 		const { first, after } = dto;
 		const qb = this.repository.createQueryBuilder(this.queryName).where({
 			isActive: true,
 		});
+
+
+		if(dto.search && this.searchField){
+			qb.andWhere({
+				[this.searchField]: {
+					$ilike: this.commonService.formatSearch(dto.search),
+				}
+			});
+		}
 
 		// by default, the id is used as cursor
 
@@ -56,7 +68,7 @@ export abstract class BaseService<
 			this.commonService.queryBuilderPagination(
 				this.queryName,
 				"id",
-				CursorTypeEnum.STRING,
+				CursorTypeEnum.NUMBER,
 				first,
 				QueryOrderEnum.ASC,
 				qb,

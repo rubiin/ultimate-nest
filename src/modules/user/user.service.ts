@@ -47,7 +47,7 @@ export class UserService implements IBaseService<User> {
 
 		if (!isUndefined(search) && !isNull(search)) {
 			qb.andWhere({
-				name: {
+				firstName: {
 					$ilike: this.commonService.formatSearch(search),
 				},
 			});
