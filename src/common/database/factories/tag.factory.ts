@@ -9,7 +9,7 @@ export class TagFactory extends Factory<Tag> {
 
 	definition(faker: Faker): Partial<Tag> {
 		return {
-			title: faker.helpers.unique(faker.system.fileName) + faker.datatype.number(100),
+			title: faker.system.fileName() + Date.now(),
 			description: faker.lorem.sentence(1),
 		};
 	}
