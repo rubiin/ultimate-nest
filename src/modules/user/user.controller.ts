@@ -1,5 +1,5 @@
 import { Action, IFile, Roles } from "@common/@types";
-import { Paginated } from "@common/@types/pagination.class";
+import { PaginationClass } from "@common/@types/pagination.class";
 import {
 	ApiFile,
 	ApiPaginatedResponse,
@@ -25,7 +25,7 @@ export class UserController {
 	@Public()
 	@ApiPaginatedResponse(User, "Users list")
 	@Get()
-	findAll(@Query() PaginationDto: SearchDto): Observable<Paginated<User>> {
+	findAll(@Query() PaginationDto: SearchDto): Observable<PaginationClass<User>> {
 		return this.userService.findAll(PaginationDto);
 	}
 

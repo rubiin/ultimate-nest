@@ -11,7 +11,7 @@ export class Meta {
 	hasPreviousPage: boolean;
 }
 
-export class Paginated<T> {
+export class PaginationClass<T> {
 	@ApiProperty({ isArray: true })
 	data: T[];
 

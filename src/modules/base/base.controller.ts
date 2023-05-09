@@ -1,4 +1,4 @@
-import { Paginated } from "@common/@types/pagination.class";
+import { PaginationClass } from "@common/@types/pagination.class";
 import { BaseEntity } from "@common/database";
 import { LoggedInUser, UUIDParam } from "@common/decorators";
 import { SearchDto } from "@common/dtos/search.dto";
@@ -19,7 +19,7 @@ export abstract class BaseController<
 	protected constructor(private readonly service: BaseService<T>) {}
 
 	@Get()
-	findAll(@Query() dto: SearchDto): Observable<Paginated<T>> {
+	findAll(@Query() dto: SearchDto): Observable<PaginationClass<T>> {
 		return this.service.findAll(dto);
 	}
 

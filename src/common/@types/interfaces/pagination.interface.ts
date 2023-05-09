@@ -3,7 +3,7 @@ import { QueryBuilder } from "@mikro-orm/postgresql";
 
 import { CursorTypeEnum, QueryOrderEnum } from "../enums";
 
-export interface QueryBuilderPaginationOptions<T extends Dictionary> {
+export interface IQueryBuilderPaginationOptions<T extends Dictionary> {
 	alias: string;
 	cursor: keyof T;
 	cursorType: CursorTypeEnum;
@@ -13,7 +13,7 @@ export interface QueryBuilderPaginationOptions<T extends Dictionary> {
 	after?: string;
 }
 
-export interface PaginateOptions<T> {
+export interface IPaginateOptions<T> {
 	instances: T[];
 	currentCount: number;
 	previousCount: number;

@@ -5,7 +5,7 @@ import {
 	IBaseService,
 	QueryOrderEnum,
 } from "@common/@types";
-import { Paginated } from "@common/@types/pagination.class";
+import { PaginationClass } from "@common/@types/pagination.class";
 import { DtoWithFile, isNull, isUndefined } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
@@ -38,11 +38,9 @@ export class UserService implements IBaseService<User> {
 		private readonly cloudinaryService: CloudinaryService,
 	) {}
 
-	findAll(dto: SearchDto): Observable<Paginated<User>> {
+	findAll(dto: SearchDto): Observable<PaginationClass<User>> {
 		const { search, first, after } = dto;
-		const qb = this.userRepository.createQueryBuilder(this.queryName).where({
-			isActive: true,
-		});
+		const qb = this.userRepository.createQueryBuilder(this.queryName);
 
 		if (!isUndefined(search) && !isNull(search)) {
 			qb.andWhere({
@@ -75,8 +73,6 @@ export class UserService implements IBaseService<User> {
 		return from(
 			this.userRepository.findOne({
 				idx: index,
-				isActive: true,
-				isObsolete: false,
 			}),
 		).pipe(
 			mergeMap(user => {

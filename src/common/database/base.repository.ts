@@ -1,21 +1,22 @@
 import {
 	CursorTypeEnum,
-	PaginateOptions,
-	QueryBuilderPaginationOptions,
+	IPaginateOptions,
+	IQueryBuilderPaginationOptions,
 	QueryOrderEnum,
 } from "@common/@types";
-import { Paginated } from "@common/@types/pagination.class";
+import { PaginationClass } from "@common/@types/pagination.class";
 import { getOppositeOrder, getQueryOrder, tOppositeOrder, tOrderEnum } from "@common/@types/types";
 import {
 	Dictionary,
 	EntityData,
 	EntityManager,
+	EntityName,
 	FilterQuery,
 	FindOptions,
 	Loaded,
 } from "@mikro-orm/core";
 import { EntityRepository } from "@mikro-orm/postgresql";
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, of, switchMap, throwError } from "rxjs";
 
@@ -23,6 +24,10 @@ import { BaseEntity } from "./base.entity";
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	private readonly encoding: BufferEncoding = "base64";
+
+	getEntityName(): EntityName<T> {
+		return this.entityName;
+	}
 
 	/**
 	 *
@@ -90,7 +95,17 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		return from(this.findOne(where)).pipe(
 			switchMap(entity => {
 				if (!entity) {
-					return throwError(() => new BadRequestException("Entity not found."));
+					return throwError(
+						() =>
+							new NotFoundException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemDoesNotExist",
+									{
+										args: { item: this.getEntityName() },
+									},
+								),
+							),
+					);
 				}
 				this.em.assign(entity, update);
 
@@ -108,7 +123,17 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		return from(this.findOne(where)).pipe(
 			switchMap(entity => {
 				if (!entity) {
-					return throwError(() => new BadRequestException("Entity not found."));
+					return throwError(
+						() =>
+							new NotFoundException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemDoesNotExist",
+									{
+										args: { item: this.getEntityName() },
+									},
+								),
+							),
+					);
 				}
 				this.em.remove(entity);
 
@@ -126,7 +151,17 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		return from(this.findOne(where)).pipe(
 			switchMap(entity => {
 				if (!entity) {
-					return throwError(() => new BadRequestException("Entity not found."));
+					return throwError(
+						() =>
+							new NotFoundException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemDoesNotExist",
+									{
+										args: { item: this.getEntityName() },
+									},
+								),
+							),
+					);
 				}
 
 				return this.softRemoveAndFlush(entity);
@@ -221,7 +256,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		order,
 		qb,
 		after,
-	}: QueryBuilderPaginationOptions<T>): Promise<Paginated<T>> {
+	}: IQueryBuilderPaginationOptions<T>): Promise<PaginationClass<T>> {
 		const previousCount = 0;
 
 		if (after) {
@@ -255,8 +290,8 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		previousCount,
 		cursor,
 		first,
-	}: PaginateOptions<T>): Paginated<T> {
-		const pages: Paginated<T> = {
+	}: IPaginateOptions<T>): PaginationClass<T> {
+		const pages: PaginationClass<T> = {
 			data: instances,
 			meta: {
 				nextCursor: "",
@@ -265,7 +300,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 			},
 		};
 		const length = instances.length;
-		const last = instances[length - 1][cursor] as unknown as string | number | Date;
+		const last = instances[length - 1][cursor] as string | number | Date;
 
 		pages.meta.nextCursor = this.encodeCursor(last);
 		pages.meta.hasNextPage = currentCount > first;
@@ -286,7 +321,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		where: FilterQuery<T>,
 		after?: string,
 		afterCursor: CursorTypeEnum = CursorTypeEnum.STRING,
-	): Promise<Paginated<T>> {
+	): Promise<PaginationClass<T>> {
 		let previousCount = 0;
 
 		if (after) {
