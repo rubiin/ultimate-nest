@@ -9,7 +9,7 @@ import { Paginated } from "@common/@types/pagination.class";
 import { DtoWithFile, isNull, isUndefined } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
-import { CommonService } from "@common/helpers/common.service";
+import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { IConfig } from "@lib/config/config.interface";
@@ -36,7 +36,6 @@ export class UserService implements IBaseService<User> {
 		private readonly configService: ConfigService<IConfig, true>,
 		private readonly amqpConnection: AmqpConnection,
 		private readonly cloudinaryService: CloudinaryService,
-		private readonly commonService: CommonService,
 	) {}
 
 	findAll(dto: SearchDto): Observable<Paginated<User>> {
@@ -48,21 +47,21 @@ export class UserService implements IBaseService<User> {
 		if (!isUndefined(search) && !isNull(search)) {
 			qb.andWhere({
 				firstName: {
-					$ilike: this.commonService.formatSearch(search),
+					$ilike: HelperService.formatSearch(search),
 				},
 			});
 		}
 
 		return from(
-			this.commonService.queryBuilderPagination(
-				this.queryName,
-				"username",
-				CursorTypeEnum.STRING,
+			this.userRepository.queryBuilderPagination({
+				alias: this.queryName,
+				cursor: "username",
+				cursorType: CursorTypeEnum.STRING,
 				first,
-				QueryOrderEnum.ASC,
+				order: QueryOrderEnum.ASC,
 				qb,
 				after,
-			),
+			}),
 		);
 	}
 

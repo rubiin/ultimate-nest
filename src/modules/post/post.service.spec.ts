@@ -1,11 +1,9 @@
-import { CommonService } from "@common/helpers/common.service";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import {
 	mockCategoryRepo,
 	mockCommentRepo,
-	mockCommonService,
 	mockedPost,
 	mockedUser,
 	mockEm,
@@ -48,7 +46,6 @@ describe("PostService", () => {
 					provide: getRepositoryToken(Category),
 					useValue: mockCategoryRepo,
 				},
-				{ provide: CommonService, useValue: mockCommonService },
 			],
 		}).compile();
 
@@ -78,8 +75,7 @@ describe("PostService", () => {
 	it("should get post list", () => {
 		service.findAll(queryDto).subscribe(result => {
 			expect(result.meta).toBeDefined();
-			expect(result.edges).toStrictEqual([]);
-			expect(mockCommonService.queryBuilderPagination).toHaveBeenCalled();
+			expect(result.data).toStrictEqual([]);
 		});
 	});
 

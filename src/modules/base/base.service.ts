@@ -2,10 +2,10 @@ import { CursorTypeEnum, IBaseService, QueryOrderEnum } from "@common/@types";
 import { Paginated } from "@common/@types/pagination.class";
 import { BaseEntity, BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
-import { CommonService } from "@common/helpers/common.service";
+import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
-import { Observable, from, map } from "rxjs";
+import { from, map, Observable } from "rxjs";
 
 export abstract class BaseService<
 	Entity extends BaseEntity = BaseEntity,
@@ -13,16 +13,10 @@ export abstract class BaseService<
 	UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > implements IBaseService
 {
-
 	protected searchField: keyof Entity = null;
 	protected queryName = "b";
 
-
-
-	protected constructor(
-		private readonly repository: BaseRepository<Entity>,
-		readonly commonService: CommonService,
-	) {}
+	protected constructor(private readonly repository: BaseRepository<Entity>) {}
 
 	/**
 	 * "Create a new entity from the given DTO, persist it, and return it."
@@ -48,32 +42,31 @@ export abstract class BaseService<
 	 * @param SearchDto - The DTO that will be used to search for the entities.
 	 */
 	findAll(dto: SearchDto): Observable<Paginated<Entity>> {
-		const { first, after } = dto;
+		const { first, after, search } = dto;
 		const qb = this.repository.createQueryBuilder(this.queryName).where({
 			isActive: true,
 		});
 
-
-		if(dto.search && this.searchField){
+		if (search && this.searchField) {
 			qb.andWhere({
 				[this.searchField]: {
-					$ilike: this.commonService.formatSearch(dto.search),
-				}
+					$ilike: HelperService.formatSearch(search),
+				},
 			});
 		}
 
 		// by default, the id is used as cursor
 
 		return from(
-			this.commonService.queryBuilderPagination(
-				this.queryName,
-				"id",
-				CursorTypeEnum.NUMBER,
+			this.repository.queryBuilderPagination({
+				alias: this.queryName,
+				cursor: "id",
+				cursorType: CursorTypeEnum.NUMBER,
 				first,
-				QueryOrderEnum.ASC,
+				order: QueryOrderEnum.ASC,
 				qb,
 				after,
-			),
+			}),
 		);
 	}
 

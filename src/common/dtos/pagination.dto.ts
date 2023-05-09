@@ -10,7 +10,7 @@ export abstract class PaginationDto {
 	@IsBase64({
 		message: i18nValidationMessage("validation.isDataType", {
 			type: "base64",
-		})
+		}),
 	})
 	after?: string;
 
