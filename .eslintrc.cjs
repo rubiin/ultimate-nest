@@ -10,19 +10,19 @@ module.exports = {
     },
     "ignorePatterns": ["migrations", "src/generated"],
     plugins: [
+        "import",
         "@typescript-eslint/eslint-plugin",
         "prettier",
         "unicorn",
         "simple-import-sort",
-        "import",
         "deprecation"
     ],
     extends: [
+        "plugin:import/errors",
         "plugin:import/typescript",
+        "plugin:import/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:import/recommended",
-        "plugin:import/errors",
         "plugin:unicorn/recommended",
         "prettier",
 

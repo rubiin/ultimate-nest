@@ -13,11 +13,11 @@ const argon2Options: ArgonOptions & { raw?: false } = {
 };
 
 export const HelperService = {
-	buildPayloadResponse: (
+	buildPayloadResponse(
 		user: User,
 		accessToken: string,
 		refreshToken?: string,
-	): IAuthenticationResponse => {
+	): IAuthenticationResponse {
 		return {
 			user: {
 				...pick(user, ["id", "idx"]),
@@ -27,24 +27,27 @@ export const HelperService = {
 		};
 	},
 
-	/* A function that returns an observable that resolves to a boolean. */
-	verifyHash: (userPassword: string, passwordToCompare: string): Observable<boolean> => {
+	verifyHash(userPassword: string, passwordToCompare: string): Observable<boolean> {
 		return from(verify(userPassword, passwordToCompare, argon2Options));
 	},
 
-	isDev: () => process.env.NODE_ENV.startsWith("dev"),
-	isProd: () => process.env.NODE_ENV.startsWith("prod"),
+	isDev(): boolean {
+		return process.env.NODE_ENV.startsWith("dev");
+	},
 
-	/* A function that returns an observable that resolves to a boolean. */
-	hashString: (userPassword: string): Promise<string> => {
+	isProd(): boolean {
+		return process.env.NODE_ENV.startsWith("prod");
+	},
+
+	formatSearch(search: string): string {
+		return `%${search.trim().replaceAll("\n", " ").replaceAll(/\s\s+/g, " ").toLowerCase()}%`;
+	},
+
+	hashString(userPassword: string): Promise<string> {
 		return hash(userPassword, argon2Options);
 	},
 
-	/* Generating a thumbnail from a buffer. */
-	generateThumb: (
-		input: Buffer,
-		config: { height: number; width: number },
-	): Observable<Buffer> => {
+	generateThumb(input: Buffer, config: { height: number; width: number }): Observable<Buffer> {
 		return from(sharp(input).resize(config).toFormat("png").toBuffer());
 	},
 };

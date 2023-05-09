@@ -1,11 +1,29 @@
-import { EntityData, EntityManager, FilterQuery, FindOptions, Loaded } from "@mikro-orm/core";
+import {
+	CursorTypeEnum,
+	PaginateOptions,
+	QueryBuilderPaginationOptions,
+	QueryOrderEnum,
+} from "@common/@types";
+import { Paginated } from "@common/@types/pagination.class";
+import { getOppositeOrder, getQueryOrder, tOppositeOrder, tOrderEnum } from "@common/@types/types";
+import {
+	Dictionary,
+	EntityData,
+	EntityManager,
+	FilterQuery,
+	FindOptions,
+	Loaded,
+} from "@mikro-orm/core";
 import { EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException } from "@nestjs/common";
+import { I18nContext } from "nestjs-i18n";
 import { from, map, Observable, of, switchMap, throwError } from "rxjs";
 
 import { BaseEntity } from "./base.entity";
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
+	private readonly encoding: BufferEncoding = "base64";
+
 	/**
 	 *
 	 *
@@ -114,5 +132,185 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 				return this.softRemoveAndFlush(entity);
 			}),
 		);
+	}
+
+	/**
+	 * Gets the where clause filter logic for the query builder pagination
+	 */
+	private getFilters<T>(
+		cursor: keyof T,
+		decoded: string | number | Date,
+		order: tOrderEnum | tOppositeOrder,
+	): FilterQuery<Dictionary<T>> {
+		return {
+			[cursor]: {
+				[order]: decoded,
+			},
+		};
+	}
+
+	/**
+	 * Takes a base64 cursor and returns the string or number value
+	 */
+	decodeCursor(
+		cursor: string,
+		cursorType: CursorTypeEnum = CursorTypeEnum.STRING,
+	): string | number | Date {
+		const string = Buffer.from(cursor, this.encoding).toString("utf8");
+
+		switch (cursorType) {
+			case CursorTypeEnum.DATE: {
+				const millisUnix = Number.parseInt(string, 10);
+
+				if (Number.isNaN(millisUnix))
+					throw new BadRequestException(
+						I18nContext.current<I18nTranslations>()!.t("exception.cursorInvalidDate"),
+					);
+
+				return new Date(millisUnix);
+			}
+			case CursorTypeEnum.NUMBER: {
+				const number = Number.parseInt(string, 10);
+
+				if (Number.isNaN(number))
+					throw new BadRequestException(
+						I18nContext.current<I18nTranslations>()!.t("exception.cursorInvalidNumber"),
+					);
+
+				return number;
+			}
+			default: {
+				return string;
+			}
+		}
+	}
+	/**
+	 * Takes a date, string or number and returns the base64
+	 * representation of it
+	 */
+	encodeCursor(value: Date | string | number): string {
+		let string = value.toString();
+
+		if (value instanceof Date) {
+			string = value.getTime().toString();
+		}
+
+		return Buffer.from(string, "utf8").toString(this.encoding);
+	}
+
+	/**
+	 * Makes the order by query for MikroORM orderBy method.
+	 */
+	private getOrderBy<T>(
+		cursor: keyof T,
+		order: QueryOrderEnum,
+	): Record<string, QueryOrderEnum | Record<string, QueryOrderEnum>> {
+		return {
+			[cursor]: order,
+		};
+	}
+
+	/**
+	 * Takes a query builder and returns the entities paginated
+	 */
+	async queryBuilderPagination<T extends Dictionary>({
+		alias,
+		cursor,
+		cursorType,
+		first,
+		order,
+		qb,
+		after,
+	}: QueryBuilderPaginationOptions<T>): Promise<Paginated<T>> {
+		const previousCount = 0;
+
+		if (after) {
+			const decoded = this.decodeCursor(after, cursorType);
+			const normalOd = getQueryOrder(order);
+
+			qb.andWhere(this.getFilters(cursor, decoded, normalOd));
+		}
+
+		const [entities, count]: [T[], number] = await qb
+			.select(`${alias}.*`)
+			.orderBy(this.getOrderBy(cursor, order))
+			.limit(first)
+			.getResultAndCount();
+
+		return this.paginate({
+			instances: entities,
+			currentCount: count,
+			previousCount,
+			cursor,
+			first,
+		});
+	}
+
+	/**
+	 * Takes an entity array and returns the paginated type of that entity array
+	 */
+	paginate<T>({
+		instances,
+		currentCount,
+		previousCount,
+		cursor,
+		first,
+	}: PaginateOptions<T>): Paginated<T> {
+		const pages: Paginated<T> = {
+			data: instances,
+			meta: {
+				nextCursor: "",
+				hasPreviousPage: false,
+				hasNextPage: false,
+			},
+		};
+		const length = instances.length;
+		const last = instances[length - 1][cursor] as unknown as string | number | Date;
+
+		pages.meta.nextCursor = this.encodeCursor(last);
+		pages.meta.hasNextPage = currentCount > first;
+		pages.meta.hasPreviousPage = previousCount > 0;
+
+		return pages;
+	}
+
+	/**
+	 * Takes an entity repository and a FilterQuery and returns the paginated
+	 * entities
+	 */
+	async findAndCountPagination<T extends Dictionary>(
+		cursor: keyof T,
+		first: number,
+		order: QueryOrderEnum,
+		repo: EntityRepository<T>,
+		where: FilterQuery<T>,
+		after?: string,
+		afterCursor: CursorTypeEnum = CursorTypeEnum.STRING,
+	): Promise<Paginated<T>> {
+		let previousCount = 0;
+
+		if (after) {
+			const decoded = this.decodeCursor(after, afterCursor);
+			const queryOrder = getQueryOrder(order);
+			const oppositeOrder = getOppositeOrder(order);
+			const countWhere = where;
+
+			countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
+			previousCount = await repo.count(countWhere);
+			where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
+		}
+
+		const [entities, count] = await repo.findAndCount(where, {
+			orderBy: this.getOrderBy(cursor, order),
+			limit: first,
+		});
+
+		return this.paginate({
+			instances: entities,
+			currentCount: count,
+			previousCount,
+			cursor,
+			first,
+		});
 	}
 }

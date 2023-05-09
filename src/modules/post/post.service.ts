@@ -3,7 +3,7 @@ import { Paginated } from "@common/@types/pagination.class";
 import { isNull, isUndefined } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
-import { CommonService } from "@common/helpers/common.service";
+import { HelperService } from "@common/helpers";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -31,7 +31,6 @@ export class PostService {
 		private readonly tagRepository: BaseRepository<Tag>,
 		@InjectRepository(Category)
 		private readonly categoryRepository: BaseRepository<Category>,
-		private readonly commonService: CommonService,
 	) {}
 
 	/**
@@ -50,21 +49,21 @@ export class PostService {
 		if (!isUndefined(search) && !isNull(search)) {
 			qb.andWhere({
 				title: {
-					$ilike: this.commonService.formatSearch(search),
+					$ilike: HelperService.formatSearch(search),
 				},
 			});
 		}
 
 		return from(
-			this.commonService.queryBuilderPagination(
-				this.queryName,
-				"title",
-				CursorTypeEnum.STRING,
+			this.postRepository.queryBuilderPagination({
+				alias: this.queryName,
+				cursor: "title",
+				cursorType: CursorTypeEnum.STRING,
 				first,
-				QueryOrderEnum.ASC,
+				order: QueryOrderEnum.ASC,
 				qb,
 				after,
-			),
+			}),
 		);
 	}
 

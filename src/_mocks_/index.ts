@@ -1,7 +1,6 @@
 import { IFile, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { PaginationDto } from "@common/dtos/pagination.dto";
-import { CommonService } from "@common/helpers/common.service";
 import { Category, Comment, OtpLog, Post, Protocol, RefreshToken, Tag, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
@@ -111,7 +110,6 @@ export const mockResponse = createMock<Response>();
 export const mockAmqConnection = createMock<AmqpConnection>();
 export const mockCloudinaryService = createMock<CloudinaryService>();
 export const mockConfigService = createMock<ConfigService>();
-export const mockCommonService = createMock<CommonService>();
 export const mockCacheService = createMock<CacheService>();
 export const mockUserRepo = createMock<BaseRepository<User>>();
 export const mockJwtService = createMock<JwtService>();
@@ -127,6 +125,7 @@ export const mockOtpLogRepo = createMock<BaseRepository<OtpLog>>();
 export const mockProtocolRepo = createMock<BaseRepository<Protocol>>();
 export const mockContext = createMock<ExecutionContext>({});
 export const mockReflector = createMock<Reflector>();
+
 export const mockNext = createMock<CallHandler>({
 	handle: jest.fn(() => of({})),
 });
@@ -203,17 +202,3 @@ mockUserRepo.findAndPaginate.mockImplementation(() =>
 		total: 100,
 	}),
 );
-
-mockCommonService.queryBuilderPagination.mockImplementation((_variables: any) => {
-	return Promise.resolve({
-		previousCount: 0,
-		currentCount: 0,
-		edges: [],
-		meta: {
-			endCursor: "string",
-			startCursor: "string",
-			hasNextPage: false,
-			hasPreviousPage: false,
-		},
-	});
-});
