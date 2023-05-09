@@ -1,5 +1,5 @@
 import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
-import { Paginated } from "@common/@types/pagination.class";
+import { PaginationClass } from "@common/@types/pagination.class";
 import { isNull, isUndefined } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
@@ -40,11 +40,9 @@ export class PostService {
 	 * @returns An observable of a pagination object.
 	 * @param SearchDto - The search dto.
 	 */
-	findAll(dto: SearchDto): Observable<Paginated<Post>> {
+	findAll(dto: SearchDto): Observable<PaginationClass<Post>> {
 		const { search, first, after } = dto;
-		const qb = this.postRepository.createQueryBuilder(this.queryName).where({
-			isActive: true,
-		});
+		const qb = this.postRepository.createQueryBuilder(this.queryName);
 
 		if (!isUndefined(search) && !isNull(search)) {
 			qb.andWhere({
@@ -139,8 +137,6 @@ export class PostService {
 					return from(
 						this.tagRepository.find({
 							idx: dto.tags,
-							isActive: true,
-							isObsolete: false,
 						}),
 					).pipe(
 						switchMap(tags => {
@@ -191,7 +187,7 @@ export class PostService {
 		const post$ = from(this.postRepository.findOneOrFail({ idx: postIndex }));
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id: userId, isActive: true, isObsolete: false },
+				{ id: userId },
 				{
 					populate: ["favorites"],
 					populateWhere: {
@@ -225,13 +221,11 @@ export class PostService {
 		const post$ = from(
 			this.postRepository.findOneOrFail({
 				idx: postIndex,
-				isObsolete: false,
-				isActive: true,
 			}),
 		);
 		const user$ = from(
 			this.userRepository.findOneOrFail(
-				{ id: userId, isActive: true, isObsolete: false },
+				{ id: userId },
 				{
 					populate: ["favorites"],
 					populateWhere: {
@@ -261,7 +255,7 @@ export class PostService {
 	findComments(index: string): Observable<Comment[]> {
 		return from(
 			this.postRepository.findOne(
-				{ idx: index, isActive: true, isObsolete: false },
+				{ idx: index },
 				{
 					populate: ["comments"],
 					populateWhere: {

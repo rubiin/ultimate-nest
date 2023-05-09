@@ -1,11 +1,13 @@
 import { CursorTypeEnum, IBaseService, QueryOrderEnum } from "@common/@types";
-import { Paginated } from "@common/@types/pagination.class";
+import { PaginationClass } from "@common/@types/pagination.class";
 import { BaseEntity, BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
-import { from, map, Observable } from "rxjs";
+import { NotFoundException } from "@nestjs/common";
+import { I18nContext } from "nestjs-i18n";
+import { from, map, mergeMap, Observable, of, throwError } from "rxjs";
 
 export abstract class BaseService<
 	Entity extends BaseEntity = BaseEntity,
@@ -14,7 +16,7 @@ export abstract class BaseService<
 > implements IBaseService
 {
 	protected searchField: keyof Entity = null;
-	protected queryName = "b";
+	protected queryName = "entity";
 
 	protected constructor(private readonly repository: BaseRepository<Entity>) {}
 
@@ -41,11 +43,9 @@ export abstract class BaseService<
 	 * @returns An observable of a pagination object.
 	 * @param SearchDto - The DTO that will be used to search for the entities.
 	 */
-	findAll(dto: SearchDto): Observable<Paginated<Entity>> {
+	findAll(dto: SearchDto): Observable<PaginationClass<Entity>> {
 		const { first, after, search } = dto;
-		const qb = this.repository.createQueryBuilder(this.queryName).where({
-			isActive: true,
-		});
+		const qb = this.repository.createQueryBuilder(this.queryName);
 
 		if (search && this.searchField) {
 			qb.andWhere({
@@ -75,7 +75,25 @@ export abstract class BaseService<
 	 * @param {string} index - The name of the index to search.
 	 */
 	findOne(index: string): Observable<Entity> {
-		return from(this.repository.findOneOrFail({ idx: index } as any));
+		return from(this.repository.findOne({ idx: index } as any)).pipe(
+			mergeMap(entity => {
+				if (!entity) {
+					return throwError(
+						() =>
+							new NotFoundException(
+								I18nContext.current<I18nTranslations>()!.t(
+									"exception.itemDoesNotExist",
+									{
+										args: { item: this.repository.getEntityName() },
+									},
+								),
+							),
+					);
+				}
+
+				return of(entity);
+			}),
+		);
 	}
 
 	/**

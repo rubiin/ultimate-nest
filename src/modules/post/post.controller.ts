@@ -1,5 +1,5 @@
 import { Action } from "@common/@types";
-import { Paginated } from "@common/@types/pagination.class";
+import { PaginationClass } from "@common/@types/pagination.class";
 import {
 	ApiPaginatedResponse,
 	GenericController,
@@ -22,7 +22,7 @@ export class PostController {
 
 	@Get()
 	@ApiPaginatedResponse(PostEntity, "Post list")
-	findAll(@Query() dto: PaginationDto): Observable<Paginated<PostEntity>> {
+	findAll(@Query() dto: PaginationDto): Observable<PaginationClass<PostEntity>> {
 		return this.postService.findAll(dto);
 	}
 

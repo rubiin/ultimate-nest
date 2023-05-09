@@ -37,7 +37,18 @@ export const baseOptions = {
 	filters: {
 		default: {
 			cond: { isObsolete: { $eq: false }, isActive: { $eq: true } },
-			entity: ["Post", "User", "Comment", "Tag", "Category"],
+			entity: [
+				"Post",
+				"User",
+				"Comment",
+				"Tag",
+				"Category",
+				"OtpLog",
+				"Protocol",
+				"RefreshToken",
+				"Conversation",
+				"Message",
+			],
 		},
 	},
 	migrations: {

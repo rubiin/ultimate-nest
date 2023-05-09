@@ -64,8 +64,6 @@ describe("PostService", () => {
 			expect(findOneSpy).toBeCalledWith(
 				{
 					idx: "postId",
-					isActive: true,
-					isObsolete: false,
 				},
 				{ populate: [] },
 			);

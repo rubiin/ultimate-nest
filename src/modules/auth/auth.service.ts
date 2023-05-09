@@ -56,8 +56,6 @@ export class AuthService {
 		return from(
 			this.userRepository.findOne({
 				email,
-				isActive: true,
-				isObsolete: false,
 			}),
 		).pipe(
 			switchMap(user => {
@@ -189,8 +187,6 @@ export class AuthService {
 		return from(
 			this.userRepository.findOne({
 				email,
-				isObsolete: false,
-				isActive: true,
 			}),
 		).pipe(
 			mergeMap(userExists => {
@@ -208,12 +204,7 @@ export class AuthService {
 					);
 				}
 
-				return from(
-					this.protocolRepository.findOne({
-						isActive: true,
-						isObsolete: false,
-					}),
-				).pipe(
+				return from(this.protocolRepository.findOne({})).pipe(
 					switchMap(protocol => {
 						const otpNumber = randomString({ length: 6, numbers: true }); // random six digit otp
 
@@ -262,8 +253,6 @@ export class AuthService {
 		return from(
 			this.otpRepository.findOne({
 				otpCode,
-				isActive: true,
-				isObsolete: false,
 			}),
 		).pipe(
 			switchMap(details => {
@@ -287,8 +276,6 @@ export class AuthService {
 		return from(
 			this.otpRepository.findOne({
 				otpCode,
-				isActive: true,
-				isObsolete: false,
 			}),
 		).pipe(
 			switchMap(codeDetails => {
@@ -356,8 +343,6 @@ export class AuthService {
 		return from(
 			this.userRepository.findOne({
 				id: user.id,
-				isActive: true,
-				isObsolete: false,
 			}),
 		).pipe(
 			switchMap(userDetails => {

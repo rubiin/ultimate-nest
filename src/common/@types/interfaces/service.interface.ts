@@ -4,7 +4,7 @@ import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { Observable } from "rxjs";
 
-import { Paginated } from "../pagination.class";
+import { PaginationClass } from "../pagination.class";
 
 /**
  * common service interface that enforces common methods
@@ -16,7 +16,7 @@ export interface IBaseService<
 > {
 	create(dto: CreateDto, user?: User): Promise<Entity> | Observable<Entity>;
 
-	findAll(dto: PaginationDto): Observable<Paginated<Entity>>;
+	findAll(dto: PaginationDto): Observable<PaginationClass<Entity>>;
 
 	findOne(index: string): Observable<Entity>;
 

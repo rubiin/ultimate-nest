@@ -34,7 +34,7 @@ describe("ProfileService", () => {
 		service.getProfileByUsername("username").subscribe(result => {
 			expect(result).toStrictEqual(mockedUser);
 			expect(mockUserRepo.findOne).toBeCalledWith(
-				{ username: "username", isActive: true, isObsolete: false },
+				{ username: "username" },
 				{
 					populate: [],
 					populateWhere: {
