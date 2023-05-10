@@ -1,1 +1,38 @@
-{"data":{"propertyOrder":{},"properties":{"body":{"name":"body","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},"post":{"name":"post","reference":"m:1","cascade":["persist"],"eager":false,"type":"Post","owner":true,"array":false},"author":{"name":"author","reference":"m:1","cascade":["persist"],"eager":false,"type":"User","owner":true,"array":false}},"props":[{"name":"body","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},{"name":"post","reference":"m:1","cascade":["persist"],"eager":false,"type":"Post","owner":true,"array":false},{"name":"author","reference":"m:1","cascade":["persist"],"eager":false,"type":"User","owner":true,"array":false}],"primaryKeys":[],"filters":{},"hooks":{},"indexes":[{"properties":"author"}],"uniques":[],"checks":[],"concurrencyCheckKeys":{},"className":"Comment","path":"./dist/entities/comment.entity.js","name":"Comment","abstract":false,"constructorParams":["partial"],"toJsonParams":[],"extends":"BaseEntity","useCache":true,"relations":[{"name":"post","reference":"m:1","cascade":["persist"],"eager":false,"type":"Post","owner":true,"array":false},{"name":"author","reference":"m:1","cascade":["persist"],"eager":false,"type":"User","owner":true,"array":false}],"collection":"comment"},"origin":"./dist/entities/comment.entity.js","hash":"585d986d9bee68a568908f88e3d73651","version":"5.7.4"}
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"body": { "name": "body", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			"post": { "name": "post", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "Post", "owner": true, "array": false },
+			"author": { "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "owner": true, "array": false }
+		},
+		"props": [
+			{ "name": "body", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			{ "name": "post", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "Post", "owner": true, "array": false },
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "owner": true, "array": false }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [{ "properties": "author" }],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "Comment",
+		"path": "./dist/entities/comment.entity.js",
+		"name": "Comment",
+		"abstract": false,
+		"constructorParams": ["partial"],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [
+			{ "name": "post", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "Post", "owner": true, "array": false },
+			{ "name": "author", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "owner": true, "array": false }
+		],
+		"collection": "comment"
+	},
+	"origin": "./dist/entities/comment.entity.js",
+	"hash": "74722681f69ff1fb1976950780a96238",
+	"version": "5.7.5"
+}

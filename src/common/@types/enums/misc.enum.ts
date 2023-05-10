@@ -45,9 +45,6 @@ export enum QueryOrderEnum {
 	DESC = "DESC",
 }
 
-
-
-
 export const enum RoutingKeys {
-	SEND_MAIL='send-mail'
+	SEND_MAIL = "send-mail",
 }

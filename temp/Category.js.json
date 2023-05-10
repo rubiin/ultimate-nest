@@ -1,1 +1,35 @@
-{"data":{"propertyOrder":{},"properties":{"name":{"name":"name","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},"description":{"name":"description","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},"posts":{"name":"posts","reference":"m:n","cascade":["persist"],"type":"Post","fixedOrder":false,"array":false}},"props":[{"name":"name","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},{"name":"description","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},{"name":"posts","reference":"m:n","cascade":["persist"],"type":"Post","fixedOrder":false,"array":false}],"primaryKeys":[],"filters":{},"hooks":{},"indexes":[{"properties":"name"}],"uniques":[],"checks":[],"concurrencyCheckKeys":{},"className":"Category","path":"./dist/entities/category.entity.js","name":"Category","abstract":false,"constructorParams":["partial"],"toJsonParams":[],"extends":"BaseEntity","useCache":true,"relations":[{"name":"posts","reference":"m:n","cascade":["persist"],"type":"Post","fixedOrder":false,"array":false}],"collection":"category"},"origin":"./dist/entities/category.entity.js","hash":"efbf62b209beb25b24ef46de475983ec","version":"5.7.4"}
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"name": { "name": "name", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			"description": { "name": "description", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			"posts": { "name": "posts", "reference": "m:n", "cascade": ["persist"], "type": "Post", "fixedOrder": false, "array": false }
+		},
+		"props": [
+			{ "name": "name", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			{ "name": "description", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			{ "name": "posts", "reference": "m:n", "cascade": ["persist"], "type": "Post", "fixedOrder": false, "array": false }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [{ "properties": "name" }],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "Category",
+		"path": "./dist/entities/category.entity.js",
+		"name": "Category",
+		"abstract": false,
+		"constructorParams": ["partial"],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [{ "name": "posts", "reference": "m:n", "cascade": ["persist"], "type": "Post", "fixedOrder": false, "array": false }],
+		"collection": "category"
+	},
+	"origin": "./dist/entities/category.entity.js",
+	"hash": "9d6405014f2f8f3b690db1392b47ef29",
+	"version": "5.7.5"
+}

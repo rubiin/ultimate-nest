@@ -2,7 +2,7 @@ import {
 	CursorTypeEnum,
 	EmailSubjects,
 	EmailTemplateEnum,
-	IBaseService,
+	ICrudService,
 	QueryOrderEnum,
 	RoutingKeys,
 } from "@common/@types";
@@ -27,7 +27,7 @@ import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
-export class UserService implements IBaseService<User> {
+export class UserService implements ICrudService<User> {
 	private readonly queryName = "u";
 
 	constructor(
@@ -60,7 +60,7 @@ export class UserService implements IBaseService<User> {
 				order: QueryOrderEnum.ASC,
 				qb,
 				after,
-				search
+				search,
 			}),
 		);
 	}
@@ -165,6 +165,7 @@ export class UserService implements IBaseService<User> {
 						if (url) {
 							user.avatar = url;
 						}
+
 						return from(this.em.flush()).pipe(
 							switchMap(() => {
 								return of(user);

@@ -1,13 +1,16 @@
 import { GenericController } from "@common/decorators";
 import { Tag } from "@entities";
-import { BaseController } from "@modules/base/base.controller";
+import { ControllerFactory } from "@lib/crud/crud.controller";
 
+import { CreateTagDto, EditTagDto } from "./dto";
 import { TagsService } from "./tags.service";
 
 @GenericController("tags")
-export class TagsController extends BaseController<Tag> {
-	// @ts-expect-error: Unused import error
-	constructor(private tagsService: TagsService) {
-		super(tagsService);
+export class TagsController extends ControllerFactory<Tag, CreateTagDto, EditTagDto>(
+	CreateTagDto,
+	EditTagDto,
+) {
+	constructor(protected service: TagsService) {
+		super();
 	}
 }

@@ -1,7 +1,7 @@
 import { BaseRepository } from "@common/database";
 import { Category } from "@entities";
+import { BaseService } from "@lib/crud/crud.service";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { BaseService } from "@modules/base/base.service";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

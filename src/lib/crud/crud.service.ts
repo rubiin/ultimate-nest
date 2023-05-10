@@ -1,4 +1,4 @@
-import { CursorTypeEnum, IBaseService, QueryOrderEnum } from "@common/@types";
+import { CursorTypeEnum, ICrudService, QueryOrderEnum } from "@common/@types";
 import { PaginationClass } from "@common/@types/pagination.class";
 import { BaseEntity, BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
@@ -13,7 +13,7 @@ export abstract class BaseService<
 	Entity extends BaseEntity = BaseEntity,
 	CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
 	UpdateDto extends EntityData<Entity> = EntityData<Entity>,
-> implements IBaseService
+> implements ICrudService
 {
 	protected searchField: keyof Entity = null;
 	protected queryName = "entity";
