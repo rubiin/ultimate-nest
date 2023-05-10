@@ -53,6 +53,15 @@ export class UserService implements ICrud<User> {
 			});
 		}
 
+		if (dto.relations) {
+			dto.relations.forEach(relation => {
+				qb.leftJoinAndSelect(
+					`${this.queryName}.${relation}`,
+					`${this.queryName}_${relation}`,
+				);
+			});
+		}
+
 		return from(
 			this.userRepository.queryBuilderPagination({
 				alias: this.queryName,

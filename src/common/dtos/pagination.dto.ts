@@ -23,6 +23,13 @@ export abstract class PaginationDto {
 	@IsBoolean()
 	withDeleted?: boolean = false;
 
+	/** The `relations` property is used to specify which related
+	 * entities should be included in the query
+	 * results.
+	 */
+	@IsStringField({ required: false, each: true })
+	relations?: string[] = [];
+
 	/**
 	 * Results page you want to retrieve (0..N)
 	 */
