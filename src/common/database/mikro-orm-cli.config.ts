@@ -34,23 +34,6 @@ export const baseOptions = {
 	findOneOrFailHandler: (entityName: string, key: any) => {
 		return new NotFoundException(`${entityName} not found for ${key}`);
 	},
-	filters: {
-		default: {
-			cond: { isObsolete: { $eq: false }, isActive: { $eq: true } },
-			entity: [
-				"Post",
-				"User",
-				"Comment",
-				"Tag",
-				"Category",
-				"OtpLog",
-				"Protocol",
-				"RefreshToken",
-				"Conversation",
-				"Message",
-			],
-		},
-	},
 	migrations: {
 		migrations: {
 			fileName: (timestamp: string, name?: string) => {

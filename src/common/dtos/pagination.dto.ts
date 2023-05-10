@@ -1,5 +1,6 @@
 import { IsNumberField, IsStringField } from "@common/decorators";
-import { IsBase64 } from "class-validator";
+import { ToBoolean } from "@common/decorators/validation";
+import { IsBase64, IsBoolean } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export abstract class PaginationDto {
@@ -13,6 +14,14 @@ export abstract class PaginationDto {
 		}),
 	})
 	after?: string;
+
+	/** The `withDeleted` property is a boolean flag that
+	 * indicates whether to include deleted items in the
+	 * results or not.
+	 */
+	@ToBoolean()
+	@IsBoolean()
+	withDeleted?: boolean = false;
 
 	/**
 	 * Results page you want to retrieve (0..N)
