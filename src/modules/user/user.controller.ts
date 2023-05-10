@@ -82,8 +82,12 @@ export class UserController {
 		params: ["idx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Update))
-	update(@UUIDParam("idx") index: string, @Body() dto: EditUserDto): Observable<User> {
-		return this.userService.update(index, dto);
+	update(
+		@UUIDParam("idx") index: string,
+		@Body() dto: EditUserDto,
+		@UploadedFile(fileValidatorPipe({ required: false })) image?: IFile,
+	): Observable<User> {
+		return this.userService.update(index, dto, image);
 	}
 
 	@Delete(":idx")

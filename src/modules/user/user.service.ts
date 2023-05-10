@@ -19,7 +19,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
-import { CloudinaryService } from "nestjs-cloudinary";
+import { CloudinaryService, IFile } from "nestjs-cloudinary";
 import { I18nContext } from "nestjs-i18n";
 import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
@@ -140,14 +140,36 @@ export class UserService implements IBaseService<User> {
 	 * earlier
 	 * @param {string} index - string - the index of the user to edit
 	 * @param {EditUserDto} dto - EditUserDto
+	 * @param {IFile} image - IFile
 	 * @returns Observable<User>
 	 */
-	update(index: string, dto: EditUserDto): Observable<User> {
+	update(index: string, dto: EditUserDto, image?: IFile): Observable<User> {
+		let uploadImage$ = of(null);
+
 		return this.findOne(index).pipe(
 			switchMap(user => {
+				if (image) {
+					uploadImage$ = from(this.cloudinaryService.uploadFile(image)).pipe(
+						switchMap(({ url }) => {
+							return of(url);
+						}),
+					);
+				}
+
 				this.userRepository.assign(user, dto);
 
-				return from(this.em.flush()).pipe(map(() => user));
+				return uploadImage$.pipe(
+					switchMap(url => {
+						if (url) {
+							user.avatar = url;
+						}
+						return from(this.em.flush()).pipe(
+							switchMap(() => {
+								return of(user);
+							}),
+						);
+					}),
+				);
 			}),
 		);
 	}
