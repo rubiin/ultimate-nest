@@ -18,7 +18,7 @@ import {
 import { EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, Observable, of, switchMap, throwError } from "rxjs";
+import { Observable, from, map, of, switchMap, throwError } from "rxjs";
 
 import { BaseEntity } from "./base.entity";
 
@@ -300,17 +300,16 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 				nextCursor: "",
 				hasPreviousPage: false,
 				hasNextPage: false,
+				search: search ?? "",
 			},
 		};
-
-		// TODO: handle error incase of no instances
 		const length = instances.length;
-		const last = instances[length - 1][cursor] as string | number | Date;
-
-		pages.meta.nextCursor = this.encodeCursor(last);
-		pages.meta.hasNextPage = currentCount > first;
-		pages.meta.hasPreviousPage = previousCount > 0;
-		pages.meta.search = search ?? "";
+		if (length > 0) {
+			const last = instances[length - 1][cursor] as string | number | Date;
+			pages.meta.nextCursor = this.encodeCursor(last);
+			pages.meta.hasNextPage = currentCount > first;
+			pages.meta.hasPreviousPage = previousCount > 0;
+		}
 
 		return pages;
 	}
