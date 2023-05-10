@@ -1,1 +1,42 @@
-{"data":{"propertyOrder":{},"properties":{"body":{"name":"body","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},"sender":{"name":"sender","reference":"m:1","cascade":["persist"],"eager":false,"type":"User","owner":true,"array":false},"conversation":{"name":"conversation","reference":"m:1","cascade":["persist"],"eager":false,"type":"Conversation","owner":true,"array":false},"isRead":{"name":"isRead","reference":"scalar","getter":false,"setter":false,"type":"boolean","array":false},"readAt":{"name":"readAt","reference":"scalar","getter":false,"setter":false,"type":"Date","array":false,"optional":true}},"props":[{"name":"body","reference":"scalar","getter":false,"setter":false,"type":"string","array":false},{"name":"sender","reference":"m:1","cascade":["persist"],"eager":false,"type":"User","owner":true,"array":false},{"name":"conversation","reference":"m:1","cascade":["persist"],"eager":false,"type":"Conversation","owner":true,"array":false},{"name":"isRead","reference":"scalar","getter":false,"setter":false,"type":"boolean","array":false},{"name":"readAt","reference":"scalar","getter":false,"setter":false,"type":"Date","array":false,"optional":true}],"primaryKeys":[],"filters":{},"hooks":{},"indexes":[{"properties":"sender"},{"properties":"conversation"}],"uniques":[],"checks":[],"concurrencyCheckKeys":{},"className":"Message","path":"./dist/entities/message.entity.js","name":"Message","abstract":false,"constructorParams":["partial"],"toJsonParams":[],"extends":"BaseEntity","useCache":true,"relations":[{"name":"sender","reference":"m:1","cascade":["persist"],"eager":false,"type":"User","owner":true,"array":false},{"name":"conversation","reference":"m:1","cascade":["persist"],"eager":false,"type":"Conversation","owner":true,"array":false}],"collection":"message"},"origin":"./dist/entities/message.entity.js","hash":"c8e75c096aad8bfd128c0cfb0001bf0e","version":"5.7.4"}
+{
+	"data": {
+		"propertyOrder": {},
+		"properties": {
+			"body": { "name": "body", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			"sender": { "name": "sender", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "owner": true, "array": false },
+			"conversation": { "name": "conversation", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "Conversation", "owner": true, "array": false },
+			"isRead": { "name": "isRead", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
+			"readAt": { "name": "readAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "array": false, "optional": true }
+		},
+		"props": [
+			{ "name": "body", "reference": "scalar", "getter": false, "setter": false, "type": "string", "array": false },
+			{ "name": "sender", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "owner": true, "array": false },
+			{ "name": "conversation", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "Conversation", "owner": true, "array": false },
+			{ "name": "isRead", "reference": "scalar", "getter": false, "setter": false, "type": "boolean", "array": false },
+			{ "name": "readAt", "reference": "scalar", "getter": false, "setter": false, "type": "Date", "array": false, "optional": true }
+		],
+		"primaryKeys": [],
+		"filters": {},
+		"hooks": {},
+		"indexes": [{ "properties": "sender" }, { "properties": "conversation" }],
+		"uniques": [],
+		"checks": [],
+		"concurrencyCheckKeys": {},
+		"className": "Message",
+		"path": "./dist/entities/message.entity.js",
+		"name": "Message",
+		"abstract": false,
+		"constructorParams": ["partial"],
+		"toJsonParams": [],
+		"extends": "BaseEntity",
+		"useCache": true,
+		"relations": [
+			{ "name": "sender", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "User", "owner": true, "array": false },
+			{ "name": "conversation", "reference": "m:1", "cascade": ["persist"], "eager": false, "type": "Conversation", "owner": true, "array": false }
+		],
+		"collection": "message"
+	},
+	"origin": "./dist/entities/message.entity.js",
+	"hash": "02f1762c10b6f329f417530c5f4409e3",
+	"version": "5.7.5"
+}

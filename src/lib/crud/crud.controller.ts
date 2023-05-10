@@ -1,0 +1,96 @@
+import { ICrudService } from "@common/@types";
+import { ICrudController } from "@common/@types/interfaces/controller.interface";
+import { PaginationClass } from "@common/@types/pagination.class";
+import { BaseEntity } from "@common/database";
+import { LoggedInUser } from "@common/decorators";
+import { SearchDto } from "@common/dtos/search.dto";
+import { AppUtils } from "@common/helpers";
+import { User } from "@entities";
+import { EntityData, RequiredEntityData } from "@mikro-orm/core";
+import {
+	ArgumentMetadata,
+	Body,
+	Delete,
+	Get,
+	Injectable,
+	Param,
+	Post,
+	Put,
+	Query,
+	Type,
+	UsePipes,
+	ValidationPipe,
+	ValidationPipeOptions,
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+
+@Injectable()
+export class AbstractValidationPipe extends ValidationPipe {
+	constructor(
+		options: ValidationPipeOptions,
+		private readonly targetTypes: { body?: Type; query?: Type; param?: Type },
+	) {
+		super(options);
+	}
+
+	async transform(value: any, metadata: ArgumentMetadata) {
+		const targetType = this.targetTypes[metadata.type];
+
+		if (!targetType) {
+			return super.transform(value, metadata);
+		}
+
+		return super.transform(value, { ...metadata, metatype: targetType });
+	}
+}
+
+export function ControllerFactory<
+	T extends BaseEntity,
+	C extends RequiredEntityData<T>,
+	U extends EntityData<T>,
+>(createDto: Type<C>, updateDto: Type<U>): Type<ICrudController<T, C, U>> {
+	const createPipe = new AbstractValidationPipe(AppUtils.validationPipeOptions(), {
+		body: createDto,
+	});
+	const updatePipe = new AbstractValidationPipe(AppUtils.validationPipeOptions(), {
+		body: updateDto,
+	});
+
+	class CrudController<
+		T extends BaseEntity,
+		C extends RequiredEntityData<T>,
+		U extends EntityData<T>,
+	> implements ICrudController<T, C, U>
+	{
+		protected service: ICrudService<T, C, U>;
+
+		@Get(":idx")
+		getOne(@Param("idx") index: string): Observable<T> {
+			return this.service.findOne(index);
+		}
+
+		@Get()
+		get(@Query() query: SearchDto): Observable<PaginationClass<T>> {
+			return this.service.findAll(query);
+		}
+
+		@Post()
+		@UsePipes(createPipe)
+		create(@Body() body: C, @LoggedInUser() user?: User): Observable<T> {
+			return this.service.create(body, user);
+		}
+
+		@Put(":idx")
+		@UsePipes(updatePipe)
+		update(@Param("idx") index: string, @Body() body: U): Observable<T> {
+			return this.service.update(index, body);
+		}
+
+		@Delete(":idx")
+		delete(@Param("idx") index: string): Observable<Partial<T>> {
+			return this.service.remove(index);
+		}
+	}
+
+	return CrudController;
+}

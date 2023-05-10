@@ -214,9 +214,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
 				return number;
 			}
-			default:
+			default: {
 				return string;
-
+			}
 		}
 	}
 	/**
@@ -256,7 +256,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		order,
 		qb,
 		after,
-		search
+		search,
 	}: IQueryBuilderPaginationOptions<T>): Promise<PaginationClass<T>> {
 		const previousCount = 0;
 
@@ -279,7 +279,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 			previousCount,
 			cursor,
 			first,
-			search
+			search,
 		});
 	}
 
@@ -292,7 +292,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		previousCount,
 		cursor,
 		first,
-		search
+		search,
 	}: IPaginateOptions<T>): PaginationClass<T> {
 		const pages: PaginationClass<T> = {
 			data: instances,
@@ -302,6 +302,8 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 				hasNextPage: false,
 			},
 		};
+
+		// TODO: handle error incase of no instances
 		const length = instances.length;
 		const last = instances[length - 1][cursor] as string | number | Date;
 

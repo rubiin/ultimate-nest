@@ -3,7 +3,7 @@ import "@total-typescript/ts-reset";
 import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
-import { AppUtils, HelperService } from "@common/helpers";
+import { AppUtils } from "@common/helpers";
 import { IConfig } from "@lib/config/config.interface";
 import { createLogger } from "@lib/pino/app.logger";
 import { Logger, ValidationPipe } from "@nestjs/common";
@@ -15,7 +15,7 @@ import chalk from "chalk";
 import { useContainer } from "class-validator";
 import compression from "compression";
 import helmet from "helmet";
-import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from "nestjs-i18n";
+import { I18nValidationExceptionFilter } from "nestjs-i18n";
 
 import { AppModule } from "./app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
@@ -58,15 +58,7 @@ const bootstrap = async () => {
 
 	const globalPrefix = configService.get("app.prefix", { infer: true });
 
-	app.useGlobalPipes(
-		new ValidationPipe({
-			whitelist: true,
-			transform: true,
-			forbidUnknownValues: false,
-			enableDebugMessages: HelperService.isDev(),
-			exceptionFactory: i18nValidationErrorFactory,
-		}),
-	);
+	app.useGlobalPipes(new ValidationPipe(AppUtils.validationPipeOptions()));
 
 	app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
 	app.setGlobalPrefix(globalPrefix);

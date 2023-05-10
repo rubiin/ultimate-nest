@@ -13,11 +13,24 @@ import { IConfig } from "@lib/config/config.interface";
 import { INestApplication, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";
+import { i18nValidationErrorFactory } from "nestjs-i18n";
 import { getMiddleware } from "swagger-stats";
+
+import { HelperService } from "./helpers.utils";
 
 const logger = new Logger("App:Utils");
 
 export const AppUtils = {
+	validationPipeOptions() {
+		return {
+			whitelist: true,
+			transform: true,
+			forbidUnknownValues: false,
+			enableDebugMessages: HelperService.isDev(),
+			exceptionFactory: i18nValidationErrorFactory,
+		};
+	},
+
 	gracefulShutdown(app: INestApplication, code: string): void {
 		setTimeout(() => process.exit(1), 5000);
 		logger.verbose(`Signal received with code ${code} ⚡.`);
@@ -28,26 +41,17 @@ export const AppUtils = {
 		});
 	},
 
-	/**
-	 *
-	 *
-	 * @static
-	 * @param {INestApplication} app
-	 * @memberof AppUtils
-	 */
-
-	killAppWithGrace: (app: INestApplication) => {
+	killAppWithGrace(app: INestApplication) {
 		process.on("SIGINT", async () => {
 			AppUtils.gracefulShutdown(app, "SIGINT");
 		});
-
-		// kill -15
 
 		process.on("SIGTERM", async () => {
 			AppUtils.gracefulShutdown(app, "SIGTERM");
 		});
 	},
-	setupSwagger: (app: INestApplication, configService: ConfigService<IConfig, true>): void => {
+
+	setupSwagger(app: INestApplication, configService: ConfigService<IConfig, true>): void {
 		const userName = configService.get("app.swaggerUser", { infer: true });
 		const passWord = configService.get("app.swaggerPass", { infer: true });
 		const appName = configService.get("app.name", { infer: true });
@@ -70,7 +74,6 @@ export const AppUtils = {
 
 		const document = SwaggerModule.createDocument(app, options, {});
 
-		/** check if there is Public decorator for each path (action) and its method (findMany / findOne) on each controller */
 		const paths = Object.values((document as OpenAPIObject).paths);
 
 		for (const path of paths) {
@@ -90,7 +93,6 @@ export const AppUtils = {
 				hostname: appName,
 				uriPath: "/stats",
 				onAuthenticate: (_request: any, username: string, password: string) => {
-					// simple check for username and password
 					return username === userName && password === passWord;
 				},
 			}),
@@ -101,7 +103,8 @@ export const AppUtils = {
 			swaggerOptions,
 		});
 	},
-	ssl: (): { key: Buffer; cert: Buffer } | null => {
+
+	ssl(): { key: Buffer; cert: Buffer } | null {
 		let httpsOptions: { key: Buffer; cert: Buffer };
 
 		const keyPath = `${__dirname}/../../resources/ssl/key.pem`;
