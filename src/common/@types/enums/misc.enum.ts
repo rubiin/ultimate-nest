@@ -44,3 +44,10 @@ export enum QueryOrderEnum {
 	ASC = "ASC",
 	DESC = "DESC",
 }
+
+
+
+
+export const enum RoutingKeys {
+	SEND_MAIL='send-mail'
+}

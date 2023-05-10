@@ -214,9 +214,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
 				return number;
 			}
-			default: {
+			default:
 				return string;
-			}
+
 		}
 	}
 	/**
@@ -256,6 +256,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		order,
 		qb,
 		after,
+		search
 	}: IQueryBuilderPaginationOptions<T>): Promise<PaginationClass<T>> {
 		const previousCount = 0;
 
@@ -278,6 +279,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 			previousCount,
 			cursor,
 			first,
+			search
 		});
 	}
 
@@ -290,6 +292,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		previousCount,
 		cursor,
 		first,
+		search
 	}: IPaginateOptions<T>): PaginationClass<T> {
 		const pages: PaginationClass<T> = {
 			data: instances,
@@ -305,6 +308,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		pages.meta.nextCursor = this.encodeCursor(last);
 		pages.meta.hasNextPage = currentCount > first;
 		pages.meta.hasPreviousPage = previousCount > 0;
+		pages.meta.search = search ?? "";
 
 		return pages;
 	}

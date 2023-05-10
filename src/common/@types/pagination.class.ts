@@ -9,6 +9,9 @@ export class Meta {
 
 	@ApiProperty()
 	hasPreviousPage: boolean;
+
+	@ApiProperty()
+	search?: string;
 }
 
 export class PaginationClass<T> {

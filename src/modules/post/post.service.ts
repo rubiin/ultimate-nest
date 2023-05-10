@@ -61,6 +61,7 @@ export class PostService {
 				order: QueryOrderEnum.ASC,
 				qb,
 				after,
+				search
 			}),
 		);
 	}
