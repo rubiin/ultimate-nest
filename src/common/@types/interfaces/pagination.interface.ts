@@ -11,6 +11,7 @@ export interface IQueryBuilderPaginationOptions<T extends Dictionary> {
 	order: QueryOrderEnum;
 	qb: QueryBuilder<T>;
 	after?: string;
+	search?: string;
 }
 
 export interface IPaginateOptions<T> {
@@ -19,4 +20,5 @@ export interface IPaginateOptions<T> {
 	previousCount: number;
 	cursor: keyof T;
 	first: number;
+	search?: string;
 }

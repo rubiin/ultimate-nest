@@ -4,6 +4,7 @@ import {
 	EmailTemplateEnum,
 	IBaseService,
 	QueryOrderEnum,
+	RoutingKeys,
 } from "@common/@types";
 import { PaginationClass } from "@common/@types/pagination.class";
 import { DtoWithFile, isNull, isUndefined } from "@common/@types/types";
@@ -59,6 +60,7 @@ export class UserService implements IBaseService<User> {
 				order: QueryOrderEnum.ASC,
 				qb,
 				after,
+				search
 			}),
 		);
 	}
@@ -117,7 +119,7 @@ export class UserService implements IBaseService<User> {
 
 				await this.amqpConnection.publish(
 					this.configService.get("rabbitmq.exchange", { infer: true }),
-					"send-mail",
+					RoutingKeys.SEND_MAIL,
 					{
 						template: EmailTemplateEnum.WELCOME_TEMPLATE,
 						replacements: {
