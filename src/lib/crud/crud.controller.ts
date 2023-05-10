@@ -1,5 +1,4 @@
-import { ICrudService } from "@common/@types";
-import { ICrudController } from "@common/@types/interfaces/controller.interface";
+import { ICrud } from "@common/@types";
 import { PaginationClass } from "@common/@types/pagination.class";
 import { BaseEntity } from "@common/database";
 import { LoggedInUser } from "@common/decorators";
@@ -48,7 +47,7 @@ export function ControllerFactory<
 	T extends BaseEntity,
 	C extends RequiredEntityData<T>,
 	U extends EntityData<T>,
->(createDto: Type<C>, updateDto: Type<U>): Type<ICrudController<T, C, U>> {
+>(createDto: Type<C>, updateDto: Type<U>): Type<ICrud<T, C, U>> {
 	const createPipe = new AbstractValidationPipe(AppUtils.validationPipeOptions(), {
 		body: createDto,
 	});
@@ -60,17 +59,17 @@ export function ControllerFactory<
 		T extends BaseEntity,
 		C extends RequiredEntityData<T>,
 		U extends EntityData<T>,
-	> implements ICrudController<T, C, U>
+	> implements ICrud<T, C, U>
 	{
-		protected service: ICrudService<T, C, U>;
+		protected service: ICrud<T, C, U>;
 
 		@Get(":idx")
-		getOne(@Param("idx") index: string): Observable<T> {
+		findOne(@Param("idx") index: string): Observable<T> {
 			return this.service.findOne(index);
 		}
 
 		@Get()
-		get(@Query() query: SearchDto): Observable<PaginationClass<T>> {
+		findAll(@Query() query: SearchDto): Observable<PaginationClass<T>> {
 			return this.service.findAll(query);
 		}
 
@@ -87,7 +86,7 @@ export function ControllerFactory<
 		}
 
 		@Delete(":idx")
-		delete(@Param("idx") index: string): Observable<Partial<T>> {
+		remove(@Param("idx") index: string): Observable<T> {
 			return this.service.remove(index);
 		}
 	}

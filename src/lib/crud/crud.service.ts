@@ -1,4 +1,4 @@
-import { CursorTypeEnum, ICrudService, QueryOrderEnum } from "@common/@types";
+import { CursorTypeEnum, ICrud, QueryOrderEnum } from "@common/@types";
 import { PaginationClass } from "@common/@types/pagination.class";
 import { BaseEntity, BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
@@ -13,7 +13,7 @@ export abstract class BaseService<
 	Entity extends BaseEntity = BaseEntity,
 	CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
 	UpdateDto extends EntityData<Entity> = EntityData<Entity>,
-> implements ICrudService
+> implements ICrud
 {
 	protected searchField: keyof Entity = null;
 	protected queryName = "entity";
@@ -45,7 +45,9 @@ export abstract class BaseService<
 	 */
 	findAll(dto: SearchDto): Observable<PaginationClass<Entity>> {
 		const { first, after, search } = dto;
-		const qb = this.repository.createQueryBuilder(this.queryName);
+		const qb = this.repository.createQueryBuilder(this.queryName).where({
+			isDeleted: dto.withDeleted,
+		});
 
 		if (search && this.searchField) {
 			qb.andWhere({

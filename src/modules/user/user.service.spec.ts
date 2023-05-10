@@ -50,7 +50,7 @@ describe("UserService", () => {
 			expect(mockUserRepo.findOne).toBeCalledWith({
 				idx: "userId",
 				isActive: true,
-				isObsolete: false,
+				isDeleted: false,
 			});
 		});
 	});
@@ -91,13 +91,13 @@ describe("UserService", () => {
 			expect(result).toStrictEqual({
 				...mockedUser,
 				idx: "userId",
-				isObsolete: true,
+				isDeleted: true,
 				deletedAt: expect.any(Date),
 			});
 			expect(mockUserRepo.findOne).toBeCalledWith({
 				idx: "userId",
 				isActive: true,
-				isObsolete: false,
+				isDeleted: false,
 			});
 
 			expect(mockUserRepo.softRemoveAndFlush).toBeCalled();

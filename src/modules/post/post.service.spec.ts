@@ -82,11 +82,11 @@ describe("PostService", () => {
 			expect(result).toStrictEqual({
 				...mockedPost,
 				idx: "postId",
-				isObsolete: true,
+				isDeleted: true,
 				deletedAt: expect.any(Date),
 			});
 			expect(mockPostRepo.findOne).toBeCalledWith(
-				{ idx: "postId", isActive: true, isObsolete: false },
+				{ idx: "postId", isActive: true, isDeleted: false },
 				{ populate: [] },
 			);
 

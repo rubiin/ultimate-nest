@@ -2,12 +2,12 @@ import {
 	CursorTypeEnum,
 	EmailSubjects,
 	EmailTemplateEnum,
-	ICrudService,
+	ICrud,
 	QueryOrderEnum,
 	RoutingKeys,
 } from "@common/@types";
 import { PaginationClass } from "@common/@types/pagination.class";
-import { DtoWithFile, isNull, isUndefined } from "@common/@types/types";
+import { DtoWithFile } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
 import { SearchDto } from "@common/dtos/search.dto";
 import { HelperService } from "@common/helpers";
@@ -22,12 +22,12 @@ import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService, IFile } from "nestjs-cloudinary";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
+import { Observable, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
-export class UserService implements ICrudService<User> {
+export class UserService implements ICrud<User> {
 	private readonly queryName = "u";
 
 	constructor(
@@ -41,9 +41,11 @@ export class UserService implements ICrudService<User> {
 
 	findAll(dto: SearchDto): Observable<PaginationClass<User>> {
 		const { search, first, after } = dto;
-		const qb = this.userRepository.createQueryBuilder(this.queryName);
+		const qb = this.userRepository.createQueryBuilder(this.queryName).where({
+			isDeleted: dto.withDeleted,
+		});
 
-		if (!isUndefined(search) && !isNull(search)) {
+		if (search) {
 			qb.andWhere({
 				firstName: {
 					$ilike: HelperService.formatSearch(search),

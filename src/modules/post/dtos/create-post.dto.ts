@@ -65,11 +65,11 @@ export class CreatePostDto {
 	@IsEnumField(PostState, { required: false })
 	state: PostState;
 
+	@ToBoolean()
 	@IsBoolean({
 		message: i18nValidationMessage("validation.isDataType", {
 			type: "boolean",
 		}),
 	})
-	@ToBoolean()
 	published?: boolean;
 }

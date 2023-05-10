@@ -137,7 +137,7 @@ mockUserRepo.assign.mockImplementation((entity, dto) => {
 });
 
 mockUserRepo.softRemoveAndFlush.mockImplementation(entity => {
-	Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
+	Object.assign(entity, { deletedAt: new Date(), isDeleted: true });
 
 	return of(entity);
 });
@@ -177,7 +177,7 @@ mockRefreshRepo.findOne.mockImplementation(() =>
 mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(1);
 
 mockPostRepo.softRemoveAndFlush.mockImplementation(entity => {
-	Object.assign(entity, { deletedAt: new Date(), isObsolete: true });
+	Object.assign(entity, { deletedAt: new Date(), isDeleted: true });
 
 	return of(entity);
 });

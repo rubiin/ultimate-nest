@@ -42,7 +42,9 @@ export class PostService {
 	 */
 	findAll(dto: SearchDto): Observable<PaginationClass<Post>> {
 		const { search, first, after } = dto;
-		const qb = this.postRepository.createQueryBuilder(this.queryName);
+		const qb = this.postRepository.createQueryBuilder(this.queryName).where({
+			isDeleted: dto.withDeleted,
+		});
 
 		if (!isUndefined(search) && !isNull(search)) {
 			qb.andWhere({
@@ -192,7 +194,7 @@ export class PostService {
 				{
 					populate: ["favorites"],
 					populateWhere: {
-						favorites: { isActive: true, isObsolete: false },
+						favorites: { isActive: true, isDeleted: false },
 					},
 				},
 			),
@@ -230,7 +232,7 @@ export class PostService {
 				{
 					populate: ["favorites"],
 					populateWhere: {
-						favorites: { isActive: true, isObsolete: false },
+						favorites: { isActive: true, isDeleted: false },
 					},
 				},
 			),
@@ -260,7 +262,7 @@ export class PostService {
 				{
 					populate: ["comments"],
 					populateWhere: {
-						comments: { isActive: true, isObsolete: false },
+						comments: { isActive: true, isDeleted: false },
 					},
 				},
 			),

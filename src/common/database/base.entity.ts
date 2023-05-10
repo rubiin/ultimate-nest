@@ -29,7 +29,7 @@ export abstract class BaseEntity {
 	 *  Marked true when entity is soft deleted
 	 */
 	@Property({ hidden: true })
-	isObsolete = false;
+	isDeleted = false;
 
 	/**
 	 *  The date that the entity was soft-deleted. Nullable because it's not set until the entity is soft-deleted.
