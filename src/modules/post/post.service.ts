@@ -41,9 +41,9 @@ export class PostService {
 	 * @param SearchDto - The search dto.
 	 */
 	findAll(dto: SearchDto): Observable<PaginationClass<Post>> {
-		const { search, first, after } = dto;
+		const { search, first, after, withDeleted } = dto;
 		const qb = this.postRepository.createQueryBuilder(this.queryName).where({
-			isDeleted: dto.withDeleted,
+			isDeleted: withDeleted,
 		});
 
 		if (!isUndefined(search) && !isNull(search)) {

@@ -22,7 +22,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService, IFile } from "nestjs-cloudinary";
 import { I18nContext } from "nestjs-i18n";
-import { Observable, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
@@ -40,9 +40,9 @@ export class UserService implements ICrud<User> {
 	) {}
 
 	findAll(dto: SearchDto): Observable<PaginationClass<User>> {
-		const { search, first, after } = dto;
+		const { search, first, after, withDeleted, relations } = dto;
 		const qb = this.userRepository.createQueryBuilder(this.queryName).where({
-			isDeleted: dto.withDeleted,
+			isDeleted: withDeleted,
 		});
 
 		if (search) {
@@ -53,13 +53,13 @@ export class UserService implements ICrud<User> {
 			});
 		}
 
-		if (dto.relations) {
-			dto.relations.forEach(relation => {
+		if (relations) {
+			for (const relation of relations) {
 				qb.leftJoinAndSelect(
 					`${this.queryName}.${relation}`,
 					`${this.queryName}_${relation}`,
 				);
-			});
+			}
 		}
 
 		return from(

@@ -44,9 +44,9 @@ export abstract class BaseService<
 	 * @param SearchDto - The DTO that will be used to search for the entities.
 	 */
 	findAll(dto: SearchDto): Observable<PaginationClass<Entity>> {
-		const { first, after, search } = dto;
+		const { first, after, search, withDeleted } = dto;
 		const qb = this.repository.createQueryBuilder(this.queryName).where({
-			isDeleted: dto.withDeleted,
+			isDeleted: withDeleted,
 		});
 
 		if (search && this.searchField) {
