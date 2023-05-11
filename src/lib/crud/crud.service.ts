@@ -7,7 +7,7 @@ import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { NotFoundException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, mergeMap, Observable, of, throwError } from "rxjs";
+import { Observable, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 export abstract class BaseService<
 	Entity extends BaseEntity = BaseEntity,
@@ -104,7 +104,12 @@ export abstract class BaseService<
 	 * @param {UpdateDto} dto - The data transfer object that will be used to update the entity.
 	 */
 	update(index: string, dto: UpdateDto): Observable<Entity> {
-		return from(this.repository.findAndUpdate(index as any, dto));
+		return this.findOne(index).pipe(
+			switchMap(item => {
+				this.repository.assign(item, dto);
+				return this.repository.softRemoveAndFlush(item).pipe(map(() => item));
+			}),
+		);
 	}
 
 	/**
@@ -113,6 +118,10 @@ export abstract class BaseService<
 	 * @returns An observable of the entity that was removed.
 	 */
 	remove(index: string): Observable<Entity> {
-		return this.repository.softRemoveAndFlush(index as any).pipe(map(entity => entity));
+		return this.findOne(index).pipe(
+			switchMap(item => {
+				return this.repository.softRemoveAndFlush(item).pipe(map(() => item));
+			}),
+		);
 	}
 }

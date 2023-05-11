@@ -90,7 +90,7 @@ export class PostController {
 		return this.postService.addComment(user, index, commentData);
 	}
 
-	// to: edit comment
+	// TODO: edit comment
 
 	@Delete(":idx/comments/:commentIdx")
 	@SwaggerResponse({

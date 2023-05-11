@@ -61,7 +61,7 @@ export class UserController {
 
 	@Post()
 	@SwaggerResponse({
-		operation: "User fetch",
+		operation: "User create",
 		badRequest: "User already registered with email.",
 	})
 	@CheckPolicies(new GenericPolicyHandler(User, Action.Create))
@@ -76,7 +76,7 @@ export class UserController {
 
 	@Put(":idx")
 	@SwaggerResponse({
-		operation: "User fetch",
+		operation: "User edit",
 		badRequest: "User already registered with email.",
 		notFound: "User does not exist.",
 		params: ["idx"],
@@ -92,7 +92,7 @@ export class UserController {
 
 	@Delete(":idx")
 	@SwaggerResponse({
-		operation: "User fetch",
+		operation: "User delete",
 		notFound: "User does not exist.",
 		params: ["idx"],
 	})
