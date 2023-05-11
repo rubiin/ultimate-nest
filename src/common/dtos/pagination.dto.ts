@@ -20,7 +20,11 @@ export abstract class PaginationDto {
 	 * results or not.
 	 */
 	@ToBoolean()
-	@IsBoolean()
+	@IsBoolean({
+		message: i18nValidationMessage("validation.isDataType", {
+			type: "boolean",
+		}),
+	})
 	withDeleted?: boolean = false;
 
 	/** The `relations` property is used to specify which related
