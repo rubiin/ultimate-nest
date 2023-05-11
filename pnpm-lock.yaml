@@ -161,8 +161,8 @@ dependencies:
     specifier: ^0.3.0
     version: 0.3.0(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(@nestjs/throttler@4.0.0)(ioredis@5.3.2)(reflect-metadata@0.1.13)
   nodemailer:
-    specifier: ^6.9.1
-    version: 6.9.1
+    specifier: ^6.9.2
+    version: 6.9.2
   otplib:
     specifier: ^12.0.1
     version: 12.0.1
@@ -9898,6 +9898,11 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: false
 
+  /nodemailer@6.9.2:
+    resolution: {integrity: sha512-4+TYaa/e1nIxQfyw/WzNPYTEZ5OvHIDEnmjs4LPmIfccPQN+2CYKmGHjWixn/chzD3bmUTu5FMfpltizMxqzdg==}
+    engines: {node: '>=6.0.0'}
+    dev: false
+
   /nopt@5.0.0:
     resolution: {integrity: sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ==}
     engines: {node: '>=6'}
@@ -10638,7 +10643,7 @@ packages:
       fixpack: 4.0.0
       get-port: 5.1.1
       mailparser: 3.6.4
-      nodemailer: 6.9.1
+      nodemailer: 6.9.2
       open: 7.4.2
       p-event: 4.2.0
       p-wait-for: 3.2.0

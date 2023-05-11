@@ -4,7 +4,7 @@ import { EntityManager } from "@mikro-orm/postgresql";
 import { loggedInUser, mockEm, mockRefreshRepo, refreshToken } from "@mocks";
 import { Test, TestingModule } from "@nestjs/testing";
 
-import { RefreshTokensRepository } from "./refresh-tokens.repository";
+import { RefreshTokensRepository } from "./index";
 
 describe("RefreshTokensRepository", () => {
 	let service: RefreshTokensRepository;

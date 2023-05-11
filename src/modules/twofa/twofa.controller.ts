@@ -1,14 +1,14 @@
 import { IAuthenticationResponse } from "@common/@types";
 import { Auth, GenericController, LoggedInUser } from "@common/decorators";
 import { User } from "@entities";
-import { AuthService } from "@modules/auth/auth.service";
+import { AuthService } from "@modules/auth";
 import { Body, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { Response } from "express";
 import { Observable, switchMap, throwError } from "rxjs";
 
-import { TwofaDto } from "./dtos/twofa.dto";
+import { TwofaDto } from "./dtos";
 import { TwoFactorService } from "./twofa.service";
 
 @GenericController("2fa", false)

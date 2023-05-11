@@ -1,27 +1,27 @@
-import { IsUniqueConstraint } from "@common/decorators/validation";
+import { IsUniqueConstraint } from "@common/decorators";
+import { NestCaslModule } from "@lib/casl";
+import { NestConfigModule } from "@lib/config";
 import {
-	NestCaslModule,
 	NestCloudinaryModule,
-	NestConfigModule,
 	NestHttpModule,
 	NestI18nModule,
-	NestMailModule,
-	NestPinoModule,
-	NestRabbitModule,
 	NestSentryModule,
 	NestServeStaticModule,
 	NestThrottlerModule,
 	OrmModule,
 } from "@lib/index";
-import { AuthModule } from "@modules/auth/auth.module";
-import { CategoryModule } from "@modules/category/category.module";
-import { ChatModule } from "@modules/chat/chat.module";
-import { HealthModule } from "@modules/health/health.module";
-import { PostModule } from "@modules/post/post.module";
-import { ProfileModule } from "@modules/profile/profile.module";
-import { TagsModule } from "@modules/tags/tags.module";
-import { TwoFactorModule } from "@modules/twofa/twofa.module";
-import { UserModule } from "@modules/user/user.module";
+import { NestMailModule } from "@lib/mailer";
+import { NestPinoModule } from "@lib/pino";
+import { NestRabbitModule } from "@lib/rabbit";
+import { AuthModule } from "@modules/auth";
+import { CategoryModule } from "@modules/category";
+import { ChatModule } from "@modules/chat";
+import { HealthModule } from "@modules/health";
+import { PostModule } from "@modules/post";
+import { ProfileModule } from "@modules/profile";
+import { TagsModule } from "@modules/tags";
+import { TwoFactorModule } from "@modules/twofa";
+import { UserModule } from "@modules/user";
 import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 

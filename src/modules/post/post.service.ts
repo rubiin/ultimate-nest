@@ -1,8 +1,6 @@
-import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
-import { PaginationClass } from "@common/@types/pagination.class";
-import { isNull, isUndefined } from "@common/@types/types";
+import { CursorTypeEnum, PaginationClass,QueryOrderEnum } from "@common/@types";
 import { BaseRepository } from "@common/database";
-import { SearchDto } from "@common/dtos/search.dto";
+import { SearchDto } from "@common/dtos";
 import { HelperService } from "@common/helpers";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { AutoPath } from "@mikro-orm/core/typings";
@@ -41,17 +39,26 @@ export class PostService {
 	 * @param SearchDto - The search dto.
 	 */
 	findAll(dto: SearchDto): Observable<PaginationClass<Post>> {
-		const { search, first, after, withDeleted } = dto;
+		const { search, first, after, withDeleted, relations } = dto;
 		const qb = this.postRepository.createQueryBuilder(this.queryName).where({
 			isDeleted: withDeleted,
 		});
 
-		if (!isUndefined(search) && !isNull(search)) {
+		if (search) {
 			qb.andWhere({
 				title: {
 					$ilike: HelperService.formatSearch(search),
 				},
 			});
+		}
+
+		if (relations) {
+			for (const relation of relations) {
+				qb.leftJoinAndSelect(
+					`${this.queryName}.${relation}`,
+					`${this.queryName}_${relation}`,
+				);
+			}
 		}
 
 		return from(

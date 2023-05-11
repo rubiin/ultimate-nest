@@ -7,7 +7,7 @@ import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { NotFoundException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
-import { Observable, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 export abstract class BaseService<
 	Entity extends BaseEntity = BaseEntity,
@@ -107,7 +107,8 @@ export abstract class BaseService<
 		return this.findOne(index).pipe(
 			switchMap(item => {
 				this.repository.assign(item, dto);
-				return this.repository.softRemoveAndFlush(item).pipe(map(() => item));
+				
+return this.repository.softRemoveAndFlush(item).pipe(map(() => item));
 			}),
 		);
 	}

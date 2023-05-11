@@ -1,6 +1,6 @@
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
-import { IConfig } from "@lib/config/config.interface";
+import { IConfig } from "@lib/config";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";

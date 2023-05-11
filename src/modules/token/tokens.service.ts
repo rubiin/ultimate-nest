@@ -9,7 +9,7 @@ import { TokenExpiredError } from "jsonwebtoken";
 import { I18nContext } from "nestjs-i18n";
 import { catchError, from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
-import { RefreshTokensRepository } from "./refresh-tokens.repository";
+import { RefreshTokensRepository } from "./index";
 
 @Injectable()
 export class TokensService {

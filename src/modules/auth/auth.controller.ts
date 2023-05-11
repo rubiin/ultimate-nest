@@ -1,7 +1,7 @@
 import { IAuthenticationResponse, IOauthResponse } from "@common/@types";
 import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { OtpLog, User } from "@entities";
-import { TokensService } from "@modules/token/tokens.service";
+import { TokensService } from "@modules/token";
 import {
 	Body,
 	DefaultValuePipe,
@@ -19,7 +19,6 @@ import { ApiOperation } from "@nestjs/swagger";
 import { Request, Response } from "express";
 import { map, Observable } from "rxjs";
 
-import { AuthService } from "./auth.service";
 import {
 	ChangePasswordDto,
 	MagicLinkLogin,
@@ -29,7 +28,7 @@ import {
 	SendOtpDto,
 	UserLoginDto,
 } from "./dtos";
-import { MagicLoginStrategy } from "./strategies";
+import { AuthService, MagicLoginStrategy } from "./index";
 
 @GenericController("auth", false)
 export class AuthController {
