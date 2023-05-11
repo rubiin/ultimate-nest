@@ -8,7 +8,7 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
-import { SearchDto } from "@common/dtos/search.dto";
+import { SearchDto } from "@common/dtos";
 import { fileValidatorPipe } from "@common/misc";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";

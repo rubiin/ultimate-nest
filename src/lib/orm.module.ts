@@ -1,6 +1,5 @@
 import { baseOptions } from "@common/database/mikro-orm-cli.config";
 import * as Entities from "@entities";
-import { IConfig } from "@lib/config/config.interface";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { defineConfig } from "@mikro-orm/postgresql";
 import { Global, Module } from "@nestjs/common";

@@ -1,4 +1,3 @@
-import { IConfig } from "@lib/config/config.interface";
 import { NestConfigModule } from "@lib/config/config.module";
 import { Global, Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";

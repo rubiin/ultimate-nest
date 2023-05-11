@@ -1,6 +1,5 @@
 import { EmailSubjects, EmailTemplateEnum } from "@common/@types";
 import { User } from "@entities";
-import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { Loaded } from "@mikro-orm/core";
 import { Injectable, Logger, UnauthorizedException } from "@nestjs/common";

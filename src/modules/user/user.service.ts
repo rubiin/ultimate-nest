@@ -1,19 +1,18 @@
 import {
 	CursorTypeEnum,
+	DtoWithFile,
 	EmailSubjects,
 	EmailTemplateEnum,
 	ICrud,
+	PaginationClass,
 	QueryOrderEnum,
 	RoutingKeys,
 } from "@common/@types";
-import { PaginationClass } from "@common/@types/pagination.class";
-import { DtoWithFile } from "@common/@types/types";
 import { BaseRepository } from "@common/database";
-import { SearchDto } from "@common/dtos/search.dto";
+import { SearchDto } from "@common/dtos";
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { IConfig } from "@lib/config/config.interface";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
