@@ -118,7 +118,7 @@ services:
             - rabbitmq-data:/var/lib/rabbitmq/mnesia/
 
     database:
-        image: postgres:15.2-alpine
+        image: postgres:15.3-alpine
         restart: unless-stopped
         env_file: env/.env.${ENV}
         volumes:
