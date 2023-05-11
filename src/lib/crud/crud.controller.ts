@@ -1,7 +1,7 @@
 import { ICrud } from "@common/@types";
 import { PaginationClass } from "@common/@types/pagination.class";
 import { BaseEntity } from "@common/database";
-import { LoggedInUser } from "@common/decorators";
+import { LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { SearchDto } from "@common/dtos/search.dto";
 import { AppUtils } from "@common/helpers";
 import { User } from "@entities";
@@ -64,6 +64,11 @@ export function ControllerFactory<
 		protected service: ICrud<T, C, U>;
 
 		@Get(":idx")
+		@SwaggerResponse({
+			operation: "Find item",
+			badRequest: "Item does not exist.",
+			params: ["idx"],
+		})
 		findOne(@Param("idx") index: string): Observable<T> {
 			return this.service.findOne(index);
 		}
@@ -73,18 +78,32 @@ export function ControllerFactory<
 			return this.service.findAll(query);
 		}
 
+		@SwaggerResponse({
+			operation: "Create item",
+			badRequest: "Item already exists.",
+		})
 		@Post()
 		@UsePipes(createPipe)
 		create(@Body() body: C, @LoggedInUser() user?: User): Observable<T> {
 			return this.service.create(body, user);
 		}
 
+		@SwaggerResponse({
+			operation: "Item update",
+			badRequest: "Item does not exist.",
+			params: ["idx"],
+		})
 		@Put(":idx")
 		@UsePipes(updatePipe)
 		update(@Param("idx") index: string, @Body() body: U): Observable<T> {
 			return this.service.update(index, body);
 		}
 
+		@SwaggerResponse({
+			operation: "Item delete",
+			badRequest: "Item does not exist.",
+			params: ["idx"],
+		})
 		@Delete(":idx")
 		remove(@Param("idx") index: string): Observable<T> {
 			return this.service.remove(index);
