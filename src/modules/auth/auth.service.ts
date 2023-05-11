@@ -2,7 +2,6 @@ import { EmailSubjects, EmailTemplateEnum, IAuthenticationResponse } from "@comm
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
-import { IConfig } from "@lib/config/config.interface";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { FilterQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";

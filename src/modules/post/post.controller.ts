@@ -1,5 +1,4 @@
-import { Action } from "@common/@types";
-import { PaginationClass } from "@common/@types/pagination.class";
+import { Action, PaginationClass } from "@common/@types";
 import {
 	ApiPaginatedResponse,
 	GenericController,
@@ -7,7 +6,7 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
-import { PaginationDto } from "@common/dtos/pagination.dto";
+import { PaginationDto } from "@common/dtos";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Body, Delete, Get, Post, Put, Query } from "@nestjs/common";

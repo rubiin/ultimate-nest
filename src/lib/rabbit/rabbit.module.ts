@@ -1,5 +1,4 @@
 import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
-import { IConfig } from "@lib/config/config.interface";
 import { NestConfigModule } from "@lib/config/config.module";
 import { Global, Logger, Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";

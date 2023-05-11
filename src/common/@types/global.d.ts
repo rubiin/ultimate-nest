@@ -1,5 +1,6 @@
 import { User as UserEntity } from "@entities";
 import { I18nTranslations as I18nTranslationTypes } from "@generated";
+import { IConfig as ConfigInterface } from "@lib/config/config.interface";
 
 export {};
 
@@ -82,4 +83,5 @@ declare global {
 	}
 
 	export type I18nTranslations = I18nTranslationTypes;
+	export type IConfig = ConfigInterface;
 }

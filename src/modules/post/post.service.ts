@@ -1,8 +1,6 @@
-import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
-import { PaginationClass } from "@common/@types/pagination.class";
-import { isNull, isUndefined } from "@common/@types/types";
+import { CursorTypeEnum, PaginationClass, QueryOrderEnum } from "@common/@types";
 import { BaseRepository } from "@common/database";
-import { SearchDto } from "@common/dtos/search.dto";
+import { SearchDto } from "@common/dtos";
 import { HelperService } from "@common/helpers";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { AutoPath } from "@mikro-orm/core/typings";
@@ -46,7 +44,7 @@ export class PostService {
 			isDeleted: withDeleted,
 		});
 
-		if (!isUndefined(search) && !isNull(search)) {
+		if (search) {
 			qb.andWhere({
 				title: {
 					$ilike: HelperService.formatSearch(search),

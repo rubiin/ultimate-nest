@@ -4,7 +4,6 @@ import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { AppUtils } from "@common/helpers";
-import { IConfig } from "@lib/config/config.interface";
 import { createLogger } from "@lib/pino/app.logger";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";

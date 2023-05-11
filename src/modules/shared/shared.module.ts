@@ -1,18 +1,18 @@
 import { IsUniqueConstraint } from "@common/decorators/validation";
+import { NestConfigModule } from "@lib/config/config.module";
 import {
 	NestCaslModule,
 	NestCloudinaryModule,
-	NestConfigModule,
 	NestHttpModule,
 	NestI18nModule,
 	NestMailModule,
-	NestPinoModule,
-	NestRabbitModule,
 	NestSentryModule,
 	NestServeStaticModule,
 	NestThrottlerModule,
 	OrmModule,
 } from "@lib/index";
+import { NestPinoModule } from "@lib/pino/pino.module";
+import { NestRabbitModule } from "@lib/rabbit/rabbit.module";
 import { AuthModule } from "@modules/auth/auth.module";
 import { CategoryModule } from "@modules/category/category.module";
 import { ChatModule } from "@modules/chat/chat.module";

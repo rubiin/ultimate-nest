@@ -1,4 +1,3 @@
-import { IConfig } from "@lib/config/config.interface";
 import { INestApplicationContext } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { IoAdapter } from "@nestjs/platform-socket.io";
