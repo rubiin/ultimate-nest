@@ -48,3 +48,8 @@ export enum QueryOrderEnum {
 export const enum RoutingKeys {
 	SEND_MAIL = "send-mail",
 }
+
+export enum PaginationType {
+	OFFSET = "offset",
+	CURSOR = "cursor",
+}

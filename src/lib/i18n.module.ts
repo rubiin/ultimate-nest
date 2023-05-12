@@ -12,7 +12,7 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
 				"en-*": "en",
 			},
 			loaderOptions: {
-				path: path.join(__dirname, "../../resources/i18n/"),
+				path: path.join(__dirname, "../resources/i18n/"),
 				watch: true,
 				includeSubfolders: true,
 			},
