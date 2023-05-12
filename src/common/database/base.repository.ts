@@ -1,10 +1,12 @@
 import {
 	CursorTypeEnum,
 	IPaginateOptions,
-	IQueryBuilderPaginationOptions,
+	IQBCursorPaginationOptions,
+	IQBOffsetPaginationOptions,
 	QueryOrderEnum,
 } from "@common/@types";
-import { PaginationClass } from "@common/@types/pagination.class";
+import { CursorPaginationResponse } from "@common/@types/cursor.pagination";
+import { OffsetMeta, OffsetPaginationResponse } from "@common/@types/offset.pagination";
 import { getOppositeOrder, getQueryOrder, tOppositeOrder, tOrderEnum } from "@common/@types/types";
 import {
 	Dictionary,
@@ -246,18 +248,47 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	}
 
 	/**
-	 * Takes a query builder and returns the entities paginated
+	 * This is a TypeScript function that performs offset pagination on a query builder and returns an
+	 * observable of the paginated results.
+	 * @param dto - An object containing two properties:
+	 * @returns An Observable of OffsetPagination, which contains the results of a query with pagination
+	 * options applied.
 	 */
-	async queryBuilderPagination<T extends Dictionary>({
-		alias,
+	qbOffsetPagination<T extends Dictionary>(
+		dto: IQBOffsetPaginationOptions<T>,
+	): Observable<OffsetPaginationResponse<T>> {
+		const { qb, pageOptionsDto } = dto;
+
+		const { limit, offset, order, sort } = pageOptionsDto;
+
+		qb.orderBy({ [sort]: order.toLowerCase() })
+			.limit(limit)
+			.offset(offset);
+
+		const pagination$ = from(qb.getResultAndCount());
+
+		return pagination$.pipe(
+			map(([results, itemCount]) => {
+				const pageMetaDto = new OffsetMeta({ pageOptionsDto, itemCount });
+
+				return new OffsetPaginationResponse(results, pageMetaDto);
+			}),
+		);
+	}
+
+	/**
+	 * Takes a query builder and returns the entities paginated using cursor pagination
+	 */
+	async qbCursorPagination<T extends Dictionary>({
 		cursor,
 		cursorType,
 		first,
 		order,
 		qb,
 		after,
+		fields,
 		search,
-	}: IQueryBuilderPaginationOptions<T>): Promise<PaginationClass<T>> {
+	}: IQBCursorPaginationOptions<T>): Promise<CursorPaginationResponse<T>> {
 		const previousCount = 0;
 
 		if (after) {
@@ -268,12 +299,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		}
 
 		const [entities, count]: [T[], number] = await qb
-			.select(`${alias}.*`)
+			.select(fields)
 			.orderBy(this.getOrderBy(cursor, order))
 			.limit(first)
 			.getResultAndCount();
 
-		return this.paginate({
+		return this.paginateCursor({
 			instances: entities,
 			currentCount: count,
 			previousCount,
@@ -286,15 +317,15 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	/**
 	 * Takes an entity array and returns the paginated type of that entity array
 	 */
-	paginate<T>({
+	paginateCursor<T>({
 		instances,
 		currentCount,
 		previousCount,
 		cursor,
 		first,
 		search,
-	}: IPaginateOptions<T>): PaginationClass<T> {
-		const pages: PaginationClass<T> = {
+	}: IPaginateOptions<T>): CursorPaginationResponse<T> {
+		const pages: CursorPaginationResponse<T> = {
 			data: instances,
 			meta: {
 				nextCursor: "",
@@ -328,7 +359,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		where: FilterQuery<T>,
 		after?: string,
 		afterCursor: CursorTypeEnum = CursorTypeEnum.STRING,
-	): Promise<PaginationClass<T>> {
+	): Promise<CursorPaginationResponse<T>> {
 		let previousCount = 0;
 
 		if (after) {
@@ -347,7 +378,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 			limit: first,
 		});
 
-		return this.paginate({
+		return this.paginateCursor({
 			instances: entities,
 			currentCount: count,
 			previousCount,

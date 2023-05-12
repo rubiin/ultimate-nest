@@ -1,4 +1,4 @@
-import { Action, PaginationClass } from "@common/@types";
+import { Action, CursorPaginationResponse } from "@common/@types";
 import {
 	ApiPaginatedResponse,
 	GenericController,
@@ -6,7 +6,7 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
-import { PaginationDto } from "@common/dtos";
+import { CursorPaginationDto } from "@common/dtos";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Body, Delete, Get, Post, Put, Query } from "@nestjs/common";
@@ -21,7 +21,7 @@ export class PostController {
 
 	@Get()
 	@ApiPaginatedResponse(PostEntity, "Post list")
-	findAll(@Query() dto: PaginationDto): Observable<PaginationClass<PostEntity>> {
+	findAll(@Query() dto: CursorPaginationDto): Observable<CursorPaginationResponse<PostEntity>> {
 		return this.postService.findAll(dto);
 	}
 

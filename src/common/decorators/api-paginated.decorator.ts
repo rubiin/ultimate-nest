@@ -1,4 +1,4 @@
-import { PaginationClass } from "@common/@types/pagination.class";
+import { CursorPaginationResponse } from "@common/@types/cursor.pagination";
 import { applyDecorators, Type } from "@nestjs/common";
 import { ApiExtraModels, ApiOkResponse, ApiOperation, getSchemaPath } from "@nestjs/swagger";
 
@@ -8,11 +8,11 @@ export const ApiPaginatedResponse = <TModel extends Type<unknown>>(
 ) => {
 	return applyDecorators(
 		ApiOperation({ summary: operation }),
-		ApiExtraModels(PaginationClass, model),
+		ApiExtraModels(CursorPaginationResponse, model),
 		ApiOkResponse({
 			description: `Successfully received ${model.name.toLowerCase()} list`,
 			schema: {
-				allOf: [{ $ref: getSchemaPath(PaginationClass) }],
+				allOf: [{ $ref: getSchemaPath(CursorPaginationResponse) }],
 			},
 		}),
 	);

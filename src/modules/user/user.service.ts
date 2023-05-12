@@ -1,15 +1,15 @@
 import {
+	CursorPaginationResponse,
 	CursorTypeEnum,
 	DtoWithFile,
 	EmailSubjects,
 	EmailTemplateEnum,
 	ICrud,
-	PaginationClass,
 	QueryOrderEnum,
 	RoutingKeys,
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
-import { SearchDto } from "@common/dtos";
+import { CursorPaginationDto } from "@common/dtos";
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
@@ -26,7 +26,7 @@ import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
-export class UserService implements ICrud<User> {
+export class UserService implements ICrud<User, CursorPaginationDto> {
 	private readonly queryName = "u";
 
 	constructor(
@@ -38,8 +38,8 @@ export class UserService implements ICrud<User> {
 		private readonly cloudinaryService: CloudinaryService,
 	) {}
 
-	findAll(dto: SearchDto): Observable<PaginationClass<User>> {
-		const { search, first, after, withDeleted, relations } = dto;
+	findAll(dto: CursorPaginationDto): Observable<CursorPaginationResponse<User>> {
+		const { search, first, after, withDeleted, relations, fields } = dto;
 		const qb = this.userRepository.createQueryBuilder(this.queryName).where({
 			isDeleted: withDeleted,
 		});
@@ -62,13 +62,13 @@ export class UserService implements ICrud<User> {
 		}
 
 		return from(
-			this.userRepository.queryBuilderPagination({
-				alias: this.queryName,
+			this.userRepository.qbCursorPagination({
 				cursor: "username",
 				cursorType: CursorTypeEnum.STRING,
 				first,
 				order: QueryOrderEnum.ASC,
 				qb,
+				fields,
 				after,
 				search,
 			}),

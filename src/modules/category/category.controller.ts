@@ -1,4 +1,5 @@
 import { GenericController } from "@common/decorators";
+import { OffsetPaginationDto } from "@common/dtos";
 import { Category } from "@entities";
 import { ControllerFactory } from "@lib/crud/crud.controller";
 
@@ -8,9 +9,10 @@ import { CreateCategoryDto, EditCategoryDto } from "./dto";
 @GenericController("categories")
 export class CategoryController extends ControllerFactory<
 	Category,
+	OffsetPaginationDto,
 	CreateCategoryDto,
 	EditCategoryDto
->(CreateCategoryDto, EditCategoryDto) {
+>(OffsetPaginationDto, CreateCategoryDto, EditCategoryDto) {
 	constructor(protected service: CategoryService) {
 		super();
 	}
