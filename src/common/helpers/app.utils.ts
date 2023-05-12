@@ -9,7 +9,6 @@ import {
 	SWAGGER_TITLE,
 } from "@common/constant";
 import { swaggerOptions } from "@common/swagger/swagger.plugin";
-import { IConfig } from "@lib/config/config.interface";
 import { INestApplication, Logger, ValidationPipeOptions } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from "@nestjs/swagger";

@@ -1,5 +1,5 @@
 import { Action, IFile, Roles } from "@common/@types";
-import { PaginationClass } from "@common/@types/pagination.class";
+import { CursorPaginationResponse } from "@common/@types/cursor.pagination";
 import {
 	ApiFile,
 	ApiPaginatedResponse,
@@ -8,7 +8,7 @@ import {
 	SwaggerResponse,
 	UUIDParam,
 } from "@common/decorators";
-import { SearchDto } from "@common/dtos/search.dto";
+import { CursorPaginationDto } from "@common/dtos";
 import { fileValidatorPipe } from "@common/misc";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
@@ -25,7 +25,9 @@ export class UserController {
 	@Public()
 	@ApiPaginatedResponse(User, "Users list")
 	@Get()
-	findAll(@Query() PaginationDto: SearchDto): Observable<PaginationClass<User>> {
+	findAll(
+		@Query() PaginationDto: CursorPaginationDto,
+	): Observable<CursorPaginationResponse<User>> {
 		return this.userService.findAll(PaginationDto);
 	}
 

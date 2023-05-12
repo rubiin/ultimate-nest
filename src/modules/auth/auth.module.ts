@@ -1,4 +1,4 @@
-import { NestJwtModule } from "@lib/jwt/jwt.module";
+import { NestJwtModule } from "@lib/index";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
 import { TokensService } from "@modules/token/tokens.service";
 import { UserModule } from "@modules/user/user.module";

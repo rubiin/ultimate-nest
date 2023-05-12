@@ -1,5 +1,4 @@
 import { IJwtPayload } from "@common/@types";
-import { IConfig } from "@lib/config/config.interface";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";

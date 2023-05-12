@@ -1,7 +1,10 @@
+import { CursorPaginationDto, OffsetPaginationDto } from "@common/dtos";
 import { AnySchema } from "joi";
 
+import { CursorPaginationResponse } from "./cursor.pagination";
 import { CursorTypeEnum, EmailTemplateEnum, QueryCursorEnum, QueryOrderEnum } from "./enums";
 import { IFile } from "./interfaces";
+import { OffsetPaginationResponse } from "./offset.pagination";
 
 // This function is used to convert a joi schema to typescript interface.
 export type JoiTypeToInterFace<T> = {
@@ -36,3 +39,6 @@ export const getOppositeOrder = (order: QueryOrderEnum): tOppositeOrder =>
 	order === QueryOrderEnum.ASC ? "$lte" : "$gte";
 
 export type EmailSubject = keyof typeof EmailTemplateEnum extends `${infer T}_TEMPLATE` ? T : never;
+
+export type PaginationRequest = CursorPaginationDto | OffsetPaginationDto;
+export type PaginationResponse<T> = CursorPaginationResponse<T> | OffsetPaginationResponse<T>;

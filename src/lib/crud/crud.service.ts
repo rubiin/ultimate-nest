@@ -1,19 +1,25 @@
-import { CursorTypeEnum, ICrud, QueryOrderEnum } from "@common/@types";
-import { PaginationClass } from "@common/@types/pagination.class";
+import {
+	CursorTypeEnum,
+	ICrud,
+	PaginationRequest,
+	PaginationResponse,
+	PaginationType,
+	QueryOrderEnum,
+} from "@common/@types";
 import { BaseEntity, BaseRepository } from "@common/database";
-import { SearchDto } from "@common/dtos/search.dto";
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { NotFoundException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
-import { Observable, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 export abstract class BaseService<
-	Entity extends BaseEntity = BaseEntity,
+	Entity extends BaseEntity,
+	paginationRequest extends PaginationRequest,
 	CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
 	UpdateDto extends EntityData<Entity> = EntityData<Entity>,
-> implements ICrud
+> implements ICrud<Entity, paginationRequest>
 {
 	protected searchField: keyof Entity = null;
 	protected queryName = "entity";
@@ -43,33 +49,45 @@ export abstract class BaseService<
 	 * @returns An observable of a pagination object.
 	 * @param SearchDto - The DTO that will be used to search for the entities.
 	 */
-	findAll(dto: SearchDto): Observable<PaginationClass<Entity>> {
-		const { first, after, search, withDeleted } = dto;
-		const qb = this.repository.createQueryBuilder(this.queryName).where({
-			isDeleted: withDeleted,
-		});
-
-		if (search && this.searchField) {
-			qb.andWhere({
-				[this.searchField]: {
-					$ilike: HelperService.formatSearch(search),
-				},
+	findAll(dto: PaginationRequest): Observable<PaginationResponse<Entity>> {
+		if (dto.type === PaginationType.CURSOR) {
+			const { first, after, search, withDeleted, fields } = dto;
+			const qb = this.repository.createQueryBuilder(this.queryName).where({
+				isDeleted: withDeleted,
 			});
+
+			if (search && this.searchField) {
+				qb.andWhere({
+					[this.searchField]: {
+						$ilike: HelperService.formatSearch(search),
+					},
+				});
+			}
+
+			// by default, the id is used as cursor
+
+			return from(
+				this.repository.qbCursorPagination({
+					cursor: "id",
+					cursorType: CursorTypeEnum.NUMBER,
+					first,
+					order: QueryOrderEnum.ASC,
+					qb,
+					fields,
+					after,
+					search,
+				}),
+			);
 		}
 
-		// by default, the id is used as cursor
+		const qb = this.repository.createQueryBuilder(this.queryName).where({
+			isDeleted: dto.withDeleted,
+		});
 
-		return from(
-			this.repository.queryBuilderPagination({
-				alias: this.queryName,
-				cursor: "id",
-				cursorType: CursorTypeEnum.NUMBER,
-				first,
-				order: QueryOrderEnum.ASC,
-				qb,
-				after,
-			}),
-		);
+		return this.repository.qbOffsetPagination({
+			pageOptionsDto: dto,
+			qb,
+		});
 	}
 
 	/**
@@ -107,6 +125,7 @@ export abstract class BaseService<
 		return this.findOne(index).pipe(
 			switchMap(item => {
 				this.repository.assign(item, dto);
+
 				return this.repository.softRemoveAndFlush(item).pipe(map(() => item));
 			}),
 		);

@@ -1,8 +1,6 @@
-import { CursorTypeEnum, QueryOrderEnum } from "@common/@types";
-import { PaginationClass } from "@common/@types/pagination.class";
-import { isNull, isUndefined } from "@common/@types/types";
+import { CursorPaginationResponse, CursorTypeEnum, QueryOrderEnum } from "@common/@types";
 import { BaseRepository } from "@common/database";
-import { SearchDto } from "@common/dtos/search.dto";
+import { CursorPaginationDto } from "@common/dtos";
 import { HelperService } from "@common/helpers";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { AutoPath } from "@mikro-orm/core/typings";
@@ -40,13 +38,13 @@ export class PostService {
 	 * @returns An observable of a pagination object.
 	 * @param SearchDto - The search dto.
 	 */
-	findAll(dto: SearchDto): Observable<PaginationClass<Post>> {
-		const { search, first, after, withDeleted } = dto;
+	findAll(dto: CursorPaginationDto): Observable<CursorPaginationResponse<Post>> {
+		const { search, first, after, withDeleted, fields } = dto;
 		const qb = this.postRepository.createQueryBuilder(this.queryName).where({
 			isDeleted: withDeleted,
 		});
 
-		if (!isUndefined(search) && !isNull(search)) {
+		if (search) {
 			qb.andWhere({
 				title: {
 					$ilike: HelperService.formatSearch(search),
@@ -55,13 +53,13 @@ export class PostService {
 		}
 
 		return from(
-			this.postRepository.queryBuilderPagination({
-				alias: this.queryName,
+			this.postRepository.qbCursorPagination({
 				cursor: "title",
 				cursorType: CursorTypeEnum.STRING,
 				first,
 				order: QueryOrderEnum.ASC,
 				qb,
+				fields,
 				after,
 				search,
 			}),

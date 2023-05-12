@@ -1,4 +1,3 @@
-import { IConfig } from "@lib/config/config.interface";
 import { NestConfigModule } from "@lib/config/config.module";
 import { CacheModule, CacheStore } from "@nestjs/cache-manager";
 import { Module } from "@nestjs/common";
