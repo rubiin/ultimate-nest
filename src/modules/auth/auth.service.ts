@@ -1,4 +1,4 @@
-import { EmailSubjects, EmailTemplateEnum, IAuthenticationResponse } from "@common/@types";
+import { EmailSubjectsEnum, EmailTemplateEnum, IAuthenticationResponse } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
@@ -226,7 +226,7 @@ export class AuthService {
 										otp: otpNumber,
 									},
 									to: userExists.email,
-									subject: EmailSubjects.RESET_PASSWORD,
+									subject: EmailSubjectsEnum.RESET_PASSWORD,
 									from: this.configService.get("mail.senderEmail", {
 										infer: true,
 									}),

@@ -3,7 +3,7 @@ import {
 	ICrud,
 	PaginationRequest,
 	PaginationResponse,
-	PaginationType,
+	PaginationTypeEnum,
 	QueryOrderEnum,
 } from "@common/@types";
 import { BaseEntity, BaseRepository } from "@common/database";
@@ -47,10 +47,10 @@ export abstract class BaseService<
 	/**
 	 * It takes in a SearchOptionsDto object, and returns an Observable of a Pagination object
 	 * @returns An observable of a pagination object.
-	 * @param SearchDto - The DTO that will be used to search for the entities.
+	 * @param dto - The DTO that will be used to search for the entities.
 	 */
 	findAll(dto: PaginationRequest): Observable<PaginationResponse<Entity>> {
-		if (dto.type === PaginationType.CURSOR) {
+		if (dto.type === PaginationTypeEnum.CURSOR) {
 			const { first, after, search, withDeleted, fields } = dto;
 			const qb = this.repository.createQueryBuilder(this.queryName).where({
 				isDeleted: withDeleted,
@@ -119,7 +119,7 @@ export abstract class BaseService<
 	/**
 	 * It updates an entity.
 	 * @param {string} index - The name of the index you want to update.
-	 * @param {UpdateDto} dto - The data transfer object that will be used to update the entity.
+	 * @param dto - The data transfer object that will be used to update the entity.
 	 */
 	update(index: string, dto: UpdateDto): Observable<Entity> {
 		return this.findOne(index).pipe(

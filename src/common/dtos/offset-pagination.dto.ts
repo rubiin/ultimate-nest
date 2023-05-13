@@ -1,4 +1,4 @@
-import { PaginationType, QueryOrderEnum } from "@common/@types";
+import { PaginationTypeEnum, QueryOrderEnum } from "@common/@types";
 import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 import { Allow } from "class-validator";
 
@@ -6,7 +6,7 @@ import { PaginationDto } from "./pagination.dto";
 
 export class OffsetPaginationDto extends PaginationDto {
 	@Allow()
-	type: PaginationType.OFFSET = PaginationType.OFFSET;
+	type: PaginationTypeEnum.OFFSET = PaginationTypeEnum.OFFSET;
 	/**
 	 *  The search query
 	 */

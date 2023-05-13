@@ -2,11 +2,11 @@ import {
 	CursorPaginationResponse,
 	CursorTypeEnum,
 	DtoWithFile,
-	EmailSubjects,
+	EmailSubjectsEnum,
 	EmailTemplateEnum,
 	ICrud,
 	QueryOrderEnum,
-	RoutingKeys,
+	RoutingKeysEnum,
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
@@ -129,7 +129,7 @@ export class UserService implements ICrud<User, CursorPaginationDto> {
 
 				await this.amqpConnection.publish(
 					this.configService.get("rabbitmq.exchange", { infer: true }),
-					RoutingKeys.SEND_MAIL,
+					RoutingKeysEnum.SEND_MAIL,
 					{
 						template: EmailTemplateEnum.WELCOME_TEMPLATE,
 						replacements: {
@@ -137,7 +137,7 @@ export class UserService implements ICrud<User, CursorPaginationDto> {
 							link,
 						},
 						to: user.email,
-						subject: EmailSubjects.WELCOME,
+						subject: EmailSubjectsEnum.WELCOME,
 						from: this.configService.get("mail.senderEmail", { infer: true }),
 					},
 				);

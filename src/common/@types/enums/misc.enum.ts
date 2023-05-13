@@ -6,23 +6,23 @@ export enum EmailTemplateEnum {
 	"MAGIC_LOGIN_TEMPLATE" = "magiclogin",
 }
 
-export const EmailSubjects: Record<EmailSubject, string> = {
+export const EmailSubjectsEnum: Record<EmailSubject, string> = {
 	RESET_PASSWORD: "Reset your password",
 	WELCOME: "Welcome to the app",
 	MAGIC_LOGIN: "Login to the app",
 };
 
-export enum FileSizes {
+export enum FileSizesEnum {
 	IMAGE = 5 * 1024 * 1024, // 5MB
 	DOC = 10 * 1024 * 1024, // 10MB
 }
 
-export enum PostState {
+export enum PostStateEnum {
 	DRAFT = "DRAFT",
 	PUBLISHED = "PUBLISHED",
 }
 
-export const FileTypes: Record<keyof typeof FileSizes, RegExp> = {
+export const FileTypes: Record<keyof typeof FileSizesEnum, RegExp> = {
 	IMAGE: new RegExp(/(jpg|jpeg|png|gif|svg)$/i),
 	DOC: new RegExp(/(pdf|doc|txt|key|csv|docx|xls|xlsx|ppt|pptx)$/i),
 };
@@ -45,11 +45,11 @@ export enum QueryOrderEnum {
 	DESC = "DESC",
 }
 
-export const enum RoutingKeys {
+export const enum RoutingKeysEnum {
 	SEND_MAIL = "send-mail",
 }
 
-export enum PaginationType {
+export enum PaginationTypeEnum {
 	OFFSET = "offset",
 	CURSOR = "cursor",
 }

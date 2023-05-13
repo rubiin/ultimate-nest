@@ -1,4 +1,4 @@
-import { PostState } from "@common/@types";
+import { PostStateEnum } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import {
 	BeforeCreate,
@@ -37,8 +37,8 @@ export class Post extends BaseEntity {
 	@Property({ type: "text" })
 	content!: string;
 
-	@Enum({ items: () => PostState })
-	state = PostState.DRAFT;
+	@Enum({ items: () => PostStateEnum })
+	state = PostStateEnum.DRAFT;
 
 	@Property()
 	readingTime = 0;
