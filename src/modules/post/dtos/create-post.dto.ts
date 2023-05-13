@@ -1,4 +1,4 @@
-import { PostState } from "@common/@types";
+import { PostStateEnum } from "@common/@types";
 import { IsEnumField, IsStringField } from "@common/decorators";
 import { ToBoolean } from "@common/decorators/validation";
 import { IsBoolean, IsNotEmpty, IsUUID } from "class-validator";
@@ -62,8 +62,8 @@ export class CreatePostDto {
 	 * @example DRAFT
 	 */
 
-	@IsEnumField(PostState, { required: false })
-	state: PostState;
+	@IsEnumField(PostStateEnum, { required: false })
+	state: PostStateEnum;
 
 	@ToBoolean()
 	@IsBoolean({

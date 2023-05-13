@@ -36,7 +36,7 @@ export class PostService {
 	 * database
 	 * offset.
 	 * @returns An observable of a pagination object.
-	 * @param SearchDto - The search dto.
+	 * @param dto
 	 */
 	findAll(dto: CursorPaginationDto): Observable<CursorPaginationResponse<Post>> {
 		const { search, first, after, withDeleted, fields } = dto;

@@ -1,4 +1,4 @@
-import { EmailSubjects, EmailTemplateEnum } from "@common/@types";
+import { EmailSubjectsEnum, EmailTemplateEnum } from "@common/@types";
 import { User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { Loaded } from "@mikro-orm/core";
@@ -51,9 +51,10 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 					template: EmailTemplateEnum.MAGIC_LOGIN_TEMPLATE,
 					replacements: {
 						link: `${this.configService.get("app.url", { infer: true })}/v1/${href}`,
+						expiry: this.configService.get("jwt.magicLinkExpiry", { infer: true }),
 					},
 					to: destination,
-					subject: EmailSubjects.MAGIC_LOGIN,
+					subject: EmailSubjectsEnum.MAGIC_LOGIN,
 					from: this.configService.get("mail.senderEmail", { infer: true }),
 				});
 			},

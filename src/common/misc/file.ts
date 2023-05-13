@@ -1,4 +1,4 @@
-import { FileSizes, FileTypes, IFileValidator } from "@common/@types";
+import { FileSizesEnum, FileTypes, IFileValidator } from "@common/@types";
 import { MULTER_IMAGE_FILTER } from "@common/constant";
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
@@ -7,7 +7,7 @@ import { memoryStorage } from "multer";
 
 export const ImageMulterOption: MulterOptions = {
 	limits: {
-		fileSize: FileSizes.IMAGE, // 5 MB
+		fileSize: FileSizesEnum.IMAGE, // 5 MB
 	},
 	storage: memoryStorage(),
 	fileFilter: (_request: Request, file, callback) => {
@@ -29,7 +29,7 @@ export const ImageMulterOption: MulterOptions = {
  */
 export const fileValidatorPipe = ({
 	fileType = FileTypes.IMAGE,
-	fileSize = FileSizes.IMAGE,
+	fileSize = FileSizesEnum.IMAGE,
 	required = true,
 }: IFileValidator) => {
 	return new ParseFilePipeBuilder()

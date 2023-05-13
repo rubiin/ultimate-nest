@@ -48,7 +48,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 	/**
 	 * It takes a key and a value, and if the value is a string and the key is not in the except array, it
 	 * returns the value after it has been sanitized
-	 * @param {T} key - The key of the object
+	 * @param key - The key of the object
 	 * @param {string} value - The value to be sanitized.
 	 * @returns The value of the key is being returned.
 	 */
