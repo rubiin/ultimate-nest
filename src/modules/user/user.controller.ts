@@ -1,4 +1,4 @@
-import { Action, IFile, Roles } from "@common/@types";
+import { Action, File, Roles } from "@common/@types";
 import { CursorPaginationResponse } from "@common/@types/cursor.pagination";
 import {
 	ApiFile,
@@ -41,7 +41,7 @@ export class UserController {
 	publicRegistration(
 		@Body() dto: UserRegistrationDto,
 		@UploadedFile(fileValidatorPipe({}))
-		image: IFile,
+		image: File,
 	): Observable<User> {
 		return this.userService.create({
 			...dto,
@@ -71,7 +71,7 @@ export class UserController {
 	create(
 		@Body() dto: CreateUserDto,
 		@UploadedFile(fileValidatorPipe({}))
-		image: IFile,
+		image: File,
 	): Observable<User> {
 		return this.userService.create({ ...dto, files: image });
 	}
@@ -87,7 +87,7 @@ export class UserController {
 	update(
 		@UUIDParam("idx") index: string,
 		@Body() dto: EditUserDto,
-		@UploadedFile(fileValidatorPipe({ required: false })) image?: IFile,
+		@UploadedFile(fileValidatorPipe({ required: false })) image?: File,
 	): Observable<User> {
 		return this.userService.update(index, dto, image);
 	}

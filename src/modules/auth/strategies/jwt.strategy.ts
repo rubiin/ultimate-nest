@@ -1,4 +1,4 @@
-import { IJwtPayload } from "@common/@types";
+import { JwtPayload } from "@common/@types";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
@@ -24,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 	 *
 	 */
 
-	async validate(payload: IJwtPayload) {
+	async validate(payload: JwtPayload) {
 		const { sub: id } = payload;
 
 		// Accept the JWT and attempt to validate it using the user service

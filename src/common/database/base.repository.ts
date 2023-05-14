@@ -1,13 +1,13 @@
 import {
-	CursorTypeEnum,
+	CursorType,
 	IPaginateOptions,
 	IQBCursorPaginationOptions,
 	IQBOffsetPaginationOptions,
-	QueryOrderEnum,
+	QueryOrder,
 } from "@common/@types";
 import { CursorPaginationResponse } from "@common/@types/cursor.pagination";
 import { OffsetMeta, OffsetPaginationResponse } from "@common/@types/offset.pagination";
-import { getOppositeOrder, getQueryOrder, tOppositeOrder, tOrderEnum } from "@common/@types/types";
+import { getOppositeOrder, getQueryOrder, OppositeOrder, Order } from "@common/@types/types";
 import {
 	Dictionary,
 	EntityData,
@@ -177,7 +177,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	private getFilters<T>(
 		cursor: keyof T,
 		decoded: string | number | Date,
-		order: tOrderEnum | tOppositeOrder,
+		order: Order | OppositeOrder,
 	): FilterQuery<Dictionary<T>> {
 		return {
 			[cursor]: {
@@ -191,12 +191,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 */
 	decodeCursor(
 		cursor: string,
-		cursorType: CursorTypeEnum = CursorTypeEnum.STRING,
+		cursorType: CursorType = CursorType.STRING,
 	): string | number | Date {
 		const string = Buffer.from(cursor, this.encoding).toString("utf8");
 
 		switch (cursorType) {
-			case CursorTypeEnum.DATE: {
+			case CursorType.DATE: {
 				const millisUnix = Number.parseInt(string, 10);
 
 				if (Number.isNaN(millisUnix))
@@ -206,7 +206,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
 				return new Date(millisUnix);
 			}
-			case CursorTypeEnum.NUMBER: {
+			case CursorType.NUMBER: {
 				const number = Number.parseInt(string, 10);
 
 				if (Number.isNaN(number))
@@ -240,8 +240,8 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 */
 	private getOrderBy<T>(
 		cursor: keyof T,
-		order: QueryOrderEnum,
-	): Record<string, QueryOrderEnum | Record<string, QueryOrderEnum>> {
+		order: QueryOrder,
+	): Record<string, QueryOrder | Record<string, QueryOrder>> {
 		return {
 			[cursor]: order,
 		};
@@ -363,11 +363,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	async findAndCountPagination<T extends Dictionary>(
 		cursor: keyof T,
 		first: number,
-		order: QueryOrderEnum,
+		order: QueryOrder,
 		repo: EntityRepository<T>,
 		where: FilterQuery<T>,
 		after?: string,
-		afterCursor: CursorTypeEnum = CursorTypeEnum.STRING,
+		afterCursor: CursorType = CursorType.STRING,
 	): Promise<CursorPaginationResponse<T>> {
 		let previousCount = 0;
 

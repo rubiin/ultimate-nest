@@ -1,4 +1,4 @@
-import { ICrud, PaginationRequest, PaginationResponse } from "@common/@types";
+import { Crud, PaginationRequest, PaginationResponse } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import { LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { AppUtils } from "@common/helpers";
@@ -43,7 +43,7 @@ export function ControllerFactory<
 	Q extends PaginationRequest,
 	C extends RequiredEntityData<T>,
 	U extends EntityData<T>,
->(queryDto: Type<Q>, createDto: Type<C>, updateDto: Type<U>): Type<ICrud<T, Q, C, U>> {
+>(queryDto: Type<Q>, createDto: Type<C>, updateDto: Type<U>): Type<Crud<T, Q, C, U>> {
 	const createPipe = new AbstractValidationPipe({
 		body: createDto,
 	});
@@ -58,9 +58,9 @@ export function ControllerFactory<
 		Q extends PaginationRequest,
 		C extends RequiredEntityData<T>,
 		U extends EntityData<T>,
-	> implements ICrud<T, Q, C, U>
+	> implements Crud<T, Q, C, U>
 	{
-		protected service: ICrud<T, Q, C, U>;
+		protected service: Crud<T, Q, C, U>;
 
 		@Get(":idx")
 		@SwaggerResponse({

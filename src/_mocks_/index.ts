@@ -1,4 +1,4 @@
-import { IFile, PaginationTypeEnum, Roles } from "@common/@types";
+import { File, PaginationType, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Category, Comment, OtpLog, Post, Protocol, RefreshToken, Tag, User } from "@entities";
@@ -59,7 +59,7 @@ export const queryDto: CursorPaginationDto = {
 	search: "",
 	relations: [],
 	fields: [],
-	type: PaginationTypeEnum.CURSOR,
+	type: PaginationType.CURSOR,
 };
 
 export const mockFile = {
@@ -68,7 +68,7 @@ export const mockFile = {
 	mimetype: "text/png",
 	buffer: Buffer.from(__dirname + "/../../test/test.png", "utf8"),
 	size: 13_148,
-} as IFile;
+} as File;
 
 export const mockedOtpLog = {
 	expiresIn: new Date(),

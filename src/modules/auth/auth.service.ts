@@ -1,4 +1,4 @@
-import { EmailSubjectsEnum, EmailTemplateEnum, IAuthenticationResponse } from "@common/@types";
+import { EmailSubject, EmailTemplate, AuthenticationResponse } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
@@ -114,7 +114,7 @@ export class AuthService {
 	 * @returns An observable of type IAuthenticationResponse
 	 */
 
-	login(loginDto: UserLoginDto, isPasswordLogin = false): Observable<IAuthenticationResponse> {
+	login(loginDto: UserLoginDto, isPasswordLogin = false): Observable<AuthenticationResponse> {
 		return this.validateUser(isPasswordLogin, loginDto.email, loginDto.password).pipe(
 			switchMap(user => {
 				if (!user) {
@@ -220,14 +220,14 @@ export class AuthService {
 								await em.persistAndFlush(otp);
 
 								return this.mailService.sendMail({
-									template: EmailTemplateEnum.RESET_PASSWORD_TEMPLATE,
+									template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
 									replacements: {
 										firstName: capitalize(userExists.firstName),
 										lastName: capitalize(userExists.lastName),
 										otp: otpNumber,
 									},
 									to: userExists.email,
-									subject: EmailSubjectsEnum.RESET_PASSWORD,
+									subject: EmailSubject.RESET_PASSWORD,
 									from: this.configService.get("mail.senderEmail", {
 										infer: true,
 									}),

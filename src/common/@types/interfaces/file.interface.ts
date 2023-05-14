@@ -1,7 +1,7 @@
 import { Readable } from "node:stream";
 
 /** Object containing file metadata and access information. */
-export interface IFile {
+export interface File {
 	/** Name of the form field associated with this file. */
 	fieldname: string;
 	/** Name of the file on the uploader's computer. */

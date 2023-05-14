@@ -1,4 +1,4 @@
-import { IOauthResponse } from "@common/@types";
+import { OauthResponse } from "@common/@types";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
@@ -34,7 +34,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 		done: VerifyCallback,
 	): Promise<any> {
 		const { name, emails } = profile;
-		const user: IOauthResponse = {
+		const user: OauthResponse = {
 			email: emails![0].value,
 			firstName: name?.givenName,
 			lastName: name?.familyName,

@@ -1,4 +1,4 @@
-import { IProfileData } from "@common/@types";
+import { ProfileData } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { AutoPath } from "@mikro-orm/core/typings";
@@ -75,7 +75,7 @@ export class ProfileService {
 	 *    avatar: followingUser.avatar,
 	 *    username: followingUser.username
 	 */
-	follow(loggedInUser: User, usernameToFollow: string): Observable<IProfileData> {
+	follow(loggedInUser: User, usernameToFollow: string): Observable<ProfileData> {
 		if (!usernameToFollow) {
 			return throwError(
 				() =>
@@ -100,7 +100,7 @@ export class ProfileService {
 
 				followingUser.followers.add(loggedInUser);
 
-				const profile: IProfileData = {
+				const profile: ProfileData = {
 					following: true,
 					avatar: followingUser.avatar,
 					username: followingUser.username,
@@ -120,7 +120,7 @@ export class ProfileService {
 	 * - avatar: string
 	 * - username: string
 	 */
-	unFollow(loggedInUser: User, username: string): Observable<IProfileData> {
+	unFollow(loggedInUser: User, username: string): Observable<ProfileData> {
 		if (!username) {
 			return throwError(
 				() =>
@@ -147,7 +147,7 @@ export class ProfileService {
 
 				followingUser.followers.remove(followerUser);
 
-				const profile: IProfileData = {
+				const profile: ProfileData = {
 					following: false,
 					avatar: followingUser.avatar,
 					username: followingUser.username,

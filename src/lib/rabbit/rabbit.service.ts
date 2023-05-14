@@ -1,4 +1,4 @@
-import { IMailPayload, RoutingKeysEnum } from "@common/@types";
+import { MailPayload, RoutingKey } from "@common/@types";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { Injectable, Logger } from "@nestjs/common";
@@ -11,12 +11,12 @@ export class RabbitService {
 	constructor(private readonly mailService: MailerService) {}
 
 	@RabbitSubscribe({
-		routingKey: RoutingKeysEnum.SEND_MAIL,
+		routingKey: RoutingKey.SEND_MAIL,
 		exchange: process.env.RABBITMQ_EXCHANGE,
 		queue: process.env.RABBITMQ_QUEUE,
 		createQueueIfNotExists: true,
 	})
-	sendMail(payload: IMailPayload) {
+	sendMail(payload: MailPayload) {
 		return from(
 			this.mailService.sendMail({
 				template: payload.template,

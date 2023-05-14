@@ -1,4 +1,4 @@
-export interface IAuthenticationResponse {
+export interface AuthenticationResponse {
 	user: {
 		idx: string;
 	};
@@ -6,14 +6,14 @@ export interface IAuthenticationResponse {
 	refreshToken?: string;
 }
 
-export interface IOauthResponse {
+export interface OauthResponse {
 	email: string;
 	firstName?: string;
 	lastName?: string;
 	accessToken: string;
 }
 
-export interface IJwtPayload {
+export interface JwtPayload {
 	jti?: number;
 	sub: number;
 	iat: number;

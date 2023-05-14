@@ -1,10 +1,10 @@
 import {
-	CursorTypeEnum,
-	ICrud,
+	CursorType,
+	Crud,
 	PaginationRequest,
 	PaginationResponse,
-	PaginationTypeEnum,
-	QueryOrderEnum,
+	PaginationType,
+	QueryOrder,
 } from "@common/@types";
 import { BaseEntity, BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
@@ -19,7 +19,7 @@ export abstract class BaseService<
 	paginationRequest extends PaginationRequest,
 	CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
 	UpdateDto extends EntityData<Entity> = EntityData<Entity>,
-> implements ICrud<Entity, paginationRequest>
+> implements Crud<Entity, paginationRequest>
 {
 	protected searchField: keyof Entity = null;
 	protected queryName = "entity";
@@ -50,7 +50,7 @@ export abstract class BaseService<
 	 * @param dto - The DTO that will be used to search for the entities.
 	 */
 	findAll(dto: PaginationRequest): Observable<PaginationResponse<Entity>> {
-		if (dto.type === PaginationTypeEnum.CURSOR) {
+		if (dto.type === PaginationType.CURSOR) {
 			const { first, after, search, withDeleted, fields } = dto;
 			const qb = this.repository.createQueryBuilder(this.queryName).where({
 				isDeleted: withDeleted,
@@ -70,9 +70,9 @@ export abstract class BaseService<
 				this.repository.qbCursorPagination({
 					alias: this.queryName,
 					cursor: "id",
-					cursorType: CursorTypeEnum.NUMBER,
+					cursorType: CursorType.NUMBER,
 					first,
-					order: QueryOrderEnum.ASC,
+					order: QueryOrder.ASC,
 					qb,
 					fields,
 					after,

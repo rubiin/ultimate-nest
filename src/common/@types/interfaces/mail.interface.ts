@@ -1,4 +1,4 @@
-export interface IMailPayload {
+export interface MailPayload {
 	template: string;
 	replacements?: Record<string, string>;
 	to: string;
