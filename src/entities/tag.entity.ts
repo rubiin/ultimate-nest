@@ -24,7 +24,7 @@ export class Tag extends BaseEntity {
 	})
 	title!: string;
 
-	@Property()
+	@Property({ columnType: "text" })
 	description!: string;
 
 	@Index()

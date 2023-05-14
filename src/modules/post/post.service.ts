@@ -303,7 +303,7 @@ export class PostService {
 					switchMap(comment => {
 						this.commentRepository.assign(comment, commentData);
 
-return from(this.em.flush()).pipe(map(() => _post));
+						return from(this.em.flush()).pipe(map(() => _post));
 					}),
 				);
 			}),

@@ -40,13 +40,13 @@ export class User extends BaseEntity {
 	@Property()
 	email!: string;
 
-	@Property({ length: 1000 })
+	@Property({ columnType: "text" })
 	bio!: string;
 
-	@Property({ length: 1000 })
+	@Property({ columnType: "text" })
 	avatar!: string;
 
-	@Property({ hidden: true, length: 1000 })
+	@Property({ hidden: true, columnType: "text" })
 	password!: string;
 
 	@Property()
@@ -91,6 +91,7 @@ export class User extends BaseEntity {
 
 	@ManyToMany(() => User, u => u.followers)
 	followed = new Collection<User>(this);
+
 	@Property()
 	lastLogin = new Date();
 

@@ -11,7 +11,7 @@ export class RabbitService {
 	constructor(private readonly mailService: MailerService) {}
 
 	@RabbitSubscribe({
-		routingKey: RoutingKey.SEND_MAIL,
+		routingKey: [RoutingKey.SEND_MAIL, RoutingKey.SEND_NEWSLETTER],
 		exchange: process.env.RABBITMQ_EXCHANGE,
 		queue: process.env.RABBITMQ_QUEUE,
 		createQueueIfNotExists: true,
@@ -27,4 +27,5 @@ export class RabbitService {
 			}),
 		).pipe(map(tap(() => this.logger.log(`✅ Sent mail to ${payload.to}`))));
 	}
+
 }

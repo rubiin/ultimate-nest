@@ -1,7 +1,10 @@
 const CaseInsensitiveFilterPlugin = () => {
 	return {
 		fn: {
-			opsFilter: (taggedOps: { filter: (argument: (_tagObject: any, tag: string) => boolean) => any; }, phrase: string) => {
+			opsFilter: (
+				taggedOps: { filter: (argument: (_tagObject: any, tag: string) => boolean) => any },
+				phrase: string,
+			) => {
 				return taggedOps.filter((_tagObject: any, tag: string) =>
 					tag.toLowerCase().includes(phrase.toLowerCase()),
 				);
