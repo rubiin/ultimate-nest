@@ -17,18 +17,14 @@ import {
 	Type,
 	UsePipes,
 	ValidationPipe,
-	ValidationPipeOptions,
 } from "@nestjs/common";
-import { ApiBody, ApiCreatedResponse } from "@nestjs/swagger";
+import { ApiBody, ApiResponse } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {
-	constructor(
-		options: ValidationPipeOptions,
-		private readonly targetTypes: { body?: Type; query?: Type; param?: Type },
-	) {
-		super(options);
+	constructor(private readonly targetTypes: { body?: Type; query?: Type; param?: Type }) {
+		super(AppUtils.validationPipeOptions());
 	}
 
 	async transform(value: any, metadata: ArgumentMetadata) {
@@ -47,16 +43,15 @@ export function ControllerFactory<
 	Q extends PaginationRequest,
 	C extends RequiredEntityData<T>,
 	U extends EntityData<T>,
->(queryDto: Type<Q>,createDto: Type<C>, updateDto: Type<U>): Type<ICrud<T, Q, C, U>> {
-	const createPipe = new AbstractValidationPipe(AppUtils.validationPipeOptions(), {
+>(queryDto: Type<Q>, createDto: Type<C>, updateDto: Type<U>): Type<ICrud<T, Q, C, U>> {
+	const createPipe = new AbstractValidationPipe({
 		body: createDto,
 	});
-	const updatePipe = new AbstractValidationPipe(AppUtils.validationPipeOptions(), {
+	const updatePipe = new AbstractValidationPipe({
 		body: updateDto,
 	});
 
-	const queryPipe = new AbstractValidationPipe({ whitelist: true, transform: true }, { query: queryDto });
-
+	const queryPipe = new AbstractValidationPipe({ query: queryDto });
 
 	class CrudController<
 		T extends BaseEntity,
@@ -89,9 +84,10 @@ export function ControllerFactory<
 		})
 		@UsePipes(createPipe)
 		@ApiBody({ type: createDto })
-		@ApiCreatedResponse({
+		@ApiResponse({
 			description: "Created successfully.",
 			type: createDto,
+			status: 201,
 		})
 		@Post()
 		create(@Body() body: C, @LoggedInUser() user?: User): Observable<T> {
@@ -105,9 +101,10 @@ export function ControllerFactory<
 		})
 		@UsePipes(updatePipe)
 		@ApiBody({ type: createDto })
-		@ApiCreatedResponse({
+		@ApiResponse({
 			description: "Updated successfully.",
 			type: createDto,
+			status: 200,
 		})
 		@Put(":idx")
 		update(@Param("idx") index: string, @Body() body: U): Observable<T> {
@@ -119,9 +116,10 @@ export function ControllerFactory<
 			badRequest: "Item does not exist.",
 			params: ["idx"],
 		})
-		@ApiCreatedResponse({
+		@ApiResponse({
 			description: "Deleted successfully.",
 			type: createDto,
+			status: 200,
 		})
 		@Delete(":idx")
 		remove(@Param("idx") index: string): Observable<T> {

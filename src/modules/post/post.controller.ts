@@ -89,7 +89,20 @@ export class PostController {
 		return this.postService.addComment(user, index, commentData);
 	}
 
-	// TODO: edit comment
+	@Put(":idx/comments/:commentIdx")
+	@SwaggerResponse({
+		operation: "Post comment edit",
+		notFound: "Post doesn't exist.",
+		params: ["idx", "commentIdx"],
+	})
+	@CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
+	editComment(
+		@UUIDParam("idx") postIndex: string,
+		@UUIDParam("commentIdx") commentIndex: string,
+		@Body() commentData: CreateCommentDto,
+	) {
+		return this.postService.editComment(postIndex, commentIndex, commentData);
+	}
 
 	@Delete(":idx/comments/:commentIdx")
 	@SwaggerResponse({
