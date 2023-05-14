@@ -291,22 +291,20 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		search,
 	}: IQBCursorPaginationOptions<T>): Promise<CursorPaginationResponse<T>> {
 		let previousCount = 0;
-		const strCursor = String(cursor); // because of runtime issues
-    const aliasCursor = `${alias}.${strCursor}`;
+		const stringCursor = String(cursor); // because of runtime issues
+		const aliasCursor = `${alias}.${stringCursor}`;
 
 		if (after) {
-      const decoded = this.decodeCursor(after, cursorType);
-      const oppositeOd = getOppositeOrder(order);
-      const tempQb = qb.clone();
-      tempQb.andWhere(
-        this.getFilters(cursor, decoded, oppositeOd),
-      );
-      previousCount = await tempQb.count(aliasCursor, true);
+			const decoded = this.decodeCursor(after, cursorType);
+			const oppositeOd = getOppositeOrder(order);
+			const temporaryQb = qb.clone();
 
-      const normalOd = getQueryOrder(order);
-      qb.andWhere(
-        this.getFilters(cursor, decoded, normalOd),
-      );
+			temporaryQb.andWhere(this.getFilters(cursor, decoded, oppositeOd));
+			previousCount = await temporaryQb.count(aliasCursor, true);
+
+			const normalOd = getQueryOrder(order);
+
+			qb.andWhere(this.getFilters(cursor, decoded, normalOd));
 		}
 
 		const [entities, count]: [T[], number] = await qb

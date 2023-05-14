@@ -1,7 +1,6 @@
 import { IFile, PaginationTypeEnum, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
-import { PaginationDto } from "@common/dtos/pagination.dto";
 import { Category, Comment, OtpLog, Post, Protocol, RefreshToken, Tag, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
@@ -60,7 +59,7 @@ export const queryDto: CursorPaginationDto = {
 	search: "",
 	relations: [],
 	fields: [],
-	type: PaginationTypeEnum.CURSOR
+	type: PaginationTypeEnum.CURSOR,
 };
 
 export const mockFile = {

@@ -289,6 +289,28 @@ export class PostService {
 	}
 
 	/**
+	 * This function edits a comment on a post using data from a DTO and returns the updated post.
+	 * @param {string} postIndex - A string representing the index of the post to which the comment belongs.
+	 * @param {string} commentIndex - commentIndex is a string parameter that represents the unique
+	 * @param {CreateCommentDto} commentData - commentData is an object of type CreateCommentDto
+	 * @returns The `editComment` method is returning an Observable that emits the updated post data after
+	 * editing the comment specified by `commentIndex` in the post specified by `postIndex`.
+	 */
+	editComment(postIndex: string, commentIndex: string, commentData: CreateCommentDto) {
+		return this.findOne(postIndex, ["comments"]).pipe(
+			switchMap(_post => {
+				return from(this.commentRepository.findOneOrFail({ idx: commentIndex })).pipe(
+					switchMap(comment => {
+						this.commentRepository.assign(comment, commentData);
+						
+return from(this.em.flush()).pipe(map(() => _post));
+					}),
+				);
+			}),
+		);
+	}
+
+	/**
 	 * It finds a post and a comment, removes the comment from the post, and then deletes the comment
 	 * @param {string} postIndex - string - The id of the post
 	 * @param {string} commentIndex - The id of the comment to be deleted
