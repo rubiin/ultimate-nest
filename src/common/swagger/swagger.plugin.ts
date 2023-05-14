@@ -1,8 +1,8 @@
 const CaseInsensitiveFilterPlugin = () => {
 	return {
 		fn: {
-			opsFilter: (taggedOps, phrase) => {
-				return taggedOps.filter((_tagObject, tag) =>
+			opsFilter: (taggedOps: { filter: (arg: (_tagObject: any, tag: string) => boolean) => any; }, phrase: string) => {
+				return taggedOps.filter((_tagObject: any, tag: string) =>
 					tag.toLowerCase().includes(phrase.toLowerCase()),
 				);
 			},
@@ -17,8 +17,8 @@ export const swaggerOptions = {
 	persistAuthorization: true,
 	plugins: [CaseInsensitiveFilterPlugin],
 	operationsSorter: (
-		a: { get: (argument0: string) => string },
-		b: { get: (argument0: string) => string },
+		a: { get: (arg: string) => string },
+		b: { get: (arg: string) => string },
 	) => {
 		const methodsOrder = ["get", "post", "put", "patch", "delete", "options", "trace"];
 		let result = methodsOrder.indexOf(a.get("method")) - methodsOrder.indexOf(b.get("method"));

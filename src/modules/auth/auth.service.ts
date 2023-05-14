@@ -15,10 +15,11 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { isAfter } from "date-fns";
-import { capitalize, omit, randomString } from "helper-fns";
+import { capitalize, omit } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, mergeMap, Observable, of, switchMap, throwError, zip } from "rxjs";
+import { Observable, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
+import { init } from "@paralleldrive/cuid2";
 import {
 	ChangePasswordDto,
 	OtpVerifyDto,
@@ -205,7 +206,7 @@ export class AuthService {
 
 				return from(this.protocolRepository.findOne({})).pipe(
 					switchMap(protocol => {
-						const otpNumber = randomString({ length: 6, numbers: true }); // random six digit otp
+						const otpNumber = init({length: 6})(); // random six digit otp
 
 						const otp = this.otpRepository.create({
 							user: userExists,
