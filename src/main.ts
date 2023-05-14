@@ -87,7 +87,6 @@ const bootstrap = async () => {
 	// use nestjs repl to verbose
 	if (isRepl) {
 		const replServer = await repl(AppModule);
-		const logger = new Logger();
 
 		// sets up history file for repl
 		const cacheDirectory = join("node_modules", ".cache");
