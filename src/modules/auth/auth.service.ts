@@ -206,7 +206,7 @@ export class AuthService {
 
 				return from(this.protocolRepository.findOne({})).pipe(
 					switchMap(protocol => {
-						const otpNumber = init({length: 6})(); // random six digit otp
+						const otpNumber = init({ length: 6 })(); // random six digit otp
 
 						const otp = this.otpRepository.create({
 							user: userExists,
