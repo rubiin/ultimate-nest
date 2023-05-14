@@ -1,4 +1,4 @@
-import { IAuthenticationResponse, IOauthResponse } from "@common/@types";
+import { AuthenticationResponse, OauthResponse } from "@common/@types";
 import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { OtpLog, User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
@@ -41,7 +41,7 @@ export class AuthController {
 
 	@Post("login")
 	@ApiOperation({ summary: "User Login" })
-	login(@Body() loginDto: UserLoginDto): Observable<IAuthenticationResponse> {
+	login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {
 		return this.authService.login(loginDto);
 	}
 
@@ -102,7 +102,7 @@ export class AuthController {
 	@UseGuards(AuthGuard("google"))
 	googleAuthRedirect(
 		@LoggedInUser()
-		user: IOauthResponse,
+		user: OauthResponse,
 		@Res() response: Response,
 	) {
 		return this.authService.login({ email: user.email }, false).pipe(
@@ -125,7 +125,7 @@ export class AuthController {
 	@UseGuards(AuthGuard("facebook"))
 	facebookAuthRedirect(
 		@LoggedInUser()
-		user: IOauthResponse,
+		user: OauthResponse,
 		@Res() response: Response,
 	) {
 		return this.authService.login({ email: user.email }, false).pipe(

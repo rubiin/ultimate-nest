@@ -1,4 +1,4 @@
-import { IAuthenticationResponse } from "@common/@types";
+import { AuthenticationResponse } from "@common/@types";
 import { Auth, GenericController, LoggedInUser } from "@common/decorators";
 import { User } from "@entities";
 import { AuthService } from "@modules/auth/auth.service";
@@ -34,7 +34,7 @@ export class TwoFactorController {
 	authenticate(
 		@LoggedInUser() user: User,
 		@Body() twoFaAuthDto: TwofaDto,
-	): Observable<IAuthenticationResponse> {
+	): Observable<AuthenticationResponse> {
 		const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorCodeValid(
 			twoFaAuthDto.code,
 			user,

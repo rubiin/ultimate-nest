@@ -3,18 +3,18 @@ import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { Observable } from "rxjs";
 
-import { PaginationRequest, PaginationResponse } from "../types";
+import { PaginationRequest as TPaginationRequest, PaginationResponse } from "../types";
 
 /**
  * common interface that enforces common methods for controller and service
  */
-export interface ICrud<
+export interface Crud<
 	Entity extends BaseEntity,
-	paginationRequest extends PaginationRequest,
+	PaginationRequest extends TPaginationRequest,
 	CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
 	UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > {
-	findAll(query: paginationRequest): Observable<PaginationResponse<Entity>>;
+	findAll(query: PaginationRequest): Observable<PaginationResponse<Entity>>;
 	findOne(index: string): Observable<Entity>;
 
 	create(body: CreateDto, user?: User): Observable<Entity>;

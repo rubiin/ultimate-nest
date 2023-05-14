@@ -1,4 +1,4 @@
-import { PaginationTypeEnum, QueryOrderEnum } from "@common/@types";
+import { PaginationType, QueryOrder } from "@common/@types";
 import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 import { Allow } from "class-validator";
 
@@ -6,7 +6,7 @@ import { PaginationDto } from "./pagination.dto";
 
 export class OffsetPaginationDto extends PaginationDto {
 	@Allow()
-	type: PaginationTypeEnum.OFFSET = PaginationTypeEnum.OFFSET;
+	type: PaginationType.OFFSET = PaginationType.OFFSET;
 	/**
 	 *  The search query
 	 */
@@ -28,8 +28,8 @@ export class OffsetPaginationDto extends PaginationDto {
 	/**
 	 * Sorting order
 	 */
-	@IsEnumField(QueryOrderEnum, { required: false })
-	readonly order: QueryOrderEnum = QueryOrderEnum.DESC;
+	@IsEnumField(QueryOrder, { required: false })
+	readonly order: QueryOrder = QueryOrder.DESC;
 
 	/**
 	 * Sorting criteria

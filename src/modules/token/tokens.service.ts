@@ -1,4 +1,4 @@
-import { IJwtPayload } from "@common/@types";
+import { JwtPayload } from "@common/@types";
 import { RefreshToken, User } from "@entities";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -148,7 +148,7 @@ export class TokensService {
 	 * @param {string} token - The refresh token to decode.
 	 * @returns The payload of the token.
 	 */
-	decodeRefreshToken(token: string): Observable<IJwtPayload> {
+	decodeRefreshToken(token: string): Observable<JwtPayload> {
 		return from(this.jwt.verifyAsync(token)).pipe(
 			map(payload => payload),
 			catchError(error_ => {
@@ -183,10 +183,10 @@ export class TokensService {
 	/**
 	 * It deletes the refresh token from the database and returns the user
 	 * @param {User} user - The user object that was returned from the validateUser method.
-	 * @param {IJwtPayload} payload - The payload of the refresh token.
+	 * @param {JwtPayload} payload - The payload of the refresh token.
 	 * @returns The user object
 	 */
-	deleteRefreshToken(user: User, payload: IJwtPayload): Observable<User> {
+	deleteRefreshToken(user: User, payload: JwtPayload): Observable<User> {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {
@@ -210,10 +210,10 @@ export class TokensService {
 	/**
 	 * It takes a refresh token payload, extracts the user ID from it, and then returns an observable of
 	 * the user with that ID
-	 * @param {IJwtPayload} payload - IJwtPayload
+	 * @param {JwtPayload} payload - IJwtPayload
 	 * @returns A user object
 	 */
-	getUserFromRefreshTokenPayload(payload: IJwtPayload): Observable<User> {
+	getUserFromRefreshTokenPayload(payload: JwtPayload): Observable<User> {
 		const subId = payload.sub;
 
 		if (!subId) {
@@ -237,10 +237,10 @@ export class TokensService {
 	/**
 	 * It takes a refresh token payload, extracts the token ID from it, and then uses that token ID to
 	 * find the corresponding refresh token in the database
-	 * @param {IJwtPayload} payload - IJwtPayload
+	 * @param {JwtPayload} payload - IJwtPayload
 	 * @returns Observable<RefreshToken | null>
 	 */
-	getStoredTokenFromRefreshTokenPayload(payload: IJwtPayload): Observable<RefreshToken | null> {
+	getStoredTokenFromRefreshTokenPayload(payload: JwtPayload): Observable<RefreshToken | null> {
 		const tokenId = payload.jti;
 
 		if (!tokenId) {

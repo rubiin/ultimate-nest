@@ -342,3 +342,5 @@ const friend = ['Bob', 'Tony', 'Tanya']
 const friend = 'Bob'
 const friends = ['Bob', 'Tony', 'Tanya']
 ```
+
+More naming convention for typescript can be found [here](https://basarat.gitbook.io/typescript/styleguide#class)

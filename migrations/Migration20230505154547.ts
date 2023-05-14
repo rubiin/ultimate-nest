@@ -72,10 +72,6 @@ export class Migration20230505154547 extends Migration {
     this.addSql('create index "comment_idx_index" on "comment" ("idx");');
     this.addSql('create index "comment_author_id_index" on "comment" ("author_id");');
 
-    this.addSql('create table "activity_log" ("id" serial primary key, "idx" varchar(255) not null, "is_active" boolean not null default true, "is_obsolete" boolean not null default false, "deleted_at" timestamptz(0) null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) null, "activity_type" varchar(255) null, "login_type" varchar(255) null, "ip_address" varchar(255) null, "device_id" varchar(255) null, "status" boolean not null default true, "login_status" boolean not null default true, "user_id" int not null);');
-    this.addSql('create index "activity_log_id_index" on "activity_log" ("id");');
-    this.addSql('create index "activity_log_idx_index" on "activity_log" ("idx");');
-    this.addSql('create index "activity_log_user_id_index" on "activity_log" ("user_id");');
 
     this.addSql('create table "user_conversations" ("user_id" int not null, "conversation_id" int not null, constraint "user_conversations_pkey" primary key ("user_id", "conversation_id"));');
 
@@ -101,7 +97,6 @@ export class Migration20230505154547 extends Migration {
     this.addSql('alter table "comment" add constraint "comment_post_id_foreign" foreign key ("post_id") references "post" ("id") on update cascade;');
     this.addSql('alter table "comment" add constraint "comment_author_id_foreign" foreign key ("author_id") references "user" ("id") on update cascade;');
 
-    this.addSql('alter table "activity_log" add constraint "activity_log_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade;');
 
     this.addSql('alter table "user_conversations" add constraint "user_conversations_user_id_foreign" foreign key ("user_id") references "user" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "user_conversations" add constraint "user_conversations_conversation_id_foreign" foreign key ("conversation_id") references "conversation" ("id") on update cascade on delete cascade;');
@@ -132,7 +127,6 @@ export class Migration20230505154547 extends Migration {
 
     this.addSql('alter table "comment" drop constraint "comment_author_id_foreign";');
 
-    this.addSql('alter table "activity_log" drop constraint "activity_log_user_id_foreign";');
 
     this.addSql('alter table "user_conversations" drop constraint "user_conversations_user_id_foreign";');
 
@@ -175,8 +169,6 @@ export class Migration20230505154547 extends Migration {
     this.addSql('drop table if exists "message" cascade;');
 
     this.addSql('drop table if exists "comment" cascade;');
-
-    this.addSql('drop table if exists "activity_log" cascade;');
 
     this.addSql('drop table if exists "user_conversations" cascade;');
 

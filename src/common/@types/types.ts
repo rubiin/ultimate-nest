@@ -2,8 +2,8 @@ import { CursorPaginationDto, OffsetPaginationDto } from "@common/dtos";
 import { AnySchema } from "joi";
 
 import { CursorPaginationResponse } from "./cursor.pagination";
-import { CursorTypeEnum, EmailTemplateEnum, QueryCursorEnum, QueryOrderEnum } from "./enums";
-import { IFile } from "./interfaces";
+import { CursorType, EmailTemplate, QueryCursor, QueryOrder } from "./enums";
+import { File } from "./interfaces";
 import { OffsetPaginationResponse } from "./offset.pagination";
 
 // This function is used to convert a joi schema to typescript interface.
@@ -12,12 +12,12 @@ export type JoiTypeToInterFace<T> = {
 };
 
 // This type represents a dto that contains a file or files
-export type DtoWithFile<T, K = IFile> = T & {
+export type DtoWithFile<T, K = File> = T & {
 	files: K;
 };
 
-export type tOrderEnum = "$gt" | "$lt";
-export type tOppositeOrder = "$gte" | "$lte";
+export type Order = "$gt" | "$lt";
+export type OppositeOrder = "$gte" | "$lte";
 
 export const isArray = <T>(value: unknown): value is T[] => {
 	return Array.isArray(value);
@@ -29,16 +29,16 @@ export const isUndefined = (value: unknown): value is undefined => {
 
 export const isNull = (value: unknown): value is null => value === null;
 
-export const getCursorType = (cursor: QueryCursorEnum): CursorTypeEnum =>
-	cursor === QueryCursorEnum.DATE ? CursorTypeEnum.NUMBER : CursorTypeEnum.STRING;
+export const getCursorType = (cursor: QueryCursor): CursorType =>
+	cursor === QueryCursor.DATE ? CursorType.NUMBER : CursorType.STRING;
 
-export const getQueryOrder = (order: QueryOrderEnum): tOrderEnum =>
-	order === QueryOrderEnum.ASC ? "$gt" : "$lt";
+export const getQueryOrder = (order: QueryOrder): Order =>
+	order === QueryOrder.ASC ? "$gt" : "$lt";
 
-export const getOppositeOrder = (order: QueryOrderEnum): tOppositeOrder =>
-	order === QueryOrderEnum.ASC ? "$lte" : "$gte";
+export const getOppositeOrder = (order: QueryOrder): OppositeOrder =>
+	order === QueryOrder.ASC ? "$lte" : "$gte";
 
-export type EmailSubject = keyof typeof EmailTemplateEnum extends `${infer T}_TEMPLATE` ? T : never;
+export type TEmailSubject = keyof typeof EmailTemplate extends `${infer T}_TEMPLATE` ? T : never;
 
 export type PaginationRequest = CursorPaginationDto | OffsetPaginationDto;
 export type PaginationResponse<T> = CursorPaginationResponse<T> | OffsetPaginationResponse<T>;

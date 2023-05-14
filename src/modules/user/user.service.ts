@@ -1,12 +1,12 @@
 import {
 	CursorPaginationResponse,
-	CursorTypeEnum,
+	CursorType,
 	DtoWithFile,
-	EmailSubjectsEnum,
-	EmailTemplateEnum,
-	ICrud,
-	QueryOrderEnum,
-	RoutingKeysEnum,
+	EmailSubject,
+	EmailTemplate,
+	Crud,
+	QueryOrder,
+	RoutingKey,
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
@@ -26,7 +26,7 @@ import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
-export class UserService implements ICrud<User, CursorPaginationDto> {
+export class UserService implements Crud<User, CursorPaginationDto> {
 	private readonly queryName = "u";
 
 	constructor(
@@ -65,9 +65,9 @@ export class UserService implements ICrud<User, CursorPaginationDto> {
 			this.userRepository.qbCursorPagination({
 				alias: this.queryName,
 				cursor: "username",
-				cursorType: CursorTypeEnum.STRING,
+				cursorType: CursorType.STRING,
 				first,
-				order: QueryOrderEnum.ASC,
+				order: QueryOrder.ASC,
 				qb,
 				fields,
 				after,
@@ -130,15 +130,15 @@ export class UserService implements ICrud<User, CursorPaginationDto> {
 
 				await this.amqpConnection.publish(
 					this.configService.get("rabbitmq.exchange", { infer: true }),
-					RoutingKeysEnum.SEND_MAIL,
+					RoutingKey.SEND_MAIL,
 					{
-						template: EmailTemplateEnum.WELCOME_TEMPLATE,
+						template: EmailTemplate.WELCOME_TEMPLATE,
 						replacements: {
 							firstName: capitalize(user.firstName),
 							link,
 						},
 						to: user.email,
-						subject: EmailSubjectsEnum.WELCOME,
+						subject: EmailSubject.WELCOME,
 						from: this.configService.get("mail.senderEmail", { infer: true }),
 					},
 				);

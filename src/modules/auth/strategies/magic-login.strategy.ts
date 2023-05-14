@@ -1,4 +1,4 @@
-import { EmailSubjectsEnum, EmailTemplateEnum } from "@common/@types";
+import { EmailSubject, EmailTemplate } from "@common/@types";
 import { User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { Loaded } from "@mikro-orm/core";
@@ -48,13 +48,13 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 				this.logger.log(`Sending magic link to ${destination} with href ${href}`);
 
 				return this.mailService.sendMail({
-					template: EmailTemplateEnum.MAGIC_LOGIN_TEMPLATE,
+					template: EmailTemplate.MAGIC_LOGIN_TEMPLATE,
 					replacements: {
 						link: `${this.configService.get("app.url", { infer: true })}/v1/${href}`,
 						expiry: this.configService.get("jwt.magicLinkExpiry", { infer: true }),
 					},
 					to: destination,
-					subject: EmailSubjectsEnum.MAGIC_LOGIN,
+					subject: EmailSubject.MAGIC_LOGIN,
 					from: this.configService.get("mail.senderEmail", { infer: true }),
 				});
 			},

@@ -1,4 +1,4 @@
-import { IProfileData } from "@common/@types";
+import { ProfileData } from "@common/@types";
 import { GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { User } from "@entities";
 import { Delete, Get, Param, Post } from "@nestjs/common";
@@ -28,7 +28,7 @@ export class ProfileController {
 	follow(
 		@LoggedInUser() user: User,
 		@Param("username") username: string,
-	): Observable<IProfileData> {
+	): Observable<ProfileData> {
 		return this.profileService.follow(user, username);
 	}
 
@@ -41,7 +41,7 @@ export class ProfileController {
 	unFollow(
 		@LoggedInUser() user: User,
 		@Param("username") username: string,
-	): Observable<IProfileData> {
+	): Observable<ProfileData> {
 		return this.profileService.unFollow(user, username);
 	}
 }

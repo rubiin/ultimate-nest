@@ -2,14 +2,14 @@ import { OffsetPaginationDto } from "@common/dtos/offset-pagination.dto";
 import { Dictionary } from "@mikro-orm/core";
 import { QueryBuilder } from "@mikro-orm/postgresql";
 
-import { CursorTypeEnum, QueryOrderEnum } from "../enums";
+import { CursorType, QueryOrder } from "../enums";
 
 export interface IQBCursorPaginationOptions<T extends Dictionary> {
 	alias: string;
 	cursor: keyof T;
-	cursorType: CursorTypeEnum;
+	cursorType: CursorType;
 	first: number;
-	order: QueryOrderEnum;
+	order: QueryOrder;
 	qb: QueryBuilder<T>;
 	fields: string[];
 	after?: string;

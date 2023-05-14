@@ -1,4 +1,4 @@
-import { PaginationTypeEnum } from "@common/@types";
+import { PaginationType } from "@common/@types";
 import { IsNumberField, IsStringField } from "@common/decorators";
 import { Allow, IsBase64 } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
@@ -7,7 +7,7 @@ import { PaginationDto } from "./pagination.dto";
 
 export class CursorPaginationDto extends PaginationDto {
 	@Allow()
-	type: PaginationTypeEnum.CURSOR = PaginationTypeEnum.CURSOR;
+	type: PaginationType.CURSOR = PaginationType.CURSOR;
 
 	/**
 	 * The cursor of the page you are requesting

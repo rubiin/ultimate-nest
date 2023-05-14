@@ -1,4 +1,4 @@
-import { IJwtPayload } from "@common/@types";
+import { JwtPayload } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -18,7 +18,7 @@ export class WsJwtGuard implements CanActivate {
 		const request = context.switchToWs().getClient().handshake;
 		const token = request.headers.authorization;
 
-		const payload: IJwtPayload = await this.jwtService.verify(token);
+		const payload: JwtPayload = await this.jwtService.verify(token);
 		const user = await this.userRepository.findOne({ id: payload.sub });
 
 		if (!user) {

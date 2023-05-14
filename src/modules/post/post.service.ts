@@ -1,4 +1,4 @@
-import { CursorPaginationResponse, CursorTypeEnum, QueryOrderEnum } from "@common/@types";
+import { CursorPaginationResponse, CursorType, QueryOrder } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { HelperService } from "@common/helpers";
@@ -56,9 +56,9 @@ export class PostService {
 			this.postRepository.qbCursorPagination({
 				alias: this.queryName,
 				cursor: "title",
-				cursorType: CursorTypeEnum.STRING,
+				cursorType: CursorType.STRING,
 				first,
-				order: QueryOrderEnum.ASC,
+				order: QueryOrder.ASC,
 				qb,
 				fields,
 				after,
@@ -302,7 +302,7 @@ export class PostService {
 				return from(this.commentRepository.findOneOrFail({ idx: commentIndex })).pipe(
 					switchMap(comment => {
 						this.commentRepository.assign(comment, commentData);
-						
+
 return from(this.em.flush()).pipe(map(() => _post));
 					}),
 				);
