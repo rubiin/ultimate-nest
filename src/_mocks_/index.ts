@@ -1,5 +1,6 @@
-import { IFile, Roles } from "@common/@types";
+import { IFile, PaginationTypeEnum, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
+import { CursorPaginationDto } from "@common/dtos";
 import { PaginationDto } from "@common/dtos/pagination.dto";
 import { Category, Comment, OtpLog, Post, Protocol, RefreshToken, Tag, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
@@ -54,8 +55,12 @@ export const mockedProtocol = {
 	otpExpiryInMinutes: 5,
 };
 
-export const queryDto: PaginationDto = {
+export const queryDto: CursorPaginationDto = {
 	first: 10,
+	search: "",
+	relations: [],
+	fields: [],
+	type: PaginationTypeEnum.CURSOR
 };
 
 export const mockFile = {
