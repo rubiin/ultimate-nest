@@ -54,6 +54,7 @@ export class PostService {
 
 		return from(
 			this.postRepository.qbCursorPagination({
+				alias: this.queryName,
 				cursor: "title",
 				cursorType: CursorTypeEnum.STRING,
 				first,

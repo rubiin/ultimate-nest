@@ -280,6 +280,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * Takes a query builder and returns the entities paginated using cursor pagination
 	 */
 	async qbCursorPagination<T extends Dictionary>({
+		alias,
 		cursor,
 		cursorType,
 		first,
@@ -289,13 +290,23 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		fields,
 		search,
 	}: IQBCursorPaginationOptions<T>): Promise<CursorPaginationResponse<T>> {
-		const previousCount = 0;
+		let previousCount = 0;
+		const strCursor = String(cursor); // because of runtime issues
+    const aliasCursor = `${alias}.${strCursor}`;
 
 		if (after) {
-			const decoded = this.decodeCursor(after, cursorType);
-			const normalOd = getQueryOrder(order);
+      const decoded = this.decodeCursor(after, cursorType);
+      const oppositeOd = getOppositeOrder(order);
+      const tempQb = qb.clone();
+      tempQb.andWhere(
+        this.getFilters(cursor, decoded, oppositeOd),
+      );
+      previousCount = await tempQb.count(aliasCursor, true);
 
-			qb.andWhere(this.getFilters(cursor, decoded, normalOd));
+      const normalOd = getQueryOrder(order);
+      qb.andWhere(
+        this.getFilters(cursor, decoded, normalOd),
+      );
 		}
 
 		const [entities, count]: [T[], number] = await qb

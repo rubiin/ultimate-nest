@@ -5,6 +5,7 @@ import { QueryBuilder } from "@mikro-orm/postgresql";
 import { CursorTypeEnum, QueryOrderEnum } from "../enums";
 
 export interface IQBCursorPaginationOptions<T extends Dictionary> {
+	alias: string;
 	cursor: keyof T;
 	cursorType: CursorTypeEnum;
 	first: number;

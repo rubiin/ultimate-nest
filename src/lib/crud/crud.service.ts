@@ -68,6 +68,7 @@ export abstract class BaseService<
 
 			return from(
 				this.repository.qbCursorPagination({
+					alias: this.queryName,
 					cursor: "id",
 					cursorType: CursorTypeEnum.NUMBER,
 					first,

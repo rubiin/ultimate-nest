@@ -63,6 +63,7 @@ export class UserService implements ICrud<User, CursorPaginationDto> {
 
 		return from(
 			this.userRepository.qbCursorPagination({
+				alias: this.queryName,
 				cursor: "username",
 				cursorType: CursorTypeEnum.STRING,
 				first,
