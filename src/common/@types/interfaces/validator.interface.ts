@@ -4,6 +4,8 @@ interface BaseValidator {
 	message?: string;
 }
 
+export interface IsDateFieldOptions extends BaseValidator {}
+
 export interface IsStringFieldOptions extends BaseValidator {
 	minLength?: number;
 	maxLength?: number;

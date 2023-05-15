@@ -1,4 +1,4 @@
-import { EmailSubject, EmailTemplate, AuthenticationResponse } from "@common/@types";
+import { AuthenticationResponse, EmailSubject, EmailTemplate } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
