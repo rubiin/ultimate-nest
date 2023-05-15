@@ -27,5 +27,4 @@ export class RabbitService {
 			}),
 		).pipe(map(tap(() => this.logger.log(`✅ Sent mail to ${payload.to}`))));
 	}
-
 }

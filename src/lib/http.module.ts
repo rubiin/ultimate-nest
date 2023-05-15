@@ -10,7 +10,8 @@ import { Module } from "@nestjs/common";
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
-				"user-agent": `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36`,
+				"user-agent":
+					"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
 			},
 		}),
 	],

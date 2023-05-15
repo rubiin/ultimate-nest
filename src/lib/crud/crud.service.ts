@@ -1,6 +1,6 @@
 import {
-	CursorType,
 	Crud,
+	CursorType,
 	PaginationRequest,
 	PaginationResponse,
 	PaginationType,

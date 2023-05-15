@@ -1,10 +1,10 @@
 import {
+	Crud,
 	CursorPaginationResponse,
 	CursorType,
 	DtoWithFile,
 	EmailSubject,
 	EmailTemplate,
-	Crud,
 	QueryOrder,
 	RoutingKey,
 } from "@common/@types";
