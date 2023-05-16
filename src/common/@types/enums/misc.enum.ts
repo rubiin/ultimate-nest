@@ -4,12 +4,14 @@ export enum EmailTemplate {
 	"RESET_PASSWORD_TEMPLATE" = "reset",
 	"WELCOME_TEMPLATE" = "welcome",
 	"MAGIC_LOGIN_TEMPLATE" = "magiclogin",
+	"NEWSLETTER_TEMPLATE" = "newsletter",
 }
 
 export const EmailSubject: Record<TEmailSubject, string> = {
 	RESET_PASSWORD: "Reset your password",
 	WELCOME: "Welcome to the app",
 	MAGIC_LOGIN: "Login to the app",
+	NEWSLETTER: "Newsletter",
 };
 
 export enum FileSize {
@@ -47,7 +49,6 @@ export enum QueryOrder {
 
 export const enum RoutingKey {
 	SEND_MAIL = "send-mail",
-	SEND_NEWSLETTER = "send-newsletter",
 }
 
 export enum PaginationType {

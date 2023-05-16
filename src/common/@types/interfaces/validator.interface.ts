@@ -4,16 +4,12 @@ interface BaseValidator {
 	message?: string;
 }
 
-export interface IsDateFieldOptions extends BaseValidator {}
-
 export interface IsStringFieldOptions extends BaseValidator {
 	minLength?: number;
 	maxLength?: number;
 	sanitize?: boolean;
 	trim?: boolean;
 }
-
-export type IsEnumFieldOptions = BaseValidator;
 
 export interface IsNumberFieldOptions extends BaseValidator {
 	min?: number;
@@ -31,3 +27,7 @@ export interface FileValidator {
 	fileSize?: number;
 	required?: boolean;
 }
+
+export interface IsDateFieldOptions extends BaseValidator {}
+
+export interface IsEnumFieldOptions extends BaseValidator {}
