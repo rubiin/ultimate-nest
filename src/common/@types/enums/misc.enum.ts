@@ -49,6 +49,7 @@ export enum QueryOrder {
 
 export const enum RoutingKey {
 	SEND_MAIL = "send-mail",
+	SEND_NEWSLETTER = "send-newsletter",
 }
 
 export enum PaginationType {
