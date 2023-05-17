@@ -36,7 +36,7 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
 			promises.push(
 				this.amqpConnection.publish(
 					this.configService.get("rabbitmq.exchange", { infer: true }),
-					RoutingKey.SEND_MAIL,
+					RoutingKey.SEND_NEWSLETTER,
 					{
 						template: EmailTemplate.WELCOME_TEMPLATE,
 						to: subscriber.email,
