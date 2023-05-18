@@ -1,7 +1,11 @@
 import { OauthResponse } from "@common/@types";
+import { BaseRepository } from "@common/database";
+import { User } from "@entities";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
+import { omit, randomString } from "helper-fns";
 import { Profile, Strategy } from "passport-facebook";
 import { VerifyCallback } from "passport-google-oauth20";
 
@@ -17,7 +21,10 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 	 *
 	 */
 
-	constructor(public readonly configService: ConfigService<IConfig, true>) {
+	constructor(
+		public readonly configService: ConfigService<IConfig, true>,
+		@InjectRepository(User) private readonly userRepo: BaseRepository<User>,
+	) {
 		super({
 			clientID: configService.get("facebookOauth.clientId", { infer: true }),
 			clientSecret: configService.get("facebookOauth.secret", { infer: true }),
@@ -40,7 +47,24 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 			lastName: name?.familyName,
 			accessToken,
 		};
+		// Check if the user already exists in your database
+		const existingUser = await this.userRepo.findOne({
+			email: profile.emails![0].value,
+			isDeleted: false,
+		});
 
-		done(null, user);
+		if (existingUser) {
+			// If the user exists, return the user object
+			done(null, existingUser);
+		} else {
+			// If the user doesn't exist, create a new user
+			const newUser = this.userRepo.create({
+				...omit(user, ["accessToken"]),
+				avatar: profile.photos![0].value,
+				username: profile.username,
+				password: randomString({ length: 10, symbols: true, numbers: true }),
+			});
+			done(null, newUser);
+		}
 	}
 }
