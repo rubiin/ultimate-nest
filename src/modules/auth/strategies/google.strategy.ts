@@ -1,7 +1,11 @@
 import { OauthResponse } from "@common/@types";
+import { BaseRepository } from "@common/database";
+import { User } from "@entities";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
+import { omit, randomString } from "helper-fns";
 import { Profile, Strategy, VerifyCallback } from "passport-google-oauth20";
 
 @Injectable()
@@ -16,7 +20,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 	 *
 	 */
 
-	constructor(public readonly configService: ConfigService<IConfig, true>) {
+	constructor(
+		public readonly configService: ConfigService<IConfig, true>,
+		@InjectRepository(User) private readonly userRepo: BaseRepository<User>,
+	) {
 		super({
 			clientID: configService.get("googleOauth.clientId", { infer: true }),
 			clientSecret: configService.get("googleOauth.secret", { infer: true }),
@@ -39,6 +46,24 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 			accessToken,
 		};
 
-		done(null, user);
+		// Check if the user already exists in your database
+		const existingUser = await this.userRepo.findOne({
+			email: profile.emails![0].value,
+			isDeleted: false,
+		});
+
+		if (existingUser) {
+			// If the user exists, return the user object
+			done(null, existingUser);
+		} else {
+			// If the user doesn't exist, create a new user
+			const newUser = this.userRepo.create({
+				...omit(user, ["accessToken"]),
+				avatar: profile.photos![0].value,
+				username: profile.username,
+				password: randomString({ length: 10, symbols: true, numbers: true }),
+			});
+			done(null, newUser);
+		}
 	}
 }

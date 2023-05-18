@@ -1,5 +1,7 @@
 import { TEmailSubject } from "../types";
 
+const BITS_TO_MB = 1024 * 1024;
+
 export enum EmailTemplate {
 	"RESET_PASSWORD_TEMPLATE" = "reset",
 	"WELCOME_TEMPLATE" = "welcome",
@@ -15,8 +17,8 @@ export const EmailSubject: Record<TEmailSubject, string> = {
 };
 
 export enum FileSize {
-	IMAGE = 5 * 1024 * 1024, // 5MB
-	DOC = 10 * 1024 * 1024, // 10MB
+	IMAGE = 5 * BITS_TO_MB, // 5MB
+	DOC = 10 * BITS_TO_MB, // 10MB
 }
 
 export enum PostStateEnum {

@@ -28,6 +28,6 @@ export interface FileValidator {
 	required?: boolean;
 }
 
-export type IsDateFieldOptions = BaseValidator
+export type IsDateFieldOptions = BaseValidator;
 
-export type IsEnumFieldOptions = BaseValidator
+export type IsEnumFieldOptions = BaseValidator;
