@@ -32,8 +32,8 @@ export const IsNumberField = (ops?: IsNumberFieldOptions) => {
 	};
 	const decoratorsToApply = [
 		Type(() => Number),
-		Min(options.min, { message: i18nValidationMessage("validation.min") }),
-		Max(options.max, { message: i18nValidationMessage("validation.max") }),
+		Min(options.min, { message: i18nValidationMessage("validation.min"), each: options.each }),
+		Max(options.max, { message: i18nValidationMessage("validation.max"), each: options.each }),
 	];
 
 	if (options.int) {

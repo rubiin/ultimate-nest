@@ -40,7 +40,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 		profile: Profile,
 		done: VerifyCallback,
 	): Promise<any> {
-		const { name, emails, username,photos } = profile;
+		const { name, emails, username, photos } = profile;
 		const user: OauthResponse = {
 			email: emails![0].value,
 			firstName: name?.givenName,
