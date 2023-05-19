@@ -1,4 +1,4 @@
-import { isArray } from "@common/@types/types";
+import { HelperService } from "@common/helpers";
 import {
 	registerDecorator,
 	ValidationArguments,
@@ -15,7 +15,7 @@ class IsDateInFormatConstraint implements ValidatorConstraintInterface {
 	async validate(value: string | Array<string>, arguments_: ValidationArguments) {
 		const [format] = arguments_.constraints;
 
-		if (isArray(value)) {
+		if (HelperService.isArray(value)) {
 			return value.some(v => isMatch(v, format));
 		}
 

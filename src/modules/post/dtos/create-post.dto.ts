@@ -1,6 +1,5 @@
 import { PostStateEnum } from "@common/@types";
-import { IsEnumField, IsStringField } from "@common/decorators";
-import { ToBoolean } from "@common/decorators/validation";
+import { IsEnumField, IsStringField, ToBoolean } from "@common/decorators";
 import { IsBoolean, IsNotEmpty, IsUUID } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 

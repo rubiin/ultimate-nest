@@ -30,3 +30,8 @@ export interface File {
 	/** `MemoryStorage` only: A Buffer containing the entire file. */
 	buffer: Buffer;
 }
+
+// This type represents a dto that contains a file or files
+export type DtoWithFile<T, K = File> = T & {
+	files: K;
+};
