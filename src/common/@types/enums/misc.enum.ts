@@ -1,4 +1,4 @@
-import { TEmailSubject } from "../types";
+import { TEmailSubject } from "../interfaces";
 
 const BITS_TO_MB = 1024 * 1024;
 

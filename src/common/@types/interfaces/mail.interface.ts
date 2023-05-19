@@ -1,3 +1,5 @@
+import { EmailTemplate } from "../enums";
+
 export interface MailPayload {
 	template: string;
 	replacements?: Record<string, string>;
@@ -5,3 +7,5 @@ export interface MailPayload {
 	subject: string;
 	from: string;
 }
+
+export type TEmailSubject = keyof typeof EmailTemplate extends `${infer T}_TEMPLATE` ? T : never;

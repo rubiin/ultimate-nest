@@ -1,13 +1,17 @@
 import {
+	CursorPaginationResponse,
 	CursorType,
+	getOppositeOrder,
+	getQueryOrder,
 	IPaginateOptions,
 	IQBCursorPaginationOptions,
 	IQBOffsetPaginationOptions,
+	OffsetMeta,
+	OffsetPaginationResponse,
+	OppositeOrder,
+	Order,
 	QueryOrder,
 } from "@common/@types";
-import { CursorPaginationResponse } from "@common/@types/cursor.pagination";
-import { OffsetMeta, OffsetPaginationResponse } from "@common/@types/offset.pagination";
-import { getOppositeOrder, getQueryOrder, OppositeOrder, Order } from "@common/@types/types";
 import {
 	Dictionary,
 	EntityData,

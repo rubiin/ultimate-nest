@@ -1,5 +1,4 @@
-import { Action, File, Roles } from "@common/@types";
-import { CursorPaginationResponse } from "@common/@types/cursor.pagination";
+import { Action, CursorPaginationResponse,File, Roles } from "@common/@types";
 import {
 	ApiFile,
 	ApiPaginatedResponse,

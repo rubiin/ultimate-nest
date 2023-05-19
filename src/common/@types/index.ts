@@ -4,4 +4,3 @@ export * from "./cursor.pagination";
 export * from "./enums";
 export * from "./interfaces";
 export * from "./offset.pagination";
-export * from "./types";

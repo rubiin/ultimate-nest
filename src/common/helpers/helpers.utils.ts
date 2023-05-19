@@ -13,6 +13,9 @@ const argon2Options: ArgonOptions & { raw?: false } = {
 };
 
 export const HelperService = {
+	isArray: <T>(value: unknown): value is T[] => {
+		return Array.isArray(value);
+	},
 	buildPayloadResponse(
 		user: User,
 		accessToken: string,

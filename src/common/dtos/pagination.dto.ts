@@ -1,6 +1,5 @@
 import { PaginationRequestAbstract } from "@common/@types";
-import { IsStringField } from "@common/decorators";
-import { ToBoolean } from "@common/decorators/validation";
+import { IsStringField, ToBoolean } from "@common/decorators";
 import { IsBoolean } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 

@@ -3,7 +3,10 @@ import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { Observable } from "rxjs";
 
-import { PaginationRequest as TPaginationRequest, PaginationResponse } from "../types";
+import {
+	PaginationRequest as TPaginationRequest,
+	PaginationResponse,
+} from "./pagination.interface";
 
 /**
  * common interface that enforces common methods for controller and service
