@@ -1,0 +1,27 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "testTimeout": 30000,
+  "moduleNameMapper": {
+    "^@entities": "<rootDir>/entities/index",
+    "^@mocks": "<rootDir>/_mocks_/index",
+    "^@common/(.*)$": "<rootDir>/common/$1",
+    "^@modules/(.*)$": "<rootDir>/modules/$1",
+    "^@lib/(.*)$": "<rootDir>/lib/$1"
+  },
+  "rootDir": "src",
+  "testRegex": ".spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "@swc/jest"
+  },
+  "runtime": "@side/jest-runtime",
+  "coverageDirectory": "../coverage",
+  "testEnvironment": "node",
+  "coverageReporters": [
+    "text",
+    "html"
+  ]
+}
