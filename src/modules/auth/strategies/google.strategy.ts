@@ -38,7 +38,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 		profile: Profile,
 		done: VerifyCallback,
 	): Promise<any> {
-		const { name, emails } = profile;
+		const { name, emails, photos, username } = profile;
 		const user: OauthResponse = {
 			email: emails![0].value,
 			firstName: name?.givenName,
@@ -48,7 +48,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 
 		// Check if the user already exists in your database
 		const existingUser = await this.userRepo.findOne({
-			email: profile.emails![0].value,
+			email: emails![0].value,
 			isDeleted: false,
 		});
 
@@ -59,10 +59,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 			// If the user doesn't exist, create a new user
 			const newUser = this.userRepo.create({
 				...omit(user, ["accessToken"]),
-				avatar: profile.photos![0].value,
-				username: profile.username,
+				avatar: photos![0].value,
+				username: username,
 				password: randomString({ length: 10, symbols: true, numbers: true }),
 			});
+
 			done(null, newUser);
 		}
 	}
