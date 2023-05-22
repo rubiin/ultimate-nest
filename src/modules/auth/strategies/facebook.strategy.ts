@@ -22,7 +22,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 	 */
 
 	constructor(
-		public readonly configService: ConfigService<IConfig, true>,
+		public readonly configService: ConfigService<Configs, true>,
 		@InjectRepository(User) private readonly userRepo: BaseRepository<User>,
 	) {
 		super({

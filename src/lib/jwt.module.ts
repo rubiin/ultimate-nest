@@ -7,7 +7,7 @@ import { JwtModule } from "@nestjs/jwt";
 	imports: [
 		JwtModule.registerAsync({
 			imports: [NestConfigModule],
-			useFactory: async (configService: ConfigService<IConfig, true>) => ({
+			useFactory: async (configService: ConfigService<Configs, true>) => ({
 				isGlobal: true,
 				secret: configService.get("jwt.secret", { infer: true }),
 				signOptions: {

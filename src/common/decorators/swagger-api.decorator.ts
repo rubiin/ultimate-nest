@@ -1,7 +1,7 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 
-interface ISwaggerResponseOptions {
+interface SwaggerResponseOptions {
 	operation: string;
 	params?: string[];
 	notFound?: string;
@@ -20,7 +20,7 @@ export const SwaggerResponse = ({
 	notFound,
 	badRequest,
 	params,
-}: ISwaggerResponseOptions) => {
+}: SwaggerResponseOptions) => {
 	const decsToApply = [ApiOperation({ summary: operation })];
 
 	if (params) {

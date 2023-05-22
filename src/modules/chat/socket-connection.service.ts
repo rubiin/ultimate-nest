@@ -1,7 +1,7 @@
 import { User } from "@entities";
 import { Injectable } from "@nestjs/common";
 
-interface ISocketConnection {
+interface SocketConnection {
 	connectedUser: User;
 	socketId: string;
 }
@@ -14,7 +14,7 @@ export class SocketConnectionService {
 		return [...this.socketConnections.values()];
 	}
 
-	saveConnection(connection: ISocketConnection) {
+	saveConnection(connection: SocketConnection) {
 		return this.socketConnections.set(connection.socketId, connection.connectedUser);
 	}
 

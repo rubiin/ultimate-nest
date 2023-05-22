@@ -11,7 +11,7 @@ import { CacheService } from "./cache.service";
 		CacheModule.registerAsync<any>({
 			imports: [NestConfigModule],
 			isGlobal: true,
-			useFactory: async (configService: ConfigService<IConfig, true>) => {
+			useFactory: async (configService: ConfigService<Configs, true>) => {
 				const store = await redisStore({
 					url: configService.get("redis.url", { infer: true }),
 

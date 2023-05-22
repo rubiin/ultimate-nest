@@ -9,7 +9,7 @@ import Strategy from "passport-magic-login";
 
 import { AuthService } from "../auth.service";
 
-interface IMagicLoginPayload {
+interface MagicLoginPayload {
 	destination: string;
 	code: string;
 	iat: number;
@@ -33,8 +33,8 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 	constructor(
 		private readonly authService: AuthService,
 		private readonly mailService: MailerService,
-		private readonly configService: ConfigService<IConfig, true>,
-		config: ConfigService<IConfig, true>,
+		private readonly configService: ConfigService<Configs, true>,
+		config: ConfigService<Configs, true>,
 	) {
 		super({
 			secret: config.get("jwt.secret", { infer: true }),
@@ -59,7 +59,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 				});
 			},
 			verify: (
-				payload: IMagicLoginPayload,
+				payload: MagicLoginPayload,
 				callback: (callback_: null, user: Promise<Loaded<User>>) => void,
 			) => {
 				// Get or create a user with the provided email from the database

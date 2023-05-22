@@ -4,23 +4,23 @@ interface BaseValidator {
 	message?: string;
 }
 
-export interface IsStringFieldOptions extends BaseValidator {
+export interface StringFieldOptions extends BaseValidator {
 	minLength?: number;
 	maxLength?: number;
 	sanitize?: boolean;
 	trim?: boolean;
 }
 
-export interface IsNumberFieldOptions extends BaseValidator {
+export interface NumberFieldOptions extends BaseValidator {
 	min?: number;
 	max?: number;
 	int?: boolean;
 	positive?: boolean;
 }
 
-export interface IsMinMaxLengthOptions
-	extends Pick<IsStringFieldOptions, "each">,
-		Pick<IsStringFieldOptions, "minLength" | "maxLength"> {}
+export interface MinMaxLengthOptions
+	extends Pick<StringFieldOptions, "each">,
+		Pick<StringFieldOptions, "minLength" | "maxLength"> {}
 
 export interface FileValidator {
 	fileType?: RegExp | string;
@@ -28,6 +28,6 @@ export interface FileValidator {
 	required?: boolean;
 }
 
-export type IsDateFieldOptions = BaseValidator;
+export type DateFieldOptions = BaseValidator;
 
-export type IsEnumFieldOptions = BaseValidator;
+export type EnumFieldOptions = BaseValidator;

@@ -1,4 +1,4 @@
-import { IsNumberFieldOptions } from "@common/@types";
+import { NumberFieldOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
 import { Type } from "class-transformer";
 import {
@@ -16,19 +16,19 @@ import { i18nValidationMessage } from "nestjs-i18n";
 
 /**
  * It's a decorator that validates a number field
- * @param {IsNumberFieldOptions} [ops] - IsNumberFieldOptions
+ * @param {NumberFieldOptions} [options_] - IsNumberFieldOptions
  * @returns A function that returns a decorator.
  */
 
-export const IsNumberField = (ops?: IsNumberFieldOptions) => {
-	const options: IsNumberFieldOptions = {
+export const IsNumberField = (options_?: NumberFieldOptions) => {
+	const options: NumberFieldOptions = {
 		min: 1,
 		max: Number.POSITIVE_INFINITY,
 		int: true,
 		positive: true,
 		required: true,
 		each: false,
-		...ops,
+		...options_,
 	};
 	const decoratorsToApply = [
 		Type(() => Number),

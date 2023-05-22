@@ -1,4 +1,4 @@
-import { Action, CursorPaginationResponse,File, Roles } from "@common/@types";
+import { Action, CursorPaginationResponse, File, Roles } from "@common/@types";
 import {
 	ApiFile,
 	ApiPaginatedResponse,

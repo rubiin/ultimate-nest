@@ -8,7 +8,7 @@ import { AuthService } from "../auth.service";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-	constructor(private readonly authService: AuthService, config: ConfigService<IConfig, true>) {
+	constructor(private readonly authService: AuthService, config: ConfigService<Configs, true>) {
 		super({
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 			secretOrKey: config.get("jwt.secret", { infer: true }),

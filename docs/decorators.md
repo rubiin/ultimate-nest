@@ -6,10 +6,10 @@ Most decorators are combination of multiple decorators to make code more lesser
 
 | Decorator                                    | Description                                                                           |
 |----------------------------------------------|---------------------------------------------------------------------------------------|
-| `@MinMaxLength(ops?:IsMinMaxLengthOptions)`  | Checks if value is has supplied minlength and maxlength                               |
-| `@IsNumberField(ops?:IsNumberFieldOptions)`  | Checks if given value is number, is required and has supplied min and max value       |
-| `@IsStringField(ops?: IsStringFieldOptions)` | Checks if given value is string, is required and has supplied minlength and maxlength |
-| `@IsEnumField(ops?: IsEnumFieldOptions)`     | Checks if value is an enum and is required                                            |
+| `@MinMaxLength(options?:IsMinMaxLengthOptions)`  | Checks if value is has supplied minlength and maxlength                               |
+| `@IsNumberField(options?:IsNumberFieldOptions)`  | Checks if given value is number, is required and has supplied min and max value       |
+| `@IsStringField(options?: IsStringFieldOptions)` | Checks if given value is string, is required and has supplied minlength and maxlength |
+| `@IsEnumField(options?: IsEnumFieldOptions)`     | Checks if value is an enum and is required                                            |
 | `@IsAfter(value)`                            | Checks if given date is after the passed date                                         |
 | `@IsDateInFormat(format)`                    | Checks if date string is in provided date format                                      |
 | `@IsEqualTo(value)`                          | Checks if value is in equal to the passed value                                       |

@@ -1,4 +1,4 @@
-import { IsStringFieldOptions } from "@common/@types";
+import { StringFieldOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
 import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
@@ -8,19 +8,19 @@ import { Sanitize, Trim } from "./transform.decorator";
 
 /**
  * It's a decorator that validates a string field
- * @param {IsStringFieldOptions} [ops] - IsStringFieldOptions
+ * @param {StringFieldOptions} [options_] - IsStringFieldOptions
  * @returns A function that returns a decorator.
  */
 
-export const IsStringField = (ops?: IsStringFieldOptions) => {
-	const options: IsStringFieldOptions = {
+export const IsStringField = (options_?: StringFieldOptions) => {
+	const options: StringFieldOptions = {
 		minLength: 2,
 		maxLength: 1000,
 		required: true,
 		each: false,
 		sanitize: true,
 		trim: true,
-		...ops,
+		...options_,
 	};
 	const decoratorsToApply = [
 		IsString({

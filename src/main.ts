@@ -30,7 +30,7 @@ const bootstrap = async () => {
 
 	AppUtils.killAppWithGrace(app);
 
-	const configService = app.get(ConfigService<IConfig, true>);
+	const configService = app.get(ConfigService<Configs, true>);
 
 	const logger = new Logger("Bootstrap");
 

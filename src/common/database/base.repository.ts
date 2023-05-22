@@ -3,13 +3,13 @@ import {
 	CursorType,
 	getOppositeOrder,
 	getQueryOrder,
-	IPaginateOptions,
-	IQBCursorPaginationOptions,
-	IQBOffsetPaginationOptions,
 	OffsetMeta,
 	OffsetPaginationResponse,
 	OppositeOrder,
 	Order,
+	PaginateOptions,
+	QBCursorPaginationOptions,
+	QBOffsetPaginationOptions,
 	QueryOrder,
 } from "@common/@types";
 import {
@@ -259,7 +259,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	 * options applied.
 	 */
 	qbOffsetPagination<T extends Dictionary>(
-		dto: IQBOffsetPaginationOptions<T>,
+		dto: QBOffsetPaginationOptions<T>,
 	): Observable<OffsetPaginationResponse<T>> {
 		const { qb, pageOptionsDto } = dto;
 
@@ -293,7 +293,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		after,
 		fields,
 		search,
-	}: IQBCursorPaginationOptions<T>): Promise<CursorPaginationResponse<T>> {
+	}: QBCursorPaginationOptions<T>): Promise<CursorPaginationResponse<T>> {
 		let previousCount = 0;
 		const stringCursor = String(cursor); // because of runtime issues
 		const aliasCursor = `${alias}.${stringCursor}`;
@@ -337,7 +337,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		cursor,
 		first,
 		search,
-	}: IPaginateOptions<T>): CursorPaginationResponse<T> {
+	}: PaginateOptions<T>): CursorPaginationResponse<T> {
 		const pages: CursorPaginationResponse<T> = {
 			data: instances,
 			meta: {

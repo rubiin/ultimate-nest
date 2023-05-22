@@ -10,13 +10,13 @@ import {
 	SchemaObject,
 } from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
 
-interface IApiFileOptions {
+interface ApiFileOptions {
 	fieldName?: string;
 	required?: boolean;
 	localOptions?: MulterOptions;
 }
 
-interface IApiFilesOptions extends IApiFileOptions {
+interface ApiFilesOptions extends ApiFileOptions {
 	maxCount?: number;
 }
 
@@ -26,8 +26,8 @@ interface IApiFilesOptions extends IApiFileOptions {
  * @returns A function that returns a function that returns a function.
  * @param options_
  */
-export const ApiFile = (options_?: IApiFileOptions) => {
-	const options: IApiFileOptions = { fieldName: "file", required: false, ...options_ };
+export const ApiFile = (options_?: ApiFileOptions) => {
+	const options: ApiFileOptions = { fieldName: "file", required: false, ...options_ };
 
 	return applyDecorators(
 		UseInterceptors(FileInterceptor(options.fieldName, options.localOptions)),
@@ -50,11 +50,11 @@ export const ApiFile = (options_?: IApiFileOptions) => {
 /**
  * It adds the `@UseInterceptors(FilesInterceptor(...))` decorator to the route handler, and adds the
  * `@ApiConsumes("multipart/form-data")` and `@ApiBody({...})` decorators to the route handler
- * @param {IApiFilesOptions} [options_] - IApiFilesOptions - The options for the decorator.
+ * @param {ApiFilesOptions} [options_] - IApiFilesOptions - The options for the decorator.
  * @returns A function that returns a decorator.
  */
-export const ApiFiles = (options_?: IApiFilesOptions) => {
-	const options: IApiFilesOptions = {
+export const ApiFiles = (options_?: ApiFilesOptions) => {
+	const options: ApiFilesOptions = {
 		fieldName: "files",
 		required: false,
 		maxCount: 10,
