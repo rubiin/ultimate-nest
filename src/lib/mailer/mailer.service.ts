@@ -7,11 +7,11 @@ import previewEmail from "preview-email";
 import { from, switchMap } from "rxjs";
 
 import { EtaAdapter, HandlebarsAdapter, PugAdapter } from "./adapters";
-import { IAdapter } from "./adapters/abstract.adapter";
+import { Adapter } from "./adapters/abstract.adapter";
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
 import { MailModuleOptions } from "./mailer.options";
 
-interface IMailOptions extends Partial<SendMailOptions> {
+interface MailOptions extends Partial<SendMailOptions> {
 	template: string;
 	replacements: Record<string, any>;
 }
@@ -20,7 +20,7 @@ interface IMailOptions extends Partial<SendMailOptions> {
 export class MailerService {
 	readonly transporter: Transporter<SentMessageInfo>;
 	private readonly logger: Logger = new Logger(MailerService.name);
-	private readonly adapter: IAdapter;
+	private readonly adapter: Adapter;
 
 	constructor(
 		@Inject(MODULE_OPTIONS_TOKEN)
@@ -82,10 +82,10 @@ export class MailerService {
 
 	/**
 	 * It takes a mailOptions object, renders the template, and sends the email
-	 * @param {IMailOptions} mailOptions - IMailOptions
+	 * @param {MailOptions} mailOptions - IMailOptions
 	 * @returns A promise that resolves to a boolean.
 	 */
-	sendMail(mailOptions: IMailOptions) {
+	sendMail(mailOptions: MailOptions) {
 		const templatePath = resolve(
 			`${__dirname}/../../${this.options.templateDir}/${mailOptions.template}.${this.options.engine.adapter}`,
 		);
@@ -108,7 +108,7 @@ export class MailerService {
 			if (error) {
 				this.logger.log(error);
 			} else {
-				this.logger.log("Mail server is ready to take our messages");
+				this.logger.log(`Mail server is ready to take our messages: ${_success}`);
 			}
 		});
 	}

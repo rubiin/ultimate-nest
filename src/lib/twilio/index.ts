@@ -8,7 +8,7 @@ import { TwilioModule } from "./twilio.module";
 	imports: [
 		TwilioModule.forRootAsync({
 			imports: [NestConfigModule],
-			useFactory: (configService: ConfigService<IConfig, true>) => ({
+			useFactory: (configService: ConfigService<Configs, true>) => ({
 				isGlobal: true,
 				accountSid: configService.get("twilio.accountSid", { infer: true }),
 				authToken: configService.get("twilio.authToken", { infer: true }),

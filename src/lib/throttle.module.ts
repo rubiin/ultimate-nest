@@ -8,7 +8,7 @@ import { ThrottlerStorageRedisService } from "nestjs-throttler-storage-redis";
 		ThrottlerModule.forRootAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
-			useFactory: (config: ConfigService<IConfig, true>) => ({
+			useFactory: (config: ConfigService<Configs, true>) => ({
 				ttl: config.get("throttle.ttl", { infer: true }),
 				limit: config.get("throttle.limit", { infer: true }),
 				ignoreUserAgents: [/nestify/i],

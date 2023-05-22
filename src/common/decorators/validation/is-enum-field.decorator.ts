@@ -1,4 +1,4 @@
-import { IsEnumFieldOptions } from "@common/@types";
+import { EnumFieldOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
 import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import { enumToString } from "helper-fns";
@@ -7,11 +7,11 @@ import { i18nValidationMessage } from "nestjs-i18n";
 /**
  * It's a decorator that validates that the field is an enum value
  * @param {object} entity - object - The enum object to validate against.
- * @param {IsEnumFieldOptions} [ops] - IsEnumFieldOptions
+ * @param {EnumFieldOptions} [options_] - IsEnumFieldOptions
  * @returns A decorator function that takes in a target, propertyKey, and descriptor.
  */
-export const IsEnumField = (entity: object, ops?: IsEnumFieldOptions) => {
-	const options: IsEnumFieldOptions = { each: false, required: true, ...ops };
+export const IsEnumField = (entity: object, options_?: EnumFieldOptions) => {
+	const options: EnumFieldOptions = { each: false, required: true, ...options_ };
 	const decoratorsToApply = [
 		IsEnum(entity, {
 			each: options.each,

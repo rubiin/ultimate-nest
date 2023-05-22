@@ -12,7 +12,7 @@ const logger = new Logger("RabbitMQ");
 	imports: [
 		RabbitMQModule.forRootAsync(RabbitMQModule, {
 			imports: [NestConfigModule],
-			useFactory: (configService: ConfigService<IConfig, true>) => ({
+			useFactory: (configService: ConfigService<Configs, true>) => ({
 				exchanges: [
 					{
 						name: configService.get("rabbitmq.exchange", { infer: true }),

@@ -22,7 +22,7 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
 		@InjectRepository(NewsLetter) private newsLetterRepository: BaseRepository<NewsLetter>,
 		@InjectRepository(Subscriber) private subscriberRepository: BaseRepository<Subscriber>,
 		private readonly amqpConnection: AmqpConnection,
-		private readonly configService: ConfigService<IConfig, true>,
+		private readonly configService: ConfigService<Configs, true>,
 	) {
 		super(newsLetterRepository);
 	}

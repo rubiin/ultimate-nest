@@ -6,7 +6,7 @@ import { CursorPaginationResponse } from "../cursor.pagination";
 import { CursorType, QueryCursor, QueryOrder } from "../enums";
 import { OffsetPaginationResponse } from "../offset.pagination";
 
-export interface IQBCursorPaginationOptions<T extends Dictionary> {
+export interface QBCursorPaginationOptions<T extends Dictionary> {
 	alias: string;
 	cursor: keyof T;
 	cursorType: CursorType;
@@ -18,7 +18,7 @@ export interface IQBCursorPaginationOptions<T extends Dictionary> {
 	search?: string;
 }
 
-export interface IPaginateOptions<T> {
+export interface PaginateOptions<T> {
 	instances: T[];
 	currentCount: number;
 	previousCount: number;
@@ -27,7 +27,7 @@ export interface IPaginateOptions<T> {
 	search?: string;
 }
 
-export interface IQBOffsetPaginationOptions<T extends Dictionary> {
+export interface QBOffsetPaginationOptions<T extends Dictionary> {
 	pageOptionsDto: OffsetPaginationDto;
 	qb: QueryBuilder<T>;
 }

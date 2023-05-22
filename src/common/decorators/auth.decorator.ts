@@ -4,7 +4,7 @@ import { PoliciesGuard } from "@lib/casl/policies.guard";
 import { applyDecorators, CanActivate, Type, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiUnauthorizedResponse } from "@nestjs/swagger";
 
-interface IAuthGuard {
+interface AuthGuard {
 	guards?: Type<CanActivate>[];
 	unauthorizedResponse?: string;
 }
@@ -16,8 +16,8 @@ interface IAuthGuard {
  *
  */
 
-export const Auth = (options_?: IAuthGuard) => {
-	const options: IAuthGuard = {
+export const Auth = (options_?: AuthGuard) => {
+	const options: AuthGuard = {
 		guards: [JwtAuthGuard, PoliciesGuard],
 		unauthorizedResponse: API_UNAUTHORISED_RESPONSE,
 		...options_,

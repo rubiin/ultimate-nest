@@ -1,10 +1,13 @@
-import { IsEqualTo, IsPassword } from "@common/decorators";
+import { IsEqualTo, IsPassword, IsStringField } from "@common/decorators";
 import { PickType } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class ResetPasswordDto {
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsStringField({
+		minLength: 6,
+		maxLength: 6,
+	})
 	otpCode!: string;
 
 	/**

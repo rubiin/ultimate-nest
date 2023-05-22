@@ -10,7 +10,7 @@ export class SocketIOAdapter extends IoAdapter {
 
 	constructor(
 		app: INestApplicationContext,
-		private readonly config: ConfigService<IConfig, true>,
+		private readonly config: ConfigService<Configs, true>,
 	) {
 		super(app);
 	}

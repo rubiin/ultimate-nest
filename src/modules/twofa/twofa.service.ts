@@ -15,7 +15,7 @@ export class TwoFactorService {
 	constructor(
 		@InjectRepository(User)
 		private userRepository: BaseRepository<User>,
-		private readonly configService: ConfigService<IConfig, true>,
+		private readonly configService: ConfigService<Configs, true>,
 		private readonly em: EntityManager,
 	) {}
 

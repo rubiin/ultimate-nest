@@ -21,7 +21,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 	 */
 
 	constructor(
-		public readonly configService: ConfigService<IConfig, true>,
+		public readonly configService: ConfigService<Configs, true>,
 		@InjectRepository(User) private readonly userRepo: BaseRepository<User>,
 	) {
 		super({

@@ -7,7 +7,7 @@ import { CloudinaryModule } from "nestjs-cloudinary";
 	imports: [
 		CloudinaryModule.forRootAsync({
 			imports: [NestConfigModule],
-			useFactory: (configService: ConfigService<IConfig, true>) => ({
+			useFactory: (configService: ConfigService<Configs, true>) => ({
 				isGlobal: true,
 				cloud_name: configService.get("cloudinary.cloud_name", { infer: true }),
 				api_key: configService.get("cloudinary.api_key", { infer: true }),

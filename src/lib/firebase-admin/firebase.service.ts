@@ -6,12 +6,12 @@ import admin from "firebase-admin";
 
 import { FirebaseModuleOptions, MODULE_OPTIONS_TOKEN } from "./fire-base.module.definition";
 
-interface INestFirebaseService {
+interface NestFirebase {
 	getFirebaseAdmin(): admin.app.App;
 }
 
 @Injectable()
-export class NestFirebaseService implements INestFirebaseService {
+export class NestFirebaseService implements NestFirebase {
 	private _firebaseConnection: any;
 
 	constructor(

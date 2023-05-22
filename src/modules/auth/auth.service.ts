@@ -38,7 +38,7 @@ export class AuthService {
 		@InjectRepository(OtpLog)
 		private readonly otpRepository: BaseRepository<OtpLog>,
 		private readonly tokenService: TokensService,
-		private readonly configService: ConfigService<IConfig, true>,
+		private readonly configService: ConfigService<Configs, true>,
 		private readonly mailService: MailerService,
 		private readonly em: EntityManager,
 	) {}

@@ -1,3 +1,4 @@
+import { IsStringField } from "@common/decorators";
 import { PickType } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
@@ -7,7 +8,10 @@ export class OtpVerifyDto {
 	 * Otp sent on email
 	 * @example 986579
 	 */
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsStringField({
+		minLength: 6,
+		maxLength: 6,
+	})
 	otpCode!: string;
 
 	/**

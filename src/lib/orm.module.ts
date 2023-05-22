@@ -10,7 +10,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 	imports: [
 		MikroOrmModule.forRootAsync({
 			imports: [ConfigModule],
-			useFactory: (configService: ConfigService<IConfig, true>) =>
+			useFactory: (configService: ConfigService<Configs, true>) =>
 				defineConfig({
 					...baseOptions,
 					host: configService.get("database.host", { infer: true }),

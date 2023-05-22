@@ -9,7 +9,7 @@ import { MailModule } from "./mailer.module";
 	imports: [
 		MailModule.forRootAsync({
 			imports: [NestConfigModule],
-			useFactory: (configService: ConfigService<IConfig, true>) => ({
+			useFactory: (configService: ConfigService<Configs, true>) => ({
 				host: configService.get("mail.host", { infer: true }),
 				port: configService.get("mail.port", { infer: true }),
 				username: configService.get("mail.username", { infer: true }),

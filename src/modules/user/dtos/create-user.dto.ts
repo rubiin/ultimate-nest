@@ -1,5 +1,5 @@
 import { Roles } from "@common/@types";
-import { IsEnumField, IsPassword, IsStringField,IsUnique, IsUsername } from "@common/decorators";
+import { IsEnumField, IsPassword, IsStringField, IsUnique, IsUsername } from "@common/decorators";
 import { User } from "@entities";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty } from "class-validator";

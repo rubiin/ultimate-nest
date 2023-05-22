@@ -1,8 +1,8 @@
 import { compile } from "handlebars";
 
-import { IAdapter } from "./abstract.adapter";
+import { Adapter } from "./abstract.adapter";
 
-export class HandlebarsAdapter implements IAdapter {
+export class HandlebarsAdapter implements Adapter {
 	constructor(private readonly options: Partial<CompileOptions>) {}
 
 	compile(template: string, data: Record<string, any>): Promise<string> {

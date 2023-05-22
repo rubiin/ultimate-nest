@@ -17,7 +17,7 @@ export class HealthController {
 		private http: HttpHealthIndicator,
 		private disk: DiskHealthIndicator,
 		private memory: MemoryHealthIndicator,
-		private configService: ConfigService<IConfig, true>,
+		private configService: ConfigService<Configs, true>,
 		private databaseHealth: MikroOrmHealthIndicator,
 	) {}
 

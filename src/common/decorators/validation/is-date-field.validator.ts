@@ -1,10 +1,10 @@
-import { IsDateFieldOptions } from "@common/@types";
+import { DateFieldOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
 import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
-export const IsDateField = (options_?: IsDateFieldOptions) => {
-	const options: IsDateFieldOptions = { each: false, required: true, ...options_ };
+export const IsDateField = (options_?: DateFieldOptions) => {
+	const options: DateFieldOptions = { each: false, required: true, ...options_ };
 	const decoratorsToApply = [
 		IsDateString(
 			{ strict: true },

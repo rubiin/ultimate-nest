@@ -49,7 +49,7 @@ export const AppUtils = {
 		});
 	},
 
-	setupSwagger(app: INestApplication, configService: ConfigService<IConfig, true>): void {
+	setupSwagger(app: INestApplication, configService: ConfigService<Configs, true>): void {
 		const userName = configService.get("app.swaggerUser", { infer: true });
 		const passWord = configService.get("app.swaggerPass", { infer: true });
 		const appName = configService.get("app.name", { infer: true });

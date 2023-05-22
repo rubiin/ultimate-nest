@@ -14,7 +14,7 @@ import {
 	twilio,
 } from "./configs";
 
-export interface IConfig {
+export interface Config {
 	throttle: ConfigType<typeof throttle>;
 	redis: ConfigType<typeof redis>;
 	database: ConfigType<typeof database>;
