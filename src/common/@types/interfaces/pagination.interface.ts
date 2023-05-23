@@ -2,9 +2,9 @@ import { CursorPaginationDto, OffsetPaginationDto } from "@common/dtos";
 import { Dictionary } from "@mikro-orm/core";
 import { QueryBuilder } from "@mikro-orm/postgresql";
 
-import { CursorPaginationResponse } from "../cursor.pagination";
+import { CursorPaginationResponse } from "../cursor.response";
 import { CursorType, QueryCursor, QueryOrder } from "../enums";
-import { OffsetPaginationResponse } from "../offset.pagination";
+import { OffsetPaginationResponse } from "../offset.response";
 
 export interface QBCursorPaginationOptions<T extends Dictionary> {
 	alias: string;
