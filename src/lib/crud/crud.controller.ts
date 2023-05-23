@@ -18,7 +18,6 @@ import {
 	UsePipes,
 	ValidationPipe,
 } from "@nestjs/common";
-import { ApiBody, ApiResponse } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 
 @Injectable()
@@ -72,6 +71,7 @@ export function ControllerFactory<
 			return this.service.findOne(index);
 		}
 
+		// TODO: add swagger response for this
 		@UsePipes(queryPipe)
 		@Get()
 		findAll(@Query() query: Q): Observable<PaginationResponse<T>> {
@@ -81,14 +81,9 @@ export function ControllerFactory<
 		@SwaggerResponse({
 			operation: "Create item",
 			badRequest: "Item already exists.",
+			body: createDto,
 		})
 		@UsePipes(createPipe)
-		@ApiBody({ type: createDto })
-		@ApiResponse({
-			description: "Created successfully.",
-			type: createDto,
-			status: 201,
-		})
 		@Post()
 		create(@Body() body: C, @LoggedInUser() user?: User): Observable<T> {
 			return this.service.create(body, user);
@@ -98,14 +93,9 @@ export function ControllerFactory<
 			operation: "Item update",
 			badRequest: "Item does not exist.",
 			params: ["idx"],
+			body: updateDto,
 		})
 		@UsePipes(updatePipe)
-		@ApiBody({ type: createDto })
-		@ApiResponse({
-			description: "Updated successfully.",
-			type: createDto,
-			status: 200,
-		})
 		@Put(":idx")
 		update(@Param("idx") index: string, @Body() body: U): Observable<T> {
 			return this.service.update(index, body);
@@ -115,11 +105,6 @@ export function ControllerFactory<
 			operation: "Item delete",
 			badRequest: "Item does not exist.",
 			params: ["idx"],
-		})
-		@ApiResponse({
-			description: "Deleted successfully.",
-			type: createDto,
-			status: 200,
 		})
 		@Delete(":idx")
 		remove(@Param("idx") index: string): Observable<T> {

@@ -78,16 +78,16 @@ dependencies:
     version: 9.4.2(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/platform-socket.io@9.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
   '@ntegral/nestjs-sentry':
     specifier: ^4.0.0
-    version: 4.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@sentry/hub@7.52.1)(@sentry/node@7.52.1)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13)(rimraf@3.0.2)(rxjs@7.8.1)
+    version: 4.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@sentry/hub@7.53.0)(@sentry/node@7.53.0)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13)(rimraf@3.0.2)(rxjs@7.8.1)
   '@paralleldrive/cuid2':
     specifier: ^2.2.0
     version: 2.2.0
   '@sentry/hub':
-    specifier: ^7.52.1
-    version: 7.52.1
+    specifier: ^7.53.0
+    version: 7.53.0
   '@sentry/node':
-    specifier: ^7.52.1
-    version: 7.52.1
+    specifier: ^7.53.0
+    version: 7.53.0
   '@socket.io/redis-adapter':
     specifier: ^8.2.1
     version: 8.2.1(socket.io-adapter@2.5.2)
@@ -253,8 +253,8 @@ devDependencies:
     specifier: 9.4.2
     version: 9.4.2(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@nestjs/platform-express@9.4.2)
   '@sentry/types':
-    specifier: ^7.52.1
-    version: 7.52.1
+    specifier: ^7.53.0
+    version: 7.53.0
   '@side/jest-runtime':
     specifier: ^1.1.0
     version: 1.1.0(@jest/transform@29.5.0)(jest-runtime@29.5.0)(jest@29.5.0)
@@ -3232,7 +3232,7 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
 
-  /@ntegral/nestjs-sentry@4.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@sentry/hub@7.52.1)(@sentry/node@7.52.1)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13)(rimraf@3.0.2)(rxjs@7.8.1):
+  /@ntegral/nestjs-sentry@4.0.0(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(@sentry/hub@7.53.0)(@sentry/node@7.53.0)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13)(rimraf@3.0.2)(rxjs@7.8.1):
     resolution: {integrity: sha512-6WHZcK7NLeg7ue1y3Z61msEBzCGZeXQ0hWhliH1ddQH0kPbZ6lXLxduGMWYb0N/fPjXAX1Astz8urqnoTOZBQw==}
     peerDependencies:
       '@nestjs/common': ^9.0.4
@@ -3245,8 +3245,8 @@ packages:
     dependencies:
       '@nestjs/common': 9.4.2(cache-manager@5.2.1)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 9.4.2(@nestjs/common@9.4.2)(@nestjs/platform-express@9.4.2)(@nestjs/websockets@9.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      '@sentry/hub': 7.52.1
-      '@sentry/node': 7.52.1
+      '@sentry/hub': 7.53.0
+      '@sentry/node': 7.53.0
       reflect-metadata: 0.1.13
       rimraf: 3.0.2
       rxjs: 7.8.1
@@ -3446,43 +3446,43 @@ packages:
       selderee: 0.10.0
     dev: false
 
-  /@sentry-internal/tracing@7.52.1:
-    resolution: {integrity: sha512-6N99rE+Ek0LgbqSzI/XpsKSLUyJjQ9nychViy+MP60p1x+hllukfTsDbNtUNrPlW0Bx+vqUrWKkAqmTFad94TQ==}
+  /@sentry-internal/tracing@7.53.0:
+    resolution: {integrity: sha512-0UrXhZ9wJo3bkzwVq/DkJVnTFmPI+71fjTS0AdyVzP2WYX+qF5NfmsndjWHK0m/g/ZWnfqEqXHmKa6Vt/PyoEQ==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/core': 7.52.1
-      '@sentry/types': 7.52.1
-      '@sentry/utils': 7.52.1
+      '@sentry/core': 7.53.0
+      '@sentry/types': 7.53.0
+      '@sentry/utils': 7.53.0
       tslib: 1.14.1
     dev: false
 
-  /@sentry/core@7.52.1:
-    resolution: {integrity: sha512-36clugQu5z/9jrit1gzI7KfKbAUimjRab39JeR0mJ6pMuKLTTK7PhbpUAD4AQBs9qVeXN2c7h9SVZiSA0UDvkg==}
+  /@sentry/core@7.53.0:
+    resolution: {integrity: sha512-TKMWWEvwT8tSqyIWuCexUk+fIoMA8ZAzGJdOfPW9XRL38RrXA9O+7V5xxK98X/bPHQ6UQF/QceookGOqqpmQyQ==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/types': 7.52.1
-      '@sentry/utils': 7.52.1
+      '@sentry/types': 7.53.0
+      '@sentry/utils': 7.53.0
       tslib: 1.14.1
     dev: false
 
-  /@sentry/hub@7.52.1:
-    resolution: {integrity: sha512-iNHB33ATTxpTNNOc9cQwuSweU6dufDeHPpOC57uVgqZVd+hb4XW/8A/4MckdqeEEMfamvdERzG6Oovy3V0GvzQ==}
+  /@sentry/hub@7.53.0:
+    resolution: {integrity: sha512-lMWyELUtsomXiQOn5DI77ZOeYOmE5VbqSZ+fPrhnvey5NDxyHozEl5KBpyWIiC5Kc++lmjWQK6gH7FUA/vhO2A==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/core': 7.52.1
-      '@sentry/types': 7.52.1
-      '@sentry/utils': 7.52.1
+      '@sentry/core': 7.53.0
+      '@sentry/types': 7.53.0
+      '@sentry/utils': 7.53.0
       tslib: 1.14.1
     dev: false
 
-  /@sentry/node@7.52.1:
-    resolution: {integrity: sha512-n3frjYbkY/+eZ5RTQMaipv6Hh9w3ia40GDeRK6KJQit7OLKLmXisD+FsdYzm8Jc784csSvb6HGGVgqLpO1p9Og==}
+  /@sentry/node@7.53.0:
+    resolution: {integrity: sha512-iuavyakRJ0ci6+fCwmDRlDRn7IddOOM41iTTUl+K3AiFNdyIeK0Ix8tEOmIrSWA2pbanTFVicWfR3MuiAvsKGw==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry-internal/tracing': 7.52.1
-      '@sentry/core': 7.52.1
-      '@sentry/types': 7.52.1
-      '@sentry/utils': 7.52.1
+      '@sentry-internal/tracing': 7.53.0
+      '@sentry/core': 7.53.0
+      '@sentry/types': 7.53.0
+      '@sentry/utils': 7.53.0
       cookie: 0.4.2
       https-proxy-agent: 5.0.1
       lru_map: 0.3.3
@@ -3491,15 +3491,15 @@ packages:
       - supports-color
     dev: false
 
-  /@sentry/types@7.52.1:
-    resolution: {integrity: sha512-OMbGBPrJsw0iEXwZ2bJUYxewI1IEAU2e1aQGc0O6QW5+6hhCh+8HO8Xl4EymqwejjztuwStkl6G1qhK+Q0/Row==}
+  /@sentry/types@7.53.0:
+    resolution: {integrity: sha512-hqlbrCL8nfDfjlF6wh4NHNW9plhWJ1m2BSqRyspcxOC44e293BPfwjUzr0aQapJK/aRkHROnfAtzsEu2awNPzg==}
     engines: {node: '>=8'}
 
-  /@sentry/utils@7.52.1:
-    resolution: {integrity: sha512-MPt1Xu/jluulknW8CmZ2naJ53jEdtdwCBSo6fXJvOTI0SDqwIPbXDVrsnqLAhVJuIN7xbkj96nuY/VBR6S5sWg==}
+  /@sentry/utils@7.53.0:
+    resolution: {integrity: sha512-T3F2DkXB9fDjUIAcrOMrGCnquyTQxTyTb5Mh+NbFBevQn32fHehQ62VraLhe20HTVy8YBFkXisvLu6HeOZ5Mog==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/types': 7.52.1
+      '@sentry/types': 7.53.0
       tslib: 1.14.1
     dev: false
 
