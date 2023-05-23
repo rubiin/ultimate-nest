@@ -12,8 +12,8 @@
 		"jsx": "react",
 		"esModuleInterop": true,
 		"moduleResolution": "node",
-		"outDir": "dist",
 		"baseUrl": "src",
+		"outDir": "dist",
 		"incremental": true,
 		"skipLibCheck": true,
 		"noImplicitAny": false,
@@ -40,7 +40,6 @@
 			"@mocks": ["./_mocks_/index"],
 			"@generated": ["./generated/index"]
 		},
-		"typeRoots": ["@types", "./node_modules/@types"]
 	},
 	"include": ["test/**/*", "src/**/*"],
 	"exclude": ["node_modules", "dist"],

@@ -1,4 +1,4 @@
-import { CursorPaginationResponse } from "@common/@types/cursor.pagination";
+import { CursorPaginationResponse } from "@common/@types";
 import { applyDecorators, Type } from "@nestjs/common";
 import { ApiExtraModels, ApiOkResponse, ApiOperation, getSchemaPath } from "@nestjs/swagger";
 
