@@ -5,6 +5,8 @@ import { i18nValidationMessage } from "nestjs-i18n";
 
 import { PaginationDto } from "./pagination.dto";
 
+// TODO: add filters
+
 export class CursorPaginationDto extends PaginationDto {
 	@Allow()
 	type: PaginationType.CURSOR = PaginationType.CURSOR;

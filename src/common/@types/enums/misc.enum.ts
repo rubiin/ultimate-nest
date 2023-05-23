@@ -55,6 +55,6 @@ export const enum RoutingKey {
 }
 
 export enum PaginationType {
-	OFFSET = "offset",
-	CURSOR = "cursor",
+	OFFSET = "OFFSET",
+	CURSOR = "CURSOR",
 }
