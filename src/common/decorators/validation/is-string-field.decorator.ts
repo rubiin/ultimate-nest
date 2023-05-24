@@ -1,6 +1,14 @@
 import { StringFieldOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import {
+	ArrayMaxSize,
+	ArrayMinSize,
+	ArrayNotEmpty,
+	IsArray,
+	IsNotEmpty,
+	IsOptional,
+	IsString,
+} from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 import { MinMaxLength } from "./min-max-length.decorator";
@@ -14,12 +22,14 @@ import { Sanitize, Trim } from "./transform.decorator";
 
 export const IsStringField = (options_?: StringFieldOptions) => {
 	const options: StringFieldOptions = {
-		minLength: 2,
-		maxLength: 1000,
 		required: true,
 		each: false,
 		sanitize: true,
 		trim: true,
+		minLength: 2,
+		maxLength: Number.MAX_SAFE_INTEGER,
+		arrayMinSize: 0,
+		arrayMaxSize: Number.MAX_SAFE_INTEGER,
 		...options_,
 	};
 	const decoratorsToApply = [
@@ -70,6 +80,8 @@ export const IsStringField = (options_?: StringFieldOptions) => {
 					type: "array",
 				}),
 			}),
+			ArrayMaxSize(options.arrayMaxSize),
+			ArrayMinSize(options.arrayMinSize),
 		);
 	}
 

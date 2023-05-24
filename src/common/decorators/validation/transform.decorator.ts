@@ -6,7 +6,7 @@ import DOMPurify from "isomorphic-dompurify";
  * It trims the value of a property and replaces multiple spaces with a single space
  * @returns A function that takes a parameter and returns a value.
  */
-export const Trim = (): PropertyDecorator => {
+export const Trim = () => {
 	return Transform(parameters => {
 		const value = parameters.value as string[] | string;
 
@@ -23,7 +23,7 @@ export const Trim = (): PropertyDecorator => {
  * @returns A function that returns a PropertyDecorator
  */
 
-export const ToBoolean = (): PropertyDecorator => {
+export const ToBoolean = () => {
 	return Transform(
 		parameters => {
 			switch (parameters.value) {
