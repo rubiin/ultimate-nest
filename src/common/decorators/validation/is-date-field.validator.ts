@@ -4,7 +4,13 @@ import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional } from "cl
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export const IsDateField = (options_?: DateFieldOptions) => {
-	const options: DateFieldOptions = { each: false, required: true, ...options_ };
+	const options: DateFieldOptions = {
+		each: false,
+		required: true,
+		arrayMinSize: 0,
+		arrayMaxSize: Number.MAX_SAFE_INTEGER,
+		...options_,
+	};
 	const decoratorsToApply = [
 		IsDateString(
 			{ strict: true },

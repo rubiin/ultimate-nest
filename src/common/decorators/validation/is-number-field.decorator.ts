@@ -23,11 +23,13 @@ import { i18nValidationMessage } from "nestjs-i18n";
 export const IsNumberField = (options_?: NumberFieldOptions) => {
 	const options: NumberFieldOptions = {
 		min: 1,
-		max: Number.POSITIVE_INFINITY,
-		int: true,
-		positive: true,
 		required: true,
 		each: false,
+		max: Number.MAX_SAFE_INTEGER,
+		arrayMinSize: 0,
+		arrayMaxSize: Number.MAX_SAFE_INTEGER,
+		int: true,
+		positive: true,
 		...options_,
 	};
 	const decoratorsToApply = [

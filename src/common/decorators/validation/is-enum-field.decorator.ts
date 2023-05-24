@@ -11,7 +11,13 @@ import { i18nValidationMessage } from "nestjs-i18n";
  * @returns A decorator function that takes in a target, propertyKey, and descriptor.
  */
 export const IsEnumField = (entity: object, options_?: EnumFieldOptions) => {
-	const options: EnumFieldOptions = { each: false, required: true, ...options_ };
+	const options: EnumFieldOptions = {
+		each: false,
+		required: true,
+		arrayMinSize: 0,
+		arrayMaxSize: Number.MAX_SAFE_INTEGER,
+		...options_,
+	};
 	const decoratorsToApply = [
 		IsEnum(entity, {
 			each: options.each,

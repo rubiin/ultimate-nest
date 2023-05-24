@@ -1,7 +1,13 @@
 import path from "node:path";
 
 import { Module } from "@nestjs/common";
-import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n";
+import {
+	AcceptLanguageResolver,
+	CookieResolver,
+	HeaderResolver,
+	I18nModule,
+	QueryResolver,
+} from "nestjs-i18n";
 
 @Module({
 	imports: [
@@ -10,6 +16,8 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
 			fallbacks: {
 				"np-*": "np",
 				"en-*": "en",
+				en: "en",
+				np: "np",
 			},
 			loaderOptions: {
 				path: path.join(__dirname, "../resources/i18n/"),
@@ -20,6 +28,7 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,
+				new CookieResolver(),
 				{ use: QueryResolver, options: ["lang", "locale"] },
 			],
 		}),

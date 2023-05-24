@@ -2,9 +2,9 @@ import { Action } from "@common/@types";
 import { Request } from "express";
 
 import { AppAbility } from "./casl-ability.factory";
-import { IPolicyHandler } from "./policy.interface";
+import { PoliciesHandler } from "./policy.interface";
 
-export class GenericPolicyHandler implements IPolicyHandler {
+export class GenericPolicyHandler implements PoliciesHandler {
 	constructor(private readonly type: any, private readonly action: Action = Action.Read) {}
 
 	handle(request: Request, ability: AppAbility) {
