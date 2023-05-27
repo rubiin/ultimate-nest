@@ -17,19 +17,19 @@ export abstract class BaseEntity {
 	 */
 	@Property()
 	@Index()
-	idx: string = randomUUID();
+	idx?: string = randomUUID();
 
 	/**
 	 *  To enable or disable the entity
 	 */
 	@Property()
-	isActive = true;
+	isActive? = true;
 
 	/**
 	 *  Marked true when entity is soft deleted
 	 */
 	@Property({ hidden: true })
-	isDeleted = false;
+	isDeleted? = false;
 
 	/**
 	 *  The date that the entity was soft-deleted. Nullable because it's not set until the entity is soft-deleted.
@@ -41,7 +41,7 @@ export abstract class BaseEntity {
 	 *  The date that the entity was created
 	 */
 	@Property()
-	createdAt = new Date();
+	createdAt? = new Date();
 
 	/**
 	 *  The date that the entity was last updated

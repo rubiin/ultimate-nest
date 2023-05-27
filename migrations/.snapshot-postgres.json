@@ -21,7 +21,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -30,7 +30,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -40,7 +40,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -60,7 +60,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -153,7 +153,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -162,7 +162,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -172,7 +172,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -192,7 +192,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -276,7 +276,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -285,7 +285,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -295,7 +295,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -315,7 +315,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -329,14 +329,33 @@
           "length": 6,
           "mappedType": "datetime"
         },
-        "email": {
-          "name": "email",
+        "name": {
+          "name": "name",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "mappedType": "string"
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "sent_at": {
+          "name": "sent_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "news_letter",
@@ -362,19 +381,19 @@
         },
         {
           "columnNames": [
-            "email"
+            "name"
           ],
           "composite": false,
-          "keyName": "news_letter_email_index",
+          "keyName": "news_letter_name_index",
           "primary": false,
           "unique": false
         },
         {
-          "keyName": "news_letter_email_unique",
           "columnNames": [
-            "email"
+            "name"
           ],
           "composite": false,
+          "keyName": "news_letter_name_unique",
           "primary": false,
           "unique": true
         },
@@ -408,7 +427,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -417,7 +436,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -427,7 +446,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -447,7 +466,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -549,7 +568,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -558,7 +577,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -568,7 +587,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -588,7 +607,139 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
           "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "subscriber",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "keyName": "subscriber_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "idx"
+          ],
+          "composite": false,
+          "keyName": "subscriber_idx_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "email"
+          ],
+          "composite": false,
+          "keyName": "subscriber_email_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "email"
+          ],
+          "composite": false,
+          "keyName": "subscriber_email_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "subscriber_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "idx": {
+          "name": "idx",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "is_active": {
+          "name": "is_active",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "true",
+          "mappedType": "boolean"
+        },
+        "is_deleted": {
+          "name": "is_deleted",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -614,12 +765,12 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "slug": {
           "name": "slug",
@@ -663,21 +814,21 @@
         },
         {
           "columnNames": [
+            "title"
+          ],
+          "composite": false,
+          "keyName": "tag_title_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
             "slug"
           ],
           "composite": false,
           "keyName": "tag_slug_index",
           "primary": false,
           "unique": false
-        },
-        {
-          "keyName": "tag_title_unique",
-          "columnNames": [
-            "title"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": true
         },
         {
           "keyName": "tag_pkey",
@@ -709,7 +860,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -718,7 +869,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -728,7 +879,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -748,7 +899,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -809,33 +960,30 @@
         },
         "bio": {
           "name": "bio",
-          "type": "varchar(1000)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 1000,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "avatar": {
           "name": "avatar",
-          "type": "varchar(1000)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 1000,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "password": {
           "name": "password",
-          "type": "varchar(1000)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 1000,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "two_factor_secret": {
           "name": "two_factor_secret",
@@ -852,7 +1000,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -862,7 +1010,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "'{AUTHOR}'",
           "enumItems": [
             "ADMIN",
@@ -885,9 +1033,18 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
+        },
+        "social": {
+          "name": "social",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
         },
         "last_login": {
           "name": "last_login",
@@ -895,7 +1052,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         }
@@ -967,16 +1124,6 @@
           "unique": true
         },
         {
-          "keyName": "user_email_mobile_number_unique",
-          "columnNames": [
-            "email",
-            "mobile_number"
-          ],
-          "composite": true,
-          "primary": false,
-          "unique": true
-        },
-        {
           "keyName": "user_pkey",
           "columnNames": [
             "id"
@@ -1006,7 +1153,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -1015,7 +1162,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -1025,7 +1172,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -1045,7 +1192,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -1084,7 +1231,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         }
@@ -1153,7 +1300,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -1162,7 +1309,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -1172,7 +1319,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -1192,7 +1339,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -1242,27 +1389,13 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "state": {
-          "name": "state",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'DRAFT'",
-          "enumItems": [
-            "DRAFT",
-            "PUBLISHED"
-          ],
-          "mappedType": "enum"
-        },
         "reading_time": {
           "name": "reading_time",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "0",
           "mappedType": "integer"
         },
@@ -1272,7 +1405,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "0",
           "mappedType": "integer"
         },
@@ -1282,7 +1415,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "0",
           "mappedType": "integer"
         },
@@ -1294,6 +1427,20 @@
           "primary": false,
           "nullable": false,
           "mappedType": "integer"
+        },
+        "state": {
+          "name": "state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "'DRAFT'",
+          "enumItems": [
+            "DRAFT",
+            "PUBLISHED"
+          ],
+          "mappedType": "enum"
         }
       },
       "name": "post",
@@ -1328,6 +1475,15 @@
         },
         {
           "columnNames": [
+            "slug"
+          ],
+          "composite": false,
+          "keyName": "post_slug_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
             "title"
           ],
           "composite": false,
@@ -1343,15 +1499,6 @@
           "keyName": "post_author_id_index",
           "primary": false,
           "unique": false
-        },
-        {
-          "keyName": "post_title_unique",
-          "columnNames": [
-            "title"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": true
         },
         {
           "keyName": "post_pkey",
@@ -1526,7 +1673,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -1535,7 +1682,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -1545,7 +1692,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -1565,7 +1712,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -1614,7 +1761,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
+          "default": "false",
           "mappedType": "boolean"
         }
       },
@@ -1691,7 +1839,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -1700,7 +1848,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -1710,7 +1858,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -1730,7 +1878,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },
@@ -1777,7 +1925,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -1886,7 +2034,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
         "is_active": {
@@ -1895,7 +2043,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "true",
           "mappedType": "boolean"
         },
@@ -1905,7 +2053,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "default": "false",
           "mappedType": "boolean"
         },
@@ -1925,7 +2073,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },

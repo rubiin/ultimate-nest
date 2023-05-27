@@ -14,7 +14,7 @@ export class RefreshToken extends BaseEntity {
 	user: Rel<User>;
 
 	@Property()
-	isRevoked = false;
+	isRevoked? = false;
 
 	constructor(partial?: Partial<RefreshToken>) {
 		super();

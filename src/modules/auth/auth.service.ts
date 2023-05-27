@@ -212,7 +212,6 @@ export class AuthService {
 							user: userExists,
 							otpCode: otpNumber,
 							expiresIn: new Date(Date.now() + (protocol.otpExpiryInMinutes * 60_000)), //prettier-ignore
-							isUsed: false,
 						});
 
 						return from(

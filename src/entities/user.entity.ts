@@ -7,6 +7,8 @@ import {
 	BeforeUpdate,
 	BeforeUpsert,
 	Collection,
+	Embeddable,
+	Embedded,
 	Entity,
 	Enum,
 	EventArgs,
@@ -18,7 +20,18 @@ import {
 	wrap,
 } from "@mikro-orm/core";
 
-@Unique({ properties: ["email", "mobileNumber"] })
+@Embeddable()
+export class Social {
+	@Property()
+	twitter?: string;
+
+	@Property()
+	facebook?: string;
+
+	@Property()
+	linkedin?: string;
+}
+
 @Entity()
 export class User extends BaseEntity {
 	@Property()
@@ -46,24 +59,24 @@ export class User extends BaseEntity {
 	@Property({ columnType: "text" })
 	avatar!: string;
 
-	@Property({ hidden: true, columnType: "text" })
+	@Property({ hidden: true, columnType: "text", lazy: true })
 	password!: string;
 
 	@Property()
 	twoFactorSecret?: string;
 
 	@Property()
-	isTwoFactorEnabled = false;
+	isTwoFactorEnabled? = false;
 
 	@Enum({ items: () => Roles, array: true, default: [Roles.AUTHOR] })
-	roles: Roles[] = [Roles.AUTHOR];
+	roles?: Roles[] = [Roles.AUTHOR];
 
 	@Unique()
 	@Property()
 	mobileNumber?: string;
 
 	@Property()
-	isVerified = false;
+	isVerified? = false;
 
 	@OneToMany(() => Post, post => post.author, {
 		orphanRemoval: true,
@@ -77,6 +90,9 @@ export class User extends BaseEntity {
 
 	@ManyToMany({ hidden: true })
 	favorites = new Collection<Post>(this);
+
+	@Embedded(() => Social, { object: true, nullable: true })
+	social?: Social;
 
 	@ManyToMany({
 		entity: () => User,
@@ -93,7 +109,7 @@ export class User extends BaseEntity {
 	followed = new Collection<User>(this);
 
 	@Property()
-	lastLogin = new Date();
+	lastLogin? = new Date();
 
 	constructor(data?: Pick<User, "idx">) {
 		super();

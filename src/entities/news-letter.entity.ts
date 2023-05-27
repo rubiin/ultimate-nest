@@ -1,10 +1,10 @@
 import { BaseEntity } from "@common/database";
 import { Entity, Index, Property, Unique } from "@mikro-orm/core";
 
-@Unique({ properties: ["name"] })
 @Entity()
 export class NewsLetter extends BaseEntity {
 	@Index()
+	@Unique()
 	@Property()
 	name: string;
 
