@@ -1,13 +1,10 @@
 import "@total-typescript/ts-reset";
 
-import { existsSync, mkdirSync } from "node:fs";
-import { join } from "node:path";
-
 import { AppUtils } from "@common/helpers";
 import { createLogger } from "@lib/pino/app.logger";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { NestFactory, repl } from "@nestjs/core";
+import { NestFactory } from "@nestjs/core";
 import { ExpressAdapter, NestExpressApplication } from "@nestjs/platform-express";
 import bodyParser from "body-parser";
 import chalk from "chalk";
@@ -82,21 +79,6 @@ const bootstrap = async () => {
 	app.enableShutdownHooks();
 
 	const port = process.env.PORT || configService.get("app.port", { infer: true });
-	const isRepl = process.env.REPL === "true";
-
-	// use nestjs repl to verbose
-	if (isRepl) {
-		const replServer = await repl(AppModule);
-
-		// sets up history file for repl
-		const cacheDirectory = join("node_modules", ".cache");
-
-		if (!existsSync(cacheDirectory)) mkdirSync(cacheDirectory);
-
-		replServer.setupHistory(join(cacheDirectory, ".nestjs_repl_history"), error => {
-			if (error) logger.error(error);
-		});
-	}
 
 	useContainer(app.select(AppModule), { fallbackOnErrors: true });
 

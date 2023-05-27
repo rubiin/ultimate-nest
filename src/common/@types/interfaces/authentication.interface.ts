@@ -1,6 +1,6 @@
 export interface AuthenticationResponse {
 	user: {
-		idx: string;
+		idx?: string;
 	};
 	accessToken: string;
 	refreshToken?: string;
