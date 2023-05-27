@@ -18,17 +18,6 @@ export interface ValidationArguments<
 
 export type IsUniqueValidationContext = ValidationArguments<Parameters<typeof IsUnique>>;
 
-export const IsUnique =
-	<Entity>(entityType: () => Type<Entity>, field: keyof Entity, options?: ValidationOptions) =>
-	({ constructor: target }: object, propertyName: string): void =>
-		registerDecorator({
-			constraints: [entityType, field],
-			target,
-			options,
-			propertyName,
-			validator: IsUniqueConstraint,
-		});
-
 @ValidatorConstraint({ async: true })
 export class IsUniqueConstraint implements ValidatorConstraintInterface {
 	constructor(private em: EntityManager) {}
@@ -47,3 +36,14 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
 		return `${context.property} must be unique`;
 	}
 }
+
+export const IsUnique =
+	<Entity>(entityType: () => Type<Entity>, field: keyof Entity, options?: ValidationOptions) =>
+	({ constructor: target }: object, propertyName: string) =>
+		registerDecorator({
+			constraints: [entityType, field],
+			target,
+			options,
+			propertyName,
+			validator: IsUniqueConstraint,
+		});

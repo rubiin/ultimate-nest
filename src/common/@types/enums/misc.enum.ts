@@ -3,10 +3,10 @@ import { TEmailSubject } from "../interfaces";
 const BITS_TO_MB = 1024 * 1024;
 
 export enum EmailTemplate {
-	"RESET_PASSWORD_TEMPLATE" = "reset",
-	"WELCOME_TEMPLATE" = "welcome",
-	"MAGIC_LOGIN_TEMPLATE" = "magiclogin",
-	"NEWSLETTER_TEMPLATE" = "newsletter",
+	RESET_PASSWORD_TEMPLATE = "reset",
+	WELCOME_TEMPLATE = "welcome",
+	MAGIC_LOGIN_TEMPLATE = "magiclogin",
+	NEWSLETTER_TEMPLATE = "newsletter",
 }
 
 export const EmailSubject: Record<TEmailSubject, string> = {
@@ -33,18 +33,18 @@ export const FileType: Record<keyof typeof FileSize, RegExp> = {
 
 // database enums
 
-export enum CursorType {
+export const enum CursorType {
 	DATE = "DATE",
 	STRING = "STRING",
 	NUMBER = "NUMBER",
 }
 
-export enum QueryCursor {
+export const enum QueryCursor {
 	DATE = "DATE",
 	ALPHA = "ALPHA",
 }
 
-export enum QueryOrder {
+export const enum QueryOrder {
 	ASC = "ASC",
 	DESC = "DESC",
 }
@@ -54,7 +54,18 @@ export const enum RoutingKey {
 	SEND_NEWSLETTER = "send-newsletter",
 }
 
-export enum PaginationType {
+export const enum PaginationType {
 	OFFSET = "OFFSET",
 	CURSOR = "CURSOR",
+}
+
+export const enum Server {
+	SES = "SES",
+	SMTP = "SMTP",
+}
+
+export const enum TemplateEngine {
+	ETA = "ETA",
+	PUG = "PUG",
+	HBS = "HBS",
 }

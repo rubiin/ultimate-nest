@@ -14,8 +14,8 @@ export class ResetPasswordDto {
 	 * New password of user
 	 * @example SomeThingNew7^#%
 	 */
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsPassword()
+	@IsStringField({ minLength: 8, maxLength: 50 })
+	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
 	password!: string;
 
 	/**

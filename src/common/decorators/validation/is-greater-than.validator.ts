@@ -23,11 +23,14 @@ class IsGreaterThanConstraint implements ValidatorConstraintInterface {
 	}
 }
 
-export const IsGreaterThan = (property: string, validationOptions?: ValidationOptions) => {
-	return function (object: Record<string, any>, propertyName: string): void {
+export const IsGreaterThan = (
+	property: string,
+	validationOptions?: ValidationOptions,
+): PropertyDecorator => {
+	return function (object: Record<string, any>, propertyName: string | symbol) {
 		registerDecorator({
 			target: object.constructor,
-			propertyName: propertyName,
+			propertyName: propertyName as string,
 			options: validationOptions,
 			constraints: [property],
 			validator: IsGreaterThanConstraint,

@@ -8,7 +8,7 @@ export class OffsetPaginationDto extends PaginationDto {
 	@Allow()
 	type: PaginationType.OFFSET = PaginationType.OFFSET;
 	/**
-	 *  The search query
+	 * The search query
 	 */
 	@IsStringField({ required: false, minLength: 1, maxLength: 100 })
 	search: string;
@@ -17,13 +17,13 @@ export class OffsetPaginationDto extends PaginationDto {
 	 * Results page you want to retrieve (0..N)
 	 */
 	@IsNumberField({ required: false })
-	readonly page: number = 1;
+	readonly page = 1;
 
 	/**
 	 * Number of results per page
 	 */
 	@IsNumberField({ required: false, max: 50 })
-	readonly limit: number = 10;
+	readonly limit = 10;
 
 	/**
 	 * Sorting order
@@ -35,7 +35,7 @@ export class OffsetPaginationDto extends PaginationDto {
 	 * Sorting criteria
 	 */
 	@IsStringField({ required: false, maxLength: 50 })
-	readonly sort: string = "createdAt";
+	readonly sort = "createdAt";
 
 	get offset(): number {
 		return (this.page - 1) * this.limit;

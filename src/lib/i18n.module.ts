@@ -16,9 +16,12 @@ import {
 			fallbacks: {
 				"np-*": "np",
 				"en-*": "en",
+				"np_*": "np",
+				"en_*": "en",
 				en: "en",
 				np: "np",
 			},
+			logging: true,
 			loaderOptions: {
 				path: path.join(__dirname, "../resources/i18n/"),
 				watch: true,
