@@ -9,7 +9,7 @@ import {
 import { CursorPaginationDto } from "@common/dtos";
 import { Comment, Post as PostEntity, User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
-import { Body, Delete, Get, Post, Put, Query } from "@nestjs/common";
+import { Body, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
@@ -25,24 +25,24 @@ export class PostController {
 		return this.postService.findAll(dto);
 	}
 
-	@Get(":idx")
+	@Get(":slug")
 	@SwaggerResponse({
 		operation: "Post fetch",
 		notFound: "Post doesn't exist.",
-		params: ["idx"],
+		params: ["slug"],
 	})
-	getById(@UUIDParam("idx") index: string): Observable<PostEntity> {
-		return this.postService.findOne(index);
+	getById(@Param("slug") slug: string): Observable<PostEntity> {
+		return this.postService.findOne(slug);
 	}
 
-	@Get(":idx/comments")
+	@Get(":slug/comments")
 	@SwaggerResponse({
 		operation: "Post comment fetch",
 		notFound: "Post doesn't exist.",
-		params: ["idx"],
+		params: ["slug"],
 	})
-	findComments(@UUIDParam("idx") index: string): Observable<Comment[]> {
-		return this.postService.findComments(index);
+	findComments(@Param("slug") slug: string): Observable<Comment[]> {
+		return this.postService.findComments(slug);
 	}
 
 	@Post()
@@ -52,89 +52,86 @@ export class PostController {
 		return this.postService.create(dto, author);
 	}
 
-	@Put(":idx")
+	@Put(":slug")
 	@SwaggerResponse({
 		operation: "Post update",
 		notFound: "Post doesn't exist.",
-		params: ["idx"],
+		params: ["slug"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Update))
-	update(@UUIDParam("idx") index: string, @Body() dto: EditPostDto): Observable<PostEntity> {
-		return this.postService.update(index, dto);
+	update(@Param("slug") slug: string, @Body() dto: EditPostDto): Observable<PostEntity> {
+		return this.postService.update(slug, dto);
 	}
 
-	@Delete(":idx")
+	@Delete(":slug")
 	@SwaggerResponse({
 		operation: "Post delete",
 		notFound: "Post doesn't exist.",
-		params: ["idx"],
+		params: ["slug"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Delete))
-	remove(@UUIDParam("idx") index: string): Observable<PostEntity> {
-		return this.postService.remove(index);
+	remove(@Param("slug") slug: string): Observable<PostEntity> {
+		return this.postService.remove(slug);
 	}
 
-	@Post(":idx/comments")
+	@Post(":slug/comments")
 	@SwaggerResponse({
 		operation: "Post comment create",
 		notFound: "Post doesn't exist.",
-		params: ["idx"],
+		params: ["slug"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(Comment, Action.Create))
 	createComment(
 		@LoggedInUser("id") user: number,
-		@UUIDParam("idx") index: string,
+		@Param("slug") slug: string,
 		@Body() commentData: CreateCommentDto,
 	) {
-		return this.postService.addComment(user, index, commentData);
+		return this.postService.addComment(user, slug, commentData);
 	}
 
-	@Put(":idx/comments/:commentIdx")
+	@Put(":slug/comments/:commentIdx")
 	@SwaggerResponse({
 		operation: "Post comment edit",
 		notFound: "Post doesn't exist.",
-		params: ["idx", "commentIdx"],
+		params: ["slug", "commentIdx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
 	editComment(
-		@UUIDParam("idx") postIndex: string,
+		@Param("slug") slug: string,
 		@UUIDParam("commentIdx") commentIndex: string,
 		@Body() commentData: CreateCommentDto,
 	) {
-		return this.postService.editComment(postIndex, commentIndex, commentData);
+		return this.postService.editComment(slug, commentIndex, commentData);
 	}
 
-	@Delete(":idx/comments/:commentIdx")
+	@Delete(":slug/comments/:commentIdx")
 	@SwaggerResponse({
 		operation: "Post comment delete",
 		notFound: "Post doesn't exist.",
-		params: ["idx", "commentIdx"],
+		params: ["slug", "commentIdx"],
 	})
 	@CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
-	deleteComment(
-		@UUIDParam("idx") postIndex: string,
-		@UUIDParam("commentIdx") commentIndex: string,
-	) {
-		return this.postService.deleteComment(postIndex, commentIndex);
+	deleteComment(@Param("slug") slug: string, @UUIDParam("commentIdx") commentIndex: string) {
+		return this.postService.deleteComment(slug, commentIndex);
 	}
 
-	@Post(":idx/favorite")
+	@Post(":slug/favorite")
 	@SwaggerResponse({
 		operation: "Post favorite",
 		notFound: "Post doesn't exist.",
-		params: ["idx"],
+		params: ["slug"],
 	})
-	favorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {
-		return this.postService.favorite(userId, index);
+	favorite(@LoggedInUser("id") userId: number, @UUIDParam("slug") slug: string) {
+		return this.postService.favorite(userId, slug);
 	}
 
-	@Delete(":idx/favorite")
+	@Delete(":slug/favorite")
 	@SwaggerResponse({
 		operation: "Post unfavorite",
 		notFound: "Post doesn't exist.",
-		params: ["idx"],
+		params: ["slug"],
 	})
-	unFavorite(@LoggedInUser("id") userId: number, @UUIDParam("idx") index: string) {
-		return this.postService.unFavorite(userId, index);
+	unFavorite(@LoggedInUser("id") userId: number, @Param("slug") slug: string) {
+		return this.postService.unFavorite(userId, slug);
 	}
 }

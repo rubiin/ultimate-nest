@@ -1,8 +1,9 @@
 import { AuthenticationResponse } from "@common/@types";
 import { User } from "@entities";
-import { argon2id, hash, Options as ArgonOptions, verify } from "argon2";
+import { Options as ArgonOptions, argon2id, hash, verify } from "argon2";
 import { pick } from "helper-fns";
-import { from, Observable } from "rxjs";
+import { RedisOptions } from "ioredis";
+import { Observable, from } from "rxjs";
 import sharp from "sharp";
 
 const argon2Options: ArgonOptions & { raw?: false } = {
@@ -52,5 +53,25 @@ export const HelperService = {
 
 	generateThumb(input: Buffer, config: { height: number; width: number }): Observable<Buffer> {
 		return from(sharp(input).resize(config).toFormat("png").toBuffer());
+	},
+
+	redisUrlToOptions(url: string): RedisOptions {
+		if (url.includes("://:")) {
+			const arr = url.split("://:")[1].split("@");
+			const secondArr = arr[1].split(":");
+
+			return {
+				password: arr[0],
+				host: secondArr[0],
+				port: parseInt(secondArr[1], 10),
+			};
+		}
+
+		const connectionString = url.split("://")[1];
+		const arr = connectionString.split(":");
+		return {
+			host: arr[0],
+			port: parseInt(arr[1], 10),
+		};
 	},
 };

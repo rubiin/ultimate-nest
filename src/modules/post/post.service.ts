@@ -67,12 +67,12 @@ export class PostService {
 		);
 	}
 
-	/* Finding a post by id, and then returning the comments of that post */
-	findOne(index: string, populate: AutoPath<Post, keyof Post>[] = []): Observable<Post> {
+	/* Finding a post by slug, and then returning the comments of that post */
+	findOne(slug: string, populate: AutoPath<Post, keyof Post>[] = []): Observable<Post> {
 		return from(
 			this.postRepository.findOne(
 				{
-					idx: index,
+					slug,
 				},
 				{ populate },
 			),
@@ -126,14 +126,14 @@ export class PostService {
 	}
 
 	/**
-	 * It gets a post by its index, assigns the new values to it, and then flushes the changes to the
+	 * It gets a post by its slug, assigns the new values to it, and then flushes the changes to the
 	 * database
-	 * @param {string} index - string - the index of the post to edit
+	 * @param {string} slug - string - the slug of the post to edit
 	 * @param {EditPostDto} dto - EditPostDto
 	 * @returns Observable<Post>
 	 */
-	update(index: string, dto: EditPostDto): Observable<Post> {
-		return this.findOne(index).pipe(
+	update(slug: string, dto: EditPostDto): Observable<Post> {
+		return this.findOne(slug).pipe(
 			switchMap(post => {
 				if (dto.tags) {
 					return from(
@@ -159,15 +159,13 @@ export class PostService {
 	}
 
 	/**
-	 * "Get the post by id, then delete it and return the deleted post."
+	 * "Get the post by slug, then delete it and return the deleted post."
 	 *
-	 * The first thing we do is get the post by id. We do this by calling the `getById` function we just
-	 * created
-	 * @param {string} index - string - The index of the post to delete.
+	 * @param {string} slug - string - The slug of the post to delete.
 	 * @returns Observable<Post>
 	 */
-	remove(index: string): Observable<Post> {
-		return this.findOne(index).pipe(
+	remove(slug: string): Observable<Post> {
+		return this.findOne(slug).pipe(
 			switchMap(post => {
 				return this.postRepository.softRemoveAndFlush(post).pipe(map(() => post));
 			}),
@@ -178,15 +176,12 @@ export class PostService {
 	 * "Find the post and user, add the post to the user's favorites, and increment the post's favorites
 	 * count."
 	 *
-	 * The first thing we do is create two observables, one for the post and one for the user. We use the
-	 * `findOneOrFail` method to find the post and user. The `findOneOrFail` method will throw an error if
-	 * the post or user is not found
 	 * @param {number} userId - number - The id of the user who favorite the post.
-	 * @param {string} postIndex - The index of the post to be favorited.
+	 * @param {string} slug - The slug of the post to be favorited.
 	 * @returns A post object
 	 */
-	favorite(userId: number, postIndex: string): Observable<Post> {
-		const post$ = from(this.postRepository.findOneOrFail({ idx: postIndex }));
+	favorite(userId: number, slug: string): Observable<Post> {
+		const post$ = from(this.postRepository.findOneOrFail({ idx: slug }));
 		const user$ = from(
 			this.userRepository.findOneOrFail(
 				{ id: userId },
@@ -216,13 +211,13 @@ export class PostService {
 	 * from the user's favorites and decrements the post's favorites count, then it saves the changes to
 	 * the database and returns the post
 	 * @param {number} userId - number - The id of the user who favorite the post.
-	 * @param {string} postIndex - The index of the post to be favorited.
+	 * @param {string} slug - The slug of the post to be favorited.
 	 * @returns A post object
 	 */
-	unFavorite(userId: number, postIndex: string): Observable<Post> {
+	unFavorite(userId: number, slug: string): Observable<Post> {
 		const post$ = from(
 			this.postRepository.findOneOrFail({
-				idx: postIndex,
+				idx: slug,
 			}),
 		);
 		const user$ = from(
@@ -250,14 +245,14 @@ export class PostService {
 	}
 
 	/**
-	 * It finds a post by index, and then returns the comments of that post
-	 * @param {string} index - string - The index of the post to find comments for.
+	 * It finds a post by slug, and then returns the comments of that post
+	 * @param {string} slug - string - The slug of the post to find comments for.
 	 * @returns An array of comments
 	 */
-	findComments(index: string): Observable<Comment[]> {
+	findComments(slug: string): Observable<Comment[]> {
 		return from(
 			this.postRepository.findOne(
-				{ idx: index },
+				{ slug },
 				{
 					populate: ["comments"],
 					populateWhere: {
@@ -269,14 +264,14 @@ export class PostService {
 	}
 
 	/**
-	 * It takes a userId, a post index, and a DTO, and returns an observable of a post
+	 * It takes a userId, a post slug, and a DTO, and returns an observable of a post
 	 * @param {number} userId - number,
-	 * @param {string} index - string - the index of the post to add the comment to
+	 * @param {string} slug - string - the slug of the post to add the comment to
 	 * @param {CreateCommentDto} dto - CreateCommentDto
 	 * @returns Post
 	 */
-	addComment(userId: number, index: string, dto: CreateCommentDto): Observable<Post> {
-		const post$ = this.findOne(index);
+	addComment(userId: number, slug: string, dto: CreateCommentDto): Observable<Post> {
+		const post$ = this.findOne(slug);
 		const user$ = from(this.userRepository.findOneOrFail(userId));
 
 		return forkJoin([post$, user$]).pipe(
@@ -292,14 +287,14 @@ export class PostService {
 
 	/**
 	 * This function edits a comment on a post using data from a DTO and returns the updated post.
-	 * @param {string} postIndex - A string representing the index of the post to which the comment belongs.
+	 * @param {string} slug - A string representing the slug of the post to which the comment belongs.
 	 * @param {string} commentIndex - commentIndex is a string parameter that represents the unique
 	 * @param {CreateCommentDto} commentData - commentData is an object of type CreateCommentDto
 	 * @returns The `editComment` method is returning an Observable that emits the updated post data after
-	 * editing the comment specified by `commentIndex` in the post specified by `postIndex`.
+	 * editing the comment specified by `commentIndex` in the post specified by `slug`.
 	 */
-	editComment(postIndex: string, commentIndex: string, commentData: CreateCommentDto) {
-		return this.findOne(postIndex, ["comments"]).pipe(
+	editComment(slug: string, commentIndex: string, commentData: CreateCommentDto) {
+		return this.findOne(slug, ["comments"]).pipe(
 			switchMap(_post => {
 				return from(this.commentRepository.findOneOrFail({ idx: commentIndex })).pipe(
 					switchMap(comment => {
@@ -314,13 +309,13 @@ export class PostService {
 
 	/**
 	 * It finds a post and a comment, removes the comment from the post, and then deletes the comment
-	 * @param {string} postIndex - string - The id of the post
+	 * @param {string} slug - string - The id of the post
 	 * @param {string} commentIndex - The id of the comment to be deleted
 	 * @returns A post with the comment removed.
 	 */
-	deleteComment(postIndex: string, commentIndex: string): Observable<Post> {
+	deleteComment(slug: string, commentIndex: string): Observable<Post> {
 		return forkJoin([
-			this.findOne(postIndex),
+			this.findOne(slug),
 			from(this.commentRepository.findOneOrFail({ idx: commentIndex })),
 		]).pipe(
 			switchMap(([post, comment]) => {
