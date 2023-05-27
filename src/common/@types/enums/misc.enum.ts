@@ -26,6 +26,17 @@ export enum PostStateEnum {
 	PUBLISHED = "PUBLISHED",
 }
 
+export const enum Server {
+	SES = "SES",
+	SMTP = "SMTP",
+}
+
+export const enum TemplateEngine {
+	ETA = "ETA",
+	PUG = "PUG",
+	HBS = "HBS",
+}
+
 export const FileType: Record<keyof typeof FileSize, RegExp> = {
 	IMAGE: new RegExp(/(jpg|jpeg|png|gif|svg)$/i),
 	DOC: new RegExp(/(pdf|doc|txt|key|csv|docx|xls|xlsx|ppt|pptx)$/i),
@@ -44,7 +55,7 @@ export const enum QueryCursor {
 	ALPHA = "ALPHA",
 }
 
-export const enum QueryOrder {
+export enum QueryOrder {
 	ASC = "ASC",
 	DESC = "DESC",
 }
@@ -57,15 +68,4 @@ export const enum RoutingKey {
 export const enum PaginationType {
 	OFFSET = "OFFSET",
 	CURSOR = "CURSOR",
-}
-
-export const enum Server {
-	SES = "SES",
-	SMTP = "SMTP",
-}
-
-export const enum TemplateEngine {
-	ETA = "ETA",
-	PUG = "PUG",
-	HBS = "HBS",
 }

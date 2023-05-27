@@ -1,6 +1,7 @@
 import { CustomThrottlerGuard } from "@common/guards";
 import { CustomCacheInterceptor } from "@common/interceptors";
 import { ClearCacheMiddleware, RealIpMiddleware } from "@common/middlewares";
+import { applyRawBodyOnlyTo } from "@golevelup/nestjs-webhooks";
 import { NestCacheModule } from "@lib/cache";
 import { SharedModule } from "@modules/shared/shared.module";
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
@@ -26,6 +27,10 @@ import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 })
 export class AppModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
+		applyRawBodyOnlyTo(consumer, {
+			method: RequestMethod.ALL,
+			path: "stripe/webhook",
+		});
 		consumer
 			.apply(RealIpMiddleware)
 			.forRoutes({

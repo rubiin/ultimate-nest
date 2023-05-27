@@ -7,5 +7,6 @@ export * from "./minio.config";
 export * from "./oauth2.config";
 export * from "./rabbitmq.config";
 export * from "./redis.config";
+export * from "./stripe.config";
 export * from "./throttle.config";
 export * from "./twilio.config";

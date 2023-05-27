@@ -10,6 +10,7 @@ import {
 	mail,
 	rabbitmq,
 	redis,
+	stripe,
 	throttle,
 	twilio,
 } from "./configs";
@@ -24,6 +25,7 @@ export interface Config {
 	twilio: ConfigType<typeof twilio>;
 	cloudinary: ConfigType<typeof cloudinary>;
 	mail: ConfigType<typeof mail>;
+	stripe: ConfigType<typeof stripe>;
 	facebookOauth: ConfigType<typeof facebookOauth>;
 	googleOauth: ConfigType<typeof googleOauth>;
 }
