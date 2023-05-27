@@ -14,7 +14,6 @@ import {
 	OneToMany,
 	Property,
 	Rel,
-	Unique,
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
@@ -22,7 +21,6 @@ import { Category, Comment, Tag, User } from "./index";
 @Entity()
 export class Post extends BaseEntity {
 	@Index()
-	@Unique()
 	@Property()
 	slug?: string;
 
@@ -77,7 +75,10 @@ export class Post extends BaseEntity {
 	@BeforeUpdate()
 	async generateSlug(arguments_: EventArgs<this>) {
 		if (arguments_.changeSet?.payload?.title) {
-			this.slug = slugify(this.title);
+			this.slug =
+				slugify(this.title, { lowercase: true }) +
+				"-" +
+				((Math.random() * Math.pow(36, 6)) | 0).toString(36);
 		}
 		this.readingTime = this.getReadingTime(this.content);
 	}
