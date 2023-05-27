@@ -10,13 +10,18 @@
  */
 
 import { USERNAME_REGEX } from "@common/constant";
+import { applyDecorators } from "@nestjs/common";
 import {
+	IsNotEmpty,
 	registerDecorator,
 	ValidationArguments,
 	ValidationOptions,
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
 } from "class-validator";
+import { i18nValidationMessage } from "nestjs-i18n";
+
+import { MinMaxLength } from "./min-max-length.decorator";
 
 @ValidatorConstraint({ async: true })
 class IsUsernameConstraint implements ValidatorConstraintInterface {
@@ -31,14 +36,27 @@ class IsUsernameConstraint implements ValidatorConstraintInterface {
 	}
 }
 
-export const IsUsername = (validationOptions?: ValidationOptions) => {
-	return function (object: Record<string, any>, propertyName: string): void {
+export const IsUsername = (validationOptions?: ValidationOptions): PropertyDecorator => {
+	return function (object: Record<string, any>, propertyName: string | symbol) {
 		registerDecorator({
 			target: object.constructor,
-			propertyName: propertyName,
+			propertyName: propertyName as string,
 			options: validationOptions,
 			constraints: [],
 			validator: IsUsernameConstraint,
 		});
 	};
+};
+
+export const IsUsernameField = (validationOptions?: ValidationOptions) => {
+	return applyDecorators(
+		IsNotEmpty({
+			message: i18nValidationMessage("validation.isNotEmpty"),
+		}),
+		MinMaxLength({
+			minLength: 5,
+			maxLength: 20,
+		}),
+		IsUsername(validationOptions),
+	);
 };

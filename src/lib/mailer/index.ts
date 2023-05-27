@@ -1,3 +1,4 @@
+import { TemplateEngine } from "@common/@types";
 import { NestConfigModule } from "@lib/config/config.module";
 import { Global, Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -17,8 +18,8 @@ import { MailModule } from "./mailer.module";
 				server: configService.get("mail.server", { infer: true }),
 				previewEmail: configService.get("mail.previewEmail", { infer: true }),
 				templateDir: configService.get("mail.templateDir", { infer: true }),
-				engine: {
-					adapter: "eta",
+				templateEngine: {
+					adapter: TemplateEngine.ETA,
 					options: {
 						rmWhitespace: true,
 						cache: true,

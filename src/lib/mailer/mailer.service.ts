@@ -1,6 +1,7 @@
 import { resolve } from "node:path";
 
 import * as aws from "@aws-sdk/client-ses";
+import { Server, TemplateEngine } from "@common/@types";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { createTransport, SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
 import previewEmail from "preview-email";
@@ -28,17 +29,17 @@ export class MailerService {
 	) {
 		// render template
 
-		switch (this.options.engine.adapter) {
-			case "pug": {
-				this.adapter = new PugAdapter(this.options.engine.options);
+		switch (this.options.templateEngine.adapter) {
+			case TemplateEngine.ETA: {
+				this.adapter = new PugAdapter(this.options.templateEngine.options);
 				break;
 			}
-			case "eta": {
-				this.adapter = new EtaAdapter(this.options.engine.options);
+			case TemplateEngine.ETA: {
+				this.adapter = new EtaAdapter(this.options.templateEngine.options);
 				break;
 			}
-			case "hbs": {
-				this.adapter = new HandlebarsAdapter(this.options.engine.options);
+			case TemplateEngine.HBS: {
+				this.adapter = new HandlebarsAdapter(this.options.templateEngine.options);
 				break;
 			}
 			default: {
@@ -48,7 +49,7 @@ export class MailerService {
 
 		// create Nodemailer SES transporter
 
-		if (this.options.server === "SES") {
+		if (this.options.server === Server.SES) {
 			const ses = new aws.SES({
 				apiVersion: "2010-12-01",
 				region: this.options.sesRegion,
@@ -87,7 +88,7 @@ export class MailerService {
 	 */
 	sendMail(mailOptions: MailOptions) {
 		const templatePath = resolve(
-			`${__dirname}/../../${this.options.templateDir}/${mailOptions.template}.${this.options.engine.adapter}`,
+			`${__dirname}/../../${this.options.templateDir}/${mailOptions.template}.${this.options.templateEngine.adapter}`,
 		);
 
 		return from(this.adapter.compile(templatePath, mailOptions.replacements)).pipe(

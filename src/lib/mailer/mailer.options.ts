@@ -1,3 +1,4 @@
+import { Server, TemplateEngine } from "@common/@types";
 import { config } from "eta";
 import type { Options as PugOptions } from "pug";
 
@@ -7,22 +8,22 @@ export interface MailModuleOptions {
 	password?: string;
 	username?: string;
 	previewEmail: boolean;
-	server: string;
+	server: Server;
 	sesKey?: string;
 	sesAccessKey?: string;
 	sesRegion?: string;
 	templateDir: string;
-	engine:
+	templateEngine:
 		| {
-				adapter: "eta";
+				adapter: TemplateEngine.ETA;
 				options: Partial<typeof config>;
 		  }
 		| {
-				adapter: "pug";
+				adapter: TemplateEngine.PUG;
 				options: Partial<PugOptions>;
 		  }
 		| {
-				adapter: "hbs";
+				adapter: TemplateEngine.HBS;
 				options: Partial<CompileOptions>;
 		  };
 }

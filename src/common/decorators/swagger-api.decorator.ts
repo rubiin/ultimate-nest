@@ -1,4 +1,4 @@
-import { Type, applyDecorators } from "@nestjs/common";
+import { applyDecorators, Type } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 
 interface SwaggerResponseOptions<T> {
