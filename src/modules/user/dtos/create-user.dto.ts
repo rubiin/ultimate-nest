@@ -8,8 +8,23 @@ import {
 } from "@common/decorators";
 import { User } from "@entities";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty } from "class-validator";
+import { Type } from "class-transformer";
+import { IsEmail, IsNotEmpty, IsUrl, ValidateNested } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
+
+export class SocialDto {
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsUrl()
+	twitter?: string;
+
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsUrl()
+	facebook?: string;
+
+	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsUrl()
+	linkedin?: string;
+}
 
 export class CreateUserDto {
 	/**
@@ -82,4 +97,12 @@ export class CreateUserDto {
 	 */
 	@IsEnumField(Roles, { each: true })
 	roles!: Roles[];
+
+	/**
+	 * Social handles of user
+	 * @example { twitter: "https://twitter.com/rubiin", facebook: "https://facebook.com/rubiin", linkedin: "https://linkedin.com/in/rubiin" }
+	 */
+	@ValidateNested()
+	@Type(() => SocialDto)
+	social?: SocialDto;
 }
