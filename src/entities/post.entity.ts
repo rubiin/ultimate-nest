@@ -19,11 +19,10 @@ import {
 import { slugify } from "helper-fns";
 
 import { Category, Comment, Tag, User } from "./index";
-
-@Unique({ properties: ["title"] })
 @Entity()
 export class Post extends BaseEntity {
 	@Index()
+	@Unique()
 	@Property()
 	slug?: string;
 
@@ -37,17 +36,14 @@ export class Post extends BaseEntity {
 	@Property({ type: "text" })
 	content!: string;
 
-	@Enum({ items: () => PostStateEnum })
-	state = PostStateEnum.DRAFT;
+	@Property()
+	readingTime? = 0;
 
 	@Property()
-	readingTime = 0;
+	readCount? = 0;
 
 	@Property()
-	readCount = 0;
-
-	@Property()
-	favoritesCount = 0;
+	favoritesCount? = 0;
 
 	@Index()
 	@ManyToOne({
@@ -67,6 +63,9 @@ export class Post extends BaseEntity {
 
 	@ManyToMany(() => Category, "posts", { owner: true })
 	categories = new Collection<Category>(this);
+
+	@Enum({ items: () => PostStateEnum })
+	state? = PostStateEnum.DRAFT;
 
 	constructor(partial?: Partial<Post>) {
 		super();

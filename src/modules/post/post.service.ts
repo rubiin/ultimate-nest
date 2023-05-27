@@ -281,9 +281,11 @@ export class PostService {
 
 		return forkJoin([post$, user$]).pipe(
 			switchMap(([post, user]) => {
-				const comment = new Comment({ body: dto.body, author: user, post });
+				const comment = new Comment({ body: dto.body, author: user });
 
-				return from(this.em.persistAndFlush(comment)).pipe(map(() => post));
+				post.comments.add(comment);
+
+				return from(this.em.flush()).pipe(map(() => post));
 			}),
 		);
 	}

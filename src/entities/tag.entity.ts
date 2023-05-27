@@ -15,10 +15,10 @@ import { slugify } from "helper-fns";
 
 import { Post } from "./post.entity";
 
-@Unique({ properties: ["title"] })
 @Entity()
 export class Tag extends BaseEntity {
 	@Index()
+	@Unique()
 	@Property({
 		length: 50,
 	})

@@ -20,7 +20,7 @@ export class OtpLog extends BaseEntity {
 	user: Rel<User>;
 
 	@Property()
-	isUsed!: boolean;
+	isUsed? = false;
 
 	constructor(partial?: Partial<OtpLog>) {
 		super();

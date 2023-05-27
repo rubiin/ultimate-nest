@@ -18,6 +18,11 @@ export class UserFactory extends Factory<User> {
 			roles: [Roles.AUTHOR],
 			password: process.env.USER_PASSWORD,
 			lastLogin: faker.date.past(1, new Date()),
+			social: {
+				twitter: faker.internet.url(),
+				facebook: faker.internet.url(),
+				linkedin: faker.internet.url(),
+			},
 		};
 	}
 }

@@ -31,6 +31,10 @@ import { BaseEntity } from "./base.entity";
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	private readonly encoding: BufferEncoding = "base64";
 
+	exists(where: FilterQuery<T>): Observable<boolean> {
+		return from(this.qb().where(where).getCount()).pipe(map(count => count > 0));
+	}
+
 	getEntityName(): EntityName<T> {
 		return this.entityName;
 	}
