@@ -23,6 +23,7 @@ import {
 	throttle,
 	throttleConfigValidationSchema,
 } from "./configs";
+import { HelperService } from "@common/helpers";
 
 @Module({
 	imports: [
@@ -56,7 +57,9 @@ import {
 			}),
 			validationOptions: {
 				abortEarly: true,
-				debug: true,
+				cache: !HelperService.isProd,
+        debug: !HelperService.isProd,
+        stack: !HelperService.isProd,
 			},
 		}),
 	],
