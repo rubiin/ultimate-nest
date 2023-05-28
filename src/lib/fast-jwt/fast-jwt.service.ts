@@ -6,7 +6,6 @@ import { FastJwtModuleOptions, JwtSignOptions, JwtVerifyOptions } from "./fast-j
 
 @Injectable()
 export class FastJwtService {
-
 	constructor(
 		@Optional()
 		@Inject(MODULE_OPTIONS_TOKEN)
