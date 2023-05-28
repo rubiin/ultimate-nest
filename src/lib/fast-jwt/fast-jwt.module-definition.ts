@@ -15,5 +15,5 @@ export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } =
 				global: extras.isGlobal,
 			}),
 		)
-		.setClassMethodName("forRoot")
+		.setClassMethodName("register")
 		.build();
