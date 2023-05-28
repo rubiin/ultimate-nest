@@ -58,8 +58,8 @@ import { HelperService } from "@common/helpers";
 			validationOptions: {
 				abortEarly: true,
 				cache: !HelperService.isProd,
-        debug: !HelperService.isProd,
-        stack: !HelperService.isProd,
+				debug: !HelperService.isProd,
+				stack: !HelperService.isProd,
 			},
 		}),
 	],
