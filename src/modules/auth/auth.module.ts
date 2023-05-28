@@ -1,4 +1,3 @@
-import { NestJwtModule } from "@lib/index";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
 import { TokensService } from "@modules/token/tokens.service";
 import { UserModule } from "@modules/user/user.module";
@@ -10,7 +9,7 @@ import { AuthService } from "./auth.service";
 import { FacebookStrategy, GoogleStrategy, JwtStrategy, MagicLoginStrategy } from "./strategies";
 
 @Module({
-	imports: [PassportModule, NestJwtModule, UserModule],
+	imports: [PassportModule, UserModule],
 	controllers: [AuthController],
 	providers: [
 		AuthService,
@@ -21,6 +20,6 @@ import { FacebookStrategy, GoogleStrategy, JwtStrategy, MagicLoginStrategy } fro
 		FacebookStrategy,
 		MagicLoginStrategy,
 	],
-	exports: [NestJwtModule, AuthService, JwtStrategy, TokensService, RefreshTokensRepository],
+	exports: [AuthService, JwtStrategy, TokensService, RefreshTokensRepository],
 })
 export class AuthModule {}

@@ -6,7 +6,7 @@ import { ControllerFactory } from "@lib/crud/crud.controller";
 import { CategoryService } from "./category.service";
 import { CreateCategoryDto, EditCategoryDto } from "./dto";
 
-@GenericController("categories")
+@GenericController("categories", false)
 export class CategoryController extends ControllerFactory<
 	Category,
 	OffsetPaginationDto,

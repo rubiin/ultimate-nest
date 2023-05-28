@@ -9,6 +9,7 @@ import {
 	NestSentryModule,
 	NestServeStaticModule,
 	NestThrottlerModule,
+	NestJwtModule,
 	OrmModule,
 } from "@lib/index";
 import { NestPinoModule } from "@lib/pino/pino.module";
@@ -48,6 +49,7 @@ import { ScheduleModule } from "@nestjs/schedule";
 		NestThrottlerModule,
 		NestHttpModule,
 		NestServeStaticModule,
+		NestJwtModule,
 		ScheduleModule.forRoot(),
 	],
 	providers: [IsUniqueConstraint],
