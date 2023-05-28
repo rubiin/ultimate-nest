@@ -204,7 +204,12 @@ export class AuthService {
 					);
 				}
 
-				return from(this.protocolRepository.findOne({})).pipe(
+				return from(
+					this.protocolRepository.findOne({
+						isDeleted: false,
+						isActive: true,
+					}),
+				).pipe(
 					switchMap(protocol => {
 						const otpNumber = init({ length: 6 })(); // random six digit otp
 
@@ -250,9 +255,12 @@ export class AuthService {
 		const { password, otpCode } = resetPassword;
 
 		return from(
-			this.otpRepository.findOne({
-				otpCode,
-			}),
+			this.otpRepository.findOne(
+				{
+					otpCode,
+				},
+				{ populate: ["user"] },
+			),
 		).pipe(
 			switchMap(details => {
 				this.userRepository.assign(details.user, { password });

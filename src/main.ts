@@ -1,6 +1,6 @@
 import "@total-typescript/ts-reset";
 
-import { AppUtils } from "@common/helpers";
+import { AppUtils, HelperService } from "@common/helpers";
 import { createLogger } from "@lib/pino/app.logger";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -9,7 +9,7 @@ import { ExpressAdapter, NestExpressApplication } from "@nestjs/platform-express
 import bodyParser from "body-parser";
 import chalk from "chalk";
 import { useContainer } from "class-validator";
-import compression from "compression";
+
 import helmet from "helmet";
 import { I18nValidationExceptionFilter } from "nestjs-i18n";
 
@@ -25,8 +25,6 @@ const bootstrap = async () => {
 		snapshot: true,
 	});
 
-	AppUtils.killAppWithGrace(app);
-
 	const configService = app.get(ConfigService<Configs, true>);
 
 	const logger = new Logger("Bootstrap");
@@ -35,11 +33,12 @@ const bootstrap = async () => {
 	// security
 	// ======================================================
 
-	app.use(compression());
 	app.enable("trust proxy");
 	app.set("etag", "strong");
-	app.use(bodyParser.json({ limit: "10mb" }));
-	app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+	app.use(
+		bodyParser.json({ limit: "10mb" }),
+		bodyParser.urlencoded({ limit: "10mb", extended: true }),
+	);
 	app.use(helmet());
 	app.enableCors({
 		credentials: true,
@@ -72,11 +71,15 @@ const bootstrap = async () => {
 	// configureNestSwagger
 	// =========================================================
 
-	AppUtils.setupSwagger(app, configService);
+	if (!HelperService.isProd) {
+		AppUtils.setupSwagger(app, configService);
+	}
 
 	// Starts listening for shutdown hooks
 
 	app.enableShutdownHooks();
+
+	AppUtils.killAppWithGrace(app);
 
 	const port = process.env.PORT || configService.get("app.port", { infer: true });
 
@@ -97,7 +100,9 @@ const bootstrap = async () => {
 			`${configService.get("app.allowedHosts", { infer: true })}`,
 		)}`,
 	);
-	logger.log(`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/doc`)}`);
+
+	!HelperService.isProd() &&
+		logger.log(`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/doc`)}`);
 	logger.log(`Server is up. ${chalk.yellow(`+${Math.trunc(performance.now())}ms`)}`);
 };
 
