@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
   '@aws-sdk/client-ses':
@@ -127,9 +131,6 @@ dependencies:
   eta:
     specifier: ^2.2.0
     version: 2.2.0
-  fast-jwt:
-    specifier: ^3.0.0
-    version: 3.0.0
   firebase-admin:
     specifier: ^11.8.0
     version: 11.8.0
@@ -157,6 +158,9 @@ dependencies:
   nestjs-cloudinary:
     specifier: ^1.0.12
     version: 1.0.12(@nestjs/common@9.4.2)
+  nestjs-fastjwt:
+    specifier: ^0.0.1
+    version: 0.0.1(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)
   nestjs-i18n:
     specifier: ^10.2.6
     version: 10.2.6(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(class-validator@0.14.0)(rxjs@7.8.1)
@@ -9874,6 +9878,18 @@ packages:
       sharp: 0.31.3
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /nestjs-fastjwt@0.0.1(@nestjs/common@9.4.2)(@nestjs/core@9.4.2):
+    resolution: {integrity: sha512-d42PoXBY4qGqlbvd4FFH8bD5shZmvdFxbLvr2rzrrhIax3FkmJasTqgIkRxtHGY0yjWzF+/0W54GGgXGFDcRDQ==}
+    peerDependencies:
+      '@nestjs/common': '>7.0.0'
+      '@nestjs/core': '>7.0.0'
+    dependencies:
+      '@lukeed/ms': 2.0.1
+      '@nestjs/common': 9.4.2(cache-manager@5.2.1)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 9.4.2(@nestjs/common@9.4.2)(@nestjs/platform-express@9.4.2)(@nestjs/websockets@9.4.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      fast-jwt: 3.0.0
     dev: false
 
   /nestjs-i18n@10.2.6(@nestjs/common@9.4.2)(@nestjs/core@9.4.2)(class-validator@0.14.0)(rxjs@7.8.1):
