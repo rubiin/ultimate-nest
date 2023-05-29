@@ -1,8 +1,8 @@
 import { Module, OnModuleInit } from "@nestjs/common";
 
 import { ConfigurableModuleClass } from "./mail.module-definition";
-import { MailerService } from "./mailer.service";
 import { MailProcessor } from "./mail.processor";
+import { MailerService } from "./mailer.service";
 
 @Module({
 	providers: [MailerService, MailProcessor],

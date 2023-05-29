@@ -13,8 +13,8 @@ export class Cluster {
 			Cluster.loggerService.log(`Starting cluster with ${cpuCount} workers...`);
 			Cluster.loggerService.log(`Master server is running on process ${process.pid}`);
 
-			for (let i = 0; i < cpuCount; i++) {
-				Cluster.loggerService.log(`Forking process number ${i + 1}...`);
+			for (let index = 0; index < cpuCount; index++) {
+				Cluster.loggerService.log(`Forking process number ${index + 1}...`);
 				cluster.fork();
 			}
 
@@ -30,11 +30,12 @@ export class Cluster {
 
 	private static getCpuCount(): number {
 		if (!isUndefined(process.env.WORKERS_COUNT)) {
-			return parseInt(process.env.WORKERS_COUNT, 10);
+			return Number.parseInt(process.env.WORKERS_COUNT, 10);
 		}
 		if (!isUndefined(process.env.NODE_ENV) && process.env.NODE_ENV === "production") {
 			return os.cpus().length;
 		}
-		return 2;
+		
+return 2;
 	}
 }

@@ -1,10 +1,10 @@
+import { NestConfigModule } from "@lib/config/config.module";
 import { Module } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { FastJwtModule } from "nestjs-fastjwt";
 
 import { CategoryController } from "./category.controller";
 import { CategoryService } from "./category.service";
-import { NestConfigModule } from "@lib/config/config.module";
-import { ConfigService } from "@nestjs/config";
-import { FastJwtModule } from "nestjs-fastjwt";
 
 @Module({
 	imports: [

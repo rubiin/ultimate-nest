@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import * as aws from "@aws-sdk/client-ses";
 import { Server, TemplateEngine } from "@common/@types";
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { createTransport, SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
+import { createTransport,SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
 import previewEmail from "preview-email";
 import { from, switchMap } from "rxjs";
 
@@ -17,6 +17,8 @@ interface MailOptions extends Partial<SendMailOptions> {
 	replacements: Record<string, any>;
 }
 
+
+
 @Injectable()
 export class MailerService {
 	readonly transporter: Transporter<SentMessageInfo>;
@@ -29,17 +31,19 @@ export class MailerService {
 	) {
 		// render template
 
+		
+
 		switch (this.options.templateEngine.adapter) {
-			case TemplateEngine.ETA: {
-				this.adapter = new PugAdapter(this.options.templateEngine.options);
+			case TemplateEngine.PUG: {
+				this.adapter = new PugAdapter({...this.options.templateEngine.options,basedir: resolve(this.options.templateDir)});
 				break;
 			}
 			case TemplateEngine.ETA: {
-				this.adapter = new EtaAdapter(this.options.templateEngine.options);
+				this.adapter = new EtaAdapter({...this.options.templateEngine.options, views: resolve(this.options.templateDir)});
 				break;
 			}
 			case TemplateEngine.HBS: {
-				this.adapter = new HandlebarsAdapter(this.options.templateEngine.options);
+				this.adapter = new HandlebarsAdapter({...this.options.templateEngine.options});
 				break;
 			}
 			default: {
@@ -61,6 +65,7 @@ export class MailerService {
 
 			this.transporter = createTransport({
 				SES: { ses, aws },
+				maxConnections: 14, // 14 is the maximum message rate per second for ses
 			});
 		} else {
 			this.transporter = createTransport({
@@ -68,6 +73,7 @@ export class MailerService {
 				maxConnections: 5,
 				host: this.options.host,
 				port: this.options.port,
+				logger: true,
 				secure: true,
 				auth: {
 					user: this.options.username,
@@ -88,7 +94,7 @@ export class MailerService {
 	 */
 	sendMail(mailOptions: MailOptions) {
 		const templatePath = resolve(
-			`${__dirname}/../../${this.options.templateDir}/${mailOptions.template}.${this.options.templateEngine.adapter}`,
+			`}`,
 		);
 
 		return from(this.adapter.compile(templatePath, mailOptions.replacements)).pipe(
@@ -103,6 +109,9 @@ export class MailerService {
 			}),
 		);
 	}
+
+
+
 
 	async checkConnection() {
 		return this.transporter.verify((error, _success) => {
