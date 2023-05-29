@@ -1,9 +1,12 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+
 import { AuthenticationResponse } from "@common/@types";
 import { User } from "@entities";
-import { Options as ArgonOptions, argon2id, hash, verify } from "argon2";
+import { argon2id, hash, Options as ArgonOptions, verify } from "argon2";
 import { pick } from "helper-fns";
 import { RedisOptions } from "ioredis";
-import { Observable, from } from "rxjs";
+import { from,Observable } from "rxjs";
 import sharp from "sharp";
 
 const argon2Options: ArgonOptions & { raw?: false } = {
@@ -43,6 +46,18 @@ export const HelperService = {
 		return process.env.NODE_ENV.startsWith("prod");
 	},
 
+	getAppRootDir () {
+		let currentDirectory = __dirname
+
+		while(!existsSync(join(currentDirectory, "resources"))) {
+			currentDirectory = join(currentDirectory, "..")
+		}
+
+return process.env.NODE_ENV === "prod" ? join(currentDirectory, "dist") : currentDirectory
+
+	},
+
+
 	formatSearch(search: string): string {
 		return `%${search.trim().replaceAll("\n", " ").replaceAll(/\s\s+/g, " ").toLowerCase()}%`;
 	},
@@ -57,21 +72,23 @@ export const HelperService = {
 
 	redisUrlToOptions(url: string): RedisOptions {
 		if (url.includes("://:")) {
-			const arr = url.split("://:")[1].split("@");
-			const secondArr = arr[1].split(":");
+			const array = url.split("://:")[1].split("@");
+			const secondArray = array[1].split(":");
 
 			return {
-				password: arr[0],
-				host: secondArr[0],
-				port: parseInt(secondArr[1], 10),
+				password: array[0],
+				host: secondArray[0],
+				port: Number.parseInt(secondArray[1], 10),
 			};
 		}
 
 		const connectionString = url.split("://")[1];
-		const arr = connectionString.split(":");
-		return {
-			host: arr[0],
-			port: parseInt(arr[1], 10),
+		const array = connectionString.split(":");
+
+
+return {
+			host: array[0],
+			port: Number.parseInt(array[1], 10),
 		};
 	},
 };

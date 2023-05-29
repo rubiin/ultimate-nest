@@ -1,3 +1,4 @@
+import { HelperService } from "@common/helpers";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import Joi from "joi";
@@ -23,7 +24,6 @@ import {
 	throttle,
 	throttleConfigValidationSchema,
 } from "./configs";
-import { HelperService } from "@common/helpers";
 
 @Module({
 	imports: [

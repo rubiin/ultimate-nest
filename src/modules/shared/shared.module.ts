@@ -5,11 +5,11 @@ import {
 	NestCloudinaryModule,
 	NestHttpModule,
 	NestI18nModule,
+	NestJwtModule,
 	NestMailModule,
 	NestSentryModule,
 	NestServeStaticModule,
 	NestThrottlerModule,
-	NestJwtModule,
 	OrmModule,
 } from "@lib/index";
 import { NestPinoModule } from "@lib/pino/pino.module";

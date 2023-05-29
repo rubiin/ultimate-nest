@@ -5,12 +5,10 @@ import { Adapter } from "./abstract.adapter";
 
 export class EtaAdapter implements Adapter {
 	constructor(private readonly options: Partial<EtaConfig>) {
-  	configure({
-			views: `${__dirname}/../../${this.options.template.dir}/`,
-		});
+
   }
 
 	compile(template: string, data: Record<string, any>): Promise<string> {
-		return renderFile(template, data, this.options) as Promise<string>;
+		return renderFile(template, data, this.options);
 	}
 }
