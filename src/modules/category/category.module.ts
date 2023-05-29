@@ -2,9 +2,9 @@ import { Module } from "@nestjs/common";
 
 import { CategoryController } from "./category.controller";
 import { CategoryService } from "./category.service";
-import { FastJwtModule } from "@lib/fast-jwt/fast-jwt.module";
 import { NestConfigModule } from "@lib/config/config.module";
 import { ConfigService } from "@nestjs/config";
+import { FastJwtModule } from "nestjs-fastjwt";
 
 @Module({
 	imports: [
@@ -15,8 +15,8 @@ import { ConfigService } from "@nestjs/config";
 				secret: configService.get("jwt.secret", { infer: true }),
 				signOptions: {
 					expiresIn: configService.get("jwt.accessExpiry", { infer: true }),
-					algorithm: "ES256",
 				},
+
 			}),
 			inject: [ConfigService],
 		}),
