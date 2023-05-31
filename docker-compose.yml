@@ -102,7 +102,7 @@ services:
 
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3.11.16-management-alpine
+        image: rabbitmq:3.11.17-management-alpine
         env_file: env/.env.${ENV}
         networks:
             - nestify-network
