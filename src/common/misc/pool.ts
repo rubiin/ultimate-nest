@@ -1,5 +1,6 @@
+import path from "node:path";
+
 import { Logger } from "@nestjs/common";
-import path from "path";
 import { DynamicThreadPool } from "poolifier";
 
 const logger = new Logger("ThreadPool");

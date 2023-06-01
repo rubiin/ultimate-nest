@@ -6,7 +6,7 @@ import { User } from "@entities";
 import { argon2id, hash, Options as ArgonOptions, verify } from "argon2";
 import { pick } from "helper-fns";
 import { RedisOptions } from "ioredis";
-import { from,Observable } from "rxjs";
+import { from, Observable } from "rxjs";
 import sharp from "sharp";
 
 const argon2Options: ArgonOptions & { raw?: false } = {
@@ -46,17 +46,15 @@ export const HelperService = {
 		return process.env.NODE_ENV.startsWith("prod");
 	},
 
-	getAppRootDir () {
-		let currentDirectory = __dirname
+	getAppRootDir() {
+		let currentDirectory = __dirname;
 
-		while(!existsSync(join(currentDirectory, "resources"))) {
-			currentDirectory = join(currentDirectory, "..")
+		while (!existsSync(join(currentDirectory, "resources"))) {
+			currentDirectory = join(currentDirectory, "..");
 		}
 
-return process.env.NODE_ENV === "prod" ? join(currentDirectory, "dist") : currentDirectory
-
+		return process.env.NODE_ENV === "prod" ? join(currentDirectory, "dist") : currentDirectory;
 	},
-
 
 	formatSearch(search: string): string {
 		return `%${search.trim().replaceAll("\n", " ").replaceAll(/\s\s+/g, " ").toLowerCase()}%`;
@@ -85,8 +83,7 @@ return process.env.NODE_ENV === "prod" ? join(currentDirectory, "dist") : curren
 		const connectionString = url.split("://")[1];
 		const array = connectionString.split(":");
 
-
-return {
+		return {
 			host: array[0],
 			port: Number.parseInt(array[1], 10),
 		};

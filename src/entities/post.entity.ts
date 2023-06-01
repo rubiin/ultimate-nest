@@ -79,7 +79,7 @@ export class Post extends BaseEntity {
 			this.slug =
 				slugify(this.title, { lowercase: true }) +
 				"-" +
-				((Math.random() * Math.pow(36, 6)) | 0).toString(36);
+				Math.trunc(Math.random() * Math.pow(36, 6)).toString(36);
 		}
 		this.readingTime = this.getReadingTime(this.content);
 	}

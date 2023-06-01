@@ -16,7 +16,6 @@ import { CategoryService } from "./category.service";
 				signOptions: {
 					expiresIn: configService.get("jwt.accessExpiry", { infer: true }),
 				},
-
 			}),
 			inject: [ConfigService],
 		}),

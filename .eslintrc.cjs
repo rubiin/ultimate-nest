@@ -1,15 +1,13 @@
-const path = require("path");
-
 module.exports = {
-    parser: "@typescript-eslint/parser",
-    parserOptions: {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
         "createDefaultProgram": false,
         "project": "tsconfig.json",
         "sourceType": "module",
         "tsconfigRootDir": __dirname,
     },
     "ignorePatterns": ["migrations", "src/generated"],
-    plugins: [
+    "plugins": [
         "import",
         "@typescript-eslint/eslint-plugin",
         "prettier",
@@ -17,7 +15,7 @@ module.exports = {
         "simple-import-sort",
         "deprecation"
     ],
-    extends: [
+    "extends": [
         "plugin:import/errors",
         "plugin:import/typescript",
         "plugin:import/recommended",
@@ -27,32 +25,29 @@ module.exports = {
         "prettier",
 
     ],
-    root: true,
-    settings: {
+    "root": true,
+    "settings": {
         "import/resolver": {
             "typescript": {
                 "alwaysTryTypes": true,
-                "project": [
-                    path.resolve(__dirname, ".tsconfig.json"),
-                ]
+                "project": "./tsconfig.json"
 
             }
         },
     },
-    env: {
+    "env": {
         node: true,
         jest: true,
         es6: true,
         browser: false,
     },
-    rules: {
+    "rules": {
         "deprecation/deprecation": "warn",
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
         "import/first": "error",
         "import/newline-after-import": "error",
         "import/no-duplicates": "error",
-        "no-duplicate-imports": "error",
         "no-param-reassign": "error",
         "unicorn/filename-case": "error",
         "@typescript-eslint/no-non-null-assertion": "off",
@@ -81,12 +76,10 @@ module.exports = {
             }
         ],
         "import/namespace": "off",
-        "unicorn/prefer-top-level-await": "off",
         "unicorn/no-null": "off",
         "unicorn/import-style": "error",
         "unicorn/prefer-module": "off",
-        "unicorn/prefer-node-protocol": "off",
-        "@typescript-eslint/explicit-function-return-type": "off",
+        "unicorn/prefer-top-level-await": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-unused-vars": [
@@ -117,7 +110,7 @@ module.exports = {
                 ignoreReadBeforeAssign: false,
             },
         ],
-        quotes: [
+        "quotes": [
             "error",
             "double",
             {

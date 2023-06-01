@@ -1,7 +1,8 @@
+import cluster from "node:cluster";
+import os from "node:os";
+
 import { isUndefined } from "@common/helpers";
 import { Logger } from "@nestjs/common";
-import cluster from "cluster";
-import os from "os";
 
 export class Cluster {
 	private static readonly loggerService = new Logger(Cluster.name);
@@ -35,7 +36,7 @@ export class Cluster {
 		if (!isUndefined(process.env.NODE_ENV) && process.env.NODE_ENV === "production") {
 			return os.cpus().length;
 		}
-		
-return 2;
+
+		return 2;
 	}
 }
