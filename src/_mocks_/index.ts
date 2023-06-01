@@ -60,6 +60,7 @@ export const queryDto: CursorPaginationDto = {
 	relations: [],
 	fields: [],
 	type: PaginationType.CURSOR,
+	withDeleted: false
 };
 
 export const mockFile = {
