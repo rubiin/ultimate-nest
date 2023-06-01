@@ -1,7 +1,8 @@
+import { STATUS_CODES } from "node:http";
+
 import { DriverException, ServerException } from "@mikro-orm/core";
 import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from "@nestjs/common";
 import { Response } from "express";
-import { STATUS_CODES } from "http";
 
 @Catch(ServerException)
 export class QueryFailedFilter implements ExceptionFilter {

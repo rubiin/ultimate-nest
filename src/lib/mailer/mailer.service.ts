@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import * as aws from "@aws-sdk/client-ses";
 import { Server, TemplateEngine } from "@common/@types";
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { createTransport,SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
+import { createTransport, SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
 import previewEmail from "preview-email";
 import { from, switchMap } from "rxjs";
 
@@ -17,8 +17,6 @@ interface MailOptions extends Partial<SendMailOptions> {
 	replacements: Record<string, any>;
 }
 
-
-
 @Injectable()
 export class MailerService {
 	readonly transporter: Transporter<SentMessageInfo>;
@@ -31,19 +29,23 @@ export class MailerService {
 	) {
 		// render template
 
-		
-
 		switch (this.options.templateEngine.adapter) {
 			case TemplateEngine.PUG: {
-				this.adapter = new PugAdapter({...this.options.templateEngine.options,basedir: resolve(this.options.templateDir)});
+				this.adapter = new PugAdapter({
+					...this.options.templateEngine.options,
+					basedir: resolve(this.options.templateDir),
+				});
 				break;
 			}
 			case TemplateEngine.ETA: {
-				this.adapter = new EtaAdapter({...this.options.templateEngine.options, views: resolve(this.options.templateDir)});
+				this.adapter = new EtaAdapter({
+					...this.options.templateEngine.options,
+					views: resolve(this.options.templateDir),
+				});
 				break;
 			}
 			case TemplateEngine.HBS: {
-				this.adapter = new HandlebarsAdapter({...this.options.templateEngine.options});
+				this.adapter = new HandlebarsAdapter({ ...this.options.templateEngine.options });
 				break;
 			}
 			default: {
@@ -93,9 +95,7 @@ export class MailerService {
 	 * @returns A promise that resolves to a boolean.
 	 */
 	sendMail(mailOptions: MailOptions) {
-		const templatePath = resolve(
-			`}`,
-		);
+		const templatePath = resolve(`}`);
 
 		return from(this.adapter.compile(templatePath, mailOptions.replacements)).pipe(
 			switchMap(html => {
@@ -109,9 +109,6 @@ export class MailerService {
 			}),
 		);
 	}
-
-
-
 
 	async checkConnection() {
 		return this.transporter.verify((error, _success) => {

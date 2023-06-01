@@ -1,6 +1,7 @@
+import { randomUUID } from "node:crypto";
+
 import { Index, PrimaryKey, Property } from "@mikro-orm/core";
 import { ApiHideProperty } from "@nestjs/swagger";
-import { randomUUID } from "crypto";
 
 /**
  * Base entity class for mikroorm models, that all other entities of the same type should extend.
