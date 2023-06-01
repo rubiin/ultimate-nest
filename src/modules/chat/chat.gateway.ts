@@ -1,8 +1,9 @@
 import { LoggedInUser } from "@common/decorators";
 import { WsJwtGuard } from "@common/guards";
+import { WsValidationPipe } from "@common/pipes/ws-validation.pipe";
 import { User } from "@entities";
 import { AuthService } from "@modules/auth/auth.service";
-import { Logger, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { Logger, UnauthorizedException, UseGuards, UsePipes } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import {
 	ConnectedSocket,
@@ -21,6 +22,7 @@ import { CreateChatDto, MessageSeenDto } from "./dto";
 import { SocketConnectionService } from "./socket-connection.service";
 
 @UseGuards(WsJwtGuard)
+@UsePipes(WsValidationPipe)
 @WebSocketGateway({
 	namespace: "chat",
 })
