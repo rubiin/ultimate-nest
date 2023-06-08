@@ -4,7 +4,7 @@ import Joi from "joi";
 export const twilioConfigValidationSchema = {
 	TWILIO_ACCOUNT_SID: Joi.string().required(),
 	TWILIO_AUTH_TOKEN: Joi.string().required(),
-	TWILIO_FROM: Joi.string().email().required(),
+	TWILIO_FROM: Joi.string().required(),
 };
 
 export const twilio = registerAs("twilio", () => ({

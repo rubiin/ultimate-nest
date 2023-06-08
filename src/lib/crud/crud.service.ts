@@ -50,11 +50,23 @@ export abstract class BaseService<
 	 * @param dto - The DTO that will be used to search for the entities.
 	 */
 	findAll(dto: PaginationRequest): Observable<PaginationResponse<Entity>> {
+		const { withDeleted, relations } = dto;
+
+		const qb = this.repository.createQueryBuilder(this.queryName).where({
+			isDeleted: withDeleted,
+		});
+
+		if (relations) {
+			for (const relation of relations) {
+				qb.leftJoinAndSelect(
+					`${this.queryName}.${relation}`,
+					`${this.queryName}_${relation}`,
+				);
+			}
+		}
+
 		if (dto.type === PaginationType.CURSOR) {
-			const { first, after, search, withDeleted, fields } = dto;
-			const qb = this.repository.createQueryBuilder(this.queryName).where({
-				isDeleted: withDeleted,
-			});
+			const { first, after, search, fields } = dto;
 
 			if (search && this.searchField) {
 				qb.andWhere({
@@ -80,10 +92,6 @@ export abstract class BaseService<
 				}),
 			);
 		}
-
-		const qb = this.repository.createQueryBuilder(this.queryName).where({
-			isDeleted: dto.withDeleted,
-		});
 
 		return this.repository.qbOffsetPagination({
 			pageOptionsDto: dto,
