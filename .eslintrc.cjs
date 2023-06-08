@@ -10,7 +10,6 @@ module.exports = {
     "plugins": [
         "import",
         "@typescript-eslint/eslint-plugin",
-        "prettier",
         "unicorn",
         "simple-import-sort",
         "deprecation"
@@ -22,7 +21,6 @@ module.exports = {
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:unicorn/recommended",
-        "prettier",
 
     ],
     "root": true,
