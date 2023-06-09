@@ -5,7 +5,7 @@ import { Server, TemplateEngine } from "@common/@types";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { createTransport, SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
 import previewEmail from "preview-email";
-import { from, switchMap } from "rxjs";
+import { from, retry, switchMap } from "rxjs";
 
 import { EtaAdapter, HandlebarsAdapter, PugAdapter } from "./adapters";
 import { Adapter } from "./adapters/abstract.adapter";
@@ -105,7 +105,7 @@ export class MailerService {
 					previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error);
 				}
 
-				return from(this.transporter.sendMail(mailOptions));
+				return from(this.transporter.sendMail(mailOptions)).pipe(retry(this.options.retryAttempts));
 			}),
 		);
 	}

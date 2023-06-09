@@ -1,6 +1,6 @@
 import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { catchError, from, Observable, tap, throwError } from "rxjs";
+import { catchError, from, Observable, retry, tap, throwError } from "rxjs";
 import twilio from "twilio";
 import {
 	MessageInstance,
@@ -37,6 +37,7 @@ export class TwilioService {
 				to: `${options.prefix}${options.to}`,
 			}),
 		).pipe(
+			retry(this.options.retryAttempts),
 			tap(message => this.logger.log(`SMS sent to ${message.sid}`)),
 			catchError(error => {
 				this.logger.error(error);

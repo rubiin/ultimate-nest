@@ -27,7 +27,7 @@ import {
 				watch: true,
 				includeSubfolders: true,
 			},
-			typesOutputPath: path.join(process.cwd() + "/src/generated/i18n.generated.ts"), // TODO: fix this
+			typesOutputPath: path.join(__dirname + "../generated/i18n.generated.ts"), // TODO: add retries to rxjs
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,
