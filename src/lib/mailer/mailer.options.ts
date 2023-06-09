@@ -13,6 +13,7 @@ export interface MailModuleOptions {
 	sesAccessKey?: string;
 	sesRegion?: string;
 	templateDir: string;
+	retryAttempts?: number;
 	templateEngine:
 		| {
 				adapter: TemplateEngine.ETA;
