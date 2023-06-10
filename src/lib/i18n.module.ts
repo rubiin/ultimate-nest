@@ -27,7 +27,7 @@ import {
 				watch: true,
 				includeSubfolders: true,
 			},
-			typesOutputPath: path.join(__dirname + "../generated/i18n.generated.ts"), // TODO: add retries to rxjs
+			typesOutputPath: path.join(__dirname + "/../generated/i18n.generated.d.ts"),
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,

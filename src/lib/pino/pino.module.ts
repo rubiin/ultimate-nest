@@ -7,6 +7,7 @@ const basePinoOptions = {
 	translateTime: true,
 	ignore: "pid,hostname",
 	singleLine: true,
+	redact: ["*.password", "*.confirmPassword"]
 };
 
 @Module({
@@ -15,8 +16,8 @@ const basePinoOptions = {
 			useFactory: () => {
 				return {
 					pinoHttp: {
+						timestamp: () => `,"timestamp":"${new Date(Date.now()).toISOString()}"`,
 						name: "ultimate-nest",
-
 						customProps: (_request, _response) => ({
 							context: "HTTP",
 						}),
@@ -27,7 +28,6 @@ const basePinoOptions = {
 								return request;
 							},
 						},
-
 						redact: {
 							paths: redactFields,
 							censor: "**GDPR COMPLIANT**",
@@ -42,6 +42,7 @@ const basePinoOptions = {
 										mkdir: true,
 										sync: false,
 									},
+
 							  }
 							: {
 									targets: [

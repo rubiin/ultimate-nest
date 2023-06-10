@@ -1,10 +1,12 @@
 import { PaginationType, QueryOrder } from "@common/@types";
 import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
+import { ApiHideProperty } from "@nestjs/swagger";
 import { Allow } from "class-validator";
 
 import { PaginationDto } from "./pagination.dto";
 
 export class OffsetPaginationDto extends PaginationDto {
+	@ApiHideProperty()
 	@Allow()
 	type: PaginationType.OFFSET = PaginationType.OFFSET;
 	/**

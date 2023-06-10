@@ -75,7 +75,6 @@ export class MailerService {
 				maxConnections: 5,
 				host: this.options.host,
 				port: this.options.port,
-				logger: true,
 				secure: true,
 				auth: {
 					user: this.options.username,
