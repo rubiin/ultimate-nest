@@ -3,7 +3,7 @@ import { defineConfig } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { Logger, NotFoundException } from "@nestjs/common";
-import dotenv from "dotenv";
+import {config as environmentConfig} from "dotenv";
 import dotEnvExpand from "dotenv-expand";
 
 import { BaseRepository } from "./base.repository";
@@ -20,7 +20,7 @@ import { BaseRepository } from "./base.repository";
 
 const logger = new Logger("MikroORM");
 
-const environment = dotenv.config({
+const environment = environmentConfig({
 	path: `${process.cwd()}/env/.env.${process.env.NODE_ENV}`,
 });
 

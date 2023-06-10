@@ -9,8 +9,10 @@ import { ExpressAdapter, NestExpressApplication } from "@nestjs/platform-express
 import bodyParser from "body-parser";
 import chalk from "chalk";
 import { useContainer } from "class-validator";
+import compression from "compression";
 import helmet from "helmet";
 import { I18nValidationExceptionFilter } from "nestjs-i18n";
+import { LoggerErrorInterceptor } from "nestjs-pino";
 
 import { AppModule } from "./app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
@@ -28,6 +30,15 @@ const bootstrap = async () => {
 
 	const logger = new Logger("Bootstrap");
 
+
+	// =========================================================
+	// configureNestSwagger
+	// =========================================================
+
+	if (!HelperService.isProd()) {
+		AppUtils.setupSwagger(app, configService);
+	}
+
 	// ======================================================
 	// security
 	// ======================================================
@@ -39,6 +50,7 @@ const bootstrap = async () => {
 		bodyParser.urlencoded({ limit: "10mb", extended: true }),
 	);
 	app.use(helmet());
+	app.use(compression());
 	app.enableCors({
 		credentials: true,
 		methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
@@ -66,19 +78,14 @@ const bootstrap = async () => {
 	await redisIoAdapter.connectToRedis();
 	app.useWebSocketAdapter(redisIoAdapter);
 
-	// =========================================================
-	// configureNestSwagger
-	// =========================================================
 
-	if (!HelperService.isProd) {
-		AppUtils.setupSwagger(app, configService);
-	}
 
 	// Starts listening for shutdown hooks
 
 	app.enableShutdownHooks();
 
 	AppUtils.killAppWithGrace(app);
+	app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
 	const port = process.env.PORT || configService.get("app.port", { infer: true });
 

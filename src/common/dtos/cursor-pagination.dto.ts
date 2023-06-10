@@ -1,5 +1,6 @@
 import { PaginationType } from "@common/@types";
 import { IsNumberField, IsStringField } from "@common/decorators";
+import { ApiHideProperty } from "@nestjs/swagger";
 import { Allow, IsBase64 } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
@@ -8,6 +9,7 @@ import { PaginationDto } from "./pagination.dto";
 // TODO: add filters
 
 export class CursorPaginationDto extends PaginationDto {
+	@ApiHideProperty()
 	@Allow()
 	type: PaginationType.CURSOR = PaginationType.CURSOR;
 
