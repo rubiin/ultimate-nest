@@ -31,7 +31,4 @@ export interface File {
 	buffer: Buffer;
 }
 
-// This type represents a dto that contains a file or files
-export type DtoWithFile<T, K = File> = T & {
-	files: K;
-};
+

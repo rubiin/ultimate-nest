@@ -43,7 +43,7 @@
 		"start:hmr": "nest build --watch --webpack --webpackPath webpack-hmr.js",
 		"start:prod": "node dist/main",
 		"start:repl": "nest start --watch --entryFile repl",
-		"start:debug": "nest start --debug --watch",
+		"start:debug": "NEST_DEBUG=true nest start --debug --watch",
 		"test": "jest --verbose",
 		"test:watch": "jest --watch",
 		"test:cov": "jest --coverage",
