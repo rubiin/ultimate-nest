@@ -9,7 +9,7 @@ import { ApiHideProperty } from "@nestjs/swagger";
 
 export abstract class BaseEntity {
 	@ApiHideProperty()
-	@PrimaryKey()
+	@PrimaryKey({ hidden: true })
 	@Index()
 	id!: number;
 

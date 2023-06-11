@@ -104,7 +104,9 @@ export class MailerService {
 					previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error);
 				}
 
-				return from(this.transporter.sendMail(mailOptions)).pipe(retry(this.options.retryAttempts));
+				return from(this.transporter.sendMail(mailOptions)).pipe(
+					retry(this.options.retryAttempts),
+				);
 			}),
 		);
 	}

@@ -7,7 +7,7 @@ const basePinoOptions = {
 	translateTime: true,
 	ignore: "pid,hostname",
 	singleLine: true,
-	redact: ["*.password", "*.confirmPassword"]
+	redact: ["*.password", "*.confirmPassword"],
 };
 
 @Module({
@@ -42,7 +42,6 @@ const basePinoOptions = {
 										mkdir: true,
 										sync: false,
 									},
-
 							  }
 							: {
 									targets: [

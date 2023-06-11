@@ -30,9 +30,8 @@ const bootstrap = async () => {
 
 	const logger = new Logger("Bootstrap");
 
-
 	// =========================================================
-	// configureNestSwagger
+	// configure swagger
 	// =========================================================
 
 	if (!HelperService.isProd()) {
@@ -40,7 +39,7 @@ const bootstrap = async () => {
 	}
 
 	// ======================================================
-	// security
+	// security and middlewares
 	// ======================================================
 
 	app.enable("trust proxy");
@@ -59,7 +58,7 @@ const bootstrap = async () => {
 	});
 
 	// =====================================================
-	// configureNestGlobals
+	// configure global pipes, filters, interceptors
 	// =====================================================
 
 	const globalPrefix = configService.get("app.prefix", { infer: true });
@@ -67,10 +66,13 @@ const bootstrap = async () => {
 	app.useGlobalPipes(new ValidationPipe(AppUtils.validationPipeOptions()));
 
 	app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
+
+	app.useGlobalInterceptors(new LoggerErrorInterceptor());
+
 	app.setGlobalPrefix(globalPrefix);
 
 	// =========================================================
-	// configureWebSocket
+	// configure socket
 	// =========================================================
 
 	const redisIoAdapter = new SocketIOAdapter(app, configService);
@@ -78,16 +80,14 @@ const bootstrap = async () => {
 	await redisIoAdapter.connectToRedis();
 	app.useWebSocketAdapter(redisIoAdapter);
 
-
-
-	// Starts listening for shutdown hooks
+	// =========================================================
+	// configure shutdown hooks
+	// =========================================================
 
 	app.enableShutdownHooks();
 
 	AppUtils.killAppWithGrace(app);
-	app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
-	const port = process.env.PORT || configService.get("app.port", { infer: true });
 
 	useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
@@ -95,6 +95,9 @@ const bootstrap = async () => {
 		module.hot.accept();
 		module.hot.dispose(() => app.close());
 	}
+
+
+	const port = process.env.PORT ?? configService.get("app.port", { infer: true });
 
 	await app.listen(port);
 

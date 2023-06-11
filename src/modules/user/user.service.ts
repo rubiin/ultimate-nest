@@ -5,7 +5,7 @@ import {
 	EmailSubject,
 	EmailTemplate,
 	QueryOrder,
-	RoutingKey
+	RoutingKey,
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
@@ -25,7 +25,7 @@ import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs
 import { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
-export class UserService{
+export class UserService {
 	private readonly queryName = "u";
 
 	constructor(
