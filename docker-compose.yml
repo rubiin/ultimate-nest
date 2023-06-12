@@ -87,6 +87,7 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock:ro
 
     redis:
+        container_name: redis
         image: redis:7.0.11-alpine
         env_file: env/.env.${ENV}
         restart: always
@@ -118,6 +119,7 @@ services:
             - rabbitmq-data:/var/lib/rabbitmq/mnesia/
 
     database:
+        container_name: database
         image: postgres:15.3-alpine
         restart: unless-stopped
         env_file: env/.env.${ENV}
