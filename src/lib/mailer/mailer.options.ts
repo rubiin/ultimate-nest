@@ -1,5 +1,5 @@
 import { Server, TemplateEngine } from "@common/@types";
-import { config } from "eta";
+import type { EtaConfig } from "eta/dist/types/config";
 import type { Options as PugOptions } from "pug";
 
 export interface MailModuleOptions {
@@ -17,7 +17,7 @@ export interface MailModuleOptions {
 	templateEngine:
 		| {
 				adapter: TemplateEngine.ETA;
-				options: Partial<typeof config>;
+				options: Partial<EtaConfig>;
 		  }
 		| {
 				adapter: TemplateEngine.PUG;

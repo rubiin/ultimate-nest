@@ -9,17 +9,6 @@ export class OffsetPaginationDto extends PaginationDto {
 	@ApiHideProperty()
 	@Allow()
 	type: PaginationType.OFFSET = PaginationType.OFFSET;
-	/**
-	 * The search query
-	 */
-	@IsStringField({ required: false, minLength: 1, maxLength: 100 })
-	search: string;
-
-	/**
-	 * The relations to load
-	 */
-	@IsStringField({ required: false, each: true })
-	relations: string[];
 
 	/**
 	 * Results page you want to retrieve (0..N)
