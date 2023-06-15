@@ -69,8 +69,8 @@ dependencies:
     specifier: ^9.4.3
     version: 9.4.3(@nestjs/common@9.4.3)(@nestjs/websockets@9.4.3)(rxjs@7.8.1)
   '@nestjs/schedule':
-    specifier: ^2.2.3
-    version: 2.2.3(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(reflect-metadata@0.1.13)
+    specifier: ^3.0.0
+    version: 3.0.0(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(reflect-metadata@0.1.13)
   '@nestjs/serve-static':
     specifier: ^3.0.1
     version: 3.0.1(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)
@@ -3118,11 +3118,11 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@nestjs/schedule@2.2.3(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(reflect-metadata@0.1.13):
-    resolution: {integrity: sha512-PxoGdoBwZQ6SzGfFcERTk7mDxrmesNt2cfqKgtLsFpjYNpV6ZYlKw9Ku8C0ZIjdhy0tBbysj+Fsi3sYua6o6Eg==}
+  /@nestjs/schedule@3.0.0(@nestjs/common@9.4.3)(@nestjs/core@9.4.3)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-x34wi/Jqmm16CmR4KnN9yj1jCUP8tOoxoIrzBIc7hkgP16vw614mnaQXC3NVLT/e74v937tV/4ezHs652Ju60Q==}
     peerDependencies:
-      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
-      '@nestjs/core': ^7.0.0 || ^8.0.0 || ^9.0.0
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0
       reflect-metadata: ^0.1.12
     dependencies:
       '@nestjs/common': 9.4.3(cache-manager@5.2.3)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
