@@ -24,7 +24,6 @@ export class CursorPaginationDto extends PaginationDto {
 	})
 	after?: string;
 
-
 	/**
 	 * Results page you want to retrieve (0..N)
 	 */

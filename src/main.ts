@@ -54,7 +54,7 @@ const bootstrap = async () => {
 		credentials: true,
 		methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
 		maxAge: 3600,
-		origin: configService.get("app.allowedHosts", { infer: true }),
+		origin: configService.get("app.allowedOrigins", { infer: true }),
 	});
 
 	// =====================================================
@@ -88,14 +88,12 @@ const bootstrap = async () => {
 
 	AppUtils.killAppWithGrace(app);
 
-
 	useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
 	if (module.hot) {
 		module.hot.accept();
 		module.hot.dispose(() => app.close());
 	}
-
 
 	const port = process.env.PORT ?? configService.get("app.port", { infer: true });
 
@@ -106,7 +104,7 @@ const bootstrap = async () => {
 	);
 	logger.log(
 		`🚦 Accepting request only from: ${chalk.green(
-			`${configService.get("app.allowedHosts", { infer: true })}`,
+			`${configService.get("app.allowedOrigins", { infer: true })}`,
 		)}`,
 	);
 

@@ -29,7 +29,7 @@ declare global {
 			API_URL: string;
 			CLIENT_URL: string;
 			SWAGGER_USER: string;
-			ALLOWED_HOSTS: string;
+			ALLOWED_ORIGINS?: string;
 			SWAGGER_PASSWORD: string;
 
 			DB_HOST: string;
