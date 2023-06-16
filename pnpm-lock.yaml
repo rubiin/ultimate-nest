@@ -75,8 +75,8 @@ dependencies:
     specifier: ^4.0.0
     version: 4.0.0(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)
   '@nestjs/swagger':
-    specifier: ^6.3.0
-    version: 6.3.0(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+    specifier: ^7.0.0
+    version: 7.0.0(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
   '@nestjs/terminus':
     specifier: ^9.2.2
     version: 9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@3.0.0)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -3041,6 +3041,26 @@ packages:
       class-validator: 0.14.0
       reflect-metadata: 0.1.13
     dev: false
+    optional: true
+
+  /@nestjs/mapped-types@2.0.0(@nestjs/common@10.0.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-JyIOY1OE4x2t8Z2ImWLQJnHVqLCBHJZXm6RqcOG3+4rIsqMQxm5smHbb7H5C6tLAdDcRYd/fG2gYK1J1GiqKLw==}
+    peerDependencies:
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
+      class-transformer: ^0.4.0 || ^0.5.0
+      class-validator: ^0.13.0 || ^0.14.0
+      reflect-metadata: ^0.1.12
+    peerDependenciesMeta:
+      class-transformer:
+        optional: true
+      class-validator:
+        optional: true
+    dependencies:
+      '@nestjs/common': 10.0.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      class-transformer: 0.5.1
+      class-validator: 0.14.0
+      reflect-metadata: 0.1.13
+    dev: false
 
   /@nestjs/passport@10.0.0(@nestjs/common@10.0.0)(passport@0.6.0):
     resolution: {integrity: sha512-IlKKc6M7JOe+4dBbW6gZsXBSD05ZYgwfGf3GJhgCmUGYVqffpDdALQSS6JftnExrE+12rACoEmHkzYwKAGVK0Q==}
@@ -3135,12 +3155,12 @@ packages:
       path-to-regexp: 0.2.5
     dev: false
 
-  /@nestjs/swagger@6.3.0(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
-    resolution: {integrity: sha512-Gnig189oa1tD+h0BYIfUwhp/wvvmTn6iO3csR2E4rQrDTgCxSxZDlNdfZo3AC+Rmf8u0KX4ZAX1RZN1qXTtC7A==}
+  /@nestjs/swagger@7.0.0(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-5/vPxCY7jA4aiZ24Byf76GpdCfnB1EqlvmWMjZEGTrZv2e3Yq8UexjAzJaMO+Kf8CkC5lfstkdy9myE9EqFstg==}
     peerDependencies:
       '@fastify/static': ^6.0.0
-      '@nestjs/common': ^9.0.0
-      '@nestjs/core': ^9.0.0
+      '@nestjs/common': ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^9.0.0 || ^10.0.0
       class-transformer: '*'
       class-validator: '*'
       reflect-metadata: ^0.1.12
@@ -3154,14 +3174,14 @@ packages:
     dependencies:
       '@nestjs/common': 10.0.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.0.0(@nestjs/common@10.0.0)(@nestjs/platform-express@10.0.0)(@nestjs/websockets@10.0.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      '@nestjs/mapped-types': 1.2.2(@nestjs/common@10.0.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+      '@nestjs/mapped-types': 2.0.0(@nestjs/common@10.0.0)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
       class-transformer: 0.5.1
       class-validator: 0.14.0
       js-yaml: 4.1.0
       lodash: 4.17.21
       path-to-regexp: 3.2.0
       reflect-metadata: 0.1.13
-      swagger-ui-dist: 4.18.2
+      swagger-ui-dist: 5.0.0
     dev: false
 
   /@nestjs/terminus@9.2.2(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@3.0.0)(@nestjs/common@10.0.0)(@nestjs/core@10.0.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
@@ -11907,8 +11927,8 @@ packages:
       - supports-color
     dev: false
 
-  /swagger-ui-dist@4.18.2:
-    resolution: {integrity: sha512-oVBoBl9Dg+VJw8uRWDxlyUyHoNEDC0c1ysT6+Boy6CTgr2rUcLcfPon4RvxgS2/taNW6O0+US+Z/dlAsWFjOAQ==}
+  /swagger-ui-dist@5.0.0:
+    resolution: {integrity: sha512-bwl6og9I9CAHKGSnYLKydjhBuH7d3oU6RX6uKN8oDCkLusTHXOW3sZMyBWjRtjGFnCMmN085oZoaR/4Wm9nIaQ==}
     dev: false
 
   /symbol-observable@1.2.0:
