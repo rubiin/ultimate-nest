@@ -1,4 +1,7 @@
-module.exports = {
+// @ts-check
+const { defineConfig } = require("eslint-define-config");
+
+module.exports = defineConfig({
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "createDefaultProgram": false,
@@ -20,8 +23,7 @@ module.exports = {
         "plugin:import/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:unicorn/recommended",
-
+        "plugin:unicorn/recommended"
     ],
     "root": true,
     "settings": {
@@ -29,7 +31,6 @@ module.exports = {
             "typescript": {
                 "alwaysTryTypes": true,
                 "project": "./tsconfig.json"
-
             }
         },
     },
@@ -53,6 +54,7 @@ module.exports = {
         "no-array-constructor": "error",
         "no-mixed-operators": "error",
         "import/default": "off",
+        "@typescript-eslint/no-var-requires": "off",
         "no-plusplus": [
             "error",
             {"allowForLoopAfterthoughts": true}
@@ -124,4 +126,4 @@ module.exports = {
             },
         ],
     }
-};
+});
