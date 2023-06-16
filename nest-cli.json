@@ -9,11 +9,27 @@
 					"classValidatorShim": true,
 					"introspectComments": true,
 					"controllerKeyOfComment": "description",
-					"dtoFileNameSuffix": [".entity.ts", ".dto.ts",".interface.ts"],
-					"controllerFileNameSuffix": [".controller.ts"]
+					"dtoFileNameSuffix": [
+						".entity.ts",
+						".dto.ts",
+						".interface.ts"
+					],
+					"controllerFileNameSuffix": [
+						".controller.ts"
+					]
 				}
 			}
 		],
-		"assets": [{ "include": "resources/**/*", "exclude": "resources/images/*", "watchAssets": true },{ "include": "**/*.css", "watchAssets": true }]
+		"assets": [
+			{
+				"include": "resources/**/*",
+				"exclude": "resources/images/*",
+				"watchAssets": true
+			},
+			{
+				"include": "**/*.css",
+				"watchAssets": true
+			}
+		]
 	}
 }
