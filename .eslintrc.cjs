@@ -35,10 +35,10 @@ module.exports = defineConfig({
         },
     },
     "env": {
-        node: true,
-        jest: true,
-        es6: true,
-        browser: false,
+        "node": true,
+        "jest": true,
+        "es6": true,
+        "browser": false,
     },
     "rules": {
         "deprecation/deprecation": "warn",
@@ -84,7 +84,7 @@ module.exports = defineConfig({
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-unused-vars": [
             "error",
-            {argsIgnorePattern: "^_"},
+            {"argsIgnorePattern": "^_"},
         ],
         "no-multi-spaces": "error",
         "linebreak-style": ["error", "unix"],
@@ -93,36 +93,36 @@ module.exports = defineConfig({
         "padding-line-between-statements": [
             "error",
             {
-                blankLine: "always",
-                prev: ["const", "let", "var"],
-                next: "*",
+                "blankLine": "always",
+                "prev": ["const", "let", "var"],
+                "next": "*",
             },
             {
-                blankLine: "any",
-                prev: ["const", "let", "var"],
-                next: ["const", "let", "var"],
+                "blankLine": "any",
+                "prev": ["const", "let", "var"],
+                "next": ["const", "let", "var"],
             },
         ],
         "prefer-const": [
             "error",
             {
-                destructuring: "any",
-                ignoreReadBeforeAssign: false,
+                "destructuring": "any",
+                "ignoreReadBeforeAssign": false,
             },
         ],
         "quotes": [
             "error",
             "double",
             {
-                allowTemplateLiterals: true,
-                avoidEscape: true,
+                "allowTemplateLiterals": true,
+                "avoidEscape": true,
             },
         ],
         "no-unused-vars": ["error", {"varsIgnorePattern": "^_", "ignoreRestSiblings": true, "argsIgnorePattern": "^_"}],
         "no-console": [
             "error",
             {
-                allow: ["warn", "error", "info", "table"],
+                "allow": ["warn", "error", "info", "table"],
             },
         ],
     }
