@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { AuthenticationResponse } from "@common/@types";
 import { User } from "@entities";
 import { argon2id, hash, Options as ArgonOptions, verify } from "argon2";
+import { format, zonedTimeToUtc } from "date-fns-tz";
 import { pick } from "helper-fns";
 import { RedisOptions } from "ioredis";
 import { from, Observable } from "rxjs";
@@ -66,6 +67,15 @@ export const HelperService = {
 
 	generateThumb(input: Buffer, config: { height: number; width: number }): Observable<Buffer> {
 		return from(sharp(input).resize(config).toFormat("png").toBuffer());
+	},
+
+	/* The `getTimeInUtc` function takes a `Date` object or a string representation of a date as input and
+	returns a new `Date` object representing the same date and time in UTC timezone. */
+	getTimeInUtc(date: Date | string): Date {
+		const thatDate = date instanceof Date ? date : new Date(date);
+		const currentUtcTime = zonedTimeToUtc(thatDate, "UTC");
+
+		return new Date(format(currentUtcTime, "yyyy-MM-dd HH:mm:ss"));
 	},
 
 	redisUrlToOptions(url: string): RedisOptions {
