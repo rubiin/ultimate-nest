@@ -78,8 +78,8 @@ dependencies:
     specifier: ^7.0.1
     version: 7.0.1(@nestjs/common@10.0.1)(@nestjs/core@10.0.1)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
   '@nestjs/terminus':
-    specifier: ^10.0.0
-    version: 10.0.0(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@3.0.0)(@nestjs/common@10.0.1)(@nestjs/core@10.0.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+    specifier: ^10.0.1
+    version: 10.0.1(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@3.0.0)(@nestjs/common@10.0.1)(@nestjs/core@10.0.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
   '@nestjs/throttler':
     specifier: ^4.1.0
     version: 4.1.0(@nestjs/common@10.0.1)(@nestjs/core@10.0.1)(reflect-metadata@0.1.13)
@@ -128,6 +128,9 @@ dependencies:
   date-fns:
     specifier: ^2.30.0
     version: 2.30.0
+  date-fns-tz:
+    specifier: ^2.0.0
+    version: 2.0.0(date-fns@2.30.0)
   eta:
     specifier: ^3.0.1
     version: 3.0.1
@@ -3193,8 +3196,8 @@ packages:
       swagger-ui-dist: 4.19.0
     dev: false
 
-  /@nestjs/terminus@10.0.0(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@3.0.0)(@nestjs/common@10.0.1)(@nestjs/core@10.0.1)(reflect-metadata@0.1.13)(rxjs@7.8.1):
-    resolution: {integrity: sha512-MCMXMZkBqCF3xXWFDGb1VoCQo0lroL3ys3ho8Rlwqe0PVEMMKMFNnYCV17YWU6X4ofErX6VqFR+yPFAeBG3oGw==}
+  /@nestjs/terminus@10.0.1(@mikro-orm/core@5.7.12)(@mikro-orm/nestjs@5.1.8)(@nestjs/axios@3.0.0)(@nestjs/common@10.0.1)(@nestjs/core@10.0.1)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-orQmQFdwN4QC2Oo30BrxEKzKAVeVluWQElgIe16NGvm597VqRH4b1GbKldVg6H8adehd/nR6RdCUyFozRdl2rA==}
     peerDependencies:
       '@grpc/grpc-js': '*'
       '@grpc/proto-loader': '*'
@@ -5885,6 +5888,14 @@ packages:
       abab: 2.0.6
       whatwg-mimetype: 3.0.0
       whatwg-url: 12.0.1
+    dev: false
+
+  /date-fns-tz@2.0.0(date-fns@2.30.0):
+    resolution: {integrity: sha512-OAtcLdB9vxSXTWHdT8b398ARImVwQMyjfYGkKD2zaGpHseG2UPHbHjXELReErZFxWdSLph3c2zOaaTyHfOhERQ==}
+    peerDependencies:
+      date-fns: '>=2.0.0'
+    dependencies:
+      date-fns: 2.30.0
     dev: false
 
   /date-fns@2.30.0:

@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 
+import { HelperService } from "@common/helpers";
 import { Index, PrimaryKey, Property } from "@mikro-orm/core";
 import { ApiHideProperty } from "@nestjs/swagger";
 
@@ -42,14 +43,14 @@ export abstract class BaseEntity {
 	 *  The date that the entity was created
 	 */
 	@Property()
-	createdAt? = new Date();
+	createdAt? = HelperService.getTimeInUtc(new Date());
 
 	/**
 	 *  The date that the entity was last updated
 	 */
 	@Property({
-		onUpdate: () => new Date(),
+		onUpdate: () => HelperService.getTimeInUtc(new Date()),
 		hidden: true,
 	})
-	updatedAt? = new Date();
+	updatedAt? = HelperService.getTimeInUtc(new Date());
 }
