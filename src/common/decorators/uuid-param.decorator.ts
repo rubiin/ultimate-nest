@@ -9,8 +9,8 @@ import { HttpStatus, Param, ParseUUIDPipe, PipeTransform, Type } from "@nestjs/c
  */
 
 class CustomException extends Error {
-  message = "UUID must be a valid UUID format (e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)";
-  statusCode = HttpStatus.BAD_REQUEST;
+	message = "UUID must be a valid UUID format (e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)";
+	statusCode = HttpStatus.BAD_REQUEST;
 }
 
 const exceptionFactory = () => new CustomException();
