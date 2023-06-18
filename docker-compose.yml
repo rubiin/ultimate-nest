@@ -42,6 +42,7 @@ services:
     traefik:
         image: traefik:v2.10.1
         container_name: traefik
+        restart: unless-stopped
         command:
             # Enable Docker in Traefik, so that it reads labels from Docker services
             - --providers.docker=true
@@ -89,7 +90,7 @@ services:
     redis:
         container_name: redis
         image: redis:7.0.11-alpine
-        restart: always
+        restart: unless-stopped
         depends_on:
             - traefik
         ports:
@@ -99,17 +100,24 @@ services:
         command: redis-server --loglevel warning --requirepass ${PASSWORD}
         volumes:
             - redis-data:/data
+            - .conf/redis.conf:/usr/local/etc/redis/redis.conf
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     rabbitmq:
         container_name: rabbitmq
         image: rabbitmq:3.12.0-management-alpine
+        env_file: env/.env.${ENV}
+        restart: unless-stopped
         networks:
             - nestify-network
         depends_on:
             - traefik
         environment:
             - RABBITMQ_DEFAULT_USER=nestify
-            - RABBITMQ_DEFAULT_PASS=${PASSWORD}
         ports:
             - "5672:5672"
             - "15672:15672"
@@ -125,10 +133,6 @@ services:
             - postgres_data:/var/lib/postgresql/data/
         depends_on:
             - traefik
-        environment:
-            - POSTGRES_USER=${DB_USERNAME}
-            - POSTGRES_PASSWORD=${DB_PASSWORD}
-            - POSTGRES_DB=${DB_DATABASE}
         networks:
             - nestify-network
         ports:
@@ -137,6 +141,8 @@ services:
     pgweb:
         image: sosedoff/pgweb
         container_name: pgweb
+        env_file: env/.env.${ENV}
+        restart: unless-stopped
         depends_on:
             - database
         networks:
