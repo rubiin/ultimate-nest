@@ -12,7 +12,7 @@ class IsGreaterThanConstraint implements ValidatorConstraintInterface {
 		const [relatedPropertyName] = arguments_.constraints;
 		const relatedValue = (arguments_.object as any)[relatedPropertyName];
 
-		return Number.parseInt(value) > Number.parseInt(relatedValue);
+		return Number.parseFloat(value) > Number.parseFloat(relatedValue);
 	}
 
 	defaultMessage(arguments_: ValidationArguments) {
