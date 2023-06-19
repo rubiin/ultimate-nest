@@ -32,11 +32,6 @@ export interface QBOffsetPaginationOptions<T extends Dictionary> {
 	qb: QueryBuilder<T>;
 }
 
-export interface PaginationRequestAbstract {
-	search: string;
-	fields: string[];
-}
-
 export interface PaginationAbstractResponse<T, Y> {
 	data: T[];
 	meta: Y;

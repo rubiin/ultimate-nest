@@ -22,7 +22,7 @@ export class UserController {
 	constructor(private readonly userService: UserService) {}
 
 	@Public()
-	@ApiPaginatedResponse(User, "Users list")
+	@ApiPaginatedResponse(User)
 	@Get()
 	findAll(
 		@Query() PaginationDto: CursorPaginationDto,
