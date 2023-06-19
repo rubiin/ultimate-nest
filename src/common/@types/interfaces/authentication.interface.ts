@@ -1,10 +1,4 @@
-export interface AuthenticationResponse {
-	user: {
-		idx?: string;
-	};
-	accessToken: string;
-	refreshToken?: string;
-}
+
 
 export interface OauthResponse {
 	email: string;

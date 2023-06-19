@@ -10,13 +10,13 @@ export class SocketIOAdapter extends IoAdapter {
 
 	constructor(
 		app: INestApplicationContext,
-		private readonly config: ConfigService<Configs, true>,
+		private readonly configService: ConfigService<Configs, true>,
 	) {
 		super(app);
 	}
 
 	async connectToRedis(): Promise<void> {
-		const pubClient = createClient({ url: this.config.get("redis.url", { infer: true }) });
+		const pubClient = createClient({ url: this.configService.get("redis.url", { infer: true }) });
 		const subClient = pubClient.duplicate();
 
 		await Promise.all([pubClient.connect(), subClient.connect()]);
@@ -26,7 +26,7 @@ export class SocketIOAdapter extends IoAdapter {
 
 	createIOServer(port: number, options?: ServerOptions): any {
 		const cors = {
-			origin: ["*"],
+			origin:  this.configService.get("app.allowedOrigins", { infer: true }),
 		};
 
 		const optionsWithCORS: ServerOptions = {
