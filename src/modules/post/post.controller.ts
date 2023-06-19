@@ -20,7 +20,7 @@ export class PostController {
 	constructor(private readonly postService: PostService) {}
 
 	@Get()
-	@ApiPaginatedResponse(PostEntity, "Post list")
+	@ApiPaginatedResponse(PostEntity)
 	findAll(@Query() dto: CursorPaginationDto): Observable<CursorPaginationResponse<PostEntity>> {
 		return this.postService.findAll(dto);
 	}
