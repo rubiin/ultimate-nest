@@ -8,7 +8,7 @@ export class ClearCacheMiddleware implements NestMiddleware {
 	constructor(private readonly cacheService: CacheService) {}
 
 	async use(request: Request, _response: Response, next: NextFunction) {
-		request.query.clearCache && (await this.cacheService.resetCache());
+		request.query?.clearCache === "true" && (await this.cacheService.resetCache());
 		next();
 	}
 }
