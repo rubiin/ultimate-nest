@@ -4,15 +4,27 @@ import { IsArray } from "class-validator";
 import { PaginationAbstractResponse } from "../interfaces";
 
 export class CursorMeta {
+	/**
+ * @example AdVxY2F0ZWdvcnlfaWQ9MjMx
+ */
 	@ApiProperty()
 	nextCursor: string;
 
+	/**
+	 * @example false
+	 */
 	@ApiProperty()
 	hasNextPage: boolean;
 
+	/**
+	 * @example true
+	 */
 	@ApiProperty()
 	hasPreviousPage: boolean;
 
+	/**
+	 * @example "lorem ipsum"
+	 */
 	@ApiProperty()
 	search?: string;
 }

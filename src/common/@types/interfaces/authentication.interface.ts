@@ -1,5 +1,3 @@
-
-
 export interface OauthResponse {
 	email: string;
 	firstName?: string;
