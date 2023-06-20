@@ -1,4 +1,4 @@
-import { CursorPaginationResponse, CursorType, QueryOrder } from "@common/@types";
+import { CursorType, PaginationResponse, QueryOrder } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { HelperService } from "@common/helpers";
@@ -38,7 +38,7 @@ export class PostService {
 	 * @returns An observable of a pagination object.
 	 * @param dto
 	 */
-	findAll(dto: CursorPaginationDto): Observable<CursorPaginationResponse<Post>> {
+	findAll(dto: CursorPaginationDto): Observable<PaginationResponse<Post>> {
 		const { search, first, after, withDeleted, fields } = dto;
 		const qb = this.postRepository.createQueryBuilder(this.queryName).where({
 			isDeleted: withDeleted,

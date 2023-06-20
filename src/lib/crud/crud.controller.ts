@@ -20,6 +20,8 @@ import {
 } from "@nestjs/common";
 import { Observable } from "rxjs";
 
+import { BaseService } from "./crud.service";
+
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {
 	constructor(private readonly targetTypes: { body?: Type; query?: Type; param?: Type }) {
@@ -59,7 +61,7 @@ export function ControllerFactory<
 		U extends EntityData<T>,
 	> implements Crud<T, Q, C, U>
 	{
-		protected service: Crud<T, Q, C, U>;
+		protected service: BaseService<T, Q, C, U>;
 
 		@Get(":idx")
 		@SwaggerResponse({

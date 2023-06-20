@@ -1,4 +1,4 @@
-import { Action, CursorPaginationResponse } from "@common/@types";
+import { Action, PaginationResponse } from "@common/@types";
 import {
 	ApiPaginatedResponse,
 	GenericController,
@@ -21,7 +21,7 @@ export class PostController {
 
 	@Get()
 	@ApiPaginatedResponse(PostEntity)
-	findAll(@Query() dto: CursorPaginationDto): Observable<CursorPaginationResponse<PostEntity>> {
+	findAll(@Query() dto: CursorPaginationDto): Observable<PaginationResponse<PostEntity>> {
 		return this.postService.findAll(dto);
 	}
 
