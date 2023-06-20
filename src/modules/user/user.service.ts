@@ -1,11 +1,11 @@
 import {
-	CursorPaginationResponse,
 	CursorType,
 	DtoWithFile,
 	EmailSubject,
 	EmailTemplate,
+	PaginationResponse,
 	QueryOrder,
-	RoutingKey,
+	RoutingKey
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
@@ -37,7 +37,7 @@ export class UserService {
 		private readonly cloudinaryService: CloudinaryService,
 	) {}
 
-	findAll(dto: CursorPaginationDto): Observable<CursorPaginationResponse<User>> {
+	findAll(dto: CursorPaginationDto): Observable<PaginationResponse<User>> {
 		const { search, first, after, withDeleted, relations, fields } = dto;
 		const qb = this.userRepository.createQueryBuilder(this.queryName).where({
 			isDeleted: withDeleted,

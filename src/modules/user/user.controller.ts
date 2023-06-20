@@ -1,4 +1,4 @@
-import { Action, CursorPaginationResponse, File, Roles } from "@common/@types";
+import { Action, File, PaginationResponse, Roles } from "@common/@types";
 import {
 	ApiFile,
 	ApiPaginatedResponse,
@@ -26,7 +26,7 @@ export class UserController {
 	@Get()
 	findAll(
 		@Query() PaginationDto: CursorPaginationDto,
-	): Observable<CursorPaginationResponse<User>> {
+	): Observable<PaginationResponse<User>> {
 		return this.userService.findAll(PaginationDto);
 	}
 
