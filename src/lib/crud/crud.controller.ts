@@ -1,6 +1,6 @@
 import { Crud, PaginationRequest, PaginationResponse } from "@common/@types";
 import { BaseEntity } from "@common/database";
-import { LoggedInUser, SwaggerResponse } from "@common/decorators";
+import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { AppUtils } from "@common/helpers";
 import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
@@ -18,6 +18,7 @@ import {
 	UsePipes,
 	ValidationPipe,
 } from "@nestjs/common";
+import { ApiResponse } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 
 import { BaseService } from "./crud.service";
@@ -73,7 +74,7 @@ export function ControllerFactory<
 			return this.service.findOne(index);
 		}
 
-		// TODO: add swagger response for this
+		@ApiPaginatedResponse(updateDto)
 		@UsePipes(queryPipe)
 		@Get()
 		findAll(@Query() query: Q): Observable<PaginationResponse<T>> {
@@ -87,6 +88,7 @@ export function ControllerFactory<
 		})
 		@UsePipes(createPipe)
 		@Post()
+		@ApiResponse({type: updateDto})
 		create(@Body() body: C, @LoggedInUser() user?: User): Observable<T> {
 			return this.service.create(body, user);
 		}
@@ -97,6 +99,7 @@ export function ControllerFactory<
 			params: ["idx"],
 			body: updateDto,
 		})
+		@ApiResponse({type: updateDto})
 		@UsePipes(updatePipe)
 		@Put(":idx")
 		update(@Param("idx") index: string, @Body() body: U): Observable<T> {
@@ -108,6 +111,7 @@ export function ControllerFactory<
 			badRequest: "Item does not exist.",
 			params: ["idx"],
 		})
+		@ApiResponse({type: updateDto})
 		@Delete(":idx")
 		remove(@Param("idx") index: string): Observable<T> {
 			return this.service.remove(index);

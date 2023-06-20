@@ -43,8 +43,8 @@ export const HelperService = {
 		return process.env.NODE_ENV.startsWith("dev");
 	},
 
-	isProd(): boolean{
-		return process.env.NODE_ENV.startsWith("prod")
+	isProd(): boolean {
+		return process.env.NODE_ENV.startsWith("prod");
 	},
 
 	getAppRootDir() {

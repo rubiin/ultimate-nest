@@ -16,7 +16,9 @@ export class SocketIOAdapter extends IoAdapter {
 	}
 
 	async connectToRedis(): Promise<void> {
-		const pubClient = createClient({ url: this.configService.get("redis.url", { infer: true }) });
+		const pubClient = createClient({
+			url: this.configService.get("redis.url", { infer: true }),
+		});
 		const subClient = pubClient.duplicate();
 
 		await Promise.all([pubClient.connect(), subClient.connect()]);
@@ -26,7 +28,7 @@ export class SocketIOAdapter extends IoAdapter {
 
 	createIOServer(port: number, options?: ServerOptions): any {
 		const cors = {
-			origin:  this.configService.get("app.allowedOrigins", { infer: true }),
+			origin: this.configService.get("app.allowedOrigins", { infer: true }),
 		};
 
 		const optionsWithCORS: ServerOptions = {

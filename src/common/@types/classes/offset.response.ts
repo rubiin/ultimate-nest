@@ -5,21 +5,39 @@ import { IsArray } from "class-validator";
 import { PaginationAbstractResponse } from "../interfaces";
 
 export class OffsetMeta {
+	/**
+	 * @example 10
+	 */
 	@ApiProperty()
 	readonly page: number;
 
+	/**
+	 * @example 50
+	 */
 	@ApiProperty()
 	readonly limit: number;
 
+	/**
+	 * @example 20
+	 */
 	@ApiProperty()
 	readonly itemCount: number;
 
+	/**
+	 * @example 100
+	 */
 	@ApiProperty()
 	readonly pageCount: number;
 
+	/**
+	 * @example true
+	 */
 	@ApiProperty()
 	readonly hasPreviousPage: boolean;
 
+	/**
+	 * @example true
+	 */
 	@ApiProperty()
 	readonly hasNextPage: boolean;
 

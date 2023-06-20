@@ -24,9 +24,7 @@ export class UserController {
 	@Public()
 	@ApiPaginatedResponse(User)
 	@Get()
-	findAll(
-		@Query() PaginationDto: CursorPaginationDto,
-	): Observable<PaginationResponse<User>> {
+	findAll(@Query() PaginationDto: CursorPaginationDto): Observable<PaginationResponse<User>> {
 		return this.userService.findAll(PaginationDto);
 	}
 

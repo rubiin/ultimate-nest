@@ -5,7 +5,7 @@ import {
 	EmailTemplate,
 	PaginationResponse,
 	QueryOrder,
-	RoutingKey
+	RoutingKey,
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
