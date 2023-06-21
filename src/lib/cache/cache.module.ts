@@ -14,7 +14,6 @@ import { CacheService } from "./cache.service";
 			useFactory: async (configService: ConfigService<Configs, true>) => {
 				const store = await redisStore({
 					url: configService.get("redis.url", { infer: true }),
-
 					database: 0,
 					isolationPoolOptions: {
 						min: 1,
