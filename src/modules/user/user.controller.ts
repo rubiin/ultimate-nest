@@ -17,6 +17,8 @@ import { Observable } from "rxjs";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
+// TODO: set cache key to take account for  logged in user too
+
 @GenericController("users")
 export class UserController {
 	constructor(private readonly userService: UserService) {}
@@ -34,7 +36,7 @@ export class UserController {
 		operation: "Create user",
 		badRequest: "User already registered with email.",
 	})
-	@ApiFile({ fieldName: "avatar", required: true })
+	@ApiFile({ fieldName: "avatar", required: true }) // fix this
 	publicRegistration(
 		@Body() dto: UserRegistrationDto,
 		@UploadedFile(fileValidatorPipe({}))

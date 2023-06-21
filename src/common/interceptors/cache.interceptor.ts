@@ -1,5 +1,5 @@
 import { IGNORE_CACHING_META } from "@common/constant";
-import { CacheInterceptor } from "@nestjs/cache-manager";
+import { CACHE_KEY_METADATA, CacheInterceptor } from "@nestjs/cache-manager";
 import { ExecutionContext, Injectable } from "@nestjs/common";
 
 /* If the ignoreCaching metadata is set to true, then the request will not be cached. */
@@ -16,5 +16,28 @@ export class CustomCacheInterceptor extends CacheInterceptor {
 		);
 
 		return !ignoreCaching && request.method === "GET";
+	}
+}
+
+/* This interceptor is useful when  sometimes you might want to set up tracking based on different factors, for example, using HTTP headers (e.g. Authorization to properly identify profile endpoint */
+@Injectable()
+export class CustomCacheKeyInterceptor extends CustomCacheInterceptor {
+	trackBy(context: ExecutionContext): string | undefined {
+		const httpAdapter = this.httpAdapterHost.httpAdapter;
+		const isHttpApp = httpAdapter && !!httpAdapter.getRequestMethod;
+		const cacheMetadata = this.reflector.get(CACHE_KEY_METADATA, context.getHandler());
+
+		const request = context.getArgByIndex(0);
+		const userId = request.user?.idx;
+
+		if (!isHttpApp || cacheMetadata) {
+			return `${cacheMetadata}_${userId}`;
+		}
+
+		if (!this.isRequestCacheable(context)) {
+			return undefined;
+		}
+
+		return httpAdapter.getRequestUrl(request) + "_" + userId;
 	}
 }

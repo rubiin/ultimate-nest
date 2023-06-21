@@ -18,7 +18,6 @@ import {
 	UsePipes,
 	ValidationPipe,
 } from "@nestjs/common";
-import { ApiResponse } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 
 import { BaseService } from "./crud.service";
@@ -85,10 +84,10 @@ export function ControllerFactory<
 			operation: "Create item",
 			badRequest: "Item already exists.",
 			body: createDto,
+			response: updateDto,
 		})
 		@UsePipes(createPipe)
 		@Post()
-		@ApiResponse({type: updateDto})
 		create(@Body() body: C, @LoggedInUser() user?: User): Observable<T> {
 			return this.service.create(body, user);
 		}
@@ -98,8 +97,8 @@ export function ControllerFactory<
 			badRequest: "Item does not exist.",
 			params: ["idx"],
 			body: updateDto,
+			response: updateDto,
 		})
-		@ApiResponse({type: updateDto})
 		@UsePipes(updatePipe)
 		@Put(":idx")
 		update(@Param("idx") index: string, @Body() body: U): Observable<T> {
@@ -110,8 +109,8 @@ export function ControllerFactory<
 			operation: "Item delete",
 			badRequest: "Item does not exist.",
 			params: ["idx"],
+			response: updateDto,
 		})
-		@ApiResponse({type: updateDto})
 		@Delete(":idx")
 		remove(@Param("idx") index: string): Observable<T> {
 			return this.service.remove(index);

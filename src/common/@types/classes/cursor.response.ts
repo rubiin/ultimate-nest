@@ -5,8 +5,8 @@ import { PaginationAbstractResponse } from "../interfaces";
 
 export class CursorMeta {
 	/**
- * @example AdVxY2F0ZWdvcnlfaWQ9MjMx
- */
+	 * @example AdVxY2F0ZWdvcnlfaWQ9MjMx
+	 */
 	@ApiProperty()
 	nextCursor: string;
 
