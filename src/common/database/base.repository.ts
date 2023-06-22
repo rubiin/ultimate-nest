@@ -270,7 +270,6 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		const { limit, offset, order, sort, fields } = pageOptionsDto;
 		const selectedFields = [...fields, "id"];
 
-
 		qb.orderBy({ [sort]: order.toLowerCase() })
 			.limit(limit)
 			.select(selectedFields)

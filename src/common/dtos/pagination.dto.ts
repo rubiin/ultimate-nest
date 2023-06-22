@@ -1,8 +1,24 @@
-import { IsStringField, ToBoolean } from "@common/decorators";
+import { IsDateField, IsStringField, ToBoolean } from "@common/decorators";
 import { IsBoolean, IsOptional } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export abstract class PaginationDto {
+	/**
+	 * From date filter
+	 */
+
+	@IsOptional()
+	@IsDateField()
+	from?: Date;
+
+	/**
+	 * From date filter
+	 */
+
+	@IsOptional()
+	@IsDateField()
+	to?: Date;
+
 	/**
 	 *  The search query
 	 */
