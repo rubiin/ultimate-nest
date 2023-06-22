@@ -40,7 +40,7 @@ services:
             - /usr/src/app/node_modules
 
     traefik:
-        image: traefik:v2.10.1
+        image: traefik:v2.10.3
         container_name: traefik
         restart: unless-stopped
         command:
