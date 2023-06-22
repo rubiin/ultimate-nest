@@ -267,10 +267,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	): Observable<OffsetPaginationResponse<T>> {
 		const { qb, pageOptionsDto } = dto;
 
-		const { limit, offset, order, sort } = pageOptionsDto;
+		const { limit, offset, order, sort, fields } = pageOptionsDto;
+		const selectedFields = [...fields, "id"];
+
 
 		qb.orderBy({ [sort]: order.toLowerCase() })
 			.limit(limit)
+			.select(selectedFields)
 			.offset(offset);
 
 		const pagination$ = from(qb.getResultAndCount());
@@ -301,6 +304,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		let previousCount = 0;
 		const stringCursor = String(cursor); // because of runtime issues
 		const aliasCursor = `${alias}.${stringCursor}`;
+		const selectedFields = [...fields, "id"];
 
 		if (after) {
 			const decoded = this.decodeCursor(after, cursorType);
@@ -316,7 +320,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 		}
 
 		const [entities, count]: [T[], number] = await qb
-			.select(fields)
+			.select(selectedFields)
 			.orderBy(this.getOrderBy(cursor, order))
 			.limit(first)
 			.getResultAndCount();
