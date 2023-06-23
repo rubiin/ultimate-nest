@@ -18,7 +18,6 @@ export class CustomCacheInterceptor extends CacheInterceptor {
 		return !ignoreCaching && request.method === "GET";
 	}
 }
-
 /* This interceptor is useful when  sometimes you might want to set up tracking based on different factors, for example, using HTTP headers (e.g. Authorization to properly identify profile endpoint */
 @Injectable()
 export class CustomCacheKeyInterceptor extends CustomCacheInterceptor {
