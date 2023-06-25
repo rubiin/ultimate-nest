@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsStringField } from "@common/decorators";
 
 export class MessageSeenDto {
-	@IsNotEmpty()
-	@IsString()
-	readonly receiver: string;
+	@IsStringField()
+	receiver: string;
 }

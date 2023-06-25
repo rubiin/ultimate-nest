@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 
 import { HelperService } from "@common/helpers";
-import { Index, PrimaryKey, Property } from "@mikro-orm/core";
+import { PrimaryKey, Property } from "@mikro-orm/core";
 import { ApiHideProperty } from "@nestjs/swagger";
 
 /**
@@ -10,15 +10,13 @@ import { ApiHideProperty } from "@nestjs/swagger";
 
 export abstract class BaseEntity {
 	@ApiHideProperty()
-	@PrimaryKey({ hidden: true })
-	@Index()
+	@PrimaryKey({ hidden: true, index: true })
 	id!: number;
 
 	/**
 	 *  The unique id of the entity
 	 */
-	@Property()
-	@Index()
+	@Property({ index: true })
 	idx?: string = randomUUID();
 
 	/**

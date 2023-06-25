@@ -15,7 +15,7 @@ export const IsDateField = (options_?: DateFieldOptions) => {
 		IsDateString(
 			{ strict: true },
 			{
-				message: i18nValidationMessage("validation.isDataType", {
+				message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
 					type: "date",
 				}),
 				each: options.each,
@@ -26,7 +26,7 @@ export const IsDateField = (options_?: DateFieldOptions) => {
 	if (options.required) {
 		decoratorsToApply.push(
 			IsNotEmpty({
-				message: i18nValidationMessage("validation.isNotEmpty"),
+				message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty"),
 				each: options.each,
 			}),
 		);
@@ -34,7 +34,7 @@ export const IsDateField = (options_?: DateFieldOptions) => {
 		if (options.each) {
 			decoratorsToApply.push(
 				ArrayNotEmpty({
-					message: i18nValidationMessage("validation.isNotEmpty"),
+					message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty"),
 				}),
 			);
 		}
@@ -45,7 +45,7 @@ export const IsDateField = (options_?: DateFieldOptions) => {
 	if (options.each) {
 		decoratorsToApply.push(
 			IsArray({
-				message: i18nValidationMessage("validation.isDataType", {
+				message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
 					type: "array",
 				}),
 			}),

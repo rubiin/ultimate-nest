@@ -1,16 +1,14 @@
 import { BaseEntity } from "@common/database";
-import { Collection, Entity, Index, ManyToMany, OneToMany, Property } from "@mikro-orm/core";
+import { Collection, Entity, ManyToMany, OneToMany, Property } from "@mikro-orm/core";
 
 import { Message, User } from "./index";
 
 @Entity()
 export class Conversation extends BaseEntity {
-	@Index()
-	@Property()
+	@Property({ index: true })
 	chatName: string;
 
-	@Index()
-	@ManyToMany(() => User, user => user.conversations)
+	@ManyToMany(() => User, user => user.conversations, { index: true })
 	users = new Collection<User>(this);
 
 	@OneToMany(() => Message, message => message.conversation, {

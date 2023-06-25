@@ -1,5 +1,6 @@
 import { Roles } from "@common/@types";
 import {
+	IsEmailField,
 	IsEnumField,
 	IsPassword,
 	IsStringField,
@@ -7,21 +8,32 @@ import {
 	IsUsernameField,
 } from "@common/decorators";
 import { User } from "@entities";
-import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsEmail, IsNotEmpty, IsUrl, ValidateNested } from "class-validator";
+import { IsNotEmpty, IsUrl, ValidateNested } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class SocialDto {
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	/**
+	 * Twitter url of user
+	 * @example https://twitter.com/rubiin
+	 */
+	@IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty") })
 	@IsUrl()
 	twitter?: string;
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	/**
+	 * Facebook url of user
+	 * @example https://facebook.com/rubiin
+	 */
+	@IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty") })
 	@IsUrl()
 	facebook?: string;
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	/**
+	 * Linkedin url of user
+	 * @example https://linkedin.com/rubiin
+	 */
+	@IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty") })
 	@IsUrl()
 	linkedin?: string;
 }
@@ -61,25 +73,11 @@ export class CreateUserDto {
 	lastName!: string;
 
 	/**
-	 * Indicates the profile picture of user
-	 */
-	@ApiProperty({ type: "string", format: "binary", required: false, name: "image" })
-	avatar?: string;
-
-	/**
 	 * Email of user
 	 * @example someemail@gmail.com
 	 */
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
 	@IsUnique(() => User, "email")
-	@IsEmail(
-		{},
-		{
-			message: i18nValidationMessage("validation.isDataType", {
-				type: "email",
-			}),
-		},
-	)
+	@IsEmailField()
 	email!: string;
 
 	/**
@@ -88,7 +86,7 @@ export class CreateUserDto {
 	 */
 
 	@IsStringField({ minLength: 8, maxLength: 50 })
-	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
+	@IsPassword({ message: i18nValidationMessage<I18nTranslations>("validation.isPassword") })
 	password!: string;
 
 	/**

@@ -12,11 +12,9 @@ import {
 	Entity,
 	Enum,
 	EventArgs,
-	Index,
 	ManyToMany,
 	OneToMany,
 	Property,
-	Unique,
 	wrap,
 } from "@mikro-orm/core";
 
@@ -43,14 +41,10 @@ export class User extends BaseEntity {
 	@Property()
 	lastName!: string;
 
-	@Index()
-	@Unique()
-	@Property()
+	@Property({ index: true, unique: true })
 	username!: string;
 
-	@Index()
-	@Unique()
-	@Property()
+	@Property({ index: true, unique: true })
 	email!: string;
 
 	@Property({ columnType: "text" })
@@ -68,11 +62,10 @@ export class User extends BaseEntity {
 	@Property()
 	isTwoFactorEnabled? = false;
 
-	@Enum({ items: () => Roles, array: true, default: [Roles.AUTHOR] })
+	@Enum({ items: () => Roles, array: true })
 	roles?: Roles[] = [Roles.AUTHOR];
 
-	@Unique()
-	@Property()
+	@Property({ index: true, unique: true })
 	mobileNumber?: string;
 
 	@Property()

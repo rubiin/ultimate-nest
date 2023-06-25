@@ -23,8 +23,12 @@ export class ValidatorFieldBuilder {
 	number() {
 		this.decoratorsToApply.push(
 			Type(() => Number),
-			Min(this.options.min, { message: i18nValidationMessage("validation.min") }),
-			Max(this.options.max, { message: i18nValidationMessage("validation.max") }),
+			Min(this.options.min, {
+				message: i18nValidationMessage<I18nTranslations>("validation.min"),
+			}),
+			Max(this.options.max, {
+				message: i18nValidationMessage<I18nTranslations>("validation.max"),
+			}),
 		);
 
 		return this;
@@ -33,7 +37,7 @@ export class ValidatorFieldBuilder {
 	string() {
 		this.decoratorsToApply.push(
 			IsString({
-				message: i18nValidationMessage("validation.isDataType", {
+				message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
 					type: "string",
 				}),
 				each: this.options.each,

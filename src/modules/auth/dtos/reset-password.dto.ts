@@ -4,6 +4,10 @@ import { IsNotEmpty } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class ResetPasswordDto {
+	/**
+	 * Otp code sent on email
+	 * @example 986579
+	 */
 	@IsStringField({
 		minLength: 6,
 		maxLength: 6,
@@ -15,7 +19,7 @@ export class ResetPasswordDto {
 	 * @example SomeThingNew7^#%
 	 */
 	@IsStringField({ minLength: 8, maxLength: 50 })
-	@IsPassword({ message: i18nValidationMessage("validation.isPassword") })
+	@IsPassword({ message: i18nValidationMessage<I18nTranslations>("validation.isPassword") })
 	password!: string;
 
 	/**
@@ -23,7 +27,7 @@ export class ResetPasswordDto {
 	 * @example AVeryGoodPassword@&67t75
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty") })
 	@IsEqualTo("password")
 	confirmPassword!: string;
 }
@@ -36,6 +40,6 @@ export class ChangePasswordDto extends PickType(ResetPasswordDto, [
 	 * Password of user
 	 * @example SomeThingNew7^#%
 	 */
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	@IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty") })
 	oldPassword!: string;
 }

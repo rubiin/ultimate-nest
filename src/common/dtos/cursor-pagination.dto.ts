@@ -18,7 +18,7 @@ export class CursorPaginationDto extends PaginationDto {
 	 */
 	@IsStringField({ required: false })
 	@IsBase64({
-		message: i18nValidationMessage("validation.isDataType", {
+		message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
 			type: "base64",
 		}),
 	})
