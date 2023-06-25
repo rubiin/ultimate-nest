@@ -6,10 +6,8 @@ import {
 	Collection,
 	Entity,
 	EventArgs,
-	Index,
 	ManyToMany,
 	Property,
-	Unique,
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 
@@ -17,18 +15,17 @@ import { Post } from "./post.entity";
 
 @Entity()
 export class Tag extends BaseEntity {
-	@Index()
-	@Unique()
 	@Property({
 		length: 50,
+		index: true,
+		unique: true,
 	})
 	title!: string;
 
 	@Property({ columnType: "text" })
 	description!: string;
 
-	@Index()
-	@Property()
+	@Property({ index: true })
 	slug?: string;
 
 	@ManyToMany(() => Post, post => post.tags)

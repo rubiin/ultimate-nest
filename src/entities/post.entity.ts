@@ -8,7 +8,6 @@ import {
 	Entity,
 	Enum,
 	EventArgs,
-	Index,
 	ManyToMany,
 	ManyToOne,
 	OneToMany,
@@ -21,12 +20,10 @@ import { Category, Comment, Tag, User } from "./index";
 
 @Entity()
 export class Post extends BaseEntity {
-	@Index()
-	@Property()
+	@Property({ index: true })
 	slug?: string;
 
-	@Index()
-	@Property()
+	@Property({ index: true })
 	title!: string;
 
 	@Property({ type: "text" })
@@ -44,9 +41,9 @@ export class Post extends BaseEntity {
 	@Property()
 	favoritesCount? = 0;
 
-	@Index()
 	@ManyToOne({
 		eager: false,
+		index: true,
 	})
 	author: Rel<User>;
 

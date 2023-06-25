@@ -1,6 +1,6 @@
 import { PostStateEnum } from "@common/@types";
-import { IsEnumField, IsStringField, ToBoolean } from "@common/decorators";
-import { IsBoolean, IsNotEmpty, IsUUID } from "class-validator";
+import { IsEnumField, IsStringField, IsUUIDField, ToBoolean } from "@common/decorators";
+import { IsBoolean } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreatePostDto {
@@ -33,13 +33,7 @@ export class CreatePostDto {
 	 * @example ["c84ab664-d9a9-4b00-b412-bc31b50c7c50","c84ab664-d9a9-4b00-b412-bc31b50c7c50"]
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsUUID("4", {
-		each: true,
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "uuid",
-		}),
-	})
+	@IsUUIDField({ each: true })
 	tags!: string[];
 
 	/**
@@ -47,13 +41,7 @@ export class CreatePostDto {
 	 * @example ["c84ab664-d9a9-4b00-b412-bc31b50c7c50","c84ab664-d9a9-4b00-b412-bc31b50c7c50"]
 	 */
 
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsUUID("4", {
-		each: true,
-		message: i18nValidationMessage("validation.isDataType", {
-			type: "uuid",
-		}),
-	})
+	@IsUUIDField({ each: true })
 	categories!: string[];
 
 	/**
@@ -64,9 +52,13 @@ export class CreatePostDto {
 	@IsEnumField(PostStateEnum, { required: false })
 	state: PostStateEnum;
 
+	/**
+	 * Published status of post
+	 * @example true
+	 */
 	@ToBoolean()
 	@IsBoolean({
-		message: i18nValidationMessage("validation.isDataType", {
+		message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
 			type: "boolean",
 		}),
 	})

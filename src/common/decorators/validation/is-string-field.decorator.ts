@@ -34,7 +34,7 @@ export const IsStringField = (options_?: StringFieldOptions) => {
 	};
 	const decoratorsToApply = [
 		IsString({
-			message: i18nValidationMessage("validation.isDataType", {
+			message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
 				type: "string",
 			}),
 			each: options.each,
@@ -57,7 +57,7 @@ export const IsStringField = (options_?: StringFieldOptions) => {
 	if (options.required) {
 		decoratorsToApply.push(
 			IsNotEmpty({
-				message: i18nValidationMessage("validation.isNotEmpty"),
+				message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty"),
 				each: options.each,
 			}),
 		);
@@ -65,7 +65,7 @@ export const IsStringField = (options_?: StringFieldOptions) => {
 		if (options.each) {
 			decoratorsToApply.push(
 				ArrayNotEmpty({
-					message: i18nValidationMessage("validation.isNotEmpty"),
+					message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty"),
 				}),
 			);
 		}
@@ -76,7 +76,7 @@ export const IsStringField = (options_?: StringFieldOptions) => {
 	if (options.each) {
 		decoratorsToApply.push(
 			IsArray({
-				message: i18nValidationMessage("validation.isDataType", {
+				message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
 					type: "array",
 				}),
 			}),

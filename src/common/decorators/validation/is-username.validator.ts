@@ -51,7 +51,7 @@ export const IsUsername = (validationOptions?: ValidationOptions): PropertyDecor
 export const IsUsernameField = (validationOptions?: ValidationOptions) => {
 	return applyDecorators(
 		IsNotEmpty({
-			message: i18nValidationMessage("validation.isNotEmpty"),
+			message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty"),
 		}),
 		MinMaxLength({
 			minLength: 5,

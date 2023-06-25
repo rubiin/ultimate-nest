@@ -1,10 +1,9 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsStringField } from "@common/decorators";
 
 export class CreateChatDto {
-	@IsNotEmpty()
-	@IsString()
+	@IsStringField()
 	message!: string;
 
-	@IsString()
+	@IsStringField({ required: false })
 	to?: string;
 }

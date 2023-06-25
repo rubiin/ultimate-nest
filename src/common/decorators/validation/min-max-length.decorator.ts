@@ -13,11 +13,11 @@ export const MinMaxLength = (options_?: MinMaxLengthOptions) => {
 
 	return applyDecorators(
 		MinLength(options.minLength, {
-			message: i18nValidationMessage("validation.minLength"),
+			message: i18nValidationMessage<I18nTranslations>("validation.minLength"),
 			each: options.each,
 		}),
 		MaxLength(options.maxLength, {
-			message: i18nValidationMessage("validation.maxLength"),
+			message: i18nValidationMessage<I18nTranslations>("validation.maxLength"),
 			each: options.each,
 		}),
 	);

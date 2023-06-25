@@ -1,4 +1,4 @@
-interface BaseValidator {
+export interface BaseValidator {
 	required?: boolean;
 	message?: string;
 }
@@ -33,4 +33,4 @@ export interface FileValidator {
 
 export type DateFieldOptions = BaseValidator & BaseArrayValidator;
 
-export type EnumFieldOptions = BaseValidator & BaseArrayValidator;
+export type EnumFieldOptions = DateFieldOptions;

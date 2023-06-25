@@ -2,9 +2,14 @@ import { IsJWT, IsNotEmpty } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 export class RefreshTokenDto {
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
+	/**
+	 * Refresh token of user
+	 * @example "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+	 */
+
+	@IsNotEmpty({ message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty") })
 	@IsJWT({
-		message: i18nValidationMessage("validation.isDataType", {
+		message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
 			type: "jwt",
 		}),
 	})

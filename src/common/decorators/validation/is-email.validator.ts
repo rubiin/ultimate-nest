@@ -1,22 +1,20 @@
-import { DateFieldOptions } from "@common/@types";
+import { EnumFieldOptions as EmailFieldOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
-import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsOptional } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 
-export const IsDateField = (options_?: DateFieldOptions) => {
-	const options: DateFieldOptions = {
+export const IsEmailField = (options_?: EmailFieldOptions) => {
+	const options: EmailFieldOptions = {
 		each: false,
 		required: true,
-		arrayMinSize: 0,
-		arrayMaxSize: Number.MAX_SAFE_INTEGER,
 		...options_,
 	};
 	const decoratorsToApply = [
-		IsDateString(
-			{ strict: true },
+		IsEmail(
+			{},
 			{
 				message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
-					type: "date",
+					type: "email address",
 				}),
 				each: options.each,
 			},

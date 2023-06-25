@@ -1,15 +1,11 @@
-import { IsEmail, IsNotEmpty } from "class-validator";
-import { i18nValidationMessage } from "nestjs-i18n";
+import { IsEmailField } from "@common/decorators";
 
 export class SubscribeNewsletterDto {
-	@IsNotEmpty({ message: i18nValidationMessage("validation.isNotEmpty") })
-	@IsEmail(
-		{},
-		{
-			message: i18nValidationMessage("validation.isDataType", {
-				type: "email",
-			}),
-		},
-	)
+	/**
+	 * Email of user
+	 * @example someone@gmail.com
+	 */
+
+	@IsEmailField()
 	email: string;
 }

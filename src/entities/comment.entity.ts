@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database";
-import { Entity, Index, ManyToOne, Property, Rel } from "@mikro-orm/core";
+import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
 
 import { Post, User } from "./index";
 
@@ -15,8 +15,8 @@ export class Comment extends BaseEntity {
 
 	@ManyToOne({
 		eager: false,
+		index: true,
 	})
-	@Index()
 	author!: Rel<User>;
 
 	constructor(partial?: Partial<Comment>) {
