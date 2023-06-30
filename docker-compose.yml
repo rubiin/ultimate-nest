@@ -109,7 +109,7 @@ services:
 
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3.12.0-management-alpine
+        image: rabbitmq:3.12.1-management-alpine
         env_file: env/.env.${ENV}
         restart: unless-stopped
         networks:
