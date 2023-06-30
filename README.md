@@ -85,7 +85,7 @@ Copy sample env file and adjust the connection settings and other settings(jwt,r
 `Note`: Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage']. The env file name
 should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as NODE_ENV=dev yarn dev
 
-Start local Postgres server and run `NODE_ENV=dev make migrate` to apply migrations
+Start local Postgres server and run `NODE_ENV=dev yarn orm migration:up` to apply migrations
 
 Now you can start the application witt `NODE_ENV=dev yarn start`.
 
