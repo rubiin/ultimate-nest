@@ -89,7 +89,7 @@ Start local Postgres server and run `NODE_ENV=dev make migrate` to apply migrati
 
 Now you can start the application witt `NODE_ENV=dev yarn start`.
 
-Note: If you are using windows, `SET NODE_ENV=dev yarn start` or install cross-env and use `cross-env NODE_ENV=dev yarn start`
+Note: If you are using windows, `SET NODE_ENV=dev yarn start` or install cross-env or use `cross-env NODE_ENV=dev yarn start`
 
 ---
 
