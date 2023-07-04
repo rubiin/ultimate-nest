@@ -85,11 +85,9 @@ Copy sample env file and adjust the connection settings and other settings(jwt,r
 `Note`: Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage']. The env file name
 should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as NODE_ENV=dev yarn dev
 
-Start local Postgres server and run `NODE_ENV=dev yarn orm migration:up` to apply migrations
+Start local Postgres server and run `npx cross-env NODE_ENV=dev make migrate` to apply migrations
 
-Now you can start the application witt `NODE_ENV=dev yarn start`.
-
-Note: If you are using windows, `SET NODE_ENV=dev yarn start` or install cross-env or use `cross-env NODE_ENV=dev yarn start`
+Now you can start the application witt `npx cross-env NODE_ENV=dev yarn start`.
 
 ---
 
@@ -146,19 +144,18 @@ Additionally, you can also see the scripts in `justfile` which is a cross platfo
 Migrations are used to update the database schema. The migration files are stored in `migrations` directory.
 
 ```sh
-  NODE_ENV=dev yarn orm migration:up # applies migration for dev env
+  npx cross-env NODE_ENV=dev yarn orm migration:up # applies migration for dev env
 ```
 
 Seeding is used to insert data into the database. The seeding files are stored in `common/database/seeders` directory.
 
 ```sh
-  USER_PASSWORD=Test@1234 NODE_ENV=dev yarn orm seeder:run   # seeds data for dev env with all user password set as Test@1234
+    npx cross-env USER_PASSWORD=Test@1234 NODE_ENV=dev yarn orm seeder:run   # seeds data for dev env with all user password set as Test@1234
 ```
 
 ## Start application
 
--   `NODE_ENV=[env name] yarn start`
--   Test api by browsing to `http://localhost:[port]/v1/user`
+-   `npx cross-env NODE_ENV=[env name] yarn start`
 -   View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
 -   View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and password is the values set in the env file under `SWAGGER_USERNAME` and `SWAGGER_PASS` respectively
 
