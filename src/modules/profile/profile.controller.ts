@@ -1,5 +1,10 @@
 import { ProfileData } from "@common/@types";
-import { GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import {
+	ApplyCustomCache,
+	GenericController,
+	LoggedInUser,
+	SwaggerResponse,
+} from "@common/decorators";
 import { User } from "@entities";
 import { Delete, Get, Param, Post } from "@nestjs/common";
 import { Observable } from "rxjs";
@@ -10,6 +15,7 @@ import { ProfileService } from "./profile.service";
 export class ProfileController {
 	constructor(private readonly profileService: ProfileService) {}
 
+	@ApplyCustomCache()
 	@Get()
 	@SwaggerResponse({
 		operation: "Profile fetch",
