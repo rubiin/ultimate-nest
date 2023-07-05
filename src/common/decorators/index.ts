@@ -4,6 +4,7 @@ export * from "./api-file.decorator";
 export * from "./api-paginated.decorator";
 export * from "./auth.decorator";
 export * from "./controller.decorator";
+export * from "./custom-cache.decorator";
 export * from "./nocache.decorator";
 export * from "./public.decorator";
 export * from "./swagger-api.decorator";

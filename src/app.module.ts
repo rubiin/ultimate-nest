@@ -1,5 +1,5 @@
 import { CustomThrottlerGuard } from "@common/guards";
-import { ClearCacheInterceptor, CustomCacheInterceptor } from "@common/interceptors";
+import { ClearCacheInterceptor, HttpCacheInterceptor } from "@common/interceptors";
 import { ClearCacheMiddleware, RealIpMiddleware } from "@common/middlewares";
 import { applyRawBodyOnlyTo } from "@golevelup/nestjs-webhooks";
 import { NestCacheModule } from "@lib/cache";
@@ -21,7 +21,7 @@ import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 		},
 		{
 			provide: APP_INTERCEPTOR,
-			useClass: CustomCacheInterceptor,
+			useClass: HttpCacheInterceptor,
 		},
 		{
 			provide: APP_INTERCEPTOR,

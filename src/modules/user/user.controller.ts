@@ -17,8 +17,6 @@ import { Observable } from "rxjs";
 import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
-// TODO: set cache key to take account for  logged in user too
-
 @GenericController("users")
 export class UserController {
 	constructor(private readonly userService: UserService) {}

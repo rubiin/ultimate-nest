@@ -5,7 +5,7 @@ import { ExecutionContext, Injectable } from "@nestjs/common";
 /* If the ignoreCaching metadata is set to true, then the request will not be cached. */
 
 @Injectable()
-export class CustomCacheInterceptor extends CacheInterceptor {
+export class HttpCacheInterceptor extends CacheInterceptor {
 	protected isRequestCacheable(context: ExecutionContext): boolean {
 		const http = context.switchToHttp();
 		const request = http.getRequest();
@@ -21,7 +21,7 @@ export class CustomCacheInterceptor extends CacheInterceptor {
 
 /* This interceptor is useful when  sometimes you might want to set up tracking based on different factors, for example, using HTTP headers (e.g. Authorization to properly identify profile endpoint */
 @Injectable()
-export class CustomCacheKeyInterceptor extends CustomCacheInterceptor {
+export class CacheKeyInterceptor extends CacheInterceptor {
 	trackBy(context: ExecutionContext): string | undefined {
 		const httpAdapter = this.httpAdapterHost.httpAdapter;
 		const isHttpApp = httpAdapter && !!httpAdapter.getRequestMethod;
