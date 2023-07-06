@@ -1,6 +1,7 @@
 import { capitalize } from "helper-fns";
+import pkg from "load-pkg";
 
-export const APP_NAME = "nestify";
+
 export const REQUEST_ID_TOKEN_HEADER = "x-request-id";
 export const VERSION_VALIDATION_MESSAGE = 'Version must start with "v" followed by a number.';
 
@@ -11,11 +12,14 @@ export const MULTER_IMAGE_FILTER = "Only image files are allowed!.";
 export const API_UNAUTHORISED_RESPONSE = "No auth token in request.";
 
 // swagger constants
+const packageJson = pkg.sync();
+
+export const APP_NAME = packageJson.name;
+export const SWAGGER_API_CURRENT_VERSION = packageJson.version;
+export const SWAGGER_DESCRIPTION = packageJson.description;
 export const SWAGGER_TITLE = `${capitalize(APP_NAME)} API Documentation`;
 
 export const SWAGGER_API_ENDPOINT = "doc";
-export const SWAGGER_API_CURRENT_VERSION = "1.9.6";
-export const SWAGGER_DESCRIPTION = "NestJS + MikroORM blog example with batteries included";
 
 // available values constants
 export const SES_REGIONS = [
