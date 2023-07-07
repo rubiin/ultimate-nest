@@ -9,7 +9,7 @@ import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { omit } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
-import { forkJoin, from, map, mergeMap, Observable, of, switchMap, throwError, zip } from "rxjs";
+import { forkJoin, from, map, Observable, of, switchMap, throwError, zip } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
@@ -77,7 +77,7 @@ export class PostService {
 				{ populate },
 			),
 		).pipe(
-			mergeMap(post => {
+			switchMap(post => {
 				if (!post) {
 					return throwError(
 						() =>

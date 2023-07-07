@@ -6,7 +6,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
+import { from, map, Observable, of, switchMap, throwError } from "rxjs";
 
 @Injectable()
 export class ProfileService {
@@ -45,7 +45,7 @@ export class ProfileService {
 				},
 			),
 		).pipe(
-			mergeMap(user => {
+			switchMap(user => {
 				if (!user) {
 					return throwError(
 						() =>

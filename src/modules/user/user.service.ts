@@ -20,7 +20,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService, IFile } from "nestjs-cloudinary";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
+import { from, map, Observable, of, switchMap, throwError } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
 
@@ -87,7 +87,7 @@ export class UserService {
 				idx: index,
 			}),
 		).pipe(
-			mergeMap(user => {
+			switchMap(user => {
 				if (!user) {
 					return throwError(
 						() =>

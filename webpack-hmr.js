@@ -16,6 +16,14 @@ module.exports = function (options, {HotModuleReplacementPlugin, WatchIgnorePlug
         },
         plugins: [
             ...options.plugins,
+            require('unplugin-auto-import/webpack')({
+                imports: [{
+                    'rxjs': ['from','zip','map','of', 'switchMap', 'throwError','Observable' ,'catchError','tap'],
+                    
+                }],
+                presets: [],
+                dts: 'src/generated/auto-imports.d.ts',
+            }),
             new HotModuleReplacementPlugin(),
             new WatchIgnorePlugin({
                 paths: [/\.js$/, /\.d\.ts$/],

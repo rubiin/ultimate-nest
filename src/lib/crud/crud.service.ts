@@ -12,7 +12,7 @@ import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { NotFoundException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
+import { from, map, Observable, of, switchMap, throwError } from "rxjs";
 
 export abstract class BaseService<
 	Entity extends BaseEntity,
@@ -121,7 +121,7 @@ export abstract class BaseService<
 	 */
 	findOne(index: string): Observable<Entity> {
 		return from(this.repository.findOne({ idx: index } as any)).pipe(
-			mergeMap(entity => {
+			switchMap(entity => {
 				if (!entity) {
 					return throwError(
 						() =>

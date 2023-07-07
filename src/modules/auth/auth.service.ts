@@ -18,7 +18,7 @@ import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, mergeMap, Observable, of, switchMap, throwError, zip } from "rxjs";
+import { from, map, Observable, of, switchMap, throwError, zip } from "rxjs";
 
 import {
 	ChangePasswordDto,
@@ -189,7 +189,7 @@ export class AuthService {
 				email,
 			}),
 		).pipe(
-			mergeMap(userExists => {
+			switchMap(userExists => {
 				if (!userExists) {
 					return throwError(
 						() =>

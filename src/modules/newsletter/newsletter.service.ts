@@ -9,7 +9,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { I18nContext } from "nestjs-i18n";
-import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
+import { from, map, Observable, of, switchMap, throwError } from "rxjs";
 
 import { SubscribeNewsletterDto } from "./dto";
 
@@ -58,7 +58,7 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
 	 */
 	findOneSubscription(email: string): Observable<Subscriber> {
 		return from(this.subscriberRepository.findOne({ email })).pipe(
-			mergeMap(entity => {
+			switchMap(entity => {
 				if (!entity) {
 					return throwError(
 						() =>
