@@ -8,7 +8,10 @@ import { PolicyHandler } from "./policy.interface";
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
-	constructor(private reflector: Reflector, private caslAbilityFactory: CaslAbilityFactory) {}
+	constructor(
+		private reflector: Reflector,
+		private caslAbilityFactory: CaslAbilityFactory,
+	) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const isPublic = this.reflector.get<boolean>(IS_PUBLIC_KEY_META, context.getHandler());

@@ -12,6 +12,7 @@ import {
 	QBOffsetPaginationOptions,
 	QueryOrder,
 } from "@common/@types";
+import { HelperService } from "@common/helpers";
 import {
 	Dictionary,
 	EntityData,
@@ -31,10 +32,21 @@ import { BaseEntity } from "./base.entity";
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	private readonly encoding: BufferEncoding = "base64";
 
+	/**
+	 * The exists function checks if there are any records that match the given filter query.
+	 * @param where - The `where` parameter is a filter query that specifies the conditions for the
+	 * existence check. It is used to filter the records in the database and determine if any records match
+	 * the specified conditions.
+	 * @returns The `exists` method is returning an `Observable<boolean>`.
+	 */
 	exists(where: FilterQuery<T>): Observable<boolean> {
 		return from(this.qb().where(where).getCount()).pipe(map(count => count > 0));
 	}
 
+	/**
+	 * The function `getEntityName()` returns the entity name of type `EntityName<T>`.
+	 * @returns The method `getEntityName()` is returning an object of type `EntityName<T>`.
+	 */
 	getEntityName(): EntityName<T> {
 		return this.entityName;
 	}
@@ -267,8 +279,50 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	): Observable<OffsetPaginationResponse<T>> {
 		const { qb, pageOptionsDto } = dto;
 
-		const { limit, offset, order, sort, fields } = pageOptionsDto;
+		const {
+			limit,
+			offset,
+			order,
+			sort,
+			fields,
+			search,
+			from: fromDate,
+			relations,
+			to,
+			searchField,
+			alias,
+		} = pageOptionsDto;
 		const selectedFields = [...new Set([...fields, "id"])];
+
+		if (search) {
+			qb.andWhere({
+				[searchField]: {
+					$ilike: HelperService.formatSearch(search),
+				},
+			});
+		}
+
+		if (relations) {
+			for (const relation of relations) {
+				qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
+			}
+		}
+
+		if (fromDate) {
+			qb.andWhere({
+				createdAt: {
+					$gte: fromDate,
+				},
+			});
+		}
+
+		if (to) {
+			qb.andWhere({
+				createdAt: {
+					$lte: to,
+				},
+			});
+		}
 
 		qb.orderBy({ [sort]: order.toLowerCase() })
 			.limit(limit)
@@ -289,17 +343,61 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 	/**
 	 * Takes a query builder and returns the entities paginated using cursor pagination
 	 */
-	async qbCursorPagination<T extends Dictionary>({
-		alias,
-		cursor,
-		cursorType,
-		first,
-		order,
-		qb,
-		after,
-		fields,
-		search,
-	}: QBCursorPaginationOptions<T>): Promise<CursorPaginationResponse<T>> {
+	async qbCursorPagination<T extends Dictionary>(
+		dto: QBCursorPaginationOptions<T>,
+	): Promise<CursorPaginationResponse<T>> {
+		const { qb, pageOptionsDto } = dto;
+
+		const {
+			after,
+			first,
+			search,
+			relations,
+			alias,
+			cursor,
+			order,
+			cursorType,
+			fields,
+			withDeleted,
+			from: fromDate,
+			to,
+			searchField,
+		} = pageOptionsDto;
+
+		qb.where({
+			isDeleted: withDeleted,
+		});
+
+		if (search && searchField) {
+			qb.andWhere({
+				[searchField]: {
+					$ilike: HelperService.formatSearch(search),
+				},
+			});
+		}
+
+		if (relations) {
+			for (const relation of relations) {
+				qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
+			}
+		}
+
+		if (fromDate) {
+			qb.andWhere({
+				createdAt: {
+					$gte: fromDate,
+				},
+			});
+		}
+
+		if (to) {
+			qb.andWhere({
+				createdAt: {
+					$lte: to,
+				},
+			});
+		}
+
 		let previousCount = 0;
 		const stringCursor = String(cursor); // because of runtime issues
 		const aliasCursor = `${alias}.${stringCursor}`;
