@@ -5,7 +5,10 @@ import { AppAbility } from "./casl-ability.factory";
 import { PoliciesHandler } from "./policy.interface";
 
 export class GenericPolicyHandler implements PoliciesHandler {
-	constructor(private readonly type: any, private readonly action: Action = Action.Read) {}
+	constructor(
+		private readonly type: any,
+		private readonly action: Action = Action.Read,
+	) {}
 
 	handle(request: Request, ability: AppAbility) {
 		/* Checking if the action is Create, Read, or Delete. If it is, it will return the

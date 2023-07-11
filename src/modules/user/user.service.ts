@@ -9,7 +9,6 @@ import {
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
-import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { EntityManager } from "@mikro-orm/core";
@@ -37,40 +36,27 @@ export class UserService {
 		private readonly cloudinaryService: CloudinaryService,
 	) {}
 
+	/**
+	 * The function `findAll` retrieves a paginated list of users based on the provided cursor pagination
+	 * DTO.
+	 * @param {CursorPaginationDto} dto - CursorPaginationDto - A data transfer object that contains the
+	 * pagination parameters for the query.
+	 * @returns The method is returning an Observable of type PaginationResponse<User>.
+	 */
 	findAll(dto: CursorPaginationDto): Observable<PaginationResponse<User>> {
-		const { search, first, after, withDeleted, relations, fields } = dto;
-		const qb = this.userRepository.createQueryBuilder(this.queryName).where({
-			isDeleted: withDeleted,
-		});
-
-		if (search) {
-			qb.andWhere({
-				firstName: {
-					$ilike: HelperService.formatSearch(search),
-				},
-			});
-		}
-
-		if (relations) {
-			for (const relation of relations) {
-				qb.leftJoinAndSelect(
-					`${this.queryName}.${relation}`,
-					`${this.queryName}_${relation}`,
-				);
-			}
-		}
+		const qb = this.userRepository.createQueryBuilder(this.queryName);
 
 		return from(
 			this.userRepository.qbCursorPagination({
-				alias: this.queryName,
-				cursor: "username",
-				cursorType: CursorType.STRING,
-				first,
-				order: QueryOrder.ASC,
 				qb,
-				fields,
-				after,
-				search,
+				pageOptionsDto: {
+					alias: this.queryName,
+					cursor: "username",
+					cursorType: CursorType.STRING,
+					order: QueryOrder.ASC,
+					searchField: "firstName",
+					...dto,
+				},
 			}),
 		);
 	}

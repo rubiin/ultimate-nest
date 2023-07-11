@@ -60,7 +60,7 @@ describe("UserService", () => {
 			() =>
 				({
 					...mockedUser,
-				} as any),
+				}) as any,
 		);
 
 		service.create({ ...mockedUser, files: mockFile }).subscribe(result => {

@@ -7,7 +7,6 @@ import {
 	QueryOrder,
 } from "@common/@types";
 import { BaseEntity, BaseRepository } from "@common/database";
-import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { NotFoundException } from "@nestjs/common";
@@ -50,67 +49,34 @@ export abstract class BaseService<
 	 * @param dto - The DTO that will be used to search for the entities.
 	 */
 	findAll(dto: PaginationRequest): Observable<PaginationResponse<Entity>> {
-		const { withDeleted, relations, from: fromDate, to } = dto;
-
-		const qb = this.repository.createQueryBuilder(this.queryName).where({
-			isDeleted: withDeleted,
-		});
-
-		if (relations) {
-			for (const relation of relations) {
-				qb.leftJoinAndSelect(
-					`${this.queryName}.${relation}`,
-					`${this.queryName}_${relation}`,
-				);
-			}
-		}
-
-		if (fromDate) {
-			qb.andWhere({
-				createdAt: {
-					$gte: fromDate,
-				},
-			});
-		}
-
-		if (to) {
-			qb.andWhere({
-				createdAt: {
-					$lte: to,
-				},
-			});
-		}
+		const qb = this.repository.createQueryBuilder(this.queryName);
 
 		if (dto.type === PaginationType.CURSOR) {
-			const { first, after, search, fields } = dto;
-
-			if (search && this.searchField) {
-				qb.andWhere({
-					[this.searchField]: {
-						$ilike: HelperService.formatSearch(search),
-					},
-				});
-			}
-
 			// by default, the id is used as cursor
 
 			return from(
 				this.repository.qbCursorPagination({
-					alias: this.queryName,
-					cursor: "id",
-					cursorType: CursorType.NUMBER,
-					first,
-					order: QueryOrder.ASC,
 					qb,
-					fields,
-					after,
-					search,
+					pageOptionsDto: {
+						alias: this.queryName,
+						cursor: "id",
+						cursorType: CursorType.NUMBER,
+						order: QueryOrder.ASC,
+						searchField: this.searchField,
+						...dto,
+					},
 				}),
 			);
 		}
 
 		return this.repository.qbOffsetPagination({
-			pageOptionsDto: dto,
+			pageOptionsDto: {
+				alias: this.queryName,
+				order: QueryOrder.ASC,
+				offset: dto.offset,
+				searchField: this.searchField,
+				...dto,
+			},
 			qb,
 		});
 	}

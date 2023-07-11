@@ -1,7 +1,6 @@
 import { capitalize } from "helper-fns";
 import pkg from "load-pkg";
 
-
 export const REQUEST_ID_TOKEN_HEADER = "x-request-id";
 export const VERSION_VALIDATION_MESSAGE = 'Version must start with "v" followed by a number.';
 

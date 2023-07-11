@@ -2,21 +2,25 @@ import { CursorPaginationDto, OffsetPaginationDto } from "@common/dtos";
 import { Dictionary } from "@mikro-orm/core";
 import { QueryBuilder } from "@mikro-orm/postgresql";
 
-import { CursorPaginationResponse } from "../classes/cursor.response";
-import { OffsetPaginationResponse } from "../classes/offset.response";
+import { CursorPaginationResponse, OffsetPaginationResponse } from "../classes";
 import { CursorType, QueryCursor, QueryOrder } from "../enums";
 
 export interface QBCursorPaginationOptions<T extends Dictionary> {
-	alias: string;
-	cursor: keyof T;
-	cursorType: CursorType;
-	first: number;
-	order: QueryOrder;
 	qb: QueryBuilder<T>;
-	fields: string[];
-	after?: string;
-	search?: string;
+	pageOptionsDto: Omit<CursorPaginationDto, "type"> & {
+		alias: string;
+		cursor: keyof T;
+		cursorType: CursorType;
+		order: QueryOrder;
+		searchField: keyof T;
+	};
 }
+
+export interface QBOffsetPaginationOptions<T extends Dictionary> {
+	pageOptionsDto: OffsetPaginationDto & { searchField: keyof T; alias: string };
+	qb: QueryBuilder<T>;
+}
+
 
 export interface PaginateOptions<T> {
 	instances: T[];
@@ -25,11 +29,6 @@ export interface PaginateOptions<T> {
 	cursor: keyof T;
 	first: number;
 	search?: string;
-}
-
-export interface QBOffsetPaginationOptions<T extends Dictionary> {
-	pageOptionsDto: OffsetPaginationDto;
-	qb: QueryBuilder<T>;
 }
 
 export interface PaginationAbstractResponse<T, Y> {
