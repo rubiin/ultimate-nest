@@ -60,6 +60,11 @@ export enum QueryOrder {
 	DESC = "DESC",
 }
 
+export enum ReferralStatus {
+	PENDING = "PENDING",
+	COMPLETED = "COMPLETED",
+}
+
 export const enum RoutingKey {
 	SEND_MAIL = "send-mail",
 	SEND_NEWSLETTER = "send-newsletter",

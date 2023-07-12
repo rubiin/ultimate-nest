@@ -21,7 +21,6 @@ export interface QBOffsetPaginationOptions<T extends Dictionary> {
 	qb: QueryBuilder<T>;
 }
 
-
 export interface PaginateOptions<T> {
 	instances: T[];
 	currentCount: number;
