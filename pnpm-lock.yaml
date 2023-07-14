@@ -246,8 +246,8 @@ dependencies:
     specifier: ^0.99.7
     version: 0.99.7(prom-client@14.2.0)
   twilio:
-    specifier: 4.13.0
-    version: 4.13.0
+    specifier: 4.14.0
+    version: 4.14.0
   unprofane:
     specifier: ^1.0.3
     version: 1.0.3
@@ -6091,8 +6091,8 @@ packages:
     resolution: {integrity: sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==}
     dev: false
 
-  /dayjs@1.11.8:
-    resolution: {integrity: sha512-LcgxzFoWMEPO7ggRv1Y2N31hUf2R0Vj7fuy/m+Bg1K8rr+KAs1AEy4y9jd5DXe8pbHgX+srkHNS7TH6Q6ZhYeQ==}
+  /dayjs@1.11.9:
+    resolution: {integrity: sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==}
     dev: false
 
   /debug@2.6.9:
@@ -12500,12 +12500,12 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
-  /twilio@4.13.0:
-    resolution: {integrity: sha512-fecPGy2lXnULwle4iXcCH3rP5z4fgkirzp+rRIXsFi45+y3qjkY5DBZSzmYr5T4vUOzZ2djmODZJ2jpRfgIBSw==}
+  /twilio@4.14.0:
+    resolution: {integrity: sha512-LRXvEYVzFBuo0BDLAJkb5fM9NgXH163nhmL/7jhz3pg84GNIiUsEKA8G65xDskaCJjFPjwBkZYyzen64zs+foQ==}
     engines: {node: '>=14.0'}
     dependencies:
       axios: 0.26.1
-      dayjs: 1.11.8
+      dayjs: 1.11.9
       https-proxy-agent: 5.0.1
       jsonwebtoken: 9.0.0
       qs: 6.11.2
