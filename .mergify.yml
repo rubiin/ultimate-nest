@@ -1,7 +1,7 @@
 queue_rules:
   - name: renovate
     conditions:
-      - author=dependabot[bot]
+      - author=renovate[bot]
       - status-success=build
 
 pull_request_rules:
