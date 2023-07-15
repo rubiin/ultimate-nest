@@ -2,7 +2,7 @@ queue_rules:
   - name: renovate
     conditions:
       - author=dependabot[bot]
-      - status-success=build-and-publish
+      - status-success=build
 
 pull_request_rules:
 - name: merge pull requests from renovate bot if CI passes
