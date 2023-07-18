@@ -17,9 +17,5 @@ jobs:
         uses: docker://renovate/renovate:slim
         env:
           RENOVATE_REPOSITORIES: rubiin/ultimate-nest
-          RENOVATE_TOKEN: ${{ secrets.TOKEN_GITHUB }}
-          RENOVATE_USERNAME: "renovate[bot]"
-          # Git commit author used, must match GitHub App
-          RENOVATE_GIT_AUTHOR: "renovate <121964725+superseb-demo-renovate[bot]@users.noreply.github.com>"
         with:
           configurationFile: renovate.json
