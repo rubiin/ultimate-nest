@@ -12,8 +12,8 @@ dependencies:
     specifier: ^6.5.0
     version: 6.5.0
   '@golevelup/nestjs-rabbitmq':
-    specifier: ^3.7.0
-    version: 3.7.0(@nestjs/common@10.1.0)(@nestjs/core@10.1.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+    specifier: ^4.0.0
+    version: 4.0.0(@nestjs/common@10.1.0)(@nestjs/core@10.1.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
   '@golevelup/nestjs-stripe':
     specifier: ^0.6.2
     version: 0.6.2(@nestjs/common@10.1.0)(@nestjs/core@10.1.0)(rxjs@7.8.1)(stripe@12.12.0)
@@ -263,8 +263,8 @@ devDependencies:
     specifier: 0.x
     version: 0.1.0
   '@golevelup/ts-jest':
-    specifier: ^0.3.8
-    version: 0.3.8
+    specifier: ^0.4.0
+    version: 0.4.0
   '@mikro-orm/cli':
     specifier: ^5.7.12
     version: 5.7.12(@mikro-orm/migrations@5.7.12)(@mikro-orm/postgresql@5.7.12)(@mikro-orm/seeder@5.7.12)(pg@8.11.0)
@@ -1531,11 +1531,32 @@ packages:
       nanoid: 3.3.6
     dev: false
 
+  /@golevelup/nestjs-common@2.0.0(@nestjs/common@10.1.0):
+    resolution: {integrity: sha512-D9RLXgkqn9SDLnZ2VoMER9l/+g5CM9Z7sZXa+10+0rZs6yevMepoiWmMVsFoUXLzYG2GwfixHLExwUr3XBCHFw==}
+    peerDependencies:
+      '@nestjs/common': ^10.x
+    dependencies:
+      '@nestjs/common': 10.1.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      lodash: 4.17.21
+      nanoid: 3.3.6
+    dev: false
+
   /@golevelup/nestjs-discovery@3.0.1(@nestjs/common@10.1.0)(@nestjs/core@10.1.0):
     resolution: {integrity: sha512-kK/GBYVxb8XGlwXgtCWAkPOwDVh7dXyLRaoZuk2bBYntV3DZkYGAIbLKOFTGz+MGz71vEeQ9bGLP7cHKtCee4g==}
     peerDependencies:
       '@nestjs/common': ^9.x
       '@nestjs/core': ^9.x
+    dependencies:
+      '@nestjs/common': 10.1.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core': 10.1.0(@nestjs/common@10.1.0)(@nestjs/platform-express@10.0.5)(@nestjs/websockets@10.0.5)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      lodash: 4.17.21
+    dev: false
+
+  /@golevelup/nestjs-discovery@4.0.0(@nestjs/common@10.1.0)(@nestjs/core@10.1.0):
+    resolution: {integrity: sha512-iyZLYip9rhVMR0C93vo860xmboRrD5g5F5iEOfpeblGvYSz8ymQrL9RAST7x/Fp3n+TAXSeOLzDIASt+rak68g==}
+    peerDependencies:
+      '@nestjs/common': ^10.x
+      '@nestjs/core': ^10.x
     dependencies:
       '@nestjs/common': 10.1.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.1.0(@nestjs/common@10.1.0)(@nestjs/platform-express@10.0.5)(@nestjs/websockets@10.0.5)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -1553,17 +1574,28 @@ packages:
       rxjs: 7.8.1
     dev: false
 
-  /@golevelup/nestjs-rabbitmq@3.7.0(@nestjs/common@10.1.0)(@nestjs/core@10.1.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
-    resolution: {integrity: sha512-wV6SA8oCTu8v66U5i3vu/k6DEvlHKM+LTb9JY7Iz8C0nUUuf6pufgvAalusAi4iJJ7/7p3Q44LF38SB4buszWw==}
+  /@golevelup/nestjs-modules@0.7.0(@nestjs/common@10.1.0)(rxjs@7.8.1):
+    resolution: {integrity: sha512-4WxGKubYx0IJF2rxL3S4SChKdl4ZDZPwCdSj6HxmmElXRyua/LlcwLH6NYquh4RRIkQGspDd5WpcMTBw3SxR5g==}
     peerDependencies:
-      '@nestjs/common': ^9.x
-      '@nestjs/core': ^9.x
+      '@nestjs/common': ^10.x
+      rxjs: ^7.x
+    dependencies:
+      '@nestjs/common': 10.1.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      lodash: 4.17.21
+      rxjs: 7.8.1
+    dev: false
+
+  /@golevelup/nestjs-rabbitmq@4.0.0(@nestjs/common@10.1.0)(@nestjs/core@10.1.0)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-CQHRq/jyK3GlM7Lv4nVaqd+BJ53tZXsrOtO/8/OZh19i0YOcQxyRM7iDdtULeG8omJB5/aGMZNsbioLuupxoog==}
+    peerDependencies:
+      '@nestjs/common': ^10.x
+      '@nestjs/core': ^10.x
       reflect-metadata: ^0.1.0
       rxjs: ^7.x
     dependencies:
-      '@golevelup/nestjs-common': 1.4.5(@nestjs/common@10.1.0)
-      '@golevelup/nestjs-discovery': 3.0.1(@nestjs/common@10.1.0)(@nestjs/core@10.1.0)
-      '@golevelup/nestjs-modules': 0.6.1(@nestjs/common@10.1.0)(rxjs@7.8.1)
+      '@golevelup/nestjs-common': 2.0.0(@nestjs/common@10.1.0)
+      '@golevelup/nestjs-discovery': 4.0.0(@nestjs/common@10.1.0)(@nestjs/core@10.1.0)
+      '@golevelup/nestjs-modules': 0.7.0(@nestjs/common@10.1.0)(rxjs@7.8.1)
       '@nestjs/common': 10.1.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.1.0(@nestjs/common@10.1.0)(@nestjs/platform-express@10.0.5)(@nestjs/websockets@10.0.5)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       amqp-connection-manager: 3.9.0(amqplib@0.8.0)
@@ -1603,8 +1635,8 @@ packages:
       - rxjs
     dev: false
 
-  /@golevelup/ts-jest@0.3.8:
-    resolution: {integrity: sha512-2H4XzpCHwoUs2P13tzwVzj+AYspbFGKwMr94WK5eHiDBKgx0j4QGgLQh1wgM18DjhN7jdntrzVMoQRie6kZhnw==}
+  /@golevelup/ts-jest@0.4.0:
+    resolution: {integrity: sha512-ehgllV/xU8PC+yVyEUtTzhiSQKsr7k5Jz74B6dtCaVJz7/Vo7JiaACsCLvD7/iATlJUAEqvBson0OHewD3JDzQ==}
     dev: true
 
   /@google-cloud/firestore@6.6.1:
