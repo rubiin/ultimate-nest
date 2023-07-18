@@ -1,34 +1,38 @@
 {
-   "$schema":"https://docs.renovatebot.com/renovate-schema.json",
-   "extends":[
-      "config:base"
-   ],
-   "assignees":[
-      "rubiin"
-   ],
-   "labels":[
-      "dependencies"
-   ],
-   "prCreation":"immediate",
-   "packageRules":[
-      {
-         "matchPackagePatterns":[
-            "*"
-         ],
-         "matchUpdateTypes":[
-            "minor",
-            "patch"
-         ],
-         "groupName":"all non-major deps"
-      },
-      {
-         "matchPackagePatterns":[
-            "*"
-         ],
-         "matchUpdateTypes":[
-            "major"
-         ],
-         "groupName":"all major deps"
-      }
-   ]
+  "$schema":"https://docs.renovatebot.com/renovate-schema.json",
+  "extends":[
+     "config:base"
+  ],
+  "rebaseWhen":"auto",
+  "assignees":[
+     "rubiin"
+  ],
+  "schedule":[
+     "at any time"
+  ],
+  "labels":[
+     "dependencies"
+  ],
+  "prCreation":"immediate",
+  "packageRules":[
+     {
+        "matchPackagePatterns":[
+           "*"
+        ],
+        "matchUpdateTypes":[
+           "minor",
+           "patch"
+        ],
+        "groupName":"all non-major deps"
+     },
+     {
+        "matchPackagePatterns":[
+           "*"
+        ],
+        "matchUpdateTypes":[
+           "major"
+        ],
+        "groupName":"all major deps"
+     }
+  ]
 }
