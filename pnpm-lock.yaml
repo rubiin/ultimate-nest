@@ -317,8 +317,8 @@ devDependencies:
     specifier: ^1.0.12
     version: 1.0.12
   '@types/passport-facebook':
-    specifier: ^2.1.11
-    version: 2.1.11
+    specifier: ^3.0.0
+    version: 3.0.0
   '@types/passport-google-oauth20':
     specifier: ^2.0.11
     version: 2.0.11
@@ -4248,11 +4248,12 @@ packages:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
     dev: true
 
-  /@types/passport-facebook@2.1.11:
-    resolution: {integrity: sha512-YsZUZryJvHt2E/WdR22FlnCi9ckMwkGR+FwCcXq830rOvruhXJHJtKSXSD+Kn4phBsrEpqoP4xX6fFuEodk20A==}
+  /@types/passport-facebook@3.0.0:
+    resolution: {integrity: sha512-hZjXy39X+In1/y607NfGVJEWtl5vuClkAbglcAiq/UBuUSPCu6uBvyGd4wE3ikc4iJ1as3biuanBMrMZus0U5A==}
     dependencies:
       '@types/express': 4.17.17
       '@types/passport': 1.0.12
+      '@types/passport-oauth2': 1.4.12
     dev: true
 
   /@types/passport-google-oauth20@2.0.11:
@@ -6955,6 +6956,7 @@ packages:
   /event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: false
 
   /eventemitter3@3.1.2:
