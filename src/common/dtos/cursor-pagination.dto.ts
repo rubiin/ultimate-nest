@@ -1,8 +1,8 @@
 import { PaginationType } from "@common/@types";
 import { IsNumberField, IsStringField } from "@common/decorators";
+import { validationI18nMessage } from "@lib/i18n";
 import { ApiHideProperty } from "@nestjs/swagger";
 import { Allow, IsBase64 } from "class-validator";
-import { i18nValidationMessage } from "nestjs-i18n";
 
 import { PaginationDto } from "./pagination.dto";
 
@@ -18,7 +18,7 @@ export class CursorPaginationDto extends PaginationDto {
 	 */
 	@IsStringField({ required: false })
 	@IsBase64({
-		message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
+		message: validationI18nMessage("validation.isDataType", {
 			type: "base64",
 		}),
 	})

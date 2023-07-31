@@ -1,11 +1,11 @@
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
+import { translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Response } from "express";
-import { I18nContext } from "nestjs-i18n";
 import { authenticator } from "otplib";
 import { toFileStream } from "qrcode";
 import { from, map, Observable, throwError } from "rxjs";
@@ -83,7 +83,7 @@ export class TwoFactorService {
 
 		if (!isCodeValid) {
 			return throwError(() =>
-				I18nContext.current<I18nTranslations>()!.t("exception.refreshToken", {
+				translate("exception.refreshToken", {
 					args: { error: "malformed" },
 				}),
 			);

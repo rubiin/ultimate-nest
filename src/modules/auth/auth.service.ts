@@ -2,30 +2,30 @@ import { AuthenticationResponse, EmailSubject, EmailTemplate } from "@common/@ty
 import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
+import { translate } from "@lib/i18n";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { FilterQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { TokensService } from "@modules/token/tokens.service";
 import {
-	BadRequestException,
-	ForbiddenException,
-	Injectable,
-	NotFoundException,
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
-import { I18nContext } from "nestjs-i18n";
 import { from, map, mergeMap, Observable, of, switchMap, throwError, zip } from "rxjs";
 
 import {
-	ChangePasswordDto,
-	OtpVerifyDto,
-	ResetPasswordDto,
-	SendOtpDto,
-	UserLoginDto,
+  ChangePasswordDto,
+  OtpVerifyDto,
+  ResetPasswordDto,
+  SendOtpDto,
+  UserLoginDto,
 } from "./dtos";
 
 @Injectable()
@@ -63,7 +63,7 @@ export class AuthService {
 					return throwError(
 						() =>
 							new ForbiddenException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.itemDoesNotExist",
 									{
 										args: { item: "Account" },
@@ -77,7 +77,7 @@ export class AuthService {
 					return throwError(
 						() =>
 							new ForbiddenException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.inactiveUser",
 								),
 							),
@@ -94,7 +94,7 @@ export class AuthService {
 								return throwError(
 									() =>
 										new BadRequestException(
-											I18nContext.current<I18nTranslations>()!.t(
+											translate(
 												"exception.invalidCredentials",
 											),
 										),
@@ -121,7 +121,7 @@ export class AuthService {
 					return throwError(
 						() =>
 							new BadRequestException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.invalidCredentials",
 								),
 							),
@@ -194,7 +194,7 @@ export class AuthService {
 					return throwError(
 						() =>
 							new NotFoundException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.itemDoesNotExist",
 									{
 										args: { item: "Account" },
@@ -290,7 +290,7 @@ export class AuthService {
 					return throwError(
 						() =>
 							new NotFoundException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.itemDoesNotExist",
 									{
 										args: { item: "Otp" },
@@ -306,7 +306,7 @@ export class AuthService {
 					return throwError(
 						() =>
 							new BadRequestException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.itemExpired",
 									{
 										args: { item: "Otp" },
@@ -359,7 +359,7 @@ export class AuthService {
 							return throwError(
 								() =>
 									new BadRequestException(
-										I18nContext.current<I18nTranslations>()!.t(
+										translate(
 											"exception.invalidCredentials",
 										),
 									),

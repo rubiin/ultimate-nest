@@ -1,16 +1,16 @@
 import {
-	Crud,
-	CursorType,
-	PaginationRequest,
-	PaginationResponse,
-	PaginationType,
-	QueryOrder,
+  Crud,
+  CursorType,
+  PaginationRequest,
+  PaginationResponse,
+  PaginationType,
+  QueryOrder,
 } from "@common/@types";
 import { BaseEntity, BaseRepository } from "@common/database";
 import { User } from "@entities";
+import { translate } from "@lib/i18n";
 import { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import { NotFoundException } from "@nestjs/common";
-import { I18nContext } from "nestjs-i18n";
 import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 export abstract class BaseService<
@@ -92,7 +92,7 @@ export abstract class BaseService<
 					return throwError(
 						() =>
 							new NotFoundException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.itemDoesNotExist",
 									{
 										args: { item: this.repository.getEntityName() },
