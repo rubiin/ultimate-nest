@@ -1,16 +1,17 @@
 import {
-	CursorType,
-	DtoWithFile,
-	EmailSubject,
-	EmailTemplate,
-	PaginationResponse,
-	QueryOrder,
-	RoutingKey,
+  CursorType,
+  DtoWithFile,
+  EmailSubject,
+  EmailTemplate,
+  PaginationResponse,
+  QueryOrder,
+  RoutingKey,
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import { translate } from "@lib/i18n";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
@@ -18,7 +19,6 @@ import { ConfigService } from "@nestjs/config";
 import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService, IFile } from "nestjs-cloudinary";
-import { I18nContext } from "nestjs-i18n";
 import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 import { CreateUserDto, EditUserDto } from "./dtos";
@@ -78,7 +78,7 @@ export class UserService {
 					return throwError(
 						() =>
 							new NotFoundException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.itemDoesNotExist",
 									{
 										args: { item: "User" },

@@ -1,7 +1,7 @@
 import { PostStateEnum } from "@common/@types";
 import { IsEnumField, IsStringField, IsUUIDField, ToBoolean } from "@common/decorators";
+import { validationI18nMessage } from "@lib/i18n";
 import { IsBoolean } from "class-validator";
-import { i18nValidationMessage } from "nestjs-i18n";
 
 export class CreatePostDto {
 	/**
@@ -58,7 +58,7 @@ export class CreatePostDto {
 	 */
 	@ToBoolean()
 	@IsBoolean({
-		message: i18nValidationMessage<I18nTranslations>("validation.isDataType", {
+		message: validationI18nMessage("validation.isDataType", {
 			type: "boolean",
 		}),
 	})

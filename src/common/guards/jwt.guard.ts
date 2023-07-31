@@ -1,14 +1,14 @@
 import { IS_PUBLIC_KEY_META } from "@common/constant";
+import { translate } from "@lib/i18n";
 import {
-	ExecutionContext,
-	ForbiddenException,
-	Injectable,
-	UnauthorizedException,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
-import { I18nContext } from "nestjs-i18n";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {
@@ -30,13 +30,13 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
 		if (error || info || !user) {
 			if (info instanceof TokenExpiredError) {
 				throw new ForbiddenException(
-					I18nContext.current<I18nTranslations>()!.t("exception.token", {
+					translate("exception.token", {
 						args: { error: "expired" },
 					}),
 				);
 			} else if (info instanceof JsonWebTokenError) {
 				throw new UnauthorizedException(
-					I18nContext.current<I18nTranslations>()!.t("exception.token", {
+					translate("exception.token", {
 						args: { error: "malformed" },
 					}),
 				);
