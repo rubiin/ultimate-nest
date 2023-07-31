@@ -4,11 +4,11 @@ import { CursorPaginationDto } from "@common/dtos";
 import { NewsLetter, Subscriber } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { BaseService } from "@lib/crud/crud.service";
+import { translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression } from "@nestjs/schedule";
-import { I18nContext } from "nestjs-i18n";
 import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 import { SubscribeNewsletterDto } from "./dto";
@@ -63,7 +63,7 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
 					return throwError(
 						() =>
 							new NotFoundException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.itemDoesNotExist",
 									{
 										args: { item: "subscriber" },
@@ -91,7 +91,7 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
 					return throwError(
 						() =>
 							new NotFoundException(
-								I18nContext.current<I18nTranslations>()!.t("exception.itemExists", {
+								translate("exception.itemExists", {
 									args: { item: "subscriber", property: "email" },
 								}),
 							),

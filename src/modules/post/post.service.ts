@@ -2,12 +2,12 @@ import { CursorType, PaginationResponse, QueryOrder } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Category, Comment, Post, Tag, User } from "@entities";
+import { translate } from "@lib/i18n";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { omit } from "helper-fns";
-import { I18nContext } from "nestjs-i18n";
 import { forkJoin, from, map, mergeMap, Observable, of, switchMap, throwError, zip } from "rxjs";
 
 import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
@@ -70,7 +70,7 @@ export class PostService {
 					return throwError(
 						() =>
 							new NotFoundException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.itemDoesNotExist",
 									{
 										args: { item: "Post" },

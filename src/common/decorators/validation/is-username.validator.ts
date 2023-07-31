@@ -10,6 +10,7 @@
  */
 
 import { USERNAME_REGEX } from "@common/constant";
+import { validationI18nMessage } from "@lib/i18n";
 import { applyDecorators } from "@nestjs/common";
 import {
 	IsNotEmpty,
@@ -19,7 +20,6 @@ import {
 	ValidatorConstraint,
 	ValidatorConstraintInterface,
 } from "class-validator";
-import { i18nValidationMessage } from "nestjs-i18n";
 
 import { MinMaxLength } from "./min-max-length.decorator";
 
@@ -51,7 +51,7 @@ export const IsUsername = (validationOptions?: ValidationOptions): PropertyDecor
 export const IsUsernameField = (validationOptions?: ValidationOptions) => {
 	return applyDecorators(
 		IsNotEmpty({
-			message: i18nValidationMessage<I18nTranslations>("validation.isNotEmpty"),
+			message: validationI18nMessage("validation.isNotEmpty"),
 		}),
 		MinMaxLength({
 			minLength: 5,

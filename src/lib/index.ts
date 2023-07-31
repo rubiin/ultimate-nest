@@ -5,7 +5,7 @@ export * from "./cloudinary.module";
 export * from "./crud";
 export * from "./firebase-admin";
 export * from "./http.module";
-export * from "./i18n.module";
+export * from "./i18n/i18n.module";
 export * from "./jwt.module";
 export * from "./mailer";
 export * from "./minio.module";

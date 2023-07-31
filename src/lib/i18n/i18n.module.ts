@@ -23,11 +23,11 @@ import {
 			},
 			logging: true,
 			loaderOptions: {
-				path: path.join(__dirname, "../resources/i18n/"),
+				path: path.join(__dirname, "../../resources/i18n/"),
 				watch: true,
 				includeSubfolders: true,
 			},
-			typesOutputPath: path.join(__dirname + "/../generated/i18n.generated.d.ts"),
+      typesOutputPath: path.join(process.cwd() + "/src/generated/i18n-generated.ts"),
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,

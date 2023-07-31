@@ -1,11 +1,11 @@
 import { ProfileData } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
+import { translate } from "@lib/i18n";
 import { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { I18nContext } from "nestjs-i18n";
 import { from, map, mergeMap, Observable, of, switchMap, throwError } from "rxjs";
 
 @Injectable()
@@ -50,7 +50,7 @@ export class ProfileService {
 					return throwError(
 						() =>
 							new NotFoundException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.itemDoesNotExist",
 									{
 										args: { item: "Profile" },
@@ -80,7 +80,7 @@ export class ProfileService {
 			return throwError(
 				() =>
 					new BadRequestException(
-						I18nContext.current<I18nTranslations>()!.t("exception.usernameRequired"),
+						translate("exception.usernameRequired"),
 					),
 			);
 		}
@@ -91,7 +91,7 @@ export class ProfileService {
 					return throwError(
 						() =>
 							new BadRequestException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.followerFollowingSame",
 								),
 							),
@@ -125,7 +125,7 @@ export class ProfileService {
 			return throwError(
 				() =>
 					new BadRequestException(
-						I18nContext.current<I18nTranslations>()!.t("exception.usernameRequired"),
+						translate("exception.usernameRequired"),
 					),
 			);
 		}
@@ -138,7 +138,7 @@ export class ProfileService {
 					return throwError(
 						() =>
 							new BadRequestException(
-								I18nContext.current<I18nTranslations>()!.t(
+								translate(
 									"exception.followerFollowingSame",
 								),
 							),
