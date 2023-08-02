@@ -111,8 +111,8 @@ dependencies:
     specifier: ^1.7.2
     version: 1.7.2
   argon2:
-    specifier: ^0.30.3
-    version: 0.30.3
+    specifier: ^0.31.0
+    version: 0.31.0
   cache-manager:
     specifier: 5.2.3
     version: 5.2.3
@@ -2350,8 +2350,8 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /@mapbox/node-pre-gyp@1.0.10:
-    resolution: {integrity: sha512-4ySo4CjzStuprMwk35H5pPbkymjv1SF3jGLj6rAHp/xT/RF7TL7bd9CTm1xDY49K2qF7jmR/g7k+SkLETP6opA==}
+  /@mapbox/node-pre-gyp@1.0.11:
+    resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
     hasBin: true
     dependencies:
       detect-libc: 2.0.1
@@ -4970,14 +4970,14 @@ packages:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
     dev: true
 
-  /argon2@0.30.3:
-    resolution: {integrity: sha512-DoH/kv8c9127ueJSBxAVJXinW9+EuPA3EMUxoV2sAY1qDE5H9BjTyVF/aD2XyHqbqUWabgBkIfcP3ZZuGhbJdg==}
+  /argon2@0.31.0:
+    resolution: {integrity: sha512-r56NWwlE3tjD/FIqL1T+V4Ka+Mb5yMF35w1YWHpwpEjeONXBUbxmjhWkWqY63mse8lpcZ+ZZIGpKL+s+qXhyfg==}
     engines: {node: '>=14.0.0'}
     requiresBuild: true
     dependencies:
-      '@mapbox/node-pre-gyp': 1.0.10
+      '@mapbox/node-pre-gyp': 1.0.11
       '@phc/format': 1.0.0
-      node-addon-api: 5.1.0
+      node-addon-api: 7.0.0
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -10176,6 +10176,10 @@ packages:
 
   /node-addon-api@5.1.0:
     resolution: {integrity: sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==}
+    dev: false
+
+  /node-addon-api@7.0.0:
+    resolution: {integrity: sha512-vgbBJTS4m5/KkE16t5Ly0WW9hz46swAstv0hYYwMtbG7AznRhNyfLRe8HZAiWIpcHzoO7HxhLuBQj9rJ/Ho0ZA==}
     dev: false
 
   /node-emoji@1.11.0:
