@@ -1,4 +1,4 @@
-import fs from "node:fs";
+
 
 import {
 	IS_PUBLIC_KEY_META,
@@ -105,26 +105,4 @@ export const AppUtils = {
 		});
 	},
 
-	ssl(): { key: Buffer; cert: Buffer } | null {
-		let httpsOptions: { key: Buffer; cert: Buffer };
-
-		const keyPath = `${__dirname}/../../resources/ssl/key.pem`;
-		const certPath = `${__dirname}/../../resources/ssl/certificate.pem`;
-
-		const ssl = process.env.SSL === "true";
-		const isExist = fs.existsSync(keyPath) && fs.existsSync(certPath);
-
-		if (ssl && !isExist) {
-			logger.error("❗SSL is enabled but no key and certificate found.");
-		}
-
-		if (ssl && isExist) {
-			httpsOptions = {
-				key: fs.readFileSync(keyPath),
-				cert: fs.readFileSync(certPath),
-			};
-		}
-
-		return httpsOptions;
-	},
 };
