@@ -33,16 +33,30 @@ const basePinoOptions = {
 							censor: "**GDPR COMPLIANT**",
 						},
 						transport: process.env.NODE_ENV.startsWith("prod")
-							? {
-									target: "pino/file",
-									level: "error", // log only errors to file
-									options: {
-										...basePinoOptions,
-										destination: "app.log",
-										mkdir: true,
-										sync: false,
-									},
-							  }
+							?{
+                targets: [
+                  {
+                    target: "pino/file",
+                    level: "info", // log only errors to file
+                    options: {
+                      ...basePinoOptions,
+                      destination: "logs/info.log",
+                      mkdir: true,
+                      sync: false,
+                    },
+                  },
+                  {
+                    target: "pino/file",
+                    level: "error", // log only errors to file
+                    options: {
+                      ...basePinoOptions,
+                      destination: "logs/error.log",
+                      mkdir: true,
+                      sync: false,
+                    },
+                  },
+                ],
+              }
 							: {
 									targets: [
 										{
@@ -55,10 +69,20 @@ const basePinoOptions = {
 										},
 										{
 											target: "pino/file",
+											level: "info", // log only errors to file
+											options: {
+												...basePinoOptions,
+												destination: "logs/info.log",
+												mkdir: true,
+												sync: false,
+											},
+										},
+                    {
+											target: "pino/file",
 											level: "error", // log only errors to file
 											options: {
 												...basePinoOptions,
-												destination: "app.log",
+												destination: "logs/error.log",
 												mkdir: true,
 												sync: false,
 											},
