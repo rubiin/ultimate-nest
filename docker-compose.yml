@@ -19,13 +19,13 @@ services:
         restart: unless-stopped
         command: npm run start:dev
         labels:
-            - traefik.enable=true
-            - traefik.http.routers.nestify.rule=Host(`${API_URL}`)
-            - traefik.http.services.nestify.loadbalancer.server.port=3000
-            - traefik.http.routers.nestify.entrypoints=websecure
-            - traefik.http.routers.nestify.tls=true
-            - traefik.http.routers.nestify.tls.certresolver=certresolver
-            - traefik.http.routes.nestify.middlewares=traefik-headers,traefik-compress,traefik-ratelimit,traefik-retry
+            - "traefik.enable=true"
+            - "traefik.http.routers.nestify.rule=Host(`${API_URL}`)"
+            - "traefik.http.services.nestify.loadbalancer.server.port=3000"
+            - "traefik.http.routers.nestify.entrypoints=websecure"
+            - "traefik.http.routers.nestify.tls=true"
+            - "traefik.http.routers.nestify.tls.certresolver=certresolver"
+            - "traefik.http.routes.nestify.middlewares=traefik-headers,traefik-compress,traefik-ratelimit,traefik-retry"
 
 
         stdin_open: true
@@ -81,28 +81,30 @@ services:
 
         labels:
             - traefik.enable=true
-            - traefik.http.middlewares.traefik-compress.compress=true # Enable compression middleware
-            - traefik.http.middlewares.traefik-ratelimit.ratelimit.average=100 # Set average rate limit to 100 requests per minute
-            - traefik.http.middlewares.traefik-ratelimit.ratelimit.burst=50 # Set burst rate limit to 50 requests
-            - traefik.http.middlewares.traefik-ratelimit.ratelimit.period=1m # Set rate limit evaluation period to 1 minute
-            - traefik.http.middlewares.traefik-retry.retry.attempts=4 # Allow up to 4 retry attempts
-            - traefik.http.middlewares.traefik-retry.retry.initialinterval=100ms # Set initial retry interval to 100 milliseconds
-            - traefik.http.middlewares.security-headers.headers.accesscontrolallowmethods=GET, OPTIONS, PUT, POST, DELETE # Allow specified HTTP methods
-            - traefik.http.middlewares.security-headers.headers.accesscontrolmaxage=100 # Set value for Access-Control-Max-Age header
-            - traefik.http.middlewares.security-headers.headers.addvaryheader=true # Add Vary header to responses
-            - traefik.http.middlewares.security-headers.headers.hostsproxyheaders=X-Forwarded-Host # Configure proxy headers for X-Forwarded-Host
-            - traefik.http.middlewares.security-headers.headers.sslredirect=true # Enable HTTPS redirection
-            - traefik.http.middlewares.security-headers.headers.sslproxyheaders.X-Forwarded-Proto=https # Configure proxy headers for X-Forwarded-Proto
-            - traefik.http.middlewares.security-headers.headers.stsseconds=63072000 # Set Strict-Transport-Security max-age value
-            - traefik.http.middlewares.security-headers.headers.stsincludesubdomains=true # Include subdomains in Strict-Transport-Security header
-            - traefik.http.middlewares.security-headers.headers.stspreload=true # Enable HTTP Strict Transport Security preload list
-            - traefik.http.middlewares.security-headers.headers.forcestsheader=true # Force Strict-Transport-Security header on all responses
-            - traefik.http.middlewares.security-headers.headers.framedeny=true # Enable frame denial for clickjacking protection
-            - traefik.http.middlewares.security-headers.headers.contenttypenosniff=true # Enable Content-Type nosniff
-            - traefik.http.middlewares.security-headers.headers.browserxssfilter=true # Enable browser XSS filter
-            - traefik.http.middlewares.security-headers.headers.referrerpolicy=same-origin # Set Referrer-Policy header
-            - traefik.http.middlewares.security-headers.headers.featurepolicy=camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none'; # Set Feature-Policy header values
-            - traefik.http.middlewares.security-headers.headers.customresponseheaders.X-Robots-Tag=none,noarchive,nosnippet,notranslate,noimageindex # Set custom response headers
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.middlewares.traefik-compress.compress=true"
+            - "traefik.http.middlewares.traefik-ratelimit.ratelimit.average=100" # Set average rate limit to 100 requests per minute
+            - "traefik.http.middlewares.traefik-ratelimit.ratelimit.burst=50" # Set burst rate limit to 50 requests
+            - "traefik.http.middlewares.traefik-ratelimit.ratelimit.period=1m" # Set rate limit evaluation period to 1 minute
+            - "traefik.http.middlewares.traefik-retry.retry.attempts=4" # Allow up to 4 retry attempts
+            - "traefik.http.middlewares.traefik-retry.retry.initialinterval=100ms" # Set initial retry interval to 100 milliseconds
+            - "traefik.http.middlewares.security-headers.headers.accesscontrolallowmethods=GET, OPTIONS, PUT, POST, DELETE" # Allow specified HTTP methods
+            - "traefik.http.middlewares.security-headers.headers.accesscontrolmaxage=100" # Set value for Access-Control-Max-Age header
+            - "traefik.http.middlewares.security-headers.headers.addvaryheader=true" # Add Vary header to responses
+            - "traefik.http.middlewares.security-headers.headers.hostsproxyheaders=X-Forwarded-Host" # Configure proxy headers for X-Forwarded-Host
+            - "traefik.http.middlewares.security-headers.headers.sslredirect=true" # Enable HTTPS redirection
+            - "traefik.http.middlewares.security-headers.headers.sslproxyheaders.X-Forwarded-Proto=https" # Configure proxy headers for X-Forwarded-Proto
+            - "traefik.http.middlewares.security-headers.headers.stsseconds=63072000" # Set Strict-Transport-Security max-age value
+            - "traefik.http.middlewares.security-headers.headers.stsincludesubdomains=true" # Include subdomains in Strict-Transport-Security header
+            - "traefik.http.middlewares.security-headers.headers.stspreload=true" # Enable HTTP Strict Transport Security preload list
+            - "traefik.http.middlewares.security-headers.headers.forcestsheader=true" # Force Strict-Transport-Security header on all responses
+            - "traefik.http.middlewares.security-headers.headers.framedeny=true" # Enable frame denial for clickjacking protection
+            - "traefik.http.middlewares.security-headers.headers.contenttypenosniff=true" # Enable Content-Type nosniff
+            - "traefik.http.middlewares.security-headers.headers.browserxssfilter=true" # Enable browser XSS filter
+            - "traefik.http.middlewares.security-headers.headers.referrerpolicy=same-origin" # Set Referrer-Policy header
+            - "traefik.http.middlewares.security-headers.headers.featurepolicy=camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';" # Set Feature-Policy header values
+            - "traefik.http.middlewares.security-headers.headers.customresponseheaders.X-Robots-Tag=none,noarchive,nosnippet,notranslate,noimageindex" # Set custom response headers
 
         networks:
             - nestify-network
@@ -114,14 +116,6 @@ services:
             - ./letsencrypt:/letsencrypt
             - ./logs/:/logs/
             - /var/run/docker.sock:/var/run/docker.sock:ro
-        healthcheck:
-            # Run traefik healthcheck command
-            # https://doc.traefik.io/traefik/operations/cli/#healthcheck
-            test: ["CMD", "traefik", "healthcheck", "--ping"]
-            interval: 10s
-            timeout: 5s
-            retries: 3
-            start_period: 5s
 
 # Redis service
 # This service runs the Redis database
