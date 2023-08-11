@@ -8,7 +8,7 @@ export const mailConfigValidationSchema = {
 	MAIL_USERNAME: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
 	MAIL_PASSWORD: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
 	MAIL_HOST: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
-	MAIL_PORT: Joi.number().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
+	MAIL_PORT: Joi.number().port().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
 	MAIL_PREVIEW_EMAIL: Joi.boolean().default(false).optional(),
 	MAIL_BCC_LIST: Joi.string().optional(),
 	MAIL_TEMPLATE_DIR: Joi.string().required(),
