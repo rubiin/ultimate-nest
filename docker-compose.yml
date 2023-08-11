@@ -171,7 +171,7 @@ services:
 # This service runs the PostgreSQL database
     database:
         container_name: database
-        image: postgres:15.3-alpine
+        image: postgres:15.4-alpine
         restart: unless-stopped
         env_file: env/.env.${ENV}
         depends_on:
