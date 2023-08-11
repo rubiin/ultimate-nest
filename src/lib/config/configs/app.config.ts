@@ -8,7 +8,7 @@ export const appConfigValidationSchema = {
 	NODE_ENV: Joi.string()
 		.valid(...APP_ENVIRONMENTS)
 		.required(),
-	APP_PORT: Joi.number().required(),
+	APP_PORT: Joi.number().port().required(),
 	API_URL: Joi.string().uri().required(),
 	APP_PREFIX: Joi.string().required().pattern(/^v\d+/).required().messages({
 		"string.pattern.base": VERSION_VALIDATION_MESSAGE,

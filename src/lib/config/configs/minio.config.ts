@@ -3,7 +3,7 @@ import Joi from "joi";
 
 export const minioConfigValidationSchema = {
 	MINIO_HOST: Joi.string().required(),
-	MINIO_PORT: Joi.number().required(),
+	MINIO_PORT: Joi.number().port().required(),
 	MINIO_ACCESS_KEY: Joi.string().required(),
 	MINIO_SECRET_KEY: Joi.string().required(),
 	MINIO_USE_SSL: Joi.boolean().required(),
