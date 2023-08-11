@@ -80,9 +80,6 @@ services:
             - --certificatesresolvers.certresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
 
         labels:
-            - traefik.enable=true
-        labels:
-            - "traefik.enable=true"
             - "traefik.enable=true"
             - "traefik.http.middlewares.traefik-compress.compress=true"
             - "traefik.http.middlewares.traefik-ratelimit.ratelimit.average=100" # Set average rate limit to 100 requests per minute
