@@ -1,5 +1,3 @@
-
-
 import {
 	IS_PUBLIC_KEY_META,
 	SWAGGER_API_CURRENT_VERSION,
@@ -104,5 +102,4 @@ export const AppUtils = {
 			swaggerOptions,
 		});
 	},
-
 };

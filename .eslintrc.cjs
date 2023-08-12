@@ -44,6 +44,7 @@ module.exports = defineConfig({
         "deprecation/deprecation": "warn",
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
+        "no-multiple-empty-lines": ["error", { "max": 1}],
         "import/first": "error",
         "import/newline-after-import": "error",
         "import/no-duplicates": "error",
