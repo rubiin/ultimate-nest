@@ -3,15 +3,15 @@ import { validationI18nMessage } from "@lib/i18n";
 import { applyDecorators } from "@nestjs/common";
 import { Type } from "class-transformer";
 import {
-  ArrayNotEmpty,
-  IsArray,
-  IsInt,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  Max,
-  Min,
+	ArrayNotEmpty,
+	IsArray,
+	IsInt,
+	IsNotEmpty,
+	IsNumber,
+	IsOptional,
+	IsPositive,
+	Max,
+	Min,
 } from "class-validator";
 
 /**

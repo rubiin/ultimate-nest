@@ -1,4 +1,3 @@
-
 import { NestConfigModule } from "@lib/config/config.module";
 import { CacheModule, CacheStore } from "@nestjs/cache-manager";
 import { Global, Module } from "@nestjs/common";
@@ -15,10 +14,10 @@ import { CacheService } from "./cache.service";
 			useFactory: async (configService: ConfigService) => {
 				const store = await redisStore({
 					host: configService.get("redis.host"),
-          port: configService.get("redis.port"),
-          username: configService.get("redis.username"),
-          password: configService.get("redis.password"),
-          keepAlive: 120,
+					port: configService.get("redis.port"),
+					username: configService.get("redis.username"),
+					password: configService.get("redis.password"),
+					keepAlive: 120,
 					ttl: configService.get("redis.ttl"),
 				});
 

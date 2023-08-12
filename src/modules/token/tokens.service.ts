@@ -77,12 +77,9 @@ export class TokensService {
 							return throwError(
 								() =>
 									new UnauthorizedException(
-										translate(
-											"exception.refreshToken",
-											{
-												args: { error: "not found" },
-											},
-										),
+										translate("exception.refreshToken", {
+											args: { error: "not found" },
+										}),
 									),
 							);
 						}
@@ -91,12 +88,9 @@ export class TokensService {
 							return throwError(
 								() =>
 									new UnauthorizedException(
-										translate(
-											"exception.refreshToken",
-											{
-												args: { error: "revoked" },
-											},
-										),
+										translate("exception.refreshToken", {
+											args: { error: "revoked" },
+										}),
 									),
 							);
 						}
@@ -107,12 +101,9 @@ export class TokensService {
 									return throwError(
 										() =>
 											new UnauthorizedException(
-												translate(
-													"exception.refreshToken",
-													{
-														args: { error: "malformed" },
-													},
-												),
+												translate("exception.refreshToken", {
+													args: { error: "malformed" },
+												}),
 											),
 									);
 								}

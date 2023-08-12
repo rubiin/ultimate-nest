@@ -9,10 +9,10 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { TokensService } from "@modules/token/tokens.service";
 import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
+	BadRequestException,
+	ForbiddenException,
+	Injectable,
+	NotFoundException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { init } from "@paralleldrive/cuid2";
@@ -21,11 +21,11 @@ import { capitalize, omit } from "helper-fns";
 import { from, map, mergeMap, Observable, of, switchMap, throwError, zip } from "rxjs";
 
 import {
-  ChangePasswordDto,
-  OtpVerifyDto,
-  ResetPasswordDto,
-  SendOtpDto,
-  UserLoginDto,
+	ChangePasswordDto,
+	OtpVerifyDto,
+	ResetPasswordDto,
+	SendOtpDto,
+	UserLoginDto,
 } from "./dtos";
 
 @Injectable()
@@ -63,24 +63,16 @@ export class AuthService {
 					return throwError(
 						() =>
 							new ForbiddenException(
-								translate(
-									"exception.itemDoesNotExist",
-									{
-										args: { item: "Account" },
-									},
-								),
+								translate("exception.itemDoesNotExist", {
+									args: { item: "Account" },
+								}),
 							),
 					);
 				}
 
 				if (!user.isActive) {
 					return throwError(
-						() =>
-							new ForbiddenException(
-								translate(
-									"exception.inactiveUser",
-								),
-							),
+						() => new ForbiddenException(translate("exception.inactiveUser")),
 					);
 				}
 
@@ -94,9 +86,7 @@ export class AuthService {
 								return throwError(
 									() =>
 										new BadRequestException(
-											translate(
-												"exception.invalidCredentials",
-											),
+											translate("exception.invalidCredentials"),
 										),
 								);
 							}),
@@ -119,12 +109,7 @@ export class AuthService {
 			switchMap(user => {
 				if (!user) {
 					return throwError(
-						() =>
-							new BadRequestException(
-								translate(
-									"exception.invalidCredentials",
-								),
-							),
+						() => new BadRequestException(translate("exception.invalidCredentials")),
 					);
 				}
 
@@ -194,12 +179,9 @@ export class AuthService {
 					return throwError(
 						() =>
 							new NotFoundException(
-								translate(
-									"exception.itemDoesNotExist",
-									{
-										args: { item: "Account" },
-									},
-								),
+								translate("exception.itemDoesNotExist", {
+									args: { item: "Account" },
+								}),
 							),
 					);
 				}
@@ -290,12 +272,9 @@ export class AuthService {
 					return throwError(
 						() =>
 							new NotFoundException(
-								translate(
-									"exception.itemDoesNotExist",
-									{
-										args: { item: "Otp" },
-									},
-								),
+								translate("exception.itemDoesNotExist", {
+									args: { item: "Otp" },
+								}),
 							),
 					);
 				}
@@ -306,12 +285,9 @@ export class AuthService {
 					return throwError(
 						() =>
 							new BadRequestException(
-								translate(
-									"exception.itemExpired",
-									{
-										args: { item: "Otp" },
-									},
-								),
+								translate("exception.itemExpired", {
+									args: { item: "Otp" },
+								}),
 							),
 					);
 				}
@@ -359,9 +335,7 @@ export class AuthService {
 							return throwError(
 								() =>
 									new BadRequestException(
-										translate(
-											"exception.invalidCredentials",
-										),
+										translate("exception.invalidCredentials"),
 									),
 							);
 						}

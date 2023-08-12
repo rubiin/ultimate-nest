@@ -63,12 +63,9 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
 					return throwError(
 						() =>
 							new NotFoundException(
-								translate(
-									"exception.itemDoesNotExist",
-									{
-										args: { item: "subscriber" },
-									},
-								),
+								translate("exception.itemDoesNotExist", {
+									args: { item: "subscriber" },
+								}),
 							),
 					);
 				}

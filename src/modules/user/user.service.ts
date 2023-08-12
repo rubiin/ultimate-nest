@@ -1,11 +1,11 @@
 import {
-  CursorType,
-  DtoWithFile,
-  EmailSubject,
-  EmailTemplate,
-  PaginationResponse,
-  QueryOrder,
-  RoutingKey,
+	CursorType,
+	DtoWithFile,
+	EmailSubject,
+	EmailTemplate,
+	PaginationResponse,
+	QueryOrder,
+	RoutingKey,
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
@@ -78,12 +78,9 @@ export class UserService {
 					return throwError(
 						() =>
 							new NotFoundException(
-								translate(
-									"exception.itemDoesNotExist",
-									{
-										args: { item: "User" },
-									},
-								),
+								translate("exception.itemDoesNotExist", {
+									args: { item: "User" },
+								}),
 							),
 					);
 				}

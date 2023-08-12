@@ -1,11 +1,11 @@
 import { Roles } from "@common/@types";
 import {
-  IsEmailField,
-  IsEnumField,
-  IsPassword,
-  IsStringField,
-  IsUnique,
-  IsUsernameField,
+	IsEmailField,
+	IsEnumField,
+	IsPassword,
+	IsStringField,
+	IsUnique,
+	IsUsernameField,
 } from "@common/decorators";
 import { User } from "@entities";
 import { validationI18nMessage } from "@lib/i18n";
