@@ -13,7 +13,7 @@ import { SentryInterceptor } from "@ntegral/nestjs-sentry";
 	providers: [
 		{
 			provide: APP_INTERCEPTOR,
-			useValue: new SentryInterceptor(),
+			useClass: SentryInterceptor,
 		},
 		{
 			provide: APP_GUARD,
@@ -36,15 +36,14 @@ export class AppModule implements NestModule {
 			path: "stripe/webhook",
 		});
 		consumer
-			.apply(RealIpMiddleware)
+			.apply(RealIpMiddleware, ClearCacheMiddleware)
+			.exclude(
+				{ path: "stripe/webhook", method: RequestMethod.ALL },
+				{ path: "doc", method: RequestMethod.ALL },
+			)
 			.forRoutes({
 				path: "*",
 				method: RequestMethod.ALL,
-			})
-			.apply(ClearCacheMiddleware)
-			.forRoutes({
-				path: "*",
-				method: RequestMethod.GET,
 			});
 	}
 }
