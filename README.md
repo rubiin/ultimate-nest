@@ -209,6 +209,10 @@ More docs found at `docs` folder
 
 <h2 align="center">Do you use this template?<br/>Don't be shy to give it a star! ★</h2>
 
+## Support
+
+<a href="https://www.buymeacoffee.com/XbgWxt567"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=XbgWxt567&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
+
 Also if you are into NestJS ecosystem you may be interested in one of my other libs:
 
 [nestjs-easyconfig](https://github.com/rubiin/nestjs-pino)
