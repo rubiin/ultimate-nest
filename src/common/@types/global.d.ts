@@ -61,10 +61,10 @@ declare global {
 
 			REDIS_TTL: number;
 			REDIS_URI: string;
-      REDIS_HOST: string;
+			REDIS_HOST: string;
 			REDIS_PASSWORD: string;
 			REDIS_USERNAME: string;
-			REDIS_PORT: number
+			REDIS_PORT: number;
 
 			RABBITMQ_URI: string;
 			RABBITMQ_EXCHANGE: string;

@@ -1,10 +1,10 @@
 import {
-  Crud,
-  CursorType,
-  PaginationRequest,
-  PaginationResponse,
-  PaginationType,
-  QueryOrder,
+	Crud,
+	CursorType,
+	PaginationRequest,
+	PaginationResponse,
+	PaginationType,
+	QueryOrder,
 } from "@common/@types";
 import { BaseEntity, BaseRepository } from "@common/database";
 import { User } from "@entities";
@@ -92,12 +92,9 @@ export abstract class BaseService<
 					return throwError(
 						() =>
 							new NotFoundException(
-								translate(
-									"exception.itemDoesNotExist",
-									{
-										args: { item: this.repository.getEntityName() },
-									},
-								),
+								translate("exception.itemDoesNotExist", {
+									args: { item: this.repository.getEntityName() },
+								}),
 							),
 					);
 				}

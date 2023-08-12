@@ -27,7 +27,7 @@ import {
 				watch: true,
 				includeSubfolders: true,
 			},
-      typesOutputPath: path.join(process.cwd() + "/src/generated/i18n-generated.ts"),
+			typesOutputPath: path.join(process.cwd() + "/src/generated/i18n-generated.ts"),
 			resolvers: [
 				new HeaderResolver(["x-custom-lang"]),
 				AcceptLanguageResolver,

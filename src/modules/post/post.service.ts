@@ -70,12 +70,9 @@ export class PostService {
 					return throwError(
 						() =>
 							new NotFoundException(
-								translate(
-									"exception.itemDoesNotExist",
-									{
-										args: { item: "Post" },
-									},
-								),
+								translate("exception.itemDoesNotExist", {
+									args: { item: "Post" },
+								}),
 							),
 					);
 				}

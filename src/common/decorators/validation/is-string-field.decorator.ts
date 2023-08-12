@@ -2,13 +2,13 @@ import { StringFieldOptions } from "@common/@types";
 import { validationI18nMessage } from "@lib/i18n";
 import { applyDecorators } from "@nestjs/common";
 import {
-  ArrayMaxSize,
-  ArrayMinSize,
-  ArrayNotEmpty,
-  IsArray,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
+	ArrayMaxSize,
+	ArrayMinSize,
+	ArrayNotEmpty,
+	IsArray,
+	IsNotEmpty,
+	IsOptional,
+	IsString,
 } from "class-validator";
 
 import { MinMaxLength } from "./min-max-length.decorator";
