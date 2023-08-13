@@ -464,7 +464,7 @@ search,
     repo: EntityRepository<T>,
     where: FilterQuery<T>,
     after?: string,
-afterCursor: CursorType = CursorType.STRING,
+    afterCursor: CursorType = CursorType.STRING,
   ): Promise<CursorPaginationResponse<T>> {
     let previousCount = 0
 
@@ -474,9 +474,11 @@ afterCursor: CursorType = CursorType.STRING,
       const oppositeOrder = getOppositeOrder(order)
       const countWhere = where
 
-      countWhere.$and = this.getFilters('createdAt', decoded, oppositeOrder)
+      // eslint-disable-next-line dot-notation
+      countWhere['$and'] = this.getFilters('createdAt', decoded, oppositeOrder)
       previousCount = await repo.count(countWhere)
-      where.$and = this.getFilters('createdAt', decoded, queryOrder)
+      // eslint-disable-next-line dot-notation
+      where['$and'] = this.getFilters('createdAt', decoded, queryOrder)
     }
 
     const [entities, count] = await repo.findAndCount(where, {
