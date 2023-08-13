@@ -1,39 +1,38 @@
-import { GenericController, SwaggerResponse } from "@common/decorators";
-import { CursorPaginationDto } from "@common/dtos";
-import { NewsLetter, Subscriber } from "@entities";
-import { ControllerFactory } from "@lib/crud/crud.controller";
-import { Body, Delete, Post } from "@nestjs/common";
-import { Observable } from "rxjs";
+import { Body, Delete, Post } from '@nestjs/common'
+import { Observable } from 'rxjs'
+import { CreateNewsletterDto, EditNewsletterDto, SubscribeNewsletterDto } from './dto'
+import { NewsLetterService } from './newsletter.service'
+import { GenericController, SwaggerResponse } from '@common/decorators'
+import { CursorPaginationDto } from '@common/dtos'
+import type { NewsLetter, Subscriber } from '@entities'
+import { ControllerFactory } from '@lib/crud/crud.controller'
 
-import { CreateNewsletterDto, EditNewsletterDto, SubscribeNewsletterDto } from "./dto";
-import { NewsLetterService } from "./newsletter.service";
-
-@GenericController("newsletter")
+@GenericController('newsletter')
 export class NewsLetterController extends ControllerFactory<
-	NewsLetter,
-	CursorPaginationDto,
-	CreateNewsletterDto,
-	EditNewsletterDto
+NewsLetter,
+CursorPaginationDto,
+CreateNewsletterDto,
+EditNewsletterDto
 >(CursorPaginationDto, CreateNewsletterDto, EditNewsletterDto) {
-	constructor(protected service: NewsLetterService) {
-		super();
-	}
+  constructor(protected service: NewsLetterService) {
+    super()
+  }
 
-	@Post("subscribe")
-	@SwaggerResponse({
-		operation: "Subscribe to newsletter",
-		badRequest: "Subscription already exist.",
-	})
-	subscribeNewsLetter(@Body() dto: SubscribeNewsletterDto): Observable<Subscriber> {
-		return this.service.subscribeNewsLetter(dto);
-	}
+  @Post('subscribe')
+  @SwaggerResponse({
+    operation: 'Subscribe to newsletter',
+    badRequest: 'Subscription already exist.',
+  })
+  subscribeNewsLetter(@Body() dto: SubscribeNewsletterDto): Observable<Subscriber> {
+    return this.service.subscribeNewsLetter(dto)
+  }
 
-	@Delete("unsubscribe")
-	@SwaggerResponse({
-		operation: "Subscribe to newsletter",
-		notFound: "Subscription does not exist.",
-	})
-	unSubscribeNewsLetter(@Body() dto: SubscribeNewsletterDto): Observable<Subscriber> {
-		return this.service.unSubscribeNewsLetter(dto);
-	}
+  @Delete('unsubscribe')
+  @SwaggerResponse({
+    operation: 'Subscribe to newsletter',
+    notFound: 'Subscription does not exist.',
+  })
+  unSubscribeNewsLetter(@Body() dto: SubscribeNewsletterDto): Observable<Subscriber> {
+    return this.service.unSubscribeNewsLetter(dto)
+  }
 }

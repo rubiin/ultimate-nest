@@ -1,106 +1,106 @@
-import { Roles } from "@common/@types";
+import { Type } from 'class-transformer'
+import { IsNotEmpty, IsUrl, ValidateNested } from 'class-validator'
+import { Roles } from '@common/@types'
 import {
-	IsEmailField,
-	IsEnumField,
-	IsPassword,
-	IsStringField,
-	IsUnique,
-	IsUsernameField,
-} from "@common/decorators";
-import { User } from "@entities";
-import { validationI18nMessage } from "@lib/i18n";
-import { Type } from "class-transformer";
-import { IsNotEmpty, IsUrl, ValidateNested } from "class-validator";
+  IsEmailField,
+  IsEnumField,
+  IsPassword,
+  IsStringField,
+  IsUnique,
+  IsUsernameField,
+} from '@common/decorators'
+import { User } from '@entities'
+import { validationI18nMessage } from '@lib/i18n'
 
 export class SocialDto {
-	/**
-	 * Twitter url of user
-	 * @example https://twitter.com/rubiin
-	 */
-	@IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
-	@IsUrl()
-	twitter?: string;
+/**
+* Twitter url of user
+* @example https://twitter.com/rubiin
+*/
+  @IsNotEmpty({ message: validationI18nMessage('validation.isNotEmpty') })
+  @IsUrl()
+twitter?: string
 
-	/**
-	 * Facebook url of user
-	 * @example https://facebook.com/rubiin
-	 */
-	@IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
-	@IsUrl()
-	facebook?: string;
+  /**
+* Facebook url of user
+* @example https://facebook.com/rubiin
+*/
+  @IsNotEmpty({ message: validationI18nMessage('validation.isNotEmpty') })
+  @IsUrl()
+facebook?: string
 
-	/**
-	 * Linkedin url of user
-	 * @example https://linkedin.com/rubiin
-	 */
-	@IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
-	@IsUrl()
-	linkedin?: string;
+  /**
+* Linkedin url of user
+* @example https://linkedin.com/rubiin
+*/
+  @IsNotEmpty({ message: validationI18nMessage('validation.isNotEmpty') })
+  @IsUrl()
+linkedin?: string
 }
 
 export class CreateUserDto {
-	/**
-	 * Username of user
-	 * @example rubiin
-	 */
+/**
+* Username of user
+* @example rubiin
+*/
 
-	@IsUsernameField()
-	@IsUnique(() => User, "username")
-	username!: string;
+  @IsUsernameField()
+  @IsUnique(() => User, 'username')
+username!: string
 
-	/**
-	 * Firstname of user
-	 * @example John
-	 */
+  /**
+* Firstname of user
+* @example John
+*/
 
-	@IsStringField({ maxLength: 50 })
-	firstName!: string;
+  @IsStringField({ maxLength: 50 })
+firstName!: string
 
-	/**
-	 * Middlename of user
-	 * @example d
-	 */
+  /**
+* Middlename of user
+* @example d
+*/
 
-	@IsStringField({ required: false, maxLength: 50 })
-	middleName?: string;
+  @IsStringField({ required: false, maxLength: 50 })
+middleName?: string
 
-	/**
-	 * Lastname of user
-	 * @example Doe
-	 */
+  /**
+* Lastname of user
+* @example Doe
+*/
 
-	@IsStringField({ maxLength: 50 })
-	lastName!: string;
+  @IsStringField({ maxLength: 50 })
+lastName!: string
 
-	/**
-	 * Email of user
-	 * @example someemail@gmail.com
-	 */
-	@IsUnique(() => User, "email")
-	@IsEmailField()
-	email!: string;
+  /**
+* Email of user
+* @example someemail@gmail.com
+*/
+  @IsUnique(() => User, 'email')
+  @IsEmailField()
+email!: string
 
-	/**
-	 * Password of user
-	 * @example SomePassword@123
-	 */
+  /**
+* Password of user
+* @example SomePassword@123
+*/
 
-	@IsStringField({ minLength: 8, maxLength: 50 })
-	@IsPassword({ message: validationI18nMessage("validation.isPassword") })
-	password!: string;
+  @IsStringField({ minLength: 8, maxLength: 50 })
+  @IsPassword({ message: validationI18nMessage('validation.isPassword') })
+password!: string
 
-	/**
-	 * Roles of user
-	 * @example ["ADMIN"]
-	 */
-	@IsEnumField(Roles, { each: true })
-	roles!: Roles[];
+  /**
+* Roles of user
+* @example ["ADMIN"]
+*/
+  @IsEnumField(Roles, { each: true })
+roles!: Roles[]
 
-	/**
-	 * Social handles of user
-	 * @example { twitter: "https://twitter.com/rubiin", facebook: "https://facebook.com/rubiin", linkedin: "https://linkedin.com/in/rubiin" }
-	 */
-	@ValidateNested()
-	@Type(() => SocialDto)
-	social?: SocialDto;
+  /**
+* Social handles of user
+* @example { twitter: "https://twitter.com/rubiin", facebook: "https://facebook.com/rubiin", linkedin: "https://linkedin.com/in/rubiin" }
+*/
+  @ValidateNested()
+  @Type(() => SocialDto)
+social?: SocialDto
 }

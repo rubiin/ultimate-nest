@@ -1,15 +1,14 @@
-import { GenericController, LoggedInUser } from "@common/decorators";
-import { User } from "@entities";
-import { Get } from "@nestjs/common";
+import { Get } from '@nestjs/common'
+import { ChatService } from './chat.service'
+import { GenericController, LoggedInUser } from '@common/decorators'
+import { User } from '@entities'
 
-import { ChatService } from "./chat.service";
-
-@GenericController("chat")
+@GenericController('chat')
 export class ChatController {
-	constructor(private readonly chatService: ChatService) {}
+  constructor(private readonly chatService: ChatService) {}
 
-	@Get()
-	async getConversationForUser(@LoggedInUser() user: User) {
-		return this.chatService.getConversationForUser(user);
-	}
+  @Get()
+  async getConversationForUser(@LoggedInUser() user: User) {
+    return this.chatService.getConversationForUser(user)
+  }
 }
