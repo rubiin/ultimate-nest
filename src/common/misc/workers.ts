@@ -1,23 +1,23 @@
-import { HelperService } from "@common/helpers";
-import { ThreadWorker } from "poolifier";
+import { ThreadWorker } from 'poolifier'
+import { HelperService } from '@common/helpers'
 
 const enum ThreadFunctions {
-	HashString = "hashString",
+  HashString = 'hashString',
 }
 
 // all expensive process goes here to avoid blocking the main thread
 const workerFunction = (data: { functionName: string; input: string }) => {
-	switch (data.functionName) {
-		case ThreadFunctions.HashString: {
-			return HelperService.hashString(data.input);
-		}
+  switch (data.functionName) {
+    case ThreadFunctions.HashString: {
+      return HelperService.hashString(data.input)
+    }
 
-		default: {
-			throw new Error("Invalid function name");
-		}
-	}
-};
+    default: {
+      throw new Error('Invalid function name')
+    }
+  }
+}
 
-const threadWorker = new ThreadWorker(workerFunction, { async: true });
+const threadWorker = new ThreadWorker(workerFunction, { async: true })
 
-export default threadWorker;
+export default threadWorker

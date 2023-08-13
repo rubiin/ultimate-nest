@@ -1,17 +1,17 @@
-import { IsStringField } from "@common/decorators";
+import { IsStringField } from '@common/decorators'
 
 export class CreateTagDto {
-	/**
-	 * Title of tag
-	 * @example "Lorem ipsum"
-	 */
-	@IsStringField()
-	title: string;
+/**
+* Title of tag
+* @example "Lorem ipsum"
+*/
+  @IsStringField()
+title: string
 
-	/**
-	 * Description of tag
-	 * @example "Lorem ipsum"
-	 */
-	@IsStringField()
-	description: string;
+  /**
+* Description of tag
+* @example "Lorem ipsum"
+*/
+  @IsStringField()
+description: string
 }

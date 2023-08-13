@@ -1,11 +1,11 @@
-import { IsStringField } from "@common/decorators";
+import { IsStringField } from '@common/decorators'
 
 export class CreateCommentDto {
-	/**
-	 * Content of comment
-	 * @example "This is a comment"
-	 */
+/**
+* Content of comment
+* @example "This is a comment"
+*/
 
-	@IsStringField()
-	body!: string;
+  @IsStringField()
+body!: string
 }

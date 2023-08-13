@@ -1,30 +1,30 @@
-import { BaseEntity } from "@common/database";
-import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
+import { Entity, ManyToOne, Property, Rel } from '@mikro-orm/core'
 
-import { User } from "./user.entity";
+import type { User } from './user.entity'
+import { BaseEntity } from '@common/database'
 
 @Entity()
 export class OtpLog extends BaseEntity {
-	@Property()
-	expiresIn!: Date;
+  @Property()
+expiresIn!: Date
 
-	@Property({
-		length: 20,
-		index: true,
-	})
-	otpCode?: string;
+  @Property({
+    length: 20,
+    index: true,
+  })
+otpCode?: string
 
-	@ManyToOne({
-		eager: false,
-		index: true,
-	})
-	user: Rel<User>;
+  @ManyToOne({
+    eager: false,
+    index: true,
+  })
+user: Rel<User>
 
-	@Property()
-	isUsed? = false;
+  @Property()
+isUsed? = false
 
-	constructor(partial?: Partial<OtpLog>) {
-		super();
-		Object.assign(this, partial);
-	}
+  constructor(partial?: Partial<OtpLog>) {
+    super()
+    Object.assign(this, partial)
+  }
 }

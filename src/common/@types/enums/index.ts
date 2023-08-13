@@ -1,2 +1,2 @@
-export * from "./misc.enum";
-export * from "./permission.enum";
+export * from './misc.enum'
+export * from './permission.enum'

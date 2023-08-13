@@ -1,5 +1,5 @@
 export interface ProfileData {
-	following: boolean;
-	avatar: string;
-	username: string;
+  following: boolean
+  avatar: string
+  username: string
 }

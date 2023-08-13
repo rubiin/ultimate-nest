@@ -1,1 +1,1 @@
-export * from "./sharp.pipe";
+export * from './sharp.pipe'
