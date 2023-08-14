@@ -22,7 +22,7 @@ const basePinoOptions = {
               context: 'HTTP',
             }),
             serializers: {
-              req(request) {
+              req(request: Record<string, any>) {
                 request.body = request.raw.body;
 
                 return request;

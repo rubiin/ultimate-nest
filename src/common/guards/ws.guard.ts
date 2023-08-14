@@ -17,7 +17,7 @@ private readonly userRepository: BaseRepository<User>,
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToWs().getClient().handshake;
-    const token = request.headers.authorization;
+    const token: string = request.headers.authorization;
 
     const payload: JwtPayload = await this.jwtService.verify(token);
     const user = await this.userRepository.findOne({ id: payload.sub });

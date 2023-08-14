@@ -38,7 +38,7 @@ export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, call$: CallHandler): Observable<unknown> {
     const request: Request = context.switchToHttp().getRequest();
     const { method, url, body, headers } = request;
-    const context_ = `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`;
+    const logContext = `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`;
     const message = `Request - ${method} - ${url}`;
 
     this.logger.log(
@@ -48,7 +48,7 @@ export class LoggingInterceptor implements NestInterceptor {
         body,
         headers,
       },
-      context_,
+      logContext,
     );
 
     return call$.handle().pipe(
@@ -73,7 +73,7 @@ export class LoggingInterceptor implements NestInterceptor {
     const response: Response = context.switchToHttp().getResponse<Response>();
     const { method, url } = request;
     const { statusCode } = response;
-    const context_ = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`;
+    const logContext = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`;
     const message = `Response - ${statusCode} - ${method} - ${url}`;
 
     this.logger.log(
@@ -81,7 +81,7 @@ export class LoggingInterceptor implements NestInterceptor {
         message,
         body,
       },
-      context_,
+      logContext,
     );
   }
 
@@ -96,7 +96,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
     if (error instanceof HttpException) {
       const statusCode: number = error.getStatus();
-      const context_ = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`;
+      const logContext = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`;
       const message = `Response - ${statusCode} - ${method} - ${url}`;
 
       if (statusCode >= HttpStatus.INTERNAL_SERVER_ERROR) {
@@ -109,7 +109,7 @@ export class LoggingInterceptor implements NestInterceptor {
             error,
           },
           error.stack,
-          context_,
+          logContext,
         );
       }
       else {
@@ -121,7 +121,7 @@ export class LoggingInterceptor implements NestInterceptor {
             body,
             message,
           },
-          context_,
+          logContext,
         );
       }
     }

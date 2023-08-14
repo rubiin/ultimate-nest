@@ -9,6 +9,9 @@ namespace Express {
 export interface Request {
 user?: UserEntity;
 realIp: string;
+body : Record<string, any>;
+ip: string;
+ips: string[];
 }
 }
 

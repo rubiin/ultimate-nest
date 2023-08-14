@@ -12,9 +12,9 @@ import {
 
 export interface ValidationArguments<
 Constraints extends unknown[] = [],
-Object_ extends object = object,
+CustomObject extends object = object,
 > extends BaseValidationArguments {
-  object: Object_;
+  object: CustomObject;
   constraints: Constraints;
 }
 
