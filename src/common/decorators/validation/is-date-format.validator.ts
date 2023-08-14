@@ -8,16 +8,16 @@ import {
   registerDecorator,
 } from 'class-validator';
 import { isMatch } from 'date-fns';
-import { HelperService } from '@common/helpers';
+import { isArray } from 'helper-fns';
 
 /* It validates that a date is in a given format */
 
 @ValidatorConstraint({ async: true })
 class IsDateInFormatConstraint implements ValidatorConstraintInterface {
   async validate(value: string | string[], arguments_: ValidationArguments) {
-    const [format] = arguments_.constraints;
+    const [format] = arguments_.constraints as string[];
 
-    if (HelperService.isArray(value))
+    if (isArray(value))
       return value.some(v => isMatch(v, format));
 
     return isMatch(value, format);

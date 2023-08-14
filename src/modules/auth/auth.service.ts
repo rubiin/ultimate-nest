@@ -153,7 +153,7 @@ private readonly em: EntityManager,
 * @param {string} refreshToken - The refresh token that was sent to the client.
 * @returns Observable<any>
 */
-  logout(user: User, refreshToken: string): Observable<any> {
+  logout(user: User, refreshToken: string): Observable<User> {
     return from(this.tokenService.decodeRefreshToken(refreshToken)).pipe(
       switchMap((payload) => {
         return this.tokenService.deleteRefreshToken(user, payload);

@@ -11,7 +11,7 @@ export class ExitInterceptor implements NestInterceptor {
       catchError((error: Error) => {
         return throwError(() => error);
       }),
-      map(data => data),
+      map((data: unknown) => data),
     );
   }
 }

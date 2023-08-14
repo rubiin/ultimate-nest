@@ -9,7 +9,7 @@ export const LoggedInUser = createParamDecorator((data: keyof User, context: Exe
   if (context.getType() === 'ws')
     request = context.switchToWs().getClient().handshake;
 
-  const user = request.user;
+  const user: User = request.user;
 
-  return data ? user?.[data] : user;
+  return data ? user[data] : user;
 });
