@@ -1,12 +1,12 @@
-import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq'
-import { Injectable, Logger } from '@nestjs/common'
-import { from, map, tap } from 'rxjs'
-import { MailerService } from '@lib/mailer/mailer.service'
-import { MailPayload, RoutingKey } from '@common/@types'
+import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { Injectable, Logger } from '@nestjs/common';
+import { from, map, tap } from 'rxjs';
+import { MailerService } from '@lib/mailer/mailer.service';
+import { MailPayload, RoutingKey } from '@common/@types';
 
 @Injectable()
 export class MailProcessor {
-  private logger = new Logger(MailProcessor.name)
+  private logger = new Logger(MailProcessor.name);
 
   constructor(private readonly mailService: MailerService) {}
 
@@ -33,6 +33,6 @@ export class MailProcessor {
           ),
         ),
       ),
-    )
+    );
   }
 }

@@ -1,23 +1,23 @@
-import { UseInterceptors, applyDecorators } from '@nestjs/common'
-import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express'
+import { UseInterceptors, applyDecorators } from '@nestjs/common';
+import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import type {
   MulterField,
   MulterOptions,
-} from '@nestjs/platform-express/multer/interfaces/multer-options.interface'
-import { ApiBody, ApiConsumes } from '@nestjs/swagger'
+} from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import type {
   ReferenceObject,
   SchemaObject,
-} from '@nestjs/swagger/dist/interfaces/open-api-spec.interface'
+} from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 
 interface ApiFileOptions {
-  fieldName?: string
-  required?: boolean
-  localOptions?: MulterOptions
+  fieldName?: string;
+  required?: boolean;
+  localOptions?: MulterOptions;
 }
 
 interface ApiFilesOptions extends ApiFileOptions {
-  maxCount?: number
+  maxCount?: number;
 }
 
 /**
@@ -27,7 +27,7 @@ interface ApiFilesOptions extends ApiFileOptions {
 * @param options_
 */
 export const ApiFile = (options_?: ApiFileOptions) => {
-  const options: ApiFileOptions = { fieldName: 'file', required: false, ...options_ }
+  const options: ApiFileOptions = { fieldName: 'file', required: false, ...options_ };
 
   return applyDecorators(
     UseInterceptors(FileInterceptor(options.fieldName, options.localOptions)),
@@ -44,8 +44,8 @@ export const ApiFile = (options_?: ApiFileOptions) => {
         },
       },
     }),
-  )
-}
+  );
+};
 
 /**
 * It adds the `@UseInterceptors(FilesInterceptor(...))` decorator to the route handler, and adds the
@@ -59,7 +59,7 @@ export const ApiFiles = (options_?: ApiFilesOptions) => {
     required: false,
     maxCount: 10,
     ...options_,
-  }
+  };
 
   return applyDecorators(
     UseInterceptors(
@@ -81,8 +81,8 @@ export const ApiFiles = (options_?: ApiFilesOptions) => {
         },
       },
     }),
-  )
-}
+  );
+};
 
 /**
 * It takes an array of MulterFields and returns a decorator that will add the appropriate OpenAPI
@@ -99,9 +99,9 @@ export const ApiFileFields = (
   const bodyProperties: Record<string, SchemaObject | ReferenceObject> = Object.assign(
     {},
     ...options.map((field) => {
-      return { [field.name]: { type: 'string', format: 'binary' } }
+      return { [field.name]: { type: 'string', format: 'binary' } };
     }),
-  )
+  );
 
   return applyDecorators(
     UseInterceptors(FileFieldsInterceptor(options, localOptions)),
@@ -113,5 +113,5 @@ export const ApiFileFields = (
         required: options.filter(f => f.required).map(f => f.name),
       },
     }),
-  )
-}
+  );
+};

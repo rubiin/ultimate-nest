@@ -1,5 +1,5 @@
-import { IsJWT, IsNotEmpty } from 'class-validator'
-import { validationI18nMessage } from '@lib/i18n'
+import { IsJWT, IsNotEmpty } from 'class-validator';
+import { validationI18nMessage } from '@lib/i18n';
 
 export class RefreshTokenDto {
 /**
@@ -13,5 +13,5 @@ export class RefreshTokenDto {
       type: 'jwt',
     }),
   })
-refreshToken!: string
+refreshToken!: string;
 }

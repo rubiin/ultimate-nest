@@ -1,8 +1,8 @@
-import type { EntityManager } from '@mikro-orm/core'
-import { Seeder } from '@mikro-orm/seeder'
+import type { EntityManager } from '@mikro-orm/core';
+import { Seeder } from '@mikro-orm/seeder';
+import { UserFactory } from '../factories';
 
-import { UserFactory } from '../factories'
-import { Roles } from '@common/@types'
+import { Roles } from '@common/@types';
 
 /*
 * It creates a user with the email and password specified in the .env file, and gives them the admin role
@@ -15,6 +15,6 @@ export class AdminSeeder extends Seeder {
       firstName: 'Rubin',
       lastName: 'Bhandari',
       roles: [Roles.ADMIN],
-    })
+    });
   }
 }

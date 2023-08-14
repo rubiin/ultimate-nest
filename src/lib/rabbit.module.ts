@@ -1,9 +1,9 @@
-import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq'
-import { Global, Logger, Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { NestConfigModule } from '@lib/config/config.module'
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { Global, Logger, Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { NestConfigModule } from '@lib/config/config.module';
 
-const logger = new Logger('RabbitMQ')
+const logger = new Logger('RabbitMQ');
 
 @Global()
 @Module({

@@ -1,15 +1,15 @@
-import { InjectRepository } from '@mikro-orm/nestjs'
-import { EntityManager } from '@mikro-orm/postgresql'
-import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import type { Response } from 'express'
-import { authenticator } from 'otplib'
-import { toFileStream } from 'qrcode'
-import type { Observable } from 'rxjs'
-import { from, map, throwError } from 'rxjs'
-import { translate } from '@lib/i18n'
-import { User } from '@entities'
-import { BaseRepository } from '@common/database'
+import type { Response } from 'express';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityManager } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { authenticator } from 'otplib';
+import { toFileStream } from 'qrcode';
+import type { Observable } from 'rxjs';
+import { from, map, throwError } from 'rxjs';
+import { translate } from '@lib/i18n';
+import { User } from '@entities';
+import { BaseRepository } from '@common/database';
 
 @Injectable()
 export class TwoFactorService {
@@ -28,21 +28,21 @@ private readonly em: EntityManager,
 */
 
   generateTwoFactorSecret(user: User): Observable<{ secret: string; otpAuthUrl: string }> {
-    const secret = authenticator.generateSecret()
+    const secret = authenticator.generateSecret();
 
     const otpAuthUrl = authenticator.keyuri(
       user.email,
       this.configService.get('app.name', { infer: true }),
       secret,
-    )
+    );
 
-    this.userRepository.assign(user, { twoFactorSecret: secret })
+    this.userRepository.assign(user, { twoFactorSecret: secret });
 
     return from(this.em.flush()).pipe(
       map(() => {
-        return { secret, otpAuthUrl }
+        return { secret, otpAuthUrl };
       }),
-    )
+    );
   }
 
   /**
@@ -53,7 +53,7 @@ private readonly em: EntityManager,
 * @returns Observable<unknown>
 */
   pipeQrCodeStream(stream: Response, otpAuthUrl: string): Observable<unknown> {
-    return from(toFileStream(stream, otpAuthUrl))
+    return from(toFileStream(stream, otpAuthUrl));
   }
 
   /**
@@ -66,7 +66,7 @@ private readonly em: EntityManager,
     return authenticator.verify({
       token: twoFactorAuthenticationCode,
       secret: user.twoFactorSecret,
-    })
+    });
   }
 
   /**
@@ -80,18 +80,18 @@ private readonly em: EntityManager,
     twoFactorAuthenticationCode: string,
     user: User,
   ): Observable<User> {
-    const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user)
+    const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user);
 
     if (!isCodeValid) {
       return throwError(() =>
         translate('exception.refreshToken', {
           args: { error: 'malformed' },
         }),
-      )
+      );
     }
 
-    this.userRepository.assign(user, { isTwoFactorEnabled: true })
+    this.userRepository.assign(user, { isTwoFactorEnabled: true });
 
-    return from(this.em.flush()).pipe(map(() => user))
+    return from(this.em.flush()).pipe(map(() => user));
   }
 }

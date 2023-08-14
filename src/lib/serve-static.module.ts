@@ -1,7 +1,7 @@
-import { join } from 'node:path'
+import { join } from 'node:path';
 
-import { Module } from '@nestjs/common'
-import { ServeStaticModule } from '@nestjs/serve-static'
+import { Module } from '@nestjs/common';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [

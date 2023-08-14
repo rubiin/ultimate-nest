@@ -1,20 +1,20 @@
-import type { EntityData, RequiredEntityData } from '@mikro-orm/core'
-import { NotFoundException } from '@nestjs/common'
-import type { Observable } from 'rxjs'
-import { from, map, mergeMap, of, switchMap, throwError } from 'rxjs'
+import type { EntityData, RequiredEntityData } from '@mikro-orm/core';
+import { NotFoundException } from '@nestjs/common';
+import type { Observable } from 'rxjs';
+import { from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
 import type {
   Crud,
   PaginationRequest,
   PaginationResponse,
-} from '@common/@types'
+} from '@common/@types';
 import {
   CursorType,
   PaginationType,
   QueryOrder,
-} from '@common/@types'
-import type { BaseEntity, BaseRepository } from '@common/database'
-import type { User } from '@entities'
-import { translate } from '@lib/i18n'
+} from '@common/@types';
+import type { BaseEntity, BaseRepository } from '@common/database';
+import type { User } from '@entities';
+import { translate } from '@lib/i18n';
 
 export abstract class BaseService<
 Entity extends BaseEntity,
@@ -22,8 +22,8 @@ paginationRequest extends PaginationRequest,
 CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
 UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > implements Crud<Entity, paginationRequest> {
-  protected searchField: keyof Entity
-  protected queryName = 'entity'
+  protected searchField: keyof Entity;
+  protected queryName = 'entity';
 
   protected constructor(private readonly repository: BaseRepository<Entity>) {}
 
@@ -38,11 +38,11 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 */
 
   create(dto: CreateDto, _user?: User): Observable<Entity> {
-    const entity = this.repository.create(dto)
+    const entity = this.repository.create(dto);
 
     return from(this.repository.getEntityManager().persistAndFlush(entity)).pipe(
       map(() => entity),
-    )
+    );
   }
 
   /**
@@ -51,7 +51,7 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 * @param dto - The DTO that will be used to search for the entities.
 */
   findAll(dto: PaginationRequest): Observable<PaginationResponse<Entity>> {
-    const qb = this.repository.createQueryBuilder(this.queryName)
+    const qb = this.repository.createQueryBuilder(this.queryName);
 
     if (dto.type === PaginationType.CURSOR) {
       // by default, the id is used as cursor
@@ -68,7 +68,7 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
             ...dto,
           },
         }),
-      )
+      );
     }
 
     return this.repository.qbOffsetPagination({
@@ -80,7 +80,7 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
         ...dto,
       },
       qb,
-    })
+    });
   }
 
   /**
@@ -98,12 +98,12 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
                   args: { item: this.repository.getEntityName() },
                 }),
               ),
-          )
+          );
         }
 
-        return of(entity)
+        return of(entity);
       }),
-    )
+    );
   }
 
   /**
@@ -114,11 +114,11 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
   update(index: string, dto: UpdateDto): Observable<Entity> {
     return this.findOne(index).pipe(
       switchMap((item) => {
-        this.repository.assign(item, dto)
+        this.repository.assign(item, dto);
 
-        return this.repository.softRemoveAndFlush(item).pipe(map(() => item))
+        return this.repository.softRemoveAndFlush(item).pipe(map(() => item));
       }),
-    )
+    );
   }
 
   /**
@@ -129,8 +129,8 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
   remove(index: string): Observable<Entity> {
     return this.findOne(index).pipe(
       switchMap((item) => {
-        return this.repository.softRemoveAndFlush(item).pipe(map(() => item))
+        return this.repository.softRemoveAndFlush(item).pipe(map(() => item));
       }),
-    )
+    );
   }
 }

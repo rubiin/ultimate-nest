@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import {
   Body,
   DefaultValuePipe,
@@ -9,13 +10,11 @@ import {
   Req,
   Res,
   UseGuards,
-} from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
-import { ApiOperation } from '@nestjs/swagger'
-import { Request, Response } from 'express'
-import { Observable, map } from 'rxjs'
-
-import { AuthService } from './auth.service'
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiOperation } from '@nestjs/swagger';
+import { Observable, map } from 'rxjs';
+import { MagicLoginStrategy } from './strategies';
 import {
   ChangePasswordDto,
   MagicLinkLogin,
@@ -24,14 +23,15 @@ import {
   ResetPasswordDto,
   SendOtpDto,
   UserLoginDto,
-} from './dtos'
-import { MagicLoginStrategy } from './strategies'
-import { TokensService } from '@modules/token/tokens.service'
-import type { OtpLog } from '@entities'
-import { User } from '@entities'
-import { Auth, GenericController, LoggedInUser, SwaggerResponse } from '@common/decorators'
-import type { AuthenticationResponse } from '@common/@types'
-import { OauthResponse } from '@common/@types'
+} from './dtos';
+import { AuthService } from './auth.service';
+
+import { TokensService } from '@modules/token/tokens.service';
+import type { OtpLog } from '@entities';
+import { User } from '@entities';
+import { Auth, GenericController, LoggedInUser, SwaggerResponse } from '@common/decorators';
+import type { AuthenticationResponse } from '@common/@types';
+import { OauthResponse } from '@common/@types';
 
 @GenericController('auth', false)
 export class AuthController {
@@ -44,7 +44,7 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: 'User Login' })
   login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {
-    return this.authService.login(loginDto)
+    return this.authService.login(loginDto);
   }
 
   @Post('login/magic')
@@ -56,9 +56,9 @@ export class AuthController {
   ): Observable<void> {
     return this.authService.validateUser(false, dto.destination).pipe(
       map((_user) => {
-        this.magicStrategy.send(request, response)
+        this.magicStrategy.send(request, response);
       }),
-    )
+    );
   }
 
   @Post('reset-password')
@@ -68,7 +68,7 @@ export class AuthController {
     badRequest: 'Otp is expired.',
   })
   resetUserPassword(@Body() dto: ResetPasswordDto): Observable<User> {
-    return this.authService.resetPassword(dto)
+    return this.authService.resetPassword(dto);
   }
 
   @Auth()
@@ -78,7 +78,7 @@ export class AuthController {
     notFound: 'Account doesn\'t exist.',
   })
   forgotPassword(@Body() dto: SendOtpDto): Observable<OtpLog> {
-    return this.authService.forgotPassword(dto)
+    return this.authService.forgotPassword(dto);
   }
 
   @UseGuards(AuthGuard('magicLogin'))
@@ -89,9 +89,9 @@ export class AuthController {
         // client url
         return response.redirect(
 `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
-        )
+        );
       }),
-    )
+    );
   }
 
   @Get('google')
@@ -112,9 +112,9 @@ user: OauthResponse,
         // client url
         return response.redirect(
 `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
-        )
+        );
       }),
-    )
+    );
   }
 
   @Get('facebook')
@@ -135,15 +135,15 @@ user: OauthResponse,
         // client url
         return response.redirect(
 `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
-        )
+        );
       }),
-    )
+    );
   }
 
   // this simulates a frontend url for testing oauth login
   @Get('oauth/login')
   oauthMock(@Query() query: { token: string }) {
-    return { message: 'successfully logged', token: query.token }
+    return { message: 'successfully logged', token: query.token };
   }
 
   @Post('verify-otp')
@@ -153,7 +153,7 @@ user: OauthResponse,
     badRequest: 'Otp is expired.',
   })
   verifyOtp(@Body() dto: OtpVerifyDto): Observable<User> {
-    return this.authService.verifyOtp(dto)
+    return this.authService.verifyOtp(dto);
   }
 
   @Auth()
@@ -163,7 +163,7 @@ user: OauthResponse,
     badRequest: 'Username and password provided does not match.',
   })
   changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User): Observable<User> {
-    return this.authService.changePassword(dto, user)
+    return this.authService.changePassword(dto, user);
   }
 
   @ApiOperation({ summary: 'Refresh token' })
@@ -171,7 +171,7 @@ user: OauthResponse,
   refresh(@Body() body: RefreshTokenDto): Observable<any> {
     return this.tokenService
       .createAccessTokenFromRefreshToken(body.refreshToken)
-      .pipe(map(token => ({ token })))
+      .pipe(map(token => ({ token })));
   }
 
   @Auth()
@@ -184,6 +184,6 @@ user: OauthResponse,
   ): Observable<User> {
     return fromAll
       ? this.authService.logoutFromAll(user)
-      : this.authService.logout(user, refreshToken.refreshToken)
+      : this.authService.logout(user, refreshToken.refreshToken);
   }
 }

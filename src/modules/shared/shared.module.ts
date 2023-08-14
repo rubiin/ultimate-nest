@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common'
-import { ScheduleModule } from '@nestjs/schedule'
-import { IsUniqueConstraint } from '@common/decorators/validation'
-import { NestConfigModule } from '@lib/config/config.module'
+import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
+import { IsUniqueConstraint } from '@common/decorators/validation';
+import { NestConfigModule } from '@lib/config/config.module';
 import {
   NestCaslModule,
   NestCloudinaryModule,
@@ -13,18 +13,18 @@ import {
   NestServeStaticModule,
   NestThrottlerModule,
   OrmModule,
-} from '@lib/index'
-import { NestPinoModule } from '@lib/pino/pino.module'
-import { NestRabbitModule } from '@lib/rabbit/rabbit.module'
-import { AuthModule } from '@modules/auth/auth.module'
-import { CategoryModule } from '@modules/category/category.module'
-import { ChatModule } from '@modules/chat/chat.module'
-import { HealthModule } from '@modules/health/health.module'
-import { PostModule } from '@modules/post/post.module'
-import { ProfileModule } from '@modules/profile/profile.module'
-import { TagsModule } from '@modules/tags/tags.module'
-import { TwoFactorModule } from '@modules/twofa/twofa.module'
-import { UserModule } from '@modules/user/user.module'
+} from '@lib/index';
+import { NestPinoModule } from '@lib/pino/pino.module';
+import { NestRabbitModule } from '@lib/rabbit/rabbit.module';
+import { AuthModule } from '@modules/auth/auth.module';
+import { CategoryModule } from '@modules/category/category.module';
+import { ChatModule } from '@modules/chat/chat.module';
+import { HealthModule } from '@modules/health/health.module';
+import { PostModule } from '@modules/post/post.module';
+import { ProfileModule } from '@modules/profile/profile.module';
+import { TagsModule } from '@modules/tags/tags.module';
+import { TwoFactorModule } from '@modules/twofa/twofa.module';
+import { UserModule } from '@modules/user/user.module';
 
 @Module({
   imports: [

@@ -1,8 +1,8 @@
-import type { EntityData, RequiredEntityData } from '@mikro-orm/core'
+import type { EntityData, RequiredEntityData } from '@mikro-orm/core';
 import type {
   ArgumentMetadata,
   Type,
-} from '@nestjs/common'
+} from '@nestjs/common';
 import {
   Body,
   Delete,
@@ -14,28 +14,28 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
-} from '@nestjs/common'
-import { Observable } from 'rxjs'
-import type { BaseService } from './crud.service'
-import type { Crud, PaginationRequest, PaginationResponse } from '@common/@types'
-import type { BaseEntity } from '@common/database'
-import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from '@common/decorators'
-import { AppUtils } from '@common/helpers'
-import { User } from '@entities'
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import type { BaseService } from './crud.service';
+import type { Crud, PaginationRequest, PaginationResponse } from '@common/@types';
+import type { BaseEntity } from '@common/database';
+import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from '@common/decorators';
+import { AppUtils } from '@common/helpers';
+import { User } from '@entities';
 
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {
   constructor(private readonly targetTypes: { body?: Type; query?: Type; param?: Type }) {
-    super(AppUtils.validationPipeOptions())
+    super(AppUtils.validationPipeOptions());
   }
 
   async transform(value: any, metadata: ArgumentMetadata) {
-    const targetType = this.targetTypes[metadata.type]
+    const targetType = this.targetTypes[metadata.type];
 
     if (!targetType)
-      return super.transform(value, metadata)
+      return super.transform(value, metadata);
 
-    return super.transform(value, { ...metadata, metatype: targetType })
+    return super.transform(value, { ...metadata, metatype: targetType });
   }
 }
 
@@ -47,12 +47,12 @@ U extends EntityData<T>,
 >(queryDto: Type<Q>, createDto: Type<C>, updateDto: Type<U>): Type<Crud<T, Q, C, U>> {
   const createPipe = new AbstractValidationPipe({
     body: createDto,
-  })
+  });
   const updatePipe = new AbstractValidationPipe({
     body: updateDto,
-  })
+  });
 
-  const queryPipe = new AbstractValidationPipe({ query: queryDto })
+  const queryPipe = new AbstractValidationPipe({ query: queryDto });
 
   class CrudController<
 T extends BaseEntity,
@@ -60,7 +60,7 @@ Q extends PaginationRequest,
 C extends RequiredEntityData<T>,
 U extends EntityData<T>,
 > implements Crud<T, Q, C, U> {
-    protected service: BaseService<T, Q, C, U>
+    protected service: BaseService<T, Q, C, U>;
 
     @Get(':idx')
     @SwaggerResponse({
@@ -69,14 +69,14 @@ U extends EntityData<T>,
       params: ['idx'],
     })
     findOne(@Param('idx') index: string): Observable<T> {
-      return this.service.findOne(index)
+      return this.service.findOne(index);
     }
 
     @ApiPaginatedResponse(updateDto)
     @UsePipes(queryPipe)
     @Get()
     findAll(@Query() query: Q): Observable<PaginationResponse<T>> {
-      return this.service.findAll(query)
+      return this.service.findAll(query);
     }
 
     @SwaggerResponse({
@@ -88,7 +88,7 @@ U extends EntityData<T>,
     @UsePipes(createPipe)
     @Post()
     create(@Body() body: C, @LoggedInUser() user?: User): Observable<T> {
-      return this.service.create(body, user)
+      return this.service.create(body, user);
     }
 
     @SwaggerResponse({
@@ -101,7 +101,7 @@ U extends EntityData<T>,
     @UsePipes(updatePipe)
     @Put(':idx')
     update(@Param('idx') index: string, @Body() body: U): Observable<T> {
-      return this.service.update(index, body)
+      return this.service.update(index, body);
     }
 
     @SwaggerResponse({
@@ -112,9 +112,9 @@ U extends EntityData<T>,
     })
     @Delete(':idx')
     remove(@Param('idx') index: string): Observable<T> {
-      return this.service.remove(index)
+      return this.service.remove(index);
     }
   }
 
-  return CrudController
+  return CrudController;
 }

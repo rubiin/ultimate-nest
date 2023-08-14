@@ -1,9 +1,9 @@
-import { Body, Delete, Get, Post, Put, Query, UploadedFile } from '@nestjs/common'
-import { Observable } from 'rxjs'
-import { CreateUserDto, EditUserDto, UserRegistrationDto } from './dtos'
-import { UserService } from './user.service'
-import type { PaginationResponse } from '@common/@types'
-import { Action, File, Roles } from '@common/@types'
+import { Body, Delete, Get, Post, Put, Query, UploadedFile } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { CreateUserDto, EditUserDto, UserRegistrationDto } from './dtos';
+import { UserService } from './user.service';
+import type { PaginationResponse } from '@common/@types';
+import { Action, File, Roles } from '@common/@types';
 import {
   ApiFile,
   ApiPaginatedResponse,
@@ -11,11 +11,11 @@ import {
   Public,
   SwaggerResponse,
   UUIDParam,
-} from '@common/decorators'
-import { CursorPaginationDto } from '@common/dtos'
-import { fileValidatorPipe } from '@common/misc'
-import { User } from '@entities'
-import { CheckPolicies, GenericPolicyHandler } from '@lib/casl'
+} from '@common/decorators';
+import { CursorPaginationDto } from '@common/dtos';
+import { fileValidatorPipe } from '@common/misc';
+import { User } from '@entities';
+import { CheckPolicies, GenericPolicyHandler } from '@lib/casl';
 
 @GenericController('users')
 export class UserController {
@@ -25,7 +25,7 @@ export class UserController {
   @ApiPaginatedResponse(User)
   @Get()
   findAll(@Query() PaginationDto: CursorPaginationDto): Observable<PaginationResponse<User>> {
-    return this.userService.findAll(PaginationDto)
+    return this.userService.findAll(PaginationDto);
   }
 
   @Public()
@@ -44,7 +44,7 @@ image: File,
       ...dto,
       roles: [Roles.AUTHOR],
       files: image,
-    })
+    });
   }
 
   @Get(':idx')
@@ -55,7 +55,7 @@ image: File,
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Read))
   findOne(@UUIDParam('idx') index: string): Observable<User> {
-    return this.userService.findOne(index)
+    return this.userService.findOne(index);
   }
 
   @Post()
@@ -70,7 +70,7 @@ image: File,
 @UploadedFile(fileValidatorPipe({}))
 image: File,
   ): Observable<User> {
-    return this.userService.create({ ...dto, files: image })
+    return this.userService.create({ ...dto, files: image });
   }
 
   @Put(':idx')
@@ -86,7 +86,7 @@ image: File,
 @Body() dto: EditUserDto,
 @UploadedFile(fileValidatorPipe({ required: false })) image?: File,
   ): Observable<User> {
-    return this.userService.update(index, dto, image)
+    return this.userService.update(index, dto, image);
   }
 
   @Delete(':idx')
@@ -97,6 +97,6 @@ image: File,
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Delete))
   remove(@UUIDParam('idx') index: string): Observable<User> {
-    return this.userService.remove(index)
+    return this.userService.remove(index);
   }
 }

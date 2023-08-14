@@ -1,11 +1,11 @@
-import type { Faker } from '@mikro-orm/seeder'
-import { Factory } from '@mikro-orm/seeder'
-import { Roles } from '@common/@types'
-import { User } from '@entities'
+import type { Faker } from '@mikro-orm/seeder';
+import { Factory } from '@mikro-orm/seeder';
+import { Roles } from '@common/@types';
+import { User } from '@entities';
 
 /* `UserFactory` is a factory that creates `User` instances */
 export class UserFactory extends Factory<User> {
-  model = User
+  model = User;
 
   definition(faker: Faker): Partial<User> {
     return {
@@ -24,6 +24,6 @@ export class UserFactory extends Factory<User> {
         facebook: faker.internet.url(),
         linkedin: faker.internet.url(),
       },
-    }
+    };
   }
 }

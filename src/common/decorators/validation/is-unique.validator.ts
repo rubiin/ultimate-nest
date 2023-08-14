@@ -1,24 +1,24 @@
-import { EntityManager } from '@mikro-orm/core'
-import type { Type } from '@nestjs/common'
+import { EntityManager } from '@mikro-orm/core';
+import type { Type } from '@nestjs/common';
 import type {
   ValidationArguments as BaseValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from 'class-validator'
+} from 'class-validator';
 import {
   ValidatorConstraint,
   registerDecorator,
-} from 'class-validator'
+} from 'class-validator';
 
 export interface ValidationArguments<
 Constraints extends unknown[] = [],
 Object_ extends object = object,
 > extends BaseValidationArguments {
-  object: Object_
-  constraints: Constraints
+  object: Object_;
+  constraints: Constraints;
 }
 
-export type IsUniqueValidationContext = ValidationArguments<Parameters<typeof IsUnique>>
+export type IsUniqueValidationContext = ValidationArguments<Parameters<typeof IsUnique>>;
 
 @ValidatorConstraint({ async: true })
 export class IsUniqueConstraint implements ValidatorConstraintInterface {
@@ -28,14 +28,14 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
     value: Entity[Field],
     context: IsUniqueValidationContext,
   ): Promise<boolean> {
-    const [entityType, field] = context.constraints
-    const result = await this.em.count(entityType(), { [field]: value })
+    const [entityType, field] = context.constraints;
+    const result = await this.em.count(entityType(), { [field]: value });
 
-    return result === 0
+    return result === 0;
   }
 
   defaultMessage(context: IsUniqueValidationContext): string {
-    return `${context.property} must be unique`
+    return `${context.property} must be unique`;
   }
 }
 
@@ -48,4 +48,4 @@ export const IsUnique
       options,
       propertyName,
       validator: IsUniqueConstraint,
-    })
+    });

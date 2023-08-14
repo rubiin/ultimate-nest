@@ -6,15 +6,15 @@ import type {
   FilterQuery,
   FindOptions,
   Loaded,
-} from '@mikro-orm/core'
-import { EntityRepository } from '@mikro-orm/postgresql'
-import { BadRequestException, NotFoundException } from '@nestjs/common'
-import type { Observable } from 'rxjs'
-import { from, map, of, switchMap, throwError } from 'rxjs'
+} from '@mikro-orm/core';
+import { EntityRepository } from '@mikro-orm/postgresql';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+import type { Observable } from 'rxjs';
+import { from, map, of, switchMap, throwError } from 'rxjs';
+import type { BaseEntity } from './base.entity';
 
-import type { BaseEntity } from './base.entity'
-import { translate } from '@lib/i18n'
-import { HelperService } from '@common/helpers'
+import { translate } from '@lib/i18n';
+import { HelperService } from '@common/helpers';
 import type {
   CursorPaginationResponse,
   OppositeOrder,
@@ -23,17 +23,17 @@ import type {
   QBCursorPaginationOptions,
   QBOffsetPaginationOptions,
   QueryOrder,
-} from '@common/@types'
+} from '@common/@types';
 import {
   CursorType,
   OffsetMeta,
   OffsetPaginationResponse,
   getOppositeOrder,
   getQueryOrder,
-} from '@common/@types'
+} from '@common/@types';
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
-  private readonly encoding: BufferEncoding = 'base64'
+  private readonly encoding: BufferEncoding = 'base64';
 
   /**
 * The exists function checks if there are any records that match the given filter query.
@@ -43,7 +43,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 * @returns The `exists` method is returning an `Observable<boolean>`.
 */
   exists(where: FilterQuery<T>): Observable<boolean> {
-    return from(this.qb().where(where).getCount()).pipe(map(count => count > 0))
+    return from(this.qb().where(where).getCount()).pipe(map(count => count > 0));
   }
 
   /**
@@ -51,7 +51,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 * @returns The method `getEntityName()` is returning an object of type `EntityName<T>`.
 */
   getEntityName(): EntityName<T> {
-    return this.entityName
+    return this.entityName;
   }
 
   /**
@@ -62,11 +62,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 * @memberof BaseRepositroy
 */
   softRemove(entity: T): EntityManager {
-    entity.deletedAt = new Date()
-    entity.isDeleted = true
-    this.em.persist(entity)
+    entity.deletedAt = new Date();
+    entity.isDeleted = true;
+    this.em.persist(entity);
 
-    return this.em
+    return this.em;
   }
 
   /**
@@ -77,10 +77,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 * @memberof BaseRepositroy
 */
   softRemoveAndFlush(entity: T): Observable<T> {
-    entity.deletedAt = new Date()
-    entity.isDeleted = true
+    entity.deletedAt = new Date();
+    entity.isDeleted = true;
 
-    return from(this.em.persistAndFlush(entity)).pipe(map(() => entity))
+    return from(this.em.persistAndFlush(entity)).pipe(map(() => entity));
   }
 
   /**
@@ -96,7 +96,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   ): Observable<{ total: number; results: Loaded<T, Populate>[] }> {
     return from(this.findAndCount(where, options)).pipe(
       map(([results, total]) => ({ total, results })),
-    )
+    );
   }
 
   /**
@@ -105,9 +105,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 * @returns
 */
   delete(entity: T): T {
-    this.em.remove(entity)
+    this.em.remove(entity);
 
-    return entity
+    return entity;
   }
 
   /**
@@ -127,13 +127,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
                   args: { item: this.getEntityName() },
                 }),
               ),
-          )
+          );
         }
-        this.em.assign(entity, update)
+        this.em.assign(entity, update);
 
-        return from(this.em.persistAndFlush(entity)).pipe(map(() => entity))
+        return from(this.em.persistAndFlush(entity)).pipe(map(() => entity));
       }),
-    )
+    );
   }
 
   /**
@@ -152,13 +152,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
                   args: { item: this.getEntityName() },
                 }),
               ),
-          )
+          );
         }
-        this.em.remove(entity)
+        this.em.remove(entity);
 
-        return of(entity)
+        return of(entity);
       }),
-    )
+    );
   }
 
   /**
@@ -177,12 +177,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
                   args: { item: this.getEntityName() },
                 }),
               ),
-          )
+          );
         }
 
-        return this.softRemoveAndFlush(entity)
+        return this.softRemoveAndFlush(entity);
       }),
-    )
+    );
   }
 
   /**
@@ -197,7 +197,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       [cursor]: {
         [order]: decoded,
       },
-    }
+    };
   }
 
   /**
@@ -207,27 +207,27 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     cursor: string,
 cursorType: CursorType = CursorType.STRING,
   ): string | number | Date {
-    const string = Buffer.from(cursor, this.encoding).toString('utf8')
+    const string = Buffer.from(cursor, this.encoding).toString('utf8');
 
     switch (cursorType) {
       case CursorType.DATE: {
-        const millisUnix = Number.parseInt(string, 10)
+        const millisUnix = Number.parseInt(string, 10);
 
         if (Number.isNaN(millisUnix))
-          throw new BadRequestException(translate('exception.cursorInvalidDate'))
+          throw new BadRequestException(translate('exception.cursorInvalidDate'));
 
-        return new Date(millisUnix)
+        return new Date(millisUnix);
       }
       case CursorType.NUMBER: {
-        const number = Number.parseInt(string, 10)
+        const number = Number.parseInt(string, 10);
 
         if (Number.isNaN(number))
-          throw new BadRequestException(translate('exception.cursorInvalidNumber'))
+          throw new BadRequestException(translate('exception.cursorInvalidNumber'));
 
-        return number
+        return number;
       }
       default: {
-        return string
+        return string;
       }
     }
   }
@@ -237,12 +237,12 @@ cursorType: CursorType = CursorType.STRING,
 * representation of it
 */
   encodeCursor(value: Date | string | number): string {
-    let string = value.toString()
+    let string = value.toString();
 
     if (value instanceof Date)
-      string = value.getTime().toString()
+      string = value.getTime().toString();
 
-    return Buffer.from(string, 'utf8').toString(this.encoding)
+    return Buffer.from(string, 'utf8').toString(this.encoding);
   }
 
   /**
@@ -254,7 +254,7 @@ cursorType: CursorType = CursorType.STRING,
   ): Record<string, QueryOrder | Record<string, QueryOrder>> {
     return {
       [cursor]: order,
-    }
+    };
   }
 
   /**
@@ -267,7 +267,7 @@ cursorType: CursorType = CursorType.STRING,
   qbOffsetPagination<T extends Dictionary>(
     dto: QBOffsetPaginationOptions<T>,
   ): Observable<OffsetPaginationResponse<T>> {
-    const { qb, pageOptionsDto } = dto
+    const { qb, pageOptionsDto } = dto;
 
     const {
       limit,
@@ -281,20 +281,20 @@ cursorType: CursorType = CursorType.STRING,
       to,
       searchField,
       alias,
-    } = pageOptionsDto
-    const selectedFields = [...new Set([...fields, 'id'])]
+    } = pageOptionsDto;
+    const selectedFields = [...new Set([...fields, 'id'])];
 
     if (search) {
       qb.andWhere({
         [searchField]: {
           $ilike: HelperService.formatSearch(search),
         },
-      })
+      });
     }
 
     if (relations) {
       for (const relation of relations)
-        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`)
+        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
     }
 
     if (fromDate) {
@@ -302,7 +302,7 @@ cursorType: CursorType = CursorType.STRING,
         createdAt: {
           $gte: fromDate,
         },
-      })
+      });
     }
 
     if (to) {
@@ -310,23 +310,23 @@ cursorType: CursorType = CursorType.STRING,
         createdAt: {
           $lte: to,
         },
-      })
+      });
     }
 
     qb.orderBy({ [sort]: order.toLowerCase() })
       .limit(limit)
       .select(selectedFields)
-      .offset(offset)
+      .offset(offset);
 
-    const pagination$ = from(qb.getResultAndCount())
+    const pagination$ = from(qb.getResultAndCount());
 
     return pagination$.pipe(
       map(([results, itemCount]) => {
-        const pageMetaDto = new OffsetMeta({ pageOptionsDto, itemCount })
+        const pageMetaDto = new OffsetMeta({ pageOptionsDto, itemCount });
 
-        return new OffsetPaginationResponse(results, pageMetaDto)
+        return new OffsetPaginationResponse(results, pageMetaDto);
       }),
-    )
+    );
   }
 
   /**
@@ -335,7 +335,7 @@ cursorType: CursorType = CursorType.STRING,
   async qbCursorPagination<T extends Dictionary>(
     dto: QBCursorPaginationOptions<T>,
   ): Promise<CursorPaginationResponse<T>> {
-    const { qb, pageOptionsDto } = dto
+    const { qb, pageOptionsDto } = dto;
 
     const {
       after,
@@ -351,23 +351,23 @@ cursorType: CursorType = CursorType.STRING,
       from: fromDate,
       to,
       searchField,
-    } = pageOptionsDto
+    } = pageOptionsDto;
 
     qb.where({
       isDeleted: withDeleted,
-    })
+    });
 
     if (search && searchField) {
       qb.andWhere({
         [searchField]: {
           $ilike: HelperService.formatSearch(search),
         },
-      })
+      });
     }
 
     if (relations) {
       for (const relation of relations)
-        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`)
+        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
     }
 
     if (fromDate) {
@@ -375,7 +375,7 @@ cursorType: CursorType = CursorType.STRING,
         createdAt: {
           $gte: fromDate,
         },
-      })
+      });
     }
 
     if (to) {
@@ -383,32 +383,32 @@ cursorType: CursorType = CursorType.STRING,
         createdAt: {
           $lte: to,
         },
-      })
+      });
     }
 
-    let previousCount = 0
-    const stringCursor = String(cursor) // because of runtime issues
-    const aliasCursor = `${alias}.${stringCursor}`
-    const selectedFields = [...new Set([...fields, 'id'])]
+    let previousCount = 0;
+    const stringCursor = String(cursor); // because of runtime issues
+    const aliasCursor = `${alias}.${stringCursor}`;
+    const selectedFields = [...new Set([...fields, 'id'])];
 
     if (after) {
-      const decoded = this.decodeCursor(after, cursorType)
-      const oppositeOd = getOppositeOrder(order)
-      const temporaryQb = qb.clone()
+      const decoded = this.decodeCursor(after, cursorType);
+      const oppositeOd = getOppositeOrder(order);
+      const temporaryQb = qb.clone();
 
-      temporaryQb.andWhere(this.getFilters(cursor, decoded, oppositeOd))
-      previousCount = await temporaryQb.count(aliasCursor, true)
+      temporaryQb.andWhere(this.getFilters(cursor, decoded, oppositeOd));
+      previousCount = await temporaryQb.count(aliasCursor, true);
 
-      const normalOd = getQueryOrder(order)
+      const normalOd = getQueryOrder(order);
 
-      qb.andWhere(this.getFilters(cursor, decoded, normalOd))
+      qb.andWhere(this.getFilters(cursor, decoded, normalOd));
     }
 
     const [entities, count]: [T[], number] = await qb
       .select(selectedFields)
       .orderBy(this.getOrderBy(cursor, order))
       .limit(first)
-      .getResultAndCount()
+      .getResultAndCount();
 
     return this.paginateCursor({
       instances: entities,
@@ -417,7 +417,7 @@ cursorType: CursorType = CursorType.STRING,
       cursor,
       first,
       search,
-    })
+    });
   }
 
   /**
@@ -439,18 +439,18 @@ search,
         hasNextPage: false,
         search: search ?? '',
       },
-    }
-    const length = instances.length
+    };
+    const length = instances.length;
 
     if (length > 0) {
-      const last = instances[length - 1][cursor] as string | number | Date
+      const last = instances[length - 1][cursor] as string | number | Date;
 
-      pages.meta.nextCursor = this.encodeCursor(last)
-      pages.meta.hasNextPage = currentCount > first
-      pages.meta.hasPreviousPage = previousCount > 0
+      pages.meta.nextCursor = this.encodeCursor(last);
+      pages.meta.hasNextPage = currentCount > first;
+      pages.meta.hasPreviousPage = previousCount > 0;
     }
 
-    return pages
+    return pages;
   }
 
   /**
@@ -466,25 +466,24 @@ search,
     after?: string,
     afterCursor: CursorType = CursorType.STRING,
   ): Promise<CursorPaginationResponse<T>> {
-    let previousCount = 0
+    let previousCount = 0;
 
     if (after) {
-      const decoded = this.decodeCursor(after, afterCursor)
-      const queryOrder = getQueryOrder(order)
-      const oppositeOrder = getOppositeOrder(order)
-      const countWhere = where
+      const decoded = this.decodeCursor(after, afterCursor);
+      const queryOrder = getQueryOrder(order);
+      const oppositeOrder = getOppositeOrder(order);
+      const countWhere = where;
 
-      // eslint-disable-next-line dot-notation
-      countWhere['$and'] = this.getFilters('createdAt', decoded, oppositeOrder)
-      previousCount = await repo.count(countWhere)
-      // eslint-disable-next-line dot-notation
-      where['$and'] = this.getFilters('createdAt', decoded, queryOrder)
+      countWhere.$and = this.getFilters('createdAt', decoded, oppositeOrder);
+      previousCount = await repo.count(countWhere);
+
+      where.$and = this.getFilters('createdAt', decoded, queryOrder);
     }
 
     const [entities, count] = await repo.findAndCount(where, {
       orderBy: this.getOrderBy(cursor, order),
       limit: first,
-    })
+    });
 
     return this.paginateCursor({
       instances: entities,
@@ -492,6 +491,6 @@ search,
       previousCount,
       cursor,
       first,
-    })
+    });
   }
 }

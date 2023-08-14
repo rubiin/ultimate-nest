@@ -1,34 +1,34 @@
-import type { FilterQuery } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
-import { EntityManager } from '@mikro-orm/postgresql'
+import type { FilterQuery } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityManager } from '@mikro-orm/postgresql';
 import {
   BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
-} from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { init } from '@paralleldrive/cuid2'
-import { isAfter } from 'date-fns'
-import { capitalize, omit } from 'helper-fns'
-import type { Observable } from 'rxjs'
-import { from, map, mergeMap, of, switchMap, throwError, zip } from 'rxjs'
-
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { init } from '@paralleldrive/cuid2';
+import { isAfter } from 'date-fns';
+import { capitalize, omit } from 'helper-fns';
+import type { Observable } from 'rxjs';
+import { from, map, mergeMap, of, switchMap, throwError, zip } from 'rxjs';
 import type {
   ChangePasswordDto,
   OtpVerifyDto,
   ResetPasswordDto,
   SendOtpDto,
   UserLoginDto,
-} from './dtos'
-import { TokensService } from '@modules/token/tokens.service'
-import { MailerService } from '@lib/mailer/mailer.service'
-import { translate } from '@lib/i18n'
-import { OtpLog, Protocol, User } from '@entities'
-import { HelperService } from '@common/helpers'
-import { BaseRepository } from '@common/database'
-import type { AuthenticationResponse } from '@common/@types'
-import { EmailSubject, EmailTemplate } from '@common/@types'
+} from './dtos';
+
+import { TokensService } from '@modules/token/tokens.service';
+import { MailerService } from '@lib/mailer/mailer.service';
+import { translate } from '@lib/i18n';
+import { OtpLog, Protocol, User } from '@entities';
+import { HelperService } from '@common/helpers';
+import { BaseRepository } from '@common/database';
+import type { AuthenticationResponse } from '@common/@types';
+import { EmailSubject, EmailTemplate } from '@common/@types';
 
 @Injectable()
 export class AuthService {
@@ -69,32 +69,32 @@ private readonly em: EntityManager,
                   args: { item: 'Account' },
                 }),
               ),
-          )
+          );
         }
 
         if (!user.isActive) {
           return throwError(
             () => new ForbiddenException(translate('exception.inactiveUser')),
-          )
+          );
         }
 
         return user && isPasswordLogin
           ? HelperService.verifyHash(user.password, pass).pipe(
             map((isValid) => {
               if (isValid)
-                return omit(user, ['password'])
+                return omit(user, ['password']);
 
               return throwError(
                 () =>
                   new BadRequestException(
                     translate('exception.invalidCredentials'),
                   ),
-              )
+              );
             }),
           )
-          : of(omit(user, ['password']))
+          : of(omit(user, ['password']));
       }),
-    )
+    );
   }
 
   /**
@@ -107,19 +107,19 @@ private readonly em: EntityManager,
 
   login(loginDto: UserLoginDto, isPasswordLogin = false): Observable<AuthenticationResponse> {
     return this.validateUser(isPasswordLogin, loginDto.email, loginDto.password).pipe(
-      switchMap((user) => {
+      switchMap((user: User) => {
         if (!user) {
           return throwError(
             () => new BadRequestException(translate('exception.invalidCredentials')),
-          )
+          );
         }
 
         if (user.isTwoFactorEnabled) {
           return this.tokenService.generateAccessToken(user).pipe(
             map((accessToken) => {
-              return HelperService.buildPayloadResponse(user, accessToken)
+              return HelperService.buildPayloadResponse(user, accessToken);
             }),
-          )
+          );
         }
 
         return zip(
@@ -131,11 +131,11 @@ private readonly em: EntityManager,
           ),
         ).pipe(
           map(([_, accessToken, refreshToken]) => {
-            return HelperService.buildPayloadResponse(user, accessToken, refreshToken)
+            return HelperService.buildPayloadResponse(user, accessToken, refreshToken);
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -144,7 +144,7 @@ private readonly em: EntityManager,
 * @returns Observable<any>
 */
   logoutFromAll(user: User): Observable<User> {
-    return this.tokenService.deleteRefreshTokenForUser(user)
+    return this.tokenService.deleteRefreshTokenForUser(user);
   }
 
   /**
@@ -156,9 +156,9 @@ private readonly em: EntityManager,
   logout(user: User, refreshToken: string): Observable<any> {
     return from(this.tokenService.decodeRefreshToken(refreshToken)).pipe(
       switchMap((payload) => {
-        return this.tokenService.deleteRefreshToken(user, payload)
+        return this.tokenService.deleteRefreshToken(user, payload);
       }),
-    )
+    );
   }
 
   /**
@@ -168,7 +168,7 @@ private readonly em: EntityManager,
 */
 
   forgotPassword(sendOtp: SendOtpDto): Observable<OtpLog> {
-    const { email } = sendOtp
+    const { email } = sendOtp;
 
     return from(
       this.userRepository.findOne({
@@ -184,7 +184,7 @@ private readonly em: EntityManager,
                   args: { item: 'Account' },
                 }),
               ),
-          )
+          );
         }
 
         return from(
@@ -194,17 +194,17 @@ private readonly em: EntityManager,
           }),
         ).pipe(
           switchMap((protocol) => {
-            const otpNumber = init({ length: 6 })() // random six digit otp
+            const otpNumber = init({ length: 6 })(); // random six digit otp
 
             const otp = this.otpRepository.create({
               user: userExists,
               otpCode: otpNumber,
               expiresIn: new Date(Date.now() + (protocol.otpExpiryInMinutes * 60_000)), // prettier-ignore
-            })
+            });
 
             return from(
               this.em.transactional(async (em) => {
-                await em.persistAndFlush(otp)
+                await em.persistAndFlush(otp);
 
                 return this.mailService.sendMail({
                   template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
@@ -218,13 +218,13 @@ private readonly em: EntityManager,
                   from: this.configService.get('mail.senderEmail', {
                     infer: true,
                   }),
-                })
+                });
               }),
-            ).pipe(map(() => otp))
+            ).pipe(map(() => otp));
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -235,7 +235,7 @@ private readonly em: EntityManager,
 */
 
   resetPassword(resetPassword: ResetPasswordDto): Observable<User> {
-    const { password, otpCode } = resetPassword
+    const { password, otpCode } = resetPassword;
 
     return from(
       this.otpRepository.findOne(
@@ -246,11 +246,11 @@ private readonly em: EntityManager,
       ),
     ).pipe(
       switchMap((details) => {
-        this.userRepository.assign(details.user, { password })
+        this.userRepository.assign(details.user, { password });
 
-        return from(this.em.flush()).pipe(map(() => details.user))
+        return from(this.em.flush()).pipe(map(() => details.user));
       }),
-    )
+    );
   }
 
   /**
@@ -261,7 +261,7 @@ private readonly em: EntityManager,
 * @returns The `verifyOtp` function returns an Observable of type `User`.
 */
   verifyOtp(otpDto: OtpVerifyDto): Observable<User> {
-    const { otpCode } = otpDto
+    const { otpCode } = otpDto;
 
     return from(
       this.otpRepository.findOne({
@@ -277,10 +277,10 @@ private readonly em: EntityManager,
                   args: { item: 'Otp' },
                 }),
               ),
-          )
+          );
         }
 
-        const isExpired = isAfter(new Date(), new Date(codeDetails.expiresIn))
+        const isExpired = isAfter(new Date(), new Date(codeDetails.expiresIn));
 
         if (isExpired) {
           return throwError(
@@ -290,11 +290,11 @@ private readonly em: EntityManager,
                   args: { item: 'Otp' },
                 }),
               ),
-          )
+          );
         }
         this.otpRepository.assign(codeDetails, {
           isUsed: true,
-        })
+        });
 
         return from(
           this.em.transactional(async (em) => {
@@ -307,11 +307,11 @@ private readonly em: EntityManager,
                 { isVerified: true },
               ),
               em.flush(),
-            ])
+            ]);
           }),
-        ).pipe(map(() => codeDetails.user))
+        ).pipe(map(() => codeDetails.user));
       }),
-    )
+    );
   }
 
   /**
@@ -322,7 +322,7 @@ private readonly em: EntityManager,
 * @returns Observable<User>
 */
   changePassword(dto: ChangePasswordDto, user: User): Observable<User> {
-    const { password, oldPassword } = dto
+    const { password, oldPassword } = dto;
 
     return from(
       this.userRepository.findOne({
@@ -338,20 +338,20 @@ private readonly em: EntityManager,
                   new BadRequestException(
                     translate('exception.invalidCredentials'),
                   ),
-              )
+              );
             }
             this.userRepository.assign(userDetails, {
               password,
-            })
+            });
 
-            return from(this.em.flush()).pipe(map(() => userDetails))
+            return from(this.em.flush()).pipe(map(() => userDetails));
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   async findUser(condition: FilterQuery<User>): Promise<User> {
-    return this.userRepository.findOne(condition)
+    return this.userRepository.findOne(condition);
   }
 }

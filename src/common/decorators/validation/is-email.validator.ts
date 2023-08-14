@@ -1,14 +1,14 @@
-import { applyDecorators } from '@nestjs/common'
-import { ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsOptional } from 'class-validator'
-import type { EnumFieldOptions as EmailFieldOptions } from '@common/@types'
-import { validationI18nMessage } from '@lib/i18n'
+import { applyDecorators } from '@nestjs/common';
+import { ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import type { EnumFieldOptions as EmailFieldOptions } from '@common/@types';
+import { validationI18nMessage } from '@lib/i18n';
 
 export const IsEmailField = (options_?: EmailFieldOptions) => {
   const options: EmailFieldOptions = {
     each: false,
     required: true,
     ...options_,
-  }
+  };
   const decoratorsToApply = [
     IsEmail(
       {},
@@ -19,7 +19,7 @@ export const IsEmailField = (options_?: EmailFieldOptions) => {
         each: options.each,
       },
     ),
-  ]
+  ];
 
   if (options.required) {
     decoratorsToApply.push(
@@ -27,18 +27,18 @@ export const IsEmailField = (options_?: EmailFieldOptions) => {
         message: validationI18nMessage('validation.isNotEmpty'),
         each: options.each,
       }),
-    )
+    );
 
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
           message: validationI18nMessage('validation.isNotEmpty'),
         }),
-      )
+      );
     }
   }
   else {
-    decoratorsToApply.push(IsOptional())
+    decoratorsToApply.push(IsOptional());
   }
 
   if (options.each) {
@@ -48,8 +48,8 @@ export const IsEmailField = (options_?: EmailFieldOptions) => {
           type: 'array',
         }),
       }),
-    )
+    );
   }
 
-  return applyDecorators(...decoratorsToApply)
-}
+  return applyDecorators(...decoratorsToApply);
+};

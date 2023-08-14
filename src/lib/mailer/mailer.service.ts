@@ -1,28 +1,28 @@
-import { resolve } from 'node:path'
+import { resolve } from 'node:path';
 
-import * as aws from '@aws-sdk/client-ses'
-import { Inject, Injectable, Logger } from '@nestjs/common'
-import type { SendMailOptions, SentMessageInfo, Transporter } from 'nodemailer'
-import { createTransport } from 'nodemailer'
-import previewEmail from 'preview-email'
-import { from, retry, switchMap } from 'rxjs'
+import * as aws from '@aws-sdk/client-ses';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import type { SendMailOptions, SentMessageInfo, Transporter } from 'nodemailer';
+import { createTransport } from 'nodemailer';
+import previewEmail from 'preview-email';
+import { from, retry, switchMap } from 'rxjs';
+import { MailModuleOptions } from './mailer.options';
+import { MODULE_OPTIONS_TOKEN } from './mail.module-definition';
+import type { Adapter } from './adapters/abstract.adapter';
+import { EtaAdapter, HandlebarsAdapter, PugAdapter } from './adapters';
 
-import { EtaAdapter, HandlebarsAdapter, PugAdapter } from './adapters'
-import type { Adapter } from './adapters/abstract.adapter'
-import { MODULE_OPTIONS_TOKEN } from './mail.module-definition'
-import { MailModuleOptions } from './mailer.options'
-import { Server, TemplateEngine } from '@common/@types'
+import { Server, TemplateEngine } from '@common/@types';
 
 interface MailOptions extends Partial<SendMailOptions> {
-  template: string
-  replacements: Record<string, any>
+  template: string;
+  replacements: Record<string, any>;
 }
 
 @Injectable()
 export class MailerService {
-  readonly transporter: Transporter<SentMessageInfo>
-  private readonly logger: Logger = new Logger(MailerService.name)
-  private readonly adapter: Adapter
+  readonly transporter: Transporter;
+  private readonly logger: Logger = new Logger(MailerService.name);
+  private readonly adapter: Adapter;
 
   constructor(
 @Inject(MODULE_OPTIONS_TOKEN)
@@ -35,22 +35,22 @@ private readonly options: MailModuleOptions,
         this.adapter = new PugAdapter({
           ...this.options.templateEngine.options,
           basedir: resolve(this.options.templateDir),
-        })
-        break
+        });
+        break;
       }
       case TemplateEngine.ETA: {
         this.adapter = new EtaAdapter({
           ...this.options.templateEngine.options,
           views: resolve(this.options.templateDir),
-        })
-        break
+        });
+        break;
       }
       case TemplateEngine.HBS: {
-        this.adapter = new HandlebarsAdapter({ ...this.options.templateEngine.options })
-        break
+        this.adapter = new HandlebarsAdapter({ ...this.options.templateEngine.options });
+        break;
       }
       default: {
-        throw new Error('Invalid template engine')
+        throw new Error('Invalid template engine');
       }
     }
 
@@ -64,12 +64,12 @@ private readonly options: MailModuleOptions,
           accessKeyId: this.options.sesKey,
           secretAccessKey: this.options.sesAccessKey,
         },
-      })
+      });
 
       this.transporter = createTransport({
         SES: { ses, aws },
         maxConnections: 14, // 14 is the maximum message rate per second for ses
-      })
+      });
     }
     else {
       this.transporter = createTransport({
@@ -86,7 +86,7 @@ private readonly options: MailModuleOptions,
           // do not fail on invalid certs
           rejectUnauthorized: false,
         },
-      })
+      });
     }
   }
 
@@ -96,28 +96,28 @@ private readonly options: MailModuleOptions,
 * @returns A promise that resolves to a boolean.
 */
   sendMail(mailOptions: MailOptions) {
-    const templatePath = resolve('}')
+    const templatePath = resolve('}');
 
     return from(this.adapter.compile(templatePath, mailOptions.replacements)).pipe(
       switchMap((html) => {
-        mailOptions.html = html
+        mailOptions.html = html;
 
         if (this.options.previewEmail === true)
-          previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error)
+          previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error);
 
         return from(this.transporter.sendMail(mailOptions)).pipe(
           retry(this.options.retryAttempts),
-        )
+        );
       }),
-    )
+    );
   }
 
   async checkConnection() {
     return this.transporter.verify((error, _success) => {
       if (error)
-        this.logger.log(error)
+        this.logger.log(error);
       else
-        this.logger.log(`Mail server is ready to take our messages: ${_success}`)
-    })
+        this.logger.log(`Mail server is ready to take our messages: ${_success}`);
+    });
   }
 }

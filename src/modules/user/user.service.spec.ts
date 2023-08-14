@@ -1,12 +1,12 @@
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
-import { EntityManager } from '@mikro-orm/core'
-import { getRepositoryToken } from '@mikro-orm/nestjs'
-import { ConfigService } from '@nestjs/config'
-import type { TestingModule } from '@nestjs/testing'
-import { Test } from '@nestjs/testing'
-import { CloudinaryService } from 'nestjs-cloudinary'
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { EntityManager } from '@mikro-orm/core';
+import { getRepositoryToken } from '@mikro-orm/nestjs';
+import { ConfigService } from '@nestjs/config';
+import type { TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
+import { CloudinaryService } from 'nestjs-cloudinary';
+import { UserService } from './user.service';
 
-import { UserService } from './user.service'
 import {
   mockAmqConnection,
   mockCloudinaryService,
@@ -16,14 +16,14 @@ import {
   mockUserRepo,
   mockedUser,
   queryDto,
-} from '@mocks'
-import { User } from '@entities'
+} from '@mocks';
+import { User } from '@entities';
 
 describe('UserService', () => {
-  let service: UserService
+  let service: UserService;
 
   beforeEach(async () => {
-    jest.clearAllMocks()
+    jest.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
@@ -36,25 +36,25 @@ describe('UserService', () => {
         { provide: CloudinaryService, useValue: mockCloudinaryService },
         { provide: EntityManager, useValue: mockEm },
       ],
-    }).compile()
+    }).compile();
 
-    service = module.get<UserService>(UserService)
-  })
+    service = module.get<UserService>(UserService);
+  });
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
-  })
+    expect(service).toBeDefined();
+  });
 
   it('should findOne', () => {
     service.findOne('userId').subscribe((result) => {
-      expect(result).toStrictEqual({ ...mockedUser, idx: 'userId' })
+      expect(result).toStrictEqual({ ...mockedUser, idx: 'userId' });
       expect(mockUserRepo.findOne).toBeCalledWith({
         idx: 'userId',
         isActive: true,
         isDeleted: false,
-      })
-    })
-  })
+      });
+    });
+  });
 
   it('should create user', async () => {
     const createSpy = mockUserRepo.create.mockImplementation(
@@ -62,30 +62,30 @@ describe('UserService', () => {
         ({
           ...mockedUser,
         }) as any,
-    )
+    );
 
     service.create({ ...mockedUser, files: mockFile }).subscribe((result) => {
-      expect(result).toStrictEqual({ ...mockedUser })
-      expect(createSpy).toBeCalledWith({ ...mockedUser })
-      expect(mockEm.transactional).toBeCalled()
-    })
-  })
+      expect(result).toStrictEqual({ ...mockedUser });
+      expect(createSpy).toBeCalledWith({ ...mockedUser });
+      expect(mockEm.transactional).toBeCalled();
+    });
+  });
 
   it('should edit user', async () => {
-    mockUserRepo.assign.mockImplementation((entity, dto) => Object.assign(entity, dto))
+    mockUserRepo.assign.mockImplementation((entity, dto) => Object.assign(entity, dto));
 
     service.update('userId', { firstName: 'updated' }).subscribe((result) => {
-      expect(result).toStrictEqual({ ...mockedUser, idx: 'userId' })
-      expect(mockUserRepo.assign).toBeCalled()
-      expect(mockEm.flush).toBeCalled()
-    })
-  })
+      expect(result).toStrictEqual({ ...mockedUser, idx: 'userId' });
+      expect(mockUserRepo.assign).toBeCalled();
+      expect(mockEm.flush).toBeCalled();
+    });
+  });
   it('should get user list', () => {
     service.findAll(queryDto).subscribe((result) => {
-      expect(result.meta).toBeDefined()
-      expect(result.data).toStrictEqual([])
-    })
-  })
+      expect(result.meta).toBeDefined();
+      expect(result.data).toStrictEqual([]);
+    });
+  });
 
   it('should remove user', () => {
     service.remove('userId').subscribe((result) => {
@@ -94,14 +94,14 @@ describe('UserService', () => {
         idx: 'userId',
         isDeleted: true,
         deletedAt: expect.any(Date),
-      })
+      });
       expect(mockUserRepo.findOne).toBeCalledWith({
         idx: 'userId',
         isActive: true,
         isDeleted: false,
-      })
+      });
 
-      expect(mockUserRepo.softRemoveAndFlush).toBeCalled()
-    })
-  })
-})
+      expect(mockUserRepo.softRemoveAndFlush).toBeCalled();
+    });
+  });
+});

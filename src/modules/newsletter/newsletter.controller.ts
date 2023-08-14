@@ -1,11 +1,11 @@
-import { Body, Delete, Post } from '@nestjs/common'
-import { Observable } from 'rxjs'
-import { CreateNewsletterDto, EditNewsletterDto, SubscribeNewsletterDto } from './dto'
-import { NewsLetterService } from './newsletter.service'
-import { GenericController, SwaggerResponse } from '@common/decorators'
-import { CursorPaginationDto } from '@common/dtos'
-import type { NewsLetter, Subscriber } from '@entities'
-import { ControllerFactory } from '@lib/crud/crud.controller'
+import { Body, Delete, Post } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { CreateNewsletterDto, EditNewsletterDto, SubscribeNewsletterDto } from './dto';
+import { NewsLetterService } from './newsletter.service';
+import { GenericController, SwaggerResponse } from '@common/decorators';
+import { CursorPaginationDto } from '@common/dtos';
+import type { NewsLetter, Subscriber } from '@entities';
+import { ControllerFactory } from '@lib/crud/crud.controller';
 
 @GenericController('newsletter')
 export class NewsLetterController extends ControllerFactory<
@@ -15,7 +15,7 @@ CreateNewsletterDto,
 EditNewsletterDto
 >(CursorPaginationDto, CreateNewsletterDto, EditNewsletterDto) {
   constructor(protected service: NewsLetterService) {
-    super()
+    super();
   }
 
   @Post('subscribe')
@@ -24,7 +24,7 @@ EditNewsletterDto
     badRequest: 'Subscription already exist.',
   })
   subscribeNewsLetter(@Body() dto: SubscribeNewsletterDto): Observable<Subscriber> {
-    return this.service.subscribeNewsLetter(dto)
+    return this.service.subscribeNewsLetter(dto);
   }
 
   @Delete('unsubscribe')
@@ -33,6 +33,6 @@ EditNewsletterDto
     notFound: 'Subscription does not exist.',
   })
   unSubscribeNewsLetter(@Body() dto: SubscribeNewsletterDto): Observable<Subscriber> {
-    return this.service.unSubscribeNewsLetter(dto)
+    return this.service.unSubscribeNewsLetter(dto);
   }
 }

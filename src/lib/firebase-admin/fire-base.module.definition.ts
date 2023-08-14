@@ -1,8 +1,8 @@
-import { ConfigurableModuleBuilder } from '@nestjs/common'
+import { ConfigurableModuleBuilder } from '@nestjs/common';
 
 export interface FirebaseModuleOptions {
-  FIREBASE_CREDENTIAL_PATH: string
-  FIREBASE_DATABASE_URL: string
+  FIREBASE_CREDENTIAL_PATH: string;
+  FIREBASE_DATABASE_URL: string;
 }
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
@@ -19,4 +19,4 @@ export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
     }),
   )
   .setClassMethodName('forRoot')
-  .build()
+  .build();

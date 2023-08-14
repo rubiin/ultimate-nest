@@ -11,62 +11,62 @@ import {
   OneToMany,
   Property,
   Rel,
-} from '@mikro-orm/core'
-import { slugify } from 'helper-fns'
+} from '@mikro-orm/core';
+import { slugify } from 'helper-fns';
+import type { User } from './index';
+import { Category, Comment, Tag } from './index';
 
-import type { User } from './index'
-import { Category, Comment, Tag } from './index'
-import { BaseEntity } from '@common/database'
-import { PostStateEnum } from '@common/@types'
+import { BaseEntity } from '@common/database';
+import { PostStateEnum } from '@common/@types';
 
 @Entity()
 export class Post extends BaseEntity {
   @Property({ index: true })
-slug?: string
+slug?: string;
 
   @Property({ index: true })
-title!: string
+title!: string;
 
   @Property({ type: 'text' })
-description!: string
+description!: string;
 
   @Property({ type: 'text' })
-content!: string
+content!: string;
 
   @Property()
-readingTime? = 0
+readingTime? = 0;
 
   @Property()
-readCount? = 0
+readCount? = 0;
 
   @Property()
-favoritesCount? = 0
+favoritesCount? = 0;
 
   @ManyToOne({
     eager: false,
     index: true,
   })
-author: Rel<User>
+author: Rel<User>;
 
   @OneToMany(() => Comment, comment => comment.post, {
     eager: false,
     orphanRemoval: true,
     nullable: true,
   })
-comments = new Collection<Comment>(this)
+comments = new Collection<Comment>(this);
 
   @ManyToMany(() => Tag, 'posts', { owner: true })
-tags = new Collection<Tag>(this)
+tags = new Collection<Tag>(this);
 
   @ManyToMany(() => Category, 'posts', { owner: true })
-categories = new Collection<Category>(this)
+categories = new Collection<Category>(this);
 
   @Enum({ items: () => PostStateEnum })
-state? = PostStateEnum.DRAFT
+state? = PostStateEnum.DRAFT;
 
   constructor(partial?: Partial<Post>) {
-    super()
-    Object.assign(this, partial)
+    super();
+    Object.assign(this, partial);
   }
 
   @BeforeUpsert()
@@ -77,15 +77,15 @@ state? = PostStateEnum.DRAFT
       this.slug
 = `${slugify(this.title, { lowercase: true })
 }-${
-Math.trunc(Math.random() * 36 ** 6).toString(36)}`
+Math.trunc(Math.random() * 36 ** 6).toString(36)}`;
     }
-    this.readingTime = this.getReadingTime(this.content)
+    this.readingTime = this.getReadingTime(this.content);
   }
 
   getReadingTime(content: string) {
-    const avgWordsPerMin = 250
-    const count = content.match(/\w+/g).length
+    const avgWordsPerMin = 250;
+    const count = content.match(/\w+/g).length;
 
-    return Math.ceil(count / avgWordsPerMin)
+    return Math.ceil(count / avgWordsPerMin);
   }
 }

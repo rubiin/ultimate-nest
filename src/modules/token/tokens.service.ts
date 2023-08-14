@@ -1,25 +1,25 @@
-import { EntityRepository } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
-import { Injectable, UnauthorizedException } from '@nestjs/common'
-import type { JwtSignOptions } from '@nestjs/jwt'
-import { JwtService } from '@nestjs/jwt'
-import { pick } from 'helper-fns'
-import { TokenExpiredError } from 'jsonwebtoken'
-import type { Observable } from 'rxjs'
-import { catchError, from, map, mergeMap, of, switchMap, throwError } from 'rxjs'
+import { TokenExpiredError } from 'jsonwebtoken';
+import { EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import type { JwtSignOptions } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
+import { pick } from 'helper-fns';
+import type { Observable } from 'rxjs';
+import { catchError, from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
+import { RefreshTokensRepository } from './refresh-tokens.repository';
 
-import { RefreshTokensRepository } from './refresh-tokens.repository'
-import { translate } from '@lib/i18n'
-import type { RefreshToken } from '@entities'
-import { User } from '@entities'
-import type { JwtPayload } from '@common/@types'
+import { translate } from '@lib/i18n';
+import type { RefreshToken } from '@entities';
+import { User } from '@entities';
+import type { JwtPayload } from '@common/@types';
 
 @Injectable()
 export class TokensService {
   private readonly BASE_OPTIONS: JwtSignOptions = {
     issuer: 'nestify',
     audience: 'nestify',
-  }
+  };
 
   constructor(
 @InjectRepository(User)
@@ -37,11 +37,11 @@ private readonly jwt: JwtService,
     const options: JwtSignOptions = {
       ...this.BASE_OPTIONS,
       subject: String(user.id),
-    }
+    };
 
     return from(
       this.jwt.signAsync({ ...pick(user, ['roles', 'isTwoFactorEnabled']) }, options),
-    )
+    );
   }
 
   /**
@@ -58,11 +58,11 @@ private readonly jwt: JwtService,
           expiresIn,
           subject: String(user.id),
           jwtid: String(token.id),
-        }
+        };
 
-        return from(this.jwt.signAsync({}, options))
+        return from(this.jwt.signAsync({}, options));
       }),
-    )
+    );
   }
 
   /**
@@ -84,7 +84,7 @@ private readonly jwt: JwtService,
                       args: { error: 'not found' },
                     }),
                   ),
-              )
+              );
             }
 
             if (token.isRevoked) {
@@ -95,7 +95,7 @@ private readonly jwt: JwtService,
                       args: { error: 'revoked' },
                     }),
                   ),
-              )
+              );
             }
 
             return this.getUserFromRefreshTokenPayload(payload).pipe(
@@ -108,16 +108,16 @@ private readonly jwt: JwtService,
                           args: { error: 'malformed' },
                         }),
                       ),
-                  )
+                  );
                 }
 
-                return of({ user, token })
+                return of({ user, token });
               }),
-            )
+            );
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -130,11 +130,11 @@ private readonly jwt: JwtService,
       switchMap(({ user }) => {
         return this.generateAccessToken(user).pipe(
           map((token) => {
-            return { token, user }
+            return { token, user };
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -144,7 +144,7 @@ private readonly jwt: JwtService,
 */
   decodeRefreshToken(token: string): Observable<JwtPayload> {
     return from(this.jwt.verifyAsync(token)).pipe(
-      map(payload => payload),
+      map((payload: JwtPayload) => payload),
       catchError((error_) => {
         throw error_ instanceof TokenExpiredError
           ? new UnauthorizedException(
@@ -156,9 +156,9 @@ private readonly jwt: JwtService,
             translate('exception.refreshToken', {
               args: { error: 'malformed' },
             }),
-          )
+          );
       }),
-    )
+    );
   }
 
   /**
@@ -169,9 +169,9 @@ private readonly jwt: JwtService,
   deleteRefreshTokenForUser(user: User): Observable<User> {
     return this.refreshTokenRepo.deleteTokensForUser(user).pipe(
       map(() => {
-        return user
+        return user;
       }),
-    )
+    );
   }
 
   /**
@@ -181,7 +181,7 @@ private readonly jwt: JwtService,
 * @returns The user object
 */
   deleteRefreshToken(user: User, payload: JwtPayload): Observable<User> {
-    const tokenId = payload.jti
+    const tokenId = payload.jti;
 
     if (!tokenId) {
       return throwError(
@@ -191,14 +191,14 @@ private readonly jwt: JwtService,
               args: { error: 'malformed' },
             }),
           ),
-      )
+      );
     }
 
     return this.refreshTokenRepo.deleteToken(user, tokenId).pipe(
       map(() => {
-        return user
+        return user;
       }),
-    )
+    );
   }
 
   /**
@@ -208,7 +208,7 @@ private readonly jwt: JwtService,
 * @returns A user object
 */
   getUserFromRefreshTokenPayload(payload: JwtPayload): Observable<User> {
-    const subId = payload.sub
+    const subId = payload.sub;
 
     if (!subId) {
       return throwError(
@@ -218,14 +218,14 @@ private readonly jwt: JwtService,
               args: { error: 'malformed' },
             }),
           ),
-      )
+      );
     }
 
     return from(
       this.userRepository.findOne({
         id: subId,
       }),
-    )
+    );
   }
 
   /**
@@ -235,7 +235,7 @@ private readonly jwt: JwtService,
 * @returns Observable<RefreshToken | null>
 */
   getStoredTokenFromRefreshTokenPayload(payload: JwtPayload): Observable<RefreshToken | null> {
-    const tokenId = payload.jti
+    const tokenId = payload.jti;
 
     if (!tokenId) {
       return throwError(
@@ -245,9 +245,9 @@ private readonly jwt: JwtService,
               args: { error: 'malformed' },
             }),
           ),
-      )
+      );
     }
 
-    return this.refreshTokenRepo.findTokenById(tokenId)
+    return this.refreshTokenRepo.findTokenById(tokenId);
   }
 }

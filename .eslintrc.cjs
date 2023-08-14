@@ -1,8 +1,5 @@
 // @ts-check
-const process = require('node:process')
 const { defineConfig } = require('eslint-define-config')
-
-process.env.ESLINT_TSCONFIG = 'tsconfig.json'
 
 module.exports = defineConfig({
   parser: '@typescript-eslint/parser',
@@ -22,6 +19,10 @@ module.exports = defineConfig({
   },
   rules: {
     'unicorn/prefer-module': 'off',
+    'no-useless-constructor': 'off', // optimize this
+    '@typescript-eslint/require-await': 'off', // optimize this
+    '@typescript-eslint/no-unsafe-assignment': 'off', // optimize this
+    '@typescript-eslint/no-unsafe-member-access': 'off', // optimize this
     'unicorn/prefer-top-level-await': 'off',
     'unicorn/prevent-abbreviations': [
       'error',

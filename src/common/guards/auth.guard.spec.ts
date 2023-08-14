@@ -1,12 +1,12 @@
-import { createMock } from '@golevelup/ts-jest'
-import type { ExecutionContext } from '@nestjs/common'
-import { HttpException } from '@nestjs/common'
+import { createMock } from '@golevelup/ts-jest';
+import type { ExecutionContext } from '@nestjs/common';
+import { HttpException } from '@nestjs/common';
+import { AuthGuard } from './auth.guard';
 
-import { AuthGuard } from './auth.guard'
-import { mockJwtService } from '@mocks'
+import { mockJwtService } from '@mocks';
 
 describe('AuthenticatedGuard', () => {
-  let authenticatedGuard: AuthGuard
+  let authenticatedGuard: AuthGuard;
   const mockContext = createMock<ExecutionContext>({
     switchToHttp: () => ({
       getRequest: () => ({
@@ -15,35 +15,35 @@ describe('AuthenticatedGuard', () => {
         },
       }),
     }),
-  })
+  });
 
   beforeEach(() => {
-    authenticatedGuard = new AuthGuard(mockJwtService)
-  })
+    authenticatedGuard = new AuthGuard(mockJwtService);
+  });
 
   it('should be defined', () => {
-    expect(authenticatedGuard).toBeDefined()
-  })
+    expect(authenticatedGuard).toBeDefined();
+  });
 
   describe('canActivate', () => {
     it('should return authorization', () => {
       mockJwtService.verify.mockImplementationOnce(() => {
-        return { idx: 'idx' }
-      })
-      expect(authenticatedGuard.canActivate(mockContext)).toBe(true)
-    })
+        return { idx: 'idx' };
+      });
+      expect(authenticatedGuard.canActivate(mockContext)).toBe(true);
+    });
 
     it.skip('should throw error when invalid token', () => {
       mockJwtService.verify.mockImplementationOnce(() => {
-        throw new Error('Invalid token')
-      })
+        throw new Error('Invalid token');
+      });
 
       try {
-        authenticatedGuard.canActivate(mockContext)
+        authenticatedGuard.canActivate(mockContext);
       }
       catch (error) {
-        expect(error).toBeInstanceOf(HttpException)
+        expect(error).toBeInstanceOf(HttpException);
       }
-    })
-  })
-})
+    });
+  });
+});
