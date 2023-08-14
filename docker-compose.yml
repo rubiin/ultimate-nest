@@ -1,41 +1,76 @@
-version: 3.9
+version:
+    "3.8"
+
+    #######################################
+    # Basic needed services
+    #######################################
+
 services:
 
-# Nestify service
-# This service runs the Nestify application
-    nestify:
-        container_name: nestify
-        env_file: env/.env.${ENV}
-        build:
-            context: .
-            dockerfile: ./docker/dev.Dockerfile
-        image: nestify
-        depends_on:
-            - traefik
-            - redis
-            - rabbitmq
-            - database
-
+# Redis service
+# This service runs the Redis database
+    redis:
+        image: redis:7.0.11-alpine
+        container_name: redis
         restart: unless-stopped
-        command: npm run start:dev
-        labels:
-            - "traefik.enable=true"
-            - "traefik.http.routers.nestify.rule=Host(`${API_URL}`)"
-            - "traefik.http.services.nestify.loadbalancer.server.port=3000"
-            - "traefik.http.routers.nestify.entrypoints=websecure"
-            - "traefik.http.routers.nestify.tls=true"
-            - "traefik.http.routers.nestify.tls.certresolver=certresolver"
-            - "traefik.http.routes.nestify.middlewares=traefik-headers,traefik-compress,traefik-ratelimit,traefik-retry"
-
-
-        stdin_open: true
-        tty: true
+        env_file: env/.env.${ENV}
+        ports:
+            - "6379:6379"
+        command: redis-server --loglevel warning --requirepass DwaLbTL84QaA
+        volumes:
+            - redis-data:/data
+            - .conf/redis.conf:/usr/local/etc/redis/redis.conf
         networks:
             - nestify-network
-        volumes:
-            - .:/usr/src/app
-            - /usr/src/app/node_modules
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
+# Pgweb service
+# This service runs the Pgweb administration tool for PostgreSQL
+    pgweb:
+        image: sosedoff/pgweb
+        container_name: pgweb
+        env_file: env/.env.${ENV}
+        restart: unless-stopped
+        depends_on:
+            - database
+        networks:
+            - nestify-network
+        ports:
+            - "8091:8081"
+        healthcheck:
+            test: nc -vz 127.0.0.1 8081
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+# Database service
+# This service runs the PostgreSQL database
+    database:
+        container_name: database
+        image: postgres:15.4-alpine
+        restart: unless-stopped
+        env_file: env/.env.${ENV}
+        environment:
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_DB=${DB_DATABASE}
+        depends_on:
+            - traefik
+        networks:
+            - nestify-network
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data/
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
 
 # Traefik service
 # This service runs the Traefik reverse proxy which is used to expose the other services
@@ -121,27 +156,40 @@ services:
             - ./logs/:/logs/
             - /var/run/docker.sock:/var/run/docker.sock:ro
 
-# Redis service
-# This service runs the Redis database
-    redis:
-        container_name: redis
-        image: redis:7.0.12-alpine
-        restart: unless-stopped
+# Nestify service
+# This service runs the Nestify application
+    nestify:
+        container_name: nestify
+        env_file: env/.env.${ENV}
+        build:
+            context: .
+            dockerfile: ./docker/{ENV}.Dockerfile
+        image: nestify
         depends_on:
             - traefik
-        ports:
-            - "6379:6379"
+            - redis
+            - rabbitmq
+            - database
+
+        restart: unless-stopped
+        command: npm run start:dev
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nestify.rule=Host(`${API_URL}`)"
+            - "traefik.http.services.nestify.loadbalancer.server.port=3000"
+            - "traefik.http.routers.nestify.entrypoints=websecure"
+            - "traefik.http.routers.nestify.tls=true"
+            - "traefik.http.routers.nestify.tls.certresolver=certresolver"
+            - "traefik.http.routes.nestify.middlewares=traefik-headers,traefik-compress,traefik-ratelimit,traefik-retry"
+
+
+        stdin_open: true
+        tty: true
         networks:
             - nestify-network
-        command: redis-server --loglevel warning --requirepass ${PASSWORD}
         volumes:
-            - redis-data:/data
-            - .conf/redis.conf:/usr/local/etc/redis/redis.conf
-        healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
 
 # RabbitMQ service
 # This service runs the RabbitMQ message broker
@@ -155,7 +203,7 @@ services:
         depends_on:
             - traefik
         environment:
-            - RABBITMQ_DEFAULT_USER=nestify
+            - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
         ports:
             - "5672:5672"
             - "15672:15672"
@@ -167,53 +215,11 @@ services:
           timeout: 30s
           retries: 10
 
-# Database service
-# This service runs the PostgreSQL database
-    database:
-        container_name: database
-        image: postgres:15.4-alpine
-        restart: unless-stopped
-        env_file: env/.env.${ENV}
-        depends_on:
-            - traefik
-        networks:
-            - nestify-network
-        ports:
-            - "5432:5432"
-        volumes:
-            - postgres_data:/var/lib/postgresql/data/
-        healthcheck:
-          test: ["CMD-SHELL", "pg_isready"]
-          interval: 10s
-          timeout: 5s
-          retries: 5
-
-# Pgweb service
-# This service runs the Pgweb administration tool for PostgreSQL
-    pgweb:
-        image: sosedoff/pgweb
-        container_name: pgweb
-        env_file: env/.env.${ENV}
-        restart: unless-stopped
-        depends_on:
-            - database
-        networks:
-            - nestify-network
-        environment:
-            - PGWEB_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
-        ports:
-            - "8091:8081"
-        healthcheck:
-            test: nc -vz 127.0.0.1 8081
-            interval: 10s
-            timeout: 5s
-            retries: 5
-
 volumes:
     redis-data:
     rabbitmq-data:
-    postgres_data:
 
 networks:
     nestify-network:
+        driver: bridge
         name: nestify-network
