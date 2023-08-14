@@ -1,4 +1,4 @@
-import { IsStringField } from '@common/decorators'
+import { IsStringField } from '@common/decorators';
 
 export class TwofaDto {
 /**
@@ -6,5 +6,5 @@ export class TwofaDto {
 * @example 123456
 */
   @IsStringField({ minLength: 1, required: true })
-code: string
+code: string;
 }

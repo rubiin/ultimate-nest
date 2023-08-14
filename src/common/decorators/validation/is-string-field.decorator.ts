@@ -1,4 +1,4 @@
-import { applyDecorators } from '@nestjs/common'
+import { applyDecorators } from '@nestjs/common';
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -7,12 +7,12 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-} from 'class-validator'
+} from 'class-validator';
+import { MinMaxLength } from './min-max-length.decorator';
+import { Sanitize, Trim } from './transform.decorator';
 
-import { MinMaxLength } from './min-max-length.decorator'
-import { Sanitize, Trim } from './transform.decorator'
-import { validationI18nMessage } from '@lib/i18n'
-import type { StringFieldOptions } from '@common/@types'
+import { validationI18nMessage } from '@lib/i18n';
+import type { StringFieldOptions } from '@common/@types';
 
 /**
 * It's a decorator that validates a string field
@@ -31,7 +31,7 @@ export const IsStringField = (options_?: StringFieldOptions) => {
     arrayMinSize: 0,
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
     ...options_,
-  }
+  };
   const decoratorsToApply = [
     IsString({
       message: validationI18nMessage('validation.isDataType', {
@@ -44,13 +44,13 @@ export const IsStringField = (options_?: StringFieldOptions) => {
       maxLength: options.maxLength,
       each: options.each,
     }),
-  ]
+  ];
 
   if (options.sanitize)
-    decoratorsToApply.push(Sanitize())
+    decoratorsToApply.push(Sanitize());
 
   if (options.trim)
-    decoratorsToApply.push(Trim())
+    decoratorsToApply.push(Trim());
 
   if (options.required) {
     decoratorsToApply.push(
@@ -58,18 +58,18 @@ export const IsStringField = (options_?: StringFieldOptions) => {
         message: validationI18nMessage('validation.isNotEmpty'),
         each: options.each,
       }),
-    )
+    );
 
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
           message: validationI18nMessage('validation.isNotEmpty'),
         }),
-      )
+      );
     }
   }
   else {
-    decoratorsToApply.push(IsOptional())
+    decoratorsToApply.push(IsOptional());
   }
 
   if (options.each) {
@@ -81,8 +81,8 @@ export const IsStringField = (options_?: StringFieldOptions) => {
       }),
       ArrayMaxSize(options.arrayMaxSize),
       ArrayMinSize(options.arrayMinSize),
-    )
+    );
   }
 
-  return applyDecorators(...decoratorsToApply)
-}
+  return applyDecorators(...decoratorsToApply);
+};

@@ -1,11 +1,11 @@
-import type { Faker } from '@mikro-orm/seeder'
-import { Factory } from '@mikro-orm/seeder'
-import { randomNumber } from 'helper-fns'
-import { Post } from '@entities'
+import type { Faker } from '@mikro-orm/seeder';
+import { Factory } from '@mikro-orm/seeder';
+import { randomNumber } from 'helper-fns';
+import { Post } from '@entities';
 
 /* `PostFactory` is a factory that creates `Post` instances */
 export class PostFactory extends Factory<Post> {
-  model = Post
+  model = Post;
 
   definition(faker: Faker): Partial<Post> {
     return {
@@ -15,6 +15,6 @@ export class PostFactory extends Factory<Post> {
       readingTime: randomNumber(10, 100),
       favoritesCount: randomNumber(1, 100),
       readCount: randomNumber(10, 100),
-    }
+    };
   }
 }

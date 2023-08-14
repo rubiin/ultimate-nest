@@ -1,22 +1,22 @@
-import { CACHE_KEY_METADATA, CacheInterceptor } from '@nestjs/cache-manager'
-import type { ExecutionContext } from '@nestjs/common'
-import { Injectable } from '@nestjs/common'
-import { IGNORE_CACHING_META } from '@common/constant'
+import { CACHE_KEY_METADATA, CacheInterceptor } from '@nestjs/cache-manager';
+import type { ExecutionContext } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { IGNORE_CACHING_META } from '@common/constant';
 
 /* If the ignoreCaching metadata is set to true, then the request will not be cached. */
 
 @Injectable()
 export class HttpCacheInterceptor extends CacheInterceptor {
   protected isRequestCacheable(context: ExecutionContext): boolean {
-    const http = context.switchToHttp()
-    const request = http.getRequest()
+    const http = context.switchToHttp();
+    const request = http.getRequest();
 
     const ignoreCaching: boolean = this.reflector.get(
       IGNORE_CACHING_META,
       context.getHandler(),
-    )
+    );
 
-    return !ignoreCaching && request.method === 'GET'
+    return !ignoreCaching && request.method === 'GET';
   }
 }
 
@@ -24,19 +24,19 @@ export class HttpCacheInterceptor extends CacheInterceptor {
 @Injectable()
 export class CacheKeyInterceptor extends CacheInterceptor {
   trackBy(context: ExecutionContext): string | undefined {
-    const httpAdapter = this.httpAdapterHost.httpAdapter
-    const isHttpApp = httpAdapter && !!httpAdapter.getRequestMethod
-    const cacheMetadata = this.reflector.get(CACHE_KEY_METADATA, context.getHandler())
+    const httpAdapter = this.httpAdapterHost.httpAdapter;
+    const isHttpApp = httpAdapter && !!httpAdapter.getRequestMethod;
+    const cacheMetadata = this.reflector.get(CACHE_KEY_METADATA, context.getHandler());
 
-    const request = context.getArgByIndex(0)
-    const userId = request.user?.idx
+    const request = context.getArgByIndex(0);
+    const userId = request.user?.idx;
 
     if (!isHttpApp || cacheMetadata)
-      return `${cacheMetadata}_${userId}`
+      return `${cacheMetadata}_${userId}`;
 
     if (!this.isRequestCacheable(context))
-      return undefined
+      return undefined;
 
-    return `${httpAdapter.getRequestUrl(request)}_${userId}`
+    return `${httpAdapter.getRequestUrl(request)}_${userId}`;
   }
 }

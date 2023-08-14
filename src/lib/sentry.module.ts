@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { SentryModule } from '@ntegral/nestjs-sentry'
-import { NestConfigModule } from '@lib/config/config.module'
+import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { SentryModule } from '@ntegral/nestjs-sentry';
+import { NestConfigModule } from '@lib/config/config.module';
 
 @Module({
   imports: [

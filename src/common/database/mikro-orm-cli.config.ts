@@ -1,13 +1,12 @@
-import type { Options } from '@mikro-orm/core'
-import { LoadStrategy } from '@mikro-orm/core'
-import { defineConfig } from '@mikro-orm/postgresql'
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection'
-import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
-import { Logger, NotFoundException } from '@nestjs/common'
-import { config as environmentConfig } from 'dotenv'
-import dotEnvExpand from 'dotenv-expand'
-
-import { BaseRepository } from './base.repository'
+import { config as environmentConfig } from 'dotenv';
+import dotEnvExpand from 'dotenv-expand';
+import type { Options } from '@mikro-orm/core';
+import { LoadStrategy } from '@mikro-orm/core';
+import { defineConfig } from '@mikro-orm/postgresql';
+import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
+import { Logger, NotFoundException } from '@nestjs/common';
+import { BaseRepository } from './base.repository';
 
 /**
 *
@@ -19,28 +18,28 @@ import { BaseRepository } from './base.repository'
 *
 */
 
-const logger = new Logger('MikroORM')
+const logger = new Logger('MikroORM');
 
 const environment = environmentConfig({
   path: `${process.cwd()}/env/.env.${process.env.NODE_ENV}`,
-})
+});
 
-dotEnvExpand.expand(environment)
+dotEnvExpand.expand(environment);
 
-logger.log(`🛠️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`)
+logger.log(`🛠️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\n`);
 
 export const baseOptions = {
   entities: ['dist/entities/*.entity.js'],
   entitiesTs: ['src/entities/*.entity.ts'],
   findOneOrFailHandler: (entityName: string, key: any) => {
-    return new NotFoundException(`${entityName} not found for ${key}`)
+    return new NotFoundException(`${entityName} not found for ${key}`);
   },
   migrations: {
     migrations: {
       fileName: (timestamp: string, name?: string) => {
-        if (!name) return `Migration${timestamp}`
+        if (!name) return `Migration${timestamp}`;
 
-        return `Migration${timestamp}_${name}`
+        return `Migration${timestamp}_${name}`;
       },
     },
     tableName: 'migrations', // name of database table with log of executed transactions
@@ -66,7 +65,7 @@ export const baseOptions = {
   forceUtcTimezone: true,
   registerRequestContext: true,
   pool: { min: 2, max: 10 },
-}
+};
 
 const config: Options = defineConfig({
   ...baseOptions,
@@ -75,6 +74,6 @@ const config: Options = defineConfig({
   port: process.env.DB_PORT,
   user: process.env.DB_USERNAME,
   host: process.env.DB_HOST,
-})
+});
 
-export default config
+export default config;

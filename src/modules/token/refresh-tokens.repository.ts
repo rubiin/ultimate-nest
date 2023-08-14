@@ -1,11 +1,11 @@
-import { EntityRepository } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
-import { EntityManager } from '@mikro-orm/postgresql'
-import { Injectable } from '@nestjs/common'
-import type { Observable } from 'rxjs'
-import { from, map } from 'rxjs'
-import type { User } from '@entities'
-import { RefreshToken } from '@entities'
+import { EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityManager } from '@mikro-orm/postgresql';
+import { Injectable } from '@nestjs/common';
+import type { Observable } from 'rxjs';
+import { from, map } from 'rxjs';
+import type { User } from '@entities';
+import { RefreshToken } from '@entities';
 
 @Injectable()
 export class RefreshTokensRepository {
@@ -22,19 +22,19 @@ private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
 * @returns A refresh token
 */
   createRefreshToken(user: User, ttl: number): Observable<RefreshToken> {
-    const expiration = new Date()
+    const expiration = new Date();
 
     // the input is treated as millis so *1000 is necessary
-    const ttlSeconds = ttl * 1000 // seconds
+    const ttlSeconds = ttl * 1000; // seconds
 
-    expiration.setTime(expiration.getTime() + ttlSeconds)
+    expiration.setTime(expiration.getTime() + ttlSeconds);
 
     const token = this.refreshTokenRepository.create({
       user: user.id,
       expiresIn: expiration,
-    })
+    });
 
-    return from(this.em.persistAndFlush(token)).pipe(map(() => token))
+    return from(this.em.persistAndFlush(token)).pipe(map(() => token));
   }
 
   /**
@@ -48,7 +48,7 @@ private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
         id,
         isRevoked: false,
       }),
-    )
+    );
   }
 
   /**
@@ -59,7 +59,7 @@ private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
   deleteTokensForUser(user: User): Observable<boolean> {
     return from(this.refreshTokenRepository.nativeUpdate({ user }, { isRevoked: true })).pipe(
       map(() => true),
-    )
+    );
   }
 
   /**
@@ -71,6 +71,6 @@ private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
   deleteToken(user: User, tokenId: number): Observable<boolean> {
     return from(
       this.refreshTokenRepository.nativeUpdate({ user, id: tokenId }, { isRevoked: true }),
-    ).pipe(map(() => true))
+    ).pipe(map(() => true));
   }
 }

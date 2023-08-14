@@ -1,10 +1,10 @@
-import type { Faker } from '@mikro-orm/seeder'
-import { Factory } from '@mikro-orm/seeder'
-import { NewsLetter } from '@entities'
+import type { Faker } from '@mikro-orm/seeder';
+import { Factory } from '@mikro-orm/seeder';
+import { NewsLetter } from '@entities';
 
 /* `NewsLetterFactory` is a factory that creates `NewsLetter` instances */
 export class NewsLetterFactory extends Factory<NewsLetter> {
-  model = NewsLetter
+  model = NewsLetter;
 
   definition(_faker: Faker): Partial<NewsLetter> {
     return {
@@ -35,6 +35,6 @@ export class NewsLetterFactory extends Factory<NewsLetter> {
 <div class="footer">
 <p>Thank you for subscribing to our JavaScript newsletter. For more updates, follow us on Twitter: <a href="https://twitter.com/example" target="_blank">@example</a></p>
 </div>`,
-    }
+    };
   }
 }

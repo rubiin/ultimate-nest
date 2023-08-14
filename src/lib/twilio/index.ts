@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { TwilioModule } from './twilio.module';
 
-import { TwilioModule } from './twilio.module'
-import { NestConfigModule } from '@lib/config/config.module'
+import { NestConfigModule } from '@lib/config/config.module';
 
 @Module({
   imports: [

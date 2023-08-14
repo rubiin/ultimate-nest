@@ -7,11 +7,11 @@ import {
   EventArgs,
   ManyToMany,
   Property,
-} from '@mikro-orm/core'
-import { slugify } from 'helper-fns'
+} from '@mikro-orm/core';
+import { slugify } from 'helper-fns';
+import { Post } from './post.entity';
 
-import { Post } from './post.entity'
-import { BaseEntity } from '@common/database'
+import { BaseEntity } from '@common/database';
 
 @Entity()
 export class Tag extends BaseEntity {
@@ -20,20 +20,20 @@ export class Tag extends BaseEntity {
     index: true,
     unique: true,
   })
-title!: string
+title!: string;
 
   @Property({ columnType: 'text' })
-description!: string
+description!: string;
 
   @Property({ index: true })
-slug?: string
+slug?: string;
 
   @ManyToMany(() => Post, post => post.tags)
-posts = new Collection<Post>(this)
+posts = new Collection<Post>(this);
 
   constructor(partial?: Partial<Tag>) {
-    super()
-    Object.assign(this, partial)
+    super();
+    Object.assign(this, partial);
   }
 
   @BeforeCreate()
@@ -41,6 +41,6 @@ posts = new Collection<Post>(this)
   @BeforeUpdate()
   generateSlug(arguments_: EventArgs<this>) {
     if (arguments_.changeSet?.payload?.title)
-      this.slug = slugify(this.title)
+      this.slug = slugify(this.title);
   }
 }

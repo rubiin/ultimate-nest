@@ -1,13 +1,12 @@
-import { compile } from 'handlebars'
-
-import type { Adapter } from './abstract.adapter'
+import { compile } from 'handlebars';
+import type { Adapter } from './abstract.adapter';
 
 export class HandlebarsAdapter implements Adapter {
   constructor(private readonly options: Partial<CompileOptions>) {}
 
   compile(template: string, data: Record<string, any>): Promise<string> {
-    const compiledTemplate = compile(template, this.options)
+    const compiledTemplate = compile(template, this.options);
 
-    return Promise.resolve(compiledTemplate(data))
+    return Promise.resolve(compiledTemplate(data));
   }
 }

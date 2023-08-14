@@ -1,22 +1,22 @@
-import type { AutoPath } from '@mikro-orm/core/typings'
-import { InjectRepository } from '@mikro-orm/nestjs'
-import { EntityManager } from '@mikro-orm/postgresql'
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { omit } from 'helper-fns'
-import type { Observable } from 'rxjs'
-import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from 'rxjs'
+import type { AutoPath } from '@mikro-orm/core/typings';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityManager } from '@mikro-orm/postgresql';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { omit } from 'helper-fns';
+import type { Observable } from 'rxjs';
+import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from 'rxjs';
+import type { CreateCommentDto, CreatePostDto, EditPostDto } from './dtos';
 
-import type { CreateCommentDto, CreatePostDto, EditPostDto } from './dtos'
-import { translate } from '@lib/i18n'
-import { Category, Comment, Post, Tag, User } from '@entities'
-import type { CursorPaginationDto } from '@common/dtos'
-import { BaseRepository } from '@common/database'
-import type { PaginationResponse } from '@common/@types'
-import { CursorType, QueryOrder } from '@common/@types'
+import { translate } from '@lib/i18n';
+import { Category, Comment, Post, Tag, User } from '@entities';
+import type { CursorPaginationDto } from '@common/dtos';
+import { BaseRepository } from '@common/database';
+import type { PaginationResponse } from '@common/@types';
+import { CursorType, QueryOrder } from '@common/@types';
 
 @Injectable()
 export class PostService {
-  private readonly queryName = 'p'
+  private readonly queryName = 'p';
 
   constructor(
     private readonly em: EntityManager,
@@ -40,7 +40,7 @@ private readonly categoryRepository: BaseRepository<Category>,
 * @param dto
 */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<Post>> {
-    const qb = this.postRepository.createQueryBuilder(this.queryName)
+    const qb = this.postRepository.createQueryBuilder(this.queryName);
 
     return from(
       this.postRepository.qbCursorPagination({
@@ -54,7 +54,7 @@ private readonly categoryRepository: BaseRepository<Category>,
           ...dto,
         },
       }),
-    )
+    );
   }
 
   /* Finding a post by slug, and then returning the comments of that post */
@@ -76,12 +76,12 @@ private readonly categoryRepository: BaseRepository<Category>,
                   args: { item: 'Post' },
                 }),
               ),
-          )
+          );
         }
 
-        return of(post)
+        return of(post);
       }),
-    )
+    );
   }
 
   /**
@@ -105,11 +105,11 @@ private readonly categoryRepository: BaseRepository<Category>,
           author,
           categories,
           tags,
-        })
+        });
 
-        return from(this.em.persistAndFlush(post)).pipe(map(() => post))
+        return from(this.em.persistAndFlush(post)).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -132,17 +132,17 @@ private readonly categoryRepository: BaseRepository<Category>,
               this.postRepository.assign(post, {
                 ...omit(dto, ['tags', 'categories']),
                 tags,
-              })
+              });
 
-              return from(this.em.flush()).pipe(map(() => post))
+              return from(this.em.flush()).pipe(map(() => post));
             }),
-          )
+          );
         }
-        this.postRepository.assign(post, omit(dto, ['tags', 'categories']))
+        this.postRepository.assign(post, omit(dto, ['tags', 'categories']));
 
-        return from(this.em.flush()).pipe(map(() => post))
+        return from(this.em.flush()).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -154,9 +154,9 @@ private readonly categoryRepository: BaseRepository<Category>,
   remove(slug: string): Observable<Post> {
     return this.findOne(slug).pipe(
       switchMap((post) => {
-        return this.postRepository.softRemoveAndFlush(post).pipe(map(() => post))
+        return this.postRepository.softRemoveAndFlush(post).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -168,7 +168,7 @@ private readonly categoryRepository: BaseRepository<Category>,
 * @returns A post object
 */
   favorite(userId: number, slug: string): Observable<Post> {
-    const post$ = from(this.postRepository.findOneOrFail({ idx: slug }))
+    const post$ = from(this.postRepository.findOneOrFail({ idx: slug }));
     const user$ = from(
       this.userRepository.findOneOrFail(
         { id: userId },
@@ -179,18 +179,18 @@ private readonly categoryRepository: BaseRepository<Category>,
           },
         },
       ),
-    )
+    );
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
         if (!user.favorites.contains(post)) {
-          user.favorites.add(post)
-          post.favoritesCount += 1
+          user.favorites.add(post);
+          post.favoritesCount += 1;
         }
 
-        return from(this.em.flush()).pipe(map(() => post))
+        return from(this.em.flush()).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -206,7 +206,7 @@ private readonly categoryRepository: BaseRepository<Category>,
       this.postRepository.findOneOrFail({
         idx: slug,
       }),
-    )
+    );
     const user$ = from(
       this.userRepository.findOneOrFail(
         { id: userId },
@@ -217,18 +217,18 @@ private readonly categoryRepository: BaseRepository<Category>,
           },
         },
       ),
-    )
+    );
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
         if (!user.favorites.contains(post)) {
-          user.favorites.remove(post)
-          post.favoritesCount -= 1
+          user.favorites.remove(post);
+          post.favoritesCount -= 1;
         }
 
-        return from(this.em.flush()).pipe(map(() => post))
+        return from(this.em.flush()).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -247,7 +247,7 @@ private readonly categoryRepository: BaseRepository<Category>,
           },
         },
       ),
-    ).pipe(map(post => post.comments.getItems()))
+    ).pipe(map(post => post.comments.getItems()));
   }
 
   /**
@@ -258,18 +258,18 @@ private readonly categoryRepository: BaseRepository<Category>,
 * @returns Post
 */
   addComment(userId: number, slug: string, dto: CreateCommentDto): Observable<Post> {
-    const post$ = this.findOne(slug)
-    const user$ = from(this.userRepository.findOneOrFail(userId))
+    const post$ = this.findOne(slug);
+    const user$ = from(this.userRepository.findOneOrFail(userId));
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
-        const comment = new Comment({ body: dto.body, author: user })
+        const comment = new Comment({ body: dto.body, author: user });
 
-        post.comments.add(comment)
+        post.comments.add(comment);
 
-        return from(this.em.flush()).pipe(map(() => post))
+        return from(this.em.flush()).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -285,13 +285,13 @@ private readonly categoryRepository: BaseRepository<Category>,
       switchMap((_post) => {
         return from(this.commentRepository.findOneOrFail({ idx: commentIndex })).pipe(
           switchMap((comment) => {
-            this.commentRepository.assign(comment, commentData)
+            this.commentRepository.assign(comment, commentData);
 
-            return from(this.em.flush()).pipe(map(() => _post))
+            return from(this.em.flush()).pipe(map(() => _post));
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -306,15 +306,15 @@ private readonly categoryRepository: BaseRepository<Category>,
       from(this.commentRepository.findOneOrFail({ idx: commentIndex })),
     ]).pipe(
       switchMap(([post, comment]) => {
-        const commentReference = this.commentRepository.getReference(comment.id)
+        const commentReference = this.commentRepository.getReference(comment.id);
 
         if (post.comments.contains(commentReference)) {
-          post.comments.remove(commentReference)
-          from(this.em.removeAndFlush(commentReference)).pipe(map(() => post))
+          post.comments.remove(commentReference);
+          from(this.em.removeAndFlush(commentReference)).pipe(map(() => post));
         }
 
-        return of(post)
+        return of(post);
       }),
-    )
+    );
   }
 }

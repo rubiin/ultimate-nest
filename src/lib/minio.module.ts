@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { NestMinioModule } from 'nestjs-minio'
-import { NestConfigModule } from '@lib/config/config.module'
+import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { NestMinioModule } from 'nestjs-minio';
+import { NestConfigModule } from '@lib/config/config.module';
 
 @Module({
   imports: [

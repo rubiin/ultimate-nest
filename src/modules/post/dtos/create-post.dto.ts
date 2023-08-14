@@ -1,7 +1,7 @@
-import { IsBoolean } from 'class-validator'
-import { PostStateEnum } from '@common/@types'
-import { IsEnumField, IsStringField, IsUUIDField, ToBoolean } from '@common/decorators'
-import { validationI18nMessage } from '@lib/i18n'
+import { IsBoolean } from 'class-validator';
+import { PostStateEnum } from '@common/@types';
+import { IsEnumField, IsStringField, IsUUIDField, ToBoolean } from '@common/decorators';
+import { validationI18nMessage } from '@lib/i18n';
 
 export class CreatePostDto {
 /**
@@ -10,7 +10,7 @@ export class CreatePostDto {
 */
 
   @IsStringField()
-title!: string
+title!: string;
 
   /**
 * Description of post
@@ -18,7 +18,7 @@ title!: string
 */
 
   @IsStringField()
-description!: string
+description!: string;
 
   /**
 * Content of post
@@ -26,7 +26,7 @@ description!: string
 */
 
   @IsStringField()
-content!: string
+content!: string;
 
   /**
 * tags of post
@@ -34,7 +34,7 @@ content!: string
 */
 
   @IsUUIDField({ each: true })
-tags!: string[]
+tags!: string[];
 
   /**
 * tags of post
@@ -42,7 +42,7 @@ tags!: string[]
 */
 
   @IsUUIDField({ each: true })
-categories!: string[]
+categories!: string[];
 
   /**
 * State of post
@@ -50,7 +50,7 @@ categories!: string[]
 */
 
   @IsEnumField(PostStateEnum, { required: false })
-state: PostStateEnum
+state: PostStateEnum;
 
   /**
 * Published status of post
@@ -62,5 +62,5 @@ state: PostStateEnum
       type: 'boolean',
     }),
   })
-published?: boolean
+published?: boolean;
 }

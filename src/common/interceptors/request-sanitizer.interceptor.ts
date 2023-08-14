@@ -1,47 +1,47 @@
-import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common'
-import type { Request } from 'express'
-import DOMPurify from 'isomorphic-dompurify'
-import type { Observable } from 'rxjs'
+import type { Request } from 'express';
+import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import DOMPurify from 'isomorphic-dompurify';
+import type { Observable } from 'rxjs';
 
 export class RequestSanitizerInterceptor implements NestInterceptor {
-  private except: Array<any> = ['password', 'captcha']
+  private except: any[] = ['password', 'captcha'];
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    this.cleanRequest(context.switchToHttp().getRequest())
+    this.cleanRequest(context.switchToHttp().getRequest());
 
-    return next.handle()
+    return next.handle();
   }
 
   cleanRequest(request: Request): void {
-    request.query = this.cleanObject(request.query)
-    request.params = this.cleanObject(request.params)
+    request.query = this.cleanObject(request.query);
+    request.params = this.cleanObject(request.params);
 
     // we wont be sending body on GET and DELETE requests
 
     if (!['GET', 'DELETE'].includes(request.method))
-      request.body = this.cleanObject(request.body)
+      request.body = this.cleanObject(request.body);
   }
 
   cleanObject(object: Record<string, any> | null | undefined) {
     if (!object)
-      return object
+      return object;
 
     for (const key in object) {
-      const value = object[key]
+      const value = object[key];
 
       // If the value is another nested object we need to recursively
       // clean it too. This will work for both array and object.
       if (typeof value === 'object') {
-        this.cleanObject(value)
+        this.cleanObject(value);
       }
       else {
         // If the value is not an object then it's a scalar
         // so we just let it be transformed.
-        object[key] = this.transform(key, value)
+        object[key] = this.transform(key, value);
       }
     }
 
-    return object
+    return object;
   }
 
   /**
@@ -53,9 +53,9 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 */
   transform<T>(key: T, value: string): string {
     if (this.isString(value) && !this.except.includes(key))
-      return DOMPurify.sanitize(value.trim())
+      return DOMPurify.sanitize(value.trim());
 
-    return value
+    return value;
   }
 
   /**
@@ -67,6 +67,6 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 * @returns A boolean value.
 */
   isString(value: unknown): value is string {
-    return typeof value === 'string' || value instanceof String
+    return typeof value === 'string' || value instanceof String;
   }
 }

@@ -1,10 +1,10 @@
-import { HttpStatus, ParseFilePipeBuilder } from '@nestjs/common'
-import type { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface'
-import type { Request } from 'express'
-import { memoryStorage } from 'multer'
-import { MULTER_IMAGE_FILTER } from '@common/constant'
-import type { FileValidator } from '@common/@types'
-import { FileSize, FileType } from '@common/@types'
+import type { Request } from 'express';
+import { HttpStatus, ParseFilePipeBuilder } from '@nestjs/common';
+import type { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
+import { memoryStorage } from 'multer';
+import { MULTER_IMAGE_FILTER } from '@common/constant';
+import type { FileValidator } from '@common/@types';
+import { FileSize, FileType } from '@common/@types';
 
 export const ImageMulterOption: MulterOptions = {
   limits: {
@@ -13,11 +13,11 @@ export const ImageMulterOption: MulterOptions = {
   storage: memoryStorage(),
   fileFilter: (_request: Request, file, callback) => {
     if (!FileType.IMAGE.test(file.mimetype))
-      return callback(new Error(MULTER_IMAGE_FILTER), false)
+      return callback(new Error(MULTER_IMAGE_FILTER), false);
 
-    return callback(undefined, true)
+    return callback(undefined, true);
   },
-}
+};
 
 /**
 *
@@ -42,5 +42,5 @@ export const fileValidatorPipe = ({
     .build({
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       fileIsRequired: required,
-    })
-}
+    });
+};

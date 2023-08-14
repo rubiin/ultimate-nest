@@ -1,10 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { PassportStrategy } from '@nestjs/passport'
-import { ExtractJwt, Strategy } from 'passport-jwt'
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { AuthService } from '../auth.service';
 
-import { AuthService } from '../auth.service'
-import type { JwtPayload } from '@common/@types'
+import type { JwtPayload } from '@common/@types';
 
 @Injectable()
 export class JwtTwofaStrategy extends PassportStrategy(Strategy, 'jwt2fa') {
@@ -16,7 +16,7 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, 'jwt2fa') {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: config.get('jwt.secret', { infer: true }),
       ignoreExpiration: false,
-    })
+    });
   }
 
   /**
@@ -28,14 +28,14 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, 'jwt2fa') {
 */
 
   async validate(payload: JwtPayload) {
-    const { sub: id } = payload
+    const { sub: id } = payload;
 
     // Accept the JWT and attempt to validate it using the user service
-    const user = await this.authService.findUser({ id })
+    const user = await this.authService.findUser({ id });
 
     if (!user)
-      throw new UnauthorizedException()
+      throw new UnauthorizedException();
 
-    return user
+    return user;
   }
 }

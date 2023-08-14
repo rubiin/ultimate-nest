@@ -1,4 +1,4 @@
-import { IsStringField } from '@common/decorators'
+import { IsStringField } from '@common/decorators';
 
 export class CreateCategoryDto {
 /**
@@ -6,12 +6,12 @@ export class CreateCategoryDto {
 * @example "Lorem ipsum dolor sit"
 */
   @IsStringField()
-title: string
+title: string;
 
   /**
 * Description of tag
 * @example "Lorem ipsum dolor sit"
 */
   @IsStringField()
-description: string
+description: string;
 }

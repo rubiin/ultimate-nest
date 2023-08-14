@@ -7,11 +7,11 @@ const CaseInsensitiveFilterPlugin = () => {
       ) => {
         return taggedOps.filter((_tagObject: any, tag: string) =>
           tag.toLowerCase().includes(phrase.toLowerCase()),
-        )
+        );
       },
     },
-  }
-}
+  };
+};
 
 export const swaggerOptions = {
   docExpansion: 'list',
@@ -23,12 +23,12 @@ export const swaggerOptions = {
     a: { get: (argument: string) => string },
     b: { get: (argument: string) => string },
   ) => {
-    const methodsOrder = ['get', 'post', 'put', 'patch', 'delete', 'options', 'trace']
-    let result = methodsOrder.indexOf(a.get('method')) - methodsOrder.indexOf(b.get('method'))
+    const methodsOrder = ['get', 'post', 'put', 'patch', 'delete', 'options', 'trace'];
+    let result = methodsOrder.indexOf(a.get('method')) - methodsOrder.indexOf(b.get('method'));
 
     if (result === 0)
-      result = a.get('path').localeCompare(b.get('path'))
+      result = a.get('path').localeCompare(b.get('path'));
 
-    return result
+    return result;
   },
-}
+};

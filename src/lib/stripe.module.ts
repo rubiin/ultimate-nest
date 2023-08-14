@@ -1,10 +1,10 @@
-import { StripeModule } from '@golevelup/nestjs-stripe'
-import { Global, Logger, Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { SkipThrottle } from '@nestjs/throttler'
-import { NestConfigModule } from '@lib/config/config.module'
+import { StripeModule } from '@golevelup/nestjs-stripe';
+import { Global, Logger, Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { SkipThrottle } from '@nestjs/throttler';
+import { NestConfigModule } from '@lib/config/config.module';
 
-const logger = new Logger('Stripe')
+const logger = new Logger('Stripe');
 
 @Global()
 @Module({

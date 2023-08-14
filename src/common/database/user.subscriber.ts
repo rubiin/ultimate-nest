@@ -1,7 +1,7 @@
-import type { EntityName, EventArgs, EventSubscriber } from '@mikro-orm/core'
-import { Injectable } from '@nestjs/common'
-import { HelperService } from '@common/helpers'
-import { User } from '@entities'
+import type { EntityName, EventArgs, EventSubscriber } from '@mikro-orm/core';
+import { Injectable } from '@nestjs/common';
+import { HelperService } from '@common/helpers';
+import { User } from '@entities';
 
 /* It's a class that implements the EventSubscriber interface, and it's responsible for hashing the
 password before the user is created or updated */
@@ -9,16 +9,16 @@ password before the user is created or updated */
 @Injectable()
 export class UserSubscriber implements EventSubscriber<User> {
   getSubscribedEntities(): EntityName<User>[] {
-    return [User]
+    return [User];
   }
 
   async beforeCreate(arguments_: EventArgs<User>): Promise<void> {
     if (arguments_.changeSet.payload?.password)
-      arguments_.entity.password = await HelperService.hashString(arguments_.entity.password)
+      arguments_.entity.password = await HelperService.hashString(arguments_.entity.password);
   }
 
   async beforeUpdate(arguments_: EventArgs<User>): Promise<void> {
     if (arguments_.changeSet.payload?.password)
-      arguments_.entity.password = await HelperService.hashString(arguments_.entity.password)
+      arguments_.entity.password = await HelperService.hashString(arguments_.entity.password);
   }
 }

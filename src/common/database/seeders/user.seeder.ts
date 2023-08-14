@@ -1,8 +1,7 @@
-import type { EntityManager } from '@mikro-orm/core'
-import { Seeder } from '@mikro-orm/seeder'
-import { randomNumber } from 'helper-fns'
-
-import { CommentFactory, PostFactory, TagFactory, UserFactory } from '../factories'
+import type { EntityManager } from '@mikro-orm/core';
+import { Seeder } from '@mikro-orm/seeder';
+import { randomNumber } from 'helper-fns';
+import { CommentFactory, PostFactory, TagFactory, UserFactory } from '../factories';
 
 /**
 * Runs the UserSeeder, creating new users with associated posts, comments, and tags.
@@ -17,18 +16,18 @@ export class UserSeeder extends Seeder {
       .each(async (user) => {
         const comments = new CommentFactory(em).make(randomNumber(2, 4), {
           author: user,
-        })
+        });
 
-        const tags = new TagFactory(em).makeOne()
+        const tags = new TagFactory(em).makeOne();
 
         const posts = await new PostFactory(em).create(randomNumber(2, 4), {
           author: user,
           comments,
           tags,
-        })
+        });
 
-        user.posts.set(posts)
+        user.posts.set(posts);
       })
-      .make(50)
+      .make(50);
   }
 }

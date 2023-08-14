@@ -1,36 +1,36 @@
-import { createMock } from '@golevelup/ts-jest'
-import type { Request } from 'express'
+import type { Request } from 'express';
 
-import { ClearCacheMiddleware } from './cache.middleware'
-import { mockCacheService, mockResponse } from '@mocks'
+import { createMock } from '@golevelup/ts-jest';
+import { ClearCacheMiddleware } from './cache.middleware';
+import { mockCacheService, mockResponse } from '@mocks';
 
 describe('ClearCacheMiddleware', () => {
-  let middleware: ClearCacheMiddleware
+  let middleware: ClearCacheMiddleware;
 
   beforeEach(() => {
-    jest.clearAllMocks()
-    middleware = new ClearCacheMiddleware(mockCacheService)
-  })
+    jest.clearAllMocks();
+    middleware = new ClearCacheMiddleware(mockCacheService);
+  });
   const mockRequest = createMock<Request>({
     query: {
       clearCache: 'true',
     },
-  })
+  });
 
   it('should be defined', () => {
-    expect(middleware).toBeDefined()
-  })
+    expect(middleware).toBeDefined();
+  });
 
   describe('use', () => {
     it('should clear cache', async () => {
-      mockCacheService.resetCache.mockReturnValue(Promise.resolve())
+      mockCacheService.resetCache.mockReturnValue(Promise.resolve());
 
-      const mockNext = jest.fn()
+      const mockNext = jest.fn();
 
-      await middleware.use(mockRequest, mockResponse, mockNext)
+      await middleware.use(mockRequest, mockResponse, mockNext);
 
-      expect(mockCacheService.resetCache).toBeCalled()
-      expect(mockNext).toBeCalled()
-    })
-  })
-})
+      expect(mockCacheService.resetCache).toBeCalled();
+      expect(mockNext).toBeCalled();
+    });
+  });
+});

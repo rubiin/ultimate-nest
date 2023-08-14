@@ -2,32 +2,32 @@ import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from 'class-validator'
+} from 'class-validator';
 import {
   ValidatorConstraint,
   registerDecorator,
-} from 'class-validator'
-import { isMatch } from 'date-fns'
-import { HelperService } from '@common/helpers'
+} from 'class-validator';
+import { isMatch } from 'date-fns';
+import { HelperService } from '@common/helpers';
 
 /* It validates that a date is in a given format */
 
 @ValidatorConstraint({ async: true })
 class IsDateInFormatConstraint implements ValidatorConstraintInterface {
-  async validate(value: string | Array<string>, arguments_: ValidationArguments) {
-    const [format] = arguments_.constraints
+  async validate(value: string | string[], arguments_: ValidationArguments) {
+    const [format] = arguments_.constraints;
 
     if (HelperService.isArray(value))
-      return value.some(v => isMatch(v, format))
+      return value.some(v => isMatch(v, format));
 
-    return isMatch(value, format)
+    return isMatch(value, format);
   }
 
   defaultMessage(arguments_: ValidationArguments) {
-    const property = arguments_.property
-    const [format] = arguments_.constraints
+    const property = arguments_.property;
+    const [format] = arguments_.constraints;
 
-    return `${property} should be in ${format} format`
+    return `${property} should be in ${format} format`;
   }
 }
 
@@ -42,6 +42,6 @@ export const IsDateInFormat = (
       options: validationOptions,
       constraints: [format],
       validator: IsDateInFormatConstraint,
-    })
-  }
-}
+    });
+  };
+};

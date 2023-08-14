@@ -2,26 +2,26 @@ import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from 'class-validator'
+} from 'class-validator';
 import {
   ValidatorConstraint,
   registerDecorator,
-} from 'class-validator'
+} from 'class-validator';
 
 @ValidatorConstraint({ async: true })
 class IsEqualToConstraint implements ValidatorConstraintInterface {
   async validate(value: string, arguments_: ValidationArguments) {
-    const [relatedPropertyName] = arguments_.constraints
-    const relatedValue = (arguments_.object as any)[relatedPropertyName]
+    const [relatedPropertyName] = arguments_.constraints;
+    const relatedValue = (arguments_.object as any)[relatedPropertyName];
 
-    return value === relatedValue
+    return value === relatedValue;
   }
 
   defaultMessage(arguments_: ValidationArguments) {
-    const property = arguments_.property
-    const [relatedPropertyName] = arguments_.constraints
+    const property = arguments_.property;
+    const [relatedPropertyName] = arguments_.constraints;
 
-    return `${property} should be equal to ${relatedPropertyName}`
+    return `${property} should be equal to ${relatedPropertyName}`;
   }
 }
 
@@ -36,6 +36,6 @@ export const IsEqualTo = (
       options: validationOptions,
       constraints: [property],
       validator: IsEqualToConstraint,
-    })
-  }
-}
+    });
+  };
+};

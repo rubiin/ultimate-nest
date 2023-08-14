@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer'
+import { Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
   IsArray,
@@ -8,16 +8,16 @@ import {
   IsString,
   Max,
   Min,
-} from 'class-validator'
-import { enumToString } from 'helper-fns'
-import { i18nValidationMessage } from 'nestjs-i18n'
+} from 'class-validator';
+import { enumToString } from 'helper-fns';
+import { i18nValidationMessage } from 'nestjs-i18n';
+import { Sanitize, Trim } from './transform.decorator';
 
-import { Sanitize, Trim } from './transform.decorator'
-import { validationI18nMessage } from '@lib/i18n'
-import { MinMaxLength } from '@common/decorators'
+import { validationI18nMessage } from '@lib/i18n';
+import { MinMaxLength } from '@common/decorators';
 
 export class ValidatorFieldBuilder {
-  private decoratorsToApply: PropertyDecorator[]
+  private decoratorsToApply: PropertyDecorator[];
 
   constructor(readonly options: any) {}
 
@@ -30,9 +30,9 @@ export class ValidatorFieldBuilder {
       Max(this.options.max, {
         message: validationI18nMessage('validation.max'),
       }),
-    )
+    );
 
-    return this
+    return this;
   }
 
   string() {
@@ -43,9 +43,9 @@ export class ValidatorFieldBuilder {
         }),
         each: this.options.each,
       }),
-    )
+    );
 
-    return this
+    return this;
   }
 
   enum(entity: object) {
@@ -54,23 +54,23 @@ export class ValidatorFieldBuilder {
         each: this.options.each,
         message: `must be a valid enum value,${enumToString(entity)}`,
       }),
-    )
+    );
 
-    return this
+    return this;
   }
 
   addSanitize() {
     if (this.options.sanitize)
-      this.decoratorsToApply.push(Sanitize())
+      this.decoratorsToApply.push(Sanitize());
 
-    return this
+    return this;
   }
 
   addTrim() {
     if (this.options.trim)
-      this.decoratorsToApply.push(Trim())
+      this.decoratorsToApply.push(Trim());
 
-    return this
+    return this;
   }
 
   addMinMaxLength() {
@@ -79,10 +79,10 @@ export class ValidatorFieldBuilder {
         minLength: this.options.minLength,
         maxLength: this.options.maxLength,
         each: this.options.each,
-      })
+      });
     }
 
-    return this
+    return this;
   }
 
   addRequired() {
@@ -92,13 +92,13 @@ export class ValidatorFieldBuilder {
           message: i18nValidationMessage('validation.isNotEmpty'),
           each: this.options.each,
         }),
-      )
+      );
     }
     else {
-      this.decoratorsToApply.push(IsOptional())
+      this.decoratorsToApply.push(IsOptional());
     }
 
-    return this
+    return this;
   }
 
   addEach() {
@@ -107,7 +107,7 @@ export class ValidatorFieldBuilder {
         ArrayNotEmpty({
           message: i18nValidationMessage('validation.isNotEmpty'),
         }),
-      )
+      );
     }
 
     if (this.options.each) {
@@ -117,15 +117,15 @@ export class ValidatorFieldBuilder {
             type: 'array',
           }),
         }),
-      )
+      );
     }
 
-    return this
+    return this;
   }
 
   build() {
-    return this.decoratorsToApply
+    return this.decoratorsToApply;
   }
 }
 
-export { ValidatorFieldBuilder as V }
+export { ValidatorFieldBuilder as V };

@@ -1,24 +1,24 @@
-import { Entity, Property } from '@mikro-orm/core'
-import { BaseEntity } from '@common/database'
+import { Entity, Property } from '@mikro-orm/core';
+import { BaseEntity } from '@common/database';
 
 // use this model to store the protocol
 
 @Entity()
 export class Protocol extends BaseEntity {
   @Property()
-loginAttemptnumbererval!: number
+loginAttemptnumbererval!: number;
 
   @Property()
-loginnumberervalUnit!: string
+loginnumberervalUnit!: string;
 
   @Property()
-loginMaxRetry!: number
+loginMaxRetry!: number;
 
   @Property()
-otpExpiryInMinutes!: number
+otpExpiryInMinutes!: number;
 
   constructor(partial?: Partial<Protocol>) {
-    super()
-    Object.assign(this, partial)
+    super();
+    Object.assign(this, partial);
   }
 }

@@ -1,35 +1,35 @@
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq'
-import { EntityManager } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { createId } from '@paralleldrive/cuid2'
-import { capitalize, slugify } from 'helper-fns'
-import type { IFile } from 'nestjs-cloudinary'
-import { CloudinaryService } from 'nestjs-cloudinary'
-import type { Observable } from 'rxjs'
-import { from, map, mergeMap, of, switchMap, throwError } from 'rxjs'
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { EntityManager } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { createId } from '@paralleldrive/cuid2';
+import { capitalize, slugify } from 'helper-fns';
+import type { IFile } from 'nestjs-cloudinary';
+import { CloudinaryService } from 'nestjs-cloudinary';
+import type { Observable } from 'rxjs';
+import { from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
+import type { CreateUserDto, EditUserDto } from './dtos';
 
-import type { CreateUserDto, EditUserDto } from './dtos'
-import { translate } from '@lib/i18n'
-import { User } from '@entities'
-import type { CursorPaginationDto } from '@common/dtos'
-import { BaseRepository } from '@common/database'
 import type {
   DtoWithFile,
   PaginationResponse,
-} from '@common/@types'
+} from '@common/@types';
 import {
   CursorType,
   EmailSubject,
   EmailTemplate,
   QueryOrder,
   RoutingKey,
-} from '@common/@types'
+} from '@common/@types';
+import { BaseRepository } from '@common/database';
+import type { CursorPaginationDto } from '@common/dtos';
+import { User } from '@entities';
+import { translate } from '@lib/i18n';
 
 @Injectable()
 export class UserService {
-  private readonly queryName = 'u'
+  private readonly queryName = 'u';
 
   constructor(
 @InjectRepository(User)
@@ -48,7 +48,7 @@ private readonly cloudinaryService: CloudinaryService,
 * @returns The method is returning an Observable of type PaginationResponse<User>.
 */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<User>> {
-    const qb = this.userRepository.createQueryBuilder(this.queryName)
+    const qb = this.userRepository.createQueryBuilder(this.queryName);
 
     return from(
       this.userRepository.qbCursorPagination({
@@ -62,7 +62,7 @@ private readonly cloudinaryService: CloudinaryService,
           ...dto,
         },
       }),
-    )
+    );
   }
 
   /**
@@ -86,12 +86,12 @@ private readonly cloudinaryService: CloudinaryService,
                   args: { item: 'User' },
                 }),
               ),
-          )
+          );
         }
 
-        return of(user)
+        return of(user);
       }),
-    )
+    );
   }
 
   /**
@@ -100,19 +100,19 @@ private readonly cloudinaryService: CloudinaryService,
 * @returns The user object
 */
   create(dto: DtoWithFile<CreateUserDto>): Observable<User> {
-    const { files, ...rest } = dto
-    const user = this.userRepository.create(rest)
+    const { files, ...rest } = dto;
+    const user = this.userRepository.create(rest);
 
     return from(
       this.em.transactional(async (em) => {
-        const { url } = await this.cloudinaryService.uploadFile(files)
+        const { url } = await this.cloudinaryService.uploadFile(files);
 
         // cloudinary gives a url key on response that is the full url to file
 
-        user.avatar = url
+        user.avatar = url;
 
-        await em.persistAndFlush(user)
-        const link = this.configService.get('app.clientUrl', { infer: true })
+        await em.persistAndFlush(user);
+        const link = this.configService.get('app.clientUrl', { infer: true });
 
         await this.amqpConnection.publish(
           this.configService.get('rabbitmq.exchange', { infer: true }),
@@ -127,9 +127,9 @@ private readonly cloudinaryService: CloudinaryService,
             subject: EmailSubject.WELCOME,
             from: this.configService.get('mail.senderEmail', { infer: true }),
           },
-        )
+        );
       }),
-    ).pipe(map(() => user))
+    ).pipe(map(() => user));
   }
 
   /**
@@ -143,34 +143,34 @@ private readonly cloudinaryService: CloudinaryService,
 * @returns Observable<User>
 */
   update(index: string, dto: EditUserDto, image?: IFile): Observable<User> {
-    let uploadImage$: Observable<string>
+    let uploadImage$: Observable<string>;
 
     return this.findOne(index).pipe(
       switchMap((user) => {
         if (image) {
           uploadImage$ = from(this.cloudinaryService.uploadFile(image)).pipe(
             switchMap(({ url }) => {
-              return of(url)
+              return of(url);
             }),
-          )
+          );
         }
 
-        this.userRepository.assign(user, dto)
+        this.userRepository.assign(user, dto);
 
         return uploadImage$.pipe(
           switchMap((url) => {
             if (url)
-              user.avatar = url
+              user.avatar = url;
 
             return from(this.em.flush()).pipe(
               switchMap(() => {
-                return of(user)
+                return of(user);
               }),
-            )
+            );
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -183,9 +183,9 @@ private readonly cloudinaryService: CloudinaryService,
   remove(index: string): Observable<User> {
     return this.findOne(index).pipe(
       switchMap((user) => {
-        return this.userRepository.softRemoveAndFlush(user).pipe(map(() => user))
+        return this.userRepository.softRemoveAndFlush(user).pipe(map(() => user));
       }),
-    )
+    );
   }
 
   /**
@@ -198,7 +198,7 @@ private readonly cloudinaryService: CloudinaryService,
   generateUsername(name: string): Observable<string> {
     const pointSlug = slugify(`${name} ${createId().slice(0, 6)}`, {
       lowercase: true,
-    })
+    });
 
     return from(
       this.userRepository.count({
@@ -209,10 +209,10 @@ private readonly cloudinaryService: CloudinaryService,
     ).pipe(
       map((count) => {
         if (count > 0)
-          return `${pointSlug}${count}`
+          return `${pointSlug}${count}`;
 
-        return pointSlug
+        return pointSlug;
       }),
-    )
+    );
   }
 }

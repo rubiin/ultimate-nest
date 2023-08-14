@@ -1,5 +1,4 @@
-import type { ConfigType } from '@nestjs/config'
-
+import type { ConfigType } from '@nestjs/config';
 import type {
   app,
   cloudinary,
@@ -13,19 +12,19 @@ import type {
   stripe,
   throttle,
   twilio,
-} from './configs'
+} from './configs';
 
 export interface Config {
-  throttle: ConfigType<typeof throttle>
-  redis: ConfigType<typeof redis>
-  database: ConfigType<typeof database>
-  app: ConfigType<typeof app>
-  rabbitmq: ConfigType<typeof rabbitmq>
-  jwt: ConfigType<typeof jwt>
-  twilio: ConfigType<typeof twilio>
-  cloudinary: ConfigType<typeof cloudinary>
-  mail: ConfigType<typeof mail>
-  stripe: ConfigType<typeof stripe>
-  facebookOauth: ConfigType<typeof facebookOauth>
-  googleOauth: ConfigType<typeof googleOauth>
+  throttle: ConfigType<typeof throttle>;
+  redis: ConfigType<typeof redis>;
+  database: ConfigType<typeof database>;
+  app: ConfigType<typeof app>;
+  rabbitmq: ConfigType<typeof rabbitmq>;
+  jwt: ConfigType<typeof jwt>;
+  twilio: ConfigType<typeof twilio>;
+  cloudinary: ConfigType<typeof cloudinary>;
+  mail: ConfigType<typeof mail>;
+  stripe: ConfigType<typeof stripe>;
+  facebookOauth: ConfigType<typeof facebookOauth>;
+  googleOauth: ConfigType<typeof googleOauth>;
 }

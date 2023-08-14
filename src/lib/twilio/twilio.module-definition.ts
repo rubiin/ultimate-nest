@@ -1,6 +1,5 @@
-import { ConfigurableModuleBuilder } from '@nestjs/common'
-
-import type { TwilioModuleOptions } from './twilio.options'
+import { ConfigurableModuleBuilder } from '@nestjs/common';
+import type { TwilioModuleOptions } from './twilio.options';
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
 = new ConfigurableModuleBuilder<TwilioModuleOptions>({
@@ -16,4 +15,4 @@ export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
     }),
   )
   .setClassMethodName('forRoot')
-  .build()
+  .build();

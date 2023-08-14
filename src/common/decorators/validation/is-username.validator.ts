@@ -9,32 +9,32 @@
 *
 */
 
-import { applyDecorators } from '@nestjs/common'
+import { applyDecorators } from '@nestjs/common';
 import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from 'class-validator'
+} from 'class-validator';
 import {
   IsNotEmpty,
   ValidatorConstraint,
   registerDecorator,
-} from 'class-validator'
+} from 'class-validator';
+import { MinMaxLength } from './min-max-length.decorator';
 
-import { MinMaxLength } from './min-max-length.decorator'
-import { validationI18nMessage } from '@lib/i18n'
-import { USERNAME_REGEX } from '@common/constant'
+import { validationI18nMessage } from '@lib/i18n';
+import { USERNAME_REGEX } from '@common/constant';
 
 @ValidatorConstraint({ async: true })
 class IsUsernameConstraint implements ValidatorConstraintInterface {
   async validate(value: string, _argument: ValidationArguments) {
-    return USERNAME_REGEX.test(value)
+    return USERNAME_REGEX.test(value);
   }
 
   defaultMessage(argument: ValidationArguments) {
-    const property = argument.property
+    const property = argument.property;
 
-    return `${property} must fulfill username's criteria`
+    return `${property} must fulfill username's criteria`;
   }
 }
 
@@ -46,9 +46,9 @@ export const IsUsername = (validationOptions?: ValidationOptions): PropertyDecor
       options: validationOptions,
       constraints: [],
       validator: IsUsernameConstraint,
-    })
-  }
-}
+    });
+  };
+};
 
 export const IsUsernameField = (validationOptions?: ValidationOptions) => {
   return applyDecorators(
@@ -60,5 +60,5 @@ export const IsUsernameField = (validationOptions?: ValidationOptions) => {
       maxLength: 20,
     }),
     IsUsername(validationOptions),
-  )
-}
+  );
+};

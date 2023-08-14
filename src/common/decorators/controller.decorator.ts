@@ -1,8 +1,7 @@
-import { Controller, applyDecorators } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
-import { capitalize } from 'helper-fns'
-
-import { Auth } from './auth.decorator'
+import { Controller, applyDecorators } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { capitalize } from 'helper-fns';
+import { Auth } from './auth.decorator';
 
 /**
 * It takes a name and a boolean value and returns a decorator that applies the Controller, ApiTags,
@@ -15,10 +14,10 @@ export const GenericController = (name: string, secured = true) => {
   const decsToApply: (ClassDecorator | MethodDecorator | PropertyDecorator)[] = [
     ApiTags(capitalize(name)),
     Controller(name),
-  ]
+  ];
 
   if (secured)
-    decsToApply.push(Auth())
+    decsToApply.push(Auth());
 
-  return applyDecorators(...decsToApply)
-}
+  return applyDecorators(...decsToApply);
+};

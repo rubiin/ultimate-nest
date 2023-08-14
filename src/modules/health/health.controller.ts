@@ -1,5 +1,5 @@
-import { Get } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
+import { Get } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   DiskHealthIndicator,
   HealthCheck,
@@ -7,8 +7,8 @@ import {
   HttpHealthIndicator,
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
-} from '@nestjs/terminus'
-import { GenericController } from '@common/decorators'
+} from '@nestjs/terminus';
+import { GenericController } from '@common/decorators';
 
 @GenericController('health', false)
 export class HealthController {
@@ -23,7 +23,7 @@ export class HealthController {
 
   @Get('test')
   healthCheck() {
-    return 'Http working fine'
+    return 'Http working fine';
   }
 
   @Get()
@@ -61,6 +61,6 @@ infer: true,
           threshold: 250 * 1024 * 1024 * 1024,
           path: '/',
         }),
-    ])
+    ]);
   }
 }

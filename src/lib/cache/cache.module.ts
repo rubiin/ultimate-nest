@@ -1,11 +1,11 @@
-import type { CacheStore } from '@nestjs/cache-manager'
-import { CacheModule } from '@nestjs/cache-manager'
-import { Global, Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { redisStore } from 'cache-manager-ioredis-yet'
+import type { CacheStore } from '@nestjs/cache-manager';
+import { CacheModule } from '@nestjs/cache-manager';
+import { Global, Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { redisStore } from 'cache-manager-ioredis-yet';
+import { CacheService } from './cache.service';
 
-import { CacheService } from './cache.service'
-import { NestConfigModule } from '@lib/config/config.module'
+import { NestConfigModule } from '@lib/config/config.module';
 
 @Global()
 @Module({
@@ -20,11 +20,11 @@ import { NestConfigModule } from '@lib/config/config.module'
           password: configService.get('redis.password'),
           keepAlive: 120,
           ttl: configService.get('redis.ttl'),
-        })
+        });
 
         return {
           store: store as unknown as CacheStore,
-        }
+        };
       },
       inject: [ConfigService],
     }),

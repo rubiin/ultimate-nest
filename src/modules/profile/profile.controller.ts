@@ -1,14 +1,14 @@
-import { Delete, Get, Param, Post } from '@nestjs/common'
-import { Observable } from 'rxjs'
-import { ProfileService } from './profile.service'
-import type { ProfileData } from '@common/@types'
+import { Delete, Get, Param, Post } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { ProfileService } from './profile.service';
+import type { ProfileData } from '@common/@types';
 import {
   ApplyCustomCache,
   GenericController,
   LoggedInUser,
   SwaggerResponse,
-} from '@common/decorators'
-import { User } from '@entities'
+} from '@common/decorators';
+import { User } from '@entities';
 
 @GenericController('profile')
 export class ProfileController {
@@ -21,7 +21,7 @@ export class ProfileController {
     notFound: 'Profile does not exist.',
   })
   profile(@LoggedInUser('username') username: string): Observable<User> {
-    return this.profileService.getProfileByUsername(username, ['followers', 'followed'])
+    return this.profileService.getProfileByUsername(username, ['followers', 'followed']);
   }
 
   @Post(':username/follow')
@@ -34,7 +34,7 @@ export class ProfileController {
 @LoggedInUser() user: User,
 @Param('username') username: string,
   ): Observable<ProfileData> {
-    return this.profileService.follow(user, username)
+    return this.profileService.follow(user, username);
   }
 
   @Delete(':username/unfollow')
@@ -47,6 +47,6 @@ export class ProfileController {
 @LoggedInUser() user: User,
 @Param('username') username: string,
   ): Observable<ProfileData> {
-    return this.profileService.unFollow(user, username)
+    return this.profileService.unFollow(user, username);
   }
 }

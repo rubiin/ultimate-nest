@@ -1,6 +1,6 @@
-import type { TEmailSubject } from '../interfaces'
+import type { TEmailSubject } from '../interfaces';
 
-const BITS_TO_MB = 1024 * 1024
+const BITS_TO_MB = 1024 * 1024;
 
 export enum EmailTemplate {
   RESET_PASSWORD_TEMPLATE = 'reset',
@@ -14,7 +14,7 @@ export const EmailSubject: Record<TEmailSubject, string> = {
   WELCOME: 'Welcome to the app',
   MAGIC_LOGIN: 'Login to the app',
   NEWSLETTER: 'Newsletter',
-}
+};
 
 export enum FileSize {
   IMAGE = 5 * BITS_TO_MB, // 5MB
@@ -40,7 +40,7 @@ export const enum TemplateEngine {
 export const FileType: Record<keyof typeof FileSize, RegExp> = {
   IMAGE: /(jpg|jpeg|png|gif|svg)$/i,
   DOC: /(pdf|doc|txt|key|csv|docx|xls|xlsx|ppt|pptx)$/i,
-}
+};
 
 // database enums
 
