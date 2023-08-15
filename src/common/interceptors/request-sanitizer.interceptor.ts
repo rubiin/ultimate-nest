@@ -19,7 +19,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
     // we wont be sending body on GET and DELETE requests
 
     if (!['GET', 'DELETE'].includes(request.method))
-      request.body = this.cleanObject(request.body);
+      request.body = this.cleanObject(request.body as Record<string, any>);
   }
 
   cleanObject(object: Record<string, any> | null | undefined) {
@@ -32,9 +32,9 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
       // If the value is another nested object we need to recursively
       // clean it too. This will work for both array and object.
       if (typeof value === 'object') {
-        this.cleanObject(value);
+        this.cleanObject(value as Record<string, any>);
       }
-      else {
+      else if (typeof value === 'string') {
         // If the value is not an object then it's a scalar
         // so we just let it be transformed.
         object[key] = this.transform(key, value);
