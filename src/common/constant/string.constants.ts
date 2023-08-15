@@ -1,5 +1,5 @@
 import { capitalize } from 'helper-fns';
-import pkg from 'load-pkg';
+import { readPackageSync } from 'read-pkg';
 
 export const REQUEST_ID_TOKEN_HEADER = 'x-request-id';
 export const VERSION_VALIDATION_MESSAGE = 'Version must start with "v" followed by a number.';
@@ -11,11 +11,7 @@ export const MULTER_IMAGE_FILTER = 'Only image files are allowed!.';
 export const API_UNAUTHORISED_RESPONSE = 'No auth token in request.';
 
 // swagger constants
-const packageJson: {
-  name: string;
-  version: string;
-  description: string;
-} = pkg.sync();
+const packageJson = readPackageSync();
 
 export const APP_NAME = packageJson.name;
 export const SWAGGER_API_CURRENT_VERSION = packageJson.version;

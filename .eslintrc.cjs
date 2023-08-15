@@ -6,7 +6,7 @@ module.exports = defineConfig({
   parserOptions: {
     project: 'tsconfig.json',
   },
-  ignorePatterns: ['migrations', 'src/generated'],
+  ignorePatterns: ['migrations', 'src/generated', '**/*.spec.ts', '**/*.e2e.ts'], // optimize this
   extends: ['@rubiin/eslint-config-typescript'],
   root: true,
   settings: {
@@ -19,6 +19,7 @@ module.exports = defineConfig({
   },
   rules: {
     'unicorn/prefer-module': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
     'no-useless-constructor': 'off', // optimize this
     '@typescript-eslint/require-await': 'off', // optimize this
     '@typescript-eslint/no-unsafe-assignment': 'off', // optimize this

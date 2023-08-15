@@ -1,4 +1,4 @@
-import type { EntityData, RequiredEntityData } from '@mikro-orm/core';
+import type { EntityData, FilterQuery, RequiredEntityData } from '@mikro-orm/core';
 import { NotFoundException } from '@nestjs/common';
 import type { Observable } from 'rxjs';
 import { from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
@@ -18,10 +18,10 @@ import { translate } from '@lib/i18n';
 
 export abstract class BaseService<
 Entity extends BaseEntity,
-paginationRequest extends PaginationRequest,
+PRequest extends PaginationRequest,
 CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
 UpdateDto extends EntityData<Entity> = EntityData<Entity>,
-> implements Crud<Entity, paginationRequest> {
+> implements Crud<Entity, PRequest> {
   protected searchField: keyof Entity;
   protected queryName = 'entity';
 
@@ -88,7 +88,7 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 * @param {string} index - The name of the index to search.
 */
   findOne(index: string): Observable<Entity> {
-    return from(this.repository.findOne({ idx: index } as any)).pipe(
+    return from(this.repository.findOne({ idx: index } as FilterQuery<Entity>)).pipe(
       mergeMap((entity) => {
         if (!entity) {
           return throwError(

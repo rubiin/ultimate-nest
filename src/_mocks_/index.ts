@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import type { Request, Response } from 'express';
 import type { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { createMock } from '@golevelup/ts-jest';

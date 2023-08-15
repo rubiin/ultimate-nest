@@ -21,7 +21,7 @@ export const IsEnumField = (entity: object, options_?: EnumFieldOptions) => {
   const decoratorsToApply = [
     IsEnum(entity, {
       each: options.each,
-      message: `must be a valid enum value,${enumToString(entity)}`,
+      message: `must be a valid enum value,${enumToString(entity).join(',')}`,
     }),
   ];
 

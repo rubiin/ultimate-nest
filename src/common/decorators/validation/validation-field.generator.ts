@@ -15,11 +15,12 @@ import { Sanitize, Trim } from './transform.decorator';
 
 import { validationI18nMessage } from '@lib/i18n';
 import { MinMaxLength } from '@common/decorators';
+import type { NumberFieldOptions, StringFieldOptions } from '@common/@types';
 
 export class ValidatorFieldBuilder {
   private decoratorsToApply: PropertyDecorator[];
 
-  constructor(readonly options: any) {}
+  constructor(readonly options: NumberFieldOptions & StringFieldOptions) {}
 
   number() {
     this.decoratorsToApply.push(
@@ -48,11 +49,11 @@ export class ValidatorFieldBuilder {
     return this;
   }
 
-  enum(entity: object) {
+  enum(entity: Record<any, any>) {
     this.decoratorsToApply.push(
       IsEnum(entity, {
         each: this.options.each,
-        message: `must be a valid enum value,${enumToString(entity)}`,
+        message: `must be a valid enum value,${enumToString(entity).join(',')}`,
       }),
     );
 

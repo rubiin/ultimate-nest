@@ -36,15 +36,19 @@ export const AppUtils = {
     app.close().then(() => {
       logger.log('✅ Http server closed.');
       process.exit(0);
-    });
+    })
+      .catch((error) => {
+        logger.error(`❌ Http server closed with error: ${error}`);
+        process.exit(1);
+      });
   },
 
   killAppWithGrace(app: INestApplication): void {
-    process.on('SIGINT', async () => {
+    process.on('SIGINT', () => {
       AppUtils.gracefulShutdown(app, 'SIGINT');
     });
 
-    process.on('SIGTERM', async () => {
+    process.on('SIGTERM', () => {
       AppUtils.gracefulShutdown(app, 'SIGTERM');
     });
   },
@@ -80,6 +84,7 @@ export const AppUtils = {
       for (const method of methods) {
         if (
           HelperService.isArray(method.security)
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 && method.security.includes(IS_PUBLIC_KEY_META)
         )
           method.security = [];
