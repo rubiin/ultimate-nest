@@ -1,8 +1,8 @@
-import type { EntityData, RequiredEntityData } from '@mikro-orm/core';
+import type { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import type {
   ArgumentMetadata,
   Type,
-} from '@nestjs/common';
+} from "@nestjs/common";
 import {
   Body,
   Delete,
@@ -14,14 +14,14 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import type { BaseService } from './crud.service';
-import type { Crud, PaginationRequest, PaginationResponse } from '@common/@types';
-import type { BaseEntity } from '@common/database';
-import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from '@common/decorators';
-import { AppUtils } from '@common/helpers';
-import { User } from '@entities';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import type { BaseService } from "./crud.service";
+import type { Crud, PaginationRequest, PaginationResponse } from "@common/@types";
+import type { BaseEntity } from "@common/database";
+import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import { AppUtils } from "@common/helpers";
+import { User } from "@entities";
 
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {
@@ -62,13 +62,13 @@ U extends EntityData<T>,
 > implements Crud<T, Q, C, U> {
     protected service: BaseService<T, Q, C, U>;
 
-    @Get(':idx')
+    @Get(":idx")
     @SwaggerResponse({
-      operation: 'Find item',
-      badRequest: 'Item does not exist.',
-      params: ['idx'],
+      operation: "Find item",
+      badRequest: "Item does not exist.",
+      params: ["idx"],
     })
-    findOne(@Param('idx') index: string): Observable<T> {
+    findOne(@Param("idx") index: string): Observable<T> {
       return this.service.findOne(index);
     }
 
@@ -80,8 +80,8 @@ U extends EntityData<T>,
     }
 
     @SwaggerResponse({
-      operation: 'Create item',
-      badRequest: 'Item already exists.',
+      operation: "Create item",
+      badRequest: "Item already exists.",
       body: createDto,
       response: updateDto,
     })
@@ -92,26 +92,26 @@ U extends EntityData<T>,
     }
 
     @SwaggerResponse({
-      operation: 'Item update',
-      badRequest: 'Item does not exist.',
-      params: ['idx'],
+      operation: "Item update",
+      badRequest: "Item does not exist.",
+      params: ["idx"],
       body: updateDto,
       response: updateDto,
     })
     @UsePipes(updatePipe)
-    @Put(':idx')
-    update(@Param('idx') index: string, @Body() body: U): Observable<T> {
+    @Put(":idx")
+    update(@Param("idx") index: string, @Body() body: U): Observable<T> {
       return this.service.update(index, body);
     }
 
     @SwaggerResponse({
-      operation: 'Item delete',
-      badRequest: 'Item does not exist.',
-      params: ['idx'],
+      operation: "Item delete",
+      badRequest: "Item does not exist.",
+      params: ["idx"],
       response: updateDto,
     })
-    @Delete(':idx')
-    remove(@Param('idx') index: string): Observable<T> {
+    @Delete(":idx")
+    remove(@Param("idx") index: string): Observable<T> {
       return this.service.remove(index);
     }
   }

@@ -1,9 +1,9 @@
-import path from 'node:path';
+import path from "node:path";
 
-import type { PipeTransform } from '@nestjs/common';
-import { Injectable } from '@nestjs/common';
-import sharp from 'sharp';
-import type { File } from '@common/@types';
+import type { PipeTransform } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
+import sharp from "sharp";
+import type { File } from "@common/@types";
 
 /**
 *
@@ -24,7 +24,7 @@ export class SharpPipe implements PipeTransform<File, Promise<string>> {
     await sharp(image.buffer)
       .resize(800)
       .webp({ effort: 3 })
-      .toFile(path.join('uploads', filename));
+      .toFile(path.join("uploads", filename));
 
     return filename;
   }

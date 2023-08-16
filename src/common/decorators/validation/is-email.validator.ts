@@ -1,7 +1,7 @@
-import { applyDecorators } from '@nestjs/common';
-import { ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-import type { EnumFieldOptions as EmailFieldOptions } from '@common/@types';
-import { validationI18nMessage } from '@lib/i18n';
+import { applyDecorators } from "@nestjs/common";
+import { ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsOptional } from "class-validator";
+import type { EnumFieldOptions as EmailFieldOptions } from "@common/@types";
+import { validationI18nMessage } from "@lib/i18n";
 
 export const IsEmailField = (options_?: EmailFieldOptions) => {
   const options: EmailFieldOptions = {
@@ -13,8 +13,8 @@ export const IsEmailField = (options_?: EmailFieldOptions) => {
     IsEmail(
       {},
       {
-        message: validationI18nMessage('validation.isDataType', {
-          type: 'email address',
+        message: validationI18nMessage("validation.isDataType", {
+          type: "email address",
         }),
         each: options.each,
       },
@@ -24,7 +24,7 @@ export const IsEmailField = (options_?: EmailFieldOptions) => {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: validationI18nMessage('validation.isNotEmpty'),
+        message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
       }),
     );
@@ -32,7 +32,7 @@ export const IsEmailField = (options_?: EmailFieldOptions) => {
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
-          message: validationI18nMessage('validation.isNotEmpty'),
+          message: validationI18nMessage("validation.isNotEmpty"),
         }),
       );
     }
@@ -44,8 +44,8 @@ export const IsEmailField = (options_?: EmailFieldOptions) => {
   if (options.each) {
     decoratorsToApply.push(
       IsArray({
-        message: validationI18nMessage('validation.isDataType', {
-          type: 'array',
+        message: validationI18nMessage("validation.isDataType", {
+          type: "array",
         }),
       }),
     );

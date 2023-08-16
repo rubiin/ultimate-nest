@@ -1,4 +1,4 @@
-import { IsDateField, IsStringField } from '@common/decorators';
+import { IsDateField, IsStringField } from "@common/decorators";
 
 export class CreateNewsletterDto {
 /**

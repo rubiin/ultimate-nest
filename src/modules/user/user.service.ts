@@ -1,35 +1,35 @@
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { EntityManager } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { createId } from '@paralleldrive/cuid2';
-import { capitalize, slugify } from 'helper-fns';
-import type { IFile } from 'nestjs-cloudinary';
-import { CloudinaryService } from 'nestjs-cloudinary';
-import type { Observable } from 'rxjs';
-import { from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
-import type { CreateUserDto, EditUserDto } from './dtos';
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import { EntityManager } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { createId } from "@paralleldrive/cuid2";
+import { capitalize, slugify } from "helper-fns";
+import type { IFile } from "nestjs-cloudinary";
+import { CloudinaryService } from "nestjs-cloudinary";
+import type { Observable } from "rxjs";
+import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import type { CreateUserDto, EditUserDto } from "./dtos";
 
 import type {
   DtoWithFile,
   PaginationResponse,
-} from '@common/@types';
+} from "@common/@types";
 import {
   CursorType,
   EmailSubject,
   EmailTemplate,
   QueryOrder,
   RoutingKey,
-} from '@common/@types';
-import { BaseRepository } from '@common/database';
-import type { CursorPaginationDto } from '@common/dtos';
-import { User } from '@entities';
-import { translate } from '@lib/i18n';
+} from "@common/@types";
+import { BaseRepository } from "@common/database";
+import type { CursorPaginationDto } from "@common/dtos";
+import { User } from "@entities";
+import { translate } from "@lib/i18n";
 
 @Injectable()
 export class UserService {
-  private readonly queryName = 'u';
+  private readonly queryName = "u";
 
   constructor(
 @InjectRepository(User)
@@ -55,10 +55,10 @@ private readonly cloudinaryService: CloudinaryService,
         qb,
         pageOptionsDto: {
           alias: this.queryName,
-          cursor: 'username',
+          cursor: "username",
           cursorType: CursorType.STRING,
           order: QueryOrder.ASC,
-          searchField: 'firstName',
+          searchField: "firstName",
           ...dto,
         },
       }),
@@ -82,8 +82,8 @@ private readonly cloudinaryService: CloudinaryService,
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
-                  args: { item: 'User' },
+                translate("exception.itemDoesNotExist", {
+                  args: { item: "User" },
                 }),
               ),
           );
@@ -112,10 +112,10 @@ private readonly cloudinaryService: CloudinaryService,
         user.avatar = url;
 
         await em.persistAndFlush(user);
-        const link = this.configService.get('app.clientUrl', { infer: true });
+        const link = this.configService.get("app.clientUrl", { infer: true });
 
         await this.amqpConnection.publish(
-          this.configService.get('rabbitmq.exchange', { infer: true }),
+          this.configService.get("rabbitmq.exchange", { infer: true }),
           RoutingKey.SEND_MAIL,
           {
             template: EmailTemplate.WELCOME_TEMPLATE,
@@ -125,7 +125,7 @@ private readonly cloudinaryService: CloudinaryService,
             },
             to: user.email,
             subject: EmailSubject.WELCOME,
-            from: this.configService.get('mail.senderEmail', { infer: true }),
+            from: this.configService.get("mail.senderEmail", { infer: true }),
           },
         );
       }),

@@ -12,11 +12,11 @@ import {
   OneToMany,
   Property,
   wrap,
-} from '@mikro-orm/core';
-import { Roles } from '@common/@types';
-import { BaseEntity } from '@common/database';
-import { HelperService } from '@common/helpers';
-import { Conversation, Post } from '@entities';
+} from "@mikro-orm/core";
+import { Roles } from "@common/@types";
+import { BaseEntity } from "@common/database";
+import { HelperService } from "@common/helpers";
+import { Conversation, Post } from "@entities";
 
 @Embeddable()
 export class Social {
@@ -47,13 +47,13 @@ username!: string;
   @Property({ index: true, unique: true })
 email!: string;
 
-  @Property({ columnType: 'text' })
+  @Property({ columnType: "text" })
 bio!: string;
 
-  @Property({ columnType: 'text' })
+  @Property({ columnType: "text" })
 avatar!: string;
 
-  @Property({ hidden: true, columnType: 'text', lazy: true })
+  @Property({ hidden: true, columnType: "text", lazy: true })
 password!: string;
 
   @Property()
@@ -78,7 +78,7 @@ isVerified? = false;
   })
 posts = new Collection<Post>(this);
 
-  @ManyToMany(() => Conversation, 'users', { owner: true })
+  @ManyToMany(() => Conversation, "users", { owner: true })
 conversations = new Collection<Conversation>(this);
 
   @ManyToMany({ hidden: true })
@@ -91,9 +91,9 @@ social?: Social;
     entity: () => User,
     inversedBy: u => u.followed,
     owner: true,
-    pivotTable: 'user_to_follower',
-    joinColumn: 'follower',
-    inverseJoinColumn: 'following',
+    pivotTable: "user_to_follower",
+    joinColumn: "follower",
+    inverseJoinColumn: "following",
     hidden: true,
   })
 followers = new Collection<User>(this);
@@ -104,7 +104,7 @@ followed = new Collection<User>(this);
   @Property()
 lastLogin? = new Date();
 
-  constructor(data?: Pick<User, 'idx'>) {
+  constructor(data?: Pick<User, "idx">) {
     super();
     Object.assign(this, data);
   }

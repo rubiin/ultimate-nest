@@ -1,4 +1,4 @@
-import type { File } from '@common/@types';
+import type { File } from "@common/@types";
 
 export type Optional<T> = T | undefined;
 export type Nullable<T> = T | null;

@@ -1,4 +1,4 @@
-import type { Readable } from 'node:stream';
+import type { Readable } from "node:stream";
 
 /** Object containing file metadata and access information. */
 export interface File {

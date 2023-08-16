@@ -1,7 +1,7 @@
-import { applyDecorators } from '@nestjs/common';
-import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional } from 'class-validator';
-import type { DateFieldOptions } from '@common/@types';
-import { validationI18nMessage } from '@lib/i18n';
+import { applyDecorators } from "@nestjs/common";
+import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional } from "class-validator";
+import type { DateFieldOptions } from "@common/@types";
+import { validationI18nMessage } from "@lib/i18n";
 
 export const IsDateField = (options_?: DateFieldOptions) => {
   const options: DateFieldOptions = {
@@ -15,8 +15,8 @@ export const IsDateField = (options_?: DateFieldOptions) => {
     IsDateString(
       { strict: true },
       {
-        message: validationI18nMessage('validation.isDataType', {
-          type: 'date',
+        message: validationI18nMessage("validation.isDataType", {
+          type: "date",
         }),
         each: options.each,
       },
@@ -26,7 +26,7 @@ export const IsDateField = (options_?: DateFieldOptions) => {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: validationI18nMessage('validation.isNotEmpty'),
+        message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
       }),
     );
@@ -34,7 +34,7 @@ export const IsDateField = (options_?: DateFieldOptions) => {
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
-          message: validationI18nMessage('validation.isNotEmpty'),
+          message: validationI18nMessage("validation.isNotEmpty"),
         }),
       );
     }
@@ -46,8 +46,8 @@ export const IsDateField = (options_?: DateFieldOptions) => {
   if (options.each) {
     decoratorsToApply.push(
       IsArray({
-        message: validationI18nMessage('validation.isDataType', {
-          type: 'array',
+        message: validationI18nMessage("validation.isDataType", {
+          type: "array",
         }),
       }),
     );

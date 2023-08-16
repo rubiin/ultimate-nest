@@ -1,25 +1,25 @@
-import { Response } from 'express';
-import { Body, Post, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth } from '@nestjs/swagger';
-import { Observable, switchMap, throwError } from 'rxjs';
-import { TwoFactorService } from './twofa.service';
-import { TwofaDto } from './dtos/twofa.dto';
+import { Response } from "express";
+import { Body, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth } from "@nestjs/swagger";
+import { Observable, switchMap, throwError } from "rxjs";
+import { TwoFactorService } from "./twofa.service";
+import { TwofaDto } from "./dtos/twofa.dto";
 
-import { AuthService } from '@modules/auth/auth.service';
-import { User } from '@entities';
-import { Auth, GenericController, LoggedInUser } from '@common/decorators';
-import type { AuthenticationResponse } from '@common/@types';
+import { AuthService } from "@modules/auth/auth.service";
+import { User } from "@entities";
+import { Auth, GenericController, LoggedInUser } from "@common/decorators";
+import type { AuthenticationResponse } from "@common/@types";
 
-@GenericController('2fa', false)
+@GenericController("2fa", false)
 export class TwoFactorController {
   constructor(
     private readonly twoFactorAuthenticationService: TwoFactorService,
     private readonly authService: AuthService,
   ) {}
 
-  @Post('generate')
-  @UseGuards(AuthGuard('jwt2fa'))
+  @Post("generate")
+  @UseGuards(AuthGuard("jwt2fa"))
   register(@Res() response: Response, @LoggedInUser() user: User): Observable<unknown> {
     return this.twoFactorAuthenticationService.generateTwoFactorSecret(user).pipe(
       switchMap(({ otpAuthUrl }) => {
@@ -29,8 +29,8 @@ export class TwoFactorController {
   }
 
   @ApiBearerAuth()
-  @Post('authenticate')
-  @UseGuards(AuthGuard('jwt2fa'))
+  @Post("authenticate")
+  @UseGuards(AuthGuard("jwt2fa"))
   authenticate(
 @LoggedInUser() user: User,
 @Body() twoFaAuthDto: TwofaDto,
@@ -47,7 +47,7 @@ export class TwoFactorController {
   }
 
   @Auth()
-  @Post('turn-on')
+  @Post("turn-on")
   turnOnTwoFactorAuthentication(
 @LoggedInUser() user: User,
 @Body() dto: TwofaDto,

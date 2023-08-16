@@ -1,7 +1,7 @@
-import type { EntityManager } from '@mikro-orm/core';
-import { Seeder } from '@mikro-orm/seeder';
-import { randomNumber } from 'helper-fns';
-import { CommentFactory, PostFactory, TagFactory, UserFactory } from '../factories';
+import type { EntityManager } from "@mikro-orm/core";
+import { Seeder } from "@mikro-orm/seeder";
+import { randomNumber } from "helper-fns";
+import { CommentFactory, PostFactory, TagFactory, UserFactory } from "../factories";
 
 /**
 * Runs the UserSeeder, creating new users with associated posts, comments, and tags.

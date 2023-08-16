@@ -7,11 +7,11 @@ import {
   EventArgs,
   ManyToMany,
   Property,
-} from '@mikro-orm/core';
-import { slugify } from 'helper-fns';
-import { Post } from './post.entity';
+} from "@mikro-orm/core";
+import { slugify } from "helper-fns";
+import { Post } from "./post.entity";
 
-import { BaseEntity } from '@common/database';
+import { BaseEntity } from "@common/database";
 
 @Entity()
 export class Tag extends BaseEntity {
@@ -22,7 +22,7 @@ export class Tag extends BaseEntity {
   })
 title!: string;
 
-  @Property({ columnType: 'text' })
+  @Property({ columnType: "text" })
 description!: string;
 
   @Property({ index: true })

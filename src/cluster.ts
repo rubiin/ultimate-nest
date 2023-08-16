@@ -1,8 +1,8 @@
-import cluster from 'node:cluster';
-import os from 'node:os';
+import cluster from "node:cluster";
+import os from "node:os";
 
-import { Logger } from '@nestjs/common';
-import { isUndefined } from '@common/helpers';
+import { Logger } from "@nestjs/common";
+import { isUndefined } from "@common/helpers";
 
 export class Cluster {
   private static readonly loggerService = new Logger(Cluster.name);
@@ -19,9 +19,9 @@ export class Cluster {
         cluster.fork();
       }
 
-      cluster.on('exit', (worker) => {
+      cluster.on("exit", (worker) => {
         Cluster.loggerService.warn(`Worker ${worker.id} died. `);
-        Cluster.loggerService.warn('Starting a new worker...');
+        Cluster.loggerService.warn("Starting a new worker...");
         cluster.fork();
       });
     }
@@ -36,7 +36,7 @@ export class Cluster {
     if (!isUndefined(process.env.WORKERS_COUNT))
       return Number.parseInt(process.env.WORKERS_COUNT, 10);
 
-    if (!isUndefined(process.env.NODE_ENV) && process.env.NODE_ENV === 'production')
+    if (!isUndefined(process.env.NODE_ENV) && process.env.NODE_ENV === "production")
       return os.cpus().length;
 
     return 2;

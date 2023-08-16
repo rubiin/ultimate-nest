@@ -1,4 +1,4 @@
-import type { EmailTemplate } from '../enums';
+import type { EmailTemplate } from "../enums";
 
 export interface MailPayload {
   template: string;

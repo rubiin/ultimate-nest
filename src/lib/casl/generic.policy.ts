@@ -1,8 +1,8 @@
-import type { Request } from 'express';
+import type { Request } from "express";
 
-import type { AppAbility } from './casl-ability.factory';
-import type { PoliciesHandler } from './policy.interface';
-import { Action } from '@common/@types';
+import type { AppAbility } from "./casl-ability.factory";
+import type { PoliciesHandler } from "./policy.interface";
+import { Action } from "@common/@types";
 
 export class GenericPolicyHandler implements PoliciesHandler {
   constructor(

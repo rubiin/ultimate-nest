@@ -1,8 +1,8 @@
-import type { EntityManager } from '@mikro-orm/core';
-import { Seeder } from '@mikro-orm/seeder';
-import { UserFactory } from '../factories';
+import type { EntityManager } from "@mikro-orm/core";
+import { Seeder } from "@mikro-orm/seeder";
+import { UserFactory } from "../factories";
 
-import { Roles } from '@common/@types';
+import { Roles } from "@common/@types";
 
 /*
 * It creates a user with the email and password specified in the .env file, and gives them the admin role
@@ -10,10 +10,10 @@ import { Roles } from '@common/@types';
 export class AdminSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
     await new UserFactory(em).createOne({
-      email: 'roobin.bhandari@gmail.com',
+      email: "roobin.bhandari@gmail.com",
       password: process.env.USER_PASSWORD,
-      firstName: 'Rubin',
-      lastName: 'Bhandari',
+      firstName: "Rubin",
+      lastName: "Bhandari",
       roles: [Roles.ADMIN],
     });
   }

@@ -1,7 +1,7 @@
-import { IsBoolean } from 'class-validator';
-import { PostStateEnum } from '@common/@types';
-import { IsEnumField, IsStringField, IsUUIDField, ToBoolean } from '@common/decorators';
-import { validationI18nMessage } from '@lib/i18n';
+import { IsBoolean } from "class-validator";
+import { PostStateEnum } from "@common/@types";
+import { IsEnumField, IsStringField, IsUUIDField, ToBoolean } from "@common/decorators";
+import { validationI18nMessage } from "@lib/i18n";
 
 export class CreatePostDto {
 /**
@@ -58,8 +58,8 @@ state: PostStateEnum;
 */
   @ToBoolean()
   @IsBoolean({
-    message: validationI18nMessage('validation.isDataType', {
-      type: 'boolean',
+    message: validationI18nMessage("validation.isDataType", {
+      type: "boolean",
     }),
   })
 published?: boolean;

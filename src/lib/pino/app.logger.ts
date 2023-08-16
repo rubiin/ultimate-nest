@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { Logger } from 'nestjs-pino';
-import { NestPinoModule } from './pino.module';
+import { Module } from "@nestjs/common";
+import { NestFactory } from "@nestjs/core";
+import { Logger } from "nestjs-pino";
+import { NestPinoModule } from "./pino.module";
 
 export async function createLogger(): Promise<Logger> {
   @Module({

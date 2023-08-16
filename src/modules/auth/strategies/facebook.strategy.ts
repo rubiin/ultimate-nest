@@ -1,17 +1,17 @@
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import { omit, randomString } from 'helper-fns';
-import type { Profile } from 'passport-facebook';
-import { Strategy } from 'passport-facebook';
-import type { VerifyCallback } from 'passport-google-oauth20';
-import { User } from '@entities';
-import { BaseRepository } from '@common/database';
-import type { OauthResponse } from '@common/@types';
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { PassportStrategy } from "@nestjs/passport";
+import { omit, randomString } from "helper-fns";
+import type { Profile } from "passport-facebook";
+import { Strategy } from "passport-facebook";
+import type { VerifyCallback } from "passport-google-oauth20";
+import { User } from "@entities";
+import { BaseRepository } from "@common/database";
+import type { OauthResponse } from "@common/@types";
 
 @Injectable()
-export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
+export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
 /**
 * It's a PassportStrategy that uses the FacebookStrategy and the Google OAuth2.0 API to authenticate users
 * Create a new project at
@@ -27,11 +27,11 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
 @InjectRepository(User) private readonly userRepo: BaseRepository<User>,
   ) {
     super({
-      clientID: configService.get('facebookOauth.clientId', { infer: true }),
-      clientSecret: configService.get('facebookOauth.secret', { infer: true }),
-      callbackURL: configService.get('facebookOauth.callbackUrl', { infer: true }),
-      scope: 'email',
-      profileFields: ['emails', 'name'],
+      clientID: configService.get("facebookOauth.clientId", { infer: true }),
+      clientSecret: configService.get("facebookOauth.secret", { infer: true }),
+      callbackURL: configService.get("facebookOauth.callbackUrl", { infer: true }),
+      scope: "email",
+      profileFields: ["emails", "name"],
     });
   }
 
@@ -61,7 +61,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     else {
       // If the user doesn't exist, create a new user
       const newUser = this.userRepo.create({
-        ...omit(user, ['accessToken']),
+        ...omit(user, ["accessToken"]),
         avatar: photos[0].value,
         username,
         password: randomString({ length: 10, symbols: true, numbers: true }),

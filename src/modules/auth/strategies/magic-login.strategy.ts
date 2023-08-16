@@ -1,13 +1,13 @@
-import type { Loaded } from '@mikro-orm/core';
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import Strategy from 'passport-magic-login';
-import { AuthService } from '../auth.service';
+import type { Loaded } from "@mikro-orm/core";
+import { Injectable, Logger, UnauthorizedException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { PassportStrategy } from "@nestjs/passport";
+import Strategy from "passport-magic-login";
+import { AuthService } from "../auth.service";
 
-import { MailerService } from '@lib/mailer/mailer.service';
-import type { User } from '@entities';
-import { EmailSubject, EmailTemplate } from '@common/@types';
+import { MailerService } from "@lib/mailer/mailer.service";
+import type { User } from "@entities";
+import { EmailSubject, EmailTemplate } from "@common/@types";
 
 interface MagicLoginPayload {
   destination: string;
@@ -17,7 +17,7 @@ interface MagicLoginPayload {
 }
 
 @Injectable()
-export class MagicLoginStrategy extends PassportStrategy(Strategy, 'magicLogin') {
+export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin") {
 /**
 * It's a PassportStrategy that uses the MagicLoginStrategy  to authenticate users
 * More at
@@ -37,25 +37,25 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, 'magicLogin')
     config: ConfigService<Configs, true>,
   ) {
     super({
-      secret: config.get('jwt.secret', { infer: true }),
+      secret: config.get("jwt.secret", { infer: true }),
       jwtOptions: {
-        expiresIn: config.get('jwt.magicLinkExpiry', { infer: true }),
+        expiresIn: config.get("jwt.magicLinkExpiry", { infer: true }),
       },
-      algorithms: ['HS256'],
+      algorithms: ["HS256"],
       // The authentication callback URL
-      callbackUrl: 'auth/magiclogin/callback',
+      callbackUrl: "auth/magiclogin/callback",
       sendMagicLink: async (destination: string, href: string) => {
         this.logger.log(`Sending magic link to ${destination} with href ${href}`);
 
         return this.mailService.sendMail({
           template: EmailTemplate.MAGIC_LOGIN_TEMPLATE,
           replacements: {
-            link: `${this.configService.get('app.url', { infer: true })}/v1/${href}`,
-            expiry: this.configService.get<string>('jwt.magicLinkExpiry', { infer: true }),
+            link: `${this.configService.get("app.url", { infer: true })}/v1/${href}`,
+            expiry: this.configService.get<string>("jwt.magicLinkExpiry", { infer: true }),
           },
           to: destination,
           subject: EmailSubject.MAGIC_LOGIN,
-          from: this.configService.get('mail.senderEmail', { infer: true }),
+          from: this.configService.get("mail.senderEmail", { infer: true }),
         });
       },
       verify: (

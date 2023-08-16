@@ -1,4 +1,4 @@
-import { applyDecorators } from '@nestjs/common';
+import { applyDecorators } from "@nestjs/common";
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -7,12 +7,12 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-} from 'class-validator';
-import { MinMaxLength } from './min-max-length.decorator';
-import { Sanitize, Trim } from './transform.decorator';
+} from "class-validator";
+import { MinMaxLength } from "./min-max-length.decorator";
+import { Sanitize, Trim } from "./transform.decorator";
 
-import { validationI18nMessage } from '@lib/i18n';
-import type { StringFieldOptions } from '@common/@types';
+import { validationI18nMessage } from "@lib/i18n";
+import type { StringFieldOptions } from "@common/@types";
 
 /**
 * It's a decorator that validates a string field
@@ -34,8 +34,8 @@ export const IsStringField = (options_?: StringFieldOptions) => {
   };
   const decoratorsToApply = [
     IsString({
-      message: validationI18nMessage('validation.isDataType', {
-        type: 'string',
+      message: validationI18nMessage("validation.isDataType", {
+        type: "string",
       }),
       each: options.each,
     }),
@@ -55,7 +55,7 @@ export const IsStringField = (options_?: StringFieldOptions) => {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: validationI18nMessage('validation.isNotEmpty'),
+        message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
       }),
     );
@@ -63,7 +63,7 @@ export const IsStringField = (options_?: StringFieldOptions) => {
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
-          message: validationI18nMessage('validation.isNotEmpty'),
+          message: validationI18nMessage("validation.isNotEmpty"),
         }),
       );
     }
@@ -75,8 +75,8 @@ export const IsStringField = (options_?: StringFieldOptions) => {
   if (options.each) {
     decoratorsToApply.push(
       IsArray({
-        message: validationI18nMessage('validation.isDataType', {
-          type: 'array',
+        message: validationI18nMessage("validation.isDataType", {
+          type: "array",
         }),
       }),
       ArrayMaxSize(options.arrayMaxSize),

@@ -1,22 +1,22 @@
-import '@total-typescript/ts-reset';
+import "@total-typescript/ts-reset";
 
-import bodyParser from 'body-parser';
-import chalk from 'chalk';
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
-import type { NestExpressApplication } from '@nestjs/platform-express';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import { useContainer } from 'class-validator';
-import compression from 'compression-next';
-import helmet from 'helmet';
-import { I18nValidationExceptionFilter } from 'nestjs-i18n';
-import { LoggerErrorInterceptor } from 'nestjs-pino';
-import { SocketIOAdapter } from './socket-io.adapter';
-import { AppModule } from './app.module';
+import bodyParser from "body-parser";
+import chalk from "chalk";
+import { Logger, ValidationPipe } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { NestFactory } from "@nestjs/core";
+import type { NestExpressApplication } from "@nestjs/platform-express";
+import { ExpressAdapter } from "@nestjs/platform-express";
+import { useContainer } from "class-validator";
+import compression from "compression-next";
+import helmet from "helmet";
+import { I18nValidationExceptionFilter } from "nestjs-i18n";
+import { LoggerErrorInterceptor } from "nestjs-pino";
+import { SocketIOAdapter } from "./socket-io.adapter";
+import { AppModule } from "./app.module";
 
-import { createLogger } from '@lib/pino/app.logger';
-import { AppUtils, HelperService } from '@common/helpers';
+import { createLogger } from "@lib/pino/app.logger";
+import { AppUtils, HelperService } from "@common/helpers";
 
 declare const module: { hot: { accept: () => void; dispose: (argument0: () => Promise<void>) => void } };
 
@@ -28,7 +28,7 @@ const bootstrap = async () => {
 
   const configService = app.get(ConfigService<Configs, true>);
 
-  const logger = new Logger('Bootstrap');
+  const logger = new Logger("Bootstrap");
 
   // =========================================================
   // configure swagger
@@ -41,26 +41,26 @@ const bootstrap = async () => {
   // security and middlewares
   // ======================================================
 
-  app.enable('trust proxy');
-  app.set('etag', 'strong');
+  app.enable("trust proxy");
+  app.set("etag", "strong");
   app.use(
-    bodyParser.json({ limit: '10mb' }),
-    bodyParser.urlencoded({ limit: '10mb', extended: true }),
+    bodyParser.json({ limit: "10mb" }),
+    bodyParser.urlencoded({ limit: "10mb", extended: true }),
   );
   app.use(helmet());
   app.use(compression());
   app.enableCors({
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     maxAge: 3600,
-    origin: configService.get('app.allowedOrigins', { infer: true }),
+    origin: configService.get("app.allowedOrigins", { infer: true }),
   });
 
   // =====================================================
   // configure global pipes, filters, interceptors
   // =====================================================
 
-  const globalPrefix = configService.get('app.prefix', { infer: true });
+  const globalPrefix = configService.get("app.prefix", { infer: true });
 
   app.useGlobalPipes(new ValidationPipe(AppUtils.validationPipeOptions()));
 
@@ -94,7 +94,7 @@ const bootstrap = async () => {
     module.hot.dispose(() => app.close());
   }
 
-  const port = process.env.PORT ?? configService.get('app.port', { infer: true });
+  const port = process.env.PORT ?? configService.get("app.port", { infer: true });
 
   await app.listen(port);
 
@@ -103,7 +103,7 @@ const bootstrap = async () => {
   );
   logger.log(
 `🚦 Accepting request only from: ${chalk.green(
-`${configService.get('app.allowedOrigins', { infer: true }).toString()}`,
+`${configService.get("app.allowedOrigins", { infer: true }).toString()}`,
 )}`,
   );
 

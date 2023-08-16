@@ -1,5 +1,5 @@
-import { Get } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Get } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import {
   DiskHealthIndicator,
   HealthCheck,
@@ -7,10 +7,10 @@ import {
   HttpHealthIndicator,
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
-} from '@nestjs/terminus';
-import { GenericController } from '@common/decorators';
+} from "@nestjs/terminus";
+import { GenericController } from "@common/decorators";
 
-@GenericController('health', false)
+@GenericController("health", false)
 export class HealthController {
   constructor(
     private health: HealthCheckService,
@@ -21,9 +21,9 @@ export class HealthController {
     private databaseHealth: MikroOrmHealthIndicator,
   ) {}
 
-  @Get('test')
+  @Get("test")
   healthCheck() {
-    return 'Http working fine';
+    return "Http working fine";
   }
 
   @Get()
@@ -32,34 +32,34 @@ export class HealthController {
     return this.health.check([
       () =>
         this.http.pingCheck(
-          'swagger',
-`${this.configService.get('app.url', {
+          "swagger",
+`${this.configService.get("app.url", {
 infer: true,
-})}:${this.configService.get('app.port', { infer: true })}/doc`,
+})}:${this.configService.get("app.port", { infer: true })}/doc`,
         ),
       () =>
         this.http.pingCheck(
-          'routes',
-`${this.configService.get('app.url', {
+          "routes",
+`${this.configService.get("app.url", {
 infer: true,
-})}:${this.configService.get('app.port', {
+})}:${this.configService.get("app.port", {
 infer: true,
-})}/${this.configService.get('app.prefix', { infer: true })}/health/test`,
+})}/${this.configService.get("app.prefix", { infer: true })}/health/test`,
         ),
-      async () => this.databaseHealth.pingCheck('mikroOrm'),
-      async () => this.memory.checkHeap('memory_heap', 200 * 1024 * 1024),
-      async () => this.memory.checkRSS('memory_rss', 3000 * 1024 * 1024),
+      async () => this.databaseHealth.pingCheck("mikroOrm"),
+      async () => this.memory.checkHeap("memory_heap", 200 * 1024 * 1024),
+      async () => this.memory.checkRSS("memory_rss", 3000 * 1024 * 1024),
       // The used disk storage should not exceed 50% of the full disk size
       () =>
-        this.disk.checkStorage('disk health', {
+        this.disk.checkStorage("disk health", {
           thresholdPercent: 0.5,
-          path: '/',
+          path: "/",
         }),
       // The used disk storage should not exceed 250 GB
       () =>
-        this.disk.checkStorage('disk health', {
+        this.disk.checkStorage("disk health", {
           threshold: 250 * 1024 * 1024 * 1024,
-          path: '/',
+          path: "/",
         }),
     ]);
   }

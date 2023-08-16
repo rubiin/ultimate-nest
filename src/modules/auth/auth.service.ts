@@ -1,34 +1,34 @@
-import type { FilterQuery } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityManager } from '@mikro-orm/postgresql';
+import type { FilterQuery } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 import {
   BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
-} from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { init } from '@paralleldrive/cuid2';
-import { isAfter } from 'date-fns';
-import { capitalize, omit } from 'helper-fns';
-import type { Observable } from 'rxjs';
-import { from, map, mergeMap, of, switchMap, throwError, zip } from 'rxjs';
+} from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { init } from "@paralleldrive/cuid2";
+import { isAfter } from "date-fns";
+import { capitalize, omit } from "helper-fns";
+import type { Observable } from "rxjs";
+import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 import type {
   ChangePasswordDto,
   OtpVerifyDto,
   ResetPasswordDto,
   SendOtpDto,
   UserLoginDto,
-} from './dtos';
+} from "./dtos";
 
-import { TokensService } from '@modules/token/tokens.service';
-import { MailerService } from '@lib/mailer/mailer.service';
-import { translate } from '@lib/i18n';
-import { OtpLog, Protocol, User } from '@entities';
-import { HelperService } from '@common/helpers';
-import { BaseRepository } from '@common/database';
-import type { AuthenticationResponse } from '@common/@types';
-import { EmailSubject, EmailTemplate } from '@common/@types';
+import { TokensService } from "@modules/token/tokens.service";
+import { MailerService } from "@lib/mailer/mailer.service";
+import { translate } from "@lib/i18n";
+import { OtpLog, Protocol, User } from "@entities";
+import { HelperService } from "@common/helpers";
+import { BaseRepository } from "@common/database";
+import type { AuthenticationResponse } from "@common/@types";
+import { EmailSubject, EmailTemplate } from "@common/@types";
 
 @Injectable()
 export class AuthService {
@@ -65,8 +65,8 @@ private readonly em: EntityManager,
           return throwError(
             () =>
               new ForbiddenException(
-                translate('exception.itemDoesNotExist', {
-                  args: { item: 'Account' },
+                translate("exception.itemDoesNotExist", {
+                  args: { item: "Account" },
                 }),
               ),
           );
@@ -74,7 +74,7 @@ private readonly em: EntityManager,
 
         if (!user.isActive) {
           return throwError(
-            () => new ForbiddenException(translate('exception.inactiveUser')),
+            () => new ForbiddenException(translate("exception.inactiveUser")),
           );
         }
 
@@ -82,17 +82,17 @@ private readonly em: EntityManager,
           ? HelperService.verifyHash(user.password, pass).pipe(
             map((isValid) => {
               if (isValid)
-                return omit(user, ['password']);
+                return omit(user, ["password"]);
 
               return throwError(
                 () =>
                   new BadRequestException(
-                    translate('exception.invalidCredentials'),
+                    translate("exception.invalidCredentials"),
                   ),
               );
             }),
           )
-          : of(omit(user, ['password']));
+          : of(omit(user, ["password"]));
       }),
     );
   }
@@ -110,7 +110,7 @@ private readonly em: EntityManager,
       switchMap((user: User) => {
         if (!user) {
           return throwError(
-            () => new BadRequestException(translate('exception.invalidCredentials')),
+            () => new BadRequestException(translate("exception.invalidCredentials")),
           );
         }
 
@@ -127,7 +127,7 @@ private readonly em: EntityManager,
           this.tokenService.generateAccessToken(user),
           this.tokenService.generateRefreshToken(
             user,
-            this.configService.get('jwt.refreshExpiry', { infer: true }),
+            this.configService.get("jwt.refreshExpiry", { infer: true }),
           ),
         ).pipe(
           map(([_, accessToken, refreshToken]) => {
@@ -180,8 +180,8 @@ private readonly em: EntityManager,
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
-                  args: { item: 'Account' },
+                translate("exception.itemDoesNotExist", {
+                  args: { item: "Account" },
                 }),
               ),
           );
@@ -215,7 +215,7 @@ private readonly em: EntityManager,
                   },
                   to: userExists.email,
                   subject: EmailSubject.RESET_PASSWORD,
-                  from: this.configService.get('mail.senderEmail', {
+                  from: this.configService.get("mail.senderEmail", {
                     infer: true,
                   }),
                 });
@@ -242,7 +242,7 @@ private readonly em: EntityManager,
         {
           otpCode,
         },
-        { populate: ['user'] },
+        { populate: ["user"] },
       ),
     ).pipe(
       switchMap((details) => {
@@ -273,8 +273,8 @@ private readonly em: EntityManager,
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
-                  args: { item: 'Otp' },
+                translate("exception.itemDoesNotExist", {
+                  args: { item: "Otp" },
                 }),
               ),
           );
@@ -286,8 +286,8 @@ private readonly em: EntityManager,
           return throwError(
             () =>
               new BadRequestException(
-                translate('exception.itemExpired', {
-                  args: { item: 'Otp' },
+                translate("exception.itemExpired", {
+                  args: { item: "Otp" },
                 }),
               ),
           );
@@ -336,7 +336,7 @@ private readonly em: EntityManager,
               return throwError(
                 () =>
                   new BadRequestException(
-                    translate('exception.invalidCredentials'),
+                    translate("exception.invalidCredentials"),
                   ),
               );
             }

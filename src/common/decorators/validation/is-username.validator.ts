@@ -9,21 +9,21 @@
 *
 */
 
-import { applyDecorators } from '@nestjs/common';
+import { applyDecorators } from "@nestjs/common";
 import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from 'class-validator';
+} from "class-validator";
 import {
   IsNotEmpty,
   ValidatorConstraint,
   registerDecorator,
-} from 'class-validator';
-import { MinMaxLength } from './min-max-length.decorator';
+} from "class-validator";
+import { MinMaxLength } from "./min-max-length.decorator";
 
-import { validationI18nMessage } from '@lib/i18n';
-import { USERNAME_REGEX } from '@common/constant';
+import { validationI18nMessage } from "@lib/i18n";
+import { USERNAME_REGEX } from "@common/constant";
 
 @ValidatorConstraint({ async: true })
 class IsUsernameConstraint implements ValidatorConstraintInterface {
@@ -53,7 +53,7 @@ export const IsUsername = (validationOptions?: ValidationOptions): PropertyDecor
 export const IsUsernameField = (validationOptions?: ValidationOptions) => {
   return applyDecorators(
     IsNotEmpty({
-      message: validationI18nMessage('validation.isNotEmpty'),
+      message: validationI18nMessage("validation.isNotEmpty"),
     }),
     MinMaxLength({
       minLength: 5,

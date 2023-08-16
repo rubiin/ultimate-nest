@@ -1,9 +1,9 @@
-import { existsSync } from 'node:fs';
-import path from 'node:path';
+import { existsSync } from "node:fs";
+import path from "node:path";
 
-import { Inject, Injectable } from '@nestjs/common';
-import admin from 'firebase-admin';
-import { FirebaseModuleOptions, MODULE_OPTIONS_TOKEN } from './fire-base.module.definition';
+import { Inject, Injectable } from "@nestjs/common";
+import admin from "firebase-admin";
+import { FirebaseModuleOptions, MODULE_OPTIONS_TOKEN } from "./fire-base.module.definition";
 
 interface NestFirebase {
   getFirebaseAdmin(): admin.app.App;
@@ -18,7 +18,7 @@ export class NestFirebaseService implements NestFirebase {
   ) {}
 
   getFirebaseAdmin(): admin.app.App {
-    const filePath = path.resolve('.', this._NestFirebaseOptions.FIREBASE_CREDENTIAL_PATH);
+    const filePath = path.resolve(".", this._NestFirebaseOptions.FIREBASE_CREDENTIAL_PATH);
 
     if (!existsSync(filePath)) throw new Error(`Unknown file ${filePath}`);
 

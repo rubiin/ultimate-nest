@@ -1,33 +1,33 @@
-import { Logger, UnauthorizedException, UseGuards, UsePipes } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Logger, UnauthorizedException, UseGuards, UsePipes } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import type {
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
-} from '@nestjs/websockets';
+} from "@nestjs/websockets";
 import {
   ConnectedSocket,
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-} from '@nestjs/websockets';
-import { Namespace, Socket } from 'socket.io';
-import { SocketConnectionService } from './socket-connection.service';
-import { CreateChatDto, MessageSeenDto } from './dto';
-import { ChatService } from './chat.service';
+} from "@nestjs/websockets";
+import { Namespace, Socket } from "socket.io";
+import { SocketConnectionService } from "./socket-connection.service";
+import { CreateChatDto, MessageSeenDto } from "./dto";
+import { ChatService } from "./chat.service";
 
-import { AuthService } from '@modules/auth/auth.service';
-import { User } from '@entities';
-import { WsValidationPipe } from '@common/pipes/ws-validation.pipe';
-import { WsJwtGuard } from '@common/guards';
-import { LoggedInUser } from '@common/decorators';
-import type { JwtPayload } from '@common/@types';
+import { AuthService } from "@modules/auth/auth.service";
+import { User } from "@entities";
+import { WsValidationPipe } from "@common/pipes/ws-validation.pipe";
+import { WsJwtGuard } from "@common/guards";
+import { LoggedInUser } from "@common/decorators";
+import type { JwtPayload } from "@common/@types";
 
 @UseGuards(WsJwtGuard)
 @UsePipes(WsValidationPipe)
 @WebSocketGateway({
-  namespace: 'chat',
+  namespace: "chat",
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
   @WebSocketServer() server: Namespace;
@@ -58,7 +58,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
 
       this.logger.log(`🔗 Client connected: ${user.firstName}`);
 
-      return this.server.emit('onlineUsers', this.connectionService.getAllOnlineUSers());
+      return this.server.emit("onlineUsers", this.connectionService.getAllOnlineUSers());
     }
     catch {
       return this.handleDisconnect(client);
@@ -75,7 +75,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
     this.disconnect(client);
   }
 
-  @SubscribeMessage('send')
+  @SubscribeMessage("send")
   async create(
 @MessageBody() createChatDto: CreateChatDto,
 @ConnectedSocket() _client: Socket,
@@ -88,12 +88,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
       message: createChatDto.message,
       users: [user, receiver],
     });
-    _client.to(createChatDto.to).emit('receive', createChatDto.message);
+    _client.to(createChatDto.to).emit("receive", createChatDto.message);
 
     return createChatDto;
   }
 
-  @SubscribeMessage('markAsSeen')
+  @SubscribeMessage("markAsSeen")
   async markAsSeen(
 @MessageBody() markAsSeenDto: MessageSeenDto,
 @ConnectedSocket() client: Socket,
@@ -106,7 +106,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
   }
 
   private disconnect(socket: Socket) {
-    socket.emit('Error', new UnauthorizedException());
+    socket.emit("Error", new UnauthorizedException());
     socket.disconnect();
   }
 }

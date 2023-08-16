@@ -1,22 +1,22 @@
-import type { AutoPath } from '@mikro-orm/core/typings';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityManager } from '@mikro-orm/postgresql';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { omit } from 'helper-fns';
-import type { Observable } from 'rxjs';
-import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from 'rxjs';
-import type { CreateCommentDto, CreatePostDto, EditPostDto } from './dtos';
+import type { AutoPath } from "@mikro-orm/core/typings";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { omit } from "helper-fns";
+import type { Observable } from "rxjs";
+import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
+import type { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
-import { translate } from '@lib/i18n';
-import { Category, Comment, Post, Tag, User } from '@entities';
-import type { CursorPaginationDto } from '@common/dtos';
-import { BaseRepository } from '@common/database';
-import type { PaginationResponse } from '@common/@types';
-import { CursorType, QueryOrder } from '@common/@types';
+import { translate } from "@lib/i18n";
+import { Category, Comment, Post, Tag, User } from "@entities";
+import type { CursorPaginationDto } from "@common/dtos";
+import { BaseRepository } from "@common/database";
+import type { PaginationResponse } from "@common/@types";
+import { CursorType, QueryOrder } from "@common/@types";
 
 @Injectable()
 export class PostService {
-  private readonly queryName = 'p';
+  private readonly queryName = "p";
 
   constructor(
     private readonly em: EntityManager,
@@ -47,10 +47,10 @@ private readonly categoryRepository: BaseRepository<Category>,
         qb,
         pageOptionsDto: {
           alias: this.queryName,
-          cursor: 'title',
+          cursor: "title",
           cursorType: CursorType.STRING,
           order: QueryOrder.ASC,
-          searchField: 'title',
+          searchField: "title",
           ...dto,
         },
       }),
@@ -72,8 +72,8 @@ private readonly categoryRepository: BaseRepository<Category>,
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
-                  args: { item: 'Post' },
+                translate("exception.itemDoesNotExist", {
+                  args: { item: "Post" },
                 }),
               ),
           );
@@ -101,7 +101,7 @@ private readonly categoryRepository: BaseRepository<Category>,
     ).pipe(
       switchMap(([tags, categories]) => {
         const post = this.postRepository.create({
-          ...omit(dto, ['tags', 'categories']),
+          ...omit(dto, ["tags", "categories"]),
           author,
           categories,
           tags,
@@ -130,7 +130,7 @@ private readonly categoryRepository: BaseRepository<Category>,
           ).pipe(
             switchMap((tags) => {
               this.postRepository.assign(post, {
-                ...omit(dto, ['tags', 'categories']),
+                ...omit(dto, ["tags", "categories"]),
                 tags,
               });
 
@@ -138,7 +138,7 @@ private readonly categoryRepository: BaseRepository<Category>,
             }),
           );
         }
-        this.postRepository.assign(post, omit(dto, ['tags', 'categories']));
+        this.postRepository.assign(post, omit(dto, ["tags", "categories"]));
 
         return from(this.em.flush()).pipe(map(() => post));
       }),
@@ -173,7 +173,7 @@ private readonly categoryRepository: BaseRepository<Category>,
       this.userRepository.findOneOrFail(
         { id: userId },
         {
-          populate: ['favorites'],
+          populate: ["favorites"],
           populateWhere: {
             favorites: { isActive: true, isDeleted: false },
           },
@@ -211,7 +211,7 @@ private readonly categoryRepository: BaseRepository<Category>,
       this.userRepository.findOneOrFail(
         { id: userId },
         {
-          populate: ['favorites'],
+          populate: ["favorites"],
           populateWhere: {
             favorites: { isActive: true, isDeleted: false },
           },
@@ -241,7 +241,7 @@ private readonly categoryRepository: BaseRepository<Category>,
       this.postRepository.findOne(
         { slug },
         {
-          populate: ['comments'],
+          populate: ["comments"],
           populateWhere: {
             comments: { isActive: true, isDeleted: false },
           },
@@ -281,7 +281,7 @@ private readonly categoryRepository: BaseRepository<Category>,
 * editing the comment specified by `commentIndex` in the post specified by `slug`.
 */
   editComment(slug: string, commentIndex: string, commentData: CreateCommentDto) {
-    return this.findOne(slug, ['comments']).pipe(
+    return this.findOne(slug, ["comments"]).pipe(
       switchMap((_post) => {
         return from(this.commentRepository.findOneOrFail({ idx: commentIndex })).pipe(
           switchMap((comment) => {

@@ -1,16 +1,16 @@
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import { omit, randomString } from 'helper-fns';
-import type { Profile, VerifyCallback } from 'passport-google-oauth20';
-import { Strategy } from 'passport-google-oauth20';
-import { User } from '@entities';
-import { BaseRepository } from '@common/database';
-import type { OauthResponse } from '@common/@types';
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { PassportStrategy } from "@nestjs/passport";
+import { omit, randomString } from "helper-fns";
+import type { Profile, VerifyCallback } from "passport-google-oauth20";
+import { Strategy } from "passport-google-oauth20";
+import { User } from "@entities";
+import { BaseRepository } from "@common/database";
+import type { OauthResponse } from "@common/@types";
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 /**
 * It's a PassportStrategy that uses the GoogleStrategy and the Google OAuth2.0 API to authenticate users
 * Create a new project at
@@ -26,10 +26,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 @InjectRepository(User) private readonly userRepo: BaseRepository<User>,
   ) {
     super({
-      clientID: configService.get('googleOauth.clientId', { infer: true }),
-      clientSecret: configService.get('googleOauth.secret', { infer: true }),
-      callbackURL: configService.get('googleOauth.callbackUrl', { infer: true }),
-      scope: ['email', 'profile'],
+      clientID: configService.get("googleOauth.clientId", { infer: true }),
+      clientSecret: configService.get("googleOauth.secret", { infer: true }),
+      callbackURL: configService.get("googleOauth.callbackUrl", { infer: true }),
+      scope: ["email", "profile"],
     });
   }
 
@@ -60,7 +60,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     else {
       // If the user doesn't exist, create a new user
       const newUser = this.userRepo.create({
-        ...omit(user, ['accessToken']),
+        ...omit(user, ["accessToken"]),
         avatar: photos[0].value,
         username,
         password: randomString({ length: 10, symbols: true, numbers: true }),

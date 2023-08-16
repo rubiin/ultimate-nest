@@ -1,5 +1,5 @@
-import { compile } from 'handlebars';
-import type { Adapter } from './abstract.adapter';
+import { compile } from "handlebars";
+import type { Adapter } from "./abstract.adapter";
 
 export class HandlebarsAdapter implements Adapter {
   constructor(private readonly options: Partial<CompileOptions>) {}

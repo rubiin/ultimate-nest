@@ -1,5 +1,5 @@
-import { registerAs } from '@nestjs/config';
-import Joi from 'joi';
+import { registerAs } from "@nestjs/config";
+import Joi from "joi";
 
 export const databaseConfigValidationSchema = {
   DB_HOST: Joi.string().required(),
@@ -9,7 +9,7 @@ export const databaseConfigValidationSchema = {
   DB_DATABASE: Joi.string().required(),
 };
 
-export const database = registerAs('database', () => ({
+export const database = registerAs("database", () => ({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   password: process.env.DB_PASSWORD,

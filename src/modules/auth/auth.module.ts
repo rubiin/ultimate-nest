@@ -1,11 +1,11 @@
-import { PassportModule } from '@nestjs/passport';
-import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { FacebookStrategy, GoogleStrategy, JwtStrategy, MagicLoginStrategy } from './strategies';
-import { UserModule } from '@modules/user/user.module';
-import { TokensService } from '@modules/token/tokens.service';
-import { RefreshTokensRepository } from '@modules/token/refresh-tokens.repository';
+import { PassportModule } from "@nestjs/passport";
+import { Module } from "@nestjs/common";
+import { AuthController } from "./auth.controller";
+import { AuthService } from "./auth.service";
+import { FacebookStrategy, GoogleStrategy, JwtStrategy, MagicLoginStrategy } from "./strategies";
+import { UserModule } from "@modules/user/user.module";
+import { TokensService } from "@modules/token/tokens.service";
+import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
 
 @Module({
   imports: [PassportModule, UserModule],

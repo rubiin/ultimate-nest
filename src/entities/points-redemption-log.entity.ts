@@ -1,14 +1,14 @@
-import { Entity, ManyToOne, Property, Rel } from '@mikro-orm/core';
-import type { User } from './user.entity';
+import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
+import type { User } from "./user.entity";
 
-import { BaseEntity } from '@common/database';
+import { BaseEntity } from "@common/database";
 
 @Entity()
 export class PointRedemptionLog extends BaseEntity {
   @Property()
 points!: number;
 
-  @Property({ columnType: 'numeric(9,2)' })
+  @Property({ columnType: "numeric(9,2)" })
 amount!: string;
 
   @ManyToOne()

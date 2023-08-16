@@ -11,13 +11,13 @@ import {
   OneToMany,
   Property,
   Rel,
-} from '@mikro-orm/core';
-import { slugify } from 'helper-fns';
-import type { User } from './index';
-import { Category, Comment, Tag } from './index';
+} from "@mikro-orm/core";
+import { slugify } from "helper-fns";
+import type { User } from "./index";
+import { Category, Comment, Tag } from "./index";
 
-import { BaseEntity } from '@common/database';
-import { PostStateEnum } from '@common/@types';
+import { BaseEntity } from "@common/database";
+import { PostStateEnum } from "@common/@types";
 
 @Entity()
 export class Post extends BaseEntity {
@@ -27,10 +27,10 @@ slug?: string;
   @Property({ index: true })
 title!: string;
 
-  @Property({ type: 'text' })
+  @Property({ type: "text" })
 description!: string;
 
-  @Property({ type: 'text' })
+  @Property({ type: "text" })
 content!: string;
 
   @Property()
@@ -55,10 +55,10 @@ author: Rel<User>;
   })
 comments = new Collection<Comment>(this);
 
-  @ManyToMany(() => Tag, 'posts', { owner: true })
+  @ManyToMany(() => Tag, "posts", { owner: true })
 tags = new Collection<Tag>(this);
 
-  @ManyToMany(() => Category, 'posts', { owner: true })
+  @ManyToMany(() => Category, "posts", { owner: true })
 categories = new Collection<Category>(this);
 
   @Enum({ items: () => PostStateEnum })

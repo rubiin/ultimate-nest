@@ -1,7 +1,7 @@
-import type { EtaConfig } from 'eta/dist/types/config';
+import type { EtaConfig } from "eta/dist/types/config";
 
-import { Eta } from 'eta';
-import type { Adapter } from './abstract.adapter';
+import { Eta } from "eta";
+import type { Adapter } from "./abstract.adapter";
 
 export class EtaAdapter implements Adapter {
   constructor(private readonly options: Partial<EtaConfig>) {}
