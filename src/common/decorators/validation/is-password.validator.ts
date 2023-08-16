@@ -2,12 +2,12 @@ import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from 'class-validator';
+} from "class-validator";
 import {
   ValidatorConstraint,
   registerDecorator,
-} from 'class-validator';
-import { PASSWORD_REGEX } from '@common/constant';
+} from "class-validator";
+import { PASSWORD_REGEX } from "@common/constant";
 
 /**
 *

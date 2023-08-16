@@ -1,23 +1,23 @@
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import type { Observable } from 'rxjs';
-import { from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
-import type { SubscribeNewsletterDto } from './dto';
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { Cron, CronExpression } from "@nestjs/schedule";
+import type { Observable } from "rxjs";
+import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import type { SubscribeNewsletterDto } from "./dto";
 
-import { translate } from '@lib/i18n';
-import { BaseService } from '@lib/crud/crud.service';
-import { NewsLetter, Subscriber } from '@entities';
-import type { CursorPaginationDto } from '@common/dtos';
-import { BaseRepository } from '@common/database';
-import { EmailSubject, EmailTemplate, RoutingKey } from '@common/@types';
+import { translate } from "@lib/i18n";
+import { BaseService } from "@lib/crud/crud.service";
+import { NewsLetter, Subscriber } from "@entities";
+import type { CursorPaginationDto } from "@common/dtos";
+import { BaseRepository } from "@common/database";
+import { EmailSubject, EmailTemplate, RoutingKey } from "@common/@types";
 
 @Injectable()
 export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationDto> {
-  protected readonly queryName = 't'; // the name of the query used in the pagination
-  protected readonly searchField = 'name'; // the field to search for when searching for tags
+  protected readonly queryName = "t"; // the name of the query used in the pagination
+  protected readonly searchField = "name"; // the field to search for when searching for tags
   constructor(
 // @ts-expect-error: Unused import error
 @InjectRepository(NewsLetter) private newsLetterRepository: BaseRepository<NewsLetter>,
@@ -36,13 +36,13 @@ private readonly configService: ConfigService<Configs, true>,
     for (const subscriber of subscribers) {
       promises.push(
         this.amqpConnection.publish(
-          this.configService.get('rabbitmq.exchange', { infer: true }),
+          this.configService.get("rabbitmq.exchange", { infer: true }),
           RoutingKey.SEND_NEWSLETTER,
           {
             template: EmailTemplate.WELCOME_TEMPLATE,
             to: subscriber.email,
             subject: EmailSubject.WELCOME,
-            from: this.configService.get('mail.senderEmail', { infer: true }),
+            from: this.configService.get("mail.senderEmail", { infer: true }),
           },
         ),
       );
@@ -64,8 +64,8 @@ private readonly configService: ConfigService<Configs, true>,
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
-                  args: { item: 'subscriber' },
+                translate("exception.itemDoesNotExist", {
+                  args: { item: "subscriber" },
                 }),
               ),
           );
@@ -89,8 +89,8 @@ private readonly configService: ConfigService<Configs, true>,
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemExists', {
-                  args: { item: 'subscriber', property: 'email' },
+                translate("exception.itemExists", {
+                  args: { item: "subscriber", property: "email" },
                 }),
               ),
           );

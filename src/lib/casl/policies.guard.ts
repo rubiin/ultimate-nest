@@ -1,12 +1,12 @@
-import type { Request } from 'express';
+import type { Request } from "express";
 
-import { Reflector } from '@nestjs/core';
-import { Injectable } from '@nestjs/common';
-import type { CanActivate, ExecutionContext } from '@nestjs/common';
-import type { AppAbility } from './casl-ability.factory';
-import { CaslAbilityFactory } from './casl-ability.factory';
-import type { PolicyHandler } from './policy.interface';
-import { CHECK_POLICIES_KEY_META, IS_PUBLIC_KEY_META } from '@common/constant';
+import { Reflector } from "@nestjs/core";
+import { Injectable } from "@nestjs/common";
+import type { CanActivate, ExecutionContext } from "@nestjs/common";
+import type { AppAbility } from "./casl-ability.factory";
+import { CaslAbilityFactory } from "./casl-ability.factory";
+import type { PolicyHandler } from "./policy.interface";
+import { CHECK_POLICIES_KEY_META, IS_PUBLIC_KEY_META } from "@common/constant";
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
@@ -38,7 +38,7 @@ export class PoliciesGuard implements CanActivate {
   }
 
   private execPolicyHandler(handler: PolicyHandler, request: Request, ability: AppAbility) {
-    if (typeof handler === 'function')
+    if (typeof handler === "function")
       return handler(request, ability);
 
     return handler.handle(request, ability);

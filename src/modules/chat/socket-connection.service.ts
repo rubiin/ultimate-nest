@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import type { User } from '@entities';
+import { Injectable } from "@nestjs/common";
+import type { User } from "@entities";
 
 interface SocketConnection {
   connectedUser: User;

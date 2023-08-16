@@ -1,4 +1,4 @@
-import type { ConfigType } from '@nestjs/config';
+import type { ConfigType } from "@nestjs/config";
 import type {
   app,
   cloudinary,
@@ -12,7 +12,7 @@ import type {
   stripe,
   throttle,
   twilio,
-} from './configs';
+} from "./configs";
 
 export interface Config {
   throttle: ConfigType<typeof throttle>;

@@ -1,17 +1,17 @@
-import { resolve } from 'node:path';
+import { resolve } from "node:path";
 
-import * as aws from '@aws-sdk/client-ses';
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import type { SendMailOptions, SentMessageInfo, Transporter } from 'nodemailer';
-import { createTransport } from 'nodemailer';
-import previewEmail from 'preview-email';
-import { from, retry, switchMap } from 'rxjs';
-import { MailModuleOptions } from './mailer.options';
-import { MODULE_OPTIONS_TOKEN } from './mail.module-definition';
-import type { Adapter } from './adapters/abstract.adapter';
-import { EtaAdapter, HandlebarsAdapter, PugAdapter } from './adapters';
+import * as aws from "@aws-sdk/client-ses";
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import type { SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
+import { createTransport } from "nodemailer";
+import previewEmail from "preview-email";
+import { from, retry, switchMap } from "rxjs";
+import { MailModuleOptions } from "./mailer.options";
+import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
+import type { Adapter } from "./adapters/abstract.adapter";
+import { EtaAdapter, HandlebarsAdapter, PugAdapter } from "./adapters";
 
-import { Server, TemplateEngine } from '@common/@types';
+import { Server, TemplateEngine } from "@common/@types";
 
 interface MailOptions extends Partial<SendMailOptions> {
   template: string;
@@ -50,7 +50,7 @@ private readonly options: MailModuleOptions,
         break;
       }
       default: {
-        throw new Error('Invalid template engine');
+        throw new Error("Invalid template engine");
       }
     }
 
@@ -58,7 +58,7 @@ private readonly options: MailModuleOptions,
 
     if (this.options.server === Server.SES) {
       const ses = new aws.SES({
-        apiVersion: '2010-12-01',
+        apiVersion: "2010-12-01",
         region: this.options.sesRegion,
         credentials: {
           accessKeyId: this.options.sesKey,
@@ -96,14 +96,17 @@ private readonly options: MailModuleOptions,
 * @returns A promise that resolves to a boolean.
 */
   sendMail(mailOptions: MailOptions) {
-    const templatePath = resolve('}');
+    const templatePath = resolve("}");
 
     return from(this.adapter.compile(templatePath, mailOptions.replacements)).pipe(
       switchMap((html) => {
         mailOptions.html = html;
 
-        if (this.options.previewEmail === true)
-          previewEmail(mailOptions).then(this.logger.log).catch(this.logger.error);
+        if (this.options.previewEmail === true) {
+          previewEmail(mailOptions).catch((error) => {
+            this.logger.error(error);
+          });
+        }
 
         return from(this.transporter.sendMail(mailOptions)).pipe(
           retry(this.options.retryAttempts),

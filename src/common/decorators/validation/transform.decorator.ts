@@ -1,6 +1,6 @@
-import { Transform } from 'class-transformer';
-import DOMPurify from 'isomorphic-dompurify';
-import { isArray } from 'helper-fns';
+import { Transform } from "class-transformer";
+import DOMPurify from "isomorphic-dompurify";
+import { isArray } from "helper-fns";
 
 /**
  * It trims the value of a property and replaces multiple spaces with a single space
@@ -11,9 +11,9 @@ export const Trim = () => {
     const value = parameters.value as string[] | string;
 
     if (isArray(value))
-      return value.map((v: string) => v.trim().replaceAll(/\s\s+/g, ' '));
+      return value.map((v: string) => v.trim().replaceAll(/\s\s+/g, " "));
 
-    return value.trim().replaceAll(/\s\s+/g, ' ');
+    return value.trim().replaceAll(/\s\s+/g, " ");
   });
 };
 
@@ -26,10 +26,10 @@ export const ToBoolean = () => {
   return Transform(
     (parameters) => {
       switch (parameters.value) {
-        case 'true': {
+        case "true": {
           return true;
         }
-        case 'false': {
+        case "false": {
           return false;
         }
         default: {
@@ -51,13 +51,13 @@ export const Sanitize = (): PropertyDecorator => {
     ({ value }) => {
       if (Array.isArray(value)) {
         return value.map((v) => {
-          if (typeof v === 'string') return DOMPurify.sanitize(v);
+          if (typeof v === "string") return DOMPurify.sanitize(v);
 
           return v;
         }) as string[];
       }
 
-      if (typeof value === 'string') return DOMPurify.sanitize(value);
+      if (typeof value === "string") return DOMPurify.sanitize(value);
 
       return value as string;
     },

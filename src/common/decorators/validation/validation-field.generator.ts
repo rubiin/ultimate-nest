@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Type } from "class-transformer";
 import {
   ArrayNotEmpty,
   IsArray,
@@ -8,14 +8,14 @@ import {
   IsString,
   Max,
   Min,
-} from 'class-validator';
-import { enumToString } from 'helper-fns';
-import { i18nValidationMessage } from 'nestjs-i18n';
-import { Sanitize, Trim } from './transform.decorator';
+} from "class-validator";
+import { enumToString } from "helper-fns";
+import { i18nValidationMessage } from "nestjs-i18n";
+import { Sanitize, Trim } from "./transform.decorator";
 
-import { validationI18nMessage } from '@lib/i18n';
-import { MinMaxLength } from '@common/decorators';
-import type { NumberFieldOptions, StringFieldOptions } from '@common/@types';
+import { validationI18nMessage } from "@lib/i18n";
+import { MinMaxLength } from "@common/decorators";
+import type { NumberFieldOptions, StringFieldOptions } from "@common/@types";
 
 export class ValidatorFieldBuilder {
   private decoratorsToApply: PropertyDecorator[];
@@ -26,10 +26,10 @@ export class ValidatorFieldBuilder {
     this.decoratorsToApply.push(
       Type(() => Number),
       Min(this.options.min, {
-        message: validationI18nMessage('validation.min'),
+        message: validationI18nMessage("validation.min"),
       }),
       Max(this.options.max, {
-        message: validationI18nMessage('validation.max'),
+        message: validationI18nMessage("validation.max"),
       }),
     );
 
@@ -39,8 +39,8 @@ export class ValidatorFieldBuilder {
   string() {
     this.decoratorsToApply.push(
       IsString({
-        message: validationI18nMessage('validation.isDataType', {
-          type: 'string',
+        message: validationI18nMessage("validation.isDataType", {
+          type: "string",
         }),
         each: this.options.each,
       }),
@@ -53,7 +53,7 @@ export class ValidatorFieldBuilder {
     this.decoratorsToApply.push(
       IsEnum(entity, {
         each: this.options.each,
-        message: `must be a valid enum value,${enumToString(entity).join(',')}`,
+        message: `must be a valid enum value,${enumToString(entity).join(",")}`,
       }),
     );
 
@@ -90,7 +90,7 @@ export class ValidatorFieldBuilder {
     if (this.options.required) {
       this.decoratorsToApply.push(
         IsNotEmpty({
-          message: i18nValidationMessage('validation.isNotEmpty'),
+          message: i18nValidationMessage("validation.isNotEmpty"),
           each: this.options.each,
         }),
       );
@@ -106,7 +106,7 @@ export class ValidatorFieldBuilder {
     if (this.options.required && this.options.each) {
       this.decoratorsToApply.push(
         ArrayNotEmpty({
-          message: i18nValidationMessage('validation.isNotEmpty'),
+          message: i18nValidationMessage("validation.isNotEmpty"),
         }),
       );
     }
@@ -114,8 +114,8 @@ export class ValidatorFieldBuilder {
     if (this.options.each) {
       this.decoratorsToApply.push(
         IsArray({
-          message: i18nValidationMessage('validation.isDataType', {
-            type: 'array',
+          message: i18nValidationMessage("validation.isDataType", {
+            type: "array",
           }),
         }),
       );

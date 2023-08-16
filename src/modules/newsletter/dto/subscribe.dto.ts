@@ -1,4 +1,4 @@
-import { IsEmailField } from '@common/decorators';
+import { IsEmailField } from "@common/decorators";
 
 export class SubscribeNewsletterDto {
 /**

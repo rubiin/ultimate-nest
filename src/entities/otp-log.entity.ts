@@ -1,7 +1,7 @@
-import { Entity, ManyToOne, Property, Rel } from '@mikro-orm/core';
-import type { User } from './user.entity';
+import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
+import type { User } from "./user.entity";
 
-import { BaseEntity } from '@common/database';
+import { BaseEntity } from "@common/database";
 
 @Entity()
 export class OtpLog extends BaseEntity {

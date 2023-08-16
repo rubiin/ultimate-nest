@@ -1,7 +1,7 @@
-import { applyDecorators } from '@nestjs/common';
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
-import type { EnumFieldOptions as EmailFieldOptions } from '@common/@types';
-import { validationI18nMessage } from '@lib/i18n';
+import { applyDecorators } from "@nestjs/common";
+import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
+import type { EnumFieldOptions as EmailFieldOptions } from "@common/@types";
+import { validationI18nMessage } from "@lib/i18n";
 
 export const IsUUIDField = (options_?: EmailFieldOptions) => {
   const options: EmailFieldOptions = {
@@ -10,9 +10,9 @@ export const IsUUIDField = (options_?: EmailFieldOptions) => {
     ...options_,
   };
   const decoratorsToApply = [
-    IsUUID('4', {
-      message: validationI18nMessage('validation.isDataType', {
-        type: 'uuid',
+    IsUUID("4", {
+      message: validationI18nMessage("validation.isDataType", {
+        type: "uuid",
       }),
       each: options.each,
     }),
@@ -21,7 +21,7 @@ export const IsUUIDField = (options_?: EmailFieldOptions) => {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: validationI18nMessage('validation.isNotEmpty'),
+        message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
       }),
     );
@@ -29,7 +29,7 @@ export const IsUUIDField = (options_?: EmailFieldOptions) => {
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
-          message: validationI18nMessage('validation.isNotEmpty'),
+          message: validationI18nMessage("validation.isNotEmpty"),
         }),
       );
     }
@@ -41,8 +41,8 @@ export const IsUUIDField = (options_?: EmailFieldOptions) => {
   if (options.each) {
     decoratorsToApply.push(
       IsArray({
-        message: validationI18nMessage('validation.isDataType', {
-          type: 'array',
+        message: validationI18nMessage("validation.isDataType", {
+          type: "array",
         }),
       }),
     );

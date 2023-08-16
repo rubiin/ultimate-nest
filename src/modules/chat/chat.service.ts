@@ -1,9 +1,9 @@
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityManager } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
-import type { User } from '@entities';
-import { Conversation, Message } from '@entities';
-import { BaseRepository } from '@common/database';
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
+import { Injectable } from "@nestjs/common";
+import type { User } from "@entities";
+import { Conversation, Message } from "@entities";
+import { BaseRepository } from "@common/database";
 
 interface IConversation {
   users: User[];
@@ -60,11 +60,11 @@ private readonly conversationRepository: BaseRepository<Conversation>,
 
   async getConversationForUser(user: User) {
     return await this.conversationRepository
-      .qb('c')
-      .select('c.*')
-      .leftJoinAndSelect('c.messages', 'm')
-      .join('user_conversation', 'uc', 'c.id = uc.conversation_id')
-      .where('uc.user_id = ?', [user.id])
+      .qb("c")
+      .select("c.*")
+      .leftJoinAndSelect("c.messages", "m")
+      .join("user_conversation", "uc", "c.id = uc.conversation_id")
+      .where("uc.user_id = ?", [user.id])
       .execute();
   }
 

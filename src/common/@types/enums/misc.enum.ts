@@ -1,19 +1,19 @@
-import type { TEmailSubject } from '../interfaces';
+import type { TEmailSubject } from "../interfaces";
 
 const BITS_TO_MB = 1024 * 1024;
 
 export enum EmailTemplate {
-  RESET_PASSWORD_TEMPLATE = 'reset',
-  WELCOME_TEMPLATE = 'welcome',
-  MAGIC_LOGIN_TEMPLATE = 'magiclogin',
-  NEWSLETTER_TEMPLATE = 'newsletter',
+  RESET_PASSWORD_TEMPLATE = "reset",
+  WELCOME_TEMPLATE = "welcome",
+  MAGIC_LOGIN_TEMPLATE = "magiclogin",
+  NEWSLETTER_TEMPLATE = "newsletter",
 }
 
 export const EmailSubject: Record<TEmailSubject, string> = {
-  RESET_PASSWORD: 'Reset your password',
-  WELCOME: 'Welcome to the app',
-  MAGIC_LOGIN: 'Login to the app',
-  NEWSLETTER: 'Newsletter',
+  RESET_PASSWORD: "Reset your password",
+  WELCOME: "Welcome to the app",
+  MAGIC_LOGIN: "Login to the app",
+  NEWSLETTER: "Newsletter",
 };
 
 export enum FileSize {
@@ -22,19 +22,19 @@ export enum FileSize {
 }
 
 export enum PostStateEnum {
-  DRAFT = 'DRAFT',
-  PUBLISHED = 'PUBLISHED',
+  DRAFT = "DRAFT",
+  PUBLISHED = "PUBLISHED",
 }
 
 export const enum Server {
-  SES = 'SES',
-  SMTP = 'SMTP',
+  SES = "SES",
+  SMTP = "SMTP",
 }
 
 export const enum TemplateEngine {
-  ETA = 'ETA',
-  PUG = 'PUG',
-  HBS = 'HBS',
+  ETA = "ETA",
+  PUG = "PUG",
+  HBS = "HBS",
 }
 
 export const FileType: Record<keyof typeof FileSize, RegExp> = {
@@ -45,32 +45,32 @@ export const FileType: Record<keyof typeof FileSize, RegExp> = {
 // database enums
 
 export const enum CursorType {
-  DATE = 'DATE',
-  STRING = 'STRING',
-  NUMBER = 'NUMBER',
+  DATE = "DATE",
+  STRING = "STRING",
+  NUMBER = "NUMBER",
 }
 
 export const enum QueryCursor {
-  DATE = 'DATE',
-  ALPHA = 'ALPHA',
+  DATE = "DATE",
+  ALPHA = "ALPHA",
 }
 
 export enum QueryOrder {
-  ASC = 'ASC',
-  DESC = 'DESC',
+  ASC = "ASC",
+  DESC = "DESC",
 }
 
 export enum ReferralStatus {
-  PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED',
+  PENDING = "PENDING",
+  COMPLETED = "COMPLETED",
 }
 
 export const enum RoutingKey {
-  SEND_MAIL = 'send-mail',
-  SEND_NEWSLETTER = 'send-newsletter',
+  SEND_MAIL = "send-mail",
+  SEND_NEWSLETTER = "send-newsletter",
 }
 
 export const enum PaginationType {
-  OFFSET = 'OFFSET',
-  CURSOR = 'CURSOR',
+  OFFSET = "OFFSET",
+  CURSOR = "CURSOR",
 }

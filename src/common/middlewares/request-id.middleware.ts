@@ -1,6 +1,6 @@
-import { createId, isCuid } from '@paralleldrive/cuid2';
-import type { NextFunction, Request, Response } from 'express';
-import { REQUEST_ID_TOKEN_HEADER } from '@common/constant';
+import { createId, isCuid } from "@paralleldrive/cuid2";
+import type { NextFunction, Request, Response } from "express";
+import { REQUEST_ID_TOKEN_HEADER } from "@common/constant";
 
 export const RequestIdMiddleware = (
   request: Request,

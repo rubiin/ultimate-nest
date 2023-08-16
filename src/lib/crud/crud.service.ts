@@ -1,20 +1,20 @@
-import type { EntityData, FilterQuery, RequiredEntityData } from '@mikro-orm/core';
-import { NotFoundException } from '@nestjs/common';
-import type { Observable } from 'rxjs';
-import { from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
+import type { EntityData, FilterQuery, RequiredEntityData } from "@mikro-orm/core";
+import { NotFoundException } from "@nestjs/common";
+import type { Observable } from "rxjs";
+import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 import type {
   Crud,
   PaginationRequest,
   PaginationResponse,
-} from '@common/@types';
+} from "@common/@types";
 import {
   CursorType,
   PaginationType,
   QueryOrder,
-} from '@common/@types';
-import type { BaseEntity, BaseRepository } from '@common/database';
-import type { User } from '@entities';
-import { translate } from '@lib/i18n';
+} from "@common/@types";
+import type { BaseEntity, BaseRepository } from "@common/database";
+import type { User } from "@entities";
+import { translate } from "@lib/i18n";
 
 export abstract class BaseService<
 Entity extends BaseEntity,
@@ -23,7 +23,7 @@ CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
 UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > implements Crud<Entity, PRequest> {
   protected searchField: keyof Entity;
-  protected queryName = 'entity';
+  protected queryName = "entity";
 
   protected constructor(private readonly repository: BaseRepository<Entity>) {}
 
@@ -61,7 +61,7 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
           qb,
           pageOptionsDto: {
             alias: this.queryName,
-            cursor: 'id',
+            cursor: "id",
             cursorType: CursorType.NUMBER,
             order: QueryOrder.ASC,
             searchField: this.searchField,
@@ -94,7 +94,7 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
+                translate("exception.itemDoesNotExist", {
                   args: { item: this.repository.getEntityName() },
                 }),
               ),

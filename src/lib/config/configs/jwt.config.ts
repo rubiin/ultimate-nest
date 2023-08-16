@@ -1,6 +1,6 @@
-import { registerAs } from '@nestjs/config';
-import Joi from 'joi';
-import { JWT_EXPIRY_REGEX } from '@common/constant';
+import { registerAs } from "@nestjs/config";
+import Joi from "joi";
+import { JWT_EXPIRY_REGEX } from "@common/constant";
 
 /**
 * NOTE:
@@ -17,7 +17,7 @@ export const jwtConfigValidationSchema = {
   MAGIC_LINK_EXPIRY: Joi.string().regex(JWT_EXPIRY_REGEX).required(),
 };
 
-export const jwt = registerAs('jwt', () => ({
+export const jwt = registerAs("jwt", () => ({
   secret: process.env.JWT_SECRET,
   accessExpiry: /^\d+$/.test(process.env.JWT_ACCESS_EXPIRY)
     ? +process.env.JWT_ACCESS_EXPIRY

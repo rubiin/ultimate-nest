@@ -2,12 +2,12 @@ import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from 'class-validator';
+} from "class-validator";
 import {
   ValidatorConstraint,
   registerDecorator,
-} from 'class-validator';
-import { isAfter } from 'date-fns';
+} from "class-validator";
+import { isAfter } from "date-fns";
 
 @ValidatorConstraint({ async: true })
 class IsAfterConstraint implements ValidatorConstraintInterface {

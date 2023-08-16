@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import {
   Body,
   DefaultValuePipe,
@@ -10,11 +10,11 @@ import {
   Req,
   Res,
   UseGuards,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation } from '@nestjs/swagger';
-import { Observable, map } from 'rxjs';
-import { MagicLoginStrategy } from './strategies';
+} from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { ApiOperation } from "@nestjs/swagger";
+import { Observable, map } from "rxjs";
+import { MagicLoginStrategy } from "./strategies";
 import {
   ChangePasswordDto,
   MagicLinkLogin,
@@ -23,17 +23,17 @@ import {
   ResetPasswordDto,
   SendOtpDto,
   UserLoginDto,
-} from './dtos';
-import { AuthService } from './auth.service';
+} from "./dtos";
+import { AuthService } from "./auth.service";
 
-import { TokensService } from '@modules/token/tokens.service';
-import type { OtpLog } from '@entities';
-import { User } from '@entities';
-import { Auth, GenericController, LoggedInUser, SwaggerResponse } from '@common/decorators';
-import type { AuthenticationResponse } from '@common/@types';
-import { OauthResponse } from '@common/@types';
+import { TokensService } from "@modules/token/tokens.service";
+import type { OtpLog } from "@entities";
+import { User } from "@entities";
+import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import type { AuthenticationResponse } from "@common/@types";
+import { OauthResponse } from "@common/@types";
 
-@GenericController('auth', false)
+@GenericController("auth", false)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -41,14 +41,14 @@ export class AuthController {
     private readonly magicStrategy: MagicLoginStrategy,
   ) {}
 
-  @Post('login')
-  @ApiOperation({ summary: 'User Login' })
+  @Post("login")
+  @ApiOperation({ summary: "User Login" })
   login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {
     return this.authService.login(loginDto);
   }
 
-  @Post('login/magic')
-  @ApiOperation({ summary: 'User Login with magic link' })
+  @Post("login/magic")
+  @ApiOperation({ summary: "User Login with magic link" })
   loginByMagicLink(
 @Req() request: Request,
 @Res() response: Response,
@@ -61,28 +61,28 @@ export class AuthController {
     );
   }
 
-  @Post('reset-password')
+  @Post("reset-password")
   @SwaggerResponse({
-    operation: 'Reset password',
-    notFound: 'Otp doesn\'t exist.',
-    badRequest: 'Otp is expired.',
+    operation: "Reset password",
+    notFound: "Otp doesn't exist.",
+    badRequest: "Otp is expired.",
   })
   resetUserPassword(@Body() dto: ResetPasswordDto): Observable<User> {
     return this.authService.resetPassword(dto);
   }
 
   @Auth()
-  @Put('forgot-password')
+  @Put("forgot-password")
   @SwaggerResponse({
-    operation: 'Forgot password',
-    notFound: 'Account doesn\'t exist.',
+    operation: "Forgot password",
+    notFound: "Account doesn't exist.",
   })
   forgotPassword(@Body() dto: SendOtpDto): Observable<OtpLog> {
     return this.authService.forgotPassword(dto);
   }
 
-  @UseGuards(AuthGuard('magicLogin'))
-  @Get('magiclogin/callback')
+  @UseGuards(AuthGuard("magicLogin"))
+  @Get("magiclogin/callback")
   magicCallback(@LoggedInUser() user: User, @Res() response: Response) {
     return this.authService.login({ email: user.email }, false).pipe(
       map((data) => {
@@ -94,14 +94,14 @@ export class AuthController {
     );
   }
 
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
+  @Get("google")
+  @UseGuards(AuthGuard("google"))
   googleAuth(@Req() _request: Request) {
     // the google auth redirect will be handled by passport
   }
 
-  @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
+  @Get("google/callback")
+  @UseGuards(AuthGuard("google"))
   googleAuthRedirect(
 @LoggedInUser()
 user: OauthResponse,
@@ -117,14 +117,14 @@ user: OauthResponse,
     );
   }
 
-  @Get('facebook')
-  @UseGuards(AuthGuard('facebook'))
+  @Get("facebook")
+  @UseGuards(AuthGuard("facebook"))
   facebookAuth(@Req() _request: Request) {
     // the facebook auth redirect will be handled by passport
   }
 
-  @Get('facebook/callback')
-  @UseGuards(AuthGuard('facebook'))
+  @Get("facebook/callback")
+  @UseGuards(AuthGuard("facebook"))
   facebookAuthRedirect(
 @LoggedInUser()
 user: OauthResponse,
@@ -141,33 +141,33 @@ user: OauthResponse,
   }
 
   // this simulates a frontend url for testing oauth login
-  @Get('oauth/login')
+  @Get("oauth/login")
   oauthMock(@Query() query: { token: string }) {
-    return { message: 'successfully logged', token: query.token };
+    return { message: "successfully logged", token: query.token };
   }
 
-  @Post('verify-otp')
+  @Post("verify-otp")
   @SwaggerResponse({
-    operation: 'Verify otp',
-    notFound: 'Otp doesn\'t exist.',
-    badRequest: 'Otp is expired.',
+    operation: "Verify otp",
+    notFound: "Otp doesn't exist.",
+    badRequest: "Otp is expired.",
   })
   verifyOtp(@Body() dto: OtpVerifyDto): Observable<User> {
     return this.authService.verifyOtp(dto);
   }
 
   @Auth()
-  @Post('change-password')
+  @Post("change-password")
   @SwaggerResponse({
-    operation: 'Change password',
-    badRequest: 'Username and password provided does not match.',
+    operation: "Change password",
+    badRequest: "Username and password provided does not match.",
   })
   changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User): Observable<User> {
     return this.authService.changePassword(dto, user);
   }
 
-  @ApiOperation({ summary: 'Refresh token' })
-  @Post('token/refresh')
+  @ApiOperation({ summary: "Refresh token" })
+  @Post("token/refresh")
   refresh(@Body() body: RefreshTokenDto): Observable<any> {
     return this.tokenService
       .createAccessTokenFromRefreshToken(body.refreshToken)
@@ -175,11 +175,11 @@ user: OauthResponse,
   }
 
   @Auth()
-  @ApiOperation({ summary: 'Logout user' })
-  @Post('logout')
+  @ApiOperation({ summary: "Logout user" })
+  @Post("logout")
   logout(
 @LoggedInUser() user: User,
-@Query('from_all', new DefaultValuePipe(false), ParseBoolPipe) fromAll: boolean,
+@Query("from_all", new DefaultValuePipe(false), ParseBoolPipe) fromAll: boolean,
 @Body() refreshToken?: RefreshTokenDto,
   ): Observable<User> {
     return fromAll

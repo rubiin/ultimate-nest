@@ -6,15 +6,15 @@ import type {
   FilterQuery,
   FindOptions,
   Loaded,
-} from '@mikro-orm/core';
-import { EntityRepository } from '@mikro-orm/postgresql';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
-import type { Observable } from 'rxjs';
-import { from, map, of, switchMap, throwError } from 'rxjs';
-import type { BaseEntity } from './base.entity';
+} from "@mikro-orm/core";
+import { EntityRepository } from "@mikro-orm/postgresql";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
+import type { Observable } from "rxjs";
+import { from, map, of, switchMap, throwError } from "rxjs";
+import type { BaseEntity } from "./base.entity";
 
-import { translate } from '@lib/i18n';
-import { HelperService } from '@common/helpers';
+import { translate } from "@lib/i18n";
+import { HelperService } from "@common/helpers";
 import type {
   CursorPaginationResponse,
   OppositeOrder,
@@ -23,17 +23,17 @@ import type {
   QBCursorPaginationOptions,
   QBOffsetPaginationOptions,
   QueryOrder,
-} from '@common/@types';
+} from "@common/@types";
 import {
   CursorType,
   OffsetMeta,
   OffsetPaginationResponse,
   getOppositeOrder,
   getQueryOrder,
-} from '@common/@types';
+} from "@common/@types";
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
-  private readonly encoding: BufferEncoding = 'base64';
+  private readonly encoding: BufferEncoding = "base64";
 
   /**
 * The exists function checks if there are any records that match the given filter query.
@@ -123,7 +123,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
+                translate("exception.itemDoesNotExist", {
                   args: { item: this.getEntityName() },
                 }),
               ),
@@ -148,7 +148,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
+                translate("exception.itemDoesNotExist", {
                   args: { item: this.getEntityName() },
                 }),
               ),
@@ -173,7 +173,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
+                translate("exception.itemDoesNotExist", {
                   args: { item: this.getEntityName() },
                 }),
               ),
@@ -207,14 +207,14 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     cursor: string,
 cursorType: CursorType = CursorType.STRING,
   ): string | number | Date {
-    const string = Buffer.from(cursor, this.encoding).toString('utf8');
+    const string = Buffer.from(cursor, this.encoding).toString("utf8");
 
     switch (cursorType) {
       case CursorType.DATE: {
         const millisUnix = Number.parseInt(string, 10);
 
         if (Number.isNaN(millisUnix))
-          throw new BadRequestException(translate('exception.cursorInvalidDate'));
+          throw new BadRequestException(translate("exception.cursorInvalidDate"));
 
         return new Date(millisUnix);
       }
@@ -222,7 +222,7 @@ cursorType: CursorType = CursorType.STRING,
         const number = Number.parseInt(string, 10);
 
         if (Number.isNaN(number))
-          throw new BadRequestException(translate('exception.cursorInvalidNumber'));
+          throw new BadRequestException(translate("exception.cursorInvalidNumber"));
 
         return number;
       }
@@ -242,7 +242,7 @@ cursorType: CursorType = CursorType.STRING,
     if (value instanceof Date)
       string = value.getTime().toString();
 
-    return Buffer.from(string, 'utf8').toString(this.encoding);
+    return Buffer.from(string, "utf8").toString(this.encoding);
   }
 
   /**
@@ -282,7 +282,7 @@ cursorType: CursorType = CursorType.STRING,
       searchField,
       alias,
     } = pageOptionsDto;
-    const selectedFields = [...new Set([...fields, 'id'])];
+    const selectedFields = [...new Set([...fields, "id"])];
 
     if (search) {
       qb.andWhere({
@@ -389,7 +389,7 @@ cursorType: CursorType = CursorType.STRING,
     let previousCount = 0;
     const stringCursor = String(cursor); // because of runtime issues
     const aliasCursor = `${alias}.${stringCursor}`;
-    const selectedFields = [...new Set([...fields, 'id'])];
+    const selectedFields = [...new Set([...fields, "id"])];
 
     if (after) {
       const decoded = this.decodeCursor(after, cursorType);
@@ -434,10 +434,10 @@ search,
     const pages: CursorPaginationResponse<T> = {
       data: instances,
       meta: {
-        nextCursor: '',
+        nextCursor: "",
         hasPreviousPage: false,
         hasNextPage: false,
-        search: search ?? '',
+        search: search ?? "",
       },
     };
     const length = instances.length;
@@ -474,10 +474,10 @@ search,
       const oppositeOrder = getOppositeOrder(order);
       const countWhere = where;
 
-      countWhere.$and = this.getFilters('createdAt', decoded, oppositeOrder);
+      countWhere.$and = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
-      where.$and = this.getFilters('createdAt', decoded, queryOrder);
+      where.$and = this.getFilters("createdAt", decoded, queryOrder);
     }
 
     const [entities, count] = await repo.findAndCount(where, {

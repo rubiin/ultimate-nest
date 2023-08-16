@@ -1,6 +1,6 @@
-import type { Faker } from '@mikro-orm/seeder';
-import { Factory } from '@mikro-orm/seeder';
-import { Tag } from '@entities';
+import type { Faker } from "@mikro-orm/seeder";
+import { Factory } from "@mikro-orm/seeder";
+import { Tag } from "@entities";
 
 /* `TagFactory` is a factory that creates `Tag` instances */
 export class TagFactory extends Factory<Tag> {

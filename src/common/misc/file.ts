@@ -1,10 +1,10 @@
-import type { Request } from 'express';
-import { HttpStatus, ParseFilePipeBuilder } from '@nestjs/common';
-import type { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
-import { memoryStorage } from 'multer';
-import { MULTER_IMAGE_FILTER } from '@common/constant';
-import type { FileValidator } from '@common/@types';
-import { FileSize, FileType } from '@common/@types';
+import type { Request } from "express";
+import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
+import type { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
+import { memoryStorage } from "multer";
+import { MULTER_IMAGE_FILTER } from "@common/constant";
+import type { FileValidator } from "@common/@types";
+import { FileSize, FileType } from "@common/@types";
 
 export const ImageMulterOption: MulterOptions = {
   limits: {

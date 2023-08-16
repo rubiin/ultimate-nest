@@ -2,11 +2,11 @@ import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from 'class-validator';
+} from "class-validator";
 import {
   ValidatorConstraint,
   registerDecorator,
-} from 'class-validator';
+} from "class-validator";
 
 @ValidatorConstraint({ async: true })
 class IsGreaterThanConstraint implements ValidatorConstraintInterface {

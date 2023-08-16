@@ -1,10 +1,10 @@
-import type { INestApplicationContext } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
-import { IoAdapter } from '@nestjs/platform-socket.io';
-import { createAdapter } from '@socket.io/redis-adapter';
-import { createClient } from 'redis';
-import type { Adapter } from 'socket.io-adapter';
-import type { Namespace, Server, ServerOptions } from 'socket.io';
+import type { INestApplicationContext } from "@nestjs/common";
+import type { ConfigService } from "@nestjs/config";
+import { IoAdapter } from "@nestjs/platform-socket.io";
+import { createAdapter } from "@socket.io/redis-adapter";
+import { createClient } from "redis";
+import type { Adapter } from "socket.io-adapter";
+import type { Namespace, Server, ServerOptions } from "socket.io";
 
 export class SocketIOAdapter extends IoAdapter {
   private adapterConstructor: ((nsp: Namespace) => Adapter);
@@ -18,7 +18,7 @@ export class SocketIOAdapter extends IoAdapter {
 
   async connectToRedis(): Promise<void> {
     const pubClient = createClient({
-      url: this.configService.get('redis.url', { infer: true }),
+      url: this.configService.get("redis.url", { infer: true }),
     });
     const subClient = pubClient.duplicate();
 
@@ -29,7 +29,7 @@ export class SocketIOAdapter extends IoAdapter {
 
   createIOServer(port: number, options?: ServerOptions): any {
     const cors = {
-      origin: this.configService.get('app.allowedOrigins', { infer: true }),
+      origin: this.configService.get("app.allowedOrigins", { infer: true }),
     };
 
     const optionsWithCORS: ServerOptions = {

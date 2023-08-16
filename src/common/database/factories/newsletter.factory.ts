@@ -1,6 +1,6 @@
-import type { Faker } from '@mikro-orm/seeder';
-import { Factory } from '@mikro-orm/seeder';
-import { NewsLetter } from '@entities';
+import type { Faker } from "@mikro-orm/seeder";
+import { Factory } from "@mikro-orm/seeder";
+import { NewsLetter } from "@entities";
 
 /* `NewsLetterFactory` is a factory that creates `NewsLetter` instances */
 export class NewsLetterFactory extends Factory<NewsLetter> {

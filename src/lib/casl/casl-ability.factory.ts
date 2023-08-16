@@ -2,17 +2,17 @@ import type {
   ExtractSubjectType,
   InferSubjects,
   MongoAbility,
-} from '@casl/ability';
+} from "@casl/ability";
 import {
   AbilityBuilder,
   createMongoAbility,
-} from '@casl/ability';
-import { Injectable } from '@nestjs/common';
-import { Action, Roles } from '@common/@types';
-import type { Tag } from '@entities';
-import { Comment, Post, User } from '@entities';
+} from "@casl/ability";
+import { Injectable } from "@nestjs/common";
+import { Action, Roles } from "@common/@types";
+import type { Tag } from "@entities";
+import { Comment, Post, User } from "@entities";
 
-type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment | typeof Tag> | 'all';
+type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment | typeof Tag> | "all";
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 
@@ -24,9 +24,9 @@ export class CaslAbilityFactory {
     /* Giving the user the ability to read and write to everything if they are an admin. */
 
     if (user.roles.includes(Roles.ADMIN))
-      can(Action.Manage, 'all'); // read-write access to everything
+      can(Action.Manage, "all"); // read-write access to everything
     else
-      can(Action.Read, 'all'); // read-only access to everything
+      can(Action.Read, "all"); // read-only access to everything
 
     // user specific permissions
     can(Action.Update, User, { id: user.id });

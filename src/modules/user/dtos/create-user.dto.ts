@@ -1,6 +1,6 @@
-import { Type } from 'class-transformer';
-import { IsNotEmpty, IsUrl, ValidateNested } from 'class-validator';
-import { Roles } from '@common/@types';
+import { Type } from "class-transformer";
+import { IsNotEmpty, IsUrl, ValidateNested } from "class-validator";
+import { Roles } from "@common/@types";
 import {
   IsEmailField,
   IsEnumField,
@@ -8,16 +8,16 @@ import {
   IsStringField,
   IsUnique,
   IsUsernameField,
-} from '@common/decorators';
-import { User } from '@entities';
-import { validationI18nMessage } from '@lib/i18n';
+} from "@common/decorators";
+import { User } from "@entities";
+import { validationI18nMessage } from "@lib/i18n";
 
 export class SocialDto {
 /**
 * Twitter url of user
 * @example https://twitter.com/rubiin
 */
-  @IsNotEmpty({ message: validationI18nMessage('validation.isNotEmpty') })
+  @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsUrl()
 twitter?: string;
 
@@ -25,7 +25,7 @@ twitter?: string;
 * Facebook url of user
 * @example https://facebook.com/rubiin
 */
-  @IsNotEmpty({ message: validationI18nMessage('validation.isNotEmpty') })
+  @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsUrl()
 facebook?: string;
 
@@ -33,7 +33,7 @@ facebook?: string;
 * Linkedin url of user
 * @example https://linkedin.com/rubiin
 */
-  @IsNotEmpty({ message: validationI18nMessage('validation.isNotEmpty') })
+  @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsUrl()
 linkedin?: string;
 }
@@ -45,7 +45,7 @@ export class CreateUserDto {
 */
 
   @IsUsernameField()
-  @IsUnique(() => User, 'username')
+  @IsUnique(() => User, "username")
 username!: string;
 
   /**
@@ -76,7 +76,7 @@ lastName!: string;
 * Email of user
 * @example someemail@gmail.com
 */
-  @IsUnique(() => User, 'email')
+  @IsUnique(() => User, "email")
   @IsEmailField()
 email!: string;
 
@@ -86,7 +86,7 @@ email!: string;
 */
 
   @IsStringField({ minLength: 8, maxLength: 50 })
-  @IsPassword({ message: validationI18nMessage('validation.isPassword') })
+  @IsPassword({ message: validationI18nMessage("validation.isPassword") })
 password!: string;
 
   /**

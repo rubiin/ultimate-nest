@@ -1,7 +1,7 @@
-import type { EntityName, EventArgs, EventSubscriber } from '@mikro-orm/core';
-import { Injectable } from '@nestjs/common';
-import { HelperService } from '@common/helpers';
-import { User } from '@entities';
+import type { EntityName, EventArgs, EventSubscriber } from "@mikro-orm/core";
+import { Injectable } from "@nestjs/common";
+import { HelperService } from "@common/helpers";
+import { User } from "@entities";
 
 /* It's a class that implements the EventSubscriber interface, and it's responsible for hashing the
 password before the user is created or updated */

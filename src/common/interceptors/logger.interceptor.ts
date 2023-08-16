@@ -1,17 +1,17 @@
-import type { Request, Response } from 'express';
+import type { Request, Response } from "express";
 import type {
   CallHandler,
   ExecutionContext,
   NestInterceptor,
-} from '@nestjs/common';
+} from "@nestjs/common";
 import {
   HttpException,
   HttpStatus,
   Injectable,
   Logger,
-} from '@nestjs/common';
-import type { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+} from "@nestjs/common";
+import type { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 
 /**
 * Interceptor that logs input/output requests
@@ -20,7 +20,7 @@ import { tap } from 'rxjs/operators';
 export class LoggingInterceptor implements NestInterceptor {
   private readonly ctxPrefix: string = LoggingInterceptor.name;
   private readonly logger: Logger = new Logger(this.ctxPrefix);
-  private userPrefix = '';
+  private userPrefix = "";
 
   /**
 *  Prefix setter

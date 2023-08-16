@@ -23,7 +23,7 @@ export interface NumberFieldOptions extends BaseValidator, BaseArrayValidator {
   positive?: boolean;
 }
 
-export type MinMaxLengthOptions = Pick<StringFieldOptions, 'each' | 'minLength' | 'maxLength'>;
+export type MinMaxLengthOptions = Pick<StringFieldOptions, "each" | "minLength" | "maxLength">;
 
 export interface FileValidator {
   fileType?: RegExp | string;

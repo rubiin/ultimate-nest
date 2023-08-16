@@ -1,7 +1,7 @@
-import { Collection, Entity, ManyToMany, Property } from '@mikro-orm/core';
-import { Post } from './index';
+import { Collection, Entity, ManyToMany, Property } from "@mikro-orm/core";
+import { Post } from "./index";
 
-import { BaseEntity } from '@common/database';
+import { BaseEntity } from "@common/database";
 
 @Entity()
 export class Category extends BaseEntity {

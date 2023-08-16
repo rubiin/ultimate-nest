@@ -1,13 +1,13 @@
-import type { Dictionary } from '@mikro-orm/core';
-import type { QueryBuilder } from '@mikro-orm/postgresql';
-import type { CursorPaginationResponse, OffsetPaginationResponse } from '../classes';
-import { CursorType, QueryCursor, QueryOrder } from '../enums';
+import type { Dictionary } from "@mikro-orm/core";
+import type { QueryBuilder } from "@mikro-orm/postgresql";
+import type { CursorPaginationResponse, OffsetPaginationResponse } from "../classes";
+import { CursorType, QueryCursor, QueryOrder } from "../enums";
 
-import type { CursorPaginationDto, OffsetPaginationDto } from '@common/dtos';
+import type { CursorPaginationDto, OffsetPaginationDto } from "@common/dtos";
 
 export interface QBCursorPaginationOptions<T extends Dictionary> {
   qb: QueryBuilder<T>;
-  pageOptionsDto: Omit<CursorPaginationDto, 'type'> & {
+  pageOptionsDto: Omit<CursorPaginationDto, "type"> & {
     alias: string;
     cursor: keyof T;
     cursorType: CursorType;
@@ -35,17 +35,17 @@ export interface PaginationAbstractResponse<T, Y> {
   meta: Y;
 }
 
-export type Order = '$gt' | '$lt';
-export type OppositeOrder = '$gte' | '$lte';
+export type Order = "$gt" | "$lt";
+export type OppositeOrder = "$gte" | "$lte";
 
 export const getCursorType = (cursor: QueryCursor): CursorType =>
   cursor === QueryCursor.DATE ? CursorType.NUMBER : CursorType.STRING;
 
 export const getQueryOrder = (order: QueryOrder): Order =>
-  order === QueryOrder.ASC ? '$gt' : '$lt';
+  order === QueryOrder.ASC ? "$gt" : "$lt";
 
 export const getOppositeOrder = (order: QueryOrder): OppositeOrder =>
-  order === QueryOrder.ASC ? '$lte' : '$gte';
+  order === QueryOrder.ASC ? "$lte" : "$gte";
 
 export type PaginationRequest = CursorPaginationDto | OffsetPaginationDto;
 export type PaginationResponse<T> = CursorPaginationResponse<T> | OffsetPaginationResponse<T>;

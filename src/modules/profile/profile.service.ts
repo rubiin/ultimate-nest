@@ -1,13 +1,13 @@
-import type { AutoPath } from '@mikro-orm/core/typings';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityManager } from '@mikro-orm/postgresql';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import type { Observable } from 'rxjs';
-import { from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
-import { translate } from '@lib/i18n';
-import { User } from '@entities';
-import { BaseRepository } from '@common/database';
-import type { ProfileData } from '@common/@types';
+import type { AutoPath } from "@mikro-orm/core/typings";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import type { Observable } from "rxjs";
+import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import { translate } from "@lib/i18n";
+import { User } from "@entities";
+import { BaseRepository } from "@common/database";
+import type { ProfileData } from "@common/@types";
 
 @Injectable()
 export class ProfileService {
@@ -51,8 +51,8 @@ populate: AutoPath<User, keyof User>[] = [],
           return throwError(
             () =>
               new NotFoundException(
-                translate('exception.itemDoesNotExist', {
-                  args: { item: 'Profile' },
+                translate("exception.itemDoesNotExist", {
+                  args: { item: "Profile" },
                 }),
               ),
           );
@@ -76,15 +76,15 @@ populate: AutoPath<User, keyof User>[] = [],
   follow(loggedInUser: User, usernameToFollow: string): Observable<ProfileData> {
     if (!usernameToFollow) {
       return throwError(
-        () => new BadRequestException(translate('exception.usernameRequired')),
+        () => new BadRequestException(translate("exception.usernameRequired")),
       );
     }
 
-    return this.getProfileByUsername(usernameToFollow, ['followers']).pipe(
+    return this.getProfileByUsername(usernameToFollow, ["followers"]).pipe(
       switchMap((followingUser) => {
         if (loggedInUser.username === usernameToFollow) {
           return throwError(
-            () => new BadRequestException(translate('exception.followerFollowingSame')),
+            () => new BadRequestException(translate("exception.followerFollowingSame")),
           );
         }
 
@@ -113,17 +113,17 @@ populate: AutoPath<User, keyof User>[] = [],
   unFollow(loggedInUser: User, username: string): Observable<ProfileData> {
     if (!username) {
       return throwError(
-        () => new BadRequestException(translate('exception.usernameRequired')),
+        () => new BadRequestException(translate("exception.usernameRequired")),
       );
     }
 
-    return this.getProfileByUsername(username, ['followers']).pipe(
+    return this.getProfileByUsername(username, ["followers"]).pipe(
       switchMap((followingUser) => {
         const followerUser = this.userRepository.getReference(loggedInUser.id);
 
         if (followingUser.id === loggedInUser.id) {
           return throwError(
-            () => new BadRequestException(translate('exception.followerFollowingSame')),
+            () => new BadRequestException(translate("exception.followerFollowingSame")),
           );
         }
 

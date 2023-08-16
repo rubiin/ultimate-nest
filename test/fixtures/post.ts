@@ -1,4 +1,4 @@
-import { faker } from '@mikro-orm/seeder';
+import { faker } from "@mikro-orm/seeder";
 
 export const postDto = {
   title: faker.name.firstName(),

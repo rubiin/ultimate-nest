@@ -1,15 +1,15 @@
-import type { Response } from 'express';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityManager } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { authenticator } from 'otplib';
-import { toFileStream } from 'qrcode';
-import type { Observable } from 'rxjs';
-import { from, map, throwError } from 'rxjs';
-import { translate } from '@lib/i18n';
-import { User } from '@entities';
-import { BaseRepository } from '@common/database';
+import type { Response } from "express";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { authenticator } from "otplib";
+import { toFileStream } from "qrcode";
+import type { Observable } from "rxjs";
+import { from, map, throwError } from "rxjs";
+import { translate } from "@lib/i18n";
+import { User } from "@entities";
+import { BaseRepository } from "@common/database";
 
 @Injectable()
 export class TwoFactorService {
@@ -32,7 +32,7 @@ private readonly em: EntityManager,
 
     const otpAuthUrl = authenticator.keyuri(
       user.email,
-      this.configService.get('app.name', { infer: true }),
+      this.configService.get("app.name", { infer: true }),
       secret,
     );
 
@@ -84,8 +84,8 @@ private readonly em: EntityManager,
 
     if (!isCodeValid) {
       return throwError(() =>
-        translate('exception.refreshToken', {
-          args: { error: 'malformed' },
+        translate("exception.refreshToken", {
+          args: { error: "malformed" },
         }),
       );
     }

@@ -2,13 +2,13 @@ import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from 'class-validator';
+} from "class-validator";
 import {
   ValidatorConstraint,
   registerDecorator,
-} from 'class-validator';
-import { isMatch } from 'date-fns';
-import { isArray } from 'helper-fns';
+} from "class-validator";
+import { isMatch } from "date-fns";
+import { isArray } from "helper-fns";
 
 /* It validates that a date is in a given format */
 

@@ -1,24 +1,24 @@
-import { TokenExpiredError } from 'jsonwebtoken';
-import { EntityRepository } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import type { JwtSignOptions } from '@nestjs/jwt';
-import { JwtService } from '@nestjs/jwt';
-import { pick } from 'helper-fns';
-import type { Observable } from 'rxjs';
-import { catchError, from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
-import { RefreshTokensRepository } from './refresh-tokens.repository';
+import { TokenExpiredError } from "jsonwebtoken";
+import { EntityRepository } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import type { JwtSignOptions } from "@nestjs/jwt";
+import { JwtService } from "@nestjs/jwt";
+import { pick } from "helper-fns";
+import type { Observable } from "rxjs";
+import { catchError, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
-import { translate } from '@lib/i18n';
-import type { RefreshToken } from '@entities';
-import { User } from '@entities';
-import type { JwtPayload } from '@common/@types';
+import { translate } from "@lib/i18n";
+import type { RefreshToken } from "@entities";
+import { User } from "@entities";
+import type { JwtPayload } from "@common/@types";
 
 @Injectable()
 export class TokensService {
   private readonly BASE_OPTIONS: JwtSignOptions = {
-    issuer: 'nestify',
-    audience: 'nestify',
+    issuer: "nestify",
+    audience: "nestify",
   };
 
   constructor(
@@ -33,14 +33,14 @@ private readonly jwt: JwtService,
 * @param user - Omit<User, "password">
 * @returns An Observable of a string.
 */
-  generateAccessToken(user: Omit<User, 'password'>): Observable<string> {
+  generateAccessToken(user: Omit<User, "password">): Observable<string> {
     const options: JwtSignOptions = {
       ...this.BASE_OPTIONS,
       subject: String(user.id),
     };
 
     return from(
-      this.jwt.signAsync({ ...pick(user, ['roles', 'isTwoFactorEnabled']) }, options),
+      this.jwt.signAsync({ ...pick(user, ["roles", "isTwoFactorEnabled"]) }, options),
     );
   }
 
@@ -80,8 +80,8 @@ private readonly jwt: JwtService,
               return throwError(
                 () =>
                   new UnauthorizedException(
-                    translate('exception.refreshToken', {
-                      args: { error: 'not found' },
+                    translate("exception.refreshToken", {
+                      args: { error: "not found" },
                     }),
                   ),
               );
@@ -91,8 +91,8 @@ private readonly jwt: JwtService,
               return throwError(
                 () =>
                   new UnauthorizedException(
-                    translate('exception.refreshToken', {
-                      args: { error: 'revoked' },
+                    translate("exception.refreshToken", {
+                      args: { error: "revoked" },
                     }),
                   ),
               );
@@ -104,8 +104,8 @@ private readonly jwt: JwtService,
                   return throwError(
                     () =>
                       new UnauthorizedException(
-                        translate('exception.refreshToken', {
-                          args: { error: 'malformed' },
+                        translate("exception.refreshToken", {
+                          args: { error: "malformed" },
                         }),
                       ),
                   );
@@ -148,13 +148,13 @@ private readonly jwt: JwtService,
       catchError((error_) => {
         throw error_ instanceof TokenExpiredError
           ? new UnauthorizedException(
-            translate('exception.refreshToken', {
-              args: { error: 'expired' },
+            translate("exception.refreshToken", {
+              args: { error: "expired" },
             }),
           )
           : new UnauthorizedException(
-            translate('exception.refreshToken', {
-              args: { error: 'malformed' },
+            translate("exception.refreshToken", {
+              args: { error: "malformed" },
             }),
           );
       }),
@@ -187,8 +187,8 @@ private readonly jwt: JwtService,
       return throwError(
         () =>
           new UnauthorizedException(
-            translate('exception.refreshToken', {
-              args: { error: 'malformed' },
+            translate("exception.refreshToken", {
+              args: { error: "malformed" },
             }),
           ),
       );
@@ -214,8 +214,8 @@ private readonly jwt: JwtService,
       return throwError(
         () =>
           new UnauthorizedException(
-            translate('exception.refreshToken', {
-              args: { error: 'malformed' },
+            translate("exception.refreshToken", {
+              args: { error: "malformed" },
             }),
           ),
       );
@@ -241,8 +241,8 @@ private readonly jwt: JwtService,
       return throwError(
         () =>
           new UnauthorizedException(
-            translate('exception.refreshToken', {
-              args: { error: 'malformed' },
+            translate("exception.refreshToken", {
+              args: { error: "malformed" },
             }),
           ),
       );
