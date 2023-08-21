@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { Request } from "express";
 
 import type { AppAbility } from "./casl-ability.factory";
@@ -6,7 +7,7 @@ import { Action } from "@common/@types";
 
 export class GenericPolicyHandler implements PoliciesHandler {
   constructor(
-    private readonly ClassType: any,
+    private readonly ClassType,
     private readonly action: Action = Action.Read,
   ) {}
 
@@ -20,6 +21,7 @@ export class GenericPolicyHandler implements PoliciesHandler {
 
     const id = request.params.id;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     return ability.can(Action.Update, new this.ClassType({ id }));
   }
 }
