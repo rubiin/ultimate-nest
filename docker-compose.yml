@@ -10,7 +10,7 @@ services:
 # Redis service
 # This service runs the Redis database
     redis:
-        image: redis:7.0.11-alpine
+        image: redis:7.2.0-alpine
         container_name: redis
         restart: unless-stopped
         env_file: env/.env.${ENV}
