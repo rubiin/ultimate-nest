@@ -2,7 +2,7 @@ import { resolve } from "node:path";
 
 import * as aws from "@aws-sdk/client-ses";
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import type { SendMailOptions, SentMessageInfo, Transporter } from "nodemailer";
+import type { SendMailOptions, Transporter } from "nodemailer";
 import { createTransport } from "nodemailer";
 import previewEmail from "preview-email";
 import { from, retry, switchMap } from "rxjs";

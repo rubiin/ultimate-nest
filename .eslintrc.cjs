@@ -1,38 +1,45 @@
 // @ts-check
-const { defineConfig } = require('eslint-define-config')
+// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
+const { defineConfig } = require("eslint-define-config");
 
 module.exports = defineConfig({
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: 'tsconfig.json',
+    project: "tsconfig.json",
   },
-  ignorePatterns: ['migrations', 'src/generated', '**/*.spec.ts', '**/*.e2e.ts'], // optimize this
-  extends: ['@rubiin/eslint-config-typescript'],
+  ignorePatterns: ["migrations", "src/generated", "**/*.spec.ts", "**/*.e2e.ts"], // optimize this
+  extends: ["@rubiin/eslint-config-typescript"],
   root: true,
   settings: {
-    'import/resolver': {
+    "import/resolver": {
       typescript: {
         alwaysTryTypes: true,
-        project: './tsconfig.json',
+        project: "./tsconfig.json",
       },
     },
   },
   rules: {
-    'unicorn/prefer-module': 'off',
-    '@typescript-eslint/no-floating-promises': 'off',
-    'no-useless-constructor': 'off', // optimize this
-    '@typescript-eslint/require-await': 'off', // optimize this
-    '@typescript-eslint/no-unsafe-assignment': 'off', // optimize this
-    '@typescript-eslint/no-unsafe-member-access': 'off', // optimize this
-    'unicorn/prefer-top-level-await': 'off',
-    'unicorn/prevent-abbreviations': [
-      'error',
+    "unicorn/prefer-module": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "no-useless-constructor": "off", // optimize this
+    "@typescript-eslint/require-await": "off", // optimize this
+    "@typescript-eslint/no-unsafe-assignment": "off", // optimize this
+    "@typescript-eslint/no-unsafe-member-access": "off", // optimize this
+    "unicorn/prefer-top-level-await": "off",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: false,
+      },
+    ],
+    "unicorn/prevent-abbreviations": [
+      "error",
       {
         ignore: [
-          '\\.e2e*',
-          '\\.spec*',
-          '\\.decorator*',
-          '\\*idx*',
+          "\\.e2e*",
+          "\\.spec*",
+          "\\.decorator*",
+          "\\*idx*",
         ],
         allowList: {
           ProcessEnv: true,
@@ -41,4 +48,4 @@ module.exports = defineConfig({
       },
     ],
   },
-})
+});

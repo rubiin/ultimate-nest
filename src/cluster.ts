@@ -2,26 +2,26 @@ import cluster from "node:cluster";
 import os from "node:os";
 
 import { Logger } from "@nestjs/common";
-import { isUndefined } from "@common/helpers";
+import { HelperService, isUndefined } from "@common/helpers";
 
 export class Cluster {
   private static readonly loggerService = new Logger(Cluster.name);
 
   public static createCluster(main: () => Promise<void>): void {
-    const cpuCount = Cluster.getCpuCount();
+    const cpuCount = this.getCpuCount();
 
     if (cluster.isPrimary) {
-      Cluster.loggerService.log(`Starting cluster with ${cpuCount} workers...`);
-      Cluster.loggerService.log(`Master server is running on process ${process.pid}`);
+      this.loggerService.log(`Starting cluster with ${cpuCount} workers...`);
+      this.loggerService.log(`Master server is running on process ${process.pid}`);
 
       for (let index = 0; index < cpuCount; index++) {
-        Cluster.loggerService.log(`Forking process number ${index + 1}...`);
+        this.loggerService.log(`Forking process number ${index + 1}...`);
         cluster.fork();
       }
 
       cluster.on("exit", (worker) => {
-        Cluster.loggerService.warn(`Worker ${worker.id} died. `);
-        Cluster.loggerService.warn("Starting a new worker...");
+        this.loggerService.warn(`Worker ${worker.id} died. `);
+        this.loggerService.warn("Starting a new worker...");
         cluster.fork();
       });
     }
@@ -36,7 +36,7 @@ export class Cluster {
     if (!isUndefined(process.env.WORKERS_COUNT))
       return Number.parseInt(process.env.WORKERS_COUNT, 10);
 
-    if (!isUndefined(process.env.NODE_ENV) && process.env.NODE_ENV === "production")
+    if (HelperService.isProd())
       return os.cpus().length;
 
     return 2;

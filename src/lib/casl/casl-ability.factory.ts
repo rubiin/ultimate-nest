@@ -12,7 +12,7 @@ import { Action, Roles } from "@common/@types";
 import type { Tag } from "@entities";
 import { Comment, Post, User } from "@entities";
 
-type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment | typeof Tag> | "all";
+export type Subjects = InferSubjects<typeof User | typeof Post | typeof Comment | typeof Tag> | "all";
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
 

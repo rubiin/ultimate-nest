@@ -53,7 +53,7 @@ export class ValidatorFieldBuilder {
     this.decoratorsToApply.push(
       IsEnum(entity, {
         each: this.options.each,
-        message: `must be a valid enum value,${enumToString(entity).join(",")}`,
+        message: `must be a valid enum value,${enumToString(entity)}`,
       }),
     );
 
