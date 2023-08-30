@@ -7,6 +7,7 @@ import type { AppAbility } from "./casl-ability.factory";
 import { CaslAbilityFactory } from "./casl-ability.factory";
 import type { PolicyHandler } from "./policy.interface";
 import { CHECK_POLICIES_KEY_META, IS_PUBLIC_KEY_META } from "@common/constant";
+import type { User } from "@entities";
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
@@ -30,7 +31,7 @@ export class PoliciesGuard implements CanActivate {
 
     const { user } = request;
 
-    const ability = this.caslAbilityFactory.createForUser(user);
+    const ability = this.caslAbilityFactory.createForUser(user as User);
 
     return policyHandlers.every(handler =>
       this.execPolicyHandler(handler, request, ability),

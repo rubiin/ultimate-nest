@@ -474,10 +474,12 @@ search,
       const oppositeOrder = getOppositeOrder(order);
       const countWhere = where;
 
-      countWhere.$and = this.getFilters("createdAt", decoded, oppositeOrder);
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
-      where.$and = this.getFilters("createdAt", decoded, queryOrder);
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
     }
 
     const [entities, count] = await repo.findAndCount(where, {

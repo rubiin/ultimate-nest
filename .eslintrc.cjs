@@ -26,6 +26,7 @@ module.exports = defineConfig({
     "@typescript-eslint/no-unsafe-assignment": "off", // optimize this
     "@typescript-eslint/no-unsafe-member-access": "off", // optimize this
     "unicorn/prefer-top-level-await": "off",
+    "max-nested-callbacks": "off", // rxjs is nested
     "@typescript-eslint/no-misused-promises": [
       "error",
       {

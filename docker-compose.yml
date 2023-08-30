@@ -19,7 +19,7 @@ services:
         command: redis-server --loglevel warning --requirepass DwaLbTL84QaA
         volumes:
             - redis-data:/data
-            - .conf/redis.conf:/usr/local/etc/redis/redis.conf
+            - conf/redis.conf:/usr/local/etc/redis/redis.conf
         networks:
             - nestify-network
         healthcheck:

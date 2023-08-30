@@ -75,7 +75,7 @@ state? = PostStateEnum.DRAFT;
   async generateSlug(arguments_: EventArgs<this>) {
     if (arguments_.changeSet?.payload?.title) {
       this.slug
-= `${slugify(this.title, { lowercase: true })
+= `${slugify(this.title)
 }-${
 Math.trunc(Math.random() * 36 ** 6).toString(36)}`;
     }

@@ -196,9 +196,7 @@ private readonly cloudinaryService: CloudinaryService,
 * @returns An Observable of type string is being returned.
 */
   generateUsername(name: string): Observable<string> {
-    const pointSlug = slugify(`${name} ${createId().slice(0, 6)}`, {
-      lowercase: true,
-    });
+    const pointSlug = slugify(`${name} ${createId().slice(0, 6)}`);
 
     return from(
       this.userRepository.count({
