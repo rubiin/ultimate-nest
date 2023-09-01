@@ -20,9 +20,6 @@ const argon2Options: ArgonOptions & { raw?: false } = {
 };
 
 export const HelperService = {
-  isArray: <T>(value: unknown): value is T[] => {
-    return Array.isArray(value);
-  },
   buildPayloadResponse(
     user: User,
     accessToken: string,
@@ -66,6 +63,10 @@ export const HelperService = {
     return hash(userPassword, argon2Options);
   },
 
+  /* The `generateThumb` function takes an input image as a `Buffer` and a configuration object
+containing the desired height and width of the thumbnail. It uses the `sharp` library to resize the
+input image according to the provided configuration. The resized image is then converted to the PNG
+format and returned as a `Buffer` wrapped in an `Observable`. */
   generateThumb(input: Buffer, config: { height: number; width: number }): Observable<Buffer> {
     return from(sharp(input).resize(config).toFormat("png").toBuffer());
   },

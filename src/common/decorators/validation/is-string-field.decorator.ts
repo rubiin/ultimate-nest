@@ -7,6 +7,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  Matches,
 } from "class-validator";
 import { MinMaxLength } from "./min-max-length.decorator";
 import { Sanitize, Trim } from "./transform.decorator";
@@ -16,7 +17,7 @@ import type { StringFieldOptions } from "@common/@types";
 
 /**
 * It's a decorator that validates a string field
-* @param {StringFieldOptions} [options_] - IsStringFieldOptions
+* @param {StringFieldOptions} [options_] - StringFieldOptions
 * @returns A function that returns a decorator.
 */
 
@@ -48,6 +49,9 @@ export const IsStringField = (options_?: StringFieldOptions) => {
 
   if (options.sanitize)
     decoratorsToApply.push(Sanitize());
+
+  if (options.regex)
+    decoratorsToApply.push(Matches(options.regex));
 
   if (options.trim)
     decoratorsToApply.push(Trim());

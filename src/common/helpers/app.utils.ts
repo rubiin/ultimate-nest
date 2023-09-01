@@ -5,6 +5,7 @@ import type { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { i18nValidationErrorFactory } from "nestjs-i18n";
 import { getMiddleware } from "swagger-stats";
+import { isArray } from "helper-fns";
 import { HelperService } from "./helpers.utils";
 
 import { swaggerOptions } from "@common/swagger/swagger.plugin";
@@ -83,7 +84,7 @@ export const AppUtils = {
 
       for (const method of methods) {
         if (
-          HelperService.isArray(method.security)
+          isArray(method.security)
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 && method.security.includes(IS_PUBLIC_KEY_META)
         )
