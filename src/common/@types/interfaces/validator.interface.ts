@@ -10,10 +10,11 @@ interface BaseArrayValidator {
 }
 
 export interface StringFieldOptions extends BaseValidator, BaseArrayValidator {
+  trim?: boolean;
+  regex?: RegExp;
   minLength?: number;
   maxLength?: number;
   sanitize?: boolean;
-  trim?: boolean;
 }
 
 export interface NumberFieldOptions extends BaseValidator, BaseArrayValidator {

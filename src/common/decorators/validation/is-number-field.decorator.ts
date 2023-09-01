@@ -16,7 +16,7 @@ import type { NumberFieldOptions } from "@common/@types";
 
 /**
 * It's a decorator that validates a number field
-* @param {NumberFieldOptions} [options_] - IsNumberFieldOptions
+* @param {NumberFieldOptions} [options_] - NumberFieldOptions
 * @returns A function that returns a decorator.
 */
 

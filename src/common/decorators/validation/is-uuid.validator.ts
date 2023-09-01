@@ -1,10 +1,10 @@
 import { applyDecorators } from "@nestjs/common";
 import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
-import type { EnumFieldOptions as EmailFieldOptions } from "@common/@types";
+import type { EnumFieldOptions as UUIDFieldOptions } from "@common/@types";
 import { validationI18nMessage } from "@lib/i18n";
 
-export const IsUUIDField = (options_?: EmailFieldOptions) => {
-  const options: EmailFieldOptions = {
+export const IsUUIDField = (options_?: UUIDFieldOptions) => {
+  const options: UUIDFieldOptions = {
     each: false,
     required: true,
     ...options_,

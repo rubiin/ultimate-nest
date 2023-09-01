@@ -2,7 +2,8 @@ import cluster from "node:cluster";
 import os from "node:os";
 
 import { Logger } from "@nestjs/common";
-import { HelperService, isUndefined } from "@common/helpers";
+import { isUndefined } from "helper-fns";
+import { HelperService } from "@common/helpers";
 
 export class Cluster {
   private static readonly loggerService = new Logger(Cluster.name);

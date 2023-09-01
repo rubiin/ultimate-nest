@@ -116,7 +116,7 @@ UpdateDto extends EntityData<Entity> = EntityData<Entity>,
       switchMap((item) => {
         this.repository.assign(item, dto);
 
-        return this.repository.getEntityManager().persist().pipe(map(() => item));
+        return from(this.repository.getEntityManager().flush()).pipe(map(() => item));
       }),
     );
   }

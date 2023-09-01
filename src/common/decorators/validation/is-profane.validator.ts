@@ -8,14 +8,14 @@ import {
   registerDecorator,
 } from "class-validator";
 import Unprofane from "unprofane";
-import { HelperService } from "@common/helpers";
+import { isArray } from "helper-fns";
 
 @ValidatorConstraint({ async: true })
 class IsProfaneConstraint implements ValidatorConstraintInterface {
   async validate(value: string | string[]) {
     const isProfane = new Unprofane({ lang: "all" });
 
-    if (HelperService.isArray(value))
+    if (isArray(value))
       return value.some(v => isProfane.check(v));
 
     return !isProfane.check(value);

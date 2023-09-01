@@ -7,10 +7,10 @@ import type { EnumFieldOptions } from "@common/@types";
 /**
 * It's a decorator that validates that the field is an enum value
 * @param {object} entity - object - The enum object to validate against.
-* @param {EnumFieldOptions} [options_] - IsEnumFieldOptions
+* @param {EnumFieldOptions} [options_] - EnumFieldOptions
 * @returns A decorator function that takes in a target, propertyKey, and descriptor.
 */
-export const IsEnumField = (entity: object, options_?: EnumFieldOptions) => {
+export const IsEnumField = (entity: Record<string, string>, options_?: EnumFieldOptions) => {
   const options: EnumFieldOptions = {
     each: false,
     required: true,

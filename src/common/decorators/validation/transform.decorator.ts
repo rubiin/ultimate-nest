@@ -49,7 +49,7 @@ export const ToBoolean = () => {
 export const Sanitize = (): PropertyDecorator => {
   return Transform(
     ({ value }) => {
-      if (Array.isArray(value)) {
+      if (isArray(value)) {
         return value.map((v) => {
           if (typeof v === "string") return DOMPurify.sanitize(v);
 
