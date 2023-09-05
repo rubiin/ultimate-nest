@@ -39,6 +39,13 @@ export class AbstractValidationPipe extends ValidationPipe {
   }
 }
 
+/**
+ * Factory function that creates a controller class that implements the Crud interface
+ * @param queryDto - The query dto type
+ * @param createDto - The create dto type
+ * @param updateDto - The update dto type
+ * @returns A controller class that implements the Crud interface
+ */
 export function ControllerFactory<
 T extends BaseEntity,
 Q extends PaginationRequest,

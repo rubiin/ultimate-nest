@@ -4,10 +4,10 @@ import type { MinMaxLengthOptions } from "@common/@types";
 import { validationI18nMessage } from "@lib/i18n";
 
 /**
-* It's a decorator that validates the length of a string to be between a minimum and maximum length
-* @param {MinMaxLengthOptions} [options_] - MinMaxLengthOptions
-* returns
-*/
+ * It's a decorator that validates the length of a string to be between a minimum and maximum length
+ * @param options_ - MinMaxLengthOptions
+ * @returns A function that takes in a target, propertyKey, and descriptor
+ */
 export const MinMaxLength = (options_?: MinMaxLengthOptions) => {
   const options: MinMaxLengthOptions = { minLength: 2, maxLength: 500, each: false, ...options_ };
 

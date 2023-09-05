@@ -6,10 +6,10 @@ import type { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/com
 import { CacheService } from "@lib/cache";
 
 /**
-*
-*  This interceptor is used to automatically clear the cache after a successful mutation.
-*
-*/
+ *
+ *  This interceptor is used to automatically clear the cache after a successful mutation.
+ *
+ */
 @Injectable()
 export class ClearCacheInterceptor implements NestInterceptor {
   constructor(private readonly cacheService: CacheService) {}

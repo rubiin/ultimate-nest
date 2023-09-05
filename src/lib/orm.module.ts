@@ -10,6 +10,7 @@ import { baseOptions } from "@common/database/mikro-orm-cli.config";
   imports: [
     MikroOrmModule.forRootAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) =>
         defineConfig({
           ...baseOptions,
@@ -19,7 +20,6 @@ import { baseOptions } from "@common/database/mikro-orm-cli.config";
           user: configService.get("database.user", { infer: true }),
           dbName: configService.get("database.dbName", { infer: true }),
         }),
-      inject: [ConfigService],
     }),
     MikroOrmModule.forFeature({
       entities: Object.values(Entities),

@@ -5,10 +5,10 @@ import { JwtService } from "@nestjs/jwt";
 import { translate } from "@lib/i18n";
 
 /**
-*
-* The purpose of this guard is to provide a layer for extracting idx from jwt
-*
-*/
+ *
+ * The purpose of this guard is to provide a layer for extracting idx from jwt
+ *
+ */
 
 @Injectable()
 export class AuthGuard implements CanActivate {

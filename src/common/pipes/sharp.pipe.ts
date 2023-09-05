@@ -6,14 +6,14 @@ import sharp from "sharp";
 import type { File } from "@common/@types";
 
 /**
-*
-*  Usage:
-*  uploadImage(@UploadedFile(SharpPipe) image: string)
-*
-* This only works for files that are uploaded through multer with file storage
-*
-*
-*/
+ *
+ *  Usage:
+ *  uploadImage(@UploadedFile(SharpPipe) image: string)
+ *
+ * This only works for files that are uploaded through multer with file storage
+ *
+ *
+ */
 
 @Injectable()
 export class SharpPipe implements PipeTransform<File, Promise<string>> {

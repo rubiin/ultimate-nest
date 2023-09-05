@@ -16,11 +16,11 @@ private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
   ) {}
 
   /**
-* It creates a new refresh token for the given user and expiration time
-* @param {User} user - The user that the token is being created for.
-* @param {number} ttl - number - the time to live of the token in seconds
-* @returns A refresh token
-*/
+   * It creates a new refresh token for the given user and expiration time
+   * @param user - The user that the token is being created for.
+   * @param ttl - number - the time to live of the token in seconds
+   * @returns A refresh token
+   */
   createRefreshToken(user: User, ttl: number): Observable<RefreshToken> {
     const expiration = new Date();
 
@@ -38,10 +38,10 @@ private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
   }
 
   /**
-* It finds a refresh token by its id and returns it as an observable
-* @param {number} id - The id of the token to be found.
-* @returns Observable<RefreshToken>
-*/
+   * It finds a refresh token by its id and returns it as an observable
+   * @param id - The id of the token to be found.
+   * @returns Observable<RefreshToken>
+   */
   findTokenById(id: number): Observable<RefreshToken> {
     return from(
       this.refreshTokenRepository.findOne({
@@ -52,10 +52,10 @@ private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
   }
 
   /**
-* It deletes all refresh tokens for a given user
-* @param {User} user - User - The user object that we want to delete the tokens for.
-* @returns A boolean value.
-*/
+   * It deletes all refresh tokens for a given user
+   * @param user - User - The user object that we want to delete the tokens for.
+   * @returns A boolean value.
+   */
   deleteTokensForUser(user: User): Observable<boolean> {
     return from(this.refreshTokenRepository.nativeUpdate({ user }, { isRevoked: true })).pipe(
       map(() => true),
@@ -63,11 +63,11 @@ private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
   }
 
   /**
-* It deletes a refresh token by setting its `isRevoked` property to `true`
-* @param {User} user - User - the user object that is currently logged in
-* @param {number} tokenId - The ID of the token to be deleted.
-* @returns A boolean value.
-*/
+   * It deletes a refresh token by setting its `isRevoked` property to `true`
+   * @param user - User - the user object that is currently logged in
+   * @param tokenId - The ID of the token to be deleted.
+   * @returns A boolean value.
+   */
   deleteToken(user: User, tokenId: number): Observable<boolean> {
     return from(
       this.refreshTokenRepository.nativeUpdate({ user, id: tokenId }, { isRevoked: true }),

@@ -1,12 +1,12 @@
 import { Module } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { NestMinioModule } from "nestjs-minio";
-import { NestConfigModule } from "@lib/config/config.module";
 
 @Module({
   imports: [
     NestMinioModule.registerAsync({
-      imports: [NestConfigModule],
+      imports: [ConfigModule],
+      inject: [ConfigService],
       isGlobal: true,
       useFactory: async (configService: ConfigService) => ({
         endPoint: configService.get("minio.host"),
@@ -15,7 +15,6 @@ import { NestConfigModule } from "@lib/config/config.module";
         secretKey: configService.get("minio.secretKey"),
         useSSL: configService.get<boolean>("minio.ssl"),
       }),
-      inject: [ConfigService],
     }),
   ],
   exports: [NestMinioModule],

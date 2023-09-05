@@ -16,10 +16,10 @@ import { validationI18nMessage } from "@lib/i18n";
 import type { StringFieldOptions } from "@common/@types";
 
 /**
-* It's a decorator that validates a string field
-* @param {StringFieldOptions} [options_] - StringFieldOptions
-* @returns A function that returns a decorator.
-*/
+ * It's a decorator that validates a string field
+ * @param options_ - StringFieldOptions
+ * @returns A function that returns a decorator.
+ */
 
 export const IsStringField = (options_?: StringFieldOptions) => {
   const options: StringFieldOptions = {

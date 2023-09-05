@@ -15,10 +15,10 @@ import { validationI18nMessage } from "@lib/i18n";
 import type { NumberFieldOptions } from "@common/@types";
 
 /**
-* It's a decorator that validates a number field
-* @param {NumberFieldOptions} [options_] - NumberFieldOptions
-* @returns A function that returns a decorator.
-*/
+ * It's a decorator that validates a number field
+ * @param options_ - NumberFieldOptions
+ * @returns A function that returns a decorator.
+ */
 
 export const IsNumberField = (options_?: NumberFieldOptions) => {
   const options: NumberFieldOptions = {

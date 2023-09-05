@@ -14,8 +14,8 @@ import type { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
 /**
-* Interceptor that logs input/output requests
-*/
+ * Interceptor that logs input/output requests
+ */
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   private readonly ctxPrefix: string = LoggingInterceptor.name;
@@ -23,18 +23,20 @@ export class LoggingInterceptor implements NestInterceptor {
   private userPrefix = "";
 
   /**
-*  Prefix setter
-* ex. [MyPrefix - LoggingInterceptor - 200 - GET - /]
-*/
+   *  Prefix setter
+   * ex. [MyPrefix - LoggingInterceptor - 200 - GET - /]
+   * @param prefix - prefix to be added to the log
+   */
   setUserPrefix(prefix: string): void {
     this.userPrefix = `${prefix} - `;
   }
 
   /**
-* Intercept method, logs before and after the request being processed
-* @param context details about the current request
-* @param call$ implements the handle method that returns an Observable
-*/
+   * Intercept method, logs before and after the request being processed
+   * @param context details about the current request
+   * @param call$ implements the handle method that returns an Observable
+   * @returns Observable of unknown type
+   */
   intercept(context: ExecutionContext, call$: CallHandler): Observable<unknown> {
     const request: Request = context.switchToHttp().getRequest();
     const { method, url, body, headers } = request;
@@ -64,10 +66,10 @@ export class LoggingInterceptor implements NestInterceptor {
   }
 
   /**
-* Logs the request response in success cases
-* @param body body returned
-* @param context details about the current request
-*/
+   * Logs the request response in success cases
+   * @param body body returned
+   * @param context details about the current request
+   */
   private logNext(body: unknown, context: ExecutionContext): void {
     const request: Request = context.switchToHttp().getRequest<Request>();
     const response: Response = context.switchToHttp().getResponse<Response>();
@@ -86,10 +88,10 @@ export class LoggingInterceptor implements NestInterceptor {
   }
 
   /**
-* Logs the request response in success cases
-* @param error Error object
-* @param context details about the current request
-*/
+   * Logs the request response in success cases
+   * @param error Error object
+   * @param context details about the current request
+   */
   private logError(error: Error, context: ExecutionContext): void {
     const request: Request = context.switchToHttp().getRequest<Request>();
     const { method, url, body } = request;

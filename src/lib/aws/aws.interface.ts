@@ -1,6 +1,6 @@
 import type { ObjectCannedACL } from "@aws-sdk/client-s3";
 
-export interface IAwsS3 {
+export interface AwsS3 {
   path: string;
   pathWithFilename: string;
   filename: string;
@@ -9,11 +9,11 @@ export interface IAwsS3 {
   mime: string;
 }
 
-export interface IAwsS3MultiPart extends IAwsS3 {
+export interface AwsS3MultiPart extends AwsS3 {
   uploadId: string;
 }
 
-export interface IAwsS3PutItemOptions {
+export interface AwsS3PutItemOptions {
   path: string;
   acl?: ObjectCannedACL;
 }

@@ -51,12 +51,12 @@ private readonly configService: ConfigService<Configs, true>,
   }
 
   /**
-* This function finds a subscriber by their email and returns an observable that emits the subscriber
-* entity or throws a NotFoundException if the entity does not exist.
-* @param {string} email - The email parameter is a string that represents the email address of the
-* subscriber whose subscription is being searched for.
-* @returns An Observable of type `Subscriber`.
-*/
+   * This function finds a subscriber by their email and returns an observable that emits the subscriber
+   * entity or throws a NotFoundException if the entity does not exist.
+   * @param email - The email parameter is a string that represents the email address of the
+   * subscriber whose subscription is being searched for.
+   * @returns An Observable of type `Subscriber`.
+   */
   findOneSubscription(email: string): Observable<Subscriber> {
     return from(this.subscriberRepository.findOne({ email })).pipe(
       mergeMap((entity) => {
@@ -77,11 +77,11 @@ private readonly configService: ConfigService<Configs, true>,
   }
 
   /**
-* This function subscribes a new user to a newsletter and returns an observable of the new subscriber.
-* @param {SubscribeNewsletterDto} dto - SubscribeNewsletterDto object containing the email and name of
-* the subscriber.
-* @returns The `subscribeNewsLetter` method returns an `Observable` that emits a `Subscriber` object.
-*/
+   * This function subscribes a new user to a newsletter and returns an observable of the new subscriber.
+   * @param dto - SubscribeNewsletterDto object containing the email and name of
+   * the subscriber.
+   * @returns The `subscribeNewsLetter` method returns an `Observable` that emits a `Subscriber` object.
+   */
   subscribeNewsLetter(dto: SubscribeNewsletterDto): Observable<Subscriber> {
     return this.findOneSubscription(dto.email).pipe(
       switchMap((entity) => {
@@ -105,12 +105,12 @@ private readonly configService: ConfigService<Configs, true>,
   }
 
   /**
-* This function unsubscribes a subscriber from a newsletter by finding their subscription and removing
-* it.
-* @param {SubscribeNewsletterDto} dto - SubscribeNewsletterDto object which contains the email of the
-* subscriber who wants to unsubscribe from the newsletter.
-* @returns The `unSubscribeNewsLetter` method returns an Observable of type `Subscriber`.
-*/
+   * This function unsubscribes a subscriber from a newsletter by finding their subscription and removing
+   * it.
+   * @param dto - SubscribeNewsletterDto object which contains the email of the
+   * subscriber who wants to unsubscribe from the newsletter.
+   * @returns The `unSubscribeNewsLetter` method returns an Observable of type `Subscriber`.
+   */
   unSubscribeNewsLetter(dto: SubscribeNewsletterDto): Observable<Subscriber> {
     return this.findOneSubscription(dto.email).pipe(
       switchMap((subscriber) => {

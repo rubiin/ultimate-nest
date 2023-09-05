@@ -46,13 +46,13 @@ private readonly em: EntityManager,
   ) {}
 
   /**
-* It takes an email and a password, and returns the user if the password is correct
-* @param {boolean} isPasswordLogin - boolean - This is a boolean value that determines whether the
-* @param {string} email - The email address of the user.
-* @param {string} pass - string - The password to be validated
-* user is logging in with a password or not.
-* @returns The user object without the password property.
-*/
+   * It takes an email and a password, and returns the user if the password is correct
+   * @param  isPasswordLogin - boolean - This is a boolean value that determines whether the
+   * @param email - The email address of the user.
+   * @param  pass - string - The password to be validated
+   * user is logging in with a password or not.
+   * @returns The user object without the password property.
+   */
 
   validateUser(isPasswordLogin: boolean, email: string, pass?: string): Observable<any> {
     return from(
@@ -98,12 +98,12 @@ private readonly em: EntityManager,
   }
 
   /**
-* We validate the user, if the user is valid, we generate an access token and a refresh token
-* @param {UserLoginDto} loginDto - UserLoginDto - This is the DTO that we created earlier.
-* @param {boolean} isPasswordLogin - boolean - This is a boolean value that tells the function whether
-* the user is logging in with a password or oauth
-* @returns An observable of type IAuthenticationResponse
-*/
+   * We validate the user, if the user is valid, we generate an access token and a refresh token
+   * @param loginDto - UserLoginDto - This is the DTO that we created earlier.
+   * @param isPasswordLogin - boolean - This is a boolean value that tells the function whether
+   * the user is logging in with a password or oauth
+   * @returns An observable of type IAuthenticationResponse
+   */
 
   login(loginDto: UserLoginDto, isPasswordLogin = false): Observable<AuthenticationResponse> {
     return this.validateUser(isPasswordLogin, loginDto.email, loginDto.password).pipe(
@@ -139,20 +139,20 @@ private readonly em: EntityManager,
   }
 
   /**
-* It deletes all refresh tokens for a given user
-* @param {User} user - User - The user object that you want to logout from.
-* @returns Observable<any>
-*/
+   * It deletes all refresh tokens for a given user
+   * @param user - User - The user object that you want to logout from.
+   * @returns Observable<any>
+   */
   logoutFromAll(user: User): Observable<User> {
     return this.tokenService.deleteRefreshTokenForUser(user);
   }
 
   /**
-* We decode the refresh token, then delete the refresh token from the database
-* @param {User} user - User - The user object that was returned from the login method.
-* @param {string} refreshToken - The refresh token that was sent to the client.
-* @returns Observable<any>
-*/
+   * We decode the refresh token, then delete the refresh token from the database
+   * @param user - The user object that was returned from the login method.
+   * @param refreshToken - The refresh token that was sent to the client.
+   * @returns Observable of type User
+   */
   logout(user: User, refreshToken: string): Observable<User> {
     return from(this.tokenService.decodeRefreshToken(refreshToken)).pipe(
       switchMap((payload) => {
@@ -162,11 +162,10 @@ private readonly em: EntityManager,
   }
 
   /**
-* It creates a new OTP, sends it to the user's email, and returns the OTP
-* @param {SendOtpDto} sendOtp - SendOtpDto
-* @returns OtpLog
-*/
-
+   * It creates a new OTP, sends it to the user's email, and returns the OTP
+   * @param sendOtp - SendOtpDto
+   * @returns Observable of type OtpLog
+   */
   forgotPassword(sendOtp: SendOtpDto): Observable<OtpLog> {
     const { email } = sendOtp;
 
@@ -228,11 +227,11 @@ private readonly em: EntityManager,
   }
 
   /**
-* We are finding the user details from the OTP table using the OTP code and then updating the password
-* of the user in the user table
-* @param {ResetPasswordDto} resetPassword - ResetPasswordDto
-* @returns Observable<any>
-*/
+   * We are finding the user details from the OTP table using the OTP code and then updating the password
+   * of the user in the user table
+   * @param resetPassword - ResetPasswordDto
+   * @returns Observable of type User
+   */
 
   resetPassword(resetPassword: ResetPasswordDto): Observable<User> {
     const { password, otpCode } = resetPassword;
@@ -254,12 +253,12 @@ private readonly em: EntityManager,
   }
 
   /**
-* This function verifies an OTP code and updates the user's verification status if the code is valid
-* and not expired.
-* @param {OtpVerifyDto} otpDto - The `otpDto` parameter is an object of type `OtpVerifyDto` which
-* contains the OTP code that needs to be verified.
-* @returns The `verifyOtp` function returns an Observable of type `User`.
-*/
+   * This function verifies an OTP code and updates the user's verification status if the code is valid
+   * and not expired.
+   * @param otpDto - The `otpDto` parameter is an object of type `OtpVerifyDto` which
+   * contains the OTP code that needs to be verified.
+   * @returns The `verifyOtp` function returns an Observable of type `User`.
+   */
   verifyOtp(otpDto: OtpVerifyDto): Observable<User> {
     const { otpCode } = otpDto;
 
@@ -315,12 +314,12 @@ private readonly em: EntityManager,
   }
 
   /**
-* It takes a user and a DTO, then it checks if the current password is valid, if it is, it updates the
-* password and returns the user
-* @param {ChangePasswordDto} dto - ChangePasswordDto - This is the DTO that we created earlier.
-* @param {User} user - User - The user object that is currently logged in.
-* @returns Observable<User>
-*/
+   * It takes a user and a DTO, then it checks if the current password is valid, if it is, it updates the
+   * password and returns the user
+   * @param dto - ChangePasswordDto - This is the DTO that we created earlier.
+   * @param user - User - The user object that is currently logged in.
+   * @returns Observable of type User
+   */
   changePassword(dto: ChangePasswordDto, user: User): Observable<User> {
     const { password, oldPassword } = dto;
 

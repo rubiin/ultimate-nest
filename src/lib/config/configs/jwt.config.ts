@@ -3,12 +3,12 @@ import Joi from "joi";
 import { JWT_EXPIRY_REGEX } from "@common/constant";
 
 /**
-* NOTE:
-* Expiry can be either number or string
-* A numeric value is interpreted as a seconds count
-* if number, parse to string
-*
-*/
+ * NOTE:
+ * Expiry can be either number or string
+ * A numeric value is interpreted as a seconds count
+ * if number, parse to string
+ *
+ */
 
 export const jwtConfigValidationSchema = {
   JWT_SECRET: Joi.string().required().min(8),

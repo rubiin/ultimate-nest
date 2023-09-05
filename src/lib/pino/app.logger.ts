@@ -3,6 +3,10 @@ import { NestFactory } from "@nestjs/core";
 import { Logger } from "nestjs-pino";
 import { NestPinoModule } from "./pino.module";
 
+/**
+ *  Creates a logger instance
+ * @returns Promise of a Logger instance
+ */
 export async function createLogger(): Promise<Logger> {
   @Module({
     imports: [NestPinoModule],

@@ -10,14 +10,14 @@ import {
 import { PASSWORD_REGEX } from "@common/constant";
 
 /**
-*
-* Rules used:
-* This regex checks that password should contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character
-*
-*
-* Tests at https://regex101.com/r/m6CWm9/1
-*
-*/
+ *
+ * Rules used:
+ * This regex checks that password should contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character
+ *
+ *
+ * Tests at https://regex101.com/r/m6CWm9/1
+ *
+ */
 
 @ValidatorConstraint({ async: true })
 class IsPasswordConstraint implements ValidatorConstraintInterface {

@@ -19,14 +19,14 @@ interface MagicLoginPayload {
 @Injectable()
 export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin") {
 /**
-* It's a PassportStrategy that uses the MagicLoginStrategy  to authenticate users
-* More at
-* https://passportjs.org/docs/strategies/passport-magic-login
-*
-* The callback url should match whats specified in the callbackURL section
-*
-*
-*/
+ * It's a PassportStrategy that uses the MagicLoginStrategy  to authenticate users
+ * More at
+ * https://passportjs.org/docs/strategies/passport-magic-login
+ *
+ * The callback url should match whats specified in the callbackURL section
+ *
+ *
+ */
 
   logger = new Logger(MagicLoginStrategy.name);
 
@@ -69,11 +69,10 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
   }
 
   /**
-*
-* @description Validate the token and return the user
-*
-* @param email
-*/
+   *
+   * Validate the token and return the user
+   * @param email - The email of the user to validate
+   */
 
   async validate(email: string) {
     // Accept the JWT and attempt to validate it using the user service

@@ -13,94 +13,94 @@ import { User } from "@entities";
 import { validationI18nMessage } from "@lib/i18n";
 
 export class SocialDto {
-/**
-* Twitter url of user
-* @example https://twitter.com/rubiin
-*/
+  /**
+   * Twitter url of user
+   * @example https://twitter.com/rubiin
+   */
   @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsUrl()
-twitter?: string;
+  twitter?: string;
 
   /**
-* Facebook url of user
-* @example https://facebook.com/rubiin
-*/
+   * Facebook url of user
+   * @example https://facebook.com/rubiin
+   */
   @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsUrl()
-facebook?: string;
+  facebook?: string;
 
   /**
-* Linkedin url of user
-* @example https://linkedin.com/rubiin
-*/
+   * Linkedin url of user
+   * @example https://linkedin.com/rubiin
+   */
   @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsUrl()
-linkedin?: string;
+  linkedin?: string;
 }
 
 export class CreateUserDto {
-/**
-* Username of user
-* @example rubiin
-*/
+  /**
+   * Username of user
+   * @example rubiin
+   */
 
   @IsUsernameField()
   @IsUnique(() => User, "username")
-username!: string;
+  username!: string;
 
   /**
-* Firstname of user
-* @example John
-*/
+   * Firstname of user
+   * @example John
+   */
 
   @IsStringField({ maxLength: 50 })
-firstName!: string;
+  firstName!: string;
 
   /**
-* Middlename of user
-* @example d
-*/
+   * Middlename of user
+   * @example d
+   */
 
   @IsStringField({ required: false, maxLength: 50 })
-middleName?: string;
+  middleName?: string;
 
   /**
-* Lastname of user
-* @example Doe
-*/
+   * Lastname of user
+   * @example Doe
+   */
 
   @IsStringField({ maxLength: 50 })
-lastName!: string;
+  lastName!: string;
 
   /**
-* Email of user
-* @example someemail@gmail.com
-*/
+   * Email of user
+   * @example someemail@gmail.com
+   */
   @IsUnique(() => User, "email")
   @IsEmailField()
-email!: string;
+  email!: string;
 
   /**
-* Password of user
-* @example SomePassword@123
-*/
+   * Password of user
+   * @example SomePassword@123
+   */
 
   @IsStringField({ minLength: 8, maxLength: 50 })
   @IsPassword({ message: validationI18nMessage("validation.isPassword") })
-password!: string;
+  password!: string;
 
   /**
-* Roles of user
-* @example ["ADMIN"]
-*/
+   * Roles of user
+   * @example ["ADMIN"]
+   */
   @IsEnumField(Roles, { each: true })
-roles!: Roles[];
+  roles!: Roles[];
 
   /**
-* Social handles of user
-* @example { twitter: "https://twitter.com/rubiin", facebook: "https://facebook.com/rubiin", linkedin: "https://linkedin.com/in/rubiin" }
-*/
+   * Social handles of user
+   * @example { twitter: "https://twitter.com/rubiin", facebook: "https://facebook.com/rubiin", linkedin: "https://linkedin.com/in/rubiin" }
+   */
   @ValidateNested()
   @Type(() => SocialDto)
-social?: SocialDto;
+  social?: SocialDto;
 }

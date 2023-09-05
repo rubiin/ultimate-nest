@@ -20,12 +20,11 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
   }
 
   /**
-*
-* @description Validate the token and return the user
-* @param payload string
-* @returns User
-*
-*/
+   *
+   * Validate the token and return the user
+   * @param payload string
+   * @returns The user entity
+   */
 
   async validate(payload: JwtPayload) {
     const { sub: id } = payload;

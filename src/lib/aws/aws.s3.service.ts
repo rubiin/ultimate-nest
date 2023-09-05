@@ -16,9 +16,9 @@ import { Inject, Injectable } from "@nestjs/common";
 import { lookup } from "mime-types";
 
 import type {
-  IAwsS3,
-  IAwsS3MultiPart,
-  IAwsS3PutItemOptions,
+  AwsS3,
+  AwsS3MultiPart,
+  AwsS3PutItemOptions,
 } from "./aws.interface";
 import { AwsModuleOptions } from "./aws.interface";
 import { MODULE_OPTIONS_TOKEN } from "./aws.module";
@@ -49,7 +49,7 @@ export class AwsS3Service {
   /**
    * The function "listBucket" asynchronously retrieves a list of bucket names from an S3 client and
    * returns them as an array of strings.
-   * @returns an array of strings, which are the names of the buckets.
+   * @returns An array of strings, which are the names of the buckets.
    */
   async listBucket(): Promise<string[]> {
     const listBucket = await this.s3Client.send(new ListBucketsCommand({}));
@@ -61,12 +61,12 @@ export class AwsS3Service {
   /**
    * The function `listItemInBucket` retrieves a list of objects in an AWS S3 bucket and maps them to a
    * custom interface.
-   * @param {string} [prefix] - The `prefix` parameter is an optional string that represents a prefix to
+   * @param prefix - The `prefix` parameter is an optional string that represents a prefix to
    * filter the objects in the S3 bucket. It is used to retrieve only the objects whose keys start with
    * the specified prefix. If no prefix is provided, all objects in the bucket will be listed.
    * @returns The function `listItemInBucket` returns an array of objects of type `IAwsS3[]`.
    */
-  async listItemInBucket(prefix?: string): Promise<IAwsS3[]> {
+  async listItemInBucket(prefix?: string): Promise<AwsS3[]> {
     const listItems = await this.s3Client.send(
       new ListObjectsV2Command({
         Bucket: this.bucket,
@@ -96,9 +96,9 @@ export class AwsS3Service {
   /**
    * The function `getItemInBucket` retrieves an item from an S3 bucket using the specified filename and
    * optional path.
-   * @param {string} filename - The filename parameter is a string that represents the name of the file
+   * @param filename - The filename parameter is a string that represents the name of the file
    * you want to retrieve from the bucket.
-   * @param {string} [path] - The `path` parameter is an optional string that represents the directory or
+   * @param path - The `path` parameter is an optional string that represents the directory or
    * subdirectory within the bucket where the file is located. If provided, it will be appended to the
    * filename to form the complete key for retrieving the file from the bucket.
    * @returns the body of the item retrieved from the specified bucket in the AWS S3 storage.
@@ -121,9 +121,9 @@ export class AwsS3Service {
   /**
    * The function generates a unique file name by appending a timestamp, random number, and replacing
    * spaces with hyphens.
-   * @param {string} originalFilename - The `originalFilename` parameter is a string that represents the
+   * @param originalFilename - The `originalFilename` parameter is a string that represents the
    * name of the file that needs to be generated.
-   * @returns a string value.
+   * @returns A string value.
    */
   private generateFileName(originalFilename: string): string {
     const [name, extension] = originalFilename.split(".");
@@ -135,12 +135,12 @@ export class AwsS3Service {
   }
 
   /**
- * The function "getMime" takes a file name as input and returns the corresponding MIME type based
- * on the file's extension.
- * @param {string} fileName - The `fileName` parameter is a string that represents the name of a file,
- * including its extension.
- * @returns a string, which is the MIME type associated with the file extension.
- */
+   * The function "getMime" takes a file name as input and returns the corresponding MIME type based
+   * on the file's extension.
+   * @param fileName - The `fileName` parameter is a string that represents the name of a file,
+   * including its extension.
+   * @returns A string, which is the MIME type associated with the file extension.
+   */
   private getMime(fileName: string): string {
     const extension = fileName
       .slice(fileName.lastIndexOf(".") + 1, fileName.length)
@@ -151,11 +151,11 @@ export class AwsS3Service {
   /**
    * The `putItemInBucket` function uploads a file to an AWS S3 bucket and returns information about the
    * uploaded file.
-   * @param {string} originalFilename - The original filename of the item being uploaded to the S3
+   * @param originalFilename - The original filename of the item being uploaded to the S3
    * bucket.
-   * @param {Uint8Array | Buffer} content - The `content` parameter is the actual content of the file
+   * @param content - The `content` parameter is the actual content of the file
    * that you want to put in the S3 bucket. It can be either a `Uint8Array` or a `Buffer` object.
-   * @param {IAwsS3PutItemOptions} [options] - The `options` parameter is an optional object that can
+   * @param options - The `options` parameter is an optional object that can
    * contain additional configuration options for uploading the item to the S3 bucket. It can include
    * properties such as ACL (Access Control List), CacheControl, ContentDisposition, ContentEncoding,
    * ContentLanguage, Metadata, and StorageClass. These options allow you to
@@ -164,8 +164,8 @@ export class AwsS3Service {
   async putItemInBucket(
     originalFilename: string,
     content: Uint8Array | Buffer,
-    options?: IAwsS3PutItemOptions,
-  ): Promise<IAwsS3> {
+    options?: AwsS3PutItemOptions,
+  ): Promise<AwsS3> {
     const filename = this.generateFileName(originalFilename);
     const { key, mime, path } = this.getOptions(options, filename);
     await this.s3Client.send(
@@ -189,7 +189,7 @@ export class AwsS3Service {
 
   /**
    * The `deleteItemInBucket` function deletes a file with the specified filename from an S3 bucket.
-   * @param {string} filename - The filename parameter is a string that represents the name of the file
+   * @param filename - The filename parameter is a string that represents the name of the file
    * you want to delete from the bucket.
    */
   async deleteItemInBucket(filename: string): Promise<void> {
@@ -203,7 +203,7 @@ export class AwsS3Service {
 
   /**
    * The `deleteItemsInBucket` function deletes multiple items from an S3 bucket using their filenames.
-   * @param {string[]} filenames - The `filenames` parameter is an array of strings that represents the
+   * @param filenames - The `filenames` parameter is an array of strings that represents the
    * names of the files you want to delete from a bucket.
    */
 
@@ -224,7 +224,7 @@ export class AwsS3Service {
 
   /**
    * The `deleteFolder` function deletes a folder and all its contents from an S3 bucket.
-   * @param {string} directory - The `directory` parameter is a string that represents the name or path
+   * @param directory - The `directory` parameter is a string that represents the name or path
    * of the folder you want to delete from an S3 bucket.
    */
   async deleteFolder(directory: string): Promise<void> {
@@ -259,17 +259,17 @@ export class AwsS3Service {
   /**
    * The `createMultiPart` function creates a multipart upload for a file in AWS S3 and returns
    * information about the upload.
-   * @param {string} filename - The filename parameter is a string that represents the name of the file
+   * @param filename - The filename parameter is a string that represents the name of the file
    * that will be uploaded to AWS S3.
-   * @param {IAwsS3PutItemOptions} [options] - The `options` parameter is an optional object that can
+   * @param options - The `options` parameter is an optional object that can
    * contain additional configuration options for the S3 upload. It can have the following properties:
    * @returns The function `createMultiPart` returns a Promise that resolves to an object of type
    * `IAwsS3MultiPart`.
    */
   async createMultiPart(
     filename: string,
-    options?: IAwsS3PutItemOptions,
-  ): Promise<IAwsS3MultiPart> {
+    options?: AwsS3PutItemOptions,
+  ): Promise<AwsS3MultiPart> {
     const { key, mime, path, acl } = this.getOptions(options, filename);
 
     const response = await this.s3Client.send(
@@ -294,13 +294,13 @@ export class AwsS3Service {
   /**
    * The function `getOptions` returns an object containing key, mime, path, and acl based on the
    * provided options and filename.
-   * @param {IAwsS3PutItemOptions} options - An object containing optional parameters for the AWS S3 Put
+   * @param options - An object containing optional parameters for the AWS S3 Put
    * Item operation.
-   * @param {string} filename - The `filename` parameter is a string that represents the name of the
+   * @param filename - The `filename` parameter is a string that represents the name of the
    * file.
-   * @returns an object with the properties `key`, `mime`, `path`, and `acl`.
+   * @returns An object with the properties `key`, `mime`, `path`, and `acl`.
    */
-  private getOptions(options: IAwsS3PutItemOptions, filename: string) {
+  private getOptions(options: AwsS3PutItemOptions, filename: string) {
     let path = options?.path ?? undefined;
     const acl = options?.acl ?? "public-read";
 
@@ -315,18 +315,18 @@ export class AwsS3Service {
   /**
    * The `uploadPart` function uploads a part of a file to an AWS S3 bucket using the AWS SDK for
    * JavaScript.
-   * @param {string} filename - The filename parameter is a string that represents the name of the file
+   * @param filename - The filename parameter is a string that represents the name of the file
    * being uploaded.
-   * @param {Buffer} content - The `content` parameter is a `Buffer` that represents the content of the
+   * @param content - The `content` parameter is a `Buffer` that represents the content of the
    * file being uploaded. It is the actual data that will be uploaded to the S3 bucket.
-   * @param {string} uploadId - The `uploadId` parameter is a unique identifier for the multipart upload.
+   * @param uploadId - The `uploadId` parameter is a unique identifier for the multipart upload.
    * It is obtained when initiating the multipart upload and is used to associate the uploaded parts with
    * the correct upload.
-   * @param {number} partNumber - The `partNumber` parameter represents the number of the part being
+   * @param partNumber - The `partNumber` parameter represents the number of the part being
    * uploaded. In a multipart upload, a large file is divided into smaller parts, and each part is
    * uploaded separately. The `partNumber` is used to identify the order of the parts and ensure they are
    * assembled correctly when the upload is
-   * @param {IAwsS3PutItemOptions} [options] - The `options` parameter is an optional object that
+   * @param options - The `options` parameter is an optional object that
    * contains additional configuration options for the upload. It is of type `IAwsS3PutItemOptions`.
    */
   async uploadPart(
@@ -334,7 +334,7 @@ export class AwsS3Service {
     content: Buffer,
     uploadId: string,
     partNumber: number,
-    options?: IAwsS3PutItemOptions,
+    options?: AwsS3PutItemOptions,
   ): Promise<void> {
     let path: string = options?.path ?? undefined;
 

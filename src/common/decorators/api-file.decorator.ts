@@ -21,11 +21,11 @@ interface ApiFilesOptions extends ApiFileOptions {
 }
 
 /**
-* It's a decorator that uses the Multer FileInterceptor to intercept a file upload and save it to the
-* server
-* @returns A function that returns a function that returns a function.
-* @param options_
-*/
+ * It's a decorator that uses the Multer FileInterceptor to intercept a file upload and save it to the
+ * server
+ * @param options_ - IApiFileOptions - The options for the decorator.
+ * @returns A function that returns a decorator.
+ */
 export const ApiFile = (options_?: ApiFileOptions) => {
   const options: ApiFileOptions = { fieldName: "file", required: false, ...options_ };
 
@@ -48,11 +48,11 @@ export const ApiFile = (options_?: ApiFileOptions) => {
 };
 
 /**
-* It adds the `@UseInterceptors(FilesInterceptor(...))` decorator to the route handler, and adds the
-* `@ApiConsumes("multipart/form-data")` and `@ApiBody({...})` decorators to the route handler
-* @param {ApiFilesOptions} [options_] - IApiFilesOptions - The options for the decorator.
-* @returns A function that returns a decorator.
-*/
+ * It adds the `@UseInterceptors(FilesInterceptor(...))` decorator to the route handler, and adds the
+ * `@ApiConsumes("multipart/form-data")` and `@ApiBody({...})` decorators to the route handler
+ * @param options_ - The options for the decorator.
+ * @returns A function that returns a decorator.
+ */
 export const ApiFiles = (options_?: ApiFilesOptions) => {
   const options: ApiFilesOptions = {
     fieldName: "files",
@@ -85,12 +85,12 @@ export const ApiFiles = (options_?: ApiFilesOptions) => {
 };
 
 /**
-* It takes an array of MulterFields and returns a decorator that will add the appropriate OpenAPI
-* schema to the endpoint
-* @param {(MulterField & { required?: boolean })[]} options - An array of MulterFields.
-* @param {MulterOptions} [localOptions] - MulterOptions - These are the options that are passed to
-* multer.
-*/
+ * It takes an array of MulterFields and returns a decorator that will add the appropriate OpenAPI
+ * schema to the endpoint
+ * @param options - An array of MulterFields.
+ * @param localOptions - These are the options that are passed to
+ * multer.
+ */
 
 export const ApiFileFields = (
   options: (MulterField & { required?: boolean })[],

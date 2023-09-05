@@ -45,12 +45,12 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
   }
 
   /**
-* It takes a key and a value, and if the value is a string and the key is not in the except array, it
-* returns the value after it has been sanitized
-* @param key - The key of the object
-* @param {string} value - The value to be sanitized.
-* @returns The value of the key is being returned.
-*/
+   * It takes a key and a value, and if the value is a string and the key is not in the except array, it
+   * returns the value after it has been sanitized
+   * @param key - The key of the object
+   * @param value - The value to be sanitized.
+   * @returns The value of the key is being returned.
+   */
   transform<T>(key: T, value: string): string {
     if (this.isString(value) && !this.except.includes(key))
       return DOMPurify.sanitize(value.trim());
@@ -59,13 +59,13 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
   }
 
   /**
-* "If the value is a string or a String object, return true, otherwise return false."
-*
-* The above function is a type guard. It narrows the type of the value parameter from unknown to
-* string
-* @param {unknown} value - The value to check.
-* @returns A boolean value.
-*/
+   * "If the value is a string or a String object, return true, otherwise return false."
+   *
+   * The above function is a type guard. It narrows the type of the value parameter from unknown to
+   * string
+   * @param value - The value to check.
+   * @returns A boolean value.
+   */
   isString(value: unknown): value is string {
     return typeof value === "string" || value instanceof String;
   }

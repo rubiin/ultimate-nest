@@ -1,7 +1,6 @@
 import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
 import { Global, Logger, Module } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { NestConfigModule } from "@lib/config/config.module";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 const logger = new Logger("RabbitMQ");
 
@@ -9,7 +8,8 @@ const logger = new Logger("RabbitMQ");
 @Module({
   imports: [
     RabbitMQModule.forRootAsync(RabbitMQModule, {
-      imports: [NestConfigModule],
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({
         exchanges: [
           {
@@ -32,7 +32,6 @@ const logger = new Logger("RabbitMQ");
           },
         },
       }),
-      inject: [ConfigService],
     }),
   ],
   exports: [RabbitMQModule],

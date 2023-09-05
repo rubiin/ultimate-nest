@@ -2,7 +2,9 @@ import type { ExecutionContext } from "@nestjs/common";
 import { createParamDecorator } from "@nestjs/common";
 import type { User } from "@entities";
 
-/* A decorator that will be used to get the user from the request. */
+/*
+The `LoggedInUser` decorator is used to get the user object from the request object.
+*/
 export const LoggedInUser = createParamDecorator((data: keyof User, context: ExecutionContext) => {
   let request = context.switchToHttp().getRequest();
 
