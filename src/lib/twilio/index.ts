@@ -1,20 +1,18 @@
 import { Module } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TwilioModule } from "./twilio.module";
-
-import { NestConfigModule } from "@lib/config/config.module";
 
 @Module({
   imports: [
     TwilioModule.forRootAsync({
-      imports: [NestConfigModule],
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({
         isGlobal: true,
         accountSid: configService.get("twilio.accountSid", { infer: true }),
         authToken: configService.get("twilio.authToken", { infer: true }),
         from: configService.get("twilio.from", { infer: true }),
       }),
-      inject: [ConfigService],
     }),
   ],
   exports: [TwilioModule],

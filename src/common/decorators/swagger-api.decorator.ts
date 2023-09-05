@@ -11,13 +11,6 @@ interface SwaggerResponseOptions<T, K> {
   response?: Type<K>;
 }
 
-/**
-* It takes in a string for the operation summary, a string for the not found response, a string for
-* the bad request response, and an array of strings for the parameters, and returns a function that
-* applies the appropriate decorators to the class method
-* @param  - operation - The operation name
-* @returns A function that takes a class and returns a class.
-*/
 export const SwaggerResponse = ({
   operation,
   notFound,

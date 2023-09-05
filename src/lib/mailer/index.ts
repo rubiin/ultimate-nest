@@ -1,15 +1,15 @@
 import { Global, Module } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MailModule } from "./mailer.module";
 
-import { NestConfigModule } from "@lib/config/config.module";
 import { TemplateEngine } from "@common/@types";
 
 @Global()
 @Module({
   imports: [
     MailModule.forRootAsync({
-      imports: [NestConfigModule],
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({
         host: configService.get("mail.host", { infer: true }),
         port: configService.get("mail.port", { infer: true }),
@@ -26,7 +26,6 @@ import { TemplateEngine } from "@common/@types";
           },
         },
       }),
-      inject: [ConfigService],
     }),
   ],
   exports: [MailModule],

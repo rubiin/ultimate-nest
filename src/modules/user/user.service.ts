@@ -41,12 +41,12 @@ private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   /**
-* The function `findAll` retrieves a paginated list of users based on the provided cursor pagination
-* DTO.
-* @param {CursorPaginationDto} dto - CursorPaginationDto - A data transfer object that contains the
-* pagination parameters for the query.
-* @returns The method is returning an Observable of type PaginationResponse<User>.
-*/
+   * The function `findAll` retrieves a paginated list of users based on the provided cursor pagination
+   * DTO.
+   * @param dto - CursorPaginationDto - A data transfer object that contains the
+   * pagination parameters for the query.
+   * @returns The method is returning an Observable of type PaginationResponse<User>.
+   */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<User>> {
     const qb = this.userRepository.createQueryBuilder(this.queryName);
 
@@ -66,11 +66,11 @@ private readonly cloudinaryService: CloudinaryService,
   }
 
   /**
-* It returns an observable of a user entity, which is either the user entity that was passed in, or
-* the user entity that was found in the database
-* @param {string} index - string - the index of the user you want to get
-* @returns Observable<User>
-*/
+   * It returns an observable of a user entity, which is either the user entity that was passed in, or
+   * the user entity that was found in the database
+   * @param index - string - the index of the user you want to get
+   * @returns Observable<User>
+   */
   findOne(index: string): Observable<User> {
     return from(
       this.userRepository.findOne({
@@ -95,10 +95,10 @@ private readonly cloudinaryService: CloudinaryService,
   }
 
   /**
-* It creates a user and sends a welcome email
-* @param dto - CreateWithFile<CreateUserDto>
-* @returns The user object
-*/
+   * It creates a user and sends a welcome email
+   * @param dto - CreateWithFile<CreateUserDto>
+   * @returns The user object
+   */
   create(dto: DtoWithFile<CreateUserDto>): Observable<User> {
     const { files, ...rest } = dto;
     const user = this.userRepository.create(rest);
@@ -133,15 +133,15 @@ private readonly cloudinaryService: CloudinaryService,
   }
 
   /**
-* "Get a user, assign the DTO to it, and then flush the changes to the database."
-*
-* The first thing we do is get the user. We do this by calling the `findOne` function we created
-* earlier
-* @param {string} index - string - the index of the user to edit
-* @param {EditUserDto} dto - EditUserDto
-* @param {IFile} image - IFile
-* @returns Observable<User>
-*/
+   * "Get a user, assign the DTO to it, and then flush the changes to the database."
+   *
+   * The first thing we do is get the user. We do this by calling the `findOne` function we created
+   * earlier
+   * @param index - string - the index of the user to edit
+   * @param dto - EditUserDto
+   * @param image - IFile
+   * @returns Observable<User>
+   */
   update(index: string, dto: EditUserDto, image?: IFile): Observable<User> {
     let uploadImage$: Observable<string>;
 
@@ -174,12 +174,12 @@ private readonly cloudinaryService: CloudinaryService,
   }
 
   /**
-* "Get the user, then delete it."
-*
-* The first thing we do is get the user. We do this by calling the `findOne` function we just created
-* @param {string} index - string - The index of the user to delete.
-* @returns Observable<User>
-*/
+   * "Get the user, then delete it."
+   *
+   * The first thing we do is get the user. We do this by calling the `findOne` function we just created
+   * @param index - string - The index of the user to delete.
+   * @returns Observable<User>
+   */
   remove(index: string): Observable<User> {
     return this.findOne(index).pipe(
       switchMap((user) => {
@@ -189,12 +189,12 @@ private readonly cloudinaryService: CloudinaryService,
   }
 
   /**
-* This function generates a unique username based on a given name and a random ID, and checks if it
-* already exists in the database before returning it.
-* @param {string} name - The `name` parameter is a string representing the name of the user for whom
-* a username is being generated.
-* @returns An Observable of type string is being returned.
-*/
+   * This function generates a unique username based on a given name and a random ID, and checks if it
+   * already exists in the database before returning it.
+   * @param name - The `name` parameter is a string representing the name of the user for whom
+   * a username is being generated.
+   * @returns An Observable of type string is being returned.
+   */
   generateUsername(name: string): Observable<string> {
     const pointSlug = slugify(`${name} ${createId().slice(0, 6)}`);
 

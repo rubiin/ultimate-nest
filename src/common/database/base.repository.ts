@@ -36,31 +36,30 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   private readonly encoding: BufferEncoding = "base64";
 
   /**
-* The exists function checks if there are any records that match the given filter query.
-* @param where - The `where` parameter is a filter query that specifies the conditions for the
-* existence check. It is used to filter the records in the database and determine if any records match
-* the specified conditions.
-* @returns The `exists` method is returning an `Observable<boolean>`.
-*/
+   * The exists function checks if there are any records that match the given filter query.
+   * @param where - The `where` parameter is a filter query that specifies the conditions for the
+   * existence check. It is used to filter the records in the database and determine if any records match
+   * the specified conditions.
+   * @returns The method is returning an Observable of type boolean.
+   */
   exists(where: FilterQuery<T>): Observable<boolean> {
     return from(this.qb().where(where).getCount()).pipe(map(count => count > 0));
   }
 
   /**
-* The function `getEntityName()` returns the entity name of type `EntityName<T>`.
-* @returns The method `getEntityName()` is returning an object of type `EntityName<T>`.
-*/
+   * The function `getEntityName()` returns the entity name of type `EntityName<T>`.
+   * @returns The entity name of type `EntityName<T>`.
+   */
   getEntityName(): EntityName<T> {
     return this.entityName;
   }
 
   /**
-*
-*
-* @param {T} entity
-* @return {*}  {EntityManager}
-* @memberof BaseRepositroy
-*/
+   *
+   *
+   * @param entity - The entity to be removed
+   * @returns The entityManager
+   */
   softRemove(entity: T): EntityManager {
     entity.deletedAt = new Date();
     entity.isDeleted = true;
@@ -70,12 +69,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-*  soft remove
-*
-* @param {T} entity
-* @return {*}  {Promise<T>}
-* @memberof BaseRepositroy
-*/
+   *  soft remove
+   * @param entity - The entity to be removed
+   * @returns observable of the removed entity
+   */
   softRemoveAndFlush(entity: T): Observable<T> {
     entity.deletedAt = new Date();
     entity.isDeleted = true;
@@ -84,12 +81,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-* Replace the return value of {@link EntityRepository.findAndCount} with an
-* object.
-* @param where
-* @param options
-* @returns
-*/
+   * Replace the return value of {@link EntityRepository.findAndCount} with an
+   * object.
+   * @param where - FilterQuery<T>
+   * @param options - FindOptions<T, Populate>
+   * @returns An object containing the total number of entities and the entities
+   */
   findAndPaginate<Populate extends string = never>(
     where: FilterQuery<T>,
     options?: FindOptions<T, Populate>,
@@ -100,10 +97,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-* Returns the removed entity rather than `this`.
-* @param entity
-* @returns
-*/
+   * Returns the removed entity rather than `this`.
+   * @param entity - The entity to be removed
+   * @returns The removed entity
+   */
   delete(entity: T): T {
     this.em.remove(entity);
 
@@ -111,11 +108,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-* It finds an entity by the given `where` clause, and then updates it with the given `update` object
-* @param where - FilterQuery<T>
-* @param update - Partial<EntityDTO<Loaded<T>>>
-* @returns The entity that was updated
-*/
+   * It finds an entity by the given `where` clause, and then updates it with the given `update` object
+   * @param where - FilterQuery<T>
+   * @param update - Partial<EntityDTO<Loaded<T>>>
+   * @returns The entity that was updated
+   */
   findAndUpdate(where: FilterQuery<T>, update: EntityData<T>): Observable<T> {
     return from(this.findOne(where)).pipe(
       switchMap((entity) => {
@@ -137,10 +134,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-* It finds an entity by the given `where` clause, and if it exists, it deletes it
-* @param where - FilterQuery<T>
-* @returns The entity that was deleted
-*/
+   * It finds an entity by the given `where` clause, and if it exists, it deletes it
+   * @param where - FilterQuery<T>
+   * @returns The entity that was deleted
+   */
   findAndDelete(where: FilterQuery<T>): Observable<T> {
     return from(this.findOne(where)).pipe(
       switchMap((entity) => {
@@ -162,10 +159,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-* It finds an entity by the given `where` clause, and if it exists, it soft deletes it
-* @param where - FilterQuery<T>
-* @returns The entity that was soft deleted.
-*/
+   * It finds an entity by the given `where` clause, and if it exists, it soft deletes it
+   * @param where - FilterQuery<T>
+   * @returns The entity that was soft deleted.
+   */
   findAndSoftDelete(where: FilterQuery<T>): Observable<T> {
     return from(this.findOne(where)).pipe(
       switchMap((entity) => {
@@ -186,8 +183,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-* Gets the where clause filter logic for the query builder pagination
-*/
+   * Gets the where clause filter logic for the query builder pagination
+   * @param cursor - The cursor to use for the pagination
+   * @param decoded - The decoded cursor
+   * @param order - The order to use for the pagination
+   * @returns The where clause filter logic
+   */
   private getFilters<T>(
     cursor: keyof T,
     decoded: string | number | Date,
@@ -201,8 +202,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-* Takes a base64 cursor and returns the string or number value
-*/
+   * Takes a base64 cursor and returns the string or number value
+   * @param cursor - The base64 cursor
+   * @param cursorType - The type of the cursor
+   * @returns The decoded cursor
+   */
   decodeCursor(
     cursor: string,
 cursorType: CursorType = CursorType.STRING,
@@ -233,9 +237,10 @@ cursorType: CursorType = CursorType.STRING,
   }
 
   /**
-* Takes a date, string or number and returns the base64
-* representation of it
-*/
+   * Takes a date, string or number and returns the base64 representation of it
+   * @param value - The value to encode
+   * @returns The base64 encoded value
+   */
   encodeCursor(value: Date | string | number): string {
     let string = value.toString();
 
@@ -246,8 +251,11 @@ cursorType: CursorType = CursorType.STRING,
   }
 
   /**
-* Makes the order by query for MikroORM orderBy method.
-*/
+   * Makes the order by query for MikroORM orderBy method.
+   * @param cursor - The cursor to use for the pagination
+   * @param order - The order to use for the pagination
+   * @returns The order by query
+   */
   private getOrderBy<T>(
     cursor: keyof T,
     order: QueryOrder,
@@ -258,12 +266,12 @@ cursorType: CursorType = CursorType.STRING,
   }
 
   /**
-* This is a TypeScript function that performs offset pagination on a query builder and returns an
-* observable of the paginated results.
-* @param dto - An object containing two properties:
-* @returns An Observable of OffsetPagination, which contains the results of a query with pagination
-* options applied.
-*/
+   * This is a TypeScript function that performs offset pagination on a query builder and returns an
+   * observable of the paginated results.
+   * @param dto - An object containing two properties:
+   * @returns An Observable of OffsetPagination, which contains the results of a query with pagination
+   * options applied.
+   */
   qbOffsetPagination<T extends Dictionary>(
     dto: QBOffsetPaginationOptions<T>,
   ): Observable<OffsetPaginationResponse<T>> {
@@ -330,8 +338,10 @@ cursorType: CursorType = CursorType.STRING,
   }
 
   /**
-* Takes a query builder and returns the entities paginated using cursor pagination
-*/
+   * Takes a query builder and returns the entities paginated using cursor pagination
+   * @param dto - An object containing two properties
+   * @returns An Observable of CursorPaginationResponse, which contains the results of a query with
+   */
   async qbCursorPagination<T extends Dictionary>(
     dto: QBCursorPaginationOptions<T>,
   ): Promise<CursorPaginationResponse<T>> {
@@ -420,9 +430,6 @@ cursorType: CursorType = CursorType.STRING,
     });
   }
 
-  /**
-* Takes an entity array and returns the paginated type of that entity array
-*/
   paginateCursor<T>({
     instances,
 currentCount,
@@ -454,9 +461,17 @@ search,
   }
 
   /**
-* Takes an entity repository and a FilterQuery and returns the paginated
-* entities
-*/
+   * Takes an entity repository and a FilterQuery and returns the paginated
+   * entities
+   * @param cursor - The cursor to use for the pagination
+   * @param first - The number of entities to return
+   * @param order - The order to use for the pagination
+   * @param repo - The entity repository
+   * @param where - The where clause to use for the pagination
+   * @param after - The cursor to use for the pagination
+   * @param afterCursor - The type of the cursor
+   * @returns The paginated entities
+   */
   async findAndCountPagination<T extends Dictionary>(
     cursor: keyof T,
     first: number,

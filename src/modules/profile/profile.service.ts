@@ -18,14 +18,14 @@ private readonly em: EntityManager,
   ) {}
 
   /**
-* "Get a user by their username, and populate the specified fields."
-*
-* The first parameter is the username, which is a string. The second parameter is an array of fields
-* to populate
-* @param {string} username - string - The username of the user to get.
-* @param {AutoPath<User, keyof User>[]} populate - AutoPath<User, keyof User>[] = []
-* @returns Observable<User>
-*/
+   * "Get a user by their username, and populate the specified fields."
+   *
+   * The first parameter is the username, which is a string. The second parameter is an array of fields
+   * to populate
+   * @param username - string - The username of the user to get.
+   * @param populate - AutoPath<User, keyof User>[] = []
+   * @returns Observable<User>
+   */
   getProfileByUsername(
     username: string,
 populate: AutoPath<User, keyof User>[] = [],
@@ -64,15 +64,15 @@ populate: AutoPath<User, keyof User>[] = [],
   }
 
   /**
-* It takes a logged in user and a username to follow, and returns an observable of the profile data
-* of the user that was followed
-* @param {User} loggedInUser - User - The user that is currently logged in.
-* @param {string} usernameToFollow - The username of the user to follow.
-* @returns A profile object with the following properties:
-*    following: true,
-*    avatar: followingUser.avatar,
-*    username: followingUser.username
-*/
+   * It takes a logged in user and a username to follow, and returns an observable of the profile data
+   * of the user that was followed
+   * @param loggedInUser - User - The user that is currently logged in.
+   * @param usernameToFollow - The username of the user to follow.
+   * @returns A profile object with the following properties:
+   *    following: true,
+   *    avatar: followingUser.avatar,
+   *    username: followingUser.username
+   */
   follow(loggedInUser: User, usernameToFollow: string): Observable<ProfileData> {
     if (!usernameToFollow) {
       return throwError(
@@ -102,14 +102,11 @@ populate: AutoPath<User, keyof User>[] = [],
   }
 
   /**
-* It removes the logged in user from the followers of the user with the given username
-* @param {User} loggedInUser - User - The user who is logged in and is trying to follow another user.
-* @param {string} username - The username of the user to follow.
-* @returns A profile object with the following properties:
-* - following: boolean
-* - avatar: string
-* - username: string
-*/
+   * It removes the logged in user from the followers of the user with the given username
+   * @param loggedInUser - User - The user who is logged in and is trying to follow another user.
+   * @param username - The username of the user to follow.
+   * @returns A profile object
+   */
   unFollow(loggedInUser: User, username: string): Observable<ProfileData> {
     if (!username) {
       return throwError(

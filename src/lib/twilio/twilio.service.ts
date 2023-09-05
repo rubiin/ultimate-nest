@@ -20,11 +20,11 @@ private readonly options: TwilioModuleOptions,
   ) {}
 
   /**
-* It takes in an options object, creates a Twilio client, and returns an observable of the message
-* instance
-* @param {MessageListInstanceCreateOptions} options - MessageListInstanceCreateOptions
-* @returns Observable<MessageInstance>
-*/
+   * It takes in an options object, creates a Twilio client, and returns an observable of the message
+   * instance
+   * @param options - MessageListInstanceCreateOptions
+   * @returns Observable<MessageInstance>
+   */
 
   sendSms(
     options: MessageListInstanceCreateOptions & { prefix: string },

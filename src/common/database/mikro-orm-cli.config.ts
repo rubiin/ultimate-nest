@@ -9,14 +9,12 @@ import { Logger, NotFoundException } from "@nestjs/common";
 import { BaseRepository } from "./base.repository";
 
 /**
-*
-* `MikroOrmConfig` is a configuration object for `MikroORM` that is used to
-* This is required to run mikro-orm cli
-*
-* @see https://mikro-orm.io/docs/configuration
-* @see https://mikro-orm.io/docs/cli
-*
-*/
+ *
+ *`MikroOrmConfig` is a configuration object for `MikroORM` that is used to
+ *This is required to run mikro-orm cli
+ * @see https://mikro-orm.io/docs/configuration
+ * @see https://mikro-orm.io/docs/cli
+ */
 
 const logger = new Logger("MikroORM");
 

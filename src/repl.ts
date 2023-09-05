@@ -7,6 +7,9 @@ import { AppModule } from "./app.module";
 
 const logger = new Logger("Repl");
 
+/**
+ *  Bootstrap the application
+ */
 async function bootstrap() {
   const replServer = await repl(AppModule);
 

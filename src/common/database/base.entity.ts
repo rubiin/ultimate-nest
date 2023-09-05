@@ -5,8 +5,8 @@ import { ApiHideProperty } from "@nestjs/swagger";
 import { HelperService } from "@common/helpers";
 
 /**
-* Base entity class for mikroorm models, that all other entities of the same type should extend.
-*/
+ * Base entity class for mikroorm models, that all other entities of the same type should extend.
+ */
 
 export abstract class BaseEntity {
   @ApiHideProperty()
@@ -14,38 +14,38 @@ export abstract class BaseEntity {
 id!: number;
 
   /**
-*  The unique id of the entity
-*/
+   *  The unique id of the entity
+   */
   @Property({ index: true })
 idx?: string = randomUUID();
 
   /**
-*  To enable or disable the entity
-*/
+   *  To enable or disable the entity
+   */
   @Property()
 isActive? = true;
 
   /**
-*  Marked true when entity is soft deleted
-*/
+   *  Marked true when entity is soft deleted
+   */
   @Property({ hidden: true })
 isDeleted? = false;
 
   /**
-*  The date that the entity was soft-deleted. Nullable because it's not set until the entity is soft-deleted.
-*/
+   *  The date that the entity was soft-deleted. Nullable because it's not set until the entity is soft-deleted.
+   */
   @Property()
 deletedAt?: Date | null;
 
   /**
-*  The date that the entity was created
-*/
+   *  The date that the entity was created
+   */
   @Property()
 createdAt? = HelperService.getTimeInUtc(new Date());
 
   /**
-*  The date that the entity was last updated
-*/
+   *  The date that the entity was last updated
+   */
   @Property({
     onUpdate: () => HelperService.getTimeInUtc(new Date()),
     hidden: true,

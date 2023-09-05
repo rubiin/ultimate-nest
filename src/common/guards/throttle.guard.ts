@@ -7,7 +7,7 @@ import { THROTTLE_LIMIT_RESPONSE } from "@common/constant";
 export class CustomThrottlerGuard extends ThrottlerGuard {
   protected errorMessage = THROTTLE_LIMIT_RESPONSE;
 
-  protected getTracker(request: Request): string {
-    return request.ips.length > 0 ? request.ips[0] : request.ip; // individualize IP extraction to meet your own needs
+  protected async getTracker(request: Request): Promise<string> {
+    return request.ips.length > 0 ? request.ips[0] : request.ip;
   }
 }

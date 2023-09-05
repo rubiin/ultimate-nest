@@ -20,12 +20,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   /**
-*
-* @description Validate the token and return the user
-* @param payload string
-* @returns User
-*
-*/
+   *
+   * Validate the token and return the user
+   * @param payload string
+   * @returns The user object
+   */
 
   async validate(payload: JwtPayload) {
     const { sub: id } = payload;

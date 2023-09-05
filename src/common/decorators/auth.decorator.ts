@@ -11,11 +11,10 @@ interface AuthGuard {
 }
 
 /**
-* It's a decorator that uses the JwtAuthGuard and PoliciesGuard guards, and returns an unauthorized
-* response if the user is not authenticated
-* @returns A function that returns a function
-*
-*/
+ * It's a decorator that uses the JwtAuthGuard and PoliciesGuard guards, and returns an unauthorized
+ * response if the user is not authenticated
+ * @returns A function that returns a function
+ */
 
 export const Auth = (options_?: AuthGuard) => {
   const options: AuthGuard = {

@@ -91,10 +91,10 @@ private readonly options: MailModuleOptions,
   }
 
   /**
-* It takes a mailOptions object, renders the template, and sends the email
-* @param {MailOptions} mailOptions - IMailOptions
-* @returns A promise that resolves to a boolean.
-*/
+   * It takes a mailOptions object, renders the template, and sends the email
+   * @param mailOptions - IMailOptions
+   * @returns A promise that resolves to a boolean.
+   */
   sendMail(mailOptions: MailOptions) {
     const templatePath = resolve("}");
 

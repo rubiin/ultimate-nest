@@ -9,8 +9,8 @@ import type { User } from "@entities";
 import type { BaseEntity } from "@common/database";
 
 /**
-* common interface that enforces common methods for controller and service
-*/
+ * common interface that enforces common methods for controller and service
+ */
 export interface Crud<
 Entity extends BaseEntity,
 PaginationRequest extends TPaginationRequest,

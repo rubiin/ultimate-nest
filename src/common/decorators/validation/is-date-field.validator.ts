@@ -3,6 +3,12 @@ import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional } from "cl
 import type { DateFieldOptions } from "@common/@types";
 import { validationI18nMessage } from "@lib/i18n";
 
+/**
+ * It's a decorator that validates that the field is an date
+ * @param options_ - DateFieldOptions
+ * @returns A decorator function that takes in a target, propertyKey, and descriptor.
+ */
+
 export const IsDateField = (options_?: DateFieldOptions) => {
   const options: DateFieldOptions = {
     each: false,

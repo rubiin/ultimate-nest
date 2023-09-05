@@ -6,38 +6,38 @@ import type { OffsetPaginationDto } from "@common/dtos/offset-pagination.dto";
 
 export class OffsetMeta {
 /**
-* @example 10
-*/
+ * @example 10
+ */
   @ApiProperty()
   readonly page: number;
 
   /**
-* @example 50
-*/
+   * @example 50
+   */
   @ApiProperty()
   readonly limit: number;
 
   /**
-* @example 20
-*/
+   * @example 20
+   */
   @ApiProperty()
   readonly itemCount: number;
 
   /**
-* @example 100
-*/
+   * @example 100
+   */
   @ApiProperty()
   readonly pageCount: number;
 
   /**
-* @example true
-*/
+   * @example true
+   */
   @ApiProperty()
   readonly hasPreviousPage: boolean;
 
   /**
-* @example true
-*/
+   * @example true
+   */
   @ApiProperty()
   readonly hasNextPage: boolean;
 

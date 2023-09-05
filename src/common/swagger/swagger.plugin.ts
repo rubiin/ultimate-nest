@@ -1,6 +1,7 @@
 /**
  * The `CaseInsensitiveFilterPlugin` function returns an object with a `fn` property that contains an
  * `opsFilter` method, which filters an array of tagged operations based on a case-insensitive phrase.
+ * @returns An object with a `fn` property that contains an `opsFilter` method.
  */
 const CaseInsensitiveFilterPlugin = () => {
   return {

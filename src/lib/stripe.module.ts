@@ -1,8 +1,7 @@
 import { StripeModule } from "@golevelup/nestjs-stripe";
 import { Global, Logger, Module } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { SkipThrottle } from "@nestjs/throttler";
-import { NestConfigModule } from "@lib/config/config.module";
 
 const logger = new Logger("Stripe");
 
@@ -10,7 +9,8 @@ const logger = new Logger("Stripe");
 @Module({
   imports: [
     StripeModule.forRootAsync(StripeModule, {
-      imports: [NestConfigModule],
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({
         apiKey: configService.get("stripe.apiKey", { infer: true }),
         logger,
@@ -22,7 +22,6 @@ const logger = new Logger("Stripe");
         },
         decorators: [SkipThrottle()],
       }),
-      inject: [ConfigService],
     }),
   ],
   exports: [StripeModule],

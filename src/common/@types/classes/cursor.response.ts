@@ -4,26 +4,26 @@ import type { PaginationAbstractResponse } from "../interfaces";
 
 export class CursorMeta {
 /**
-* @example AdVxY2F0ZWdvcnlfaWQ9MjMx
-*/
+ * @example AdVxY2F0ZWdvcnlfaWQ9MjMx
+ */
   @ApiProperty()
 nextCursor: string;
 
   /**
-* @example false
-*/
+   * @example false
+   */
   @ApiProperty()
 hasNextPage: boolean;
 
   /**
-* @example true
-*/
+   * @example true
+   */
   @ApiProperty()
 hasPreviousPage: boolean;
 
   /**
-* @example "lorem ipsum"
-*/
+   * @example "lorem ipsum"
+   */
   @ApiProperty()
 search?: string;
 }

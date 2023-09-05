@@ -33,12 +33,12 @@ private readonly categoryRepository: BaseRepository<Category>,
   ) {}
 
   /**
-* It returns an observable of a pagination object, which is created from the results of a query to the
-* database
-* offset.
-* @returns An observable of a pagination object.
-* @param dto
-*/
+   * It returns an observable of a pagination object, which is created from the results of a query to the
+   * database
+   * offset.
+   * @param dto - this is the DTO that we created earlier.
+   * @returns An observable of a pagination object.
+   */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<Post>> {
     const qb = this.postRepository.createQueryBuilder(this.queryName);
 
@@ -85,11 +85,11 @@ private readonly categoryRepository: BaseRepository<Category>,
   }
 
   /**
-* It creates a new post, saves it to the database, and returns it
-* @param {CreatePostDto} dto - CreatePostDto - this is the DTO that we created earlier.
-* @param {User} author - User - this is the user that is currently logged in.
-* @returns The post object
-*/
+   * It creates a new post, saves it to the database, and returns it
+   * @param dto - CreatePostDto - this is the DTO that we created earlier.
+   * @param author - User - this is the user that is currently logged in.
+   * @returns The post object
+   */
   create(dto: CreatePostDto, author: User): Observable<Post> {
     return zip(
       this.tagRepository.find({
@@ -113,12 +113,12 @@ private readonly categoryRepository: BaseRepository<Category>,
   }
 
   /**
-* It gets a post by its slug, assigns the new values to it, and then flushes the changes to the
-* database
-* @param {string} slug - string - the slug of the post to edit
-* @param {EditPostDto} dto - EditPostDto
-* @returns Observable<Post>
-*/
+   * It gets a post by its slug, assigns the new values to it, and then flushes the changes to the
+   * database
+   * @param slug - string - the slug of the post to edit
+   * @param dto - EditPostDto
+   * @returns Observable<Post>
+   */
   update(slug: string, dto: EditPostDto): Observable<Post> {
     return this.findOne(slug).pipe(
       switchMap((post) => {
@@ -146,11 +146,10 @@ private readonly categoryRepository: BaseRepository<Category>,
   }
 
   /**
-* "Get the post by slug, then delete it and return the deleted post."
-*
-* @param {string} slug - string - The slug of the post to delete.
-* @returns Observable<Post>
-*/
+   * "Get the post by slug, then delete it and return the deleted post."
+   * @param slug - string - The slug of the post to delete.
+   * @returns Observable<Post>
+   */
   remove(slug: string): Observable<Post> {
     return this.findOne(slug).pipe(
       switchMap((post) => {
@@ -160,13 +159,12 @@ private readonly categoryRepository: BaseRepository<Category>,
   }
 
   /**
-* "Find the post and user, add the post to the user's favorites, and increment the post's favorites
-* count."
-*
-* @param {number} userId - number - The id of the user who favorite the post.
-* @param {string} slug - The slug of the post to be favorited.
-* @returns A post object
-*/
+   * "Find the post and user, add the post to the user's favorites, and increment the post's favorites
+   * count."
+   * @param userId - number - The id of the user who favorite the post.
+   * @param slug - The slug of the post to be favorited.
+   * @returns A post object
+   */
   favorite(userId: number, slug: string): Observable<Post> {
     const post$ = from(this.postRepository.findOneOrFail({ idx: slug }));
     const user$ = from(
@@ -194,13 +192,13 @@ private readonly categoryRepository: BaseRepository<Category>,
   }
 
   /**
-* It finds a post and a user, checks if the user has favorited the post, if so, it removes the post
-* from the user's favorites and decrements the post's favorites count, then it saves the changes to
-* the database and returns the post
-* @param {number} userId - number - The id of the user who favorite the post.
-* @param {string} slug - The slug of the post to be favorited.
-* @returns A post object
-*/
+   * It finds a post and a user, checks if the user has favorited the post, if so, it removes the post
+   * from the user's favorites and decrements the post's favorites count, then it saves the changes to
+   * the database and returns the post
+   * @param userId - number - The id of the user who favorite the post.
+   * @param slug - The slug of the post to be favorited.
+   * @returns A post object
+   */
   unFavorite(userId: number, slug: string): Observable<Post> {
     const post$ = from(
       this.postRepository.findOneOrFail({
@@ -232,10 +230,10 @@ private readonly categoryRepository: BaseRepository<Category>,
   }
 
   /**
-* It finds a post by slug, and then returns the comments of that post
-* @param {string} slug - string - The slug of the post to find comments for.
-* @returns An array of comments
-*/
+   * It finds a post by slug, and then returns the comments of that post
+   * @param slug - string - The slug of the post to find comments for.
+   * @returns An array of comments
+   */
   findComments(slug: string): Observable<Comment[]> {
     return from(
       this.postRepository.findOne(
@@ -251,12 +249,12 @@ private readonly categoryRepository: BaseRepository<Category>,
   }
 
   /**
-* It takes a userId, a post slug, and a DTO, and returns an observable of a post
-* @param {number} userId - number,
-* @param {string} slug - string - the slug of the post to add the comment to
-* @param {CreateCommentDto} dto - CreateCommentDto
-* @returns Post
-*/
+   * It takes a userId, a post slug, and a DTO, and returns an observable of a post
+   * @param userId - number,
+   * @param slug - string - the slug of the post to add the comment to
+   * @param dto - CreateCommentDto
+   * @returns Post
+   */
   addComment(userId: number, slug: string, dto: CreateCommentDto): Observable<Post> {
     const post$ = this.findOne(slug);
     const user$ = from(this.userRepository.findOneOrFail(userId));
@@ -273,13 +271,13 @@ private readonly categoryRepository: BaseRepository<Category>,
   }
 
   /**
-* This function edits a comment on a post using data from a DTO and returns the updated post.
-* @param {string} slug - A string representing the slug of the post to which the comment belongs.
-* @param {string} commentIndex - commentIndex is a string parameter that represents the unique
-* @param {CreateCommentDto} commentData - commentData is an object of type CreateCommentDto
-* @returns The `editComment` method is returning an Observable that emits the updated post data after
-* editing the comment specified by `commentIndex` in the post specified by `slug`.
-*/
+   * This function edits a comment on a post using data from a DTO and returns the updated post.
+   * @param slug - A string representing the slug of the post to which the comment belongs.
+   * @param commentIndex - commentIndex is a string parameter that represents the unique
+   * @param commentData - commentData is an object of type CreateCommentDto
+   * @returns The `editComment` method is returning an Observable that emits the updated post data after
+   * editing the comment specified by `commentIndex` in the post specified by `slug`.
+   */
   editComment(slug: string, commentIndex: string, commentData: CreateCommentDto) {
     return this.findOne(slug, ["comments"]).pipe(
       switchMap((_post) => {
@@ -295,11 +293,11 @@ private readonly categoryRepository: BaseRepository<Category>,
   }
 
   /**
-* It finds a post and a comment, removes the comment from the post, and then deletes the comment
-* @param {string} slug - string - The id of the post
-* @param {string} commentIndex - The id of the comment to be deleted
-* @returns A post with the comment removed.
-*/
+   * It finds a post and a comment, removes the comment from the post, and then deletes the comment
+   * @param slug - string - The id of the post
+   * @param commentIndex - The id of the comment to be deleted
+   * @returns A post with the comment removed.
+   */
   deleteComment(slug: string, commentIndex: string): Observable<Post> {
     return forkJoin([
       this.findOne(slug),

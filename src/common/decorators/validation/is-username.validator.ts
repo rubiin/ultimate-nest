@@ -1,13 +1,13 @@
 /**
-*
-* Rules used:
-* This regex allows usernames to contain letters (both uppercase and lowercase), numbers, underscores, hyphens, and periods,
-* but ensures that they do not start with a number, underscore, hyphen, or period.
-*
-*
-* Tests at https://regex101.com/r/m5AT6j/2
-*
-*/
+ *
+ * Rules used:
+ * This regex allows usernames to contain letters (both uppercase and lowercase), numbers, underscores, hyphens, and periods,
+ * but ensures that they do not start with a number, underscore, hyphen, or period.
+ *
+ *
+ * Tests at https://regex101.com/r/m5AT6j/2
+ *
+ */
 
 import { applyDecorators } from "@nestjs/common";
 import type {

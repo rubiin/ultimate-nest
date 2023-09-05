@@ -29,10 +29,10 @@ private readonly jwt: JwtService,
   ) {}
 
   /**
-* It takes a user object, and returns an observable of a string
-* @param user - Omit<User, "password">
-* @returns An Observable of a string.
-*/
+   * It takes a user object, and returns an observable of a string
+   * @param user - Omit<User, "password">
+   * @returns An Observable of a string.
+   */
   generateAccessToken(user: Omit<User, "password">): Observable<string> {
     const options: JwtSignOptions = {
       ...this.BASE_OPTIONS,
@@ -45,11 +45,11 @@ private readonly jwt: JwtService,
   }
 
   /**
-* It creates a refresh token in the database, then signs it with JWT
-* @param {User} user - User - The user object that we want to generate a token for.
-* @param {number} expiresIn - number - The number of seconds the token will be valid for.
-* @returns A string
-*/
+   * It creates a refresh token in the database, then signs it with JWT
+   * @param user - User - The user object that we want to generate a token for.
+   * @param expiresIn - number - The number of seconds the token will be valid for.
+   * @returns A string
+   */
   generateRefreshToken(user: User, expiresIn: number): Observable<string> {
     return this.refreshTokenRepo.createRefreshToken(user, expiresIn).pipe(
       switchMap((token) => {
@@ -66,11 +66,11 @@ private readonly jwt: JwtService,
   }
 
   /**
-* It takes an encoded refresh token, decodes it, finds the user and token in the database, and
-* returns them
-* @param {string} encoded - string - The encoded refresh token
-* @returns An object with a user and a token.
-*/
+   * It takes an encoded refresh token, decodes it, finds the user and token in the database, and
+   * returns them
+   * @param encoded - string - The encoded refresh token
+   * @returns An object with a user and a token.
+   */
   resolveRefreshToken(encoded: string): Observable<{ user: User; token: RefreshToken }> {
     return this.decodeRefreshToken(encoded).pipe(
       switchMap((payload) => {
@@ -121,10 +121,10 @@ private readonly jwt: JwtService,
   }
 
   /**
-* It takes a refresh token, resolves it to a user, and then generates an access token for that user
-* @param {string} refresh - string - The refresh token that was sent to the client.
-* @returns { token: string; user: User }
-*/
+   * It takes a refresh token, resolves it to a user, and then generates an access token for that user
+   * @param refresh - string - The refresh token that was sent to the client.
+   * @returns An object with a token and a user.
+   */
   createAccessTokenFromRefreshToken(refresh: string): Observable<{ token: string; user: User }> {
     return this.resolveRefreshToken(refresh).pipe(
       switchMap(({ user }) => {
@@ -138,10 +138,10 @@ private readonly jwt: JwtService,
   }
 
   /**
-* It decodes the refresh token and throws an error if the token is expired or malformed
-* @param {string} token - The refresh token to decode.
-* @returns The payload of the token.
-*/
+   * It decodes the refresh token and throws an error if the token is expired or malformed
+   * @param token - The refresh token to decode.
+   * @returns The payload of the token.
+   */
   decodeRefreshToken(token: string): Observable<JwtPayload> {
     return from(this.jwt.verifyAsync(token)).pipe(
       map((payload: JwtPayload) => payload),
@@ -162,10 +162,10 @@ private readonly jwt: JwtService,
   }
 
   /**
-* It deletes all the refresh token for the given user, and then returns the user
-* @param {User} user - The user object that we want to delete the refresh token for.
-* @returns The user object.
-*/
+   * It deletes all the refresh token for the given user, and then returns the user
+   * @param user - The user object that we want to delete the refresh token for.
+   * @returns The user object.
+   */
   deleteRefreshTokenForUser(user: User): Observable<User> {
     return this.refreshTokenRepo.deleteTokensForUser(user).pipe(
       map(() => {
@@ -175,11 +175,11 @@ private readonly jwt: JwtService,
   }
 
   /**
-* It deletes the refresh token from the database and returns the user
-* @param {User} user - The user object that was returned from the validateUser method.
-* @param {JwtPayload} payload - The payload of the refresh token.
-* @returns The user object
-*/
+   * It deletes the refresh token from the database and returns the user
+   * @param user - The user object that was returned from the validateUser method.
+   * @param payload - The payload of the refresh token.
+   * @returns The user object
+   */
   deleteRefreshToken(user: User, payload: JwtPayload): Observable<User> {
     const tokenId = payload.jti;
 
@@ -202,11 +202,11 @@ private readonly jwt: JwtService,
   }
 
   /**
-* It takes a refresh token payload, extracts the user ID from it, and then returns an observable of
-* the user with that ID
-* @param {JwtPayload} payload - IJwtPayload
-* @returns A user object
-*/
+   * It takes a refresh token payload, extracts the user ID from it, and then returns an observable of
+   * the user with that ID
+   * @param payload - IJwtPayload
+   * @returns A user object
+   */
   getUserFromRefreshTokenPayload(payload: JwtPayload): Observable<User> {
     const subId = payload.sub;
 
@@ -229,11 +229,11 @@ private readonly jwt: JwtService,
   }
 
   /**
-* It takes a refresh token payload, extracts the token ID from it, and then uses that token ID to
-* find the corresponding refresh token in the database
-* @param {JwtPayload} payload - IJwtPayload
-* @returns Observable<RefreshToken | null>
-*/
+   * It takes a refresh token payload, extracts the token ID from it, and then uses that token ID to
+   * find the corresponding refresh token in the database
+   * @param payload - IJwtPayload
+   * @returns Observable<RefreshToken | null>
+   */
   getStoredTokenFromRefreshTokenPayload(payload: JwtPayload): Observable<RefreshToken | null> {
     const tokenId = payload.jti;
 
