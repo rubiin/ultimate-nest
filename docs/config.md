@@ -119,10 +119,10 @@ import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class DatabaseService {
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService<Configs, true>) {}
 
   getDatabaseUrl(): string {
-    return this.configService.get<string>("database.url");
+    return this.configService.get("database.url");
   }
 
   // ... other methods to access configuration settings related to database

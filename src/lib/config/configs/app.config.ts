@@ -1,6 +1,6 @@
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
-import { APP_ENVIRONMENTS, SENTRY_DSN_REGEX, VERSION_VALIDATION_MESSAGE } from "@common/constant";
+import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant";
 
 // validation schema
 
@@ -18,7 +18,7 @@ export const appConfigValidationSchema = {
   ALLOWED_HOSTS: Joi.string().optional(),
   SWAGGER_USER: Joi.string().required(),
   SWAGGER_PASSWORD: Joi.string().required(),
-  SENTRY_DSN: Joi.string().pattern(SENTRY_DSN_REGEX).required(),
+
 };
 
 // config

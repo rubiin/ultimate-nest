@@ -51,7 +51,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
           template: EmailTemplate.MAGIC_LOGIN_TEMPLATE,
           replacements: {
             link: `${this.configService.get("app.url", { infer: true })}/v1/${href}`,
-            expiry: this.configService.get<string>("jwt.magicLinkExpiry", { infer: true }),
+            expiry: this.configService.get("jwt.magicLinkExpiry", { infer: true }),
           },
           to: destination,
           subject: EmailSubject.MAGIC_LOGIN,
