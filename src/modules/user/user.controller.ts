@@ -36,9 +36,9 @@ export class UserController {
   })
   @ApiFile({ fieldName: "avatar", required: true }) // fix this
   publicRegistration(
-@Body() dto: UserRegistrationDto,
-@UploadedFile(fileValidatorPipe({}))
-image: File,
+  @Body() dto: UserRegistrationDto,
+  @UploadedFile(fileValidatorPipe({}))
+  image: File,
   ): Observable<User> {
     return this.userService.create({
       ...dto,
@@ -66,9 +66,9 @@ image: File,
   @CheckPolicies(new GenericPolicyHandler(User, Action.Create))
   @ApiFile({ fieldName: "avatar", required: true })
   create(
-@Body() dto: CreateUserDto,
-@UploadedFile(fileValidatorPipe({}))
-image: File,
+  @Body() dto: CreateUserDto,
+  @UploadedFile(fileValidatorPipe({}))
+  image: File,
   ): Observable<User> {
     return this.userService.create({ ...dto, files: image });
   }
@@ -82,9 +82,9 @@ image: File,
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Update))
   update(
-@UUIDParam("idx") index: string,
-@Body() dto: EditUserDto,
-@UploadedFile(fileValidatorPipe({ required: false })) image?: File,
+  @UUIDParam("idx") index: string,
+  @Body() dto: EditUserDto,
+  @UploadedFile(fileValidatorPipe({ required: false })) image?: File,
   ): Observable<User> {
     return this.userService.update(index, dto, image);
   }

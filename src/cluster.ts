@@ -12,17 +12,17 @@ export class Cluster {
     const cpuCount = this.getCpuCount();
 
     if (cluster.isPrimary) {
-      this.loggerService.log(`Starting cluster with ${cpuCount} workers...`);
-      this.loggerService.log(`Master server is running on process ${process.pid}`);
+      this.loggerService.log(`📑 Starting cluster with ${cpuCount} workers...`);
+      this.loggerService.log(`📑 Master server is running on process ${process.pid}`);
 
       for (let index = 0; index < cpuCount; index++) {
-        this.loggerService.log(`Forking process number ${index + 1}...`);
+        this.loggerService.log(`📑 Forking process number ${index + 1}...`);
         cluster.fork();
       }
 
       cluster.on("exit", (worker) => {
-        this.loggerService.warn(`Worker ${worker.id} died. `);
-        this.loggerService.warn("Starting a new worker...");
+        this.loggerService.warn(`🚦 Worker ${worker.id} died. `);
+        this.loggerService.warn("🚦 Starting a new worker...");
         cluster.fork();
       });
     }
