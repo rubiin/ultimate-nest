@@ -50,9 +50,9 @@ export class AuthController {
   @Post("login/magic")
   @ApiOperation({ summary: "User Login with magic link" })
   loginByMagicLink(
-@Req() request: Request,
-@Res() response: Response,
-@Body() dto: MagicLinkLogin,
+  @Req() request: Request,
+  @Res() response: Response,
+  @Body() dto: MagicLinkLogin,
   ): Observable<void> {
     return this.authService.validateUser(false, dto.destination).pipe(
       map((_user) => {
@@ -103,9 +103,9 @@ export class AuthController {
   @Get("google/callback")
   @UseGuards(AuthGuard("google"))
   googleAuthRedirect(
-@LoggedInUser()
-user: OauthResponse,
-@Res() response: Response,
+  @LoggedInUser()
+  user: OauthResponse,
+  @Res() response: Response,
   ) {
     return this.authService.login({ email: user.email }, false).pipe(
       map((data) => {
@@ -126,9 +126,9 @@ user: OauthResponse,
   @Get("facebook/callback")
   @UseGuards(AuthGuard("facebook"))
   facebookAuthRedirect(
-@LoggedInUser()
-user: OauthResponse,
-@Res() response: Response,
+  @LoggedInUser()
+  user: OauthResponse,
+  @Res() response: Response,
   ) {
     return this.authService.login({ email: user.email }, false).pipe(
       map((data) => {
@@ -178,9 +178,9 @@ user: OauthResponse,
   @ApiOperation({ summary: "Logout user" })
   @Post("logout")
   logout(
-@LoggedInUser() user: User,
-@Query("from_all", new DefaultValuePipe(false), ParseBoolPipe) fromAll: boolean,
-@Body() refreshToken?: RefreshTokenDto,
+  @LoggedInUser() user: User,
+  @Query("from_all", new DefaultValuePipe(false), ParseBoolPipe) fromAll: boolean,
+  @Body() refreshToken?: RefreshTokenDto,
   ): Observable<User> {
     return fromAll
       ? this.authService.logoutFromAll(user)

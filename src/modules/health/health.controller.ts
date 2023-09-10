@@ -33,18 +33,18 @@ export class HealthController {
       () =>
         this.http.pingCheck(
           "swagger",
-`${this.configService.get("app.url", {
-infer: true,
-})}:${this.configService.get("app.port", { infer: true })}/doc`,
+        `${this.configService.get("app.url", {
+        infer: true,
+        })}:${this.configService.get("app.port", { infer: true })}/doc`,
         ),
       () =>
         this.http.pingCheck(
           "routes",
-`${this.configService.get("app.url", {
-infer: true,
-})}:${this.configService.get("app.port", {
-infer: true,
-})}/${this.configService.get("app.prefix", { infer: true })}/health/test`,
+          `${this.configService.get("app.url", {
+          infer: true,
+          })}:${this.configService.get("app.port", {
+          infer: true,
+          })}/${this.configService.get("app.prefix", { infer: true })}/health/test`,
         ),
       async () => this.databaseHealth.pingCheck("mikroOrm"),
       async () => this.memory.checkHeap("memory_heap", 200 * 1024 * 1024),
