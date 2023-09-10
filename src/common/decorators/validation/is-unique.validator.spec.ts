@@ -24,7 +24,7 @@ describe('IsUnique', () => {
       providers: [IsUniqueConstraint, { provide: EntityManager, useValue: mockEm }],
     }).compile();
 
-    isUnique = await module.get<IsUniqueConstraint>(IsUniqueConstraint);
+    isUnique = module.get<IsUniqueConstraint>(IsUniqueConstraint);
   });
 
   it('should pass if there are no duplicates', async () => {

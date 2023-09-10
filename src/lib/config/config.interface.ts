@@ -9,6 +9,7 @@ import type {
   mail,
   rabbitmq,
   redis,
+  sentry,
   stripe,
   throttle,
   twilio,
@@ -27,4 +28,5 @@ export interface Config {
   stripe: ConfigType<typeof stripe>;
   facebookOauth: ConfigType<typeof facebookOauth>;
   googleOauth: ConfigType<typeof googleOauth>;
+  sentry: ConfigType<typeof sentry>;
 }

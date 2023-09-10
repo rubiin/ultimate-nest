@@ -16,9 +16,9 @@ import { baseOptions } from "@common/database/mikro-orm-cli.config";
           ...baseOptions,
           host: configService.get("database.host", { infer: true }),
           port: configService.get("database.port", { infer: true }),
-          password: configService.get("database.password", { infer: true }),
-          user: configService.get("database.user", { infer: true }),
           dbName: configService.get("database.dbName", { infer: true }),
+          user: configService.get("database.user", { infer: true }),
+          password: configService.get("database.password", { infer: true }),
         }),
     }),
     MikroOrmModule.forFeature({

@@ -13,7 +13,7 @@ import { NestMinioModule } from "nestjs-minio";
         port: configService.get("minio.port"),
         accessKey: configService.get("minio.accessKey"),
         secretKey: configService.get("minio.secretKey"),
-        useSSL: configService.get<boolean>("minio.ssl"),
+        useSSL: configService.get("minio.ssl"),
       }),
     }),
   ],

@@ -19,6 +19,8 @@ import {
   rabbitmqConfigValidationSchema,
   redis,
   redisConfigValidationSchema,
+  sentry,
+  sentryConfigurationValidationSchema,
   throttle,
   throttleConfigValidationSchema,
 } from "./configs";
@@ -40,6 +42,7 @@ import { HelperService } from "@common/helpers";
         googleOauth,
         facebookOauth,
         throttle,
+        sentry,
       ],
       cache: true,
       isGlobal: true,
@@ -54,6 +57,7 @@ import { HelperService } from "@common/helpers";
         ...googleOauthConfigValidationSchema,
         ...facebookOauthConfigValidationSchema,
         ...throttleConfigValidationSchema,
+        ...sentryConfigurationValidationSchema,
       }),
       validationOptions: {
         abortEarly: true,
