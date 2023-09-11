@@ -6,12 +6,14 @@ import { BaseEntity } from "@common/database";
 
 @Entity()
 export class Referral extends BaseEntity {
-  @Index()
-  @ManyToOne()
+  @ManyToOne({
+    index: true,
+  })
 referrer: Rel<Ref<User>>;
 
-  @Index()
-  @Property()
+  @Property({
+    index: true,
+  })
 mobileNumber: string;
 
   @Index()
