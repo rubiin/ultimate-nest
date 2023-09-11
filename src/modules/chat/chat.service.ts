@@ -1,6 +1,7 @@
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
+import { ref } from "@mikro-orm/core";
 import type { User } from "@entities";
 import { Conversation, Message } from "@entities";
 import { BaseRepository } from "@common/database";
@@ -14,9 +15,10 @@ interface IConversation {
 export class ChatService {
   constructor(
     private readonly em: EntityManager,
-@InjectRepository(Conversation)
-private readonly conversationRepository: BaseRepository<Conversation>,
-@InjectRepository(Message) private readonly messageRepository: BaseRepository<Message>,
+    @InjectRepository(Conversation)
+    private readonly conversationRepository: BaseRepository<Conversation>,
+    @InjectRepository(Message)
+    private readonly messageRepository: BaseRepository<Message>,
   ) {}
 
   async createConversation(conversation: IConversation) {
@@ -27,14 +29,17 @@ private readonly conversationRepository: BaseRepository<Conversation>,
 
   async sendMessage(data: IConversation) {
     const [sender, receiver] = data.users;
-    const conversationExists = await this.getConversation(sender.id, receiver.id);
+    const conversationExists = await this.getConversation(
+      sender.id,
+      receiver.id,
+    );
 
     const messageNew = this.messageRepository.create({
       body: data.message,
     });
 
     if (conversationExists) {
-      messageNew.conversation = conversationExists;
+      messageNew.conversation = ref(conversationExists);
       conversationExists.messages.add(messageNew);
 
       await Promise.all([this.em.persistAndFlush(messageNew), this.em.flush()]);
@@ -45,7 +50,7 @@ private readonly conversationRepository: BaseRepository<Conversation>,
         messages: [messageNew],
       });
 
-      messageNew.conversation = conversationNew;
+      messageNew.conversation = ref(conversationNew);
 
       await Promise.all([
         this.em.persistAndFlush(messageNew),
@@ -54,7 +59,10 @@ private readonly conversationRepository: BaseRepository<Conversation>,
     }
   }
 
-  async getConversation(sender: number, receiver: number): Promise<Conversation> {
+  async getConversation(
+    sender: number,
+    receiver: number,
+  ): Promise<Conversation> {
     return this.conversationRepository.findOne({ users: [sender, receiver] });
   }
 
@@ -68,7 +76,10 @@ private readonly conversationRepository: BaseRepository<Conversation>,
       .execute();
   }
 
-  async markMessagesAsSeen(sender: number, receiver: number): Promise<Conversation> {
+  async markMessagesAsSeen(
+    sender: number,
+    receiver: number,
+  ): Promise<Conversation> {
     const conversation = await this.getConversation(sender, receiver);
 
     await this.messageRepository.nativeUpdate(

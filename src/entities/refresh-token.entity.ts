@@ -1,3 +1,4 @@
+import type { Ref } from "@mikro-orm/core";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
 import type { User } from "./user.entity";
 
@@ -11,7 +12,7 @@ expiresIn!: Date;
   @ManyToOne({
     eager: false,
   })
-user: Rel<User>;
+user: Rel<Ref<User>>;
 
   @Property()
 isRevoked? = false;

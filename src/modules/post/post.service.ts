@@ -5,6 +5,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { omit } from "helper-fns";
 import type { Observable } from "rxjs";
 import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
+import { ref } from "@mikro-orm/core";
 import type { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 import { translate } from "@lib/i18n";
@@ -261,7 +262,7 @@ private readonly categoryRepository: BaseRepository<Category>,
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
-        const comment = new Comment({ body: dto.body, author: user });
+        const comment = new Comment({ body: dto.body, author: ref(user) });
 
         post.comments.add(comment);
 

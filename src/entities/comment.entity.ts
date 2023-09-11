@@ -1,3 +1,4 @@
+import type { Ref } from "@mikro-orm/core";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
 import type { Post, User } from "./index";
 
@@ -11,13 +12,13 @@ body!: string;
   @ManyToOne({
     eager: false,
   })
-post!: Rel<Post>;
+  post!: Rel<Ref<Post>>;
 
   @ManyToOne({
     eager: false,
     index: true,
   })
-author!: Rel<User>;
+author!: Rel<Ref<User>>;
 
   constructor(partial?: Partial<Comment>) {
     super();

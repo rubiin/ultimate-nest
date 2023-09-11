@@ -1,3 +1,4 @@
+import type { Ref } from "@mikro-orm/core";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
 import type { User } from "./user.entity";
 
@@ -12,7 +13,7 @@ points!: number;
 amount!: string;
 
   @ManyToOne()
-user!: Rel<User>;
+user!: Rel<Ref<User>>;
 
   constructor(partial?: Partial<PointRedemptionLog>) {
     super();

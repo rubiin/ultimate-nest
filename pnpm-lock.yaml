@@ -63,8 +63,8 @@ dependencies:
     specifier: '*'
     version: 2.0.2(@nestjs/common@10.2.4)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
   '@nestjs/passport':
-    specifier: ^10.0.1
-    version: 10.0.1(@nestjs/common@10.2.4)(passport@0.6.0)
+    specifier: ^10.0.2
+    version: 10.0.2(@nestjs/common@10.2.4)(passport@0.6.0)
   '@nestjs/platform-express':
     specifier: ^10.2.4
     version: 10.2.4(@nestjs/common@10.2.4)(@nestjs/core@10.2.4)
@@ -78,8 +78,8 @@ dependencies:
     specifier: ^4.0.0
     version: 4.0.0(@nestjs/common@10.2.4)(@nestjs/core@10.2.4)
   '@nestjs/swagger':
-    specifier: ^7.1.10
-    version: 7.1.10(@nestjs/common@10.2.4)(@nestjs/core@10.2.4)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+    specifier: ^7.1.11
+    version: 7.1.11(@nestjs/common@10.2.4)(@nestjs/core@10.2.4)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
   '@nestjs/terminus':
     specifier: ^10.0.1
     version: 10.0.1(@mikro-orm/core@5.8.0)(@mikro-orm/nestjs@5.2.1)(@nestjs/axios@3.0.0)(@nestjs/common@10.2.4)(@nestjs/core@10.2.4)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -320,8 +320,8 @@ devDependencies:
     specifier: ^20.6.0
     version: 20.6.0
   '@types/nodemailer':
-    specifier: ^6.4.9
-    version: 6.4.9
+    specifier: ^6.4.10
+    version: 6.4.10
   '@types/passport':
     specifier: ^1.0.12
     version: 1.0.12
@@ -2979,8 +2979,8 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
-  /@nestjs/passport@10.0.1(@nestjs/common@10.2.4)(passport@0.6.0):
-    resolution: {integrity: sha512-hS22LeNj0LByS9toBPkpKyZhyKAXoHACLS1EQrjbAJJEQjhocOskVGwcMwvMlz+ohN+VU804/nMF1Zlya4+TiQ==}
+  /@nestjs/passport@10.0.2(@nestjs/common@10.2.4)(passport@0.6.0):
+    resolution: {integrity: sha512-od31vfB2z3y05IDB5dWSbCGE2+pAf2k2WCBinNuTTOxN0O0+wtO1L3kawj/aCW3YR9uxsTOVbTDwtwgpNNsnjQ==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       passport: ^0.4.0 || ^0.5.0 || ^0.6.0
@@ -3087,8 +3087,8 @@ packages:
       path-to-regexp: 0.2.5
     dev: false
 
-  /@nestjs/swagger@7.1.10(@nestjs/common@10.2.4)(@nestjs/core@10.2.4)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
-    resolution: {integrity: sha512-qreCcxgHFyFX1mOfK36pxiziy4xoa/XcxC0h4Zr9yH54WuqMqO9aaNFhFyuQ1iyd/3YBVQB21Un4gQnh9iGm0w==}
+  /@nestjs/swagger@7.1.11(@nestjs/common@10.2.4)(@nestjs/core@10.2.4)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-EneFcucWC4a0n/FVd1Hg1MRugt65vL/1RDsQMqhMRfVw6IbYWuiKh51TNI4QwOPrRGiR1ry8qHJCBcTX9cl89Q==}
     peerDependencies:
       '@fastify/static': ^6.0.0
       '@nestjs/common': ^9.0.0 || ^10.0.0
@@ -3113,7 +3113,7 @@ packages:
       lodash: 4.17.21
       path-to-regexp: 3.2.0
       reflect-metadata: 0.1.13
-      swagger-ui-dist: 5.4.2
+      swagger-ui-dist: 5.6.2
     dev: false
 
   /@nestjs/terminus@10.0.1(@mikro-orm/core@5.8.0)(@mikro-orm/nestjs@5.2.1)(@nestjs/axios@3.0.0)(@nestjs/common@10.2.4)(@nestjs/core@10.2.4)(reflect-metadata@0.1.13)(rxjs@7.8.1):
@@ -4432,8 +4432,8 @@ packages:
   /@types/node@20.6.0:
     resolution: {integrity: sha512-najjVq5KN2vsH2U/xyh2opaSEz6cZMR2SetLIlxlj08nOcmPOemJmUK2o4kUzfLqfrWE0PIrNeE16XhYDd3nqg==}
 
-  /@types/nodemailer@6.4.9:
-    resolution: {integrity: sha512-XYG8Gv+sHjaOtUpiuytahMy2mM3rectgroNbs6R3djZEKmPNiIJwe9KqOJBGzKKnNZNKvnuvmugBgpq3w/S0ig==}
+  /@types/nodemailer@6.4.10:
+    resolution: {integrity: sha512-oPW/IdhkU3FyZc1dzeqmS+MBjrjZNiiINnrEOrWALzccJlP5xTlbkNr2YnTnnyj9Eqm5ofjRoASEbrCYpA7BrA==}
     dependencies:
       '@types/node': 20.6.0
     dev: true
@@ -4501,7 +4501,7 @@ packages:
     dependencies:
       '@types/mailparser': 3.4.0
       '@types/node': 20.6.0
-      '@types/nodemailer': 6.4.9
+      '@types/nodemailer': 6.4.10
     dev: true
 
   /@types/pug@2.0.6:
@@ -12328,8 +12328,8 @@ packages:
       - supports-color
     dev: false
 
-  /swagger-ui-dist@5.4.2:
-    resolution: {integrity: sha512-vT5QxP/NOr9m4gLZl+SpavWI3M9Fdh30+Sdw9rEtZbkqNmNNEPhjXas2xTD9rsJYYdLzAiMfwXvtooWH3xbLJA==}
+  /swagger-ui-dist@5.6.2:
+    resolution: {integrity: sha512-2LKVuU2m6RHkemJloKiKJOTpN2RPmbsiad0OfSdtmFHOXJKAgYRZMwJcpT96RX6E9HUB5RkVOFC6vWqVjRgSOg==}
     dev: false
 
   /symbol-observable@1.2.0:
