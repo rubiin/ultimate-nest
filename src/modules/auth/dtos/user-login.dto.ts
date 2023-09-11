@@ -7,7 +7,7 @@ export class UserLoginDto {
  * Email of user
  * @example someone@something.com
  */
-  @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
+  @IsEmailField()
 email!: string;
 
   /**
