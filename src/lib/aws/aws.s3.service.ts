@@ -38,7 +38,6 @@ export class AwsS3Service {
         accessKeyId: this.options.accessKeyId,
         secretAccessKey: this.options.secretAccessKey,
       },
-
       region: this.options.region,
     });
 
@@ -191,6 +190,7 @@ export class AwsS3Service {
    * The `deleteItemInBucket` function deletes a file with the specified filename from an S3 bucket.
    * @param filename - The filename parameter is a string that represents the name of the file
    * you want to delete from the bucket.
+   * @returns The function `deleteItemInBucket` returns a Promise that resolves to void.
    */
   async deleteItemInBucket(filename: string): Promise<void> {
     await this.s3Client.send(
@@ -205,6 +205,7 @@ export class AwsS3Service {
    * The `deleteItemsInBucket` function deletes multiple items from an S3 bucket using their filenames.
    * @param filenames - The `filenames` parameter is an array of strings that represents the
    * names of the files you want to delete from a bucket.
+   * @returns The function `deleteItemsInBucket` returns a Promise that resolves to void.
    */
 
   async deleteItemsInBucket(filenames: string[]): Promise<void> {
@@ -226,6 +227,7 @@ export class AwsS3Service {
    * The `deleteFolder` function deletes a folder and all its contents from an S3 bucket.
    * @param directory - The `directory` parameter is a string that represents the name or path
    * of the folder you want to delete from an S3 bucket.
+   * @returns The function `deleteFolder` returns a Promise that resolves to void.
    */
   async deleteFolder(directory: string): Promise<void> {
     const lists = await this.s3Client.send(
@@ -264,7 +266,7 @@ export class AwsS3Service {
    * @param options - The `options` parameter is an optional object that can
    * contain additional configuration options for the S3 upload. It can have the following properties:
    * @returns The function `createMultiPart` returns a Promise that resolves to an object of type
-   * `IAwsS3MultiPart`.
+   * `AwsS3MultiPart`.
    */
   async createMultiPart(
     filename: string,
@@ -328,6 +330,7 @@ export class AwsS3Service {
    * assembled correctly when the upload is
    * @param options - The `options` parameter is an optional object that
    * contains additional configuration options for the upload. It is of type `IAwsS3PutItemOptions`.
+   * @returns The function `uploadPart` returns a Promise that resolves to void.
    */
   async uploadPart(
     filename: string,
@@ -336,11 +339,11 @@ export class AwsS3Service {
     partNumber: number,
     options?: AwsS3PutItemOptions,
   ): Promise<void> {
-    let path: string = options?.path ?? undefined;
+    let path = options?.path ?? undefined;
 
     if (path) path = path.startsWith("/") ? path.replace("/", "") : `${path}`;
 
-    const key: string = path ? `${path}/${filename}` : filename;
+    const key = path ? `${path}/${filename}` : filename;
 
     await this.s3Client.send(
       new UploadPartCommand({

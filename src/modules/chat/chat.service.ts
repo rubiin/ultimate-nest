@@ -71,7 +71,6 @@ export class ChatService {
       .qb("c")
       .select("c.*")
       .leftJoinAndSelect("c.messages", "m")
-      .join("user_conversation", "uc", "c.id = uc.conversation_id")
       .where("uc.user_id = ?", [user.id])
       .execute();
   }
