@@ -245,9 +245,10 @@ private readonly em: EntityManager,
       ),
     ).pipe(
       switchMap((details) => {
-        this.userRepository.assign(details.user, { password });
+        const user = details.user.getEntity();
+        this.userRepository.assign(user, { password });
 
-        return from(this.em.flush()).pipe(map(() => details.user));
+        return from(this.em.flush()).pipe(map(() => user));
       }),
     );
   }
@@ -265,6 +266,8 @@ private readonly em: EntityManager,
     return from(
       this.otpRepository.findOne({
         otpCode,
+      }, {
+        populate: ["user"],
       }),
     ).pipe(
       switchMap((codeDetails) => {
@@ -308,7 +311,7 @@ private readonly em: EntityManager,
               em.flush(),
             ]);
           }),
-        ).pipe(map(() => codeDetails.user));
+        ).pipe(map(() => codeDetails.user.getEntity()));
       }),
     );
   }

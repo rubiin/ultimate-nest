@@ -1,3 +1,4 @@
+import type { Ref } from "@mikro-orm/core";
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -46,7 +47,7 @@ favoritesCount? = 0;
     eager: false,
     index: true,
   })
-author: Rel<User>;
+author: Rel<Ref<User>>;
 
   @OneToMany(() => Comment, comment => comment.post, {
     eager: false,
