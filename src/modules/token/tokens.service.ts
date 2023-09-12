@@ -22,10 +22,10 @@ export class TokensService {
   };
 
   constructor(
-@InjectRepository(User)
-private readonly userRepository: EntityRepository<User>,
-private readonly refreshTokenRepo: RefreshTokensRepository,
-private readonly jwt: JwtService,
+        @InjectRepository(User)
+        private readonly userRepository: EntityRepository<User>,
+        private readonly refreshTokenRepo: RefreshTokensRepository,
+        private readonly jwt: JwtService,
   ) {}
 
   /**

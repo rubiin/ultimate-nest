@@ -7,25 +7,25 @@ import { BaseEntity } from "@common/database";
 @Entity()
 export class Message extends BaseEntity {
   @Property()
-  body!: string;
+    body!: string;
 
   @ManyToOne({
     eager: false,
     index: true,
   })
-  sender: Rel<Ref<Post>>;
+    sender: Rel<Ref<Post>>;
 
   @ManyToOne({
     eager: false,
     index: true,
   })
-  conversation!: Rel<Ref<Conversation>>;
+    conversation!: Rel<Ref<Conversation>>;
 
   @Property()
-  isRead? = false;
+    isRead? = false;
 
   @Property()
-  readAt?: Date;
+    readAt?: Date;
 
   constructor(partial?: Partial<Comment>) {
     super();

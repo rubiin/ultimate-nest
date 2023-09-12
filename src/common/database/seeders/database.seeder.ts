@@ -15,7 +15,7 @@ export class DatabaseSeeder extends Seeder {
     const seeders = [AdminSeeder, UserSeeder];
 
     this.logger.log(
-`Seeding database with seeders: ${chalk.green(seeders.map(s => s.name).join(", "))}`,
+            `Seeding database with seeders: ${chalk.green(seeders.map(s => s.name).join(", "))}`,
     );
 
     this.logger.log(`User password is set as : ${chalk.green(process.env.USER_PASSWORD)}`);

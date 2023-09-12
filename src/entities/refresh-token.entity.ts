@@ -7,15 +7,15 @@ import { BaseEntity } from "@common/database";
 @Entity()
 export class RefreshToken extends BaseEntity {
   @Property()
-expiresIn!: Date;
+    expiresIn!: Date;
 
   @ManyToOne({
     eager: false,
   })
-user: Rel<Ref<User>>;
+    user: Rel<Ref<User>>;
 
   @Property()
-isRevoked? = false;
+    isRevoked? = false;
 
   constructor(partial?: Partial<RefreshToken>) {
     super();

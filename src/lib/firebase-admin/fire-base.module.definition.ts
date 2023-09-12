@@ -6,17 +6,17 @@ export interface FirebaseModuleOptions {
 }
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
-= new ConfigurableModuleBuilder<FirebaseModuleOptions>({
-  moduleName: "FirebaseModule",
-})
-  .setExtras(
-    {
-      isGlobal: true,
-    },
-    (definition, extras) => ({
-      ...definition,
-      global: extras.isGlobal,
-    }),
-  )
-  .setClassMethodName("forRoot")
-  .build();
+    = new ConfigurableModuleBuilder<FirebaseModuleOptions>({
+      moduleName: "FirebaseModule",
+    })
+      .setExtras(
+        {
+          isGlobal: true,
+        },
+        (definition, extras) => ({
+          ...definition,
+          global: extras.isGlobal,
+        }),
+      )
+      .setClassMethodName("forRoot")
+      .build();

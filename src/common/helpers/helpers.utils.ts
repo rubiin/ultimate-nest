@@ -64,15 +64,15 @@ export const HelperService = {
   },
 
   /* The `generateThumb` function takes an input image as a `Buffer` and a configuration object
-containing the desired height and width of the thumbnail. It uses the `sharp` library to resize the
-input image according to the provided configuration. The resized image is then converted to the PNG
-format and returned as a `Buffer` wrapped in an `Observable`. */
+  containing the desired height and width of the thumbnail. It uses the `sharp` library to resize the
+  input image according to the provided configuration. The resized image is then converted to the PNG
+  format and returned as a `Buffer` wrapped in an `Observable`. */
   generateThumb(input: Buffer, config: { height: number; width: number }): Observable<Buffer> {
     return from(sharp(input).resize(config).toFormat("png").toBuffer());
   },
 
   /* The `getTimeInUtc` function takes a `Date` object or a string representation of a date as input and
-returns a new `Date` object representing the same date and time in UTC timezone. */
+  returns a new `Date` object representing the same date and time in UTC timezone. */
   getTimeInUtc(date: Date | string): Date {
     const thatDate = date instanceof Date ? date : new Date(date);
     const currentUtcTime = zonedTimeToUtc(thatDate, "UTC");

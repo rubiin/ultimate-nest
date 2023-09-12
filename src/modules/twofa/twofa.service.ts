@@ -14,10 +14,10 @@ import { BaseRepository } from "@common/database";
 @Injectable()
 export class TwoFactorService {
   constructor(
-@InjectRepository(User)
-private userRepository: BaseRepository<User>,
-private readonly configService: ConfigService<Configs, true>,
-private readonly em: EntityManager,
+        @InjectRepository(User)
+        private userRepository: BaseRepository<User>,
+        private readonly configService: ConfigService<Configs, true>,
+        private readonly em: EntityManager,
   ) {}
 
   /**

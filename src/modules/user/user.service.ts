@@ -32,12 +32,12 @@ export class UserService {
   private readonly queryName = "u";
 
   constructor(
-@InjectRepository(User)
-private userRepository: BaseRepository<User>,
-private readonly em: EntityManager,
-private readonly configService: ConfigService<Configs, true>,
-private readonly amqpConnection: AmqpConnection,
-private readonly cloudinaryService: CloudinaryService,
+        @InjectRepository(User)
+        private userRepository: BaseRepository<User>,
+        private readonly em: EntityManager,
+        private readonly configService: ConfigService<Configs, true>,
+        private readonly amqpConnection: AmqpConnection,
+        private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   /**

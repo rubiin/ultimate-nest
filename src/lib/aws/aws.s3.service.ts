@@ -30,8 +30,8 @@ export class AwsS3Service {
   private readonly baseUrl: string;
 
   constructor(
-    @Inject(MODULE_OPTIONS_TOKEN)
-    private readonly options: AwsModuleOptions,
+        @Inject(MODULE_OPTIONS_TOKEN)
+        private readonly options: AwsModuleOptions,
   ) {
     this.s3Client = new S3Client({
       credentials: {
@@ -127,8 +127,8 @@ export class AwsS3Service {
   private generateFileName(originalFilename: string): string {
     const [name, extension] = originalFilename.split(".");
     const fileName = `${Date.now()}-${Math.round(
-      Math.random() * 10_000,
-    )}-${name}.${extension}`;
+            Math.random() * 10_000,
+        )}-${name}.${extension}`;
 
     return fileName.replaceAll(" ", "-");
   }

@@ -1,31 +1,31 @@
 {
-	"$schema": "https://json.schemastore.org/nest-cli",
-	"collection": "@nestjs/schematics",
-	"sourceRoot": "src",
-	"compilerOptions": {
-		"plugins": [
-			{
-				"name": "@nestjs/swagger/plugin",
-				"options": {
-					"introspectComments": true,
-					"dtoFileNameSuffix": [
-						".entity.ts",
-						".dto.ts",
-						".response.ts"
-					]
-				}
-			}
-		],
-		"assets": [
-			{
-				"include": "resources/**/*",
-				"exclude": "resources/images/*",
-				"watchAssets": true
-			},
-			{
-				"include": "**/*.css",
-				"watchAssets": true
-			}
-		]
-	}
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "@nestjs/swagger/plugin",
+        "options": {
+          "introspectComments": true,
+          "dtoFileNameSuffix": [
+            ".entity.ts",
+            ".dto.ts",
+            ".response.ts"
+          ]
+        }
+      }
+    ],
+    "assets": [
+      {
+        "include": "resources/**/*",
+        "exclude": "resources/images/*",
+        "watchAssets": true
+      },
+      {
+        "include": "**/*.css",
+        "watchAssets": true
+      }
+    ]
+  }
 }

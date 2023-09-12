@@ -12,12 +12,13 @@ import type { BaseEntity } from "@common/database";
  * common interface that enforces common methods for controller and service
  */
 export interface Crud<
-Entity extends BaseEntity,
-PaginationRequest extends TPaginationRequest,
-CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
-UpdateDto extends EntityData<Entity> = EntityData<Entity>,
+    Entity extends BaseEntity,
+    PaginationRequest extends TPaginationRequest,
+    CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
+    UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > {
   findAll(query: PaginationRequest): Observable<PaginationResponse<Entity>>;
+
   findOne(index: string): Observable<Entity>;
 
   create(body: CreateDto, user?: User): Observable<Entity>;

@@ -31,8 +31,8 @@ export class ProfileController {
     params: ["username"],
   })
   follow(
-  @LoggedInUser() user: User,
-  @Param("username") username: string,
+        @LoggedInUser() user: User,
+        @Param("username") username: string,
   ): Observable<ProfileData> {
     return this.profileService.follow(user, username);
   }
@@ -44,8 +44,8 @@ export class ProfileController {
     params: ["username"],
   })
   unFollow(
-  @LoggedInUser() user: User,
-  @Param("username") username: string,
+        @LoggedInUser() user: User,
+        @Param("username") username: string,
   ): Observable<ProfileData> {
     return this.profileService.unFollow(user, username);
   }

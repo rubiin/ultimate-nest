@@ -11,8 +11,8 @@ import {
 } from "class-validator";
 
 export interface ValidationArguments<
-Constraints extends unknown[] = [],
-CustomObject extends object = object,
+    Constraints extends unknown[] = [],
+    CustomObject extends object = object,
 > extends BaseValidationArguments {
   object: CustomObject;
   constraints: Constraints;
@@ -40,12 +40,12 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
 }
 
 export const IsUnique
-= <Entity>(entityType: () => Type<Entity>, field: keyof Entity, options?: ValidationOptions) =>
-  ({ constructor: target }: object, propertyName: string) =>
-    registerDecorator({
-      constraints: [entityType, field],
-      target,
-      options,
-      propertyName,
-      validator: IsUniqueConstraint,
-    });
+    = <Entity>(entityType: () => Type<Entity>, field: keyof Entity, options?: ValidationOptions) =>
+      ({ constructor: target }: object, propertyName: string) =>
+        registerDecorator({
+          constraints: [entityType, field],
+          target,
+          options,
+          propertyName,
+          validator: IsUniqueConstraint,
+        });

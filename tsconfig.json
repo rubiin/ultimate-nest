@@ -1,19 +1,40 @@
 {
-	"extends": "@rubiin/tsconfig",
-	"compilerOptions": {
-		"baseUrl": "src",
-		"outDir": "dist",
+  "extends": "@rubiin/tsconfig",
+  "compilerOptions": {
+    "baseUrl": "src",
+    "outDir": "dist",
     "esModuleInterop": true,
-		"paths": {
-			"@lib/*": ["./lib/*"],
-			"@common/*": ["./common/*"],
-			"@modules/*": ["./modules/*"],
-			"@entities": ["./entities"],
-			"@mocks": ["./_mocks_"],
-			"@generated": ["./generated"]
-		},
-	},
-	"include": ["test/**/*", "src/**/*",".eslintrc.cjs"],
-	"exclude": ["node_modules", "dist"],
-	"types": ["./src/common/types/global.d.ts"]
+    "paths": {
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@common/*": [
+        "./common/*"
+      ],
+      "@modules/*": [
+        "./modules/*"
+      ],
+      "@entities": [
+        "./entities"
+      ],
+      "@mocks": [
+        "./_mocks_"
+      ],
+      "@generated": [
+        "./generated"
+      ]
+    }
+  },
+  "include": [
+    "test/**/*",
+    "src/**/*",
+    ".eslintrc.cjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "types": [
+    "./src/common/types/global.d.ts"
+  ]
 }

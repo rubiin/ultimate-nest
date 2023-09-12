@@ -13,9 +13,9 @@ export class QueryFailedFilter implements ExceptionFilter {
     const response = context.getResponse<Response>();
 
     const status
-= exception.name && exception.name.startsWith("UQ")
-  ? HttpStatus.CONFLICT
-  : HttpStatus.INTERNAL_SERVER_ERROR;
+            = exception.name && exception.name.startsWith("UQ")
+              ? HttpStatus.CONFLICT
+              : HttpStatus.INTERNAL_SERVER_ERROR;
 
     response.status(status).json({
       statusCode: status,

@@ -1,20 +1,6 @@
 import type { EntityData, RequiredEntityData } from "@mikro-orm/core";
-import type {
-  ArgumentMetadata,
-  Type,
-} from "@nestjs/common";
-import {
-  Body,
-  Delete,
-  Get,
-  Injectable,
-  Param,
-  Post,
-  Put,
-  Query,
-  UsePipes,
-  ValidationPipe,
-} from "@nestjs/common";
+import type { ArgumentMetadata, Type } from "@nestjs/common";
+import { Body, Delete, Get, Injectable, Param, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
 import { Observable } from "rxjs";
 import type { BaseService } from "./crud.service";
 import type { Crud, PaginationRequest, PaginationResponse } from "@common/@types";
@@ -47,10 +33,10 @@ export class AbstractValidationPipe extends ValidationPipe {
  * @returns A controller class that implements the Crud interface
  */
 export function ControllerFactory<
-T extends BaseEntity,
-Q extends PaginationRequest,
-C extends RequiredEntityData<T>,
-U extends EntityData<T>,
+    T extends BaseEntity,
+    Q extends PaginationRequest,
+    C extends RequiredEntityData<T>,
+    U extends EntityData<T>,
 >(queryDto: Type<Q>, createDto: Type<C>, updateDto: Type<U>): Type<Crud<T, Q, C, U>> {
   const createPipe = new AbstractValidationPipe({
     body: createDto,
@@ -62,11 +48,11 @@ U extends EntityData<T>,
   const queryPipe = new AbstractValidationPipe({ query: queryDto });
 
   class CrudController<
-T extends BaseEntity,
-Q extends PaginationRequest,
-C extends RequiredEntityData<T>,
-U extends EntityData<T>,
-> implements Crud<T, Q, C, U> {
+        T extends BaseEntity,
+        Q extends PaginationRequest,
+        C extends RequiredEntityData<T>,
+        U extends EntityData<T>,
+    > implements Crud<T, Q, C, U> {
     protected service: BaseService<T, Q, C, U>;
 
     @Get(":idx")

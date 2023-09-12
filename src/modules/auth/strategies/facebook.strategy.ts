@@ -12,19 +12,19 @@ import type { OauthResponse } from "@common/@types";
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
-/**
- * It's a PassportStrategy that uses the FacebookStrategy and the Google OAuth2.0 API to authenticate users
- * Create a new project at
- * https://developers.facebook.com
- *
- * The callback url should match whats specified in the callbackURL section
- *
- *
- */
+  /**
+   * It's a PassportStrategy that uses the FacebookStrategy and the Google OAuth2.0 API to authenticate users
+   * Create a new project at
+   * https://developers.facebook.com
+   *
+   * The callback url should match whats specified in the callbackURL section
+   *
+   *
+   */
 
   constructor(
     public readonly configService: ConfigService<Configs, true>,
-@InjectRepository(User) private readonly userRepo: BaseRepository<User>,
+        @InjectRepository(User) private readonly userRepo: BaseRepository<User>,
   ) {
     super({
       clientID: configService.get("facebookOauth.clientId", { infer: true }),

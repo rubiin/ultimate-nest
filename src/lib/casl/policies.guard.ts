@@ -1,8 +1,8 @@
 import type { Request } from "express";
 
 import { Reflector } from "@nestjs/core";
-import { Injectable } from "@nestjs/common";
 import type { CanActivate, ExecutionContext } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import type { AppAbility } from "./casl-ability.factory";
 import { CaslAbilityFactory } from "./casl-ability.factory";
 import type { PolicyHandler } from "./policy.interface";
@@ -24,8 +24,8 @@ export class PoliciesGuard implements CanActivate {
       return true;
 
     const policyHandlers
-= this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY_META, context.getHandler())
-|| [];
+            = this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY_META, context.getHandler())
+            || [];
 
     const request: Request = context.switchToHttp().getRequest();
 

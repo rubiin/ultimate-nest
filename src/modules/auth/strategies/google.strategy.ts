@@ -11,19 +11,19 @@ import type { OauthResponse } from "@common/@types";
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
-/**
- * It's a PassportStrategy that uses the GoogleStrategy and the Google OAuth2.0 API to authenticate users
- * Create a new project at
- * https://console.cloud.google.com/apis/
- *
- * The callback url should match whats specified in the callbackURL section
- *
- *
- */
+  /**
+   * It's a PassportStrategy that uses the GoogleStrategy and the Google OAuth2.0 API to authenticate users
+   * Create a new project at
+   * https://console.cloud.google.com/apis/
+   *
+   * The callback url should match whats specified in the callbackURL section
+   *
+   *
+   */
 
   constructor(
     public readonly configService: ConfigService<Configs, true>,
-@InjectRepository(User) private readonly userRepo: BaseRepository<User>,
+        @InjectRepository(User) private readonly userRepo: BaseRepository<User>,
   ) {
     super({
       clientID: configService.get("googleOauth.clientId", { infer: true }),

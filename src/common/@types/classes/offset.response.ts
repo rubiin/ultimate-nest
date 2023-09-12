@@ -5,9 +5,9 @@ import type { PaginationAbstractResponse } from "../interfaces";
 import type { OffsetPaginationDto } from "@common/dtos/offset-pagination.dto";
 
 export class OffsetMeta {
-/**
- * @example 10
- */
+  /**
+   * @example 10
+   */
   @ApiProperty()
   readonly page: number;
 
@@ -43,7 +43,7 @@ export class OffsetMeta {
 
   constructor({
     pageOptionsDto,
-itemCount,
+                    itemCount,
   }: {
     pageOptionsDto: OffsetPaginationDto;
     itemCount: number;

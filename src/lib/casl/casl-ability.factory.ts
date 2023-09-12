@@ -1,12 +1,5 @@
-import type {
-  ExtractSubjectType,
-  InferSubjects,
-  MongoAbility,
-} from "@casl/ability";
-import {
-  AbilityBuilder,
-  createMongoAbility,
-} from "@casl/ability";
+import type { ExtractSubjectType, InferSubjects, MongoAbility } from "@casl/ability";
+import { AbilityBuilder, createMongoAbility } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
 import { Action, Roles } from "@common/@types";
 import type { Tag } from "@entities";

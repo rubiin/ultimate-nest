@@ -11,8 +11,8 @@ import { RefreshToken } from "@entities";
 export class RefreshTokensRepository {
   constructor(
     private readonly em: EntityManager,
-@InjectRepository(RefreshToken)
-private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
+        @InjectRepository(RefreshToken)
+        private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
   ) {}
 
   /**

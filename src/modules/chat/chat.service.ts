@@ -15,10 +15,10 @@ interface IConversation {
 export class ChatService {
   constructor(
     private readonly em: EntityManager,
-    @InjectRepository(Conversation)
-    private readonly conversationRepository: BaseRepository<Conversation>,
-    @InjectRepository(Message)
-    private readonly messageRepository: BaseRepository<Message>,
+        @InjectRepository(Conversation)
+        private readonly conversationRepository: BaseRepository<Conversation>,
+        @InjectRepository(Message)
+        private readonly messageRepository: BaseRepository<Message>,
   ) {}
 
   async createConversation(conversation: IConversation) {

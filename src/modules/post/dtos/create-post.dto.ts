@@ -4,13 +4,13 @@ import { IsEnumField, IsStringField, IsUUIDField, ToBoolean } from "@common/deco
 import { validationI18nMessage } from "@lib/i18n";
 
 export class CreatePostDto {
-/**
- * Title of post
- * @example "Lorem ipsum dolor sit"
- */
+  /**
+   * Title of post
+   * @example "Lorem ipsum dolor sit"
+   */
 
   @IsStringField()
-  title!: string;
+    title!: string;
 
   /**
    * Description of post
@@ -18,7 +18,7 @@ export class CreatePostDto {
    */
 
   @IsStringField()
-  description!: string;
+    description!: string;
 
   /**
    * Content of post
@@ -26,7 +26,7 @@ export class CreatePostDto {
    */
 
   @IsStringField()
-  content!: string;
+    content!: string;
 
   /**
    * tags of post
@@ -34,7 +34,7 @@ export class CreatePostDto {
    */
 
   @IsUUIDField({ each: true })
-  tags!: string[];
+    tags!: string[];
 
   /**
    * tags of post
@@ -42,7 +42,7 @@ export class CreatePostDto {
    */
 
   @IsUUIDField({ each: true })
-  categories!: string[];
+    categories!: string[];
 
   /**
    * State of post
@@ -50,7 +50,7 @@ export class CreatePostDto {
    */
 
   @IsEnumField(PostStateEnum, { required: false })
-  state: PostStateEnum;
+    state: PostStateEnum;
 
   /**
    * Published status of post
@@ -62,5 +62,5 @@ export class CreatePostDto {
       type: "boolean",
     }),
   })
-  published?: boolean;
+    published?: boolean;
 }

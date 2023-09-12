@@ -7,17 +7,18 @@
 - [Avoid context duplication](#avoid-context-duplication)
 - [Reflect the expected result](#reflect-the-expected-result)
 - [Naming functions](#naming-functions)
-  - [A/HC/LC pattern](#ahclc-pattern)
-    - [Actions](#actions)
-    - [Context](#context)
-    - [Prefixes](#prefixes)
+    - [A/HC/LC pattern](#ahclc-pattern)
+        - [Actions](#actions)
+        - [Context](#context)
+        - [Prefixes](#prefixes)
 - [Singular and Plurals](#singular-and-plurals)
 
 ---
 
 Naming things is hard. This sheet attempts to make it easier.
 
-Although these suggestions can be applied to any programming language, I will use JavaScript to illustrate them in practice.
+Although these suggestions can be applied to any programming language, I will use JavaScript to illustrate them in
+practice.
 
 ## English language
 
@@ -33,7 +34,9 @@ const firstName = 'Gustavo'
 const friends = ['Kate', 'John']
 ```
 
-> Like it or not, English is the dominant language in programming: the syntax of all programming languages is written in English, as well as countless documentations and educational materials. By writing your code in English you dramatically increase its cohesiveness.
+> Like it or not, English is the dominant language in programming: the syntax of all programming languages is written in
+> English, as well as countless documentations and educational materials. By writing your code in English you dramatically
+> increase its cohesiveness.
 
 ## Naming convention
 
@@ -73,7 +76,8 @@ const shouldPaginate = postCount > 10 // alternatively
 
 ## Avoid contractions
 
-Do **not** use contractions. They contribute to nothing but decreased readability of the code. Finding a short, descriptive name may be hard, but contraction is not an excuse for not doing so.
+Do **not** use contractions. They contribute to nothing but decreased readability of the code. Finding a short,
+descriptive name may be hard, but contraction is not an excuse for not doing so.
 
 ```js
 /* Bad */
@@ -89,7 +93,8 @@ function getUserName() {
 
 ## Avoid context duplication
 
-A name should not duplicate the context in which it is defined. Always remove the context from a name if that doesn't decrease its readability.
+A name should not duplicate the context in which it is defined. Always remove the context from a name if that doesn't
+decrease its readability.
 
 ```js
 class UserService {
@@ -211,7 +216,8 @@ function getUsers() {
 
 Removes something _from_ somewhere.
 
-For example, if you have a collection of selected filters on a search page, removing one of them from the collection is `removeFilter`, **not** `deleteFilter` (and this is how you would naturally say it in English as well):
+For example, if you have a collection of selected filters on a search page, removing one of them from the collection
+is `removeFilter`, **not** `deleteFilter` (and this is how you would naturally say it in English as well):
 
 ```js
 function removeFilter(filters, filterName) {
@@ -228,7 +234,8 @@ removeFilter(selectedFilters, 'price')
 
 Completely erases something from the realms of existence.
 
-Imagine you are a content editor, and there is that notorious post you wish to get rid of. Once you clicked a shiny "Delete post" button, the CMS performed a `deletePost` action, **not** `removePost`.
+Imagine you are a content editor, and there is that notorious post you wish to get rid of. Once you clicked a shiny "
+Delete post" button, the CMS performed a `deletePost` action, **not** `removePost`.
 
 ```js
 function deleteUser(id) {
@@ -256,7 +263,8 @@ function composePageUrl(pageName, pageId) {
 
 A domain that a function operates on.
 
-A function is often an action on _something_. It is important to state what its operable domain is, or at least an expected data type.
+A function is often an action on _something_. It is important to state what its operable domain is, or at least an
+expected data type.
 
 ```js
 /* A pure function operating with primitives */
@@ -270,7 +278,8 @@ function getRecentPosts(posts) {
 }
 ```
 
-> Some language-specific assumptions may allow omitting the context. For example, in JavaScript, it's common that `filter` operates on Array. Adding explicit `filterArray` would be unnecessary.
+> Some language-specific assumptions may allow omitting the context. For example, in JavaScript, it's common
+> that `filter` operates on Array. Adding explicit `filterArray` would be unnecessary.
 
 --
 
@@ -331,7 +340,8 @@ function renderPosts(posts, minPosts, maxPosts) {
 
 ## Singular and Plurals
 
-Like a prefix, variable names can be made singular or plural depending on whether they hold a single value or multiple values.
+Like a prefix, variable names can be made singular or plural depending on whether they hold a single value or multiple
+values.
 
 ```js
 /* Bad */

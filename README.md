@@ -15,24 +15,26 @@
 </p>
 <br/>
 
-NOTE: Starting April 18,2022 , the repo has ditched most promises for observables. You can check the latest promised version code at
+NOTE: Starting April 18,2022 , the repo has ditched most promises for observables. You can check the latest promised
+version code at
 [commit](https://github.com/rubiin/ultimate-nest/tree/fb06b34f7d36f36195880e600f8f1b5b86f71213)
 
-More on why observables are better than promises can be read [here](https://betterprogramming.pub/observables-vs-promises-which-one-should-you-use-c19aef53c680)
+More on why observables are better than promises can be
+read [here](https://betterprogramming.pub/observables-vs-promises-which-one-should-you-use-c19aef53c680)
 
 <br/>
 
 ## Table of Contents
 
--   [Prerequisites](#prerequisites)
--   [Getting Started](#getting-started)
--   [Database](#database)
--   [Features Covered](#features-covered)
--   [Available Scripts](#available-scripts)
--   [Setup](#setup)
--   [File Structure](#file-structure)
--   [Authentication](#authentication)
--   [Deployment](#deployment)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Database](#database)
+- [Features Covered](#features-covered)
+- [Available Scripts](#available-scripts)
+- [Setup](#setup)
+- [File Structure](#file-structure)
+- [Authentication](#authentication)
+- [Deployment](#deployment)
 
 ## Prerequisites
 
@@ -78,12 +80,18 @@ cp env/.env.example env/.env.dev
   <a href="https://mikro-orm.io/" target="blank"><img src="https://raw.githubusercontent.com/mikro-orm/mikro-orm/master/docs/static/img/logo-readme.svg?sanitize=true" width="320" alt="Mikro Orm" /></a>
 </p>
 
-The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres database. Why `Mikroorm`? It is a modern ORM for Node.js based on Data Mapper, Unit of Work and Identity Map patterns. It is fully compatible with TypeScript and provides additional features like support for enums, custom types, MongoDB, transactions, caching, migrations, change tracking, advanced queries, lazy/eager relations and much more.
+The example codebase uses [MikroORM](https://mikro-orm.io/) with a Postgres database. Why `Mikroorm`? It is a modern ORM
+for Node.js based on Data Mapper, Unit of Work and Identity Map patterns. It is fully compatible with TypeScript and
+provides additional features like support for enums, custom types, MongoDB, transactions, caching, migrations, change
+tracking, advanced queries, lazy/eager relations and much more.
 
-Copy sample env file and adjust the connection settings and other settings(jwt,redis,mail,etc) respectively on sample env file
+Copy sample env file and adjust the connection settings and other settings(jwt,redis,mail,etc) respectively on sample
+env file
 
-`Note`: Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage']. The env file name
-should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as NODE_ENV=dev yarn dev
+`Note`: Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage'].
+The env file name
+should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as
+NODE_ENV=dev yarn dev
 
 Start local Postgres server and run `npx cross-env NODE_ENV=dev make migrate` to apply migrations
 
@@ -93,51 +101,54 @@ Now you can start the application witt `npx cross-env NODE_ENV=dev yarn start`.
 
 ## Features covered:
 
--   🌐 **I18n** - Internationalization
--   🧵 **Stats** - swagger stats for common server metrics
--   🧵 **Poolifier** - threads for cpu extensive tasks
--   💬 **Twilio** - sms support
--   📱 **NestJS** — latest version
--   🎉 **TypeScript** - Type checking
--   ⚙️ **Dotenv** - Supports environment variables
--   🗝 **Authentication** - JWT, RSA256, oauth
--   🏬 **Authorization** - RBAC with casl
--   🏪 **MikroORM** - Database ORM
--   🏪 **PostgreSQL** - Open-Source Relational Database
--   🧠 **Configuration** - Single config for all
--   📃 **Swagger** - API Documentation
--   🐳 **Docker Compose** - Container Orchestration
--   🔐 **Helmet** - secure HTTP headers
--   😴 **Insomnia** - Insomnia config for endpoints
--   📏 **ESLint** — Pluggable JavaScript linter
--   💖 **Prettier** - Opinionated Code Formatter
+- 🌐 **I18n** - Internationalization
+- 🧵 **Stats** - swagger stats for common server metrics
+- 🧵 **Poolifier** - threads for cpu extensive tasks
+- 💬 **Twilio** - sms support
+- 📱 **NestJS** — latest version
+- 🎉 **TypeScript** - Type checking
+- ⚙️ **Dotenv** - Supports environment variables
+- 🗝 **Authentication** - JWT, RSA256, oauth
+- 🏬 **Authorization** - RBAC with casl
+- 🏪 **MikroORM** - Database ORM
+- 🏪 **PostgreSQL** - Open-Source Relational Database
+- 🧠 **Configuration** - Single config for all
+- 📃 **Swagger** - API Documentation
+- 🐳 **Docker Compose** - Container Orchestration
+- 🔐 **Helmet** - secure HTTP headers
+- 😴 **Insomnia** - Insomnia config for endpoints
+- 📏 **ESLint** — Pluggable JavaScript linter
+- 💖 **Prettier** - Opinionated Code Formatter
 
 ## Available Scripts
 
--   `yarn start` - Start application
--   `yarn start:dev` - Start application in watch mode
--   `yarn start:prod` - Start built application
--   `yarn start:hmr` - Start application with hot module replacement
--   `yarn format` - Formats all the files inside src using prettier with config provided in `.prettierrc`
--   `yarn lint` - Uses eslint to lint all the files inside src with config provided in `.eslintrc.cjs`
--   `yarn orm migration:create` - Uses Mikroorm to create a migration file
--   `yarn orm migration:up` - This command is used to run availablexisting migration files.
--   `yarn orm migration:down` - This command is used to rollback migration.
--   `yarn orm seeder:run` - This command is used to run existing seeders in `src/common/database`.
+- `yarn start` - Start application
+- `yarn start:dev` - Start application in watch mode
+- `yarn start:prod` - Start built application
+- `yarn start:hmr` - Start application with hot module replacement
+- `yarn format` - Formats all the files inside src using prettier with config provided in `.prettierrc`
+- `yarn lint` - Uses eslint to lint all the files inside src with config provided in `.eslintrc.cjs`
+- `yarn orm migration:create` - Uses Mikroorm to create a migration file
+- `yarn orm migration:up` - This command is used to run availablexisting migration files.
+- `yarn orm migration:down` - This command is used to rollback migration.
+- `yarn orm seeder:run` - This command is used to run existing seeders in `src/common/database`.
 
 All the scripts require `NODE_ENV` flag
 
-Additionally, you can also see the scripts in `justfile` which is a cross platform task runner. You can use it by installing [just](https://github.com/casey/just#packages) and then running `just <script>
+Additionally, you can also see the scripts in `justfile` which is a cross platform task runner. You can use it by
+installing [just](https://github.com/casey/just#packages) and then running `just <script>
 
 ---
 
 ## Setup
 
--   First if you don't want to use any libs from like redis, mailer etc. replace them from the app.module.tasks
-    -   You will also need to remove the config from `validate.config.ts` from line ` load: []`
-    -   Also remove the unwanted config variables from the env file
--   Make sure you create a env file under `env` directory with name like `.env.something`.The portion after .env is the `NODE_ENV` value which will be required while running the app
--   Also make sure you have ssl files inside `src/resources/ssl` if you tend to use ssl. Replace the sample files with your ssl files but keep the name same. Additionally
+- First if you don't want to use any libs from like redis, mailer etc. replace them from the app.module.tasks
+    - You will also need to remove the config from `validate.config.ts` from line ` load: []`
+    - Also remove the unwanted config variables from the env file
+- Make sure you create a env file under `env` directory with name like `.env.something`.The portion after .env is
+  the `NODE_ENV` value which will be required while running the app
+- Also make sure you have ssl files inside `src/resources/ssl` if you tend to use ssl. Replace the sample files with
+  your ssl files but keep the name same. Additionally
 
 ## Migration and seeding
 
@@ -155,9 +166,10 @@ Seeding is used to insert data into the database. The seeding files are stored i
 
 ## Start application
 
--   `npx cross-env NODE_ENV=[env name] yarn start`
--   View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
--   View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and password is the values set in the env file under `SWAGGER_USERNAME` and `SWAGGER_PASS` respectively
+- `npx cross-env NODE_ENV=[env name] yarn start`
+- View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
+- View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and
+  password is the values set in the env file under `SWAGGER_USERNAME` and `SWAGGER_PASS` respectively
 
 ## File structure
 
@@ -192,11 +204,14 @@ ultimate-nest
 
 # Authentication
 
-This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and authentication of the token.
+This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using
+the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and
+authentication of the token.
 
 # Deployment
 
-You need to have `docker` and `docker-compose` (not the compose plugin) installed. Also since we are using `makefiles` for deployment, you need to have `make` installed.
+You need to have `docker` and `docker-compose` (not the compose plugin) installed. Also since we are using `makefiles`
+for deployment, you need to have `make` installed.
 
 ```sh
   ENV=dev sh ./scripts/deploy.sh   # deploys dev environment (.env.dev used)

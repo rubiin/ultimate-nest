@@ -7,5 +7,5 @@ export class SubscribeNewsletterDto {
    */
 
   @IsEmailField()
-  email: string;
+    email: string;
 }

@@ -33,16 +33,16 @@ import { EmailSubject, EmailTemplate } from "@common/@types";
 @Injectable()
 export class AuthService {
   constructor(
-@InjectRepository(User)
-private readonly userRepository: BaseRepository<User>,
-@InjectRepository(Protocol)
-private readonly protocolRepository: BaseRepository<Protocol>,
-@InjectRepository(OtpLog)
-private readonly otpRepository: BaseRepository<OtpLog>,
-private readonly tokenService: TokensService,
-private readonly configService: ConfigService<Configs, true>,
-private readonly mailService: MailerService,
-private readonly em: EntityManager,
+        @InjectRepository(User)
+        private readonly userRepository: BaseRepository<User>,
+        @InjectRepository(Protocol)
+        private readonly protocolRepository: BaseRepository<Protocol>,
+        @InjectRepository(OtpLog)
+        private readonly otpRepository: BaseRepository<OtpLog>,
+        private readonly tokenService: TokensService,
+        private readonly configService: ConfigService<Configs, true>,
+        private readonly mailService: MailerService,
+        private readonly em: EntityManager,
   ) {}
 
   /**

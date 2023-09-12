@@ -21,16 +21,16 @@ export class PostService {
 
   constructor(
     private readonly em: EntityManager,
-@InjectRepository(Post)
-private readonly postRepository: BaseRepository<Post>,
-@InjectRepository(User)
-private readonly userRepository: BaseRepository<User>,
-@InjectRepository(Comment)
-private readonly commentRepository: BaseRepository<Comment>,
-@InjectRepository(Tag)
-private readonly tagRepository: BaseRepository<Tag>,
-@InjectRepository(Category)
-private readonly categoryRepository: BaseRepository<Category>,
+        @InjectRepository(Post)
+        private readonly postRepository: BaseRepository<Post>,
+        @InjectRepository(User)
+        private readonly userRepository: BaseRepository<User>,
+        @InjectRepository(Comment)
+        private readonly commentRepository: BaseRepository<Comment>,
+        @InjectRepository(Tag)
+        private readonly tagRepository: BaseRepository<Tag>,
+        @InjectRepository(Category)
+        private readonly categoryRepository: BaseRepository<Category>,
   ) {}
 
   /**

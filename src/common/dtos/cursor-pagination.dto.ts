@@ -10,7 +10,7 @@ import { validationI18nMessage } from "@lib/i18n";
 export class CursorPaginationDto extends PaginationDto {
   @ApiHideProperty()
   @Allow()
-  type: PaginationType.CURSOR = PaginationType.CURSOR;
+    type: PaginationType.CURSOR = PaginationType.CURSOR;
 
   /**
    * The cursor of the page you are requesting
@@ -21,11 +21,11 @@ export class CursorPaginationDto extends PaginationDto {
       type: "base64",
     }),
   })
-  after?: string;
+    after?: string;
 
   /**
    * Results page you want to retrieve (0..N)
    */
   @IsNumberField({ required: false })
-  first = 10;
+    first = 10;
 }
