@@ -15,8 +15,8 @@ export class TwilioService {
   private readonly logger = new Logger(TwilioService.name);
 
   constructor(
-@Inject(MODULE_OPTIONS_TOKEN)
-private readonly options: TwilioModuleOptions,
+        @Inject(MODULE_OPTIONS_TOKEN)
+        private readonly options: TwilioModuleOptions,
   ) {}
 
   /**

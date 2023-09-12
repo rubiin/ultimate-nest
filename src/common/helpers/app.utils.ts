@@ -85,8 +85,8 @@ export const AppUtils = {
       for (const method of methods) {
         if (
           isArray(method.security)
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
-&& method.security.includes(IS_PUBLIC_KEY_META)
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                    && method.security.includes(IS_PUBLIC_KEY_META)
         )
           method.security = [];
       }

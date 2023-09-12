@@ -20,16 +20,16 @@ export class Tag extends BaseEntity {
     index: true,
     unique: true,
   })
-title!: string;
+    title!: string;
 
   @Property({ columnType: "text" })
-description!: string;
+    description!: string;
 
   @Property({ index: true })
-slug?: string;
+    slug?: string;
 
   @ManyToMany(() => Post, post => post.tags)
-posts = new Collection<Post>(this);
+    posts = new Collection<Post>(this);
 
   constructor(partial?: Partial<Tag>) {
     super();

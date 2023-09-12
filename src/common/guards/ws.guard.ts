@@ -11,8 +11,8 @@ import type { JwtPayload } from "@common/@types";
 export class WsJwtGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
-@InjectRepository(User)
-private readonly userRepository: BaseRepository<User>,
+        @InjectRepository(User)
+        private readonly userRepository: BaseRepository<User>,
   ) {}
 
   async canActivate(context: ExecutionContext) {

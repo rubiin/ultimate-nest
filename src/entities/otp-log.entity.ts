@@ -7,22 +7,22 @@ import { BaseEntity } from "@common/database";
 @Entity()
 export class OtpLog extends BaseEntity {
   @Property()
-expiresIn!: Date;
+    expiresIn!: Date;
 
   @Property({
     length: 20,
     index: true,
   })
-otpCode?: string;
+    otpCode?: string;
 
   @ManyToOne({
     eager: false,
     index: true,
   })
-user: Rel<Ref<User>>;
+    user: Rel<Ref<User>>;
 
   @Property()
-isUsed? = false;
+    isUsed? = false;
 
   constructor(partial?: Partial<OtpLog>) {
     super();

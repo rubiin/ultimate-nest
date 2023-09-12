@@ -29,7 +29,7 @@ export class MailProcessor {
       map(
         tap(() =>
           this.logger.log(
-`✅ Sent mail to ${payload.to} with subject ${payload.subject}`,
+                        `✅ Sent mail to ${payload.to} with subject ${payload.subject}`,
           ),
         ),
       ),

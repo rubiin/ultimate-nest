@@ -12,9 +12,9 @@ import type { ProfileData } from "@common/@types";
 @Injectable()
 export class ProfileService {
   constructor(
-@InjectRepository(User)
-private userRepository: BaseRepository<User>,
-private readonly em: EntityManager,
+        @InjectRepository(User)
+        private userRepository: BaseRepository<User>,
+        private readonly em: EntityManager,
   ) {}
 
   /**
@@ -28,7 +28,7 @@ private readonly em: EntityManager,
    */
   getProfileByUsername(
     username: string,
-populate: AutoPath<User, keyof User>[] = [],
+        populate: AutoPath<User, keyof User>[] = [],
   ): Observable<User> {
     return from(
       this.userRepository.findOne(

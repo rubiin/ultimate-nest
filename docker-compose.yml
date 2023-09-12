@@ -172,7 +172,7 @@ services:
             - database
 
         restart: unless-stopped
-        command: npm run start:dev
+        command: npm run start
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.nestify.rule=Host(`${API_URL}`)"

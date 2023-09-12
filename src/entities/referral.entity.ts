@@ -9,14 +9,14 @@ export class Referral extends BaseEntity {
   @ManyToOne({
     index: true,
   })
-referrer: Rel<Ref<User>>;
+    referrer: Rel<Ref<User>>;
 
   @Property({
     index: true,
   })
-mobileNumber: string;
+    mobileNumber: string;
 
   @Index()
   @Enum(() => ReferralStatus)
-status = ReferralStatus.PENDING;
+    status = ReferralStatus.PENDING;
 }

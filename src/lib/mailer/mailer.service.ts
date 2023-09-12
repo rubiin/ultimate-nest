@@ -25,8 +25,8 @@ export class MailerService {
   private readonly adapter: Adapter;
 
   constructor(
-@Inject(MODULE_OPTIONS_TOKEN)
-private readonly options: MailModuleOptions,
+        @Inject(MODULE_OPTIONS_TOKEN)
+        private readonly options: MailModuleOptions,
   ) {
     // render template
 

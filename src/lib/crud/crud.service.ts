@@ -2,25 +2,17 @@ import type { EntityData, FilterQuery, RequiredEntityData } from "@mikro-orm/cor
 import { NotFoundException } from "@nestjs/common";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
-import type {
-  Crud,
-  PaginationRequest,
-  PaginationResponse,
-} from "@common/@types";
-import {
-  CursorType,
-  PaginationType,
-  QueryOrder,
-} from "@common/@types";
+import type { Crud, PaginationRequest, PaginationResponse } from "@common/@types";
+import { CursorType, PaginationType, QueryOrder } from "@common/@types";
 import type { BaseEntity, BaseRepository } from "@common/database";
 import type { User } from "@entities";
 import { translate } from "@lib/i18n";
 
 export abstract class BaseService<
-Entity extends BaseEntity,
-PRequest extends PaginationRequest,
-CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
-UpdateDto extends EntityData<Entity> = EntityData<Entity>,
+    Entity extends BaseEntity,
+    PRequest extends PaginationRequest,
+    CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
+    UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > implements Crud<Entity, PRequest> {
   protected searchField: keyof Entity;
   protected queryName = "entity";

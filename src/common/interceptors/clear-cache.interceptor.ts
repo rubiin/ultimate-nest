@@ -13,6 +13,7 @@ import { CacheService } from "@lib/cache";
 @Injectable()
 export class ClearCacheInterceptor implements NestInterceptor {
   constructor(private readonly cacheService: CacheService) {}
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       tap(() => {
@@ -21,8 +22,8 @@ export class ClearCacheInterceptor implements NestInterceptor {
 
         if (
           request.method !== "GET"
-&& response.statusCode >= 200
-&& response.statusCode < 300
+                    && response.statusCode >= 200
+                    && response.statusCode < 300
         )
           return from(this.cacheService.resetCache());
 

@@ -1,17 +1,21 @@
 {
-	"moduleFileExtensions": ["js", "json", "ts"],
-	"rootDir": ".",
-	"testEnvironment": "node",
-	"testTimeout": 30000,
-	"testRegex": ".e2e-spec.ts$",
-	"transform": {
-		"^.+\\.(t|j)s$": "@swc/jest"
-	},
-	"runtime": "@side/jest-runtime",
-	"moduleNameMapper": {
-		"^@entities": "<rootDir>/../src/entities/index",
-		"^@common/(.*)$": "<rootDir>/../src/common/$1",
-		"^@modules/(.*)$": "<rootDir>/../src/modules/$1",
-		"^@lib/(.*)$": "<rootDir>/../src/lib/$1"
-	}
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testTimeout": 30000,
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "@swc/jest"
+  },
+  "runtime": "@side/jest-runtime",
+  "moduleNameMapper": {
+    "^@entities": "<rootDir>/../src/entities/index",
+    "^@common/(.*)$": "<rootDir>/../src/common/$1",
+    "^@modules/(.*)$": "<rootDir>/../src/modules/$1",
+    "^@lib/(.*)$": "<rootDir>/../src/lib/$1"
+  }
 }

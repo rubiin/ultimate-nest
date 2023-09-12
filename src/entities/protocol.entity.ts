@@ -6,16 +6,16 @@ import { BaseEntity } from "@common/database";
 @Entity()
 export class Protocol extends BaseEntity {
   @Property()
-loginAttemptnumbererval!: number;
+    loginAttemptnumbererval!: number;
 
   @Property()
-loginnumberervalUnit!: string;
+    loginnumberervalUnit!: string;
 
   @Property()
-loginMaxRetry!: number;
+    loginMaxRetry!: number;
 
   @Property()
-otpExpiryInMinutes!: number;
+    otpExpiryInMinutes!: number;
 
   constructor(partial?: Partial<Protocol>) {
     super();
