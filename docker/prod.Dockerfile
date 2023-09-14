@@ -1,5 +1,5 @@
 ## ===========================================================> The common stage
-FROM node:20.6.0-slim AS base
+FROM node:20.6.1-slim AS base
 
 RUN npm i -g pnpm
 ## https://engineeringblog.yelp.com/2016/01/dumb-init-an-init-for-docker.html
