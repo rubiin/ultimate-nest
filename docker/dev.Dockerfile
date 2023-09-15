@@ -2,7 +2,8 @@ FROM node:20.6.1-slim
 WORKDIR /usr/src/app
 RUN npm i -g pnpm
 # pnpm fetch does require only lockfile
-COPY pnpm-lock.yaml ./
+COPY pnpm-lock.yaml package.json ./
 RUN --mount=type=cache,id=pnpm,target=/usr/app/.pnpm-store/v3 pnpm fetch
-COPY package.json ./
+# add source code
+COPY . ./
 RUN pnpm install --offline --shamefully-hoist=true --frozen-lockfile
