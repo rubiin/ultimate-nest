@@ -2,7 +2,7 @@ version:
     "3.8"
 
     #######################################
-    # Basic needed services
+    # Basic needed services               #
     #######################################
 
 services:
@@ -182,13 +182,11 @@ services:
             - "traefik.http.routers.nestify.tls.certresolver=certresolver"
             - "traefik.http.routes.nestify.middlewares=traefik-headers,traefik-compress,traefik-ratelimit,traefik-retry"
 
-
         stdin_open: true
         tty: true
         networks:
             - nestify-network
         volumes:
-            - .:/usr/src/app
             - /usr/src/app/node_modules
 
 # RabbitMQ service
