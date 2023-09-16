@@ -33,11 +33,11 @@
     "typescript"
   ],
   "scripts": {
-    "prebuild": "rimraf dist",
-    "env": "cd env; npx  sample-env --env .env.dev",
     "build": "nest build",
     "lint": "eslint '{src,test}/**/*.ts' --cache",
     "lint:fix": "eslint '{src,test}/**/*.ts' --cache --fix",
+    "prebuild": "rimraf dist",
+    "sample": "cd env; npx  sample-env --env .env.dev",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:hmr": "nest build --watch --webpack --webpackPath webpack-hmr.js",

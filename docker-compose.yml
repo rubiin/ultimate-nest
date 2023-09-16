@@ -2,7 +2,7 @@ version:
     "3.8"
 
     #######################################
-    # Basic needed services               #
+    #       Basic needed services         #
     #######################################
 
 services:
@@ -14,8 +14,6 @@ services:
         container_name: redis
         restart: unless-stopped
         env_file: env/.env.${ENV}
-        ports:
-            - "6379:6379"
         command: redis-server --loglevel warning --requirepass DwaLbTL84QaA
         volumes:
             - redis-data:/data
@@ -39,8 +37,6 @@ services:
             - database
         networks:
             - nestify-network
-        ports:
-            - "8091:8081"
         healthcheck:
             test: nc -vz 127.0.0.1 8081
             interval: 10s
@@ -62,8 +58,6 @@ services:
             - traefik
         networks:
             - nestify-network
-        ports:
-            - "5432:5432"
         volumes:
             - ./postgres-data:/var/lib/postgresql/data/
         healthcheck:
@@ -196,18 +190,15 @@ services:
         image: rabbitmq:3.12.4-management-alpine
         env_file: env/.env.${ENV}
         restart: unless-stopped
-        networks:
-            - nestify-network
         depends_on:
             - traefik
         environment:
             - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
             - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-        ports:
-            - "5672:5672"
-            - "15672:15672"
         volumes:
             - rabbitmq-data:/var/lib/rabbitmq/mnesia/
+        networks:
+            - nestify-network
         healthcheck:
           test: rabbitmq-diagnostics check_port_connectivity
           interval: 30s
