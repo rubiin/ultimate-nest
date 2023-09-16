@@ -28,7 +28,7 @@ export class Cluster {
     }
     else {
       main().catch((error: Error) => {
-        console.error(error);
+        this.loggerService.error(error);
       });
     }
   }
