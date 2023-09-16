@@ -20,6 +20,8 @@ import { AppUtils, HelperService } from "@common/helpers";
 
 declare const module: { hot: { accept: () => void; dispose: (argument0: () => Promise<void>) => void } };
 
+const logger = new Logger("Bootstrap");
+
 const bootstrap = async () => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
     logger: await createLogger(),
@@ -27,8 +29,6 @@ const bootstrap = async () => {
   });
 
   const configService = app.get(ConfigService<Configs, true>);
-
-  const logger = new Logger("Bootstrap");
 
   // =========================================================
   // configure swagger
@@ -113,5 +113,5 @@ const bootstrap = async () => {
 };
 
 (async () => await bootstrap())().catch((error) => {
-  console.error(error);
+  logger.error(error);
 });
