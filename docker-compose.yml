@@ -116,10 +116,12 @@ services:
             - "traefik.http.middlewares.traefik-ratelimit.ratelimit.period=1m" # Set rate limit evaluation period to 1 minute
             - "traefik.http.middlewares.traefik-retry.retry.attempts=4" # Allow up to 4 retry attempts
             - "traefik.http.middlewares.traefik-retry.retry.initialinterval=100ms" # Set initial retry interval to 100 milliseconds
-            # - "traefik.http.middlewares.security-headers.headers.accesscontrolallowmethods=*" # Allow specified HTTP methods
-            # - "traefik.http.middlewares.security-headers.headers.accesscontrolalloworiginlist=*" # Allow specified HTTP methods
-            # - "traefik.http.middlewares.security-headers.headers.accesscontrolmaxage=100" # Set value for Access-Control-Max-Age header
-            # - "traefik.http.middlewares.security-headers.headers.addvaryheader=true" # Add Vary header to responses
+            # - "traefik.http.middlewares.security-headers.headers.accesscontrolallowmethods=GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS" # Allow specified HTTP methods
+            # - "traefik.http.middlewares.security-headers.headers.accesscontrolalloworiginlist=*" # Allow specified HTTP origin list
+            # - "traefik.http.middlewares.security-headers.headers.accessControlAllowCredentials=true" # Add control allow credentials header
+            # - "traefik.http.middlewares.security-headers.headers.accesscontrolallowheaders=*" # Add control allow credentials header
+            # - "traefik.http.middlewares.security-headers.headers.accesscontrolmaxage=3600" # Set value for Access-Control-Max-Age header
+            # - "traefik.http.middlewares.security-headers.headers.addvaryheader=true" # Add Vary header to responses 
             - "traefik.http.middlewares.security-headers.headers.framedeny=true" # Enable frame denial for clickjacking protection
             - "traefik.http.middlewares.security-headers.headers.contenttypenosniff=true" # Enable Content-Type nosniff
             - "traefik.http.middlewares.security-headers.headers.browserxssfilter=false" # Enable browser XSS filter
