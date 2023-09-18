@@ -18,7 +18,7 @@ import { AppModule } from "./app.module";
 import { createLogger } from "@lib/pino/app.logger";
 import { AppUtils, HelperService } from "@common/helpers";
 
-declare const module: { hot: { accept: () => void; dispose: (argument0: () => Promise<void>) => void } };
+declare const module: { hot: { accept: () => void; dispose: (argument: () => Promise<void>) => void } };
 
 const logger = new Logger("Bootstrap");
 
@@ -47,14 +47,17 @@ const bootstrap = async () => {
     bodyParser.json({ limit: "10mb" }),
     bodyParser.urlencoded({ limit: "10mb", extended: true }),
   );
-  app.use(helmet());
-  app.use(compression());
-  app.enableCors({
-    credentials: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    maxAge: 3600,
-    origin: configService.get("app.allowedOrigins", { infer: true }),
-  });
+
+  if (!HelperService.isProd()) {
+    app.use(compression());
+    app.use(helmet());
+    app.enableCors({
+      credentials: true,
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      maxAge: 3600,
+      origin: configService.get("app.allowedOrigins", { infer: true }),
+    });
+  }
 
   // =====================================================
   // configure global pipes, filters, interceptors
