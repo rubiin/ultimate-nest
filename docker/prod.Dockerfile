@@ -3,7 +3,7 @@ FROM node:20.6.1-slim AS base
 
 RUN npm i -g pnpm
 ## https://engineeringblog.yelp.com/2016/01/dumb-init-an-init-for-docker.html
-RUN apt-get update && apt-get install -y dumb-init wget
+RUN apt-get update && apt-get install -y dumb-init curl
 
 ## ======================================================> The deps image stage
 FROM base AS dependencies
@@ -28,14 +28,6 @@ RUN ( wget -q -O /dev/stdout https://gobinaries.com/tj/node-prune | sh ) \
 
 ## ======================================================> The production image stage
 FROM base AS deploy
-
-ARG PORT=8000
-ENV PORT=$PORT
-EXPOSE $PORT
-
-
-HEALTHCHECK --interval=10m --timeout=5s --retries=3 \
-        CMD wget --no-verbose --tries=1 --spider http://localhost:$PORT || exit 1
 
 WORKDIR /app
 COPY --from=build /app/dist/ ./dist/
