@@ -1,4 +1,4 @@
-FROM node:20.6.1-slim
+FROM node:20.7.0-slim
 WORKDIR /usr/src/app
 RUN npm i -g pnpm
 # pnpm fetch does require only lockfile
