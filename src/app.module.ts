@@ -8,8 +8,10 @@ import { ClearCacheInterceptor, HttpCacheInterceptor } from "@common/interceptor
 import { ClearCacheMiddleware, RealIpMiddleware } from "@common/middlewares";
 import { NestCacheModule } from "@lib/cache";
 import { SharedModule } from "@modules/shared/shared.module";
+import { AppController } from "app.controller";
 
 @Module({
+  controllers: [AppController],
   imports: [SharedModule, NestCacheModule],
   providers: [
     {

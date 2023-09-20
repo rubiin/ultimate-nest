@@ -121,7 +121,7 @@ services:
             # - "traefik.http.middlewares.security-headers.headers.accessControlAllowCredentials=true" # Add control allow credentials header
             # - "traefik.http.middlewares.security-headers.headers.accesscontrolallowheaders=*" # Add control allow credentials header
             # - "traefik.http.middlewares.security-headers.headers.accesscontrolmaxage=3600" # Set value for Access-Control-Max-Age header
-            # - "traefik.http.middlewares.security-headers.headers.addvaryheader=true" # Add Vary header to responses 
+            # - "traefik.http.middlewares.security-headers.headers.addvaryheader=true" # Add Vary header to responses
             - "traefik.http.middlewares.security-headers.headers.framedeny=true" # Enable frame denial for clickjacking protection
             - "traefik.http.middlewares.security-headers.headers.contenttypenosniff=true" # Enable Content-Type nosniff
             - "traefik.http.middlewares.security-headers.headers.browserxssfilter=false" # Enable browser XSS filter
@@ -184,6 +184,13 @@ services:
             - nestify-network
         volumes:
             - /usr/src/app/node_modules
+
+        healthcheck:
+          test:  curl --fail http://localhost:3000 || exit 1  
+          interval: 30s
+          timeout: 30s
+          retries: 10
+
 
 # RabbitMQ service
 # This service runs the RabbitMQ message broker
