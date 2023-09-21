@@ -6,8 +6,8 @@ import { JwtAuthGuard } from "@common/guards";
 import { PoliciesGuard } from "@lib/casl/policies.guard";
 
 interface AuthGuard {
-  guards?: Type<CanActivate>[];
-  unauthorizedResponse?: string;
+  guards?: Type<CanActivate>[]
+  unauthorizedResponse?: string
 }
 
 /**

@@ -8,7 +8,7 @@ module.exports = defineConfig({
         project: "tsconfig.json",
     },
     ignorePatterns: ["migrations", "src/generated", "**/*.spec.ts", "**/*.e2e.ts"], // optimize this
-    extends: ["@rubiin/eslint-config-typescript"],
+    extends: ["@rubiin/eslint-config-ts"],
     root: true,
     settings: {
         "import/resolver": {

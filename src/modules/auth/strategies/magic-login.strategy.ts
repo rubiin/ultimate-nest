@@ -10,10 +10,10 @@ import type { User } from "@entities";
 import { EmailSubject, EmailTemplate } from "@common/@types";
 
 interface MagicLoginPayload {
-  destination: string;
-  code: string;
-  iat: number;
-  exp: number;
+  destination: string
+  code: string
+  iat: number
+  exp: number
 }
 
 @Injectable()

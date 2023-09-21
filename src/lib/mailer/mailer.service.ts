@@ -14,8 +14,8 @@ import { EtaAdapter, HandlebarsAdapter, PugAdapter } from "./adapters";
 import { Server, TemplateEngine } from "@common/@types";
 
 interface MailOptions extends Partial<SendMailOptions> {
-  template: string;
-  replacements: Record<string, any>;
+  template: string
+  replacements: Record<string, any>
 }
 
 @Injectable()

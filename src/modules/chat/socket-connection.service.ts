@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import type { User } from "@entities";
 
 interface SocketConnection {
-  connectedUser: User;
-  socketId: string;
+  connectedUser: User
+  socketId: string
 }
 
 @Injectable()

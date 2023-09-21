@@ -34,18 +34,23 @@ export const HelperService = {
     };
   },
 
-  verifyHash(userPassword: string, passwordToCompare: string): Observable<boolean> {
-    return from(verify(userPassword, passwordToCompare, argon2Options));
-  },
-
+  /* The `isDev()` function is checking if the value of the `NODE_ENV` environment variable starts with
+the string "dev". It returns `true` if the environment is set to development, and `false` otherwise.
+This function is used to determine if the application is running in a development environment. */
   isDev(): boolean {
     return process.env.NODE_ENV.startsWith("dev");
   },
 
+  /* The `isProd()` function is checking if the value of the `NODE_ENV` environment variable starts with
+the string "prod". It returns `true` if the environment is set to production, and `false` otherwise.
+This function is used to determine if the application is running in a production environment. */
   isProd(): boolean {
     return process.env.NODE_ENV.startsWith("prod");
   },
 
+  /* The `getAppRootDir()` function is used to determine the root directory of the application. It starts
+by setting the `currentDirectory` variable to the value of `__dirname`, which represents the current
+directory of the module. */
   getAppRootDir() {
     let currentDirectory = __dirname;
 
@@ -55,12 +60,24 @@ export const HelperService = {
     return process.env.NODE_ENV === "prod" ? join(currentDirectory, "dist") : currentDirectory;
   },
 
+  /* The `formatSearch` function is used to format a search string for use in a database query. */
   formatSearch(search: string): string {
     return `%${search.trim().replaceAll("\n", " ").replaceAll(/\s\s+/g, " ").toLowerCase()}%`;
   },
 
+  /* The `hashString` function is used to hash a user's password using the Argon2 algorithm. It takes a
+user's password as input and returns a promise that resolves to the hashed password as a string. The
+`hash` function from the `argon2` library is used to perform the actual hashing, with the
+`userPassword` and `argon2Options` as the input parameters. */
   hashString(userPassword: string): Promise<string> {
     return hash(userPassword, argon2Options);
+  },
+
+  /* The `verifyHash` function is used to compare a user's input password with a hashed password. It
+takes two parameters: `userPassword`, which is the user's input password, and `passwordToCompare`,
+which is the hashed password to compare against. */
+  verifyHash(userPassword: string, passwordToCompare: string): Observable<boolean> {
+    return from(verify(userPassword, passwordToCompare, argon2Options));
   },
 
   /* The `generateThumb` function takes an input image as a `Buffer` and a configuration object
