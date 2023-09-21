@@ -2,7 +2,7 @@ import { capitalize } from "helper-fns";
 import { readPackageSync } from "read-pkg";
 
 export const REQUEST_ID_TOKEN_HEADER = "x-request-id";
-export const VERSION_VALIDATION_MESSAGE = 'Version must start with "v" followed by a number.';
+export const VERSION_VALIDATION_MESSAGE = "Version must start with \"v\" followed by a number.";
 
 // TODO: Move messages to a i18n file
 

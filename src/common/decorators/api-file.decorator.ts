@@ -11,13 +11,13 @@ import type {
 } from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
 
 interface ApiFileOptions {
-  fieldName?: string;
-  required?: boolean;
-  localOptions?: MulterOptions;
+  fieldName?: string
+  required?: boolean
+  localOptions?: MulterOptions
 }
 
 interface ApiFilesOptions extends ApiFileOptions {
-  maxCount?: number;
+  maxCount?: number
 }
 
 /**

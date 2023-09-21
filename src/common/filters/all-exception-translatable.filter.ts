@@ -11,8 +11,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const statusCode = exception.getStatus();
 
     let message = exception.getResponse() as {
-      key: string;
-      args: Record<string, any>;
+      key: string
+      args: Record<string, any>
     };
 
     message = I18nContext.current()!.t(message.key, {

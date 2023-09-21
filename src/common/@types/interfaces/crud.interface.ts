@@ -17,13 +17,13 @@ export interface Crud<
     CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
     UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > {
-  findAll(query: PaginationRequest): Observable<PaginationResponse<Entity>>;
+  findAll(query: PaginationRequest): Observable<PaginationResponse<Entity>>
 
-  findOne(index: string): Observable<Entity>;
+  findOne(index: string): Observable<Entity>
 
-  create(body: CreateDto, user?: User): Observable<Entity>;
+  create(body: CreateDto, user?: User): Observable<Entity>
 
-  update(index: string, body: UpdateDto): Observable<Entity>;
+  update(index: string, body: UpdateDto): Observable<Entity>
 
-  remove(index: string): Observable<Entity>;
+  remove(index: string): Observable<Entity>
 }

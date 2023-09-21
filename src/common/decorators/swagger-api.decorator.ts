@@ -3,12 +3,12 @@ import { applyDecorators } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 
 interface SwaggerResponseOptions<T, K> {
-  operation: string;
-  params?: string[];
-  notFound?: string;
-  badRequest?: string;
-  body?: Type<T>;
-  response?: Type<K>;
+  operation: string
+  params?: string[]
+  notFound?: string
+  badRequest?: string
+  body?: Type<T>
+  response?: Type<K>
 }
 
 export const SwaggerResponse = ({

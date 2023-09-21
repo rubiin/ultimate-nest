@@ -45,8 +45,8 @@ export class OffsetMeta {
     pageOptionsDto,
                     itemCount,
   }: {
-    pageOptionsDto: OffsetPaginationDto;
-    itemCount: number;
+    pageOptionsDto: OffsetPaginationDto
+    itemCount: number
   }) {
     this.page = pageOptionsDto.page;
     this.limit = pageOptionsDto.limit;

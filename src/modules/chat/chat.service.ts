@@ -7,8 +7,8 @@ import { Conversation, Message } from "@entities";
 import { BaseRepository } from "@common/database";
 
 interface IConversation {
-  users: User[];
-  message: string;
+  users: User[]
+  message: string
 }
 
 @Injectable()
