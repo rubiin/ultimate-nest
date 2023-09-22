@@ -37,9 +37,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
   /**
    * The exists function checks if there are any records that match the given filter query.
-   * @param where - The `where` parameter is a filter query that specifies the conditions for the
-   * existence check. It is used to filter the records in the database and determine if any records match
-   * the specified conditions.
+   * @param where - The `where` parameter is a filter query that specifies the conditions for the existence check.
    * @returns The method is returning an Observable of type boolean.
    */
   exists(where: FilterQuery<T>): Observable<boolean> {
@@ -55,8 +53,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   *
-   *
+   * The softRemove function soft deletes the entity and persists the changes to the database.
    * @param entity - The entity to be removed
    * @returns The entityManager
    */
@@ -69,7 +66,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   *  soft remove
+   * Soft removes the entity and flushes the changes to the database.
    * @param entity - The entity to be removed
    * @returns observable of the removed entity
    */
@@ -81,10 +78,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * Replace the return value of {@link EntityRepository.findAndCount} with an
-   * object.
-   * @param where - FilterQuery<T>
-   * @param options - FindOptions<T, Populate>
+   * Replaces the entity with the given entity and persists the changes to the database.
+   * @param where - The where clause to use for the update
+   * @param options - The options to use for the update
    * @returns An object containing the total number of entities and the entities
    */
   findAndPaginate<Populate extends string = never>(
@@ -134,8 +130,8 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * It finds an entity by the given `where` clause, and if it exists, it deletes it
-   * @param where - FilterQuery<T>
+   * It finds an entity by the given `where` clause, and if it exists, it deletes it.
+   * @param where - This is the where clause to use for the delete.
    * @returns The entity that was deleted
    */
   findAndDelete(where: FilterQuery<T>): Observable<T> {
@@ -159,8 +155,8 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * It finds an entity by the given `where` clause, and if it exists, it soft deletes it
-   * @param where - FilterQuery<T>
+   * It finds an entity by the given `where` clause, and if it exists, it soft deletes it.
+   * @param where - This is the where clause to use for the soft delete.
    * @returns The entity that was soft deleted.
    */
   findAndSoftDelete(where: FilterQuery<T>): Observable<T> {
@@ -183,7 +179,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * Gets the where clause filter logic for the query builder pagination
+   * Gets the where clause filter logic for the query builder pagination methods.
    * @param cursor - The cursor to use for the pagination
    * @param decoded - The decoded cursor
    * @param order - The order to use for the pagination
@@ -202,7 +198,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * Takes a base64 cursor and returns the string or number value
+   * Takes a base64 cursor and returns the string or number value of it.
    * @param cursor - The base64 cursor
    * @param cursorType - The type of the cursor
    * @returns The decoded cursor
@@ -237,7 +233,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * Takes a date, string or number and returns the base64 representation of it
+   * Takes a date, string or number and returns the base64 representation of it.
    * @param value - The value to encode
    * @returns The base64 encoded value
    */
@@ -338,7 +334,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * Takes a query builder and returns the entities paginated using cursor pagination
+   * Takes a query builder and returns the entities paginated using cursor pagination.
    * @param dto - An object containing two properties
    * @returns An Observable of CursorPaginationResponse, which contains the results of a query with
    */
@@ -430,14 +426,14 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     });
   }
 
-  paginateCursor<T>({
-    instances,
-                          currentCount,
-                          previousCount,
-                          cursor,
-                          first,
-                          search,
-  }: PaginateOptions<T>): CursorPaginationResponse<T> {
+  /**
+   * The `paginateCursor` function takes in a DTO and returns a paginated response with metadata such as the next cursor,
+   * whether there are previous or next pages, and the search term.
+   * @param dto - The `dto` parameter is an object that contains the following properties:
+   * @returns The function `paginateCursor` returns an object of type `CursorPaginationResponse<T>`.
+   */
+  private paginateCursor<T>(dto: PaginateOptions<T>): CursorPaginationResponse<T> {
+    const { instances, currentCount, previousCount, cursor, first, search } = dto;
     const pages: CursorPaginationResponse<T> = {
       data: instances,
       meta: {
@@ -461,8 +457,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * Takes an entity repository and a FilterQuery and returns the paginated
-   * entities
+   * Takes an entity repository and a FilterQuery and returns the paginated entities
    * @param cursor - The cursor to use for the pagination
    * @param first - The number of entities to return
    * @param order - The order to use for the pagination
