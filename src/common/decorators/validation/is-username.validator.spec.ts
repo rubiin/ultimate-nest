@@ -1,11 +1,11 @@
 import {Validator} from 'class-validator';
-import {IsUsername} from './is-username.validator';
+import {IsUsernameField} from './is-username.validator';
 
 const validator = new Validator();
 
 describe('IsUserName', () => {
     class MyClass {
-        @IsUsername()
+        @IsUsernameField()
         username: string;
     }
 

@@ -1,10 +1,10 @@
 import { applyDecorators } from "@nestjs/common";
 import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
-import type { EnumFieldOptions as UUIDFieldOptions } from "@common/@types";
+import type { UUIDFieldOptions } from "@common/@types";
 import { validationI18nMessage } from "@lib/i18n";
 
 /**
- * It's a decorator that validates that the field is an uuid value
+ * It's a decorator that validates that the field is an uuid value (v4) or an array of uuid values (v4)
  * @param options_ - UUIDFieldOptions
  * @returns A decorator function that takes in a target, propertyKey, and descriptor.
  */

@@ -1,11 +1,11 @@
-import {Validator} from 'class-validator';
-import {IsPassword} from './is-password.validator';
+import { Validator } from 'class-validator';
+import { IsPasswordField } from './is-password.validator';
 
 const validator = new Validator();
 
 describe('IsPassword', () => {
     class MyClass {
-        @IsPassword()
+        @IsPasswordField()
         password: string;
     }
 

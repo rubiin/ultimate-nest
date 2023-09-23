@@ -24,14 +24,16 @@ export interface NumberFieldOptions extends BaseValidator, BaseArrayValidator {
   positive?: boolean
 }
 
-export type MinMaxLengthOptions = Pick<StringFieldOptions, "each" | "minLength" | "maxLength">;
-
 export interface FileValidator {
   fileType?: RegExp | string
   fileSize?: number
   required?: boolean
 }
 
+export type MinMaxLengthOptions = Pick<StringFieldOptions, "each" | "minLength" | "maxLength">;
+
 export type DateFieldOptions = BaseValidator & BaseArrayValidator;
 
 export type EnumFieldOptions = DateFieldOptions;
+export type EmailFieldOptions = DateFieldOptions;
+export type UUIDFieldOptions = DateFieldOptions;

@@ -25,7 +25,7 @@ class IsEqualToConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export const IsEqualTo = (
+export const IsEqualToField = (
   property: string,
   validationOptions?: ValidationOptions,
 ): PropertyDecorator => {
