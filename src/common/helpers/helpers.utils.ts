@@ -60,10 +60,6 @@ directory of the module. */
     return process.env.NODE_ENV === "prod" ? join(currentDirectory, "dist") : currentDirectory;
   },
 
-  /* The `formatSearch` function is used to format a search string for use in a database query. */
-  formatSearch(search: string): string {
-    return `%${search.trim().replaceAll("\n", " ").replaceAll(/\s\s+/g, " ").toLowerCase()}%`;
-  },
 
   /* The `hashString` function is used to hash a user's password using the Argon2 algorithm. It takes a
 user's password as input and returns a promise that resolves to the hashed password as a string. The
