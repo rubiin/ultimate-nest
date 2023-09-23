@@ -205,7 +205,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    */
   decodeCursor(
     cursor: string,
-        cursorType: CursorType = CursorType.STRING,
+    cursorType: CursorType = CursorType.STRING,
   ): string | number | Date {
     const string = Buffer.from(cursor, this.encoding).toString("utf8");
 
@@ -474,7 +474,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     repo: EntityRepository<T>,
     where: FilterQuery<T>,
     after?: string,
-        afterCursor: CursorType = CursorType.STRING,
+    afterCursor: CursorType = CursorType.STRING,
   ): Promise<CursorPaginationResponse<T>> {
     let previousCount = 0;
 
