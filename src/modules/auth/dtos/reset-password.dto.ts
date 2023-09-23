@@ -1,6 +1,6 @@
 import { PickType } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
-import { IsEqualTo, IsPassword, IsStringField } from "@common/decorators";
+import { IsEqualToField, IsPasswordField, IsStringField } from "@common/decorators";
 import { validationI18nMessage } from "@lib/i18n";
 
 export class ResetPasswordDto {
@@ -18,8 +18,7 @@ export class ResetPasswordDto {
    * New password of user
    * @example SomeThingNew7^#%
    */
-  @IsStringField({ minLength: 8, maxLength: 50 })
-  @IsPassword({ message: validationI18nMessage("validation.isPassword") })
+  @IsPasswordField({ message: validationI18nMessage("validation.isPassword") })
     password!: string;
 
   /**
@@ -28,7 +27,7 @@ export class ResetPasswordDto {
    */
 
   @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
-  @IsEqualTo("password")
+  @IsEqualToField("password")
     confirmPassword!: string;
 }
 
@@ -40,6 +39,6 @@ export class ChangePasswordDto extends PickType(ResetPasswordDto, [
    * Password of user
    * @example SomeThingNew7^#%
    */
-  @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
+  @IsPasswordField({ message: validationI18nMessage("validation.isPassword") })
     oldPassword!: string;
 }

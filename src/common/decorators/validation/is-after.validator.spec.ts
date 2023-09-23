@@ -1,5 +1,5 @@
 import {Validator} from 'class-validator';
-import {IsAfter} from './is-after.validator';
+import {IsAfterField} from './is-after.validator';
 
 const validator = new Validator();
 
@@ -7,7 +7,7 @@ describe('IsAfter', () => {
     class MyClass {
         startDate!: Date;
 
-        @IsAfter('startDate')
+        @IsAfterField('startDate')
         endDate!: Date;
     }
 

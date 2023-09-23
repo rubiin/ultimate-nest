@@ -4,7 +4,7 @@ import { Roles } from "@common/@types";
 import {
   IsEmailField,
   IsEnumField,
-  IsPassword,
+  IsPasswordField,
   IsStringField,
   IsUnique,
   IsUsernameField,
@@ -85,8 +85,7 @@ export class CreateUserDto {
    * @example SomePassword@123
    */
 
-  @IsStringField({ minLength: 8, maxLength: 50 })
-  @IsPassword({ message: validationI18nMessage("validation.isPassword") })
+  @IsPasswordField({ message: validationI18nMessage("validation.isPassword") })
     password!: string;
 
   /**

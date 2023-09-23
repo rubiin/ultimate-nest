@@ -10,12 +10,12 @@ Most decorators are combination of multiple decorators to make code more lesser
 | `@IsNumberField(options?:IsNumberFieldOptions)`  | Checks if given value is number, is required and has supplied min and max value       |
 | `@IsStringField(options?: IsStringFieldOptions)` | Checks if given value is string, is required and has supplied minlength and maxlength |
 | `@IsEnumField(options?: IsEnumFieldOptions)`     | Checks if value is an enum and is required                                            |
-| `@IsAfter(value)`                                | Checks if given date is after the passed date                                         |
+| `@IsAfterDateField(value)`                       | Checks if given date is after the passed date                                         |
 | `@IsDateInFormat(format)`                        | Checks if date string is in provided date format                                      |
-| `@IsEqualTo(value)`                              | Checks if value is in equal to the passed value                                       |
+| `@IsEqualToField(value)`                         | Checks if value is in equal to the passed value                                       |
 | `@IsGreaterThan(values)`                         | Checks if value is greater than the passed number value                               |
-| `@IsPassword()`                                  | Checks if value is a valid password                                                   |
-| `@IsUsername()`                                  | Checks if value is a valid username                                                   |
+| `@IsPasswordField()`                             | Checks if value is a valid password                                                   |
+| `@IsUsernameField()`                             | Checks if value is a valid username                                                   |
 | `@IsProfane()`                                   | Checks if value has curse words                                                       |
 | `@IsUnique()`                                    | Checks if value is unique. Queries database to do so.                                 |
 | `@UUIDParam(value)`                              | Checks if passed param is a valid uuid v4                                             |

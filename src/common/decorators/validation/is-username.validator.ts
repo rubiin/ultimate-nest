@@ -50,14 +50,14 @@ export const IsUsername = (validationOptions?: ValidationOptions): PropertyDecor
   };
 };
 
-export const IsUsernameField = (validationOptions?: ValidationOptions) => {
+export const IsUsernameField = (validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number } ) => {
   return applyDecorators(
     IsNotEmpty({
       message: validationI18nMessage("validation.isNotEmpty"),
     }),
     MinMaxLength({
-      minLength: 5,
-      maxLength: 20,
+      minLength: validationOptions.minLength ?? 5,
+      maxLength: validationOptions.maxLength ?? 50,
     }),
     IsUsername(validationOptions),
   );

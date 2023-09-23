@@ -1,13 +1,13 @@
 import {Validator} from 'class-validator';
-import {IsEqualTo} from './is-equal-to.validator';
+import {IsEqualToField} from './is-equal-to.validator';
 
 const validator = new Validator();
 
-describe('IsEqualTo', () => {
+describe('IsEqualToField', () => {
     class MyClass {
         password!: string;
 
-        @IsEqualTo('password')
+        @IsEqualToField('password')
         confirmPassword!: string;
     }
 

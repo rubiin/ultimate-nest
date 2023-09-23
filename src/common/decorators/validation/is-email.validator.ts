@@ -1,7 +1,7 @@
 import { applyDecorators } from "@nestjs/common";
 import { ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsOptional } from "class-validator";
 import { Transform } from "class-transformer";
-import type { EnumFieldOptions as EmailFieldOptions } from "@common/@types";
+import type { EmailFieldOptions } from "@common/@types";
 import { validationI18nMessage } from "@lib/i18n";
 
 export const IsEmailField = (options_?: EmailFieldOptions) => {

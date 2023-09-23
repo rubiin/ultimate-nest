@@ -40,3 +40,15 @@ export const IsAfter = (
     });
   };
 };
+
+
+// // add typesafe property string
+
+// export const IsAfterField = <T>(property: keyof T, validationOptions?: ValidationOptions) => {
+//   return applyDecorators(
+//     IsNotEmpty({
+//       message: validationI18nMessage("validation.isNotEmpty"),
+//     }),
+//     IsAfter(String(property), validationOptions),
+//   );
+// };
