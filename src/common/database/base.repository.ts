@@ -11,10 +11,9 @@ import { EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import type { Observable } from "rxjs";
 import { from, map, of, switchMap, throwError } from "rxjs";
+import { formatSearch } from "helper-fns";
 import type { BaseEntity } from "./base.entity";
 
-import { translate } from "@lib/i18n";
-import { HelperService } from "@common/helpers";
 import type {
   CursorPaginationResponse,
   OppositeOrder,
@@ -31,6 +30,7 @@ import {
   getOppositeOrder,
   getQueryOrder,
 } from "@common/@types";
+import { translate } from "@lib/i18n";
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   private readonly encoding: BufferEncoding = "base64";
@@ -291,7 +291,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     if (search) {
       qb.andWhere({
         [searchField]: {
-          $ilike: HelperService.formatSearch(search),
+          $ilike: formatSearch(search),
         },
       });
     }
@@ -366,7 +366,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     if (search && searchField) {
       qb.andWhere({
         [searchField]: {
-          $ilike: HelperService.formatSearch(search),
+          $ilike: formatSearch(search),
         },
       });
     }
