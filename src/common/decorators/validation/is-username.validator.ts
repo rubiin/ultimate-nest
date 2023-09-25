@@ -56,8 +56,8 @@ export const IsUsernameField = (validationOptions?: ValidationOptions & { minLen
       message: validationI18nMessage("validation.isNotEmpty"),
     }),
     MinMaxLength({
-      minLength: validationOptions.minLength ?? 5,
-      maxLength: validationOptions.maxLength ?? 50,
+      minLength: validationOptions?.minLength ?? 5,
+      maxLength: validationOptions?.maxLength ?? 50,
     }),
     IsUsername(validationOptions),
   );
