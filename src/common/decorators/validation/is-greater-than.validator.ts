@@ -25,8 +25,8 @@ class IsGreaterThanConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export const IsGreaterThan = (
-  property: string,
+export const IsGreaterThan = <T = any>(
+  property: keyof T,
   validationOptions?: ValidationOptions,
 ): PropertyDecorator => {
   return function (object: Record<string, any>, propertyName: string | symbol) {

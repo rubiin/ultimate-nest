@@ -26,8 +26,8 @@ class IsAfterConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export const IsAfter = (
-  property: string,
+export const IsAfterField = <T = any>(
+  property: keyof T,
   validationOptions?: ValidationOptions,
 ): PropertyDecorator => {
   return function (object: Record<string, any>, propertyName: string | symbol) {
@@ -42,13 +42,3 @@ export const IsAfter = (
 };
 
 
-// // add typesafe property string
-
-// export const IsAfterField = <T>(property: keyof T, validationOptions?: ValidationOptions) => {
-//   return applyDecorators(
-//     IsNotEmpty({
-//       message: validationI18nMessage("validation.isNotEmpty"),
-//     }),
-//     IsAfter(String(property), validationOptions),
-//   );
-// };

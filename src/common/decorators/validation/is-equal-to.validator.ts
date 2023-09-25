@@ -25,8 +25,8 @@ class IsEqualToConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export const IsEqualToField = (
-  property: string,
+export const IsEqualToField = <T = any>(
+  property: keyof T,
   validationOptions?: ValidationOptions,
 ): PropertyDecorator => {
   return function (object: Record<string, any>, propertyName: string | symbol) {
@@ -39,3 +39,5 @@ export const IsEqualToField = (
     });
   };
 };
+
+
