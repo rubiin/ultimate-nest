@@ -55,8 +55,8 @@ export const IsPasswordField = (validationOptions?: ValidationOptions & { minLen
       message: validationI18nMessage("validation.isNotEmpty"),
     }),
     MinMaxLength({
-      minLength: validationOptions.minLength ?? 8,
-      maxLength: validationOptions.maxLength ?? 40,
+      minLength: validationOptions?.minLength ?? 8,
+      maxLength: validationOptions?.maxLength ?? 40,
     }),
     IsPassword(validationOptions),
   );
