@@ -1,7 +1,7 @@
 import { Get } from "@nestjs/common";
-import { ChatService } from "./chat.service";
 import { GenericController, LoggedInUser } from "@common/decorators";
 import { User } from "@entities";
+import { ChatService } from "./chat.service";
 
 @GenericController("chat")
 export class ChatController {

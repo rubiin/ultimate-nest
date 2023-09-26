@@ -14,7 +14,14 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation } from "@nestjs/swagger";
 import { Observable, map } from "rxjs";
-import { MagicLoginStrategy } from "./strategies";
+
+import { TokensService } from "@modules/token/tokens.service";
+import type { OtpLog } from "@entities";
+import { User } from "@entities";
+import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import type { AuthenticationResponse } from "@common/@types";
+import { OauthResponse } from "@common/@types";
+import { AuthService } from "./auth.service";
 import {
   ChangePasswordDto,
   MagicLinkLogin,
@@ -24,14 +31,7 @@ import {
   SendOtpDto,
   UserLoginDto,
 } from "./dtos";
-import { AuthService } from "./auth.service";
-
-import { TokensService } from "@modules/token/tokens.service";
-import type { OtpLog } from "@entities";
-import { User } from "@entities";
-import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
-import type { AuthenticationResponse } from "@common/@types";
-import { OauthResponse } from "@common/@types";
+import { MagicLoginStrategy } from "./strategies";
 
 @GenericController("auth", false)
 export class AuthController {

@@ -11,11 +11,11 @@ import {
 } from "class-validator";
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
-import { Sanitize, Trim } from "./transform.decorator";
 
 import { validationI18nMessage } from "@lib/i18n";
 import { MinMaxLength } from "@common/decorators";
 import type { NumberFieldOptions, StringFieldOptions } from "@common/@types";
+import { Sanitize, Trim } from "./transform.decorator";
 
 export class ValidatorFieldBuilder {
   private decoratorsToApply: PropertyDecorator[];

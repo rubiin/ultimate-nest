@@ -60,7 +60,6 @@ directory of the module. */
     return process.env.NODE_ENV === "prod" ? join(currentDirectory, "dist") : currentDirectory;
   },
 
-
   /* The `hashString` function is used to hash a user's password using the Argon2 algorithm. It takes a
 user's password as input and returns a promise that resolves to the hashed password as a string. The
 `hash` function from the `argon2` library is used to perform the actual hashing, with the

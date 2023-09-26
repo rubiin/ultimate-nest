@@ -1,9 +1,9 @@
 import { ApiHideProperty } from "@nestjs/swagger";
 import { Allow, IsBase64 } from "class-validator";
-import { PaginationDto } from "./pagination.dto";
 import { PaginationType } from "@common/@types";
 import { IsNumberField, IsStringField } from "@common/decorators";
 import { validationI18nMessage } from "@lib/i18n";
+import { PaginationDto } from "./pagination.dto";
 
 // TODO: add filters
 

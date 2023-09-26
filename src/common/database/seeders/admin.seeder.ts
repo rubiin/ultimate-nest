@@ -1,8 +1,7 @@
 import type { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
-import { UserFactory } from "../factories";
-
 import { Roles } from "@common/@types";
+import { UserFactory } from "../factories";
 
 /*
 * It creates a user with the email and password specified in the .env file, and gives them the admin role

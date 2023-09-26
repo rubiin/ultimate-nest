@@ -1,7 +1,7 @@
-import {CaslAbilityFactory} from './casl-ability.factory';
+import { CaslAbilityFactory } from "./casl-ability.factory";
 
-describe('CaslAbilityFactory', () => {
-    it('should be defined', () => {
-        expect(new CaslAbilityFactory()).toBeDefined();
-    });
+describe("CaslAbilityFactory", () => {
+  it("should be defined", () => {
+    expect(new CaslAbilityFactory()).toBeDefined();
+  });
 });

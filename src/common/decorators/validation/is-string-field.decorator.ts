@@ -9,11 +9,10 @@ import {
   IsString,
   Matches,
 } from "class-validator";
-import { MinMaxLength } from "./min-max-length.decorator";
-import { Sanitize, Trim } from "./transform.decorator";
-
 import { validationI18nMessage } from "@lib/i18n";
 import type { StringFieldOptions } from "@common/@types";
+import { MinMaxLength } from "./min-max-length.decorator";
+import { Sanitize, Trim } from "./transform.decorator";
 
 /**
  * It's a decorator that validates a string field

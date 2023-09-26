@@ -14,11 +14,10 @@ import {
   Rel,
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
-import type { User } from "./index";
-import { Category, Comment, Tag } from "./index";
-
 import { BaseEntity } from "@common/database";
 import { PostStateEnum } from "@common/@types";
+import type { User } from "./index";
+import { Category, Comment, Tag } from "./index";
 
 @Entity()
 export class Post extends BaseEntity {

@@ -1,8 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray } from "class-validator";
-import type { PaginationAbstractResponse } from "../interfaces";
-
 import type { OffsetPaginationDto } from "@common/dtos/offset-pagination.dto";
+import type { PaginationAbstractResponse } from "../interfaces";
 
 export class OffsetMeta {
   /**

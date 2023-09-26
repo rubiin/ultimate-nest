@@ -3,10 +3,9 @@ import path from "node:path";
 import { faker } from "@mikro-orm/seeder";
 import { pick } from "helper-fns";
 import request from "supertest";
+import { Roles } from "@common/@types";
 import { user, userDto } from "../fixtures/user";
 import { APP_URL } from "../fixtures/constant";
-
-import { Roles } from "@common/@types";
 
 describe("UserController (e2e)", () => {
   let adminJwtToken: string;

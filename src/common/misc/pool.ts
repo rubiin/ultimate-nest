@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import { Logger } from "@nestjs/common";
-import { DynamicThreadPool, PoolEvents } from "poolifier";
+import { DynamicThreadPool } from "poolifier";
 
 const logger = new Logger("ThreadPool");
 
@@ -10,8 +10,3 @@ export const pool = new DynamicThreadPool(7, 20, path.resolve(__dirname, "worker
   errorHandler: error => logger.error(error),
   onlineHandler: () => logger.log("✅ Worker is online"),
 });
-
-
-pool.emitter.on(PoolEvents.full, () => logger.log("Pool is full"));
-pool.emitter.on(PoolEvents.ready, () => logger.log("Pool is ready"));
-pool.emitter.on(PoolEvents.busy, () => logger.log("Pool is busy"));

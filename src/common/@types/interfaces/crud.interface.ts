@@ -1,12 +1,12 @@
 import type { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import type { Observable } from "rxjs";
+
+import type { User } from "@entities";
+import type { BaseEntity } from "@common/database";
 import type {
   PaginationResponse,
   PaginationRequest as TPaginationRequest,
 } from "./pagination.interface";
-
-import type { User } from "@entities";
-import type { BaseEntity } from "@common/database";
 
 /**
  * common interface that enforces common methods for controller and service

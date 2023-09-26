@@ -6,7 +6,6 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { i18nValidationErrorFactory } from "nestjs-i18n";
 import { getMiddleware } from "swagger-stats";
 import { isArray } from "helper-fns";
-import { HelperService } from "./helpers.utils";
 
 import { swaggerOptions } from "@common/swagger/swagger.plugin";
 import {
@@ -16,6 +15,7 @@ import {
   SWAGGER_DESCRIPTION,
   SWAGGER_TITLE,
 } from "@common/constant";
+import { HelperService } from "./helpers.utils";
 
 const logger = new Logger("App:Utils");
 
@@ -85,7 +85,7 @@ export const AppUtils = {
       for (const method of methods) {
         if (
           isArray(method.security)
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          // eslint-disable-next-line ts/no-unsafe-call
           && method.security.includes(IS_PUBLIC_KEY_META)
         )
           method.security = [];

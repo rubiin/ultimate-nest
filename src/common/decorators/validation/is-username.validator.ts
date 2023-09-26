@@ -20,10 +20,10 @@ import {
   ValidatorConstraint,
   registerDecorator,
 } from "class-validator";
-import { MinMaxLength } from "./min-max-length.decorator";
 
 import { validationI18nMessage } from "@lib/i18n";
 import { USERNAME_REGEX } from "@common/constant";
+import { MinMaxLength } from "./min-max-length.decorator";
 
 @ValidatorConstraint({ async: true })
 class IsUsernameConstraint implements ValidatorConstraintInterface {
@@ -50,7 +50,7 @@ export const IsUsername = (validationOptions?: ValidationOptions): PropertyDecor
   };
 };
 
-export const IsUsernameField = (validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number } ) => {
+export const IsUsernameField = (validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number }) => {
   return applyDecorators(
     IsNotEmpty({
       message: validationI18nMessage("validation.isNotEmpty"),

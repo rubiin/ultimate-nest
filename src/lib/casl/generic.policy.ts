@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { Request } from "express";
 
+import { Action } from "@common/@types";
 import type { AppAbility } from "./casl-ability.factory";
 import type { PoliciesHandler } from "./policy.interface";
-import { Action } from "@common/@types";
 
 export class GenericPolicyHandler implements PoliciesHandler {
   constructor(
@@ -17,11 +16,12 @@ export class GenericPolicyHandler implements PoliciesHandler {
             ability.can(Action.Update, new this.type({ id })) method. */
 
     if ([Action.Create, Action.Read, Action.Delete].includes(this.action))
+    // eslint-disable-next-line ts/no-unsafe-argument
       return ability.can(this.action, this.ClassType);
 
     const id = request.params.id;
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    // eslint-disable-next-line ts/no-unsafe-call, ts/no-unsafe-argument
     return ability.can(Action.Update, new this.ClassType({ id }));
   }
 }

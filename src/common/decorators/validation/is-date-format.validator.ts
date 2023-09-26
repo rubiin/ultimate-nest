@@ -12,7 +12,6 @@ import { isArray } from "helper-fns";
 
 /* It validates that a date is in a given format */
 
-
 export type DateFormats =
 | "yyyy-MM-dd" // ISO 8601 Format
 | "dd/MM/yyyy"

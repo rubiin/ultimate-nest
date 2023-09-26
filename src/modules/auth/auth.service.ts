@@ -13,13 +13,6 @@ import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
-import type {
-  ChangePasswordDto,
-  OtpVerifyDto,
-  ResetPasswordDto,
-  SendOtpDto,
-  UserLoginDto,
-} from "./dtos";
 
 import { TokensService } from "@modules/token/tokens.service";
 import { MailerService } from "@lib/mailer/mailer.service";
@@ -29,6 +22,13 @@ import { HelperService } from "@common/helpers";
 import { BaseRepository } from "@common/database";
 import type { AuthenticationResponse } from "@common/@types";
 import { EmailSubject, EmailTemplate } from "@common/@types";
+import type {
+  ChangePasswordDto,
+  OtpVerifyDto,
+  ResetPasswordDto,
+  SendOtpDto,
+  UserLoginDto,
+} from "./dtos";
 
 @Injectable()
 export class AuthService {

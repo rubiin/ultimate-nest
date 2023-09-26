@@ -1,8 +1,8 @@
 import type { Ref } from "@mikro-orm/core";
 import { Entity, Enum, Index, ManyToOne, Property, Rel } from "@mikro-orm/core";
-import type { User } from "./user.entity";
 import { ReferralStatus } from "@common/@types";
 import { BaseEntity } from "@common/database";
+import type { User } from "./user.entity";
 
 @Entity()
 export class Referral extends BaseEntity {

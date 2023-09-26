@@ -5,7 +5,6 @@ import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
-import type { SubscribeNewsletterDto } from "./dto";
 
 import { translate } from "@lib/i18n";
 import { BaseService } from "@lib/crud/crud.service";
@@ -13,6 +12,7 @@ import { NewsLetter, Subscriber } from "@entities";
 import type { CursorPaginationDto } from "@common/dtos";
 import { BaseRepository } from "@common/database";
 import { EmailSubject, EmailTemplate, RoutingKey } from "@common/@types";
+import type { SubscribeNewsletterDto } from "./dto";
 
 @Injectable()
 export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationDto> {
