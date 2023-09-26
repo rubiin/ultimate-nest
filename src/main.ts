@@ -12,11 +12,10 @@ import compression from "compression";
 import helmet from "helmet";
 import { I18nValidationExceptionFilter } from "nestjs-i18n";
 import { LoggerErrorInterceptor } from "nestjs-pino";
-import { SocketIOAdapter } from "./socket-io.adapter";
-import { AppModule } from "./app.module";
-
 import { createLogger } from "@lib/pino/app.logger";
 import { AppUtils, HelperService } from "@common/helpers";
+import { SocketIOAdapter } from "./socket-io.adapter";
+import { AppModule } from "./app.module";
 
 declare const module: { hot: { accept: () => void; dispose: (argument: () => Promise<void>) => void } };
 

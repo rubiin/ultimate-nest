@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable ts/no-unsafe-return */
+import path from "node:path";
 import type { Request, Response } from "express";
 import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
@@ -70,11 +71,12 @@ export const mockFile = {
   fieldname: "file",
   originalname: "test.png",
   mimetype: "text/png",
-  buffer: Buffer.from(`${__dirname}/../../test/test.png`, "utf8"),
+  buffer: Buffer.from(path.join(__dirname, "/../../test/test.png"), "utf8"),
   size: 13_148,
 } as File;
 
 export const mockedOtpLog = {
+  id: 1,
   expiresIn: new Date(),
   otpCode: "12344",
   isUsed: false,

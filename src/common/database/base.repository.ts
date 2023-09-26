@@ -12,7 +12,6 @@ import { BadRequestException, NotFoundException } from "@nestjs/common";
 import type { Observable } from "rxjs";
 import { from, map, of, switchMap, throwError } from "rxjs";
 import { formatSearch } from "helper-fns";
-import type { BaseEntity } from "./base.entity";
 
 import type {
   CursorPaginationResponse,
@@ -31,6 +30,7 @@ import {
   getQueryOrder,
 } from "@common/@types";
 import { translate } from "@lib/i18n";
+import type { BaseEntity } from "./base.entity";
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   private readonly encoding: BufferEncoding = "base64";
@@ -484,11 +484,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const oppositeOrder = getOppositeOrder(order);
       const countWhere = where;
 
-      // eslint-disable-next-line @typescript-eslint/dot-notation
+      // eslint-disable-next-line ts/dot-notation
       countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
-      // eslint-disable-next-line @typescript-eslint/dot-notation
+      // eslint-disable-next-line ts/dot-notation
       where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
     }
 

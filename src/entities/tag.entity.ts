@@ -9,9 +9,8 @@ import {
   Property,
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
-import { Post } from "./post.entity";
-
 import { BaseEntity } from "@common/database";
+import { Post } from "./post.entity";
 
 @Entity()
 export class Tag extends BaseEntity {

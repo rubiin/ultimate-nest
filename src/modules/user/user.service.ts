@@ -9,7 +9,6 @@ import type { IFile } from "nestjs-cloudinary";
 import { CloudinaryService } from "nestjs-cloudinary";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
-import type { CreateUserDto, EditUserDto } from "./dtos";
 
 import type {
   DtoWithFile,
@@ -26,6 +25,7 @@ import { BaseRepository } from "@common/database";
 import type { CursorPaginationDto } from "@common/dtos";
 import { User } from "@entities";
 import { translate } from "@lib/i18n";
+import type { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
 export class UserService {

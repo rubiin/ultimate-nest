@@ -3,11 +3,11 @@ import { Injectable, Logger, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import Strategy from "passport-magic-login";
-import { AuthService } from "../auth.service";
 
 import { MailerService } from "@lib/mailer/mailer.service";
 import type { User } from "@entities";
 import { EmailSubject, EmailTemplate } from "@common/@types";
+import { AuthService } from "../auth.service";
 
 interface MagicLoginPayload {
   destination: string

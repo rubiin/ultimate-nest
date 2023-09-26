@@ -9,9 +9,9 @@ import {
   registerDecorator,
 } from "class-validator";
 import { applyDecorators } from "@nestjs/common";
-import { MinMaxLength } from "./min-max-length.decorator";
 import { PASSWORD_REGEX } from "@common/constant";
 import { validationI18nMessage } from "@lib/i18n";
+import { MinMaxLength } from "./min-max-length.decorator";
 
 /**
  *
@@ -47,7 +47,6 @@ export const IsPassword = (validationOptions?: ValidationOptions): PropertyDecor
     });
   };
 };
-
 
 export const IsPasswordField = (validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number }) => {
   return applyDecorators(

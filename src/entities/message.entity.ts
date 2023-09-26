@@ -1,8 +1,7 @@
 import type { Ref } from "@mikro-orm/core";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
-import type { Conversation, Post } from "./index";
-
 import { BaseEntity } from "@common/database";
+import type { Conversation, Post } from "./index";
 
 @Entity()
 export class Message extends BaseEntity {

@@ -6,12 +6,11 @@ import type { SendMailOptions, Transporter } from "nodemailer";
 import { createTransport } from "nodemailer";
 import previewEmail from "preview-email";
 import { from, retry, switchMap } from "rxjs";
+import { Server, TemplateEngine } from "@common/@types";
 import { MailModuleOptions } from "./mailer.options";
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
 import type { Adapter } from "./adapters/abstract.adapter";
 import { EtaAdapter, HandlebarsAdapter, PugAdapter } from "./adapters";
-
-import { Server, TemplateEngine } from "@common/@types";
 
 interface MailOptions extends Partial<SendMailOptions> {
   template: string

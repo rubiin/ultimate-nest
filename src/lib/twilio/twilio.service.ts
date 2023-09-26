@@ -6,9 +6,8 @@ import type {
   MessageInstance,
   MessageListInstanceCreateOptions,
 } from "twilio/lib/rest/api/v2010/account/message";
-import { MODULE_OPTIONS_TOKEN } from "./twilio.module-definition";
-
 import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
+import { MODULE_OPTIONS_TOKEN } from "./twilio.module-definition";
 
 @Injectable()
 export class TwilioService {
