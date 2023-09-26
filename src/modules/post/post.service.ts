@@ -6,7 +6,6 @@ import { omit } from "helper-fns";
 import type { Observable } from "rxjs";
 import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 import { ref } from "@mikro-orm/core";
-import type { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 import { translate } from "@lib/i18n";
 import { Category, Comment, Post, Tag, User } from "@entities";
@@ -14,6 +13,7 @@ import type { CursorPaginationDto } from "@common/dtos";
 import { BaseRepository } from "@common/database";
 import type { PaginationResponse } from "@common/@types";
 import { CursorType, QueryOrder } from "@common/@types";
+import type { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
 export class PostService {

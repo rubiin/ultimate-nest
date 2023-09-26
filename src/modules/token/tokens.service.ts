@@ -7,12 +7,12 @@ import { JwtService } from "@nestjs/jwt";
 import { pick } from "helper-fns";
 import type { Observable } from "rxjs";
 import { catchError, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
-import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 import { translate } from "@lib/i18n";
 import type { RefreshToken } from "@entities";
 import { User } from "@entities";
 import type { JwtPayload } from "@common/@types";
+import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 @Injectable()
 export class TokensService {

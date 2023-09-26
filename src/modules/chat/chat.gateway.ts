@@ -13,9 +13,6 @@ import {
   WebSocketServer,
 } from "@nestjs/websockets";
 import { Namespace, Socket } from "socket.io";
-import { SocketConnectionService } from "./socket-connection.service";
-import { CreateChatDto, MessageSeenDto } from "./dto";
-import { ChatService } from "./chat.service";
 
 import { AuthService } from "@modules/auth/auth.service";
 import { User } from "@entities";
@@ -23,6 +20,9 @@ import { WsValidationPipe } from "@common/pipes/ws-validation.pipe";
 import { WsJwtGuard } from "@common/guards";
 import { LoggedInUser } from "@common/decorators";
 import type { JwtPayload } from "@common/@types";
+import { ChatService } from "./chat.service";
+import { CreateChatDto, MessageSeenDto } from "./dto";
+import { SocketConnectionService } from "./socket-connection.service";
 
 @UseGuards(WsJwtGuard)
 @UsePipes(WsValidationPipe)

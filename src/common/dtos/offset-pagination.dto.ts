@@ -1,9 +1,9 @@
 import { ApiHideProperty } from "@nestjs/swagger";
 import { Allow } from "class-validator";
-import { PaginationDto } from "./pagination.dto";
 
 import { IsEnumField, IsNumberField, IsStringField } from "@common/decorators";
 import { PaginationType, QueryOrder } from "@common/@types";
+import { PaginationDto } from "./pagination.dto";
 
 export class OffsetPaginationDto extends PaginationDto {
   @ApiHideProperty()
