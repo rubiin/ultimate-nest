@@ -29,10 +29,10 @@ services:
 # Pgweb service
 # This service runs the Pgweb administration tool for PostgreSQL
     pgweb:
-        image: sosedoff/pgweb
+        image: sosedoff/pgweb:0.14.1
         container_name: pgweb
-        env_file: env/.env.${ENV}
         restart: unless-stopped
+        env_file: env/.env.${ENV}
         depends_on:
             - database
         networks:
@@ -46,8 +46,8 @@ services:
 # Database service
 # This service runs the PostgreSQL database
     database:
-        container_name: database
         image: postgres:16.0-alpine
+        container_name: database
         restart: unless-stopped
         env_file: env/.env.${ENV}
         environment:
@@ -155,19 +155,19 @@ services:
 # Nestify service
 # This service runs the Nestify application
     nestify:
+        image: nestify
         container_name: nestify
+        restart: unless-stopped
         env_file: env/.env.${ENV}
         build:
             context: .
             dockerfile: ./docker/{ENV}.Dockerfile
-        image: nestify
         depends_on:
             - traefik
             - redis
             - rabbitmq
             - database
 
-        restart: unless-stopped
         command: npm run start
         labels:
             - "traefik.enable=true"
@@ -186,33 +186,33 @@ services:
             - /usr/src/app/node_modules
 
         healthcheck:
-          test:  curl --fail http://localhost:3000 || exit 1  
-          interval: 30s
-          timeout: 30s
-          retries: 10
+          test:  curl --fail http://localhost:3000 || exit 1
+          interval: 10s
+          timeout: 5s
+          retries: 5
 
 
 # RabbitMQ service
 # This service runs the RabbitMQ message broker
     rabbitmq:
-        container_name: rabbitmq
         image: rabbitmq:3.12.6-management-alpine
-        env_file: env/.env.${ENV}
+        container_name: rabbitmq
         restart: unless-stopped
-        depends_on:
-            - traefik
+        env_file: env/.env.${ENV}
         environment:
             - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
             - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+        depends_on:
+            - traefik
         volumes:
             - rabbitmq-data:/var/lib/rabbitmq/mnesia/
         networks:
             - nestify-network
         healthcheck:
           test: rabbitmq-diagnostics check_port_connectivity
-          interval: 30s
-          timeout: 30s
-          retries: 10
+          interval: 10s
+          timeout: 5s
+          retries: 5
 
 volumes:
     redis-data:
