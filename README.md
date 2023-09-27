@@ -146,8 +146,6 @@ installing [just](https://github.com/casey/just#packages) and then running `just
     - Also remove the unwanted config variables from the env file
 - Make sure you create a env file under `env` directory with name like `.env.something`.The portion after .env is
   the `NODE_ENV` value which will be required while running the app
-- Also make sure you have ssl files inside `src/resources/ssl` if you tend to use ssl. Replace the sample files with
-  your ssl files but keep the name same. Additionally
 
 ## Migration and seeding
 
