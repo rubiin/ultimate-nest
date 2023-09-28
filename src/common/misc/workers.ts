@@ -18,6 +18,6 @@ const workerFunction = (data: { functionName: string; input: string }) => {
   }
 };
 
-const threadWorker = new ThreadWorker(workerFunction, { async: true });
+const threadWorker = new ThreadWorker(workerFunction);
 
 export default threadWorker;
