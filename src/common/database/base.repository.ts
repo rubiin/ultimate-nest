@@ -2,7 +2,6 @@ import type {
   Dictionary,
   EntityData,
   EntityManager,
-  EntityName,
   FilterQuery,
   FindOptions,
   Loaded,
@@ -45,11 +44,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * The function `getEntityName()` returns the entity name of type `EntityName<T>`.
-   * @returns The entity name of type `EntityName<T>`.
+   * Returns the entity name.
+   * @returns The entity name as a string.
    */
-  getEntityName(): EntityName<T> {
-    return this.entityName;
+  getEntityName(): string {
+    return this.entityName.toString();
   }
 
   /**
