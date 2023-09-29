@@ -4,7 +4,7 @@ import { createMock } from "@golevelup/ts-jest";
 import { mockCacheService, mockResponse } from "@mocks";
 import { ClearCacheMiddleware } from "./cache.middleware";
 
-describe("ClearCacheMiddleware", () => {
+describe("clearCacheMiddleware", () => {
   let middleware: ClearCacheMiddleware;
 
   beforeEach(() => {

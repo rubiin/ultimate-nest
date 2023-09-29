@@ -3,7 +3,7 @@ import { IsEqualToField } from "./is-equal-to.validator";
 
 const validator = new Validator();
 
-describe("IsEqualToField", () => {
+describe("isEqualToField", () => {
   class MyClass {
     password!: string;
 

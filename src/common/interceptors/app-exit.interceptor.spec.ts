@@ -1,7 +1,7 @@
 import { mockContext, mockNext } from "@mocks";
 import { ExitInterceptor } from "./app-exit.interceptor";
 
-describe("ExitInterceptor", () => {
+describe("exitInterceptor", () => {
   let interceptor: ExitInterceptor;
 
   beforeEach(() => {

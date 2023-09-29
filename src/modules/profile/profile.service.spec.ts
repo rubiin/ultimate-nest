@@ -7,7 +7,7 @@ import { mockEm, mockUserRepo, mockedUser } from "@mocks";
 import { User } from "@entities";
 import { ProfileService } from "./profile.service";
 
-describe("ProfileService", () => {
+describe("profileService", () => {
   let service: ProfileService;
 
   beforeEach(async () => {

@@ -3,7 +3,7 @@ import { IsProfane } from "./is-profane.validator";
 
 const validator = new Validator();
 
-describe("IsProfane", () => {
+describe("isProfane", () => {
   class MyClass {
     @IsProfane()
         text!: string;

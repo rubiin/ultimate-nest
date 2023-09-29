@@ -10,7 +10,7 @@ import { loggedInUser, mockConfigService, mockEm, mockResponse, mockUserRepo } f
 import { User } from "@entities";
 import { TwoFactorService } from "./twofa.service";
 
-describe("TwoFactorService", () => {
+describe("twoFactorService", () => {
   let service: TwoFactorService;
 
   beforeEach(async () => {

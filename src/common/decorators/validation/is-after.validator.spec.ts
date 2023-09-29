@@ -3,7 +3,7 @@ import { IsAfterField } from "./is-after.validator";
 
 const validator = new Validator();
 
-describe("IsAfter", () => {
+describe("isAfter", () => {
   class MyClass {
     startDate!: Date;
 

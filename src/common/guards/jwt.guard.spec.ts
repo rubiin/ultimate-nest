@@ -3,7 +3,7 @@ import type { ExecutionContext } from "@nestjs/common";
 import { mockReflector } from "@mocks";
 import { JwtAuthGuard } from "./jwt.guard";
 
-describe("JwtAuthGuard", () => {
+describe("jwtAuthGuard", () => {
   let authenticatedGuard: JwtAuthGuard;
 
   const mockContext = createMock<ExecutionContext>({

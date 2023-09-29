@@ -20,7 +20,7 @@ import {
 import { User } from "@entities";
 import { UserService } from "./user.service";
 
-describe("UserService", () => {
+describe("userService", () => {
   let service: UserService;
 
   beforeEach(async () => {

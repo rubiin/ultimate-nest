@@ -7,7 +7,7 @@ import { loggedInUser, mockEm, mockRefreshRepo, refreshToken } from "@mocks";
 import { RefreshToken } from "@entities";
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
-describe("RefreshTokensRepository", () => {
+describe("refreshTokensRepository", () => {
   let service: RefreshTokensRepository;
 
   beforeEach(async () => {
