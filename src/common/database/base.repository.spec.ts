@@ -5,7 +5,7 @@ import { loggedInUser } from "@mocks";
 import { User } from "@entities";
 import { BaseRepository } from "./base.repository";
 
-describe("BaseRepository", () => {
+describe("baseRepository", () => {
   const mockEm = createMock<EntityManager>({
     findAndCount: jest.fn().mockResolvedValue([[], 0]),
   });

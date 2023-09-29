@@ -24,7 +24,7 @@ import { OtpLog, Protocol, User } from "@entities";
 import { HelperService } from "@common/helpers";
 import { AuthService } from "./auth.service";
 
-describe("AuthService", () => {
+describe("authService", () => {
   let service: AuthService;
 
   beforeEach(async () => {

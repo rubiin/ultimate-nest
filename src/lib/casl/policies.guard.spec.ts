@@ -4,7 +4,7 @@ import type { Reflector } from "@nestjs/core";
 import { PoliciesGuard } from "./policies.guard";
 import { CaslAbilityFactory } from "./casl-ability.factory";
 
-describe("PoliciesGuard", () => {
+describe("policiesGuard", () => {
   const mockReflector = createMock<Reflector>();
   const mockExecutionContext = createMock<ExecutionContext>({
     getHandler: jest.fn(),

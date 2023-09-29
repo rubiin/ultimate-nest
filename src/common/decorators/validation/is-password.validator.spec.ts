@@ -3,7 +3,7 @@ import { IsPasswordField } from "./is-password.validator";
 
 const validator = new Validator();
 
-describe("IsPassword", () => {
+describe("isPassword", () => {
   class MyClass {
     @IsPasswordField()
         password: string;

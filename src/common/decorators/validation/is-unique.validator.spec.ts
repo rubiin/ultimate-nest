@@ -5,7 +5,7 @@ import { User } from "@entities";
 import { IsUniqueConstraint } from "./is-unique.validator";
 import type { IsUniqueValidationContext } from "./is-unique.validator";
 
-describe("IsUnique", () => {
+describe("isUnique", () => {
   let isUnique: IsUniqueConstraint;
   const mockEm = createMock<EntityManager>();
   const username = "tester";

@@ -3,7 +3,7 @@ import type { CallHandler, ExecutionContext } from "@nestjs/common";
 import { mockRequest } from "@mocks";
 import { RequestSanitizerInterceptor } from "./request-sanitizer.interceptor";
 
-describe("RequestSanitizerInterceptor", () => {
+describe("requestSanitizerInterceptor", () => {
   let interceptor: RequestSanitizerInterceptor;
 
   // create the mock CallHandler for the interceptor

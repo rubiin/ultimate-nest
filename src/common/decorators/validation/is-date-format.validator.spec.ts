@@ -3,7 +3,7 @@ import { IsDateInFormat } from "./is-date-format.validator";
 
 const validator = new Validator();
 
-describe("IsDateInFormat", () => {
+describe("isDateInFormat", () => {
   class MyClass {
     @IsDateInFormat("yyyy-MM-dd")
         date: string;

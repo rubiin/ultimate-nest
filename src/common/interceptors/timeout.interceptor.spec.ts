@@ -1,7 +1,7 @@
 import { mockContext, mockNext } from "@mocks";
 import { TimeoutInterceptor } from "./timeout.interceptor";
 
-describe("TimeoutInterceptor", () => {
+describe("timeoutInterceptor", () => {
   let interceptor: TimeoutInterceptor;
 
   beforeEach(() => {

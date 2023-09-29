@@ -4,7 +4,7 @@ import { HttpException } from "@nestjs/common";
 import { mockJwtService } from "@mocks";
 import { AuthGuard } from "./auth.guard";
 
-describe("AuthenticatedGuard", () => {
+describe("authenticatedGuard", () => {
   let authenticatedGuard: AuthGuard;
   const mockContext = createMock<ExecutionContext>({
     switchToHttp: () => ({

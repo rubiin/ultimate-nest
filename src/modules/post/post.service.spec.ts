@@ -17,7 +17,7 @@ import {
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { PostService } from "./post.service";
 
-describe("PostService", () => {
+describe("postService", () => {
   let service: PostService;
 
   beforeEach(async () => {

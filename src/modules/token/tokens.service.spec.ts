@@ -18,7 +18,7 @@ import {
 import { User } from "@entities";
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
-describe("TokensService", () => {
+describe("tokensService", () => {
   let service: TokensService;
 
   beforeEach(async () => {
@@ -82,7 +82,7 @@ describe("TokensService", () => {
     });
   });
 
-  it("should delete all refresh token for user", () => {
+  it("should ge refresh token from payload for user", () => {
     mockRefreshTokenRepo.findTokenById.mockImplementation(() => of(refreshToken));
     service.getStoredTokenFromRefreshTokenPayload(refreshTokenPayload).subscribe((result) => {
       expect(result).toStrictEqual(refreshToken);

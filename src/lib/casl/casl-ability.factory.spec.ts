@@ -1,6 +1,6 @@
 import { CaslAbilityFactory } from "./casl-ability.factory";
 
-describe("CaslAbilityFactory", () => {
+describe("caslAbilityFactory", () => {
   it("should be defined", () => {
     expect(new CaslAbilityFactory()).toBeDefined();
   });

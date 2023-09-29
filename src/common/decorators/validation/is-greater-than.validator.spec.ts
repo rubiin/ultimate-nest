@@ -3,7 +3,7 @@ import { IsGreaterThan } from "./is-greater-than.validator";
 
 const validator = new Validator();
 
-describe("IsGreaterThan", () => {
+describe("isGreaterThan", () => {
   class MyClass {
     passMarks!: number;
 
