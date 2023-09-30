@@ -6,7 +6,7 @@ import { isArray } from "helper-fns";
  * It trims the value of a property and replaces multiple spaces with a single space
  * @returns A function that takes a parameter and returns a value.
  */
-export const Trim = () => {
+export function Trim() {
   return Transform((parameters) => {
     const value = parameters.value as string[] | string;
 
@@ -15,14 +15,14 @@ export const Trim = () => {
 
     return value.trim().replaceAll(/\s\s+/g, " ");
   });
-};
+}
 
 /**
  * It converts a string to a boolean
  * @returns A function that returns a PropertyDecorator
  */
 
-export const ToBoolean = () => {
+export function ToBoolean() {
   return Transform(
     (parameters) => {
       switch (parameters.value) {
@@ -39,28 +39,30 @@ export const ToBoolean = () => {
     },
     { toClassOnly: true },
   );
-};
+}
 
 /**
  * It takes a string, sanitizes it, and returns the sanitized string
  * @returns A decorator function that will be applied to the class.
  */
 
-export const Sanitize = (): PropertyDecorator => {
+export function Sanitize(): PropertyDecorator {
   return Transform(
     ({ value }) => {
       if (isArray(value)) {
         return value.map((v) => {
-          if (typeof v === "string") return DOMPurify.sanitize(v);
+          if (typeof v === "string")
+            return DOMPurify.sanitize(v);
 
           return v;
         }) as string[];
       }
 
-      if (typeof value === "string") return DOMPurify.sanitize(value);
+      if (typeof value === "string")
+        return DOMPurify.sanitize(value);
 
       return value as string;
     },
     { toClassOnly: true },
   );
-};
+}

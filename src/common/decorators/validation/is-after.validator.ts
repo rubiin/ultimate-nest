@@ -26,10 +26,7 @@ class IsAfterConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export const IsAfterField = <T = any>(
-  property: keyof T,
-  validationOptions?: ValidationOptions,
-): PropertyDecorator => {
+export function IsAfterField<T = any>(property: keyof T, validationOptions?: ValidationOptions): PropertyDecorator {
   return function (object: Record<string, any>, propertyName: string | symbol) {
     registerDecorator({
       target: object.constructor,
@@ -39,4 +36,4 @@ export const IsAfterField = <T = any>(
       validator: IsAfterConstraint,
     });
   };
-};
+}

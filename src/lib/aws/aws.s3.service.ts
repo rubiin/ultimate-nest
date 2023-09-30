@@ -248,14 +248,12 @@ export class AwsS3Service {
           Objects: listItems,
         },
       }),
-    ),
-    this.s3Client.send(
+    ), this.s3Client.send(
       new DeleteObjectCommand({
         Bucket: this.bucket,
         Key: directory,
       }),
-    ),
-    ]);
+    )]);
   }
 
   /**
@@ -306,7 +304,8 @@ export class AwsS3Service {
     let path = options?.path ?? undefined;
     const acl = options?.acl ?? "public-read";
 
-    if (path) path = path.startsWith("/") ? path.replace("/", "") : `${path}`;
+    if (path)
+      path = path.startsWith("/") ? path.replace("/", "") : `${path}`;
 
     const key = path ? `${path}/${filename}` : filename;
     const mime = this.getMime(filename);
@@ -341,7 +340,8 @@ export class AwsS3Service {
   ): Promise<void> {
     let path = options?.path ?? undefined;
 
-    if (path) path = path.startsWith("/") ? path.replace("/", "") : `${path}`;
+    if (path)
+      path = path.startsWith("/") ? path.replace("/", "") : `${path}`;
 
     const key = path ? `${path}/${filename}` : filename;
 

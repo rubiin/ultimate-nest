@@ -8,7 +8,7 @@ import { validationI18nMessage } from "@lib/i18n";
  * @param options_ - UUIDFieldOptions
  * @returns A decorator function that takes in a target, propertyKey, and descriptor.
  */
-export const IsUUIDField = (options_?: UUIDFieldOptions) => {
+export function IsUUIDField(options_?: UUIDFieldOptions) {
   const options: UUIDFieldOptions = {
     each: false,
     required: true,
@@ -54,4 +54,4 @@ export const IsUUIDField = (options_?: UUIDFieldOptions) => {
   }
 
   return applyDecorators(...decoratorsToApply);
-};
+}

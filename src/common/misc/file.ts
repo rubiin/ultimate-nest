@@ -29,11 +29,11 @@ export const ImageMulterOption: MulterOptions = {
  * @param param.required - whether the file is required or not
  * @returns A function that returns a ParseFilePipeBuilder
  */
-export const fileValidatorPipe = ({
+export function fileValidatorPipe({
   fileType = FileType.IMAGE,
   fileSize = FileSize.IMAGE,
   required = true,
-}: FileValidator) => {
+}: FileValidator) {
   return new ParseFilePipeBuilder()
     .addFileTypeValidator({
       fileType,
@@ -45,4 +45,4 @@ export const fileValidatorPipe = ({
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       fileIsRequired: required,
     });
-};
+}

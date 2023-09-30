@@ -2,6 +2,9 @@ import rubiin from "@rubiin/eslint-config";
 
 export default rubiin({
   stylistic: true, // enable stylistic rules
+  yaml: true, // enable yaml rules,
+  jsonc : true, // enable jsonc rules
+  markdown: true, // enable markdown rules
   typescript: {
     tsconfigPath: "tsconfig.json", // path to tsconfig.json
   },

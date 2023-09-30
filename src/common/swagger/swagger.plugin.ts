@@ -3,7 +3,7 @@
  * `opsFilter` method, which filters an array of tagged operations based on a case-insensitive phrase.
  * @returns An object with a `fn` property that contains an `opsFilter` method.
  */
-const CaseInsensitiveFilterPlugin = () => {
+function CaseInsensitiveFilterPlugin() {
   return {
     fn: {
       opsFilter: (
@@ -16,7 +16,7 @@ const CaseInsensitiveFilterPlugin = () => {
       },
     },
   };
-};
+}
 
 /* The `swaggerOptions` object is being exported as a constant. It contains various configuration
 options for a Swagger API documentation. */

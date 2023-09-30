@@ -15,6 +15,9 @@ migrate env="dev":
 unmigrate env="dev":
 	NODE_ENV={{env}} npm run orm migration:down
 
+# one stop command to make migration and migrate it
+quick-migrate: makemigration migrate
+
 # run seeders to populate database
 seed env="dev":
 	USER_PASSWORD=Test@1234 NODE_ENV={{env}} npm run orm seeder:run
@@ -25,7 +28,7 @@ test-e2e env="dev":
 
 
 # clean all auto generated files and generate initial migration file
-init: clean-files makemigration
+init: clean-files build makemigration
 
 # clean all auto generated files and run migration
 clean-db: unmigrate migrate seed
@@ -49,18 +52,10 @@ build:
 encryption:
 	sh scripts/encryption.sh
 
-# run in shell mode
-shell env="dev":
-	REPL=true npm run start:dev
+# run in repl mode
+repl env="dev":
+	REPL=true npm run start:repl
 
 # run deploy script
 deploy:
 	sh scripts/deploy.sh
-
-# stop deployed containers
-stop env="dev":
-	ENV=dev docker compose -f docker-compose.{{env}}.yml stop
-
-# remove deployed containers
-remove env="dev":
-	ENV=dev docker compose -f docker-compose.{{env}}.yml down

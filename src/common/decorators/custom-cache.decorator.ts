@@ -11,6 +11,6 @@ import { NoCache } from "./nocache.decorator";
  *  (e.g. Authorization to properly identify profile endpoints).
  * @returns A function that returns a decorator.
  */
-export const ApplyCustomCache = () => {
+export function ApplyCustomCache() {
   return applyDecorators(NoCache, UseInterceptors(CacheKeyInterceptor));
-};
+}

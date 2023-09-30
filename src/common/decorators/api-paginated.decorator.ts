@@ -13,7 +13,7 @@ import { CursorPaginationResponse, OffsetPaginationResponse } from "@common/@typ
  * includes information about the pagination type (cursor or offset) and the data items returned.
  */
 
-export const ApiPaginatedResponse = <TModel extends Type>(model: TModel) => {
+export function ApiPaginatedResponse<TModel extends Type>(model: TModel) {
   return applyDecorators(
     ApiOperation({ summary: `${model.name.toLowerCase()} list` }),
     ApiExtraModels(CursorPaginationResponse, OffsetPaginationResponse, model),
@@ -49,4 +49,4 @@ export const ApiPaginatedResponse = <TModel extends Type>(model: TModel) => {
       },
     }),
   );
-};
+}

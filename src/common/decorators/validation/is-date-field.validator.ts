@@ -9,7 +9,7 @@ import { validationI18nMessage } from "@lib/i18n";
  * @returns A decorator function that takes in a target, propertyKey, and descriptor.
  */
 
-export const IsDateField = (options_?: DateFieldOptions) => {
+export function IsDateField(options_?: DateFieldOptions) {
   const options: DateFieldOptions = {
     each: false,
     required: true,
@@ -60,4 +60,4 @@ export const IsDateField = (options_?: DateFieldOptions) => {
   }
 
   return applyDecorators(...decoratorsToApply);
-};
+}

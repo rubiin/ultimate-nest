@@ -21,7 +21,7 @@ declare const module: { hot: { accept: () => void; dispose: (argument: () => Pro
 
 const logger = new Logger("Bootstrap");
 
-const bootstrap = async () => {
+async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
     logger: await createLogger(),
     snapshot: true,
@@ -112,7 +112,7 @@ const bootstrap = async () => {
   !HelperService.isProd()
     && logger.log(`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/doc`)}`);
   logger.log(`Server is up. ${chalk.yellow(`+${Math.trunc(performance.now())}ms`)}`);
-};
+}
 
 (async () => await bootstrap())().catch((error) => {
   logger.error(error);

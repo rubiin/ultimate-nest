@@ -10,7 +10,7 @@ import type { EnumFieldOptions } from "@common/@types";
  * @param options_ - EnumFieldOptions
  * @returns A decorator function that takes in a target, propertyKey, and descriptor.
  */
-export const IsEnumField = (entity: Record<string, string>, options_?: EnumFieldOptions) => {
+export function IsEnumField(entity: Record<string, string>, options_?: EnumFieldOptions) {
   const options: EnumFieldOptions = {
     each: false,
     required: true,
@@ -56,4 +56,4 @@ export const IsEnumField = (entity: Record<string, string>, options_?: EnumField
   }
 
   return applyDecorators(...decoratorsToApply);
-};
+}

@@ -20,7 +20,7 @@ import { Sanitize, Trim } from "./transform.decorator";
  * @returns A function that returns a decorator.
  */
 
-export const IsStringField = (options_?: StringFieldOptions) => {
+export function IsStringField(options_?: StringFieldOptions) {
   const options: StringFieldOptions = {
     required: true,
     each: false,
@@ -88,4 +88,4 @@ export const IsStringField = (options_?: StringFieldOptions) => {
   }
 
   return applyDecorators(...decoratorsToApply);
-};
+}

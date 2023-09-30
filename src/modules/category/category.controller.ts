@@ -11,7 +11,10 @@ export class CategoryController extends ControllerFactory<
     OffsetPaginationDto,
     CreateCategoryDto,
     EditCategoryDto
->(OffsetPaginationDto, CreateCategoryDto, EditCategoryDto) {
+>(OffsetPaginationDto,
+  CreateCategoryDto,
+  EditCategoryDto,
+) {
   constructor(protected service: CategoryService) {
     super();
   }

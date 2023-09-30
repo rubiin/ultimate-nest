@@ -16,10 +16,12 @@ async function bootstrap() {
   // sets up history file for repl
   const cacheDirectory = join("node_modules", ".cache");
 
-  if (!existsSync(cacheDirectory)) mkdirSync(cacheDirectory);
+  if (!existsSync(cacheDirectory))
+    mkdirSync(cacheDirectory);
 
   replServer.setupHistory(join(cacheDirectory, ".nestjs_repl_history"), (error) => {
-    if (error) logger.error(error);
+    if (error)
+      logger.error(error);
   });
 }
 

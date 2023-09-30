@@ -1,8 +1,10 @@
 import type { Path, TranslateOptions } from "nestjs-i18n";
 import { I18nContext, i18nValidationMessage } from "nestjs-i18n";
 
-export const translate = (key: Path<I18nTranslations>, options: TranslateOptions = {}) =>
-  I18nContext.current<I18nTranslations>().t(key, options);
+export function translate(key: Path<I18nTranslations>, options: TranslateOptions = {}) {
+  return I18nContext.current<I18nTranslations>().t(key, options);
+}
 
-export const validationI18nMessage = (key: Path<I18nTranslations>, arguments_?: any) =>
-  i18nValidationMessage(key, arguments_);
+export function validationI18nMessage(key: Path<I18nTranslations>, arguments_?: any) {
+  return i18nValidationMessage(key, arguments_);
+}
