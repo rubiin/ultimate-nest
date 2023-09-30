@@ -1,10 +1,11 @@
-import rubiin from "@rubiin/eslint-config";
+const rubiin = require('@rubiin/eslint-config').default
 
-export default rubiin({
+module.exports = rubiin({
   stylistic: true, // enable stylistic rules
   yaml: true, // enable yaml rules,
   jsonc : true, // enable jsonc rules
   markdown: true, // enable markdown rules
+  gitignore: true, // enable gitignore rules
   typescript: {
     tsconfigPath: "tsconfig.json", // path to tsconfig.json
   },
