@@ -16,9 +16,6 @@ class CustomException extends Error {
 
 const exceptionFactory = () => new CustomException();
 
-export const UUIDParam = (
-  property: string,
-  ...pipes: (Type<PipeTransform> | PipeTransform)[]
-): ParameterDecorator => {
+export function UUIDParam(property: string, ...pipes: (Type<PipeTransform> | PipeTransform)[]): ParameterDecorator {
   return Param(property, new ParseUUIDPipe({ version: "4", exceptionFactory }), ...pipes);
-};
+}

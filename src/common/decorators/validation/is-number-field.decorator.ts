@@ -20,7 +20,7 @@ import type { NumberFieldOptions } from "@common/@types";
  * @returns A function that returns a decorator.
  */
 
-export const IsNumberField = (options_?: NumberFieldOptions) => {
+export function IsNumberField(options_?: NumberFieldOptions) {
   const options: NumberFieldOptions = {
     min: 1,
     required: true,
@@ -110,4 +110,4 @@ export const IsNumberField = (options_?: NumberFieldOptions) => {
   }
 
   return applyDecorators(...decoratorsToApply);
-};
+}

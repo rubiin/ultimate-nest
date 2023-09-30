@@ -16,7 +16,7 @@ interface AuthGuard {
  * @returns A function that returns a function
  */
 
-export const Auth = (options_?: AuthGuard) => {
+export function Auth(options_?: AuthGuard) {
   const options: AuthGuard = {
     guards: [JwtAuthGuard, PoliciesGuard],
     unauthorizedResponse: API_UNAUTHORISED_RESPONSE,
@@ -28,4 +28,4 @@ export const Auth = (options_?: AuthGuard) => {
     ApiBearerAuth(),
     ApiUnauthorizedResponse({ description: options.unauthorizedResponse }),
   );
-};
+}

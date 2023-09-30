@@ -26,7 +26,7 @@ interface ApiFilesOptions extends ApiFileOptions {
  * @param options_ - IApiFileOptions - The options for the decorator.
  * @returns A function that returns a decorator.
  */
-export const ApiFile = (options_?: ApiFileOptions) => {
+export function ApiFile(options_?: ApiFileOptions) {
   const options: ApiFileOptions = { fieldName: "file", required: false, ...options_ };
 
   return applyDecorators(
@@ -45,7 +45,7 @@ export const ApiFile = (options_?: ApiFileOptions) => {
       },
     }),
   );
-};
+}
 
 /**
  * It adds the `@UseInterceptors(FilesInterceptor(...))` decorator to the route handler, and adds the
@@ -53,7 +53,7 @@ export const ApiFile = (options_?: ApiFileOptions) => {
  * @param options_ - The options for the decorator.
  * @returns A function that returns a decorator.
  */
-export const ApiFiles = (options_?: ApiFilesOptions) => {
+export function ApiFiles(options_?: ApiFilesOptions) {
   const options: ApiFilesOptions = {
     fieldName: "files",
     required: false,
@@ -82,7 +82,7 @@ export const ApiFiles = (options_?: ApiFilesOptions) => {
       },
     }),
   );
-};
+}
 
 /**
  * It takes an array of MulterFields and returns a decorator that will add the appropriate OpenAPI
@@ -92,10 +92,7 @@ export const ApiFiles = (options_?: ApiFilesOptions) => {
  * multer.
  */
 
-export const ApiFileFields = (
-  options: (MulterField & { required?: boolean })[],
-  localOptions?: MulterOptions,
-) => {
+export function ApiFileFields(options: (MulterField & { required?: boolean })[], localOptions?: MulterOptions) {
   const bodyProperties: Record<string, SchemaObject | ReferenceObject> = Object.assign(
     {},
     ...options.map((field) => {
@@ -114,4 +111,4 @@ export const ApiFileFields = (
       },
     }),
   );
-};
+}

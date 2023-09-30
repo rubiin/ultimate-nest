@@ -20,7 +20,8 @@ export class NestFirebaseService implements NestFirebase {
   getFirebaseAdmin(): admin.app.App {
     const filePath = path.resolve(".", this._NestFirebaseOptions.FIREBASE_CREDENTIAL_PATH);
 
-    if (!existsSync(filePath)) throw new Error(`Unknown file ${filePath}`);
+    if (!existsSync(filePath))
+      throw new Error(`Unknown file ${filePath}`);
 
     if (!this._firebaseConnection) {
       try {

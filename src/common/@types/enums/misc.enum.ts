@@ -1,5 +1,7 @@
 import type { TEmailSubject } from "../interfaces";
 
+export const BYTE_TO_MB = 1024 * 1024;
+
 export enum EmailTemplate {
   RESET_PASSWORD_TEMPLATE = "reset",
   WELCOME_TEMPLATE = "welcome",
@@ -15,8 +17,8 @@ export const EmailSubject: Record<TEmailSubject, string> = {
 };
 
 export const FileSize = {
-  IMAGE: 5 * 1024 * 1024, // 5MB
-  DOC: 10 * 1024 * 1024, // 10MB
+  IMAGE: 5 * BYTE_TO_MB, // 5MB
+  DOC: 10 * BYTE_TO_MB, // 10MB
 };
 
 export enum PostStateEnum {
@@ -24,12 +26,12 @@ export enum PostStateEnum {
   PUBLISHED = "PUBLISHED",
 }
 
-export const enum Server {
+export enum Server {
   SES = "SES",
   SMTP = "SMTP",
 }
 
-export const enum TemplateEngine {
+export enum TemplateEngine {
   ETA = "ETA",
   PUG = "PUG",
   HBS = "HBS",
@@ -42,13 +44,13 @@ export const FileType: Record<keyof typeof FileSize, RegExp> = {
 
 // database enums
 
-export const enum CursorType {
+export enum CursorType {
   DATE = "DATE",
   STRING = "STRING",
   NUMBER = "NUMBER",
 }
 
-export const enum QueryCursor {
+export enum QueryCursor {
   DATE = "DATE",
   ALPHA = "ALPHA",
 }
@@ -63,12 +65,12 @@ export enum ReferralStatus {
   COMPLETED = "COMPLETED",
 }
 
-export const enum RoutingKey {
+export enum RoutingKey {
   SEND_MAIL = "send-mail",
   SEND_NEWSLETTER = "send-newsletter",
 }
 
-export const enum PaginationType {
+export enum PaginationType {
   OFFSET = "OFFSET",
   CURSOR = "CURSOR",
 }

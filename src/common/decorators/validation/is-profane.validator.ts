@@ -28,7 +28,7 @@ class IsProfaneConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export const IsProfane = (validationOptions?: ValidationOptions): PropertyDecorator => {
+export function IsProfane(validationOptions?: ValidationOptions): PropertyDecorator {
   return function (object: Record<string, any>, propertyName: string | symbol) {
     registerDecorator({
       target: object.constructor,
@@ -37,4 +37,4 @@ export const IsProfane = (validationOptions?: ValidationOptions): PropertyDecora
       validator: IsProfaneConstraint,
     });
   };
-};
+}

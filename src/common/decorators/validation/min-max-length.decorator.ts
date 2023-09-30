@@ -8,7 +8,7 @@ import { validationI18nMessage } from "@lib/i18n";
  * @param options_ - MinMaxLengthOptions
  * @returns A function that takes in a target, propertyKey, and descriptor
  */
-export const MinMaxLength = (options_?: MinMaxLengthOptions) => {
+export function MinMaxLength(options_?: MinMaxLengthOptions) {
   const options: MinMaxLengthOptions = { minLength: 2, maxLength: 500, each: false, ...options_ };
 
   return applyDecorators(
@@ -21,4 +21,4 @@ export const MinMaxLength = (options_?: MinMaxLengthOptions) => {
       each: options.each,
     }),
   );
-};
+}

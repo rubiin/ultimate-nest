@@ -10,7 +10,7 @@ import { Auth } from "./auth.decorator";
  * @param secured - whether or not the controller should be secured
  * @returns A function that takes in a class and returns a class.
  */
-export const GenericController = (name: string, secured = true) => {
+export function GenericController(name: string, secured = true) {
   const decsToApply: (ClassDecorator | MethodDecorator | PropertyDecorator)[] = [
     ApiTags(capitalize(name)),
     Controller(name),
@@ -20,4 +20,4 @@ export const GenericController = (name: string, secured = true) => {
     decsToApply.push(Auth());
 
   return applyDecorators(...decsToApply);
-};
+}

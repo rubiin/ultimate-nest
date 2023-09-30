@@ -39,13 +39,12 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export const IsUnique
-    = <Entity>(entityType: () => Type<Entity>, field: keyof Entity, options?: ValidationOptions) =>
-      ({ constructor: target }: object, propertyName: string) =>
-        registerDecorator({
-          constraints: [entityType, field],
-          target,
-          options,
-          propertyName,
-          validator: IsUniqueConstraint,
-        });
+export function IsUnique<Entity>(entityType: () => Type<Entity>, field: keyof Entity, options?: ValidationOptions) {
+  return ({ constructor: target }: object, propertyName: string) => registerDecorator({
+    constraints: [entityType, field],
+    target,
+    options,
+    propertyName,
+    validator: IsUniqueConstraint,
+  });
+}

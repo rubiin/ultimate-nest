@@ -36,7 +36,7 @@ class IsPasswordConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export const IsPassword = (validationOptions?: ValidationOptions): PropertyDecorator => {
+export function IsPassword(validationOptions?: ValidationOptions): PropertyDecorator {
   return function (object: Record<string, any>, propertyName: string | symbol) {
     registerDecorator({
       target: object.constructor,
@@ -46,9 +46,9 @@ export const IsPassword = (validationOptions?: ValidationOptions): PropertyDecor
       validator: IsPasswordConstraint,
     });
   };
-};
+}
 
-export const IsPasswordField = (validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number }) => {
+export function IsPasswordField(validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number }) {
   return applyDecorators(
     IsNotEmpty({
       message: validationI18nMessage("validation.isNotEmpty"),
@@ -59,4 +59,4 @@ export const IsPasswordField = (validationOptions?: ValidationOptions & { minLen
     }),
     IsPassword(validationOptions),
   );
-};
+}

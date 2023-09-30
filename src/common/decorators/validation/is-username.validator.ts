@@ -38,7 +38,7 @@ class IsUsernameConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export const IsUsername = (validationOptions?: ValidationOptions): PropertyDecorator => {
+export function IsUsername(validationOptions?: ValidationOptions): PropertyDecorator {
   return function (object: Record<string, any>, propertyName: string | symbol) {
     registerDecorator({
       target: object.constructor,
@@ -48,9 +48,9 @@ export const IsUsername = (validationOptions?: ValidationOptions): PropertyDecor
       validator: IsUsernameConstraint,
     });
   };
-};
+}
 
-export const IsUsernameField = (validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number }) => {
+export function IsUsernameField(validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number }) {
   return applyDecorators(
     IsNotEmpty({
       message: validationI18nMessage("validation.isNotEmpty"),
@@ -61,4 +61,4 @@ export const IsUsernameField = (validationOptions?: ValidationOptions & { minLen
     }),
     IsUsername(validationOptions),
   );
-};
+}

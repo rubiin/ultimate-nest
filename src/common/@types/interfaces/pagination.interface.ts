@@ -37,14 +37,17 @@ export interface PaginationAbstractResponse<T, Y> {
 export type Order = "$gt" | "$lt";
 export type OppositeOrder = "$gte" | "$lte";
 
-export const getCursorType = (cursor: QueryCursor): CursorType =>
-  cursor === QueryCursor.DATE ? CursorType.NUMBER : CursorType.STRING;
+export function getCursorType(cursor: QueryCursor): CursorType {
+  return cursor === QueryCursor.DATE ? CursorType.NUMBER : CursorType.STRING;
+}
 
-export const getQueryOrder = (order: QueryOrder): Order =>
-  order === QueryOrder.ASC ? "$gt" : "$lt";
+export function getQueryOrder(order: QueryOrder): Order {
+  return order === QueryOrder.ASC ? "$gt" : "$lt";
+}
 
-export const getOppositeOrder = (order: QueryOrder): OppositeOrder =>
-  order === QueryOrder.ASC ? "$lte" : "$gte";
+export function getOppositeOrder(order: QueryOrder): OppositeOrder {
+  return order === QueryOrder.ASC ? "$lte" : "$gte";
+}
 
 export type PaginationRequest = CursorPaginationDto | OffsetPaginationDto;
 export type PaginationResponse<T> = CursorPaginationResponse<T> | OffsetPaginationResponse<T>;

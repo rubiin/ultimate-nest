@@ -11,14 +11,14 @@ interface SwaggerResponseOptions<T, K> {
   response?: Type<K>
 }
 
-export const SwaggerResponse = ({
+export function SwaggerResponse({
   operation,
   notFound,
   badRequest,
   params,
   body,
   response,
-}: SwaggerResponseOptions<typeof body, typeof response>) => {
+}: SwaggerResponseOptions<typeof body, typeof response>) {
   const decsToApply = [ApiOperation({ summary: operation })];
 
   if (params) {
@@ -39,4 +39,4 @@ export const SwaggerResponse = ({
     decsToApply.push(ApiResponse({ type: response }));
 
   return applyDecorators(...decsToApply);
-};
+}
