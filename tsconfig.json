@@ -2,7 +2,6 @@
   "extends": "@rubiin/tsconfig",
   "compilerOptions": {
     "baseUrl": "src",
-    "outDir": "dist",
     "paths": {
       "@lib/*": [
         "./lib/*"
@@ -22,7 +21,8 @@
       "@generated": [
         "./generated"
       ]
-    }
+    },
+    "outDir": "dist"
   },
   "include": [
     "test/**/*",
