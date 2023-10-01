@@ -11,6 +11,7 @@ module.exports = rubiin({
   },
 },
 {
+  files: ['**/*.ts'],
   rules: {
     "ts/no-floating-promises": "off",
     "ts/no-extraneous-class": "off",
