@@ -26,12 +26,13 @@ seed env="dev":
 test-e2e env="dev":
 	USER_PASSWORD=Test@1234 NODE_ENV={{env}} yarn test:e2e
 
+# will drop the database, run all migrations
+seed-fresh env="dev":
+  NODE_ENV={{env}} npm run orm migration:fresh --seed
+
 
 # clean all auto generated files and generate initial migration file
 init: clean-files build makemigration
-
-# clean all auto generated files and run migration
-clean-db: unmigrate migrate seed
 
 # clean all auto generated files
 clean-files:
