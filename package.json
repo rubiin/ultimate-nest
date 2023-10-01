@@ -38,7 +38,7 @@
   "scripts": {
     "build": "nest build",
     "lint": "eslint '{src,test}/**/*.ts' --cache",
-    "lint:fix": "eslint '{src,test}/**/*.ts' --cache --fix --debug",
+    "lint:fix": "eslint '{src,test}/**/*.ts' --cache --fix",
     "orm": "npx mikro-orm",
     "prebuild": "rimraf dist",
     "sample": "cd env; npx  sample-env --env .env.dev",
@@ -149,7 +149,7 @@
     "@nestjs/cli": "10.1.18",
     "@nestjs/schematics": "10.0.2",
     "@nestjs/testing": "10.2.6",
-    "@rubiin/eslint-config": "^1.8.6-beta.9",
+    "@rubiin/eslint-config": "^1.8.6-beta.10",
     "@rubiin/tsconfig": "^1.1.0",
     "@sentry/types": "^7.72.0",
     "@side/jest-runtime": "^1.1.0",
