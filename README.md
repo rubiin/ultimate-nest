@@ -90,11 +90,11 @@ env file
 `Note`: Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage'].
 The env file name
 should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as
-NODE_ENV=dev yarn dev
+NODE_ENV=dev npm run dev
 
-Start local Postgres server and run `npx cross-env NODE_ENV=dev make migrate` to apply migrations
+Start local Postgres server and run `npx cross-env NODE_ENV=dev just migrate` to apply migrations
 
-Now you can start the application witt `npx cross-env NODE_ENV=dev yarn start`.
+Now you can start the application witt `npx cross-env NODE_ENV=dev npm run start`.
 
 ---
 
@@ -115,27 +115,24 @@ Now you can start the application witt `npx cross-env NODE_ENV=dev yarn start`.
 - 📃 **Swagger** - API Documentation
 - 🐳 **Docker Compose** - Container Orchestration
 - 🔐 **Helmet** - secure HTTP headers
-- 😴 **Insomnia** - Insomnia config for endpoints
 - 📏 **ESLint** — Pluggable JavaScript linter
-- 💖 **Prettier** - Opinionated Code Formatter
 
 ## Available Scripts
 
-- `yarn start` - Start application
-- `yarn start:dev` - Start application in watch mode
-- `yarn start:prod` - Start built application
-- `yarn start:hmr` - Start application with hot module replacement
-- `yarn format` - Formats all the files inside src using prettier with config provided in `.prettierrc`
-- `yarn lint` - Uses eslint to lint all the files inside src with config provided in `.eslintrc.cjs`
-- `yarn orm migration:create` - Uses Mikroorm to create a migration file
-- `yarn orm migration:up` - This command is used to run availablexisting migration files.
-- `yarn orm migration:down` - This command is used to rollback migration.
-- `yarn orm seeder:run` - This command is used to run existing seeders in `src/common/database`.
+- `npm run start` - Start application
+- `npm run start:dev` - Start application in watch mode
+- `npm run start:prod` - Start built application
+- `npm run start:hmr` - Start application with hot module replacement
+- `npm run lint` - Uses eslint to lint all the files inside src with config provided in `eslint.config.js`
+- `npm run orm migration:create` - Uses Mikroorm to create a migration file
+- `npm run orm migration:up` - This command is used to run availablexisting migration files.
+- `npm run orm migration:down` - This command is used to rollback migration.
+- `npm run orm seeder:run` - This command is used to run existing seeders in `src/common/database`.
 
 All the scripts require `NODE_ENV` flag
 
 Additionally, you can also see the scripts in `justfile` which is a cross platform task runner. You can use it by
-installing [just](https://github.com/casey/just#packages) and then running `just <script>
+installing [just](https://github.com/casey/just#packages) and then running `just <script>`. Ex. `just build`
 
 ---
 
@@ -146,26 +143,24 @@ installing [just](https://github.com/casey/just#packages) and then running `just
     - Also remove the unwanted config variables from the env file
 - Make sure you create a env file under `env` directory with name like `.env.something`.The portion after .env is
   the `NODE_ENV` value which will be required while running the app
-- Also make sure you have ssl files inside `src/resources/ssl` if you tend to use ssl. Replace the sample files with
-  your ssl files but keep the name same. Additionally
 
 ## Migration and seeding
 
 Migrations are used to update the database schema. The migration files are stored in `migrations` directory.
 
 ```sh
-  npx cross-env NODE_ENV=dev yarn orm migration:up # applies migration for dev env
+  npx cross-env NODE_ENV=dev npm run orm migration:up # applies migration for dev env
 ```
 
 Seeding is used to insert data into the database. The seeding files are stored in `common/database/seeders` directory.
 
 ```sh
-    npx cross-env USER_PASSWORD=Test@1234 NODE_ENV=dev yarn orm seeder:run   # seeds data for dev env with all user password set as Test@1234
+    npx cross-env USER_PASSWORD=Test@1234 NODE_ENV=dev npm run orm seeder:run   # seeds data for dev env with all user password set as Test@1234
 ```
 
 ## Start application
 
-- `npx cross-env NODE_ENV=[env name] yarn start`
+- `npx cross-env NODE_ENV=[env name] npm run start`
 - View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
 - View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and
   password is the values set in the env file under `SWAGGER_USERNAME` and `SWAGGER_PASS` respectively
@@ -179,8 +174,8 @@ ultimate-nest
 │   └── .env.dev                                  * Configuration file for development environment.
 │   └── .env.prod                                 * Configuration file for production environment.
 │   └── .env.test                                 * Configuration file for test environment.
-├── coverage                                      * Coverage reports after running `yarn test:cov` command.
-├── dist                                          * Optimized code for production after `yarn build` is run.
+├── coverage                                      * Coverage reports after running `npm run test:cov` command.
+├── dist                                          * Optimized code for production after `npm run build` is run.
 ├── src
     └── modules                                   * Folder where specific modules all files are stored
           └── <module>
@@ -209,15 +204,12 @@ authentication of the token.
 
 # Deployment
 
-You need to have `docker` and `docker-compose` (not the compose plugin) installed. Also since we are using `makefiles`
-for deployment, you need to have `make` installed.
+You need to have `docker` and `docker-compose` installed. The image environment variable values can be found at the compose file
 
 ```sh
   ENV=dev sh ./scripts/deploy.sh   # deploys dev environment (.env.dev used)
   ENV=prod sh ./scripts/deploy.sh   # deploys prod environment (.env.prod used)
 ```
-
-The password for `redis` and `rabbitmq` is `Test@1234` can be changed in the make file under `deploy` script
 
 More docs found at `docs` folder
 
