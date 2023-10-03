@@ -8,13 +8,12 @@
 - [Configuration](#configuration)
 - [FAQ](#faq)
 
-This project uses Typescript Eslint, and Prettier to catch errors and avoid bike-shedding by enforcing a common code
+This project uses Typescript Eslint to catch errors and avoid bike-shedding by enforcing a common code
 style.
 
 ## Languages
 
-- **TypeScript** is linted by Typescript Eslint and formatted by Prettier
-- **JSON** is formatted by Prettier
+- **TypeScript** is linted and formatted by Typescript Eslint.
 
 ## Scripts
 
@@ -24,12 +23,12 @@ There are a few different contexts in which the linters run.
 
 ```bash
 # Lint all files without auto-fixing
-yarn lint
+npm run  lint
 ```
 
 ```bash
 # Lint all files, fixing many violations automatically
-yarn lint:fix
+npm run lint:fix
 ```
 
 See `package.json` to update.
@@ -47,8 +46,10 @@ In supported editors, all files will be linted and show under the linter errors 
 This boilerplate ships with opinionated defaults, but you can edit each tools configuration in the following config
 files:
 
-- [ESLint](https://eslint.org/docs/user-guide/configuring)
-    - `.eslintrc.cjs`
+- [ESLint](https://eslint.org/docs/latest/use/configure/configuration-files-new)
+    - `eslint.config.js`
+
+Note: This uses eslint flat config, which is the recommended way to configure eslint.
 
 ## FAQ
 
@@ -60,5 +61,5 @@ files:
   possible, because dynamic configurations are simply more powerful, able to respond to environment variables and much
   more.
 
-The linting rules can be found at [eslint-plugin-unicorn](https://github.com/sindresorhus/eslint-plugin-unicorn) which
+The linting rules can be found at [@rubiin/eslint-config](https://github.com/rubiin/eslint-config) which
 has more than 100 powerful ESLint rules that help prevent bugs and enforce conventions.

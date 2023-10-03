@@ -24,7 +24,7 @@ seed env="dev":
 
 # test e2e with jest
 test-e2e env="dev":
-	USER_PASSWORD=Test@1234 NODE_ENV={{env}} yarn test:e2e
+	USER_PASSWORD=Test@1234 NODE_ENV={{env}} npm run test:e2e
 
 # will drop the database, run all migrations
 seed-fresh env="dev":
