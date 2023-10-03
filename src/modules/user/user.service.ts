@@ -11,7 +11,7 @@ import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 import type {
-  DtoWithFile,
+  RecordWithFile,
   PaginationResponse,
 } from "@common/@types";
 import {
@@ -99,7 +99,7 @@ export class UserService {
    * @param dto - CreateWithFile<CreateUserDto>
    * @returns The user object
    */
-  create(dto: DtoWithFile<CreateUserDto>): Observable<User> {
+  create(dto: RecordWithFile<CreateUserDto>): Observable<User> {
     const { files, ...rest } = dto;
     const user = this.userRepository.create(rest);
 
