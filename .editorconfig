@@ -5,24 +5,25 @@ root = true
 
 # Unix-style newlines with a newline ending every file
 [*]
+indent_size = 2
+indent_style = space
 end_of_line = lf
 insert_final_newline = true
 charset = utf-8
-indent_size = 2
-indent_style = space
 trim_trailing_whitespace = true
-quote_type = double
 
 [*.md]
-insert_final_newline = false
 trim_trailing_whitespace = false
 
 # The JSON files contain newlines inconsistently
 [*.json]
-indent_size = 2
 insert_final_newline = ignore
 
 [Makefile]
+indent_size = 8
+indent_style = tab
+
+[justfile]
 indent_style = tab
 indent_size = 8
 

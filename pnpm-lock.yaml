@@ -78,8 +78,8 @@ dependencies:
     specifier: ^4.0.0
     version: 4.0.0(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)
   '@nestjs/swagger':
-    specifier: ^7.1.12
-    version: 7.1.12(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+    specifier: ^7.1.13
+    version: 7.1.13(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
   '@nestjs/terminus':
     specifier: ^10.1.1
     version: 10.1.1(@mikro-orm/core@5.8.6)(@mikro-orm/nestjs@5.2.2)(@nestjs/axios@3.0.0)(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -168,8 +168,8 @@ dependencies:
     specifier: ^0.0.1
     version: 0.0.1(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)
   nestjs-i18n:
-    specifier: ^10.3.5
-    version: 10.3.5(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(class-validator@0.14.0)(rxjs@7.8.1)
+    specifier: ^10.3.6
+    version: 10.3.6(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(class-validator@0.14.0)(rxjs@7.8.1)
   nestjs-minio:
     specifier: ^2.5.1
     version: 2.5.1(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)
@@ -281,8 +281,8 @@ devDependencies:
     specifier: 10.2.6
     version: 10.2.6(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(@nestjs/platform-express@10.2.6)
   '@rubiin/eslint-config':
-    specifier: ^1.8.7
-    version: 1.8.7(eslint@8.50.0)(typescript@5.2.2)(vitest@0.34.6)
+    specifier: ^1.8.8
+    version: 1.8.8(eslint@8.50.0)(typescript@5.2.2)(vitest@0.34.6)
   '@rubiin/tsconfig':
     specifier: ^1.1.0
     version: 1.1.0
@@ -3258,8 +3258,8 @@ packages:
       path-to-regexp: 0.2.5
     dev: false
 
-  /@nestjs/swagger@7.1.12(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
-    resolution: {integrity: sha512-Q1P/IE+cws0sJeNtbs+8uDalcVylpmAnaEUFenGOa3KSNnXF/8DOE84mET/uUhFXsiz9PLHK8Hy7o7B6fRpMhg==}
+  /@nestjs/swagger@7.1.13(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-aHfW0rDZZKTuPVSkxutBCB16lBy5vrsHVoRF5RvPtH7U2cm4Vf+OnfhxKKuG2g2Xocn9sDL+JAyVlY2VN3ytTw==}
     peerDependencies:
       '@fastify/static': ^6.0.0
       '@nestjs/common': ^9.0.0 || ^10.0.0
@@ -3284,7 +3284,7 @@ packages:
       lodash: 4.17.21
       path-to-regexp: 3.2.0
       reflect-metadata: 0.1.13
-      swagger-ui-dist: 5.7.2
+      swagger-ui-dist: 5.9.0
     dev: false
 
   /@nestjs/terminus@10.1.1(@mikro-orm/core@5.8.6)(@mikro-orm/nestjs@5.2.2)(@nestjs/axios@3.0.0)(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(reflect-metadata@0.1.13)(rxjs@7.8.1):
@@ -3619,8 +3619,8 @@ packages:
       '@redis/client': 1.5.11
     dev: false
 
-  /@rubiin/eslint-config@1.8.7(eslint@8.50.0)(typescript@5.2.2)(vitest@0.34.6):
-    resolution: {integrity: sha512-1nlnaegb3NPO1xGyC5kEyFY3hcvDwMa3T5xjun4wR02kBO3UJ02Qf8HoxNAN2FPwUqqia6zHT56wXO5uucxCGA==}
+  /@rubiin/eslint-config@1.8.8(eslint@8.50.0)(typescript@5.2.2)(vitest@0.34.6):
+    resolution: {integrity: sha512-wrFtkND5jHXPNlOUXg71kbxt6D7hh6/EFvan/N5aPTBRWDqkd9UTMzM4f09ShES+f2NNuZsJXgHmZiqc5QAloA==}
     peerDependencies:
       eslint: '>=8.0.0'
     dependencies:
@@ -3628,6 +3628,7 @@ packages:
       '@stylistic/eslint-plugin': 0.0.6(eslint@8.50.0)(typescript@5.2.2)
       '@typescript-eslint/eslint-plugin': 6.7.4(@typescript-eslint/parser@6.7.4)(eslint@8.50.0)(typescript@5.2.2)
       '@typescript-eslint/parser': 6.7.4(eslint@8.50.0)(typescript@5.2.2)
+      '@typescript-eslint/utils': 6.7.4(eslint@8.50.0)(typescript@5.2.2)
       eslint: 8.50.0
       eslint-config-flat-gitignore: 0.1.0
       eslint-define-config: 1.23.0
@@ -10828,8 +10829,8 @@ packages:
       fast-jwt: 3.3.0
     dev: false
 
-  /nestjs-i18n@10.3.5(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(class-validator@0.14.0)(rxjs@7.8.1):
-    resolution: {integrity: sha512-2kY7ojzKIPKkWYoJIuk/VpABZpuWpUDhvgYL5epK9Tv/Dmxc/KhhV6zqgM9Ssjp3cdl9OF1Taxx86CmBUkg+Cw==}
+  /nestjs-i18n@10.3.6(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(class-validator@0.14.0)(rxjs@7.8.1):
+    resolution: {integrity: sha512-/vYS1w2zaRR22I63fzJ8mFwIEfZOlKDEe2AAuNUNMAt60TkWShgm4xWWQzOgZ9jOYpHMpjFTAwA1WV7RaYbE8w==}
     engines: {node: '>=16'}
     peerDependencies:
       '@nestjs/common': '*'
@@ -13156,8 +13157,8 @@ packages:
       - supports-color
     dev: false
 
-  /swagger-ui-dist@5.7.2:
-    resolution: {integrity: sha512-mVZc9QVQ6pTCV5crli3+Ng+DoMPwdtMHK8QLk2oX8Mtamp4D/hV+uYdC3lV0JZrDgpNEcjs0RrWTqMwwosuLPQ==}
+  /swagger-ui-dist@5.9.0:
+    resolution: {integrity: sha512-NUHSYoe5XRTk/Are8jPJ6phzBh3l9l33nEyXosM17QInoV95/jng8+PuSGtbD407QoPf93MH3Bkh773OgesJpA==}
     dev: false
 
   /symbol-observable@1.2.0:
