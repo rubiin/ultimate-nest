@@ -8,13 +8,13 @@ import { MailPayload, RoutingKey } from "@common/@types";
 export class RabbitService {
   private logger = new Logger(RabbitService.name);
 
+
   constructor(private readonly mailService: MailerService) {}
 
   @RabbitSubscribe({
     routingKey: [RoutingKey.SEND_MAIL, RoutingKey.SEND_NEWSLETTER],
     exchange: process.env.RABBITMQ_EXCHANGE,
     queue: process.env.RABBITMQ_QUEUE,
-    createQueueIfNotExists: true,
   })
   sendMail(payload: MailPayload) {
     return from(

@@ -19,7 +19,11 @@ const logger = new Logger("RabbitMQ");
           },
         ],
         uri: configService.get("rabbitmq.url", { infer: true }),
-        connectionInitOptions: { wait: false },
+        connectionInitOptions: {
+          wait: false,
+          reject: true,
+          timeout: 9000,
+        },
         logger,
         channels: {
           "channel-1": {
@@ -35,7 +39,7 @@ const logger = new Logger("RabbitMQ");
       }),
     }),
   ],
-  providers: [RabbitService],
+  providers: [RabbitService, RabbitMQHealthCheckService],
   exports: [RabbitService, RabbitMQModule],
 })
 export class NestRabbitModule {}
