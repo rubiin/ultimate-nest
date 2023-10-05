@@ -70,6 +70,11 @@ export enum RoutingKey {
   SEND_NEWSLETTER = "send-newsletter",
 }
 
+export enum Queues {
+  MAIL = "mail",
+  HTTP = "http",
+}
+
 export enum PaginationType {
   OFFSET = "OFFSET",
   CURSOR = "CURSOR",

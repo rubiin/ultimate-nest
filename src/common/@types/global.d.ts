@@ -70,8 +70,6 @@ declare global {
       REDIS_PORT: number
 
       RABBITMQ_URI: string
-      RABBITMQ_EXCHANGE: string
-      RABBITMQ_QUEUE: string
       RABBITMQ_DEFAULT_PREFETCH: number
 
       SENTRY_DSN: string
