@@ -5,8 +5,15 @@ import { DynamicThreadPool, availableParallelism } from "poolifier";
 
 const logger = new Logger("ThreadPool");
 
+
+const workerFile = path.join(
+  __dirname,
+  `workers${path.extname(__filename)}`
+);
+
+
 /* Creating a new thread pool with half of available threads and a maximum of available threads. */
-export const pool = new DynamicThreadPool(Math.floor(availableParallelism() / 2), availableParallelism(), path.resolve(__dirname, "workers.js"), {
+export const pool = new DynamicThreadPool(Math.floor(availableParallelism() / 2), availableParallelism(), workerFile, {
   enableTasksQueue: true,
   tasksQueueOptions: {
     concurrency: 8
