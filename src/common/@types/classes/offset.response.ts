@@ -42,9 +42,9 @@ export class OffsetMeta {
 
   constructor({
     pageOptionsDto,
-                    itemCount,
+    itemCount,
   }: {
-    pageOptionsDto: OffsetPaginationDto
+    pageOptionsDto: Omit<OffsetPaginationDto,"type">
     itemCount: number
   }) {
     this.page = pageOptionsDto.page;
