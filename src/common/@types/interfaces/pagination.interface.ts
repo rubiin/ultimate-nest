@@ -16,7 +16,7 @@ export interface QBCursorPaginationOptions<T extends Dictionary> {
 }
 
 export interface QBOffsetPaginationOptions<T extends Dictionary> {
-  pageOptionsDto: OffsetPaginationDto & { searchField: keyof T; alias: string }
+  pageOptionsDto: Omit<OffsetPaginationDto, "type"> & { searchField: keyof T; alias: string }
   qb: QueryBuilder<T>
 }
 
@@ -35,7 +35,7 @@ export interface PaginationAbstractResponse<T, Y> {
 }
 
 export type Order = "$gt" | "$lt";
-export type OppositeOrder = "$gte" | "$lte";
+export type OppositeOrder = `${Order}e`;
 
 export function getCursorType(cursor: QueryCursor): CursorType {
   return cursor === QueryCursor.DATE ? CursorType.NUMBER : CursorType.STRING;

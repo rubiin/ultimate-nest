@@ -37,9 +37,24 @@ export enum TemplateEngine {
   HBS = "HBS",
 }
 
+
 export const FileType: Record<keyof typeof FileSize, RegExp> = {
   IMAGE: /(jpg|jpeg|png|gif|svg)$/i,
   DOC: /(pdf|doc|txt|key|csv|docx|xls|xlsx|ppt|pptx)$/i,
+};
+
+export const ThreadFunctions = {
+  HASH_STRING: "hashString",
+};
+
+export const RoutingKey = {
+  SEND_MAIL: "send-mail",
+  SEND_NEWSLETTER: "send-newsletter",
+};
+
+export const Queues = {
+  MAIL: "mail",
+  HTTP: "http",
 };
 
 // database enums
@@ -63,16 +78,6 @@ export enum QueryOrder {
 export enum ReferralStatus {
   PENDING = "PENDING",
   COMPLETED = "COMPLETED",
-}
-
-export enum RoutingKey {
-  SEND_MAIL = "send-mail",
-  SEND_NEWSLETTER = "send-newsletter",
-}
-
-export enum Queues {
-  MAIL = "mail",
-  HTTP = "http",
 }
 
 export enum PaginationType {

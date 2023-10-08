@@ -52,7 +52,7 @@ async function bootstrap() {
     app.use(helmet());
     app.enableCors({
       credentials: true,
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      methods: ["GET","HEAD","PUT","PATCH","POST","DELETE","OPTIONS"],
       maxAge: 3600,
       origin: configService.get("app.allowedOrigins", { infer: true }),
     });
@@ -64,13 +64,15 @@ async function bootstrap() {
 
   const globalPrefix = configService.get("app.prefix", { infer: true });
 
+  app.setGlobalPrefix(globalPrefix);
+
   app.useGlobalPipes(new ValidationPipe(AppUtils.validationPipeOptions()));
 
   app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
 
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
-  app.setGlobalPrefix(globalPrefix);
+
 
   // =========================================================
   // configure socket
