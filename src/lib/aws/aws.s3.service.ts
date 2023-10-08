@@ -144,7 +144,8 @@ export class AwsS3Service {
     const extension = fileName
       .slice(fileName.lastIndexOf(".") + 1, fileName.length)
       .toUpperCase();
-    return lookup(extension) as string;
+    const fileMime = lookup(extension);
+    return fileMime || extension;
   }
 
   /**
