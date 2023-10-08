@@ -1,8 +1,8 @@
 import { ConfigurableModuleBuilder } from "@nestjs/common";
 
 export interface FirebaseModuleOptions {
-  FIREBASE_CREDENTIAL_PATH: string
-  FIREBASE_DATABASE_URL: string
+  credentialPath: string
+  databaseUrl: string
 }
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }

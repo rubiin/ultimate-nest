@@ -8,12 +8,12 @@ export interface MailModuleOptions {
   password?: string
   username?: string
   previewEmail: boolean
+  retryAttempts?: number
   server: Server
   sesKey?: string
   sesAccessKey?: string
   sesRegion?: string
   templateDir: string
-  retryAttempts?: number
   templateEngine:
   | {
     adapter: TemplateEngine.ETA
