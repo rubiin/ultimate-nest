@@ -23,6 +23,8 @@ import type {
 import { AwsModuleOptions } from "./aws.interface";
 import { MODULE_OPTIONS_TOKEN } from "./aws.module";
 
+// TODO: convert to observables
+
 @Injectable()
 export class AwsS3Service {
   private readonly s3Client: S3Client;
@@ -166,7 +168,7 @@ export class AwsS3Service {
     content: Uint8Array | Buffer,
     options?: AwsS3PutItemOptions,
   ): Promise<AwsS3> {
-    const filename = this.generateFileName(originalFilename);
+    const filename = options.keepOriginalName ? originalFilename : this.generateFileName(originalFilename);
     const { key, mime, path } = this.getOptions(options, filename);
     await this.s3Client.send(
       new PutObjectCommand({

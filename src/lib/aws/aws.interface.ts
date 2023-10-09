@@ -16,6 +16,7 @@ export interface AwsS3MultiPart extends AwsS3 {
 export interface AwsS3PutItemOptions {
   acl?: ObjectCannedACL
   path: string
+  keepOriginalName?: boolean
 }
 
 export interface AwsModuleOptions {
