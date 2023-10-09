@@ -213,8 +213,8 @@ dependencies:
     specifier: ^3.0.19
     version: 3.0.19
   prom-client:
-    specifier: ^14.2.0
-    version: 14.2.0
+    specifier: ^15.0.0
+    version: 15.0.0
   pug:
     specifier: ^3.0.2
     version: 3.0.2
@@ -244,7 +244,7 @@ dependencies:
     version: 13.9.0
   swagger-stats:
     specifier: ^0.99.7
-    version: 0.99.7(prom-client@14.2.0)
+    version: 0.99.7(prom-client@15.0.0)
   twilio:
     specifier: 4.18.1
     version: 4.18.1
@@ -3464,6 +3464,10 @@ packages:
     transitivePeerDependencies:
       - encoding
 
+  /@opentelemetry/api@1.6.0:
+    resolution: {integrity: sha512-OWlrQAnWn9577PhVgqjUvMr1pg57Bc4jv0iL4w0PRuOSRvq67rvHW9Ie/dZVMvCzhSCB+UxhcY/PmCmFj33Q+g==}
+    engines: {node: '>=8.0.0'}
+
   /@otplib/core@12.0.1:
     resolution: {integrity: sha512-4sGntwbA/AC+SbPhbsziRiD+jNDdIzsZ3JUyfZwjtKyc/wufl1pnSIaG4Uqx8ymPagujub0o92kgBnB89cuAMA==}
     dev: false
@@ -4845,7 +4849,7 @@ packages:
       '@types/node': 20.8.3
       fastify: 3.29.5
       joi: 17.11.0
-      prom-client: 14.2.0
+      prom-client: 15.0.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11781,10 +11785,11 @@ packages:
     engines: {node: '>= 0.6.0'}
     dev: false
 
-  /prom-client@14.2.0:
-    resolution: {integrity: sha512-sF308EhTenb/pDRPakm+WgiN+VdM/T1RaHj1x+MvAuT8UiQP8JmOEbxVqtkbfR4LrvOg5n7ic01kRBDGXjYikA==}
-    engines: {node: '>=10'}
+  /prom-client@15.0.0:
+    resolution: {integrity: sha512-UocpgIrKyA2TKLVZDSfm8rGkL13C19YrQBAiG3xo3aDFWcHedxRxI3z+cIcucoxpSO0h5lff5iv/SXoxyeopeA==}
+    engines: {node: ^16 || ^18 || >=20}
     dependencies:
+      '@opentelemetry/api': 1.6.0
       tdigest: 0.1.2
 
   /promise-breaker@5.0.0:
@@ -13152,7 +13157,7 @@ packages:
     dev: false
     optional: true
 
-  /swagger-stats@0.99.7(prom-client@14.2.0):
+  /swagger-stats@0.99.7(prom-client@15.0.0):
     resolution: {integrity: sha512-niP70m99Cwpz/Fyfk8ydul1jM0pOKD6UofSaDzW2Op6o6WYFsuAl/BhVbmLkZWOAZ7IloDVvFj6vaU5zA0xydg==}
     peerDependencies:
       prom-client: '>= 10 <= 14'
@@ -13163,7 +13168,7 @@ packages:
       debug: 4.3.4
       moment: 2.29.4
       path-to-regexp: 6.2.1
-      prom-client: 14.2.0
+      prom-client: 15.0.0
       qs: 6.11.2
       send: 0.18.0
       uuid: 9.0.1
