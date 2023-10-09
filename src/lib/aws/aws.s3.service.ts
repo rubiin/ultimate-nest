@@ -15,6 +15,7 @@ import {
 import { Inject, Injectable } from "@nestjs/common";
 import { lookup } from "mime-types";
 
+import { omit } from "helper-fns";
 import type {
   AwsS3,
   AwsS3MultiPart,
@@ -35,13 +36,7 @@ export class AwsS3Service {
         @Inject(MODULE_OPTIONS_TOKEN)
         private readonly options: AwsModuleOptions,
   ) {
-    this.s3Client = new S3Client({
-      credentials: {
-        accessKeyId: this.options.accessKeyId,
-        secretAccessKey: this.options.secretAccessKey,
-      },
-      region: this.options.region,
-    });
+    this.s3Client = new S3Client(omit(options, ["bucket", "baseUrl"]));
 
     this.bucket = this.options.bucket;
     this.baseUrl = this.options.baseUrl;

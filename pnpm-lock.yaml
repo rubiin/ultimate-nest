@@ -4,6 +4,10 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  prom-client: ^14.0.0
+  stripe: ^11.12.0
+
 dependencies:
   '@aws-sdk/client-s3':
     specifier: ^3.427.0
@@ -19,7 +23,7 @@ dependencies:
     version: 4.0.0(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
   '@golevelup/nestjs-stripe':
     specifier: ^0.6.3
-    version: 0.6.3(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(rxjs@7.8.1)(stripe@13.9.0)
+    version: 0.6.3(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(rxjs@7.8.1)(stripe@11.18.0)
   '@golevelup/nestjs-webhooks':
     specifier: ^0.2.16
     version: 0.2.16(@nestjs/common@10.2.7)(body-parser@1.20.2)(rxjs@7.8.1)
@@ -180,8 +184,8 @@ dependencies:
     specifier: ^0.4.1
     version: 0.4.1(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(@nestjs/throttler@5.0.0)(ioredis@5.3.2)(reflect-metadata@0.1.13)
   nodemailer:
-    specifier: ^6.9.5
-    version: 6.9.5
+    specifier: ^6.9.6
+    version: 6.9.6
   otplib:
     specifier: ^12.0.1
     version: 12.0.1
@@ -213,8 +217,8 @@ dependencies:
     specifier: ^3.0.19
     version: 3.0.19
   prom-client:
-    specifier: ^15.0.0
-    version: 15.0.0
+    specifier: ^14.0.0
+    version: 14.2.0
   pug:
     specifier: ^3.0.2
     version: 3.0.2
@@ -240,11 +244,11 @@ dependencies:
     specifier: ^4.7.2
     version: 4.7.2
   stripe:
-    specifier: ^13.9.0
-    version: 13.9.0
+    specifier: ^11.12.0
+    version: 11.18.0
   swagger-stats:
     specifier: ^0.99.7
-    version: 0.99.7(prom-client@15.0.0)
+    version: 0.99.7(prom-client@14.2.0)
   twilio:
     specifier: 4.18.1
     version: 4.18.1
@@ -1918,7 +1922,7 @@ packages:
       - supports-color
     dev: false
 
-  /@golevelup/nestjs-stripe@0.6.3(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(rxjs@7.8.1)(stripe@13.9.0):
+  /@golevelup/nestjs-stripe@0.6.3(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)(rxjs@7.8.1)(stripe@11.18.0):
     resolution: {integrity: sha512-1h9VBwZIpw/xN5iuzpA1YtQq2ezOP7dVEUnB4xtGTWX3/3KjUm2DlBawQ5YN8aTK+FJMCHTg839rq4FryEj12w==}
     peerDependencies:
       stripe: ^11.12.0
@@ -1926,7 +1930,7 @@ packages:
       '@golevelup/nestjs-common': 2.0.0(@nestjs/common@10.2.7)
       '@golevelup/nestjs-discovery': 4.0.0(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)
       '@golevelup/nestjs-modules': 0.7.0(@nestjs/common@10.2.7)(rxjs@7.8.1)
-      stripe: 13.9.0
+      stripe: 11.18.0
     transitivePeerDependencies:
       - '@nestjs/common'
       - '@nestjs/core'
@@ -3464,10 +3468,6 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@opentelemetry/api@1.6.0:
-    resolution: {integrity: sha512-OWlrQAnWn9577PhVgqjUvMr1pg57Bc4jv0iL4w0PRuOSRvq67rvHW9Ie/dZVMvCzhSCB+UxhcY/PmCmFj33Q+g==}
-    engines: {node: '>=8.0.0'}
-
   /@otplib/core@12.0.1:
     resolution: {integrity: sha512-4sGntwbA/AC+SbPhbsziRiD+jNDdIzsZ3JUyfZwjtKyc/wufl1pnSIaG4Uqx8ymPagujub0o92kgBnB89cuAMA==}
     dev: false
@@ -4849,7 +4849,7 @@ packages:
       '@types/node': 20.8.3
       fastify: 3.29.5
       joi: 17.11.0
-      prom-client: 15.0.0
+      prom-client: 14.2.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -10969,8 +10969,8 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: false
 
-  /nodemailer@6.9.5:
-    resolution: {integrity: sha512-/dmdWo62XjumuLc5+AYQZeiRj+PRR8y8qKtFCOyuOl1k/hckZd8durUUHs/ucKx6/8kN+wFxqKJlQ/LK/qR5FA==}
+  /nodemailer@6.9.6:
+    resolution: {integrity: sha512-s7pDtWwe5fLMkQUhw8TkWB/wnZ7SRdd9HRZslq/s24hlZvBP3j32N/ETLmnqTpmj4xoBZL9fOWyCIZ7r2HORHg==}
     engines: {node: '>=6.0.0'}
     dev: false
 
@@ -11761,7 +11761,7 @@ packages:
       fixpack: 4.0.0
       get-port: 5.1.1
       mailparser: 3.6.5
-      nodemailer: 6.9.5
+      nodemailer: 6.9.6
       open: 7.4.2
       p-event: 4.2.0
       p-wait-for: 3.2.0
@@ -11785,11 +11785,10 @@ packages:
     engines: {node: '>= 0.6.0'}
     dev: false
 
-  /prom-client@15.0.0:
-    resolution: {integrity: sha512-UocpgIrKyA2TKLVZDSfm8rGkL13C19YrQBAiG3xo3aDFWcHedxRxI3z+cIcucoxpSO0h5lff5iv/SXoxyeopeA==}
-    engines: {node: ^16 || ^18 || >=20}
+  /prom-client@14.2.0:
+    resolution: {integrity: sha512-sF308EhTenb/pDRPakm+WgiN+VdM/T1RaHj1x+MvAuT8UiQP8JmOEbxVqtkbfR4LrvOg5n7ic01kRBDGXjYikA==}
+    engines: {node: '>=10'}
     dependencies:
-      '@opentelemetry/api': 1.6.0
       tdigest: 0.1.2
 
   /promise-breaker@5.0.0:
@@ -13062,8 +13061,8 @@ packages:
       acorn: 8.10.0
     dev: true
 
-  /stripe@13.9.0:
-    resolution: {integrity: sha512-sQAqodCvaw/iYWauHHdOWlFGj0oZj/3A51zs4rG5PN3SUJUFSSjtnbc9q5Djpls0iz3nXz2UwjzAdKHVP4dVqQ==}
+  /stripe@11.18.0:
+    resolution: {integrity: sha512-OUA32uhNoSoM6wOodyFbV+3IBCoO140uzdXmBArQ0S88D4EbH91xl2v+Ml1sKalcFKUBadHLeHfU/p9AbsOfGw==}
     engines: {node: '>=12.*'}
     dependencies:
       '@types/node': 20.8.3
@@ -13157,10 +13156,10 @@ packages:
     dev: false
     optional: true
 
-  /swagger-stats@0.99.7(prom-client@15.0.0):
+  /swagger-stats@0.99.7(prom-client@14.2.0):
     resolution: {integrity: sha512-niP70m99Cwpz/Fyfk8ydul1jM0pOKD6UofSaDzW2Op6o6WYFsuAl/BhVbmLkZWOAZ7IloDVvFj6vaU5zA0xydg==}
     peerDependencies:
-      prom-client: '>= 10 <= 14'
+      prom-client: ^14.0.0
     dependencies:
       axios: 1.5.1(debug@4.3.4)
       basic-auth: 2.0.1
@@ -13168,7 +13167,7 @@ packages:
       debug: 4.3.4
       moment: 2.29.4
       path-to-regexp: 6.2.1
-      prom-client: 15.0.0
+      prom-client: 14.2.0
       qs: 6.11.2
       send: 0.18.0
       uuid: 9.0.1

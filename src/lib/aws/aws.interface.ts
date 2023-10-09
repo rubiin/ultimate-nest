@@ -1,4 +1,4 @@
-import type { ObjectCannedACL } from "@aws-sdk/client-s3";
+import type { ObjectCannedACL, S3ClientConfig } from "@aws-sdk/client-s3";
 
 export interface AwsS3 {
   baseUrl: string
@@ -19,10 +19,7 @@ export interface AwsS3PutItemOptions {
   keepOriginalName?: boolean
 }
 
-export interface AwsModuleOptions {
-  accessKeyId: string
-  baseUrl: string
+export interface AwsModuleOptions extends S3ClientConfig {
   bucket: string
-  secretAccessKey: string
-  region: string
+  baseUrl: string
 }
