@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-process-exit */
 import type { INestApplication, ValidationPipeOptions } from "@nestjs/common";
 import { Logger } from "@nestjs/common";
 import type { ConfigService } from "@nestjs/config";
@@ -25,6 +24,7 @@ export const AppUtils = {
       whitelist: true,
       transform: true,
       forbidUnknownValues: false,
+      validateCustomDecorators: true,
       enableDebugMessages: HelperService.isDev(),
       exceptionFactory: i18nValidationErrorFactory,
     };

@@ -72,8 +72,7 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
-
-
+  
   // =========================================================
   // configure socket
   // =========================================================
