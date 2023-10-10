@@ -8,7 +8,6 @@ import { MailPayload, Queues, RoutingKey } from "@common/@types";
 export class RabbitService {
   private logger = new Logger(RabbitService.name);
 
-
   constructor(private readonly mailService: MailerService) {}
 
   @RabbitSubscribe({

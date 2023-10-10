@@ -16,6 +16,8 @@ import { Inject, Injectable } from "@nestjs/common";
 import { lookup } from "mime-types";
 
 import { omit } from "helper-fns";
+import type { Observable } from "rxjs";
+import { from, map, mergeMap } from "rxjs";
 import type {
   AwsS3,
   AwsS3MultiPart,
@@ -24,8 +26,6 @@ import type {
 import { AwsModuleOptions } from "./aws.interface";
 import { MODULE_OPTIONS_TOKEN } from "./aws.module";
 
-// TODO: convert to observables
-
 @Injectable()
 export class AwsS3Service {
   private readonly s3Client: S3Client;
@@ -33,8 +33,8 @@ export class AwsS3Service {
   private readonly baseUrl: string;
 
   constructor(
-        @Inject(MODULE_OPTIONS_TOKEN)
-        private readonly options: AwsModuleOptions,
+    @Inject(MODULE_OPTIONS_TOKEN)
+    private readonly options: AwsModuleOptions,
   ) {
     this.s3Client = new S3Client(omit(options, ["bucket", "baseUrl"]));
 
@@ -47,11 +47,8 @@ export class AwsS3Service {
    * returns them as an array of strings.
    * @returns An array of strings, which are the names of the buckets.
    */
-  async listBucket(): Promise<string[]> {
-    const listBucket = await this.s3Client.send(new ListBucketsCommand({}));
-    const mapList = listBucket.Buckets.map((value: Bucket) => value.Name);
-
-    return mapList;
+  listBucket(): Observable<string[]> {
+    return from(this.s3Client.send(new ListBucketsCommand({}))).pipe(map(listBucket => listBucket.Buckets.map((value: Bucket) => value.Name)));
   }
 
   /**
@@ -62,31 +59,32 @@ export class AwsS3Service {
    * the specified prefix. If no prefix is provided, all objects in the bucket will be listed.
    * @returns The function `listItemInBucket` returns an array of objects of type `IAwsS3[]`.
    */
-  async listItemInBucket(prefix?: string): Promise<AwsS3[]> {
-    const listItems = await this.s3Client.send(
+  listItemInBucket(prefix?: string): Observable<AwsS3[]> {
+    return from(this.s3Client.send(
       new ListObjectsV2Command({
         Bucket: this.bucket,
         Prefix: prefix,
       }),
-    );
+    )).pipe(map((listItems) => {
+      const mapList = listItems.Contents.map((value) => {
+        const lastIndex = value.Key.lastIndexOf("/");
+        const path = value.Key.slice(0, lastIndex);
+        const filename = value.Key.slice(lastIndex, value.Key.length);
 
-    const mapList = listItems.Contents.map((value) => {
-      const lastIndex = value.Key.lastIndexOf("/");
-      const path = value.Key.slice(0, lastIndex);
-      const filename = value.Key.slice(lastIndex, value.Key.length);
+        const mime = this.getMime(filename);
+        return {
+          path,
+          pathWithFilename: value.Key,
+          filename,
+          completedUrl: `${this.baseUrl}/${value.Key}`,
+          baseUrl: this.baseUrl,
+          mime,
+        };
+      });
 
-      const mime = this.getMime(filename);
-      return {
-        path,
-        pathWithFilename: value.Key,
-        filename,
-        completedUrl: `${this.baseUrl}/${value.Key}`,
-        baseUrl: this.baseUrl,
-        mime,
-      };
-    });
-
-    return mapList;
+      return mapList;
+    },
+    ));
   }
 
   /**
@@ -99,19 +97,17 @@ export class AwsS3Service {
    * filename to form the complete key for retrieving the file from the bucket.
    * @returns the body of the item retrieved from the specified bucket in the AWS S3 storage.
    */
-  async getItemInBucket(
+  getItemInBucket(
     filename: string,
     path?: string,
-  ): Promise<Record<string, any>> {
+  ): Observable<Record<string, any>> {
     const key: string = path ? `${path}/${filename}` : filename;
-    const item = await this.s3Client.send(
+    return from(this.s3Client.send(
       new GetObjectCommand({
         Bucket: this.bucket,
         Key: key,
       }),
-    );
-
-    return item.Body;
+    )).pipe(map(item => item.Body));
   }
 
   /**
@@ -124,8 +120,8 @@ export class AwsS3Service {
   private generateFileName(originalFilename: string): string {
     const [name, extension] = originalFilename.split(".");
     const fileName = `${Date.now()}-${Math.round(
-            Math.random() * 10_000,
-        )}-${name}.${extension}`;
+      Math.random() * 10_000,
+    )}-${name}.${extension}`;
 
     return fileName.replaceAll(" ", "-");
   }
@@ -158,30 +154,28 @@ export class AwsS3Service {
    * ContentLanguage, Metadata, and StorageClass. These options allow you to
    * @returns The function `putItemInBucket` returns an object of type `IAwsS3`.
    */
-  async putItemInBucket(
+  putItemInBucket(
     originalFilename: string,
     content: Uint8Array | Buffer,
     options?: AwsS3PutItemOptions,
-  ): Promise<AwsS3> {
+  ): Observable<AwsS3> {
     const filename = options.keepOriginalName ? originalFilename : this.generateFileName(originalFilename);
     const { key, mime, path } = this.getOptions(options, filename);
-    await this.s3Client.send(
+    return from(this.s3Client.send(
       new PutObjectCommand({
         Bucket: this.bucket,
         Key: key,
         Body: content,
         ContentType: mime,
       }),
-    );
-
-    return {
+    )).pipe(map(_response => ({
       path,
       pathWithFilename: key,
       filename,
       completedUrl: `${this.baseUrl}/${key}`,
       baseUrl: this.baseUrl,
       mime,
-    };
+    })));
   }
 
   /**
@@ -190,13 +184,13 @@ export class AwsS3Service {
    * you want to delete from the bucket.
    * @returns The function `deleteItemInBucket` returns a Promise that resolves to void.
    */
-  async deleteItemInBucket(filename: string): Promise<void> {
-    await this.s3Client.send(
+  deleteItemInBucket(filename: string): Observable<any> {
+    return from(this.s3Client.send(
       new DeleteObjectCommand({
         Bucket: this.bucket,
         Key: filename,
       }),
-    );
+    ));
   }
 
   /**
@@ -206,19 +200,19 @@ export class AwsS3Service {
    * @returns The function `deleteItemsInBucket` returns a Promise that resolves to void.
    */
 
-  async deleteItemsInBucket(filenames: string[]): Promise<void> {
+  deleteItemsInBucket(filenames: string[]): Observable<any> {
     const keys = filenames.map(value => ({
       Key: value,
     }));
 
-    await this.s3Client.send(
+    return from(this.s3Client.send(
       new DeleteObjectsCommand({
         Bucket: this.bucket,
         Delete: {
           Objects: keys,
         },
       }),
-    );
+    ));
   }
 
   /**
@@ -227,31 +221,43 @@ export class AwsS3Service {
    * of the folder you want to delete from an S3 bucket.
    * @returns The function `deleteFolder` returns a Promise that resolves to void.
    */
-  async deleteFolder(directory: string): Promise<void> {
-    const lists = await this.s3Client.send(
-      new ListObjectsV2Command({
-        Bucket: this.bucket,
-        Prefix: directory,
-      }),
+  deleteFolder(directory: string): Observable<any> {
+    const listObjectsObservable = from(
+      this.s3Client.send(
+        new ListObjectsV2Command({
+          Bucket: this.bucket,
+          Prefix: directory,
+        }),
+      ),
     );
 
-    const listItems = lists.Contents.map(value => ({
-      Key: value.Key,
-    }));
-
-    await Promise.all([this.s3Client.send(
-      new DeleteObjectsCommand({
-        Bucket: this.bucket,
-        Delete: {
-          Objects: listItems,
-        },
-      }),
-    ), this.s3Client.send(
-      new DeleteObjectCommand({
-        Bucket: this.bucket,
-        Key: directory,
-      }),
-    )]);
+    return listObjectsObservable.pipe(
+      map(lists =>
+        lists.Contents.map(value => ({
+          Key: value.Key,
+        })),
+      ),
+      mergeMap(listItems =>
+        from(
+          Promise.all([
+            this.s3Client.send(
+              new DeleteObjectsCommand({
+                Bucket: this.bucket,
+                Delete: {
+                  Objects: listItems,
+                },
+              }),
+            ),
+            this.s3Client.send(
+              new DeleteObjectCommand({
+                Bucket: this.bucket,
+                Key: directory,
+              }),
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 
   /**
@@ -264,21 +270,20 @@ export class AwsS3Service {
    * @returns The function `createMultiPart` returns a Promise that resolves to an object of type
    * `AwsS3MultiPart`.
    */
-  async createMultiPart(
+  createMultiPart(
     filename: string,
     options?: AwsS3PutItemOptions,
-  ): Promise<AwsS3MultiPart> {
+  ): Observable<AwsS3MultiPart> {
     const { key, mime, path, acl } = this.getOptions(options, filename);
 
-    const response = await this.s3Client.send(
+    return from(this.s3Client.send(
       new CreateMultipartUploadCommand({
         Bucket: this.bucket,
         Key: key,
         ACL: acl,
       }),
-    );
+    )).pipe(map(response => ({
 
-    return {
       uploadId: response.UploadId,
       path,
       pathWithFilename: key,
@@ -286,7 +291,7 @@ export class AwsS3Service {
       completedUrl: `${this.baseUrl}/${key}`,
       baseUrl: this.baseUrl,
       mime,
-    };
+    })));
   }
 
   /**
@@ -329,13 +334,13 @@ export class AwsS3Service {
    * contains additional configuration options for the upload. It is of type `IAwsS3PutItemOptions`.
    * @returns The function `uploadPart` returns a Promise that resolves to void.
    */
-  async uploadPart(
+  uploadPart(
     filename: string,
     content: Buffer,
     uploadId: string,
     partNumber: number,
     options?: AwsS3PutItemOptions,
-  ): Promise<void> {
+  ): Observable<any> {
     let path = options?.path ?? undefined;
 
     if (path)
@@ -343,7 +348,7 @@ export class AwsS3Service {
 
     const key = path ? `${path}/${filename}` : filename;
 
-    await this.s3Client.send(
+    return from(this.s3Client.send(
       new UploadPartCommand({
         Bucket: this.bucket,
         Key: key,
@@ -351,6 +356,6 @@ export class AwsS3Service {
         PartNumber: partNumber,
         UploadId: uploadId,
       }),
-    );
+    ));
   }
 }
