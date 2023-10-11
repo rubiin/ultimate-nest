@@ -102,9 +102,12 @@ export class MailerService {
         mailOptions.html = html;
 
         if (this.options.previewEmail === true) {
-          previewEmail(mailOptions).catch((error) => {
+          try {
+            previewEmail(mailOptions);
+          }
+          catch (error) {
             this.logger.error(error);
-          });
+          }
         }
 
         return from(this.transporter.sendMail(mailOptions)).pipe(

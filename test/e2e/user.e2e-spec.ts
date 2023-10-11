@@ -14,12 +14,11 @@ describe("UserController (e2e)", () => {
   const app = APP_URL;
 
   beforeAll(async () => {
-    return request(app)
+    const { body } = await request(app)
       .post("/auth/login")
-      .send(user.admin)
-      .then(({ body }) => {
-        adminJwtToken = body.payload.accessToken;
-      });
+      .send(user.admin);
+
+    adminJwtToken = body.payload.accessToken;
   });
 
   describe("User", () => {

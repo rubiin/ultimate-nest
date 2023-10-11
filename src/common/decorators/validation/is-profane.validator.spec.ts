@@ -9,26 +9,24 @@ describe("isProfane", () => {
         text!: string;
   }
 
-  it("it should pass if text doesn't profane words", () => {
+  it("it should pass if text doesn't profane words", async () => {
     const model = new MyClass();
 
     model.text = "clean text";
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(0);
-    });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(0);
   });
 
-  it("it should fail if text has profane words", () => {
+  it("it should fail if text has profane words", async () => {
     const model = new MyClass();
 
     model.text = "Don't be an ash0le";
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(1);
-      expect(errors[0].constraints).toEqual({
-        IsProfaneConstraint: "text has profane words",
-      });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(1);
+    expect(errors[0].constraints).toEqual({
+      IsProfaneConstraint: "text has profane words",
     });
   });
 });

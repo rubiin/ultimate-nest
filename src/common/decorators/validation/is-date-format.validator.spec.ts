@@ -9,23 +9,21 @@ describe("isDateInFormat", () => {
         date: string;
   }
 
-  it("if date satisfies  the format then it should succeed", () => {
+  it("if date satisfies  the format then it should succeed", async () => {
     const model = new MyClass();
 
     model.date = "2014-04-03";
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(0);
-    });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(0);
   });
 
-  it("if date does not satisfies  the format then it should fail", () => {
+  it("if date does not satisfies  the format then it should fail", async () => {
     const model = new MyClass();
 
     model.date = "2014/04/03";
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(1);
-    });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(1);
   });
 });

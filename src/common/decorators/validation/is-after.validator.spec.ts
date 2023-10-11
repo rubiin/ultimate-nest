@@ -11,42 +11,39 @@ describe("isAfter", () => {
         endDate!: Date;
   }
 
-  it("if endDate is after than startDate then it should succeed", () => {
+  it("if endDate is after than startDate then it should succeed", async () => {
     const model = new MyClass();
 
     model.startDate = new Date("2022-02-21");
     model.endDate = new Date("2022-05-01");
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(0);
-    });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(0);
   });
 
-  it("if endDate is not after than startDate then it should fail", () => {
+  it("if endDate is not after than startDate then it should fail", async () => {
     const model = new MyClass();
 
     model.startDate = new Date("2022-02-21");
     model.endDate = new Date("2022-01-01");
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(1);
-      expect(errors[0].constraints).toEqual({
-        IsAfterConstraint: "endDate should be after startDate",
-      });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(1);
+    expect(errors[0].constraints).toEqual({
+      IsAfterConstraint: "endDate should be after startDate",
     });
   });
 
-  it("if endDate is equal to  startDate then it should fail", () => {
+  it("if endDate is equal to  startDate then it should fail", async () => {
     const model = new MyClass();
 
     model.startDate = new Date("2022-02-21");
     model.endDate = model.startDate;
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(1);
-      expect(errors[0].constraints).toEqual({
-        IsAfterConstraint: "endDate should be after startDate",
-      });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(1);
+    expect(errors[0].constraints).toEqual({
+      IsAfterConstraint: "endDate should be after startDate",
     });
   });
 });

@@ -30,7 +30,7 @@ export const AppUtils = {
     };
   },
 
-  gracefulShutdown(app: INestApplication, code: string): void {
+  gracefulShutdown(app: INestApplication, code: string) {
     setTimeout(() => process.exit(1), 5000);
     logger.verbose(`Signal received with code ${code} ⚡.`);
     logger.log("❗Closing http server with grace.");
@@ -44,7 +44,7 @@ export const AppUtils = {
       });
   },
 
-  killAppWithGrace(app: INestApplication): void {
+  killAppWithGrace(app: INestApplication) {
     process.on("SIGINT", () => {
       AppUtils.gracefulShutdown(app, "SIGINT");
     });
@@ -54,7 +54,7 @@ export const AppUtils = {
     });
   },
 
-  setupSwagger(app: INestApplication, configService: ConfigService<Configs, true>): void {
+  setupSwagger(app: INestApplication, configService: ConfigService<Configs, true>) {
     const userName = configService.get("app.swaggerUser", { infer: true });
     const passWord = configService.get("app.swaggerPass", { infer: true });
     const appName = configService.get("app.name", { infer: true });

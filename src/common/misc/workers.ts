@@ -2,8 +2,6 @@ import { ThreadWorker } from "poolifier";
 import { HelperService } from "@common/helpers";
 import { ThreadFunctions } from "@common/@types";
 
-
-
 // all expensive process goes here to avoid blocking the main thread
 function workerFunction(data: { functionName: string; input: string }) {
   switch (data.functionName) {
