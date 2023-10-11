@@ -27,9 +27,12 @@ export class Cluster {
       });
     }
     else {
-      main().catch((error: Error) => {
+      try {
+        main();
+      }
+      catch (error) {
         this.loggerService.error(error);
-      });
+      }
     }
   }
 

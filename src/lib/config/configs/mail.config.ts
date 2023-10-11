@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-thenable  */
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 import { SES_REGIONS } from "@common/constant";

@@ -11,42 +11,39 @@ describe("isGreaterThan", () => {
         totalMarks!: number;
   }
 
-  it("if totalMarks is greater than passMarks then it should succeed", () => {
+  it("if totalMarks is greater than passMarks then it should succeed", async () => {
     const model = new MyClass();
 
     model.passMarks = 40;
     model.totalMarks = 100;
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(0);
-    });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(0);
   });
 
-  it("if totalMarks is less than passMarks then it should fail", () => {
+  it("if totalMarks is less than passMarks then it should fail", async () => {
     const model = new MyClass();
 
     model.passMarks = 100;
     model.totalMarks = 40;
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(1);
-      expect(errors[0].constraints).toEqual({
-        IsGreaterThanConstraint: "totalMarks should be greater than passMarks",
-      });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(1);
+    expect(errors[0].constraints).toEqual({
+      IsGreaterThanConstraint: "totalMarks should be greater than passMarks",
     });
   });
 
-  it("if totalMarks is equal to passMarks then it should fail", () => {
+  it("if totalMarks is equal to passMarks then it should fail", async () => {
     const model = new MyClass();
 
     model.passMarks = 100;
     model.totalMarks = 100;
 
-    return validator.validate(model).then((errors) => {
-      expect(errors.length).toEqual(1);
-      expect(errors[0].constraints).toEqual({
-        IsGreaterThanConstraint: "totalMarks should be greater than passMarks",
-      });
+    const errors = await validator.validate(model);
+    expect(errors.length).toEqual(1);
+    expect(errors[0].constraints).toEqual({
+      IsGreaterThanConstraint: "totalMarks should be greater than passMarks",
     });
   });
 });

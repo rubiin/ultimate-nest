@@ -52,7 +52,7 @@ async function bootstrap() {
     app.use(helmet());
     app.enableCors({
       credentials: true,
-      methods: ["GET","HEAD","PUT","PATCH","POST","DELETE","OPTIONS"],
+      methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
       maxAge: 3600,
       origin: configService.get("app.allowedOrigins", { infer: true }),
     });
@@ -72,7 +72,6 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
-  
   // =========================================================
   // configure socket
   // =========================================================
@@ -102,12 +101,12 @@ async function bootstrap() {
   await app.listen(port);
 
   logger.log(
-        `🚀 Application is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}`)}`,
+    `🚀 Application is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}`)}`,
   );
   logger.log(
-        `🚦 Accepting request only from: ${chalk.green(
-            `${configService.get("app.allowedOrigins", { infer: true }).toString()}`,
-        )}`,
+    `🚦 Accepting request only from: ${chalk.green(
+      `${configService.get("app.allowedOrigins", { infer: true }).toString()}`,
+    )}`,
   );
 
   !HelperService.isProd()
@@ -115,6 +114,10 @@ async function bootstrap() {
   logger.log(`Server is up. ${chalk.yellow(`+${Math.trunc(performance.now())}ms`)}`);
 }
 
-(async () => await bootstrap())().catch((error) => {
+try {
+  ~(async () => await bootstrap())();
+}
+
+catch (error) {
   logger.error(error);
-});
+}

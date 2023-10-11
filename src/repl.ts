@@ -25,6 +25,9 @@ async function bootstrap() {
   });
 }
 
-(async () => await bootstrap())().catch((error) => {
+try {
+  (async () => await bootstrap())();
+}
+catch (error) {
   logger.error(error);
-});
+}
