@@ -115,9 +115,8 @@ async function bootstrap() {
 }
 
 try {
-  ~(async () => await bootstrap())();
+  (async () => await bootstrap())();
 }
-
 catch (error) {
   logger.error(error);
 }
