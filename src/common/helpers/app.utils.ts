@@ -34,10 +34,12 @@ export const AppUtils = {
     setTimeout(() => process.exit(1), 5000);
     logger.verbose(`Signal received with code ${code} ⚡.`);
     logger.log("❗Closing http server with grace.");
+    // eslint-disable-next-line rubiin/no-then
     app.close().then(() => {
       logger.log("✅ Http server closed.");
       process.exit(0);
     })
+      // eslint-disable-next-line rubiin/no-then
       .catch((error) => {
         logger.error(`❌ Http server closed with error: ${error}`);
         process.exit(1);
