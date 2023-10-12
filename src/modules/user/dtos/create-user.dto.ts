@@ -80,6 +80,15 @@ export class CreateUserDto {
   @IsEmailField()
     email!: string;
 
+
+    /**
+   * Bio of user
+   * @example John
+   */
+
+  @IsStringField({ maxLength: 1000 })
+  bio!: string;
+
   /**
    * Password of user
    * @example SomePassword@123

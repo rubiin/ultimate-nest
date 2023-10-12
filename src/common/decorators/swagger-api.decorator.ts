@@ -16,7 +16,9 @@ export function SwaggerResponse({
   notFound,
   badRequest,
   params,
+  //@ts-ignore
   body,
+  //@ts-ignore
   response,
 }: SwaggerResponseOptions<typeof body, typeof response>) {
   const decsToApply = [ApiOperation({ summary: operation })];

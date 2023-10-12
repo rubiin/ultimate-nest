@@ -30,7 +30,7 @@ import { SocketConnectionService } from "./socket-connection.service";
   namespace: "chat",
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
-  @WebSocketServer() server: Namespace;
+  @WebSocketServer() server!: Namespace;
   private readonly logger = new Logger(ChatGateway.name);
 
   constructor(
@@ -43,7 +43,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
   async handleConnection(client: Socket) {
     // validate user, disconnect if unidentified
     try {
-      const payload: JwtPayload = await this.jwtService.verify(client.handshake.headers.authorization);
+      const payload: JwtPayload = await this.jwtService.verify(client.handshake.headers.authorization!);
       const user = await this.authService.findUser(payload.sub);
 
       if (!user)

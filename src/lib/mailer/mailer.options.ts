@@ -3,16 +3,24 @@ import type { Options as PugOptions } from "pug";
 import type { Server, TemplateEngine } from "@common/@types";
 
 export interface MailModuleOptions {
-  host?: string
-  port?: number
-  password?: string
-  username?: string
+
+  credentials: | {
+    type: Server.SES
+    sesKey: string
+    sesAccessKey: string
+    sesRegion: string
+  }
+  | {
+    type: Server.SMTP;
+    host: string;
+    port: number
+    password: string;
+    username: string;
+  }
   previewEmail: boolean
   retryAttempts?: number
-  server: Server
-  sesKey?: string
-  sesAccessKey?: string
-  sesRegion?: string
+
+
   templateDir: string
   templateEngine:
   | {

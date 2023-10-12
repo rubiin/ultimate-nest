@@ -7,7 +7,7 @@ import type { Adapter } from "socket.io-adapter";
 import type { Namespace, Server, ServerOptions } from "socket.io";
 
 export class SocketIOAdapter extends IoAdapter {
-  private adapterConstructor: ((nsp: Namespace) => Adapter);
+  private adapterConstructor!: ((nsp: Namespace) => Adapter);
 
   constructor(
     app: INestApplicationContext,
@@ -44,10 +44,10 @@ export class SocketIOAdapter extends IoAdapter {
       origin: this.configService.get("app.allowedOrigins", { infer: true }),
     };
 
-    const optionsWithCORS: ServerOptions = {
+    const optionsWithCORS = {
       ...options,
       cors,
-    };
+    }
 
     const server: Server = super.createIOServer(port, optionsWithCORS);
 

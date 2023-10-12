@@ -65,7 +65,7 @@ export class TwoFactorService {
   isTwoFactorCodeValid(twoFactorAuthenticationCode: string, user: User): boolean {
     return authenticator.verify({
       token: twoFactorAuthenticationCode,
-      secret: user.twoFactorSecret,
+      secret: user.twoFactorSecret!,
     });
   }
 

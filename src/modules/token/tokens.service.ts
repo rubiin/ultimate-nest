@@ -222,7 +222,7 @@ export class TokensService {
     }
 
     return from(
-      this.userRepository.findOne({
+      this.userRepository.findOneOrFail({
         id: subId,
       }),
     );

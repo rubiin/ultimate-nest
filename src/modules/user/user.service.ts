@@ -101,7 +101,10 @@ export class UserService {
    */
   create(dto: RecordWithFile<CreateUserDto>): Observable<User> {
     const { files, ...rest } = dto;
-    const user = this.userRepository.create(rest);
+    const user = this.userRepository.create({
+      ...rest,
+      avatar: "",
+    });
 
     return from(
       this.em.transactional(async (em) => {

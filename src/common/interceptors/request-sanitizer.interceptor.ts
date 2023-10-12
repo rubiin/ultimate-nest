@@ -13,8 +13,8 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
   }
 
   cleanRequest(request: Request): void {
-    request.query = this.cleanObject(request.query);
-    request.params = this.cleanObject(request.params);
+    request.query = this.cleanObject(request.query) || {}; // defaulting to an empty object if query is undefined
+    request.params = this.cleanObject(request.params) || {}; // defaulting to an empty object if params is undefined
 
     // we wont be sending body on GET and DELETE requests
 

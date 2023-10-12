@@ -18,17 +18,17 @@ import type { NumberFieldOptions, StringFieldOptions } from "@common/@types";
 import { Sanitize, Trim } from "./transform.decorator";
 
 export class ValidatorFieldBuilder {
-  private decoratorsToApply: PropertyDecorator[];
+  private decoratorsToApply!: PropertyDecorator[];
 
   constructor(readonly options: NumberFieldOptions & StringFieldOptions) {}
 
   number() {
     this.decoratorsToApply.push(
       Type(() => Number),
-      Min(this.options.min, {
+      Min(this.options.min!, {
         message: validationI18nMessage("validation.min"),
       }),
-      Max(this.options.max, {
+      Max(this.options.max!, {
         message: validationI18nMessage("validation.max"),
       }),
     );

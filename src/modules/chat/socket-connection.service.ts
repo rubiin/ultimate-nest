@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import type { User } from "@entities";
+import { WsException } from "@nestjs/websockets";
 
 interface SocketConnection {
   connectedUser: User
@@ -19,18 +20,31 @@ export class SocketConnectionService {
   }
 
   findByUserId(id: number) {
-    let user: User;
+    let user = null;
 
     for (const value of this.socketConnections.values()) {
-      if (value.id === id)
+      if (value.id === id){
+
         user = value;
+      }
     }
+
+
+    if(!user){
+
+      throw new WsException("User not found");
+    }
+
 
     return user;
   }
 
   findBySocketId(id: string) {
-    return this.socketConnections.get(id);
+    const socket =  this.socketConnections.get(id);
+    if(!socket){
+      throw new WsException("Socket not found");
+    }
+    return socket;
   }
 
   deleteBySocketId(id: string) {

@@ -16,6 +16,7 @@ export class AbstractValidationPipe extends ValidationPipe {
   }
 
   async transform(value: any, metadata: ArgumentMetadata) {
+    //@ts-ignore
     const targetType = this.targetTypes[metadata.type];
 
     if (!targetType)
@@ -53,7 +54,7 @@ export function ControllerFactory<
         C extends RequiredEntityData<T>,
         U extends EntityData<T>,
     > implements Crud<T, Q, C, U> {
-    protected service: BaseService<T, Q, C, U>;
+    protected service!: BaseService<T, Q, C, U>;
 
     @Get(":idx")
     @SwaggerResponse({

@@ -1,7 +1,7 @@
+import { BaseEntity } from "@common/database";
 import type { Ref } from "@mikro-orm/core";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
-import { BaseEntity } from "@common/database";
-import type { Conversation, Post } from "./index";
+import type { Conversation, User } from "./index";
 
 @Entity()
 export class Message extends BaseEntity {
@@ -12,7 +12,7 @@ export class Message extends BaseEntity {
     eager: false,
     index: true,
   })
-    sender: Rel<Ref<Post>>;
+    sender!: Rel<Ref<User>>;
 
   @ManyToOne({
     eager: false,

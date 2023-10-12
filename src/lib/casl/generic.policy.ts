@@ -6,7 +6,7 @@ import type { PoliciesHandler } from "./policy.interface";
 
 export class GenericPolicyHandler implements PoliciesHandler {
   constructor(
-    private readonly ClassType,
+    private readonly ClassType: any,
     private readonly action: Action = Action.Read,
   ) {}
 

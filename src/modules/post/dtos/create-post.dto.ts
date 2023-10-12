@@ -50,7 +50,7 @@ export class CreatePostDto {
    */
 
   @IsEnumField(PostStateEnum, { required: false })
-    state: PostStateEnum;
+    state?: PostStateEnum;
 
   /**
    * Published status of post

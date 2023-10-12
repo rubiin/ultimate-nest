@@ -16,7 +16,7 @@ const logger = new Logger("Stripe");
         logger,
         webhookConfig: {
           stripeSecrets: {
-            account: configService.get("stripe.account", { infer: true }),
+            account: configService.get("stripe.account", { infer: true })!,
             connect: configService.get("stripe.connect", { infer: true }),
           },
         },

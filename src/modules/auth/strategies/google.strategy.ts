@@ -2,12 +2,13 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
-import { omit, randomString } from "helper-fns";
+import { omit, randomAvatar, randomString } from "helper-fns";
 import type { Profile, VerifyCallback } from "passport-google-oauth20";
 import { Strategy } from "passport-google-oauth20";
 import { User } from "@entities";
 import { BaseRepository } from "@common/database";
 import type { OauthResponse } from "@common/@types";
+import { faker } from "@mikro-orm/seeder";
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
@@ -41,15 +42,15 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
   ): Promise<any> {
     const { name, emails, photos, username } = profile;
     const user: OauthResponse = {
-      email: emails[0].value,
-      firstName: name?.givenName,
-      lastName: name?.familyName,
+      email: emails![0]!.value,
+      firstName: name?.givenName ?? faker.color.human(),
+      lastName: name?.familyName ?? faker.animal.cetacean(),
       accessToken,
     };
 
     // Check if the user already exists in your database
     const existingUser = await this.userRepo.findOne({
-      email: emails[0].value,
+      email: emails![0]!.value,
       isDeleted: false,
     });
 
@@ -61,8 +62,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
       // If the user doesn't exist, create a new user
       const newUser = this.userRepo.create({
         ...omit(user, ["accessToken"]),
-        avatar: photos[0].value,
-        username,
+        avatar: photos?.[0]?.value ?? randomAvatar(),
+        username: username ?? emails![0]!.value,
+        bio: faker.lorem.paragraph(),
         password: randomString({ length: 10, symbols: true, numbers: true }),
       });
 

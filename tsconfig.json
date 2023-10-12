@@ -27,7 +27,11 @@
   "include": [
     "test/**/*",
     "src/**/*",
-    "eslint.config.js"
+    "eslint.config.mjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ],
   "types": [
     "./src/common/types/global.d.ts"

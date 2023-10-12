@@ -98,24 +98,27 @@ Now you can start the application witt `npx cross-env NODE_ENV=dev npm run start
 
 ---
 
-## Features covered:
+## Whats included
 
 - 🌐 **I18n** - Internationalization
-- 🧵 **Stats** - swagger stats for common server metrics
+- 🧵 **Stats** - Swagger stats for common server metrics
 - 🧵 **Poolifier** - threads for cpu extensive tasks
-- 💬 **Twilio** - sms support
-- 📱 **NestJS** — latest version
+- 💬 **Twilio** - SMS support
+- 📱 **NestJS** — Latest version
 - 🎉 **TypeScript** - Type checking
 - ⚙️ **Dotenv** - Supports environment variables
-- 🗝 **Authentication** - JWT, RSA256, oauth
+- 🗝 **Authentication** - JWT, RSA256, Oauth
 - 🏬 **Authorization** - RBAC with casl
 - 🏪 **MikroORM** - Database ORM
 - 🏪 **PostgreSQL** - Open-Source Relational Database
 - 🧠 **Configuration** - Single config for all
 - 📃 **Swagger** - API Documentation
 - 🐳 **Docker Compose** - Container Orchestration
-- 🔐 **Helmet** - secure HTTP headers
+- 🔐 **Helmet** - Secure HTTP headers
 - 📏 **ESLint** — Pluggable JavaScript linter
+- ✅ **Commitlint** — Checks if your commit messages meet the conventional commit format.
+- 🐺 **Husky** — Helps you create Git hooks easily.
+
 
 ## Available Scripts
 

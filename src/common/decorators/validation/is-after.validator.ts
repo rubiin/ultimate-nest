@@ -13,7 +13,7 @@ import { isAfter } from "date-fns";
 class IsAfterConstraint implements ValidatorConstraintInterface {
   async validate(value: string, arguments_: ValidationArguments) {
     const [relatedPropertyName] = arguments_.constraints;
-    const relatedValue = (arguments_.object)[relatedPropertyName] as string | Date;
+    const relatedValue = (arguments_.object as Record<string,string | Date>)[relatedPropertyName] as string | Date;
 
     return isAfter(new Date(value), new Date(relatedValue));
   }

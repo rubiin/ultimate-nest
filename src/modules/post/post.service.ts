@@ -184,7 +184,7 @@ export class PostService {
       switchMap(([post, user]) => {
         if (!user.favorites.contains(post)) {
           user.favorites.add(post);
-          post.favoritesCount += 1;
+          post.favoritesCount = (post.favoritesCount ?? 0) + 1;
         }
 
         return from(this.em.flush()).pipe(map(() => post));
@@ -222,7 +222,7 @@ export class PostService {
       switchMap(([post, user]) => {
         if (!user.favorites.contains(post)) {
           user.favorites.remove(post);
-          post.favoritesCount -= 1;
+          post.favoritesCount = (post.favoritesCount ?? 0) - 1;
         }
 
         return from(this.em.flush()).pipe(map(() => post));
@@ -246,7 +246,20 @@ export class PostService {
           },
         },
       ),
-    ).pipe(map(post => post.comments.getItems()));
+    ).pipe(switchMap(post => {
+      if(!post) {
+        return throwError(
+          () =>
+            new NotFoundException(
+              translate("exception.itemDoesNotExist", {
+                args: { item: "Post" },
+              }),
+            ),
+        );
+      }
+      return of(post.comments.getItems())
+
+    }));
   }
 
   /**
