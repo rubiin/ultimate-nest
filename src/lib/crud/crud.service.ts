@@ -14,7 +14,7 @@ export abstract class BaseService<
     CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
     UpdateDto extends EntityData<Entity> = EntityData<Entity>,
 > implements Crud<Entity, PRequest> {
-  protected searchField: keyof Entity;
+  protected searchField!: keyof Entity;
   protected queryName = "entity";
 
   protected constructor(private readonly repository: BaseRepository<Entity>) {}
@@ -65,11 +65,11 @@ export abstract class BaseService<
 
     return this.repository.qbOffsetPagination({
       pageOptionsDto: {
+        ...dto,
         alias: this.queryName,
         order: QueryOrder.ASC,
         offset: dto.offset,
         searchField: this.searchField,
-        ...dto,
       },
       qb,
     });

@@ -16,8 +16,8 @@ import { Inject, Injectable } from "@nestjs/common";
 import { lookup } from "mime-types";
 
 import { omit } from "helper-fns";
-import type { Observable } from "rxjs";
-import { from, map, mergeMap } from "rxjs";
+import type { Observable, } from "rxjs";
+import { forkJoin, from, map, of, switchMap, throwError } from "rxjs";
 import type {
   AwsS3,
   AwsS3MultiPart,
@@ -48,8 +48,15 @@ export class AwsS3Service {
    * @returns An array of strings, which are the names of the buckets.
    */
   listBucket(): Observable<string[]> {
-    return from(this.s3Client.send(new ListBucketsCommand({}))).pipe(map(listBucket => listBucket.Buckets.map((value: Bucket) => value.Name)));
+    return from(this.s3Client.send(new ListBucketsCommand({}))).pipe(
+      switchMap(listBucket => {
+        if (!listBucket?.Buckets) return of([]);
+
+        return of(listBucket.Buckets.map((value: Bucket) => value.Name ?? ""));
+      })
+    );
   }
+
 
   /**
    * The function `listItemInBucket` retrieves a list of objects in an AWS S3 bucket and maps them to a
@@ -66,6 +73,9 @@ export class AwsS3Service {
         Prefix: prefix,
       }),
     )).pipe(map((listItems) => {
+      if(!listItems.Contents) return [];
+
+
       const mapList = listItems.Contents.map((value) => {
         const lastIndex = value.Key.lastIndexOf("/");
         const path = value.Key.slice(0, lastIndex);
@@ -107,7 +117,15 @@ export class AwsS3Service {
         Bucket: this.bucket,
         Key: key,
       }),
-    )).pipe(map(item => item.Body));
+    )).pipe(switchMap(item => {
+
+      if(!item.Body) {
+        return throwError(() => "Item not found");
+
+      }
+      return of(item.Body)
+
+    }));
   }
 
   /**
@@ -159,8 +177,8 @@ export class AwsS3Service {
     content: Uint8Array | Buffer,
     options?: AwsS3PutItemOptions,
   ): Observable<AwsS3> {
-    const filename = options.keepOriginalName ? originalFilename : this.generateFileName(originalFilename);
-    const { key, mime, path } = this.getOptions(options, filename);
+    const filename = options?.keepOriginalName ? originalFilename : this.generateFileName(originalFilename);
+    const { key, mime, path } = this.getOptions(filename,options);
     return from(this.s3Client.send(
       new PutObjectCommand({
         Bucket: this.bucket,
@@ -232,30 +250,33 @@ export class AwsS3Service {
     );
 
     return listObjectsObservable.pipe(
-      map(lists =>
-        lists.Contents.map(value => ({
+      map(lists =>{
+        if(!lists || !lists?.Contents) return []
+
+        return lists.Contents.map(value => ({
           Key: value.Key,
-        })),
+        }));
+      }
       ),
-      mergeMap(listItems =>
-        from(
-          Promise.all([
+      switchMap(listItems =>
+          forkJoin([
+            from(
             this.s3Client.send(
               new DeleteObjectsCommand({
                 Bucket: this.bucket,
                 Delete: {
                   Objects: listItems,
                 },
-              }),
+              })),
             ),
+            from(
             this.s3Client.send(
               new DeleteObjectCommand({
                 Bucket: this.bucket,
                 Key: directory,
               }),
-            ),
+            )),
           ]),
-        ),
       ),
     );
   }
@@ -274,7 +295,7 @@ export class AwsS3Service {
     filename: string,
     options?: AwsS3PutItemOptions,
   ): Observable<AwsS3MultiPart> {
-    const { key, mime, path, acl } = this.getOptions(options, filename);
+    const { key, mime, path, acl } = this.getOptions(filename,options );
 
     return from(this.s3Client.send(
       new CreateMultipartUploadCommand({
@@ -283,8 +304,7 @@ export class AwsS3Service {
         ACL: acl,
       }),
     )).pipe(map(response => ({
-
-      uploadId: response.UploadId,
+      uploadId: response?.UploadId ?? "",
       path,
       pathWithFilename: key,
       filename,
@@ -303,8 +323,8 @@ export class AwsS3Service {
    * file.
    * @returns An object with the properties `key`, `mime`, `path`, and `acl`.
    */
-  private getOptions(options: AwsS3PutItemOptions, filename: string) {
-    let path = options?.path ?? undefined;
+  private getOptions( filename: string,options?: AwsS3PutItemOptions) {
+    let path = options?.path ?? filename;
     const acl = options?.acl ?? "public-read";
 
     if (path)

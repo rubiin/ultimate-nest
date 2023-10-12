@@ -53,7 +53,7 @@ export function ControllerFactory<
         C extends RequiredEntityData<T>,
         U extends EntityData<T>,
     > implements Crud<T, Q, C, U> {
-    protected service: BaseService<T, Q, C, U>;
+    protected service!: BaseService<T, Q, C, U>;
 
     @Get(":idx")
     @SwaggerResponse({

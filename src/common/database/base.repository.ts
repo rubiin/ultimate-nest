@@ -487,7 +487,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
-      // eslint-disable-next-line ts/dot-notation
+      // eslint-disable-next-line ts/dot-notation\
       where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
     }
 

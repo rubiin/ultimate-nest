@@ -30,7 +30,7 @@ import { SocketConnectionService } from "./socket-connection.service";
   namespace: "chat",
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewayDisconnect {
-  @WebSocketServer() server: Namespace;
+  @WebSocketServer() server!: Namespace;
   private readonly logger = new Logger(ChatGateway.name);
 
   constructor(

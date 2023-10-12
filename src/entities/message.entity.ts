@@ -12,7 +12,7 @@ export class Message extends BaseEntity {
     eager: false,
     index: true,
   })
-    sender: Rel<Ref<Post>>;
+    sender!: Rel<Ref<Post>>;
 
   @ManyToOne({
     eager: false,

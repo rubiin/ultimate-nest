@@ -18,7 +18,7 @@ export class OtpLog extends BaseEntity {
     eager: false,
     index: true,
   })
-    user: Rel<Ref<User>>;
+    user!: Rel<Ref<User>>;
 
   @Property()
     isUsed? = false;

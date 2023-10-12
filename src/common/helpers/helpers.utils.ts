@@ -11,6 +11,7 @@ import { from } from "rxjs";
 import sharp from "sharp";
 import type { User } from "@entities";
 import type { AuthenticationResponse } from "@common/@types";
+import { REDIS_URI_REGEX } from "@common/constant";
 
 const argon2Options: ArgonOptions & { raw?: false } = {
   type: argon2id,
@@ -92,24 +93,34 @@ which is the hashed password to compare against. */
     return new Date(format(currentUtcTime, "yyyy-MM-dd HH:mm:ss"));
   },
 
+
+
   redisUrlToOptions(url: string): RedisOptions {
+    if(!REDIS_URI_REGEX.test(url)){
+      throw new Error("Invalid redis url");
+    }
+
+    const separator = "://";
+
     if (url.includes("://:")) {
-      const array = url.split("://:")[1].split("@");
-      const secondArray = array[1].split(":");
+      const [_, credentials] = url.split(separator);
+      const [password, rest] = credentials.split("@");
+      const [host, port] = rest.split(":");
 
       return {
-        password: array[0],
-        host: secondArray[0],
-        port: Number.parseInt(secondArray[1], 10),
+        password,
+        host,
+        port: Number.parseInt(port, 10),
       };
     }
 
-    const connectionString = url.split("://")[1];
-    const array = connectionString.split(":");
+    const connectionString = url.split(separator)[1];
+    const [host, port] = connectionString.split(":");
 
     return {
-      host: array[0],
-      port: Number.parseInt(array[1], 10),
+      host,
+      port: Number.parseInt(port, 10),
     };
+
   },
 };

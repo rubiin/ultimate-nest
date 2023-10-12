@@ -11,7 +11,7 @@ interface NestFirebase {
 
 @Injectable()
 export class NestFirebaseService implements NestFirebase {
-  private _firebaseConnection: admin.app.App;
+  private _firebaseConnection!: admin.app.App;
 
   constructor(
   @Inject(MODULE_OPTIONS_TOKEN) private _NestFirebaseOptions: FirebaseModuleOptions,

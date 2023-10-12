@@ -26,6 +26,7 @@ export class SocketConnectionService {
         user = value;
     }
 
+
     return user;
   }
 

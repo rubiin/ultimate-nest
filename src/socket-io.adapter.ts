@@ -7,7 +7,7 @@ import type { Adapter } from "socket.io-adapter";
 import type { Namespace, Server, ServerOptions } from "socket.io";
 
 export class SocketIOAdapter extends IoAdapter {
-  private adapterConstructor: ((nsp: Namespace) => Adapter);
+  private adapterConstructor!: ((nsp: Namespace) => Adapter);
 
   constructor(
     app: INestApplicationContext,

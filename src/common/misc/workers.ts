@@ -15,6 +15,6 @@ function workerFunction(data: { functionName: string; input: string }) {
   }
 }
 
-const threadWorker = new ThreadWorker(workerFunction);
+const threadWorker = new ThreadWorker(workerFunction as any);
 
 export default threadWorker;
