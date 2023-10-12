@@ -22,7 +22,10 @@ export class ChatService {
   ) {}
 
   async createConversation(conversation: IConversation) {
-    const conversationNew = this.conversationRepository.create(conversation);
+    const conversationNew = this.conversationRepository.create({
+      chatName: conversation.users.map(user => user.username).join(", "),
+      users: conversation.users
+    });
 
     await this.em.persistAndFlush(conversationNew);
   }
@@ -30,12 +33,14 @@ export class ChatService {
   async sendMessage(data: IConversation) {
     const [sender, receiver] = data.users;
     const conversationExists = await this.getConversation(
-      sender.id,
-      receiver.id,
+      sender!.id,
+      receiver!.id,
     );
 
     const messageNew = this.messageRepository.create({
-      body: data.message,
+      body: data!.message,
+      sender: sender!,
+      conversation: conversationExists,
     });
 
     if (conversationExists) {
@@ -46,6 +51,7 @@ export class ChatService {
     }
     else {
       const conversationNew = this.conversationRepository.create({
+        chatName: data.users.map(user => user.username).join(", "),
         users: data.users,
         messages: [messageNew],
       });
@@ -63,7 +69,7 @@ export class ChatService {
     sender: number,
     receiver: number,
   ): Promise<Conversation> {
-    return this.conversationRepository.findOne({ users: [sender, receiver] });
+    return this.conversationRepository.findOneOrFail({ users: [sender, receiver] });
   }
 
   async getConversationForUser(user: User) {

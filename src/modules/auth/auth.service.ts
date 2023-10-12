@@ -6,6 +6,7 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { init } from "@paralleldrive/cuid2";
@@ -79,7 +80,7 @@ export class AuthService {
         }
 
         return user && isPasswordLogin
-          ? HelperService.verifyHash(user.password, pass).pipe(
+          ? HelperService.verifyHash(user.password, pass!).pipe(
             map((isValid) => {
               if (isValid)
                 return omit(user, ["password"]);
@@ -198,7 +199,7 @@ export class AuthService {
             const otp = this.otpRepository.create({
               user: userExists,
               otpCode: otpNumber,
-              expiresIn: new Date(Date.now() + (protocol.otpExpiryInMinutes * 60_000)), // prettier-ignore
+              expiresIn: new Date(Date.now() + (protocol?.otpExpiryInMinutes ?? 5 * 60_000)), // prettier-ignore
             });
 
             return from(
@@ -245,6 +246,19 @@ export class AuthService {
       ),
     ).pipe(
       switchMap((details) => {
+
+        if(!details) {
+
+          return throwError(
+            () =>
+              new NotFoundException(
+                translate("exception.itemDoesNotExist", {
+                  args: { item: "Otp" },
+                }),
+              ),
+          );
+        }
+
         const user = details.user.getEntity();
         this.userRepository.assign(user, { password });
 
@@ -332,6 +346,19 @@ export class AuthService {
       }),
     ).pipe(
       switchMap((userDetails) => {
+
+        if(!userDetails) {
+
+          return throwError(
+            () =>
+              new NotFoundException(
+                translate("exception.itemDoesNotExist", {
+                  args: { item: "Account" },
+                }),
+              ),
+          );
+        }
+
         return HelperService.verifyHash(userDetails.password, oldPassword).pipe(
           switchMap((isValid) => {
             if (!isValid) {
@@ -354,6 +381,10 @@ export class AuthService {
   }
 
   async findUser(condition: FilterQuery<User>): Promise<User> {
-    return this.userRepository.findOne(condition);
+    const user = await this.userRepository.findOne(condition);
+
+    if (!user)
+      throw new UnauthorizedException();
+    return user
   }
 }

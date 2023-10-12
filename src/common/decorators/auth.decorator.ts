@@ -17,11 +17,11 @@ interface AuthGuard {
  */
 
 export function Auth(options_?: AuthGuard) {
-  const options: AuthGuard = {
+  const options = {
     guards: [JwtAuthGuard, PoliciesGuard],
     unauthorizedResponse: API_UNAUTHORISED_RESPONSE,
     ...options_,
-  };
+  } satisfies AuthGuard;
 
   return applyDecorators(
     UseGuards(...options.guards),

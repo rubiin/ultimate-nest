@@ -22,6 +22,8 @@ import {
   redisConfigValidationSchema,
   sentry,
   sentryConfigurationValidationSchema,
+  stripe,
+  stripeonfigValidationSchema,
   throttle,
   throttleConfigValidationSchema,
 } from "./configs";
@@ -42,6 +44,7 @@ import {
         facebookOauth,
         throttle,
         sentry,
+        stripe
       ],
       cache: true,
       isGlobal: true,
@@ -57,6 +60,7 @@ import {
         ...facebookOauthConfigValidationSchema,
         ...throttleConfigValidationSchema,
         ...sentryConfigurationValidationSchema,
+        ...stripeonfigValidationSchema
       }),
       validationOptions: {
         abortEarly: true,

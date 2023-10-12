@@ -11,7 +11,7 @@ export const minioConfigValidationSchema = {
 
 export const minio = registerAs("minio", () => ({
   host: process.env.MINIO_HOST,
-  port: Number.parseInt(process.env.MINIO_PORT, 10),
+  port: Number.parseInt(process.env.MINIO_PORT!, 10),
   accessKey: process.env.MINIO_ACCESS_KEY,
   secretKey: process.env.MINIO_SECRET_KEY,
   useSSl: process.env.MINIO_USE_SSL === "true",

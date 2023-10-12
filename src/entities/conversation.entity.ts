@@ -5,7 +5,7 @@ import { Message, User } from "./index";
 @Entity()
 export class Conversation extends BaseEntity {
   @Property({ index: true })
-    chatName: string;
+    chatName!: string;
 
   @ManyToMany(() => User, user => user.conversations, { index: true })
     users = new Collection<User>(this);

@@ -23,7 +23,7 @@ export abstract class PaginationDto {
    *  The search query
    */
   @IsStringField({ required: false, minLength: 1, maxLength: 100 })
-    search: string;
+    search?: string;
 
   /**
    * The `withDeleted` property is a boolean flag that

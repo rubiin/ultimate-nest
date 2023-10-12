@@ -6,7 +6,7 @@ import { getClientIp } from "@supercharge/request-ip";
 @Injectable()
 export class RealIpMiddleware implements NestMiddleware {
   use(request: Request, _response: Response, next: NextFunction) {
-    request.realIp = getClientIp(request);
+    request.realIp = getClientIp(request)!;
     next();
   }
 }

@@ -12,7 +12,7 @@ import {
 class IsGreaterThanConstraint implements ValidatorConstraintInterface {
   async validate(value: string, arguments_: ValidationArguments) {
     const [relatedPropertyName] = arguments_.constraints;
-    const relatedValue: string = (arguments_.object)[relatedPropertyName];
+    const relatedValue = (arguments_.object as Record<string,string>)[relatedPropertyName] as string;
 
     return Number.parseFloat(value) > Number.parseFloat(relatedValue);
   }

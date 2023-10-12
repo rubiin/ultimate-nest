@@ -5,5 +5,5 @@ export class CreateChatDto {
     message!: string;
 
   @IsStringField({ required: false })
-    to?: string;
+    to!: string;
 }

@@ -6,12 +6,12 @@ export class CreateCategoryDto {
    * @example "Lorem ipsum dolor sit"
    */
   @IsStringField()
-    title: string;
+    name!: string;
 
   /**
    * Description of tag
    * @example "Lorem ipsum dolor sit"
    */
   @IsStringField()
-    description: string;
+    description!: string;
 }

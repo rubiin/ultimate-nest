@@ -15,7 +15,7 @@ export const ImageMulterOption: MulterOptions = {
     if (!FileType.IMAGE.test(file.mimetype))
       return callback(new Error(MULTER_IMAGE_FILTER), false);
 
-    return callback(undefined, true);
+    return callback(null, true);
   },
 };
 

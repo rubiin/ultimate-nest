@@ -55,13 +55,13 @@ export class MailerService {
 
     // create Nodemailer SES transporter
 
-    if (this.options.server === Server.SES) {
+    if (this.options.credentials.type === Server.SES) {
       const ses = new aws.SES({
         apiVersion: "2010-12-01",
-        region: this.options.sesRegion,
+        region: this.options.credentials.sesRegion,
         credentials: {
-          accessKeyId: this.options.sesKey,
-          secretAccessKey: this.options.sesAccessKey,
+          accessKeyId: this.options.credentials.sesKey,
+          secretAccessKey: this.options.credentials.sesAccessKey,
         },
       });
 
@@ -74,12 +74,12 @@ export class MailerService {
       this.transporter = createTransport({
         pool: true,
         maxConnections: 5,
-        host: this.options.host,
-        port: this.options.port,
+        host: this.options.credentials.host,
+        port: this.options.credentials.port,
         secure: true,
         auth: {
-          user: this.options.username,
-          pass: this.options.password,
+          user: this.options.credentials.username,
+          pass: this.options.credentials.password,
         },
         tls: {
           // do not fail on invalid certs

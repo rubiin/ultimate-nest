@@ -21,7 +21,7 @@ import { Sanitize, Trim } from "./transform.decorator";
  */
 
 export function IsStringField(options_?: StringFieldOptions) {
-  const options: StringFieldOptions = {
+  const options = {
     required: true,
     each: false,
     sanitize: true,
@@ -31,7 +31,8 @@ export function IsStringField(options_?: StringFieldOptions) {
     arrayMinSize: 0,
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
     ...options_,
-  };
+  } satisfies StringFieldOptions;
+  
   const decoratorsToApply = [
     IsString({
       message: validationI18nMessage("validation.isDataType", {

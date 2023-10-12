@@ -9,11 +9,12 @@ import { validationI18nMessage } from "@lib/i18n";
  * @returns A decorator function that takes in a target, propertyKey, and descriptor.
  */
 export function IsUUIDField(options_?: UUIDFieldOptions) {
-  const options: UUIDFieldOptions = {
+  const options = {
     each: false,
     required: true,
     ...options_,
-  };
+  } satisfies UUIDFieldOptions;
+  
   const decoratorsToApply = [
     IsUUID("4", {
       message: validationI18nMessage("validation.isDataType", {

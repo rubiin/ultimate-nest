@@ -44,11 +44,11 @@ export class RefreshTokensRepository {
    */
   findTokenById(id: number): Observable<RefreshToken> {
     return from(
-      this.refreshTokenRepository.findOne({
+      this.refreshTokenRepository.findOneOrFail({
         id,
         isRevoked: false,
       }),
-    );
+    )
   }
 
   /**

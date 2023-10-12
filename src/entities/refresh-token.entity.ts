@@ -11,7 +11,7 @@ export class RefreshToken extends BaseEntity {
   @ManyToOne({
     eager: false,
   })
-    user: Rel<Ref<User>>;
+    user!: Rel<Ref<User>>;
 
   @Property()
     isRevoked? = false;

@@ -1,3 +1,5 @@
+/* // eslint-disable-file ts/dot-notation */
+
 import type {
   Dictionary,
   EntityData,
@@ -445,7 +447,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     const length = instances.length;
 
     if (length > 0) {
-      const last = instances[length - 1][cursor] as string | number | Date;
+      const last = instances[length - 1]![cursor] as string | number | Date;
 
       pages.meta.nextCursor = this.encodeCursor(last);
       pages.meta.hasNextPage = currentCount > first;
@@ -483,11 +485,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const oppositeOrder = getOppositeOrder(order);
       const countWhere = where;
 
-      // eslint-disable-next-line ts/dot-notation
+      //@ts-expect-error
       countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
-      // eslint-disable-next-line ts/dot-notation
+      //@ts-expect-error
       where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
     }
 

@@ -16,7 +16,7 @@ export class CaslAbilityFactory {
 
     /* Giving the user the ability to read and write to everything if they are an admin. */
 
-    if (user.roles.includes(Roles.ADMIN))
+    if (user.roles!.includes(Roles.ADMIN))
       can(Action.Manage, "all"); // read-write access to everything
     else
       can(Action.Read, "all"); // read-only access to everything

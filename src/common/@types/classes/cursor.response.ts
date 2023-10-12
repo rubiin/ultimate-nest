@@ -7,19 +7,19 @@ export class CursorMeta {
    * @example AdVxY2F0ZWdvcnlfaWQ9MjMx
    */
   @ApiProperty()
-    nextCursor: string;
+    nextCursor!: string;
 
   /**
    * @example false
    */
   @ApiProperty()
-    hasNextPage: boolean;
+    hasNextPage!: boolean;
 
   /**
    * @example true
    */
   @ApiProperty()
-    hasPreviousPage: boolean;
+    hasPreviousPage!: boolean;
 
   /**
    * @example "lorem ipsum"
@@ -31,8 +31,8 @@ export class CursorMeta {
 export class CursorPaginationResponse<T> implements PaginationAbstractResponse<T, CursorMeta> {
   @IsArray()
   @ApiProperty({ isArray: true })
-  readonly data: T[];
+  readonly data!: T[];
 
   @ApiProperty({ type: () => CursorMeta })
-  readonly meta: CursorMeta;
+  readonly meta!: CursorMeta;
 }

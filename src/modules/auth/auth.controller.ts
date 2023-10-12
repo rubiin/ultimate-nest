@@ -184,6 +184,6 @@ export class AuthController {
   ): Observable<User> {
     return fromAll
       ? this.authService.logoutFromAll(user)
-      : this.authService.logout(user, refreshToken.refreshToken);
+      : this.authService.logout(user, refreshToken!.refreshToken);
   }
 }

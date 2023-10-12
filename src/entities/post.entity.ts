@@ -46,7 +46,7 @@ export class Post extends BaseEntity {
     eager: false,
     index: true,
   })
-    author: Rel<Ref<User>>;
+    author!: Rel<Ref<User>>;
 
   @OneToMany(() => Comment, comment => comment.post, {
     eager: false,
@@ -84,7 +84,7 @@ export class Post extends BaseEntity {
 
   getReadingTime(content: string) {
     const avgWordsPerMin = 250;
-    const count = content.match(/\w+/g).length;
+    const count = content.match(/\w+/g)?.length ?? 0;
 
     return Math.ceil(count / avgWordsPerMin);
   }

@@ -1,12 +1,12 @@
 import type { Loaded } from "@mikro-orm/core";
-import { Injectable, Logger, UnauthorizedException } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import Strategy from "passport-magic-login";
 
-import { MailerService } from "@lib/mailer/mailer.service";
-import type { User } from "@entities";
 import { EmailSubject, EmailTemplate } from "@common/@types";
+import type { User } from "@entities";
+import { MailerService } from "@lib/mailer/mailer.service";
 import { AuthService } from "../auth.service";
 
 interface MagicLoginPayload {
@@ -63,7 +63,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
         callback: (callback_: null, user: Promise<Loaded<User>>) => void,
       ) => {
         // Get or create a user with the provided email from the database
-        callback(undefined, this.validate(payload.destination));
+        callback(null, this.validate(payload.destination));
       },
     });
   }
@@ -77,9 +77,6 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
   async validate(email: string) {
     // Accept the JWT and attempt to validate it using the user service
     const user = await this.authService.findUser({ email });
-
-    if (!user)
-      throw new UnauthorizedException();
 
     return user;
   }

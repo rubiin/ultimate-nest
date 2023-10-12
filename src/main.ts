@@ -96,7 +96,7 @@ async function bootstrap() {
     module.hot.dispose(() => app.close());
   }
 
-  const port = process.env.PORT ?? configService.get("app.port", { infer: true });
+  const port = process.env.PORT ?? configService.get("app.port", { infer: true })!;
 
   await app.listen(port);
 

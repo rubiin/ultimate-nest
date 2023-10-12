@@ -21,7 +21,7 @@ import type { NumberFieldOptions } from "@common/@types";
  */
 
 export function IsNumberField(options_?: NumberFieldOptions) {
-  const options: NumberFieldOptions = {
+  const options = {
     min: 1,
     required: true,
     each: false,
@@ -31,7 +31,8 @@ export function IsNumberField(options_?: NumberFieldOptions) {
     int: true,
     positive: true,
     ...options_,
-  };
+  } satisfies NumberFieldOptions;
+  
   const decoratorsToApply = [
     Type(() => Number),
     Min(options.min, {

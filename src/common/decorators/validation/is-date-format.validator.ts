@@ -31,9 +31,9 @@ class IsDateInFormatConstraint implements ValidatorConstraintInterface {
     const [format] = arguments_.constraints as string[];
 
     if (isArray(value))
-      return value.some(v => isMatch(v, format));
+      return value.some(v => isMatch(v, format!));
 
-    return isMatch(value, format);
+    return isMatch(value, format!);
   }
 
   defaultMessage(arguments_: ValidationArguments) {

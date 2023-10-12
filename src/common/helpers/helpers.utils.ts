@@ -1,16 +1,15 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
+import type { AuthenticationResponse } from "@common/@types";
+import type { User } from "@entities";
 import type { Options as ArgonOptions } from "argon2";
 import { argon2id, hash, verify } from "argon2";
 import { format, zonedTimeToUtc } from "date-fns-tz";
 import { pick } from "helper-fns";
-import type { RedisOptions } from "ioredis";
 import type { Observable } from "rxjs";
 import { from } from "rxjs";
 import sharp from "sharp";
-import type { User } from "@entities";
-import type { AuthenticationResponse } from "@common/@types";
 
 const argon2Options: ArgonOptions & { raw?: false } = {
   type: argon2id,
@@ -92,24 +91,34 @@ which is the hashed password to compare against. */
     return new Date(format(currentUtcTime, "yyyy-MM-dd HH:mm:ss"));
   },
 
-  redisUrlToOptions(url: string): RedisOptions {
-    if (url.includes("://:")) {
-      const array = url.split("://:")[1].split("@");
-      const secondArray = array[1].split(":");
 
-      return {
-        password: array[0],
-        host: secondArray[0],
-        port: Number.parseInt(secondArray[1], 10),
-      };
-    }
+      //TODO: fix this
+  // redisUrlToOptions(url: string): RedisOptions {
+  //   if(!REDIS_URI_REGEX.test(url)){
+  //     throw new Error("Invalid redis url");
+  //   }
 
-    const connectionString = url.split("://")[1];
-    const array = connectionString.split(":");
+  //   const separator = "://";
 
-    return {
-      host: array[0],
-      port: Number.parseInt(array[1], 10),
-    };
-  },
+  //   if (url.includes("://:")) {
+  //     const [_, credentials] = url.split(separator);
+  //     const [password, rest] = credentials.split("@");
+  //     const [host, port] = rest.split(":");
+
+  //     return {
+  //       password,
+  //       host,
+  //       port: Number.parseInt(port, 10),
+  //     };
+  //   }
+
+  //   const connectionString = url.split(separator)[1];
+  //   const [host, port] = connectionString.split(":");
+
+  //   return {
+  //     host,
+  //     port: Number.parseInt(port, 10),
+  //   };
+
+  // },
 };
