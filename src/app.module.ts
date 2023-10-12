@@ -9,6 +9,12 @@ import { ClearCacheMiddleware, RealIpMiddleware } from "@common/middlewares";
 import { NestCacheModule } from "@lib/cache";
 import { SharedModule } from "@modules/shared/shared.module";
 import { AppController } from "app.controller";
+import { SWAGGER_API_ENDPOINT } from "@common/constant";
+
+
+const stripeWebhookPath = "stripe/webhook";
+const excludedPaths = [stripeWebhookPath, SWAGGER_API_ENDPOINT];
+
 
 @Module({
   controllers: [AppController],
@@ -35,14 +41,16 @@ import { AppController } from "app.controller";
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     applyRawBodyOnlyTo(consumer, {
+      path: stripeWebhookPath,
       method: RequestMethod.ALL,
-      path: "stripe/webhook",
     });
     consumer
       .apply(RealIpMiddleware, ClearCacheMiddleware)
       .exclude(
-        { path: "stripe/webhook", method: RequestMethod.ALL },
-        { path: "doc", method: RequestMethod.ALL },
+        ...excludedPaths.map((path) => ({
+          path,
+          method: RequestMethod.ALL,
+        })),
       )
       .forRoutes({
         path: "*",
