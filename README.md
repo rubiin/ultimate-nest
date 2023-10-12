@@ -221,7 +221,7 @@ More docs found at `docs` folder
 
 Also if you are into NestJS ecosystem you may be interested in one of my other libs:
 
-[nestjs-easyconfig](https://github.com/rubiin/nestjs-pino)
+[nestjs-easyconfig](https://github.com/rubiin/nestjs-easyconfig)
 
 [![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-easyconfig?style=flat-square)](https://github.com/rubiin/nestjs-easyconfig)
 [![npm](https://img.shields.io/npm/dm/nestjs-easyconfig?style=flat-square)](https://www.npmjs.com/package/nestjs-easyconfig)
