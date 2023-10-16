@@ -107,7 +107,7 @@ export class AuthController {
             user: OauthResponse,
         @Res() response: Response,
   ) {
-    return this.authService.oauthHandler({ response, user });
+    return this.authService.OauthHandler({ response, user });
   }
 
   @Get("facebook")
@@ -123,7 +123,7 @@ export class AuthController {
             user: OauthResponse,
         @Res() response: Response,
   ) {
-    return this.authService.oauthHandler({ response, user });
+    return this.authService.OauthHandler({ response, user });
   }
 
   // this simulates a frontend url for testing oauth login
@@ -165,7 +165,7 @@ export class AuthController {
   @Post("logout")
   logout(
         @LoggedInUser() user: User,
-        @Query("from_all", new DefaultValuePipe(false), ParseBoolPipe) fromAll: boolean,
+        @Query("fromAll", new DefaultValuePipe(false), ParseBoolPipe) fromAll?: boolean,
         @Body() refreshToken?: RefreshTokenDto,
   ): Observable<User> {
     return fromAll

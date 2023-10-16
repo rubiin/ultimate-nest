@@ -1,17 +1,31 @@
-import { ThreadWorker } from "poolifier";
-import { HelperService } from "@common/helpers";
-import { ThreadFunctions } from "@common/@types";
+import { HelperService } from "@common/helpers"
+import { ThreadWorker } from 'poolifier'
 
-// all expensive process goes here to avoid blocking the main thread
-function workerFunction(data: { functionName: string; input: string }) {
-  if (data.functionName === ThreadFunctions.HASH_STRING)
-    return HelperService.hashString(data.input);
-
-  throw new Error(`Invalid thread function name, available are ${Object.keys(ThreadFunctions).join(" ,")}`);
+export interface WorkerData<T = string> {
+  input: T
 }
 
-const threadWorker = new ThreadWorker(workerFunction as any);
+export interface WorkerResponse<T = string> {
+  response: T
+}
 
-export default threadWorker;
+class FunctionHandlerWorker<
+  Data extends WorkerData,
+  Response extends WorkerResponse
+> extends ThreadWorker<Data, Response> {
 
-// TODO: fix this
+  public constructor() {
+    super({
+      hashString: async (workerData?: Data) => {
+        const hashedString = await HelperService.hashString(JSON.stringify(workerData));
+        return { response: hashedString } as Response;
+      }
+    });
+  }
+
+}
+
+export const requestHandlerWorker = new FunctionHandlerWorker<
+WorkerData,
+WorkerResponse
+>()

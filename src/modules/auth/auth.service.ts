@@ -273,6 +273,7 @@ export class AuthService {
    * contains the OTP code that needs to be verified.
    * @returns The `verifyOtp` function returns an Observable of type `User`.
    */
+
   verifyOtp(otpDto: OtpVerifyDto): Observable<User> {
     const { otpCode } = otpDto;
 
@@ -336,6 +337,7 @@ export class AuthService {
    * @param user - User - The user object that is currently logged in.
    * @returns Observable of type User
    */
+
   changePassword(dto: ChangePasswordDto, user: User): Observable<User> {
     const { password, oldPassword } = dto;
 
@@ -377,6 +379,14 @@ export class AuthService {
     );
   }
 
+  /**
+   * The function `findUser` searches for a user based on a given condition and returns the user if
+   * found, otherwise it throws an UnauthorizedException.
+   * @param condition - The `condition` parameter is a filter query that specifies the conditions to
+   * match when searching for a user. It is used to filter the user records in the database and find a
+   * specific user that meets the specified conditions.
+   * @returns a Promise that resolves to a User object.
+   */
   async findUser(condition: FilterQuery<User>): Promise<User> {
     const user = await this.userRepository.findOne(condition);
 
@@ -385,7 +395,12 @@ export class AuthService {
     return user;
   }
 
-  oauthHandler({ response, user }: { response: Response; user: OauthResponse }) {
+  /**
+   * The `OauthHandler` function handles the OAuth login process and redirects the user to the client URL
+   * with the access token.
+   * @returns a redirect response to a client URL with an access token as a query parameter.
+   */
+  OauthHandler({ response, user }: { response: Response; user: OauthResponse }) {
     return this.login({ email: user.email }, false).pipe(
       map((data) => {
         // client url
