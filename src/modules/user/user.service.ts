@@ -24,7 +24,7 @@ import {
 import { BaseRepository } from "@common/database";
 import type { CursorPaginationDto } from "@common/dtos";
 import { User } from "@entities";
-import { translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import type { CreateUserDto, EditUserDto } from "./dtos";
 
 @Injectable()
@@ -82,7 +82,7 @@ export class UserService {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: "User" },
                 }),
               ),

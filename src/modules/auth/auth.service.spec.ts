@@ -1,4 +1,3 @@
-/* eslint-disable ts/no-unsafe-return */
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { ConfigService } from "@nestjs/config";

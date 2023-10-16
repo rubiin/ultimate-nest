@@ -24,7 +24,7 @@ export class ChatService {
   async createConversation(conversation: IConversation) {
     const conversationNew = this.conversationRepository.create({
       chatName: conversation.users.map(user => user.username).join(", "),
-      users: conversation.users
+      users: conversation.users,
     });
 
     await this.em.persistAndFlush(conversationNew);
@@ -38,7 +38,7 @@ export class ChatService {
     );
 
     const messageNew = this.messageRepository.create({
-      body: data!.message,
+      body: data.message,
       sender: sender!,
       conversation: conversationExists,
     });

@@ -1,6 +1,7 @@
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { Server, TemplateEngine } from "@common/@types";
+import type { Server } from "@common/@types";
+import { TemplateEngine } from "@common/@types";
 import { MailModule } from "./mailer.module";
 
 @Global()

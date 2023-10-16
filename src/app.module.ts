@@ -11,10 +11,8 @@ import { SharedModule } from "@modules/shared/shared.module";
 import { AppController } from "app.controller";
 import { SWAGGER_API_ENDPOINT } from "@common/constant";
 
-
 const stripeWebhookPath = "stripe/webhook";
 const excludedPaths = [stripeWebhookPath, SWAGGER_API_ENDPOINT];
-
 
 @Module({
   controllers: [AppController],
@@ -47,7 +45,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(RealIpMiddleware, ClearCacheMiddleware)
       .exclude(
-        ...excludedPaths.map((path) => ({
+        ...excludedPaths.map(path => ({
           path,
           method: RequestMethod.ALL,
         })),

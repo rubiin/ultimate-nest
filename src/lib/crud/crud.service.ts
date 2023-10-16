@@ -6,7 +6,7 @@ import type { Crud, PaginationRequest, PaginationResponse } from "@common/@types
 import { CursorType, PaginationType, QueryOrder } from "@common/@types";
 import type { BaseEntity, BaseRepository } from "@common/database";
 import type { User } from "@entities";
-import { translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
 
 export abstract class BaseService<
     Entity extends BaseEntity,
@@ -87,7 +87,7 @@ export abstract class BaseService<
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: this.repository.getEntityName() },
                 }),
               ),

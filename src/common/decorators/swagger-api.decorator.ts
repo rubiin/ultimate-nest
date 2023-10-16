@@ -16,9 +16,9 @@ export function SwaggerResponse({
   notFound,
   badRequest,
   params,
-  //@ts-ignore
+  // @ts-expect-error - This is intentional
   body,
-  //@ts-ignore
+  // @ts-expect-error - This is intentional
   response,
 }: SwaggerResponseOptions<typeof body, typeof response>) {
   const decsToApply = [ApiOperation({ summary: operation })];

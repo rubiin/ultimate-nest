@@ -91,8 +91,7 @@ which is the hashed password to compare against. */
     return new Date(format(currentUtcTime, "yyyy-MM-dd HH:mm:ss"));
   },
 
-
-      //TODO: fix this
+  // TODO: fix this
   // redisUrlToOptions(url: string): RedisOptions {
   //   if(!REDIS_URI_REGEX.test(url)){
   //     throw new Error("Invalid redis url");

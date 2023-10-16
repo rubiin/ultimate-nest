@@ -1,4 +1,3 @@
-/* eslint-disable ts/no-unsafe-return */
 import path from "node:path";
 import type { Request, Response } from "express";
 import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
@@ -99,21 +98,23 @@ export const refreshToken = new RefreshToken({
 export const protocol = new Protocol(mockedProtocol);
 
 export const mockEm = createMock<EntityManager>();
+
+const payload = {
+  xss: "<option><iframe></select><b><script>alert(1)</script>",
+  test: "test",
+};
 export const mockRequest = createMock<Request>({
   query: {
-    test: "test",
     clearCache: "true",
-    xss: "<option><iframe></select><b><script>alert(1)</script>",
+    ...payload,
   },
   params: {
-    test: "test",
-    xss: "<option><iframe></select><b><script>alert(1)</script>",
+    ...payload,
   },
 
   body: {
-    test: "test",
-    xss: "<option><iframe></select><b><script>alert(1)</script>",
-    password: "<option><iframe></select><b><script>alert(1)</script>",
+    ...payload,
+    password: payload.xss,
   },
 });
 export const mockResponse = createMock<Response>();

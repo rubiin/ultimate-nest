@@ -30,7 +30,7 @@ import {
   getOppositeOrder,
   getQueryOrder,
 } from "@common/@types";
-import { translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import type { BaseEntity } from "./base.entity";
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
@@ -117,7 +117,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: this.getEntityName() },
                 }),
               ),
@@ -142,7 +142,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: this.getEntityName() },
                 }),
               ),
@@ -167,7 +167,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: this.getEntityName() },
                 }),
               ),
@@ -485,12 +485,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const oppositeOrder = getOppositeOrder(order);
       const countWhere = where;
 
-      //@ts-expect-error
+      // @ts-expect-error - because of runtime issues
+      // eslint-disable-next-line ts/dot-notation
       countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
-      //@ts-expect-error
-      where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
+      // @ts-expect-error - because of runtime issues
+      where["$and "] = this.getFilters("createdAt", decoded, queryOrder);
     }
 
     const [entities, count] = await repo.findAndCount(where, {

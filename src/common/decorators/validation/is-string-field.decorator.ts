@@ -32,7 +32,7 @@ export function IsStringField(options_?: StringFieldOptions) {
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
     ...options_,
   } satisfies StringFieldOptions;
-  
+
   const decoratorsToApply = [
     IsString({
       message: validationI18nMessage("validation.isDataType", {

@@ -16,7 +16,7 @@ export class AbstractValidationPipe extends ValidationPipe {
   }
 
   async transform(value: any, metadata: ArgumentMetadata) {
-    //@ts-ignore
+    // @ts-expect-error "metatype" is a private property
     const targetType = this.targetTypes[metadata.type];
 
     if (!targetType)

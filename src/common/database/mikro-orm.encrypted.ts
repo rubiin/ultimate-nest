@@ -6,7 +6,7 @@ export class EncryptedType extends Type {
   private readonly encKey = process.env.ENC_KEY;
   private readonly encIV = process.env.ENC_IV;
 
-  convertToDatabaseValue(value: string , _platform: Platform): string {
+  convertToDatabaseValue(value: string, _platform: Platform): string {
     if (value && !(typeof value.valueOf() === "string"))
       throw ValidationError.invalidType(EncryptedType, value, "JS");
 

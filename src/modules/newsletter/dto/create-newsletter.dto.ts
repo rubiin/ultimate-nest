@@ -1,4 +1,5 @@
 import { IsDateField, IsStringField } from "@common/decorators";
+import { MinDate } from "class-validator";
 
 export class CreateNewsletterDto {
   /**
@@ -20,5 +21,6 @@ export class CreateNewsletterDto {
    * @example 2020-06-07T14:34:08.700Z
    */
   @IsDateField()
+  @MinDate(new Date())
     sentAt!: string;
 }

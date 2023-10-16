@@ -11,18 +11,19 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
+import type { Response } from "express";
 import { capitalize, omit } from "helper-fns";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
-import { TokensService } from "@modules/token/tokens.service";
-import { MailerService } from "@lib/mailer/mailer.service";
-import { translate } from "@lib/i18n";
-import { OtpLog, Protocol, User } from "@entities";
-import { HelperService } from "@common/helpers";
-import { BaseRepository } from "@common/database";
-import type { AuthenticationResponse } from "@common/@types";
+import type { AuthenticationResponse, OauthResponse } from "@common/@types";
 import { EmailSubject, EmailTemplate } from "@common/@types";
+import { BaseRepository } from "@common/database";
+import { HelperService } from "@common/helpers";
+import { OtpLog, Protocol, User } from "@entities";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { MailerService } from "@lib/mailer/mailer.service";
+import { TokensService } from "@modules/token/tokens.service";
 import type {
   ChangePasswordDto,
   OtpVerifyDto,
@@ -34,16 +35,16 @@ import type {
 @Injectable()
 export class AuthService {
   constructor(
-        @InjectRepository(User)
-        private readonly userRepository: BaseRepository<User>,
-        @InjectRepository(Protocol)
-        private readonly protocolRepository: BaseRepository<Protocol>,
-        @InjectRepository(OtpLog)
-        private readonly otpRepository: BaseRepository<OtpLog>,
-        private readonly tokenService: TokensService,
-        private readonly configService: ConfigService<Configs, true>,
-        private readonly mailService: MailerService,
-        private readonly em: EntityManager,
+    @InjectRepository(User)
+    private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(Protocol)
+    private readonly protocolRepository: BaseRepository<Protocol>,
+    @InjectRepository(OtpLog)
+    private readonly otpRepository: BaseRepository<OtpLog>,
+    private readonly tokenService: TokensService,
+    private readonly configService: ConfigService<Configs, true>,
+    private readonly mailService: MailerService,
+    private readonly em: EntityManager,
   ) {}
 
   /**
@@ -66,7 +67,7 @@ export class AuthService {
           return throwError(
             () =>
               new ForbiddenException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: "Account" },
                 }),
               ),
@@ -180,7 +181,7 @@ export class AuthService {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: "Account" },
                 }),
               ),
@@ -246,13 +247,11 @@ export class AuthService {
       ),
     ).pipe(
       switchMap((details) => {
-
-        if(!details) {
-
+        if (!details) {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: "Otp" },
                 }),
               ),
@@ -289,7 +288,7 @@ export class AuthService {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: "Otp" },
                 }),
               ),
@@ -346,13 +345,11 @@ export class AuthService {
       }),
     ).pipe(
       switchMap((userDetails) => {
-
-        if(!userDetails) {
-
+        if (!userDetails) {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: "Account" },
                 }),
               ),
@@ -385,6 +382,17 @@ export class AuthService {
 
     if (!user)
       throw new UnauthorizedException();
-    return user
+    return user;
+  }
+
+  oauthHandler({ response, user }: { response: Response; user: OauthResponse }) {
+    return this.login({ email: user.email }, false).pipe(
+      map((data) => {
+        // client url
+        return response.redirect(
+          `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
+        );
+      }),
+    );
   }
 }

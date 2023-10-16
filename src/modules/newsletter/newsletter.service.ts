@@ -6,7 +6,7 @@ import { Cron, CronExpression } from "@nestjs/schedule";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
-import { translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { BaseService } from "@lib/crud/crud.service";
 import { NewsLetter, Subscriber } from "@entities";
 import type { CursorPaginationDto } from "@common/dtos";
@@ -64,7 +64,7 @@ private readonly configService: ConfigService<Configs, true>,
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: "subscriber" },
                 }),
               ),

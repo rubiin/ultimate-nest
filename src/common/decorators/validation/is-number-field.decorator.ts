@@ -32,7 +32,7 @@ export function IsNumberField(options_?: NumberFieldOptions) {
     positive: true,
     ...options_,
   } satisfies NumberFieldOptions;
-  
+
   const decoratorsToApply = [
     Type(() => Number),
     Min(options.min, {

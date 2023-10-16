@@ -107,14 +107,7 @@ export class AuthController {
             user: OauthResponse,
         @Res() response: Response,
   ) {
-    return this.authService.login({ email: user.email }, false).pipe(
-      map((data) => {
-        // client url
-        return response.redirect(
-                    `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
-        );
-      }),
-    );
+    return this.authService.oauthHandler({ response, user });
   }
 
   @Get("facebook")
@@ -130,14 +123,7 @@ export class AuthController {
             user: OauthResponse,
         @Res() response: Response,
   ) {
-    return this.authService.login({ email: user.email }, false).pipe(
-      map((data) => {
-        // client url
-        return response.redirect(
-                    `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
-        );
-      }),
-    );
+    return this.authService.oauthHandler({ response, user });
   }
 
   // this simulates a frontend url for testing oauth login
