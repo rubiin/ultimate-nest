@@ -27,7 +27,7 @@ interface ApiFilesOptions extends ApiFileOptions {
  * @returns A function that returns a decorator.
  */
 export function ApiFile(options_?: ApiFileOptions) {
-  const options = { fieldName: "file", required: false, ...options_ } satisfies ApiFilesOptions
+  const options = { fieldName: "file", required: false, ...options_ } satisfies ApiFilesOptions;
 
   return applyDecorators(
     UseInterceptors(FileInterceptor(options.fieldName, options.localOptions)),

@@ -100,18 +100,19 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  logger.log(
-    `🚀 Application is running on: ${chalk.green(`http://localhost:${port}/${globalPrefix}`)}`,
-  );
+  const appUrl = `http://localhost:${port}/${globalPrefix}`;
+  logger.log(`🚀 Application is running on: ${chalk.green(appUrl)}`);
+
   logger.log(
     `🚦 Accepting request only from: ${chalk.green(
       `${configService.get("app.allowedOrigins", { infer: true }).toString()}`,
     )}`,
   );
 
-  !HelperService.isProd()
-    && logger.log(`📑 Swagger is running on: ${chalk.green(`http://localhost:${port}/doc`)}`);
-  logger.log(`Server is up. ${chalk.yellow(`+${Math.trunc(performance.now())}ms`)}`);
+  if (!HelperService.isProd()) {
+    const swaggerUrl = `http://localhost:${port}/doc`;
+    logger.log(`📑 Swagger is running on: ${chalk.green(swaggerUrl)}`);
+  }
 }
 
 try {

@@ -14,7 +14,7 @@ describe("isAfter", () => {
   it("if endDate is after than startDate then it should succeed", async () => {
     const model = new MyClass();
 
-    model.startDate = new Date("2022-02-21");
+    model.startDate = new Date("2022-02-22");
     model.endDate = new Date("2022-05-01");
 
     const errors = await validator.validate(model);

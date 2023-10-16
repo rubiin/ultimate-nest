@@ -17,10 +17,8 @@ export class UserSubscriber implements EventSubscriber<User> {
       arguments_.entity.password = await HelperService.hashString(arguments_.entity.password);
   }
 
-
   async beforeUpdate(arguments_: EventArgs<User>): Promise<void> {
-      if (arguments_.changeSet?.payload?.password)
-        arguments_.entity.password = await HelperService.hashString(arguments_.entity.password);
-    }
-
+    if (arguments_.changeSet?.payload?.password)
+      arguments_.entity.password = await HelperService.hashString(arguments_.entity.password);
+  }
 }

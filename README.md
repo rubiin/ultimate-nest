@@ -224,7 +224,15 @@ More docs found at `docs` folder
 
 Also if you are into NestJS ecosystem you may be interested in one of my other libs:
 
-[nestjs-easyconfig](https://github.com/rubiin/nestjs-pino)
+
+[helper-fns](https://github.com/rubiin/helper-fns)
+
+[![GitHub stars](https://img.shields.io/github/stars/rubiin/helper-fns?style=flat-square)](https://github.com/rubiin/helper-fns)
+[![npm](https://img.shields.io/npm/dm/helper-fns?style=flat-square)](https://www.npmjs.com/package/helper-fns)
+
+A collection of helper functions for typescrip development. It includes functions for array,object,string,etc
+
+[nestjs-easyconfig](https://github.com/rubiin/nestjs-easyconfig)
 
 [![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-easyconfig?style=flat-square)](https://github.com/rubiin/nestjs-easyconfig)
 [![npm](https://img.shields.io/npm/dm/nestjs-easyconfig?style=flat-square)](https://www.npmjs.com/package/nestjs-easyconfig)
@@ -251,7 +259,7 @@ This is a cloudinary module for Nest.
 
 ---
 
-[nestjs-pgpromise](https://github.com/segmentstream/nestjs-injectable)
+[nestjs-pgpromise](https://github.com/rubiin/nestjs-pgpromise)
 
 [![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-pgpromise?style=flat-square)](https://github.com/rubiin/nestjs-pgpromise)
 [![npm](https://img.shields.io/npm/dm/nestjs-pgpromise?style=flat-square)](https://www.npmjs.com/package/nestjs-pgpromise)

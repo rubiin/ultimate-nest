@@ -80,8 +80,7 @@ export class CreateUserDto {
   @IsEmailField()
     email!: string;
 
-
-    /**
+  /**
    * Bio of user
    * @example John
    */

@@ -44,7 +44,7 @@ import {
         facebookOauth,
         throttle,
         sentry,
-        stripe
+        stripe,
       ],
       cache: true,
       isGlobal: true,
@@ -60,7 +60,7 @@ import {
         ...facebookOauthConfigValidationSchema,
         ...throttleConfigValidationSchema,
         ...sentryConfigurationValidationSchema,
-        ...stripeonfigValidationSchema
+        ...stripeonfigValidationSchema,
       }),
       validationOptions: {
         abortEarly: true,

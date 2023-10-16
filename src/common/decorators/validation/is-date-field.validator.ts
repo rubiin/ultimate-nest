@@ -17,7 +17,7 @@ export function IsDateField(options_?: DateFieldOptions) {
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
     ...options_,
   } satisfies DateFieldOptions;
-  
+
   const decoratorsToApply = [
     IsDateString(
       { strict: true },

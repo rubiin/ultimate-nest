@@ -7,7 +7,7 @@ import type { Observable } from "rxjs";
 import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 import { ref } from "@mikro-orm/core";
 
-import { translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import type { CursorPaginationDto } from "@common/dtos";
 import { BaseRepository } from "@common/database";
@@ -73,7 +73,7 @@ export class PostService {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: "Post" },
                 }),
               ),
@@ -246,19 +246,18 @@ export class PostService {
           },
         },
       ),
-    ).pipe(switchMap(post => {
-      if(!post) {
+    ).pipe(switchMap((post) => {
+      if (!post) {
         return throwError(
           () =>
             new NotFoundException(
-              translate("exception.itemDoesNotExist", {
+              translate(itemDoesNotExistKey, {
                 args: { item: "Post" },
               }),
             ),
         );
       }
-      return of(post.comments.getItems())
-
+      return of(post.comments.getItems());
     }));
   }
 

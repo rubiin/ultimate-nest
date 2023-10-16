@@ -21,7 +21,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
   /**
    * It's a PassportStrategy that uses the MagicLoginStrategy  to authenticate users
    * More at
-   * https://passportjs.org/docs/strategies/passport-magic-login
+   * https://www.passportjs.org/packages/passport-magic-login/
    *
    * The callback url should match whats specified in the callbackURL section
    *
@@ -60,10 +60,10 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
       },
       verify: (
         payload: MagicLoginPayload,
-        callback: (callback_: null, user: Promise<Loaded<User>>) => void,
+        callback: (callback_: undefined, user: Promise<Loaded<User>>) => void,
       ) => {
         // Get or create a user with the provided email from the database
-        callback(null, this.validate(payload.destination));
+        callback(undefined, this.validate(payload.destination));
       },
     });
   }
@@ -76,8 +76,6 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 
   async validate(email: string) {
     // Accept the JWT and attempt to validate it using the user service
-    const user = await this.authService.findUser({ email });
-
-    return user;
+    return await this.authService.findUser({ email });
   }
 }

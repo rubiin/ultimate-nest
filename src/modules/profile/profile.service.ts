@@ -4,7 +4,7 @@ import { EntityManager } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
-import { translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { User } from "@entities";
 import { BaseRepository } from "@common/database";
 import type { ProfileData } from "@common/@types";
@@ -51,7 +51,7 @@ export class ProfileService {
           return throwError(
             () =>
               new NotFoundException(
-                translate("exception.itemDoesNotExist", {
+                translate(itemDoesNotExistKey, {
                   args: { item: "Profile" },
                 }),
               ),

@@ -11,15 +11,14 @@ export interface MailModuleOptions {
     sesRegion: string
   }
   | {
-    type: Server.SMTP;
-    host: string;
+    type: Server.SMTP
+    host: string
     port: number
-    password: string;
-    username: string;
+    password: string
+    username: string
   }
   previewEmail: boolean
   retryAttempts?: number
-
 
   templateDir: string
   templateEngine:

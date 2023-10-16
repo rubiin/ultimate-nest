@@ -14,7 +14,7 @@ export function IsUUIDField(options_?: UUIDFieldOptions) {
     required: true,
     ...options_,
   } satisfies UUIDFieldOptions;
-  
+
   const decoratorsToApply = [
     IsUUID("4", {
       message: validationI18nMessage("validation.isDataType", {

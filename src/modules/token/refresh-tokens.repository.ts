@@ -48,7 +48,7 @@ export class RefreshTokensRepository {
         id,
         isRevoked: false,
       }),
-    )
+    );
   }
 
   /**
