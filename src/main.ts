@@ -1,21 +1,20 @@
 import "@total-typescript/ts-reset";
 
-import bodyParser from "body-parser";
-import chalk from "chalk";
+import { AppUtils, HelperService } from "@common/helpers";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import type { NestExpressApplication } from "@nestjs/platform-express";
 import { ExpressAdapter } from "@nestjs/platform-express";
+import bodyParser from "body-parser";
+import chalk from "chalk";
 import { useContainer } from "class-validator";
 import compression from "compression";
 import helmet from "helmet";
 import { I18nValidationExceptionFilter } from "nestjs-i18n";
 import { LoggerErrorInterceptor } from "nestjs-pino";
-import { createLogger } from "@lib/pino/app.logger";
-import { AppUtils, HelperService } from "@common/helpers";
-import { SocketIOAdapter } from "./socket-io.adapter";
 import { AppModule } from "./app.module";
+import { SocketIOAdapter } from "./socket-io.adapter";
 
 declare const module: { hot: { accept: () => void; dispose: (argument: () => Promise<void>) => void } };
 
@@ -23,7 +22,6 @@ const logger = new Logger("Bootstrap");
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
-    logger: await createLogger(),
     snapshot: true,
   });
 
