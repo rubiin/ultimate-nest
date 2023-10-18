@@ -20,7 +20,6 @@ module.exports = rubiin({
     "ts/no-unsafe-assignment": "off", // optimize this
     "ts/no-unsafe-member-access": "off", // optimize this
     "unicorn/prefer-top-level-await": "off",
-    "sonarjs/no-duplicate-string": ["error", { "threshold": 10 }],
     "ts/no-misused-promises": [
       "error",
       {

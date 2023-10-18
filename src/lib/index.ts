@@ -14,3 +14,7 @@ export * from "./sentry.module";
 export * from "./serve-static.module";
 export * from "./throttle.module";
 export * from "./twilio";
+export * from "./config/config.module";
+export * from "./pino/pino.module";
+export * from "./rabbit.module";
+export * from "./cache/cache.module";
