@@ -13,7 +13,7 @@ import compression from "compression";
 import helmet from "helmet";
 import { I18nValidationExceptionFilter } from "nestjs-i18n";
 import { LoggerErrorInterceptor } from "nestjs-pino";
-import { AppModule } from "./app.module";
+import { AppModule } from "./modules/app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
 
 declare const module: { hot: { accept: () => void; dispose: (argument: () => Promise<void>) => void } };

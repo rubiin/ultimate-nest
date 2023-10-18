@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import { Logger } from "@nestjs/common";
 import { repl } from "@nestjs/core";
-import { AppModule } from "./app.module";
+import { AppModule } from "./modules/app.module";
 
 const logger = new Logger("Repl");
 

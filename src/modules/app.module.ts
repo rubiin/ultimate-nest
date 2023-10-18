@@ -4,7 +4,7 @@ import { applyRawBodyOnlyTo } from "@golevelup/nestjs-webhooks";
 import { SharedModule } from "@modules/shared/shared.module";
 import type { MiddlewareConsumer, NestModule } from "@nestjs/common";
 import { Module, RequestMethod } from "@nestjs/common";
-import { AppController } from "app.controller";
+import { AppController } from "@modules/app.controller";
 
 const stripeWebhookPath = "stripe/webhook";
 const excludedPaths = [stripeWebhookPath, SWAGGER_API_ENDPOINT];

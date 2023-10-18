@@ -36,4 +36,4 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
   ],
   exports: [I18nModule],
 })
-export class NestI18nModule { }
+export class NestI18nModule {}

@@ -3,7 +3,7 @@ import { defineConfig } from "@mikro-orm/postgresql";
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import * as Entities from "@entities";
-import { baseOptions } from "@common/database/mikro-orm-cli.config";
+import { baseOptions } from "@common/database/orm.config";
 
 @Global()
 @Module({
