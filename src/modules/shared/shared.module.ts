@@ -1,6 +1,7 @@
-import { Module } from "@nestjs/common";
-import { ScheduleModule } from "@nestjs/schedule";
 import { IsUniqueConstraint } from "@common/decorators/validation";
+import { CustomThrottlerGuard } from "@common/guards";
+import { ClearCacheInterceptor, HttpCacheInterceptor } from "@common/interceptors";
+import { NestCacheModule } from "@lib/cache";
 import { NestConfigModule } from "@lib/config/config.module";
 import {
   NestCaslModule,
@@ -25,6 +26,9 @@ import { ProfileModule } from "@modules/profile/profile.module";
 import { TagsModule } from "@modules/tags/tags.module";
 import { TwoFactorModule } from "@modules/twofa/twofa.module";
 import { UserModule } from "@modules/user/user.module";
+import { Module } from "@nestjs/common";
+import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
@@ -44,14 +48,34 @@ import { UserModule } from "@modules/user/user.module";
     NestPinoModule,
     NestI18nModule,
     NestCloudinaryModule,
+    NestCacheModule,
     NestSentryModule,
     NestCaslModule,
     NestThrottlerModule,
     NestHttpModule,
     NestServeStaticModule,
+    NestSentryModule,
     NestJwtModule,
     ScheduleModule.forRoot(),
   ],
-  providers: [IsUniqueConstraint],
+  providers: [
+    IsUniqueConstraint,
+    // {
+    //   provide: APP_INTERCEPTOR,  // TODO: fix sentry
+    //   useClass: SentryInterceptor,
+    // },
+    {
+      provide: APP_GUARD,
+      useClass: CustomThrottlerGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: HttpCacheInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClearCacheInterceptor,
+    },
+  ],
 })
 export class SharedModule {}

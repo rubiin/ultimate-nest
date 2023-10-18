@@ -1,5 +1,4 @@
 import { capitalize } from "helper-fns";
-import { readPackageSync } from "read-pkg";
 
 export const REQUEST_ID_TOKEN_HEADER = "x-request-id";
 export const VERSION_VALIDATION_MESSAGE = "Version must start with \"v\" followed by a number.";
@@ -10,8 +9,12 @@ export const THROTTLE_LIMIT_RESPONSE = "Too many requests, please try again late
 export const MULTER_IMAGE_FILTER = "Only image files are allowed!.";
 export const API_UNAUTHORISED_RESPONSE = "No auth token in request.";
 
-// swagger constants
-const packageJson = readPackageSync();
+// swagger constants, TODO: dfix this too
+const packageJson = {
+  name: "nestjs-boilerplate",
+  version: "1.0.0",
+  description: "NestJS Boilerplate",
+};
 
 export const APP_NAME = packageJson.name;
 export const SWAGGER_API_CURRENT_VERSION = packageJson.version;

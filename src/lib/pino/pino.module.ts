@@ -14,9 +14,9 @@ const basePinoOptions = {
 @Module({
   imports: [
     LoggerModule.forRootAsync({
-      useFactory: (configService: ConfigService<Configs, true>) => ({
-        imports: [ConfigModule],
-        inject: [ConfigService],
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (_configService: ConfigService<Configs, true>) => ({
         pinoHttp: {
           timestamp: () => `,"timestamp":"${new Date(Date.now()).toISOString()}"`,
           name: "ultimate-nest",
@@ -34,7 +34,7 @@ const basePinoOptions = {
             paths: redactFields,
             censor: "**GDPR COMPLIANT**",
           },
-          transport: configService.get("app.env", { infer: true }).startsWith("prod")
+          transport: true
             ? {
                 targets: [
                   {

@@ -1,15 +1,15 @@
 import path from "node:path";
 
 import { Module } from "@nestjs/common";
-import { AcceptLanguageResolver, CookieResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n";
 
 @Module({
   imports: [
     I18nModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({
-        imports: [ConfigModule],
-        inject: [ConfigService],
         fallbackLanguage: "en",
         fallbacks: {
           "np-*": "np",
@@ -26,12 +26,6 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
           includeSubfolders: true,
         },
         typesOutputPath: configService.get("app.env", { infer: true }).startsWith("prod") ? undefined : path.join(`${process.cwd()}/src/generated/i18n-generated.ts`),
-        resolvers: [
-          new HeaderResolver(["x-custom-lang"]),
-          AcceptLanguageResolver,
-          new CookieResolver(),
-          { use: QueryResolver, options: ["lang", "locale"] },
-        ],
       }),
       resolvers: [
         { use: QueryResolver, options: ["lang"] },
@@ -42,4 +36,4 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
   ],
   exports: [I18nModule],
 })
-export class NestI18nModule {}
+export class NestI18nModule { }
