@@ -6,6 +6,7 @@ export * from "./auth.decorator";
 export * from "./controller.decorator";
 export * from "./custom-cache.decorator";
 export * from "./nocache.decorator";
+export * from "./origin.decorator";
 export * from "./public.decorator";
 export * from "./swagger-api.decorator";
 export * from "./user.decorator";

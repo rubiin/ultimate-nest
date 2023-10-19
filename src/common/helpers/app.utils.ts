@@ -67,14 +67,18 @@ export const AppUtils = {
       .setLicense("MIT", "https://opensource.org/licenses/MIT")
       .setDescription(SWAGGER_DESCRIPTION)
       .setVersion(SWAGGER_API_CURRENT_VERSION)
-      .addBearerAuth({
-        type: "http",
-        scheme: "Bearer",
-        bearerFormat: "JWT",
-        name: "JWT",
-        description: "Enter JWT token",
-        in: "header",
-      })
+      .addBearerAuth(
+        { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+        'accessToken'
+      )
+      .addBearerAuth(
+        { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+        'refreshToken'
+      )
+      .addApiKey(
+        { type: 'apiKey', in: 'header', name: 'x-api-key' },
+        'apiKey'
+      )
       .build();
 
     const document = SwaggerModule.createDocument(app, options, {});

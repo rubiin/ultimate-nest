@@ -46,6 +46,7 @@ declare global {
 
       JWT_ACCESS_EXPIRY: string
       JWT_REFRESH_EXPIRY: string
+      JWT_ALGORITHM?: string
       JWT_SECRET: string
       MAGIC_LINK_EXPIRY: string
 

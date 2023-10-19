@@ -41,7 +41,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
       jwtOptions: {
         expiresIn: config.get("jwt.magicLinkExpiry", { infer: true }),
       },
-      algorithms: ["HS256"],
+      algorithms: [config.get("jwt.algorithm", { infer: true })],
       // The authentication callback URL
       callbackUrl: "auth/magiclogin/callback",
       sendMagicLink: async (destination: string, href: string) => {
