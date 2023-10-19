@@ -99,8 +99,11 @@ async function bootstrap() {
   await app.listen(port);
 
   const appUrl = `http://localhost:${port}/${globalPrefix}`;
+
+  logger.log(`==========================================================`);
   logger.log(`🚀 Application is running on: ${chalk.green(appUrl)}`);
 
+  logger.log(`==========================================================`);
   logger.log(
     `🚦 Accepting request only from: ${chalk.green(
       `${configService.get("app.allowedOrigins", { infer: true }).toString()}`,
@@ -109,6 +112,7 @@ async function bootstrap() {
 
   if (!HelperService.isProd()) {
     const swaggerUrl = `http://localhost:${port}/doc`;
+    logger.log(`==========================================================`);
     logger.log(`📑 Swagger is running on: ${chalk.green(swaggerUrl)}`);
   }
 }

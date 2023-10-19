@@ -24,6 +24,8 @@ export const swaggerOptions = {
   docExpansion: "list",
   filter: true,
   showRequestDuration: true,
+  tryItOutEnabled: true,
+  displayOperationId: true,
   persistAuthorization: true,
   plugins: [CaseInsensitiveFilterPlugin],
   operationsSorter: (

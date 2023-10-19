@@ -1,5 +1,5 @@
 import { applyDecorators } from "@nestjs/common";
-import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional, MaxDate, MinDate } from "class-validator";
 import type { DateFieldOptions } from "@common/@types";
 import { validationI18nMessage } from "@lib/i18n";
 
@@ -15,6 +15,8 @@ export function IsDateField(options_?: DateFieldOptions) {
     required: true,
     arrayMinSize: 0,
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
+    lessThan: false,
+    greaterThan: false,
     ...options_,
   } satisfies DateFieldOptions;
 
@@ -59,6 +61,12 @@ export function IsDateField(options_?: DateFieldOptions) {
       }),
     );
   }
+
+  if (options.greaterThan)
+    decoratorsToApply.push(MinDate(options.date!));
+
+    if (options.lessThan)
+    decoratorsToApply.push(MaxDate(options.date!));
 
   return applyDecorators(...decoratorsToApply);
 }

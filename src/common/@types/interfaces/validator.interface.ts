@@ -32,8 +32,13 @@ export interface FileValidator {
 
 export type MinMaxLengthOptions = Pick<StringFieldOptions, "each" | "minLength" | "maxLength">;
 
-export type DateFieldOptions = BaseValidator & BaseArrayValidator;
 
-export type EnumFieldOptions = DateFieldOptions;
-export type EmailFieldOptions = DateFieldOptions;
-export type UUIDFieldOptions = DateFieldOptions;
+export type DateFieldOptions = BaseValidator & BaseArrayValidator & {
+greaterThan?: boolean;
+lessThan?: boolean;
+date?: Date
+};
+
+export type EnumFieldOptions = BaseValidator & BaseArrayValidator;
+export type EmailFieldOptions = EnumFieldOptions;
+export type UUIDFieldOptions = EnumFieldOptions;
