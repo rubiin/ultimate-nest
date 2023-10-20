@@ -22,6 +22,9 @@
         "./generated"
       ]
     },
+    "types": [
+      "./src/common/@types/typings/global.d.ts",
+    ],
     "declaration": true,
     "outDir": "dist"
   },
@@ -33,8 +36,5 @@
   "exclude": [
     "node_modules",
     "dist"
-  ],
-  "types": [
-    "./src/common/types/global.d.ts"
   ]
 }

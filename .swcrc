@@ -1,20 +1,26 @@
 {
   "$schema": "https://json.schemastore.org/swcrc",
-   "jsc": {
-     "parser": {
-       "syntax": "typescript",
-       "tsx": false,
-       "decorators": true,
-       "dynamicImport": true
-     },
-     "target": "es2021",
-     "transform": {
-       "legacyDecorator": true,
-       "decoratorMetadata": true
-     }
-   },
-   "module": {
-     "type": "commonjs",
-     "noInterop": false
-   }
- }
+  "sourceMaps": true,
+  "module": {
+    "type": "commonjs",
+    "strict": true
+  },
+  "jsc": {
+    "target": "esnext",
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    },
+    "keepClassNames": true,
+    "baseUrl": "./",
+    "paths": {
+      
+    }
+  },
+  "minify": false
+}

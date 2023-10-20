@@ -32,9 +32,9 @@ export enum Server {
 }
 
 export enum TemplateEngine {
-  ETA = "ETA",
-  PUG = "PUG",
-  HBS = "HBS",
+  ETA = "eta",
+  PUG = "pug",
+  HANDLEBARS = "handlebars",
 }
 
 export const FileType: Record<keyof typeof FileSize, RegExp> = {
