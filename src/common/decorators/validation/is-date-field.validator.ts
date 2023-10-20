@@ -65,7 +65,7 @@ export function IsDateField(options_?: DateFieldOptions) {
   if (options.greaterThan)
     decoratorsToApply.push(MinDate(options.date!));
 
-    if (options.lessThan)
+  if (options.lessThan)
     decoratorsToApply.push(MaxDate(options.date!));
 
   return applyDecorators(...decoratorsToApply);
