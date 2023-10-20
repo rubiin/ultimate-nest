@@ -8,6 +8,7 @@ export * from "./custom-cache.decorator";
 export * from "./nocache.decorator";
 export * from "./origin.decorator";
 export * from "./public.decorator";
+export * from "./client-timezone.decorator";
 export * from "./swagger-api.decorator";
 export * from "./user.decorator";
 export * from "./uuid-param.decorator";

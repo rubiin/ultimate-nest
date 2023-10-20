@@ -1,16 +1,15 @@
 import { resolve } from "node:path";
 
 import * as aws from "@aws-sdk/client-ses";
+import { Server } from "@common/@types";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import type { SendMailOptions, Transporter } from "nodemailer";
 import { createTransport } from "nodemailer";
 import previewEmail from "preview-email";
 import { from, retry, switchMap } from "rxjs";
-import { Server, TemplateEngine } from "@common/@types";
-import { MailModuleOptions } from "./mailer.options";
+import { BaseAdapter } from "./adapters/adapter";
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
-import type { Adapter } from "./adapters/abstract.adapter";
-import { EtaAdapter, HandlebarsAdapter, PugAdapter } from "./adapters";
+import { MailModuleOptions } from "./mailer.options";
 
 interface MailOptions extends Partial<SendMailOptions> {
   template: string
@@ -21,7 +20,7 @@ interface MailOptions extends Partial<SendMailOptions> {
 export class MailerService {
   readonly transporter: Transporter;
   private readonly logger: Logger = new Logger(MailerService.name);
-  private readonly adapter: Adapter;
+  private readonly adapter: BaseAdapter;
 
   constructor(
         @Inject(MODULE_OPTIONS_TOKEN)
@@ -29,29 +28,7 @@ export class MailerService {
   ) {
     // render template
 
-    switch (this.options.templateEngine.adapter) {
-      case TemplateEngine.PUG: {
-        this.adapter = new PugAdapter({
-          ...this.options.templateEngine.options,
-          basedir: resolve(this.options.templateDir),
-        });
-        break;
-      }
-      case TemplateEngine.ETA: {
-        this.adapter = new EtaAdapter({
-          ...this.options.templateEngine.options,
-          views: resolve(this.options.templateDir),
-        });
-        break;
-      }
-      case TemplateEngine.HBS: {
-        this.adapter = new HandlebarsAdapter({ ...this.options.templateEngine.options });
-        break;
-      }
-      default: {
-        throw new Error("Invalid template engine");
-      }
-    }
+    this.adapter = new BaseAdapter(this.options.templateEngine);
 
     // create Nodemailer SES transporter
 

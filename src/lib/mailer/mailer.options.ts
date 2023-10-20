@@ -1,6 +1,6 @@
-import type { EtaConfig } from "eta/dist/types/config";
-import type { Options as PugOptions } from "pug";
 import type { Server, TemplateEngine } from "@common/@types";
+
+export type engineOptions = Record<string, any>;
 
 export interface MailModuleOptions {
 
@@ -21,17 +21,5 @@ export interface MailModuleOptions {
   retryAttempts?: number
 
   templateDir: string
-  templateEngine:
-  | {
-    adapter: TemplateEngine.ETA
-    options: Partial<EtaConfig>
-  }
-  | {
-    adapter: TemplateEngine.PUG
-    options: Partial<PugOptions>
-  }
-  | {
-    adapter: TemplateEngine.HBS
-    options: Partial<CompileOptions>
-  }
+  templateEngine: TemplateEngine.ETA | TemplateEngine.PUG | TemplateEngine.HANDLEBARS
 }
