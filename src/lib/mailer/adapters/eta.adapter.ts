@@ -3,6 +3,8 @@ import type { EtaConfig } from "eta/dist/types/config";
 import { Eta } from "eta";
 import type { Adapter } from "./abstract.adapter";
 
+// TODO: move the adapters with dynamic import
+
 export class EtaAdapter implements Adapter {
   constructor(private readonly options: Partial<EtaConfig>) {}
 

@@ -9,19 +9,25 @@ interface BaseArrayValidator {
   each?: boolean
 }
 
-export interface StringFieldOptions extends BaseValidator, BaseArrayValidator {
-  trim?: boolean
-  regex?: RegExp
-  minLength?: number
-  maxLength?: number
-  sanitize?: boolean
-}
+export interface DateFieldOptions extends BaseValidator, BaseArrayValidator {
+  greaterThan?: boolean
+  lessThan?: boolean
+  date?: Date
+};
 
 export interface NumberFieldOptions extends BaseValidator, BaseArrayValidator {
   min?: number
   max?: number
   int?: boolean
   positive?: boolean
+}
+
+export interface StringFieldOptions extends BaseValidator, BaseArrayValidator {
+  trim?: boolean
+  regex?: RegExp
+  minLength?: number
+  maxLength?: number
+  sanitize?: boolean
 }
 
 export interface FileValidator {
@@ -31,12 +37,6 @@ export interface FileValidator {
 }
 
 export type MinMaxLengthOptions = Pick<StringFieldOptions, "each" | "minLength" | "maxLength">;
-
-export type DateFieldOptions = BaseValidator & BaseArrayValidator & {
-  greaterThan?: boolean
-  lessThan?: boolean
-  date?: Date
-};
 
 export type EnumFieldOptions = BaseValidator & BaseArrayValidator;
 export type EmailFieldOptions = EnumFieldOptions;

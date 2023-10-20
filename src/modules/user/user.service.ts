@@ -1,7 +1,7 @@
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { EntityManager } from "@mikro-orm/core";
+import { EntityManager, ref } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
@@ -23,9 +23,9 @@ import {
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import type { CursorPaginationDto } from "@common/dtos";
-import { User } from "@entities";
+import { Referral, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import type { CreateUserDto, EditUserDto } from "./dtos";
+import type { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
 
 @Injectable()
 export class UserService {
@@ -34,11 +34,45 @@ export class UserService {
   constructor(
         @InjectRepository(User)
         private userRepository: BaseRepository<User>,
+        @InjectRepository(Referral)
+        private referralRepository: BaseRepository<Referral>,
         private readonly em: EntityManager,
         private readonly configService: ConfigService<Configs, true>,
         private readonly amqpConnection: AmqpConnection,
         private readonly cloudinaryService: CloudinaryService,
   ) {}
+
+/**
+ * The function checks if a user with a given mobile number already exists, and if not, creates a
+ * referral with the mobile number and the referrer user.
+ * @param {ReferUserDto} dto - The `dto` parameter is an object of type `ReferUserDto` which contains
+ * the data needed to refer a user. It likely includes properties such as `mobileNumber` which
+ * represents the mobile number of the user being referred.
+ * @param {User} user - The `user` parameter is an instance of the `User` class, which represents the
+ * user who is referring another user.
+ * @returns The function `referUser` returns an Observable of type `Referral`.
+ */
+  referUser(dto: ReferUserDto, user: User): Observable<Referral> {
+    const userExists$ = from(this.userRepository.count({ mobileNumber: dto.mobileNumber, isActive: true }));
+
+    return userExists$.pipe(
+      switchMap((count: number, _index: number) => {
+        if (count > 0) {
+          return throwError(
+            () =>
+              new BadRequestException("User already registered with mobile number."),
+          );
+        }
+
+        // return an empty observable or undefined based on your requirements
+        return of(this.referralRepository.create({
+
+          mobileNumber: dto.mobileNumber,
+          referrer: ref(user),
+        }));
+      }),
+    );
+  }
 
   /**
    * The function `findAll` retrieves a paginated list of users based on the provided cursor pagination

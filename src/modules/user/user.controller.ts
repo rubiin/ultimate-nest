@@ -6,6 +6,7 @@ import {
   ApiFile,
   ApiPaginatedResponse,
   GenericController,
+  LoggedInUser,
   Public,
   SwaggerResponse,
   UUIDParam,
@@ -15,11 +16,20 @@ import { fileValidatorPipe } from "@common/misc";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { UserService } from "./user.service";
-import { CreateUserDto, EditUserDto, UserRegistrationDto } from "./dtos";
+import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
 
 @GenericController("users")
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Post()
+  @SwaggerResponse({
+    operation: "User create",
+    badRequest: "User already registered with email.",
+  })
+  referUser(@Body() dto: ReferUserDto, @LoggedInUser() user: User) {
+    return this.userService.referUser(dto, user);
+  }
 
   @Public()
   @ApiPaginatedResponse(User)
