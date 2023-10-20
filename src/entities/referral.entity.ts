@@ -18,5 +18,5 @@ export class Referral extends BaseEntity {
 
   @Index()
   @Enum(() => ReferralStatus)
-    status = ReferralStatus.PENDING;
+  status?: ReferralStatus = ReferralStatus.PENDING;
 }
