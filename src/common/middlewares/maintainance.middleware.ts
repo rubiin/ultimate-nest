@@ -14,7 +14,7 @@ export class SettingMaintenanceMiddleware implements NestMiddleware {
     _response: Response,
     next: NextFunction,
   ): Promise<void> {
-    const maintenance: boolean = true
+    const maintenance: boolean = true;
     // TODO: get maintenance status from database
 
     if (maintenance) {

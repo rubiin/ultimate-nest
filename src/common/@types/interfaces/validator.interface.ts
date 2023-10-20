@@ -32,11 +32,10 @@ export interface FileValidator {
 
 export type MinMaxLengthOptions = Pick<StringFieldOptions, "each" | "minLength" | "maxLength">;
 
-
 export type DateFieldOptions = BaseValidator & BaseArrayValidator & {
-greaterThan?: boolean;
-lessThan?: boolean;
-date?: Date
+  greaterThan?: boolean
+  lessThan?: boolean
+  date?: Date
 };
 
 export type EnumFieldOptions = BaseValidator & BaseArrayValidator;

@@ -68,16 +68,16 @@ export const AppUtils = {
       .setDescription(SWAGGER_DESCRIPTION)
       .setVersion(SWAGGER_API_CURRENT_VERSION)
       .addBearerAuth(
-        { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
-        'accessToken'
+        { type: "http", scheme: "bearer", bearerFormat: "JWT" },
+        "accessToken",
       )
       .addBearerAuth(
-        { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
-        'refreshToken'
+        { type: "http", scheme: "bearer", bearerFormat: "JWT" },
+        "refreshToken",
       )
       .addApiKey(
-        { type: 'apiKey', in: 'header', name: 'x-api-key' },
-        'apiKey'
+        { type: "apiKey", in: "header", name: "x-api-key" },
+        "apiKey",
       )
       .build();
 
