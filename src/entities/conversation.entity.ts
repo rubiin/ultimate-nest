@@ -1,5 +1,5 @@
-import { Collection, Entity, ManyToMany, OneToMany, Property } from "@mikro-orm/core";
 import { BaseEntity } from "@common/database";
+import { Collection, Entity, ManyToMany, OneToMany, Property } from "@mikro-orm/core";
 import { Message, User } from "./index";
 
 @Entity()
@@ -16,7 +16,7 @@ export class Conversation extends BaseEntity {
   })
     messages = new Collection<Message>(this);
 
-  constructor(partial?: Partial<Comment>) {
+  constructor(partial?: Partial<Conversation>) {
     super();
     Object.assign(this, partial);
   }

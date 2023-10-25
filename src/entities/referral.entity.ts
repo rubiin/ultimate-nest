@@ -19,4 +19,9 @@ export class Referral extends BaseEntity {
   @Index()
   @Enum(() => ReferralStatus)
   status?: ReferralStatus = ReferralStatus.PENDING;
+
+  constructor(partial?: Partial<Referral>) {
+    super();
+    Object.assign(this, partial);
+  }
 }

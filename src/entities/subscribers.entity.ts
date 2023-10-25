@@ -5,4 +5,9 @@ import { BaseEntity } from "@common/database";
 export class Subscriber extends BaseEntity {
   @Property({ index: true, unique: true })
     email!: string;
+
+  constructor(partial?: Partial<Subscriber>) {
+    super();
+    Object.assign(this, partial);
+  }
 }

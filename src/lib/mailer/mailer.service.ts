@@ -78,7 +78,7 @@ export class MailerService {
       switchMap((html) => {
         mailOptions.html = html;
 
-        if (this.options.previewEmail === true) {
+        if (this.options?.previewEmail) {
           try {
             previewEmail(mailOptions);
           }
@@ -88,7 +88,7 @@ export class MailerService {
         }
 
         return from(this.transporter.sendMail(mailOptions)).pipe(
-          retry(this.options.retryAttempts),
+          retry(this.options?.retryAttempts ?? 1),
         );
       }),
     );
