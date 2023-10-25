@@ -1,12 +1,13 @@
+import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
 import { Inject, Injectable, Logger } from "@nestjs/common";
+import { omit } from "helper-fns";
 import type { Observable } from "rxjs";
-import { catchError, from, retry, tap, throwError } from "rxjs";
+import { catchError, from, tap, throwError } from "rxjs";
 import twilio from "twilio";
 import type {
   MessageInstance,
   MessageListInstanceCreateOptions,
 } from "twilio/lib/rest/api/v2010/account/message";
-import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
 import { MODULE_OPTIONS_TOKEN } from "./twilio.module-definition";
 
 @Injectable()
@@ -14,8 +15,8 @@ export class TwilioService {
   private readonly logger = new Logger(TwilioService.name);
 
   constructor(
-        @Inject(MODULE_OPTIONS_TOKEN)
-        private readonly options: TwilioModuleOptions,
+    @Inject(MODULE_OPTIONS_TOKEN)
+    private readonly options: TwilioModuleOptions,
   ) {}
 
   /**
@@ -28,7 +29,7 @@ export class TwilioService {
   sendSms(
     options: MessageListInstanceCreateOptions & { prefix: string },
   ): Observable<MessageInstance> {
-    const client = twilio(this.options.accountSid, this.options.authToken);
+    const client = twilio(this.options.accountSid, this.options.authToken, omit(this.options, ["accountSid", "authToken", "from"]));
 
     return from(
       client.messages.create({
@@ -37,7 +38,6 @@ export class TwilioService {
         to: `${options.prefix}${options.to}`,
       }),
     ).pipe(
-      retry(this.options.retryAttempts),
       tap(message => this.logger.log(`SMS sent to ${message.sid}`)),
       catchError((error: Error) => {
         this.logger.error(error);

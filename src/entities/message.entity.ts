@@ -26,7 +26,7 @@ export class Message extends BaseEntity {
   @Property()
     readAt?: Date;
 
-  constructor(partial?: Partial<Comment>) {
+  constructor(partial?: Partial<Message>) {
     super();
     Object.assign(this, partial);
   }

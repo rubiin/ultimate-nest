@@ -20,7 +20,7 @@ import { MailModule } from "./mailer.module";
         },
         previewEmail: configService.get("mail.previewEmail", { infer: true }),
         templateDir: configService.get("mail.templateDir", { infer: true }),
-        templateEngine:TemplateEngine.ETA,
+        templateEngine: TemplateEngine.ETA,
       }),
     }),
   ],

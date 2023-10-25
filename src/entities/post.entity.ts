@@ -22,47 +22,47 @@ import { Category, Comment, Tag } from "./index";
 @Entity()
 export class Post extends BaseEntity {
   @Property({ index: true })
-    slug?: string;
+  slug?: string;
 
   @Property({ index: true })
-    title!: string;
+  title!: string;
 
   @Property({ type: "text" })
-    description!: string;
+  description!: string;
 
   @Property({ type: "text" })
-    content!: string;
+  content!: string;
 
   @Property()
-    readingTime? = 0;
+  readingTime? = 0;
 
   @Property()
-    readCount? = 0;
+  readCount? = 0;
 
   @Property()
-    favoritesCount? = 0;
+  favoritesCount? = 0;
 
   @ManyToOne({
     eager: false,
     index: true,
   })
-    author!: Rel<Ref<User>>;
+  author!: Rel<Ref<User>>;
 
   @OneToMany(() => Comment, comment => comment.post, {
     eager: false,
     orphanRemoval: true,
     nullable: true,
   })
-    comments = new Collection<Comment>(this);
+  comments = new Collection<Comment>(this);
 
   @ManyToMany(() => Tag, "posts", { owner: true })
-    tags = new Collection<Tag>(this);
+  tags = new Collection<Tag>(this);
 
   @ManyToMany(() => Category, "posts", { owner: true })
-    categories = new Collection<Category>(this);
+  categories = new Collection<Category>(this);
 
   @Enum({ items: () => PostStateEnum })
-    state? = PostStateEnum.DRAFT;
+  state? = PostStateEnum.DRAFT;
 
   constructor(partial?: Partial<Post>) {
     super();
@@ -75,9 +75,8 @@ export class Post extends BaseEntity {
   async generateSlug(arguments_: EventArgs<this>) {
     if (arguments_.changeSet?.payload?.title) {
       this.slug
-                = `${slugify(this.title)
-            }-${
-                Math.trunc(Math.random() * 36 ** 6).toString(36)}`;
+        = `${slugify(this.title)
+        }-${Math.trunc(Math.random() * 36 ** 6).toString(36)}`;
     }
     this.readingTime = this.getReadingTime(this.content);
   }
