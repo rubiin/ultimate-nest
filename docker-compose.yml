@@ -10,7 +10,7 @@ services:
 # Redis service
 # This service runs the Redis database
     redis:
-        image: redis:7.2.2-alpine
+        image: redis:7.2.3-alpine
         container_name: redis
         restart: unless-stopped
         env_file: env/.env.${ENV}
@@ -47,7 +47,7 @@ services:
 # This service runs the PostgreSQL database
     database:
         container_name: database
-        image: postgres:16.0-alpine
+        image: postgres:16.1-alpine
         restart: unless-stopped
         env_file: env/.env.${ENV}
         environment:
@@ -196,7 +196,7 @@ services:
 # This service runs the RabbitMQ message broker
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3.12.7-management-alpine
+        image: rabbitmq:3.12.8-management-alpine
         env_file: env/.env.${ENV}
         restart: unless-stopped
         depends_on:
