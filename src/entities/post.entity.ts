@@ -1,4 +1,4 @@
-import type { Ref } from "@mikro-orm/core";
+import type { EventArgs, Ref, Rel } from "@mikro-orm/core";
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -6,12 +6,10 @@ import {
   Collection,
   Entity,
   Enum,
-  EventArgs,
   ManyToMany,
   ManyToOne,
   OneToMany,
   Property,
-  Rel,
 } from "@mikro-orm/core";
 import { slugify } from "helper-fns";
 import { BaseEntity } from "@common/database";

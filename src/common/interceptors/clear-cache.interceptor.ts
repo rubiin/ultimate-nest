@@ -3,7 +3,7 @@ import type { Observable } from "rxjs";
 import { from, of } from "rxjs";
 import { tap } from "rxjs/operators";
 import type { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
-import { CacheService } from "@lib/cache";
+import type { CacheService } from "@lib/cache";
 
 /**
  *
@@ -22,8 +22,8 @@ export class ClearCacheInterceptor implements NestInterceptor {
 
         if (
           request.method !== "GET"
-                    && response.statusCode >= 200
-                    && response.statusCode < 300
+          && response.statusCode >= 200
+          && response.statusCode < 300
         )
           return from(this.cacheService.resetCache());
 

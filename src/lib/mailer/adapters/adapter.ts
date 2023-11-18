@@ -14,7 +14,6 @@ export class BaseAdapter implements Adapter {
   constructor(private engine: TemplateEngine) {}
 
   async compile(template: string, data: Record<string, any>): Promise<string> {
-    // eslint-disable-next-line ts/no-unsafe-return, ts/no-unsafe-call
     return cons[this.engine](template, data);
   }
 }

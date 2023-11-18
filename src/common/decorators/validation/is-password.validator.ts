@@ -48,7 +48,7 @@ export function IsPassword(validationOptions?: ValidationOptions): PropertyDecor
   };
 }
 
-export function IsPasswordField(validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number }) {
+export function IsPasswordField(validationOptions?: ValidationOptions & { minLength?: number, maxLength?: number }) {
   return applyDecorators(
     IsNotEmpty({
       message: validationI18nMessage("validation.isNotEmpty"),

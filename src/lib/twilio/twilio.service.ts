@@ -1,4 +1,4 @@
-import { TwilioModuleOptions } from "@lib/twilio/twilio.options";
+import type { TwilioModuleOptions } from "@lib/twilio/twilio.options";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { omit } from "helper-fns";
 import type { Observable } from "rxjs";

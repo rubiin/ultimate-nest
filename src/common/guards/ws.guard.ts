@@ -1,10 +1,10 @@
 import { InjectRepository } from "@mikro-orm/nestjs";
 import type { CanActivate, ExecutionContext } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
+import type { JwtService } from "@nestjs/jwt";
 import { WsException } from "@nestjs/websockets";
 import { User } from "@entities";
-import { BaseRepository } from "@common/database";
+import type { BaseRepository } from "@common/database";
 import type { JwtPayload } from "@common/@types";
 
 @Injectable()

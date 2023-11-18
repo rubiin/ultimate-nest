@@ -5,7 +5,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
+import type { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
 import { translate } from "@lib/i18n";
 import { IS_PUBLIC_KEY_META } from "@common/constant";

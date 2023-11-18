@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import type { NestMiddleware } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
-import { CacheService } from "@lib/cache/cache.service";
+import type { CacheService } from "@lib/cache/cache.service";
 
 // This middleware is used to clear the cache when the query parameter "clearCache" is present
 @Injectable()

@@ -87,7 +87,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   findAndPaginate<Populate extends string = never>(
     where: FilterQuery<T>,
     options?: FindOptions<T, Populate>,
-  ): Observable<{ total: number; results: Loaded<T, Populate>[] }> {
+  ): Observable<{ total: number, results: Loaded<T, Populate>[] }> {
     return from(this.findAndCount(where, options)).pipe(
       map(([results, total]) => ({ total, results })),
     );
@@ -486,8 +486,8 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const countWhere = where;
 
       // @ts-expect-error - because of runtime issues
-      // eslint-disable-next-line ts/dot-notation
-      countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
+
+      countWhere.$and = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
       // @ts-expect-error - because of runtime issues

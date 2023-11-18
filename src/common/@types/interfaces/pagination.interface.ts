@@ -16,7 +16,7 @@ export interface QBCursorPaginationOptions<T extends Dictionary> {
 }
 
 export interface QBOffsetPaginationOptions<T extends Dictionary> {
-  pageOptionsDto: Omit<OffsetPaginationDto, "type"> & { searchField: keyof T; alias: string }
+  pageOptionsDto: Omit<OffsetPaginationDto, "type"> & { searchField: keyof T, alias: string }
   qb: QueryBuilder<T>
 }
 

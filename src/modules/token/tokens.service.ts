@@ -1,9 +1,8 @@
 import { TokenExpiredError } from "jsonwebtoken";
-import { EntityRepository } from "@mikro-orm/core";
+import type { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import type { JwtSignOptions } from "@nestjs/jwt";
-import { JwtService } from "@nestjs/jwt";
+import type { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "helper-fns";
 import type { Observable } from "rxjs";
 import { catchError, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
@@ -12,7 +11,7 @@ import { translate } from "@lib/i18n";
 import type { RefreshToken } from "@entities";
 import { User } from "@entities";
 import type { JwtPayload } from "@common/@types";
-import { RefreshTokensRepository } from "./refresh-tokens.repository";
+import type { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 @Injectable()
 export class TokensService {
@@ -71,7 +70,7 @@ export class TokensService {
    * @param encoded - string - The encoded refresh token
    * @returns An object with a user and a token.
    */
-  resolveRefreshToken(encoded: string): Observable<{ user: User; token: RefreshToken }> {
+  resolveRefreshToken(encoded: string): Observable<{ user: User, token: RefreshToken }> {
     return this.decodeRefreshToken(encoded).pipe(
       switchMap((payload) => {
         return this.getStoredTokenFromRefreshTokenPayload(payload).pipe(
@@ -125,7 +124,7 @@ export class TokensService {
    * @param refresh - string - The refresh token that was sent to the client.
    * @returns An object with a token and a user.
    */
-  createAccessTokenFromRefreshToken(refresh: string): Observable<{ token: string; user: User }> {
+  createAccessTokenFromRefreshToken(refresh: string): Observable<{ token: string, user: User }> {
     return this.resolveRefreshToken(refresh).pipe(
       switchMap(({ user }) => {
         return this.generateAccessToken(user).pipe(

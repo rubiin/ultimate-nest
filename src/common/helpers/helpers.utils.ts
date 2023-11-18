@@ -80,7 +80,7 @@ which is the hashed password to compare against. */
   containing the desired height and width of the thumbnail. It uses the `sharp` library to resize the
   input image according to the provided configuration. The resized image is then converted to the PNG
   format and returned as a `Buffer` wrapped in an `Observable`. */
-  generateThumb(input: Buffer, config: { height: number; width: number }): Observable<Buffer> {
+  generateThumb(input: Buffer, config: { height: number, width: number }): Observable<Buffer> {
     return from(sharp(input).resize(config).toFormat("png").toBuffer());
   },
 

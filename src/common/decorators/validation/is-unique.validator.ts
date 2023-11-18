@@ -1,4 +1,4 @@
-import { EntityManager } from "@mikro-orm/core";
+import type { EntityManager } from "@mikro-orm/core";
 import type { Type } from "@nestjs/common";
 import type {
   ValidationArguments as BaseValidationArguments,

@@ -1,5 +1,5 @@
 import { Logger, UnauthorizedException, UseGuards, UsePipes } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
+import type { JwtService } from "@nestjs/jwt";
 import type {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -12,17 +12,17 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from "@nestjs/websockets";
-import { Namespace, Socket } from "socket.io";
+import type { Namespace, Socket } from "socket.io";
 
-import { AuthService } from "@modules/auth/auth.service";
-import { User } from "@entities";
+import type { AuthService } from "@modules/auth/auth.service";
+import type { User } from "@entities";
 import { WsValidationPipe } from "@common/pipes/ws-validation.pipe";
 import { WsJwtGuard } from "@common/guards";
 import { LoggedInUser } from "@common/decorators";
 import type { JwtPayload } from "@common/@types";
-import { ChatService } from "./chat.service";
-import { CreateChatDto, MessageSeenDto } from "./dto";
-import { SocketConnectionService } from "./socket-connection.service";
+import type { ChatService } from "./chat.service";
+import type { CreateChatDto, MessageSeenDto } from "./dto";
+import type { SocketConnectionService } from "./socket-connection.service";
 
 @UseGuards(WsJwtGuard)
 @UsePipes(WsValidationPipe)
