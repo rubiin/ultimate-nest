@@ -34,12 +34,10 @@ export const AppUtils = {
     setTimeout(() => process.exit(1), 5000);
     logger.verbose(`Signal received with code ${code} ⚡.`);
     logger.log("❗Closing http server with grace.");
-    // eslint-disable-next-line rubiin/no-then
     app.close().then(() => {
       logger.log("✅ Http server closed.");
       process.exit(0);
     })
-      // eslint-disable-next-line rubiin/no-then
       .catch((error) => {
         logger.error(`❌ Http server closed with error: ${error}`);
         process.exit(1);
@@ -91,7 +89,7 @@ export const AppUtils = {
       for (const method of methods) {
         if (
           isArray(method.security)
-          // eslint-disable-next-line ts/no-unsafe-call
+
           && method.security.includes(IS_PUBLIC_KEY_META)
         )
           method.security = [];

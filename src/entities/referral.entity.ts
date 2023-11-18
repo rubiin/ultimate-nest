@@ -1,5 +1,5 @@
-import type { Ref } from "@mikro-orm/core";
-import { Entity, Enum, Index, ManyToOne, Property, Rel } from "@mikro-orm/core";
+import type { Ref, Rel } from "@mikro-orm/core";
+import { Entity, Enum, Index, ManyToOne, Property } from "@mikro-orm/core";
 import { ReferralStatus } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import type { User } from "./user.entity";

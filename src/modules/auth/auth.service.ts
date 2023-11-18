@@ -1,6 +1,6 @@
 import type { FilterQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager } from "@mikro-orm/postgresql";
+import type { EntityManager } from "@mikro-orm/postgresql";
 import {
   BadRequestException,
   ForbiddenException,
@@ -8,7 +8,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
 import type { Response } from "express";
@@ -18,12 +18,12 @@ import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
 import type { AuthenticationResponse, OauthResponse } from "@common/@types";
 import { EmailSubject, EmailTemplate } from "@common/@types";
-import { BaseRepository } from "@common/database";
+import type { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import { MailerService } from "@lib/mailer/mailer.service";
-import { TokensService } from "@modules/token/tokens.service";
+import type { MailerService } from "@lib/mailer/mailer.service";
+import type { TokensService } from "@modules/token/tokens.service";
 import type {
   ChangePasswordDto,
   OtpVerifyDto,
@@ -400,7 +400,7 @@ export class AuthService {
    * with the access token.
    * @returns a redirect response to a client URL with an access token as a query parameter.
    */
-  OauthHandler({ response, user }: { response: Response; user: OauthResponse }) {
+  OauthHandler({ response, user }: { response: Response, user: OauthResponse }) {
     return this.login({ email: user.email }, false).pipe(
       map((data) => {
         // client url

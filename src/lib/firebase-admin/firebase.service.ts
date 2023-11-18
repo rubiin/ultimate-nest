@@ -3,7 +3,8 @@ import path from "node:path";
 
 import { Inject, Injectable } from "@nestjs/common";
 import admin from "firebase-admin";
-import { FirebaseModuleOptions, MODULE_OPTIONS_TOKEN } from "./fire-base.module.definition";
+import type { FirebaseModuleOptions } from "./fire-base.module.definition";
+import { MODULE_OPTIONS_TOKEN } from "./fire-base.module.definition";
 
 interface NestFirebase {
   getFirebaseAdmin(): admin.app.App

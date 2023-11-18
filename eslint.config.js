@@ -1,14 +1,13 @@
 const rubiin = require('@rubiin/eslint-config').default
 
 module.exports = rubiin({
-  stylistic: true, // enable stylistic rules
+  stylistic: {
+    semi: true,
+  }, // enable stylistic rules
   yaml: true, // enable yaml rules,
   jsonc : true, // enable jsonc rules
   markdown: true, // enable markdown rules
-  gitignore: true, // enable gitignore rules
-  typescript: {
-    tsconfigPath: "tsconfig.json", // path to tsconfig.json
-  },
+  gitignore: true, // enable gitignore rules,
 },
 {
   files: ['**/*.ts'],
@@ -20,12 +19,6 @@ module.exports = rubiin({
     "ts/no-unsafe-assignment": "off", // optimize this
     "ts/no-unsafe-member-access": "off", // optimize this
     "unicorn/prefer-top-level-await": "off",
-    "ts/no-misused-promises": [
-      "error",
-      {
-        checksVoidReturn: false,
-      },
-    ],
     "unicorn/prevent-abbreviations": [
       "error",
       {

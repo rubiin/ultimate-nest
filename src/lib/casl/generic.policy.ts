@@ -16,12 +16,11 @@ export class GenericPolicyHandler implements PoliciesHandler {
             ability.can(Action.Update, new this.type({ id })) method. */
 
     if ([Action.Create, Action.Read, Action.Delete].includes(this.action))
-    // eslint-disable-next-line ts/no-unsafe-argument
+
       return ability.can(this.action, this.ClassType);
 
     const id = request.params.id;
 
-    // eslint-disable-next-line ts/no-unsafe-call, ts/no-unsafe-argument
     return ability.can(Action.Update, new this.ClassType({ id }));
   }
 }

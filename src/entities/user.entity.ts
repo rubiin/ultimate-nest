@@ -1,3 +1,6 @@
+import type {
+  EventArgs,
+} from "@mikro-orm/core";
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -7,7 +10,6 @@ import {
   Embedded,
   Entity,
   Enum,
-  EventArgs,
   ManyToMany,
   OneToMany,
   Property,

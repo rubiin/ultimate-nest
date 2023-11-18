@@ -1,6 +1,6 @@
 import type { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager } from "@mikro-orm/postgresql";
+import type { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { omit } from "helper-fns";
 import type { Observable } from "rxjs";
@@ -10,7 +10,7 @@ import { ref } from "@mikro-orm/core";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import type { CursorPaginationDto } from "@common/dtos";
-import { BaseRepository } from "@common/database";
+import type { BaseRepository } from "@common/database";
 import type { PaginationResponse } from "@common/@types";
 import { CursorType, QueryOrder } from "@common/@types";
 import type { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";

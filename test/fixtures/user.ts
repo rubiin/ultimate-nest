@@ -1,7 +1,7 @@
 import { faker } from "@mikro-orm/seeder";
 import { Roles } from "@common/@types";
 
-export const user: Record<string, { email: string; password: string }> = {
+export const user: Record<string, { email: string, password: string }> = {
   admin: {
     email: "roobin.bhandari@gmail.com",
     password: process.env.USER_PASSWORD,

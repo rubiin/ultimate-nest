@@ -9,7 +9,7 @@ import previewEmail from "preview-email";
 import { from, retry, switchMap } from "rxjs";
 import { BaseAdapter } from "./adapters/adapter";
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
-import { MailModuleOptions } from "./mailer.options";
+import type { MailModuleOptions } from "./mailer.options";
 
 interface MailOptions extends Partial<SendMailOptions> {
   template: string

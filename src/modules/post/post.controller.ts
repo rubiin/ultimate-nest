@@ -1,5 +1,5 @@
 import { Body, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
-import { Observable } from "rxjs";
+import type { Observable } from "rxjs";
 import type { PaginationResponse } from "@common/@types";
 import { Action } from "@common/@types";
 import {
@@ -9,11 +9,12 @@ import {
   SwaggerResponse,
   UUIDParam,
 } from "@common/decorators";
-import { CursorPaginationDto } from "@common/dtos";
-import { Comment, Post as PostEntity, User } from "@entities";
+import type { CursorPaginationDto } from "@common/dtos";
+import type { User } from "@entities";
+import { Comment, Post as PostEntity } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
-import { PostService } from "./post.service";
-import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
+import type { PostService } from "./post.service";
+import type { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @GenericController("posts")
 export class PostController {

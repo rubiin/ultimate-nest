@@ -1,4 +1,3 @@
-/* eslint-disable ts/no-unsafe-return */
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
