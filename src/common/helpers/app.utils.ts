@@ -30,27 +30,28 @@ export const AppUtils = {
     };
   },
 
-  gracefulShutdown(app: INestApplication, code: string) {
+  async gracefulShutdown(app: INestApplication, code: string) {
     setTimeout(() => process.exit(1), 5000);
     logger.verbose(`Signal received with code ${code} ⚡.`);
     logger.log("❗Closing http server with grace.");
-    app.close().then(() => {
+
+    try {
+      await app.close()
       logger.log("✅ Http server closed.");
       process.exit(0);
-    })
-      .catch((error) => {
-        logger.error(`❌ Http server closed with error: ${error}`);
-        process.exit(1);
-      });
+    } catch (error) {
+      logger.error(`❌ Http server closed with error: ${error}`);
+      process.exit(1);
+    }
   },
 
   killAppWithGrace(app: INestApplication) {
-    process.on("SIGINT", () => {
-      AppUtils.gracefulShutdown(app, "SIGINT");
+    process.on("SIGINT", async () => {
+      await AppUtils.gracefulShutdown(app, "SIGINT");
     });
 
-    process.on("SIGTERM", () => {
-      AppUtils.gracefulShutdown(app, "SIGTERM");
+    process.on("SIGTERM", async () => {
+      await AppUtils.gracefulShutdown(app, "SIGTERM");
     });
   },
 
