@@ -12,7 +12,7 @@ interface BaseArrayValidator {
 export interface DateFieldOptions extends BaseValidator, BaseArrayValidator {
   greaterThan?: boolean
   lessThan?: boolean
-  date?: Date
+  date?: Date    // Date object to compare against
 };
 
 export interface NumberFieldOptions extends BaseValidator, BaseArrayValidator {

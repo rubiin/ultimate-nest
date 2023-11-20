@@ -1,5 +1,5 @@
 {
 		"*.{ts,tsx}": [
-			"eslint --cache --fix"
+			"ESLINT_USE_FLAT_CONFIG=true eslint '{src,test}/**/*.ts' --cache"
 		]
 	}
