@@ -1,7 +1,7 @@
 import type { User as UserEntity } from "@entities";
 import type { I18nTranslations as I18nTranslationTypes } from "@generated";
 import type { Config as ConfigInterface } from "@lib/config/config.interface";
-import type { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 export {};
 
@@ -17,19 +17,19 @@ declare global {
   }
 
   namespace NodeJS {
-    interface ProcessEnv {
+    interface ProcessEnvironment {
       APP_PORT: number
       APP_PREFIX: string
       APP_NAME: string
       NODE_ENV:
-      | "dev"
-      | "development"
-      | "stage"
-      | "staging"
-      | "test"
-      | "testing"
-      | "prod"
-      | "production"
+        | "dev"
+        | "development"
+        | "stage"
+        | "staging"
+        | "test"
+        | "testing"
+        | "prod"
+        | "production"
       API_URL: string
       CLIENT_URL: string
       SWAGGER_USER: string
@@ -96,6 +96,6 @@ declare global {
   // Using this allows is to quickly switch between express and fastify and others
   export type NestifyRequest = Request;
   export type NestifyResponse = Response;
-  export type NestifyNextFn = NextFunction;
+  export type NestifyNextFunction = NextFunction;
 
 }

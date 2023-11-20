@@ -1,4 +1,3 @@
-
 import type {
   NestMiddleware,
 } from "@nestjs/common";
@@ -12,7 +11,7 @@ export class SettingMaintenanceMiddleware implements NestMiddleware {
   async use(
     _request: NestifyRequest,
     _response: NestifyResponse,
-    next: NestifyNextFn,
+    next: NestifyNextFunction,
   ): Promise<void> {
     const maintenance: boolean = true;
     // TODO: get maintenance status from database

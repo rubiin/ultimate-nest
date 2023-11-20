@@ -1,4 +1,3 @@
-
 import type { AppAbility } from "./casl-ability.factory";
 
 export interface PoliciesHandler {
