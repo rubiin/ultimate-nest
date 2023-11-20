@@ -1,5 +1,3 @@
-import type { Request } from "express";
-
 import { createMock } from "@golevelup/ts-jest";
 import { mockCacheService, mockResponse } from "@mocks";
 import { ClearCacheMiddleware } from "./cache.middleware";
@@ -11,7 +9,7 @@ describe("clearCacheMiddleware", () => {
     jest.clearAllMocks();
     middleware = new ClearCacheMiddleware(mockCacheService);
   });
-  const mockRequest = createMock<Request>({
+  const mockRequest = createMock<NestifyRequest>({
     query: {
       clearCache: "true",
     },

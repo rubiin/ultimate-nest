@@ -1,17 +1,16 @@
-import type { Request } from "express";
+import type { FileValidator } from "@common/@types";
+import { FileSize, FileType } from "@common/@types";
+import { MULTER_IMAGE_FILTER } from "@common/constant";
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 import type { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { memoryStorage } from "multer";
-import { MULTER_IMAGE_FILTER } from "@common/constant";
-import type { FileValidator } from "@common/@types";
-import { FileSize, FileType } from "@common/@types";
 
 export const ImageMulterOption: MulterOptions = {
   limits: {
     fileSize: FileSize.IMAGE, // 5 MB
   },
   storage: memoryStorage(),
-  fileFilter: (_request: Request, file, callback) => {
+  fileFilter: (_request: NestifyRequest, file, callback) => {
     if (!FileType.IMAGE.test(file.mimetype))
       return callback(new Error(MULTER_IMAGE_FILTER), false);
 

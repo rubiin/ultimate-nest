@@ -36,10 +36,11 @@ export const AppUtils = {
     logger.log("❗Closing http server with grace.");
 
     try {
-      await app.close()
+      await app.close();
       logger.log("✅ Http server closed.");
       process.exit(0);
-    } catch (error) {
+    }
+    catch (error) {
       logger.error(`❌ Http server closed with error: ${error}`);
       process.exit(1);
     }
