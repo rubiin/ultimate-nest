@@ -1,5 +1,4 @@
 import path from "node:path";
-import type { Request, Response } from "express";
 import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
 import type { EntityManager } from "@mikro-orm/postgresql";
@@ -19,6 +18,7 @@ import type { CursorPaginationDto } from "@common/dtos";
 import type { BaseRepository } from "@common/database";
 import type { File } from "@common/@types";
 import { PaginationType, Roles } from "@common/@types";
+import { ref } from "@mikro-orm/core";
 
 export const mockedUser = {
   idx: "idx",
@@ -90,7 +90,7 @@ export const mockResetPasswordDto = {
 export const loggedInUser = new User(mockedUser);
 
 export const refreshToken = new RefreshToken({
-  user: loggedInUser,
+  user: ref(loggedInUser),
   expiresIn: new Date(),
   isRevoked: false,
 });
@@ -103,7 +103,7 @@ const payload = {
   xss: "<option><iframe></select><b><script>alert(1)</script>",
   test: "test",
 };
-export const mockRequest = createMock<Request>({
+export const mockRequest = createMock<NestifyRequest>({
   query: {
     clearCache: "true",
     ...payload,
@@ -117,7 +117,7 @@ export const mockRequest = createMock<Request>({
     password: payload.xss,
   },
 });
-export const mockResponse = createMock<Response>();
+export const mockResponse = createMock<NestifyResponse>();
 export const mockAmqConnection = createMock<AmqpConnection>();
 export const mockCloudinaryService = createMock<CloudinaryService>();
 export const mockConfigService = createMock<ConfigService>();

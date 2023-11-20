@@ -11,7 +11,6 @@ import {
 import type { ConfigService } from "@nestjs/config";
 import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
-import type { Response } from "express";
 import { capitalize, omit } from "helper-fns";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
@@ -400,7 +399,7 @@ export class AuthService {
    * with the access token.
    * @returns a redirect response to a client URL with an access token as a query parameter.
    */
-  OauthHandler({ response, user }: { response: Response, user: OauthResponse }) {
+  OauthHandler({ response, user }: { response: NestifyResponse, user: OauthResponse }) {
     return this.login({ email: user.email }, false).pipe(
       map((data) => {
         // client url

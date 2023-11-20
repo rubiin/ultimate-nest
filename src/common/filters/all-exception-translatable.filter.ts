@@ -1,4 +1,4 @@
-import type { Response } from "express";
+
 import type { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
 import { Catch, HttpException } from "@nestjs/common";
 import { I18nContext } from "nestjs-i18n";
@@ -7,7 +7,7 @@ import { I18nContext } from "nestjs-i18n";
 export class HttpExceptionFilter implements ExceptionFilter {
   async catch(exception: HttpException, host: ArgumentsHost) {
     const context = host.switchToHttp();
-    const response = context.getResponse<Response>();
+    const response = context.getResponse<NestifyResponse>();
     const statusCode = exception.getStatus();
 
     let message = exception.getResponse() as {

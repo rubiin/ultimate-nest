@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+
 import type {
   CallHandler,
   ExecutionContext,
@@ -71,8 +71,8 @@ export class LoggingInterceptor implements NestInterceptor {
    * @param context details about the current request
    */
   private logNext(body: unknown, context: ExecutionContext): void {
-    const request: Request = context.switchToHttp().getRequest<Request>();
-    const response: Response = context.switchToHttp().getResponse<Response>();
+    const request = context.switchToHttp().getRequest<NestifyRequest>();
+    const response = context.switchToHttp().getResponse<NestifyResponse>();
     const { method, url } = request;
     const { statusCode } = response;
     const logContext = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`;

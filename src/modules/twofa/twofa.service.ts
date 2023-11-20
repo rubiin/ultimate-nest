@@ -1,4 +1,3 @@
-import type { Response } from "express";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import type { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
@@ -52,7 +51,7 @@ export class TwoFactorService {
    * @param otpAuthUrl - The OTP Auth URL that you want to generate a QR code for.
    * @returns Observable<unknown>
    */
-  pipeQrCodeStream(stream: Response, otpAuthUrl: string): Observable<unknown> {
+  pipeQrCodeStream(stream: NestifyResponse, otpAuthUrl: string): Observable<unknown> {
     return from(toFileStream(stream, otpAuthUrl));
   }
 

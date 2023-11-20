@@ -7,3 +7,4 @@ export type Nullable<T> = T | null;
 export type RecordWithFile<T, K = File> = T & {
   files: K
 };
+

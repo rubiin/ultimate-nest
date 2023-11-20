@@ -1,5 +1,3 @@
-import type { Request } from "express";
-
 import type { Reflector } from "@nestjs/core";
 import type { CanActivate, ExecutionContext } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
@@ -26,7 +24,7 @@ export class PoliciesGuard implements CanActivate {
             = this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY_META, context.getHandler())
             || [];
 
-    const request: Request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<NestifyRequest>();
 
     const { user } = request;
 
@@ -37,7 +35,7 @@ export class PoliciesGuard implements CanActivate {
     );
   }
 
-  private execPolicyHandler(handler: PolicyHandler, request: Request, ability: AppAbility) {
+  private execPolicyHandler(handler: PolicyHandler, request: NestifyRequest, ability: AppAbility) {
     if (typeof handler === "function")
       return handler(request, ability);
 

@@ -1,4 +1,4 @@
-import type { Request } from "express";
+
 import type { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
 import DOMPurify from "isomorphic-dompurify";
 import type { Observable } from "rxjs";
@@ -12,7 +12,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
     return next.handle();
   }
 
-  cleanRequest(request: Request): void {
+  cleanRequest(request: NestifyRequest): void {
     request.query = this.cleanObject(request.query) || {}; // defaulting to an empty object if query is undefined
     request.params = this.cleanObject(request.params) || {}; // defaulting to an empty object if params is undefined
 

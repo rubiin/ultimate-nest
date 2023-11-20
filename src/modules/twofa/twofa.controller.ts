@@ -1,4 +1,3 @@
-import type { Response } from "express";
 import { Body, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth } from "@nestjs/swagger";
@@ -21,7 +20,7 @@ export class TwoFactorController {
 
   @Post("generate")
   @UseGuards(AuthGuard("jwt2fa"))
-  register(@Res() response: Response, @LoggedInUser() user: User): Observable<unknown> {
+  register(@Res() response: NestifyResponse, @LoggedInUser() user: User): Observable<unknown> {
     return this.twoFactorAuthenticationService.generateTwoFactorSecret(user).pipe(
       switchMap(({ otpAuthUrl }) => {
         return this.twoFactorAuthenticationService.pipeQrCodeStream(response, otpAuthUrl);

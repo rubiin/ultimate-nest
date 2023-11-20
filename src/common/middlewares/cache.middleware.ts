@@ -1,4 +1,4 @@
-import type { NextFunction, Request, Response } from "express";
+
 import type { NestMiddleware } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
 import type { CacheService } from "@lib/cache/cache.service";
@@ -8,7 +8,7 @@ import type { CacheService } from "@lib/cache/cache.service";
 export class ClearCacheMiddleware implements NestMiddleware {
   constructor(private readonly cacheService: CacheService) {}
 
-  async use(request: Request, _response: Response, next: NextFunction) {
+  async use(request: NestifyRequest, _response: NestifyResponse, next: NestifyNextFn) {
     request.query?.clearCache === "true" && (await this.cacheService.resetCache());
     next();
   }
