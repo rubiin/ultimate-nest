@@ -1,12 +1,13 @@
 import type { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
+import { isObject, isString } from "helper-fns";
 import DOMPurify from "isomorphic-dompurify";
 import type { Observable } from "rxjs";
 
 export class RequestSanitizerInterceptor implements NestInterceptor {
-  private except: any[] = ["password", "captcha"];
+  private except = ["password", "captcha"];
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    this.cleanRequest(context.switchToHttp().getRequest());
+    this.cleanRequest(context.switchToHttp().getRequest<NestifyRequest>());
 
     return next.handle();
   }
@@ -18,7 +19,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
     // we wont be sending body on GET and DELETE requests
 
     if (!["GET", "DELETE"].includes(request.method))
-      request.body = this.cleanObject(request.body as Record<string, any>);
+      request.body = this.cleanObject(request.body);
   }
 
   cleanObject(object: Record<string, any> | null | undefined) {
@@ -30,10 +31,10 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
 
       // If the value is another nested object we need to recursively
       // clean it too. This will work for both array and object.
-      if (typeof value === "object") {
-        this.cleanObject(value as Record<string, any>);
+      if (isObject(value)) {
+        this.cleanObject(value);
       }
-      else if (typeof value === "string") {
+      else if (isString(value)) {
         // If the value is not an object then it's a scalar
         // so we just let it be transformed.
         object[key] = this.transform(key, value);
@@ -50,22 +51,12 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
    * @param value - The value to be sanitized.
    * @returns The value of the key is being returned.
    */
-  transform<T>(key: T, value: string): string {
-    if (this.isString(value) && !this.except.includes(key))
+  transform(key: string, value: string): string {
+    if (isString(value) && !this.except.includes(key))
       return DOMPurify.sanitize(value.trim());
 
     return value;
   }
 
-  /**
-   * "If the value is a string or a String object, return true, otherwise return false."
-   *
-   * The above function is a type guard. It narrows the type of the value parameter from unknown to
-   * string
-   * @param value - The value to check.
-   * @returns A boolean value.
-   */
-  isString(value: unknown): value is string {
-    return typeof value === "string" || value instanceof String;
-  }
+
 }
