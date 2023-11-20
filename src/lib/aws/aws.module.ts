@@ -23,4 +23,4 @@ export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
   providers: [AwsS3Service],
   exports: [AwsS3Service],
 })
-export class MailModule extends ConfigurableModuleClass {}
+export class NestAwsModule extends ConfigurableModuleClass {}

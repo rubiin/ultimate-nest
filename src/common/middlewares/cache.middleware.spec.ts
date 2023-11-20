@@ -27,8 +27,8 @@ describe("clearCacheMiddleware", () => {
 
       await middleware.use(mockRequest, mockResponse, mockNext);
 
-      expect(mockCacheService.resetCache).toBeCalled();
-      expect(mockNext).toBeCalled();
+      expect(mockCacheService.resetCache).toHaveBeenCalled();
+      expect(mockNext).toHaveBeenCalled();
     });
   });
 });

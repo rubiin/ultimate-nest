@@ -91,7 +91,7 @@ describe("postService", () => {
         { populate: [] },
       );
 
-      expect(mockPostRepo.softRemoveAndFlush).toBeCalled();
+      expect(mockPostRepo.softRemoveAndFlush).toHaveBeenCalled();
     });
   });
 

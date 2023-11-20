@@ -20,9 +20,9 @@ describe("realIpMiddleware", () => {
 
       middleware.use(mockRequest, mockResponse, mockNext);
 
-      expect(realIp.getClientIp).toBeCalled();
+      expect(realIp.getClientIp).toHaveBeenCalled();
       expect(mockRequest.realIp).toBe("192.168.1.1");
-      expect(mockNext).toBeCalled();
+      expect(mockNext).toHaveBeenCalled();
     });
   });
 });
