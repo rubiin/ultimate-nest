@@ -9,25 +9,25 @@ module.exports = rubiin({
   jsonc: true, // enable jsonc rules
   markdown: true, // enable markdown rules
   gitignore: true, // enable gitignore rules,
-  typescript: true,
-}, {
-  files: ["**/*.ts"],
-  rules: {
-    "unicorn/prefer-top-level-await": "off",
-    "unicorn/prevent-abbreviations": [
-      "error",
-      {
-        ignore: [
-          "\\.e2e*",
-          "\\.spec*",
-          "\\.decorator*",
-          "\\*idx*",
-        ],
-        allowList: {
-          ProcessEnv: true,
-          UUIDParam: true,
+  overrides: {
+    typescript:
+    {
+      "unicorn/prefer-top-level-await": "off",
+      "unicorn/prevent-abbreviations": [
+        "error",
+        {
+          ignore: [
+            "\\.e2e*",
+            "\\.spec*",
+            "\\.decorator*",
+            "\\*idx*",
+          ],
+          allowList: {
+            ProcessEnv: true,
+            UUIDParam: true,
+          },
         },
-      },
-    ],
+      ],
+    },
   },
 });
