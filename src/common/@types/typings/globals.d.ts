@@ -17,7 +17,7 @@ declare global {
   }
 
   namespace NodeJS {
-    interface ProcessEnvironment {
+    interface ProcessEnv {
       APP_PORT: number
       APP_PREFIX: string
       APP_NAME: string
