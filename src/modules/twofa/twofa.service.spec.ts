@@ -58,9 +58,9 @@ describe("twoFactorService", () => {
 
     service.turnOnTwoFactorAuthentication("someCode", loggedInUser).subscribe((result) => {
       expect(result).toBeDefined();
-      expect(twoFactorValidSpy).toBeCalled();
-      expect(mockUserRepo.assign).toBeCalled();
-      expect(mockEm.flush).toBeCalled();
+      expect(twoFactorValidSpy).toHaveBeenCalled();
+      expect(mockUserRepo.assign).toHaveBeenCalled();
+      expect(mockEm.flush).toHaveBeenCalled();
       expect(twoFactorValidSpy).toBeCalledWith({
         token: "someCode",
         secret: loggedInUser.twoFactorSecret,
@@ -73,11 +73,11 @@ describe("twoFactorService", () => {
 
     service.turnOnTwoFactorAuthentication("someCode", loggedInUser).subscribe((result) => {
       expect(result).toBeDefined();
-      expect(twoFactorValidSpy).toBeCalled();
-      expect(authenticator.generateSecret).toBeCalled();
-      expect(authenticator.keyuri).toBeCalled();
-      expect(mockUserRepo.assign).toBeCalled();
-      expect(mockEm.flush).toBeCalled();
+      expect(twoFactorValidSpy).toHaveBeenCalled();
+      expect(authenticator.generateSecret).toHaveBeenCalled();
+      expect(authenticator.keyuri).toHaveBeenCalled();
+      expect(mockUserRepo.assign).toHaveBeenCalled();
+      expect(mockEm.flush).toHaveBeenCalled();
       expect(twoFactorValidSpy).toBeCalledWith({
         token: "someCode",
         secret: loggedInUser.twoFactorSecret,
@@ -87,7 +87,7 @@ describe("twoFactorService", () => {
 
   it("should pipe qr code to response", () => {
     service.pipeQrCodeStream(mockResponse, "www.link.com").subscribe((_result) => {
-      expect(qrCode.toFileStream).toBeCalled();
+      expect(qrCode.toFileStream).toHaveBeenCalled();
     });
   });
 });

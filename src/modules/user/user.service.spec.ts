@@ -67,7 +67,7 @@ describe("userService", () => {
     service.create({ ...mockedUser, files: mockFile }).subscribe((result) => {
       expect(result).toStrictEqual({ ...mockedUser });
       expect(createSpy).toBeCalledWith({ ...mockedUser });
-      expect(mockEm.transactional).toBeCalled();
+      expect(mockEm.transactional).toHaveBeenCalled();
     });
   });
 
@@ -76,8 +76,8 @@ describe("userService", () => {
 
     service.update("userId", { firstName: "updated" }).subscribe((result) => {
       expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
-      expect(mockUserRepo.assign).toBeCalled();
-      expect(mockEm.flush).toBeCalled();
+      expect(mockUserRepo.assign).toHaveBeenCalled();
+      expect(mockEm.flush).toHaveBeenCalled();
     });
   });
   it("should get user list", () => {
@@ -101,7 +101,7 @@ describe("userService", () => {
         isDeleted: false,
       });
 
-      expect(mockUserRepo.softRemoveAndFlush).toBeCalled();
+      expect(mockUserRepo.softRemoveAndFlush).toHaveBeenCalled();
     });
   });
 });
