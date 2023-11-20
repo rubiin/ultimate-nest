@@ -8,8 +8,7 @@ import { Catch, HttpStatus } from "@nestjs/common";
 @Catch(ServerException)
 export class QueryFailedFilter implements ExceptionFilter {
   catch(exception: DriverException, host: ArgumentsHost) {
-    const context = host.switchToHttp();
-    const response = context.getResponse<NestifyResponse>();
+    const response = host.switchToHttp().getResponse<NestifyResponse>();
 
     const status
             = exception.name && exception.name.startsWith("UQ")

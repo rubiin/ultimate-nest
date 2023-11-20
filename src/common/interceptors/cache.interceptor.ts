@@ -8,8 +8,8 @@ import { IGNORE_CACHING_META } from "@common/constant";
 @Injectable()
 export class HttpCacheInterceptor extends CacheInterceptor {
   protected isRequestCacheable(context: ExecutionContext): boolean {
-    const http = context.switchToHttp();
-    const request = http.getRequest();
+
+    const request = context.switchToHttp().getRequest<NestifyRequest>();
 
     const ignoreCaching: boolean = this.reflector.get(
       IGNORE_CACHING_META,
