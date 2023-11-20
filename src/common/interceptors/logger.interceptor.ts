@@ -37,7 +37,7 @@ export class LoggingInterceptor implements NestInterceptor {
    * @returns Observable of unknown type
    */
   intercept(context: ExecutionContext, call$: CallHandler): Observable<unknown> {
-    const request: Request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<NestifyRequest>();
     const { method, url, body, headers } = request;
     const logContext = `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`;
     const message = `Request - ${method} - ${url}`;
@@ -92,7 +92,7 @@ export class LoggingInterceptor implements NestInterceptor {
    * @param context details about the current request
    */
   private logError(error: Error, context: ExecutionContext): void {
-    const request: Request = context.switchToHttp().getRequest<Request>();
+    const request = context.switchToHttp().getRequest<NestifyRequest>();
     const { method, url, body } = request;
 
     if (error instanceof HttpException) {

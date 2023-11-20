@@ -10,6 +10,7 @@ declare global {
     export interface Request {
       user?: UserEntity
       realIp?: string
+      idx?: string
       body: Record<string, any>
       ip: string
       ips: string[]

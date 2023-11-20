@@ -1,13 +1,13 @@
 import type { EntityProperty, Platform } from "@mikro-orm/core";
 import { Type, ValidationError } from "@mikro-orm/core";
-import { decrypt, encrypt } from "helper-fns";
+import { decrypt, encrypt, isString } from "helper-fns";
 
 export class EncryptedType extends Type {
   private readonly encKey = process.env.ENC_KEY;
   private readonly encIV = process.env.ENC_IV;
 
   convertToDatabaseValue(value: string, _platform: Platform): string {
-    if (value && !(typeof value.valueOf() === "string"))
+    if (value && !(isString(value.valueOf())))
       throw ValidationError.invalidType(EncryptedType, value, "JS");
 
     return encrypt({ text: value.toString(), config: { key: this.encKey, iv: this.encIV } });
