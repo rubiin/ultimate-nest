@@ -1,7 +1,7 @@
 import { createId, isCuid } from "@paralleldrive/cuid2";
 import { REQUEST_ID_TOKEN_HEADER } from "@common/constant";
 
-export function RequestIdMiddleware(request: NestifyRequest, response: NestifyResponse, next: NestifyNextFn): void {
+export function RequestIdMiddleware(request: NestifyRequest, response: NestifyResponse, next: NestifyNextFunction): void {
   const requestId = request.header(REQUEST_ID_TOKEN_HEADER);
 
   if (!request.headers[REQUEST_ID_TOKEN_HEADER] || (requestId && !isCuid(requestId)))

@@ -1,4 +1,3 @@
-
 import { Action } from "@common/@types";
 import type { AppAbility } from "./casl-ability.factory";
 import type { PoliciesHandler } from "./policy.interface";
