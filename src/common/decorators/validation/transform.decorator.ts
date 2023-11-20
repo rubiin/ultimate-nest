@@ -55,7 +55,7 @@ export function Sanitize(): PropertyDecorator {
             return DOMPurify.sanitize(v);
 
           return v;
-        })
+        });
       }
 
       if (isString(value))
