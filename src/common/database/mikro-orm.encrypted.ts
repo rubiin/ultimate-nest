@@ -7,7 +7,7 @@ export class EncryptedType extends Type {
   private readonly encIV = process.env.ENC_IV;
 
   convertToDatabaseValue(value: string, _platform: Platform): string {
-    if (value && !(isString(value.valueOf())))
+    if (value && !isString(value.valueOf()))
       throw ValidationError.invalidType(EncryptedType, value, "JS");
 
     return encrypt({ text: value.toString(), config: { key: this.encKey, iv: this.encIV } });
