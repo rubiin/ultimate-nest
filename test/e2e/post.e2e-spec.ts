@@ -1,7 +1,5 @@
 import request from "supertest";
-import { APP_URL } from "../fixtures/constant";
-import { postDto } from "../fixtures/post";
-import { user, userDto } from "../fixtures/user";
+import { APP_URL, postDto, user, userDto } from "../fixtures";
 
 describe("PostController (e2e)", () => {
   let adminJwtToken: string;

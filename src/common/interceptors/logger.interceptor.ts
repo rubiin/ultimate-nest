@@ -26,7 +26,7 @@ export class LoggingInterceptor implements NestInterceptor {
    * ex. [MyPrefix - LoggingInterceptor - 200 - GET - /]
    * @param prefix - prefix to be added to the log
    */
-  setUserPrefix(prefix: string): void {
+  setUserPrefix(prefix: string) {
     this.userPrefix = `${prefix} - `;
   }
 
@@ -54,10 +54,10 @@ export class LoggingInterceptor implements NestInterceptor {
 
     return call$.handle().pipe(
       tap({
-        next: (value: unknown): void => {
+        next: (value: unknown) => {
           this.logNext(value, context);
         },
-        error: (error: Error): void => {
+        error: (error) => {
           this.logError(error, context);
         },
       }),
@@ -69,7 +69,7 @@ export class LoggingInterceptor implements NestInterceptor {
    * @param body body returned
    * @param context details about the current request
    */
-  private logNext(body: unknown, context: ExecutionContext): void {
+  private logNext(body: unknown, context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<NestifyRequest>();
     const response = context.switchToHttp().getResponse<NestifyResponse>();
     const { method, url } = request;
@@ -91,7 +91,7 @@ export class LoggingInterceptor implements NestInterceptor {
    * @param error Error object
    * @param context details about the current request
    */
-  private logError(error: Error, context: ExecutionContext): void {
+  private logError(error: Error, context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<NestifyRequest>();
     const { method, url, body } = request;
 

@@ -14,7 +14,6 @@ export const ImageMulterOption: MulterOptions = {
     if (!FileType.IMAGE.test(file.mimetype))
       return callback(new Error(MULTER_IMAGE_FILTER), false);
 
-    // eslint-disable-next-line unicorn/no-null
     return callback(null, true);
   },
 };

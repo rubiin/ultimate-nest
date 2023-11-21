@@ -13,7 +13,9 @@ declare global {
       idx?: string
       body: Record<string, any>
       ip: string
+      i18nLang?:string
       ips: string[]
+
     }
   }
 

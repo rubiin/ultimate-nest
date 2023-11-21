@@ -4,15 +4,15 @@ import { Roles } from "@common/@types";
 export const user: Record<string, { email: string, password: string }> = {
   admin: {
     email: "roobin.bhandari@gmail.com",
-    password: process.env.USER_PASSWORD,
+    password: process.env.USER_PASSWORD!,
   },
   user: {
     email: "user@gmail.com",
-    password: process.env.USER_PASSWORD,
+    password: process.env.USER_PASSWORD!,
   },
   NonExistentUser: {
     email: "unknown@someone.com",
-    password: process.env.USER_PASSWORD,
+    password: process.env.USER_PASSWORD!,
   },
 };
 
@@ -22,5 +22,5 @@ export const userDto = {
   email: faker.internet.email(),
   username: "username",
   roles: [Roles.AUTHOR],
-  password: process.env.USER_PASSWORD,
+  password: process.env.USER_PASSWORD!,
 };

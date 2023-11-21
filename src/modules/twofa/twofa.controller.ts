@@ -16,7 +16,7 @@ export class TwoFactorController {
   constructor(
     private readonly twoFactorAuthenticationService: TwoFactorService,
     private readonly authService: AuthService,
-  ) {}
+  ) { }
 
   @Post("generate")
   @UseGuards(AuthGuard("jwt2fa"))
@@ -32,8 +32,8 @@ export class TwoFactorController {
   @Post("authenticate")
   @UseGuards(AuthGuard("jwt2fa"))
   authenticate(
-        @LoggedInUser() user: User,
-        @Body() twoFaAuthDto: TwofaDto,
+    @LoggedInUser() user: User,
+    @Body() twoFaAuthDto: TwofaDto,
   ): Observable<AuthenticationResponse> {
     const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorCodeValid(
       twoFaAuthDto.code,
@@ -49,8 +49,8 @@ export class TwoFactorController {
   @Auth()
   @Post("turn-on")
   turnOnTwoFactorAuthentication(
-        @LoggedInUser() user: User,
-        @Body() dto: TwofaDto,
+    @LoggedInUser() user: User,
+    @Body() dto: TwofaDto,
   ): Observable<User> {
     return this.twoFactorAuthenticationService.turnOnTwoFactorAuthentication(dto.code, user);
   }

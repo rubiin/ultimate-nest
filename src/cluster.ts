@@ -8,7 +8,7 @@ import { HelperService } from "@common/helpers";
 export class Cluster {
   private static readonly loggerService = new Logger(Cluster.name);
 
-  public static createCluster(main: () => Promise<void>): void {
+  public static createCluster(main: () => Promise<void>) {
     const cpuCount = this.getCpuCount();
 
     if (cluster.isPrimary) {
