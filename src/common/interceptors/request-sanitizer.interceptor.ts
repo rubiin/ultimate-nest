@@ -12,7 +12,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
     return next.handle();
   }
 
-  cleanRequest(request: NestifyRequest): void {
+  cleanRequest(request: NestifyRequest) {
     request.query = this.cleanObject(request.query) || {}; // defaulting to an empty object if query is undefined
     request.params = this.cleanObject(request.params) || {}; // defaulting to an empty object if params is undefined
 

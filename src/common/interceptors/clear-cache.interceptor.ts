@@ -17,8 +17,8 @@ export class ClearCacheInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       tap(() => {
-        const response = context.switchToHttp().getResponse();
-        const request = context.switchToHttp().getRequest();
+        const response = context.switchToHttp().getResponse<NestifyResponse>();
+        const request = context.switchToHttp().getRequest<NestifyRequest>();
 
         if (
           request.method !== "GET"

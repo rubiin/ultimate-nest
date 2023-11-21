@@ -4,8 +4,7 @@ import { faker } from "@mikro-orm/seeder";
 import { pick } from "helper-fns";
 import request from "supertest";
 import { Roles } from "@common/@types";
-import { user, userDto } from "../fixtures/user";
-import { APP_URL } from "../fixtures/constant";
+import { APP_URL, user, userDto } from "../fixtures";
 
 describe("UserController (e2e)", () => {
   let adminJwtToken: string;

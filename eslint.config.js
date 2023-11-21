@@ -13,6 +13,7 @@ module.exports = rubiin({
     typescript:
     {
       "unicorn/prefer-top-level-await": "off",
+      "unicorn/no-null": "off",
       "unicorn/prevent-abbreviations": [
         "error",
         {
