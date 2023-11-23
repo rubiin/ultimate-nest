@@ -16,7 +16,7 @@ export class TwoFactorController {
   constructor(
     private readonly twoFactorAuthenticationService: TwoFactorService,
     private readonly authService: AuthService,
-  ) { }
+  ) {}
 
   @Post("generate")
   @UseGuards(AuthGuard("jwt2fa"))

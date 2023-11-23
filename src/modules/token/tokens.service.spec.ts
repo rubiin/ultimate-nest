@@ -78,7 +78,7 @@ describe("tokensService", () => {
     service.deleteRefreshTokenForUser(loggedInUser).subscribe((result) => {
       expect(result).toStrictEqual(loggedInUser);
       expect(mockRefreshTokenRepo.deleteTokensForUser).toBeCalledTimes(1);
-      expect(mockRefreshTokenRepo.deleteTokensForUser).toBeCalledWith(loggedInUser);
+      expect(mockRefreshTokenRepo.deleteTokensForUser).toHaveBeenCalledWith(loggedInUser);
     });
   });
 
@@ -87,7 +87,7 @@ describe("tokensService", () => {
     service.getStoredTokenFromRefreshTokenPayload(refreshTokenPayload).subscribe((result) => {
       expect(result).toStrictEqual(refreshToken);
       expect(mockRefreshTokenRepo.findTokenById).toBeCalledTimes(1);
-      expect(mockRefreshTokenRepo.findTokenById).toBeCalledWith(refreshTokenPayload.jti);
+      expect(mockRefreshTokenRepo.findTokenById).toHaveBeenCalledWith(refreshTokenPayload.jti);
     });
   });
 
@@ -95,7 +95,7 @@ describe("tokensService", () => {
     service.getUserFromRefreshTokenPayload(refreshTokenPayload).subscribe((result) => {
       expect(result).toEqual(loggedInUser);
       expect(mockUserRepo.findOne).toBeCalledTimes(1);
-      expect(mockUserRepo.findOne).toBeCalledWith({
+      expect(mockUserRepo.findOne).toHaveBeenCalledWith({
         id: refreshTokenPayload.sub,
       });
     });
@@ -105,7 +105,7 @@ describe("tokensService", () => {
     service.getUserFromRefreshTokenPayload(refreshTokenPayload).subscribe((result) => {
       expect(mockUserRepo.findOne).toBeCalledTimes(1);
       expect(result).toEqual(loggedInUser);
-      expect(mockUserRepo.findOne).toBeCalledWith({
+      expect(mockUserRepo.findOne).toHaveBeenCalledWith({
         id: refreshTokenPayload.sub,
       });
     });
@@ -122,7 +122,7 @@ describe("tokensService", () => {
         sub: 1,
       });
       expect(mockJwtService.verifyAsync).toBeCalledTimes(1);
-      expect(mockJwtService.verifyAsync).toBeCalledWith("refreshTokenPayload");
+      expect(mockJwtService.verifyAsync).toHaveBeenCalledWith("refreshTokenPayload");
     });
   });
 });

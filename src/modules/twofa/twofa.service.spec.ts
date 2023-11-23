@@ -47,7 +47,7 @@ describe("twoFactorService", () => {
 
     expect(response).toBeDefined();
     expect(response).toBeTruthy();
-    expect(authenticator.verify).toBeCalledWith({
+    expect(authenticator.verify).toHaveBeenCalledWith({
       token: "someCode",
       secret: loggedInUser.twoFactorSecret,
     });
@@ -61,7 +61,7 @@ describe("twoFactorService", () => {
       expect(twoFactorValidSpy).toHaveBeenCalled();
       expect(mockUserRepo.assign).toHaveBeenCalled();
       expect(mockEm.flush).toHaveBeenCalled();
-      expect(twoFactorValidSpy).toBeCalledWith({
+      expect(twoFactorValidSpy).toHaveBeenCalledWith({
         token: "someCode",
         secret: loggedInUser.twoFactorSecret,
       });
@@ -78,7 +78,7 @@ describe("twoFactorService", () => {
       expect(authenticator.keyuri).toHaveBeenCalled();
       expect(mockUserRepo.assign).toHaveBeenCalled();
       expect(mockEm.flush).toHaveBeenCalled();
-      expect(twoFactorValidSpy).toBeCalledWith({
+      expect(twoFactorValidSpy).toHaveBeenCalledWith({
         token: "someCode",
         secret: loggedInUser.twoFactorSecret,
       });

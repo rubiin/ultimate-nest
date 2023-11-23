@@ -48,7 +48,7 @@ describe("userService", () => {
   it("should findOne", () => {
     service.findOne("userId").subscribe((result) => {
       expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
-      expect(mockUserRepo.findOne).toBeCalledWith({
+      expect(mockUserRepo.findOne).toHaveBeenCalledWith({
         idx: "userId",
         isActive: true,
         isDeleted: false,
@@ -66,7 +66,7 @@ describe("userService", () => {
 
     service.create({ ...mockedUser, files: mockFile }).subscribe((result) => {
       expect(result).toStrictEqual({ ...mockedUser });
-      expect(createSpy).toBeCalledWith({ ...mockedUser });
+      expect(createSpy).toHaveBeenCalledWith({ ...mockedUser });
       expect(mockEm.transactional).toHaveBeenCalled();
     });
   });
@@ -95,7 +95,7 @@ describe("userService", () => {
         isDeleted: true,
         deletedAt: expect.any(Date),
       });
-      expect(mockUserRepo.findOne).toBeCalledWith({
+      expect(mockUserRepo.findOne).toHaveBeenCalledWith({
         idx: "userId",
         isActive: true,
         isDeleted: false,

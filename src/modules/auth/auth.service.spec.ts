@@ -74,8 +74,8 @@ describe("authService", () => {
 
     service.logout(loggedInUser, "refreshToken").subscribe((result) => {
       expect(result).toStrictEqual(loggedInUser);
-      expect(mockTokenService.decodeRefreshToken).toBeCalledWith("refreshToken");
-      expect(mockTokenService.deleteRefreshToken).toBeCalledWith(loggedInUser, decodedToken);
+      expect(mockTokenService.decodeRefreshToken).toHaveBeenCalledWith("refreshToken");
+      expect(mockTokenService.deleteRefreshToken).toHaveBeenCalledWith(loggedInUser, decodedToken);
     });
   });
 
@@ -84,7 +84,7 @@ describe("authService", () => {
 
     service.logoutFromAll(loggedInUser).subscribe((result) => {
       expect(result).toStrictEqual(loggedInUser);
-      expect(mockTokenService.deleteRefreshTokenForUser).toBeCalledWith(loggedInUser);
+      expect(mockTokenService.deleteRefreshTokenForUser).toHaveBeenCalledWith(loggedInUser);
     });
   });
 
@@ -95,7 +95,7 @@ describe("authService", () => {
 
     service.resetPassword(mockResetPasswordDto).subscribe((result) => {
       expect(result).toStrictEqual(loggedInUser);
-      expect(mockOtpLogRepo.findOne).toBeCalledWith({
+      expect(mockOtpLogRepo.findOne).toHaveBeenCalledWith({
         otpCode: mockResetPasswordDto.otpCode,
       });
     });

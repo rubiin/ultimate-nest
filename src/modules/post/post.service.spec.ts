@@ -62,7 +62,7 @@ describe("postService", () => {
 
     service.findOne("postId").subscribe((result) => {
       expect(result).toStrictEqual({ ...mockedPost, user: mockedUser, idx: "postId" });
-      expect(findOneSpy).toBeCalledWith(
+      expect(findOneSpy).toHaveBeenCalledWith(
         {
           idx: "postId",
         },
@@ -86,7 +86,7 @@ describe("postService", () => {
         isDeleted: true,
         deletedAt: expect.any(Date),
       });
-      expect(mockPostRepo.findOne).toBeCalledWith(
+      expect(mockPostRepo.findOne).toHaveBeenCalledWith(
         { idx: "postId", isActive: true, isDeleted: false },
         { populate: [] },
       );
@@ -106,7 +106,7 @@ describe("postService", () => {
         idx: "postId",
         content: "new content",
       });
-      expect(mockPostRepo.findOne).toBeCalledWith({ idx: "postId" }, { populate: [] });
+      expect(mockPostRepo.findOne).toHaveBeenCalledWith({ idx: "postId" }, { populate: [] });
     });
   });
 });
