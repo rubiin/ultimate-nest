@@ -31,7 +31,7 @@ describe("refreshTokensRepository", () => {
     service.findTokenById(12).subscribe((result) => {
       expect(result).toEqual(refreshToken);
       expect(mockRefreshRepo.findOne).toBeCalledTimes(1);
-      expect(mockRefreshRepo.findOne).toBeCalledWith({ id: 12, isRevoked: false });
+      expect(mockRefreshRepo.findOne).toHaveBeenCalledWith({ id: 12, isRevoked: false });
     });
   });
 
@@ -46,7 +46,7 @@ describe("refreshTokensRepository", () => {
     service.deleteToken(loggedInUser, 11).subscribe((result) => {
       expect(result).toStrictEqual(true);
       expect(mockRefreshRepo.nativeUpdate).toBeCalledTimes(1);
-      expect(mockRefreshRepo.nativeUpdate).toBeCalledWith(
+      expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledWith(
         { user: loggedInUser, id: 11 },
         { isRevoked: true },
       );
@@ -57,7 +57,7 @@ describe("refreshTokensRepository", () => {
     service.deleteTokensForUser(loggedInUser).subscribe((result) => {
       expect(result).toStrictEqual(true);
       expect(mockRefreshRepo.nativeUpdate).toBeCalledTimes(1);
-      expect(mockRefreshRepo.nativeUpdate).toBeCalledWith(
+      expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledWith(
         { user: loggedInUser },
         { isRevoked: true },
       );

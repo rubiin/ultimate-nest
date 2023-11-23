@@ -31,7 +31,7 @@ describe("isUnique", () => {
     const result = await isUnique.validate<User, "username">(username, validatorArguments);
 
     expect(result).toBeTruthy();
-    expect(mockEm.count).toBeCalledWith(User, { username });
+    expect(mockEm.count).toHaveBeenCalledWith(User, { username });
   });
 
   it("should fail if there are  duplicates", async () => {
@@ -39,6 +39,6 @@ describe("isUnique", () => {
     const result = await isUnique.validate<User, "username">(username, validatorArguments);
 
     expect(result).toBeFalsy();
-    expect(mockEm.count).toBeCalledWith(User, { username });
+    expect(mockEm.count).toHaveBeenCalledWith(User, { username });
   });
 });
