@@ -1,4 +1,6 @@
+import type { OffsetPaginationResponse } from "@common/@types";
 import request from "supertest";
+import type { SuperTestBody } from "../fixtures";
 import { APP_URL, postDto, user, userDto } from "../fixtures";
 
 describe("PostController (e2e)", () => {
@@ -21,10 +23,10 @@ describe("PostController (e2e)", () => {
         .post("/posts")
         .auth(adminJwtToken, { type: "bearer" })
         .send(postDto)
-        .expect(({ body }) => {
+        .expect(({ body }: SuperTestBody<{ email: string, idx: string }>) => {
           expect(body).toBeDefined();
           expect(body.email).toStrictEqual(userDto.email);
-          postIndex = body.id;
+          postIndex = body.idx;
         })
         .expect(201);
     });
@@ -34,7 +36,7 @@ describe("PostController (e2e)", () => {
         .post("/posts")
         .auth(adminJwtToken, { type: "bearer" })
         .send(postDto)
-        .expect(({ body }) => {
+        .expect(({ body }: SuperTestBody) => {
           expect(body.errors).toContain("title must be unique");
         })
         .expect(400);
@@ -44,9 +46,9 @@ describe("PostController (e2e)", () => {
       return request(app)
         .get("/posts")
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }) => {
+        .expect(({ body }: SuperTestBody<OffsetPaginationResponse<any>>) => {
           expect(body.meta).toBeDefined();
-          expect(body.items).toBeDefined();
+          expect(body.data).toBeDefined();
         })
         .expect(200);
     });
@@ -58,11 +60,11 @@ describe("PostController (e2e)", () => {
       return request(app)
         .get(`/posts?limit=${limit}&page=${page}`)
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }) => {
+        .expect(({ body }: SuperTestBody<OffsetPaginationResponse<any>>) => {
           expect(body.meta).toBeDefined();
-          expect(body.items).toBeDefined();
-          expect(body.meta.currentPage).toStrictEqual(page);
-          expect(body.meta.itemsPerPage).toStrictEqual(limit);
+          expect(body.data).toBeDefined();
+          expect(body.meta.page).toStrictEqual(page);
+          expect(body.meta.limit).toStrictEqual(limit);
         })
         .expect(200);
     });
@@ -71,9 +73,9 @@ describe("PostController (e2e)", () => {
       return request(app)
         .get(`/posts/${postIndex}`)
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }) => {
+        .expect(({ body }: SuperTestBody<{ idx: string }>) => {
           expect(body).toBeDefined();
-          expect(body.id).toStrictEqual(postIndex);
+          expect(body.idx).toStrictEqual(postIndex);
         });
     });
 
@@ -81,7 +83,7 @@ describe("PostController (e2e)", () => {
       return request(app)
         .get("/posts/30906d04-d770-4694-b4c1-5c084c0c96f0")
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }) => {
+        .expect(({ body }: SuperTestBody<{message: string}>) => {
           expect(body.message).toStrictEqual(
             "User does not exist for the parameter 30906d04-d770-4694-b4c1-5c084c0c96f0.",
           );
@@ -94,7 +96,7 @@ describe("PostController (e2e)", () => {
         .put(`/posts/${postIndex}`)
         .auth(adminJwtToken, { type: "bearer" })
         .send({ content: "updated content" })
-        .expect(({ body }) => {
+        .expect(({ body }: SuperTestBody<{ content: string }>) => {
           expect(body).toBeDefined();
           expect(body.content).toStrictEqual("updated content");
         })
@@ -105,9 +107,9 @@ describe("PostController (e2e)", () => {
       return request(app)
         .delete(`/posts/${postIndex}`)
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }) => {
+        .expect(({ body }: SuperTestBody<{ idx: string }>) => {
           expect(body).toBeDefined();
-          expect(body.id).toStrictEqual(postIndex);
+          expect(body.idx).toStrictEqual(postIndex);
         });
     });
   });
