@@ -9,12 +9,11 @@ module.exports = rubiin({
   jsonc: true, // enable jsonc rules
   markdown: true, // enable markdown rules
   gitignore: true, // enable gitignore rules,
-  typescript: {
-    tsconfigPath: "./tsconfig.json",
-  }, // enable typescript rules
   overrides: {
+
     typescript:
     {
+      "deprecation/deprecation": "off",
       "unicorn/prefer-top-level-await": "off",
       "unicorn/no-null": "off",
       "unicorn/prevent-abbreviations": [

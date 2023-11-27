@@ -48,7 +48,7 @@ describe("tokensService", () => {
     mockJwtService.signAsync.mockResolvedValueOnce("jwt token");
     service.generateAccessToken(loggedInUser).subscribe((result) => {
       expect(result).toStrictEqual("jwt token");
-      expect(mockJwtService.signAsync).toBeCalledTimes(1);
+      expect(mockJwtService.signAsync).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -57,7 +57,7 @@ describe("tokensService", () => {
     mockRefreshTokenRepo.createRefreshToken.mockImplementation(() => of(refreshToken));
     service.generateRefreshToken(loggedInUser, 10_000).subscribe((result) => {
       expect(result).toStrictEqual("jwtToken");
-      expect(mockJwtService.signAsync).toBeCalledTimes(1);
+      expect(mockJwtService.signAsync).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -68,8 +68,8 @@ describe("tokensService", () => {
     jest.spyOn(service, "generateAccessToken").mockImplementation(() => of("refreshToken"));
     service.createAccessTokenFromRefreshToken("refreshToken").subscribe((result) => {
       expect(result).toStrictEqual({ token: "refreshToken", user: loggedInUser });
-      expect(service.resolveRefreshToken).toBeCalledTimes(1);
-      expect(service.generateAccessToken).toBeCalledTimes(1);
+      expect(service.resolveRefreshToken).toHaveBeenCalledTimes(1);
+      expect(service.generateAccessToken).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -77,7 +77,7 @@ describe("tokensService", () => {
     mockRefreshTokenRepo.deleteTokensForUser.mockImplementation(() => of(true));
     service.deleteRefreshTokenForUser(loggedInUser).subscribe((result) => {
       expect(result).toStrictEqual(loggedInUser);
-      expect(mockRefreshTokenRepo.deleteTokensForUser).toBeCalledTimes(1);
+      expect(mockRefreshTokenRepo.deleteTokensForUser).toHaveBeenCalledTimes(1);
       expect(mockRefreshTokenRepo.deleteTokensForUser).toHaveBeenCalledWith(loggedInUser);
     });
   });
@@ -86,7 +86,7 @@ describe("tokensService", () => {
     mockRefreshTokenRepo.findTokenById.mockImplementation(() => of(refreshToken));
     service.getStoredTokenFromRefreshTokenPayload(refreshTokenPayload).subscribe((result) => {
       expect(result).toStrictEqual(refreshToken);
-      expect(mockRefreshTokenRepo.findTokenById).toBeCalledTimes(1);
+      expect(mockRefreshTokenRepo.findTokenById).toHaveBeenCalledTimes(1);
       expect(mockRefreshTokenRepo.findTokenById).toHaveBeenCalledWith(refreshTokenPayload.jti);
     });
   });
@@ -94,7 +94,7 @@ describe("tokensService", () => {
   it("should get user from refresh token payload", () => {
     service.getUserFromRefreshTokenPayload(refreshTokenPayload).subscribe((result) => {
       expect(result).toEqual(loggedInUser);
-      expect(mockUserRepo.findOne).toBeCalledTimes(1);
+      expect(mockUserRepo.findOne).toHaveBeenCalledTimes(1);
       expect(mockUserRepo.findOne).toHaveBeenCalledWith({
         id: refreshTokenPayload.sub,
       });
@@ -103,7 +103,7 @@ describe("tokensService", () => {
 
   it("should get stored token from refresh token payload", () => {
     service.getUserFromRefreshTokenPayload(refreshTokenPayload).subscribe((result) => {
-      expect(mockUserRepo.findOne).toBeCalledTimes(1);
+      expect(mockUserRepo.findOne).toHaveBeenCalledTimes(1);
       expect(result).toEqual(loggedInUser);
       expect(mockUserRepo.findOne).toHaveBeenCalledWith({
         id: refreshTokenPayload.sub,
@@ -121,7 +121,7 @@ describe("tokensService", () => {
         jti: 1,
         sub: 1,
       });
-      expect(mockJwtService.verifyAsync).toBeCalledTimes(1);
+      expect(mockJwtService.verifyAsync).toHaveBeenCalledTimes(1);
       expect(mockJwtService.verifyAsync).toHaveBeenCalledWith("refreshTokenPayload");
     });
   });

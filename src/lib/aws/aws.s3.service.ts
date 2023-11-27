@@ -20,6 +20,7 @@ import type { Observable } from "rxjs";
 import { forkJoin, from, map, of, switchMap, throwError } from "rxjs";
 import type {
   AwsModuleOptions,
+
   AwsS3,
   AwsS3MultiPart,
   AwsS3PutItemOptions,

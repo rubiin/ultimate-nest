@@ -30,7 +30,7 @@ describe("refreshTokensRepository", () => {
   it("should find token by id", () => {
     service.findTokenById(12).subscribe((result) => {
       expect(result).toEqual(refreshToken);
-      expect(mockRefreshRepo.findOne).toBeCalledTimes(1);
+      expect(mockRefreshRepo.findOne).toHaveBeenCalledTimes(1);
       expect(mockRefreshRepo.findOne).toHaveBeenCalledWith({ id: 12, isRevoked: false });
     });
   });
@@ -38,14 +38,14 @@ describe("refreshTokensRepository", () => {
   it("should create refresh token", () => {
     service.createRefreshToken(loggedInUser, 1000).subscribe((result) => {
       expect(result).toEqual(refreshToken);
-      expect(mockEm.persistAndFlush).toBeCalledTimes(1);
+      expect(mockEm.persistAndFlush).toHaveBeenCalledTimes(1);
     });
   });
 
   it("should delete  token", () => {
     service.deleteToken(loggedInUser, 11).subscribe((result) => {
       expect(result).toStrictEqual(true);
-      expect(mockRefreshRepo.nativeUpdate).toBeCalledTimes(1);
+      expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledTimes(1);
       expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledWith(
         { user: loggedInUser, id: 11 },
         { isRevoked: true },
@@ -56,7 +56,7 @@ describe("refreshTokensRepository", () => {
   it("should delete all token for user", () => {
     service.deleteTokensForUser(loggedInUser).subscribe((result) => {
       expect(result).toStrictEqual(true);
-      expect(mockRefreshRepo.nativeUpdate).toBeCalledTimes(1);
+      expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledTimes(1);
       expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledWith(
         { user: loggedInUser },
         { isRevoked: true },
