@@ -12,15 +12,16 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation } from "@nestjs/swagger";
-import type { Observable } from "rxjs";
-import { map } from "rxjs";
+import { Observable, map } from "rxjs";
 
-import type { TokensService } from "@modules/token/tokens.service";
-import type { OtpLog, User } from "@entities";
+import { TokensService } from "@modules/token/tokens.service";
+import { User } from "@entities";
+import type { OtpLog } from "@entities";
 import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
-import type { AuthenticationResponse, OauthResponse } from "@common/@types";
-import type { AuthService } from "./auth.service";
-import type {
+import { OauthResponse } from "@common/@types";
+import type { AuthenticationResponse } from "@common/@types";
+import { AuthService } from "./auth.service";
+import {
   ChangePasswordDto,
   MagicLinkLogin,
   OtpVerifyDto,
@@ -29,7 +30,7 @@ import type {
   SendOtpDto,
   UserLoginDto,
 } from "./dtos";
-import type { MagicLoginStrategy } from "./strategies";
+import { MagicLoginStrategy } from "./strategies";
 
 @GenericController("auth", false)
 export class AuthController {

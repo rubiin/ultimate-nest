@@ -1,14 +1,14 @@
 import { InjectRepository } from "@mikro-orm/nestjs";
-import type { EntityManager } from "@mikro-orm/postgresql";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { authenticator } from "otplib";
 import { toFileStream } from "qrcode";
 import type { Observable } from "rxjs";
 import { from, map, throwError } from "rxjs";
 import { translate } from "@lib/i18n";
 import { User } from "@entities";
-import type { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database";
 
 @Injectable()
 export class TwoFactorService {

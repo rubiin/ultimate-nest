@@ -1,7 +1,7 @@
 import { Body, Delete, Get, Post, Put, Query, UploadedFile } from "@nestjs/common";
-import type { Observable } from "rxjs";
-import type { File, PaginationResponse } from "@common/@types";
-import { Action, Roles } from "@common/@types";
+import { Observable } from "rxjs";
+import type { PaginationResponse } from "@common/@types";
+import { Action, File, Roles } from "@common/@types";
 import {
   ApiFile,
   ApiPaginatedResponse,
@@ -11,12 +11,12 @@ import {
   SwaggerResponse,
   UUIDParam,
 } from "@common/decorators";
-import type { CursorPaginationDto } from "@common/dtos";
+import { CursorPaginationDto } from "@common/dtos";
 import { fileValidatorPipe } from "@common/misc";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
-import type { UserService } from "./user.service";
-import type { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
+import { UserService } from "./user.service";
+import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
 
 @GenericController("users")
 export class UserController {

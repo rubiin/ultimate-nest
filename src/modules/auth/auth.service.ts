@@ -1,6 +1,6 @@
 import type { FilterQuery } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import type { EntityManager } from "@mikro-orm/postgresql";
+import { EntityManager } from "@mikro-orm/postgresql";
 import {
   BadRequestException,
   ForbiddenException,
@@ -8,7 +8,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
@@ -17,12 +17,12 @@ import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
 import type { AuthenticationResponse, OauthResponse } from "@common/@types";
 import { EmailSubject, EmailTemplate } from "@common/@types";
-import type { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import type { MailerService } from "@lib/mailer/mailer.service";
-import type { TokensService } from "@modules/token/tokens.service";
+import { MailerService } from "@lib/mailer/mailer.service";
+import { TokensService } from "@modules/token/tokens.service";
 import type {
   ChangePasswordDto,
   OtpVerifyDto,

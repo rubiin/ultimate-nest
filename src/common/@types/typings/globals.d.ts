@@ -1,4 +1,4 @@
-import type { User as UserEntity } from "@entities";
+import type { User } from "@entities";
 import type { I18nTranslations as I18nTranslationTypes } from "@generated";
 import type { Config as ConfigInterface } from "@lib/config/config.interface";
 import type { NextFunction, Request, Response } from "express";
@@ -8,7 +8,7 @@ export {};
 declare global {
   namespace Express {
     export interface Request {
-      user?: UserEntity
+      user?: User
       realIp?: string
       idx?: string
       body: Record<string, any>

@@ -1,9 +1,10 @@
-import type { Reflector } from "@nestjs/core";
+import { Reflector } from "@nestjs/core";
 import type { CanActivate, ExecutionContext } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
 import { CHECK_POLICIES_KEY_META, IS_PUBLIC_KEY_META } from "@common/constant";
 import type { User } from "@entities";
-import type { AppAbility, CaslAbilityFactory } from "./casl-ability.factory";
+import { CaslAbilityFactory } from "./casl-ability.factory";
+import type { AppAbility } from "./casl-ability.factory";
 import type { PolicyHandler } from "./policy.interface";
 
 @Injectable()

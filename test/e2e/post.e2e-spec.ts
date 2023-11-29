@@ -12,7 +12,9 @@ describe("PostController (e2e)", () => {
   beforeAll(async () => {
     const { body } = await request(app)
       .post("/auth/login")
-      .send(user.admin);
+      .send(user.admin) as SuperTestBody<{payload: {
+        accessToken: string
+      }}>;
 
     adminJwtToken = body.payload.accessToken;
   });
@@ -83,7 +85,7 @@ describe("PostController (e2e)", () => {
       return request(app)
         .get("/posts/30906d04-d770-4694-b4c1-5c084c0c96f0")
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }: SuperTestBody<{message: string}>) => {
+        .expect(({ body }: SuperTestBody<{ message: string }>) => {
           expect(body.message).toStrictEqual(
             "User does not exist for the parameter 30906d04-d770-4694-b4c1-5c084c0c96f0.",
           );

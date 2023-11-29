@@ -1,13 +1,13 @@
 import type { Loaded } from "@mikro-orm/core";
 import { Injectable, Logger } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import Strategy from "passport-magic-login";
 
 import { EmailSubject, EmailTemplate } from "@common/@types";
 import type { User } from "@entities";
-import type { MailerService } from "@lib/mailer/mailer.service";
-import type { AuthService } from "../auth.service";
+import { MailerService } from "@lib/mailer/mailer.service";
+import { AuthService } from "../auth.service";
 
 interface MagicLoginPayload {
   destination: string

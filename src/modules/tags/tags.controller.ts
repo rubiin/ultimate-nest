@@ -2,7 +2,7 @@ import { GenericController } from "@common/decorators";
 import { CursorPaginationDto } from "@common/dtos";
 import type { Tag } from "@entities";
 import { ControllerFactory } from "@lib/crud/crud.controller";
-import type { TagsService } from "./tags.service";
+import { TagsService } from "./tags.service";
 import { CreateTagDto, EditTagDto } from "./dto";
 
 @GenericController("tags")

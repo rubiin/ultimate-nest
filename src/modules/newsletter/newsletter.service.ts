@@ -1,7 +1,7 @@
-import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
@@ -10,7 +10,7 @@ import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { BaseService } from "@lib/crud/crud.service";
 import { NewsLetter, Subscriber } from "@entities";
 import type { CursorPaginationDto } from "@common/dtos";
-import type { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database";
 import { EmailSubject, EmailTemplate, RoutingKey } from "@common/@types";
 import type { SubscribeNewsletterDto } from "./dto";
 

@@ -18,8 +18,10 @@ import { lookup } from "mime-types";
 import { isEmpty, omit } from "helper-fns";
 import type { Observable } from "rxjs";
 import { forkJoin, from, map, of, switchMap, throwError } from "rxjs";
-import type {
+import {
   AwsModuleOptions,
+} from "./aws.interface";
+import type {
 
   AwsS3,
   AwsS3MultiPart,

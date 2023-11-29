@@ -1,16 +1,15 @@
-import type {
-  EventArgs,
-} from "@mikro-orm/core";
 import {
   BeforeCreate,
 
   BeforeUpdate,
+
   BeforeUpsert,
   Collection,
   Embeddable,
   Embedded,
   Entity,
   Enum,
+  EventArgs,
   ManyToMany,
   OneToMany,
   Property,

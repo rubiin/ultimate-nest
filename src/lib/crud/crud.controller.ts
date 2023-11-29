@@ -1,12 +1,12 @@
 import type { EntityData, RequiredEntityData } from "@mikro-orm/core";
 import type { ArgumentMetadata, Type } from "@nestjs/common";
 import { Body, Delete, Get, Injectable, Param, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
-import type { Observable } from "rxjs";
+import { Observable } from "rxjs";
 import type { Crud, PaginationRequest, PaginationResponse } from "@common/@types";
 import type { BaseEntity } from "@common/database";
 import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { AppUtils } from "@common/helpers";
-import type { User } from "@entities";
+import { User } from "@entities";
 import type { BaseService } from "./crud.service";
 
 @Injectable()

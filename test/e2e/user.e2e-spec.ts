@@ -3,9 +3,9 @@ import path from "node:path";
 import { faker } from "@mikro-orm/seeder";
 import { pick } from "helper-fns";
 import request from "supertest";
-import type { OffsetPaginationResponse} from "@common/@types";
+import type { OffsetPaginationResponse } from "@common/@types";
 import { Roles } from "@common/@types";
-import type { SuperTestBody} from "../fixtures";
+import type { SuperTestBody } from "../fixtures";
 import { APP_URL, user, userDto } from "../fixtures";
 
 describe("UserController (e2e)", () => {
@@ -17,7 +17,9 @@ describe("UserController (e2e)", () => {
   beforeAll(async () => {
     const { body } = await request(app)
       .post("/auth/login")
-      .send(user.admin);
+      .send(user.admin) as SuperTestBody<{payload: {
+        accessToken: string
+      }}>;
 
     adminJwtToken = body.payload.accessToken;
   });
@@ -34,7 +36,7 @@ describe("UserController (e2e)", () => {
         .field("email", userDto.email)
         .field("roles[]", userDto.roles)
         .attach("avatar", path.resolve(__dirname, "../test.png"))
-        .expect(({ body }:  SuperTestBody<{email: string; idx: string}>) => {
+        .expect(({ body }: SuperTestBody<{ email: string, idx: string }>) => {
           expect(body).toBeDefined();
           expect(body.email).toStrictEqual(userDto.email);
           userIndex = body.idx;
@@ -49,7 +51,7 @@ describe("UserController (e2e)", () => {
       return request(app)
         .post("/users/signup")
         .send({ ...pick(userDto, ["roles"]), email, username })
-        .expect(({ body }:  SuperTestBody<{email: string; idx: string; roles: string[]}>) => {
+        .expect(({ body }: SuperTestBody<{ email: string, idx: string, roles: string[] }>) => {
           expect(body).toBeDefined();
           expect(body.email).toStrictEqual(email);
           expect(body.roles).toStrictEqual([Roles.AUTHOR]);
@@ -91,7 +93,7 @@ describe("UserController (e2e)", () => {
     it("should get a list of all user /users (GET)", () => {
       return request(app)
         .get("/users")
-        .expect(({ body }:  SuperTestBody<OffsetPaginationResponse<any>>) => {
+        .expect(({ body }: SuperTestBody<OffsetPaginationResponse<any>>) => {
           expect(body.meta).toBeDefined();
           expect(body.data).toBeDefined();
         })
@@ -105,7 +107,7 @@ describe("UserController (e2e)", () => {
       return request(app)
         .get(`/users?limit=${limit}&page=${page}`)
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }:  SuperTestBody<OffsetPaginationResponse<any>>) => {
+        .expect(({ body }: SuperTestBody<OffsetPaginationResponse<any>>) => {
           expect(body.meta).toBeDefined();
           expect(body.data).toBeDefined();
           expect(body.meta.page).toStrictEqual(page);
@@ -118,7 +120,7 @@ describe("UserController (e2e)", () => {
       return request(app)
         .get(`/users/${userIndex}`)
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }:  SuperTestBody<{idx: string}>) => {
+        .expect(({ body }: SuperTestBody<{ idx: string }>) => {
           expect(body).toBeDefined();
           expect(body.idx).toStrictEqual(userIndex);
         });
@@ -128,7 +130,7 @@ describe("UserController (e2e)", () => {
       return request(app)
         .get("/users/30906d04-d770-4694-b4c1-5c084c0c96f0")
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }:  SuperTestBody<{message: string}>) => {
+        .expect(({ body }: SuperTestBody<{ message: string }>) => {
           expect(body.message).toStrictEqual(
             "User does not exist for the parameter 30906d04-d770-4694-b4c1-5c084c0c96f0.",
           );
@@ -141,7 +143,7 @@ describe("UserController (e2e)", () => {
         .put(`/users/${userIndex}`)
         .auth(adminJwtToken, { type: "bearer" })
         .field("firstName", "Updated First Name")
-        .expect(({ body }:  SuperTestBody<{firstName: string}>) => {
+        .expect(({ body }: SuperTestBody<{ firstName: string }>) => {
           expect(body).toBeDefined();
           expect(body.firstName).toStrictEqual("Updated First Name");
         })
@@ -152,7 +154,7 @@ describe("UserController (e2e)", () => {
       return request(app)
         .delete(`/users/${userIndex}`)
         .auth(adminJwtToken, { type: "bearer" })
-        .expect(({ body }:  SuperTestBody<{idx: string}>) => {
+        .expect(({ body }: SuperTestBody<{ idx: string }>) => {
           expect(body).toBeDefined();
           expect(body.idx).toStrictEqual(userIndex);
         });

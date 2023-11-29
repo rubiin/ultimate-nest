@@ -1,15 +1,14 @@
 import { Get } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
-import type {
+import { ConfigService } from "@nestjs/config";
+import {
   DiskHealthIndicator,
+  HealthCheck,
   HealthCheckService,
   HttpHealthIndicator,
+
   MemoryHealthIndicator,
 
   MikroOrmHealthIndicator,
-} from "@nestjs/terminus";
-import {
-  HealthCheck,
 } from "@nestjs/terminus";
 import { GenericController } from "@common/decorators";
 
