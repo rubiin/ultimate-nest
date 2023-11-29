@@ -1,6 +1,6 @@
 import type { NestMiddleware } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
-import type { CacheService } from "@lib/cache/cache.service";
+import { CacheService } from "@lib/cache/cache.service";
 
 // This middleware is used to clear the cache when the query parameter "clearCache" is present
 @Injectable()

@@ -3,7 +3,7 @@ import type { Observable } from "rxjs";
 import { from, of } from "rxjs";
 import { tap } from "rxjs/operators";
 import type { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
-import type { CacheService } from "@lib/cache";
+import { CacheService } from "@lib/cache";
 
 /**
  *

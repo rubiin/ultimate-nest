@@ -1,9 +1,8 @@
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { Injectable, Logger } from "@nestjs/common";
 import { from, map, tap } from "rxjs";
-import type { MailerService } from "@lib/mailer/mailer.service";
-import type { MailPayload } from "@common/@types";
-import { Queues, RoutingKey } from "@common/@types";
+import { MailerService } from "@lib/mailer/mailer.service";
+import { MailPayload, Queues, RoutingKey } from "@common/@types";
 
 @Injectable()
 export class RabbitService {

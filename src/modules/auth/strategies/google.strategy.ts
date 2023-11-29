@@ -1,12 +1,12 @@
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { omit, randomAvatar, randomString } from "helper-fns";
 import type { Profile, VerifyCallback } from "passport-google-oauth20";
 import { Strategy } from "passport-google-oauth20";
 import { User } from "@entities";
-import type { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database";
 import type { OauthResponse } from "@common/@types";
 import { faker } from "@mikro-orm/seeder";
 

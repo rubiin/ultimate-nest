@@ -1,12 +1,12 @@
 import type { AutoPath } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import type { EntityManager } from "@mikro-orm/postgresql";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { User } from "@entities";
-import type { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database";
 import type { ProfileData } from "@common/@types";
 
 @Injectable()

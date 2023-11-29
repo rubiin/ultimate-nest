@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database";
 import type { OffsetPaginationDto } from "@common/dtos";
 import { Category } from "@entities";
 import { BaseService } from "@lib/crud/crud.service";

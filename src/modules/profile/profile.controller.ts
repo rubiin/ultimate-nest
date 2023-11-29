@@ -1,5 +1,5 @@
 import { Delete, Get, Param, Post } from "@nestjs/common";
-import type { Observable } from "rxjs";
+import { Observable } from "rxjs";
 import type { ProfileData } from "@common/@types";
 import {
   ApplyCustomCache,
@@ -7,8 +7,8 @@ import {
   LoggedInUser,
   SwaggerResponse,
 } from "@common/decorators";
-import type { User } from "@entities";
-import type { ProfileService } from "./profile.service";
+import { User } from "@entities";
+import { ProfileService } from "./profile.service";
 
 @GenericController("profile")
 export class ProfileController {

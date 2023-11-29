@@ -1,12 +1,11 @@
 import { Body, Delete, Post } from "@nestjs/common";
-import type { Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { GenericController, SwaggerResponse } from "@common/decorators";
 import { CursorPaginationDto } from "@common/dtos";
 import type { NewsLetter, Subscriber } from "@entities";
 import { ControllerFactory } from "@lib/crud/crud.controller";
-import type { NewsLetterService } from "./newsletter.service";
-import type { SubscribeNewsletterDto } from "./dto";
-import { CreateNewsletterDto, EditNewsletterDto } from "./dto";
+import { NewsLetterService } from "./newsletter.service";
+import { CreateNewsletterDto, EditNewsletterDto, SubscribeNewsletterDto } from "./dto";
 
 @GenericController("newsletter")
 export class NewsLetterController extends ControllerFactory<
