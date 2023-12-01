@@ -69,7 +69,7 @@ services:
 # Traefik service
 # This service runs the Traefik reverse proxy which is used to expose the other services
     traefik:
-        image: traefik:2.10.5
+        image: traefik:2.10.6
         container_name: traefik
         restart: unless-stopped
         command:
@@ -196,7 +196,7 @@ services:
 # This service runs the RabbitMQ message broker
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3.12.9-management-alpine
+        image: rabbitmq:3.12.10-management-alpine
         env_file: env/.env.${ENV}
         restart: unless-stopped
         depends_on:
