@@ -6,7 +6,7 @@ const validator = new Validator();
 describe("isUserName", () => {
   class MyClass {
     @IsUsernameField()
-        username: string;
+    username!: string;
   }
 
   it("if username satisfies then it should succeed", async () => {
@@ -25,10 +25,10 @@ describe("isUserName", () => {
 
     const errors = await validator.validate(model);
     expect(errors.length).toEqual(1);
-    expect(errors[0].property).toEqual("username");
-    expect(errors[0].constraints).toEqual({
+    expect(errors[0]!.property).toEqual("username");
+    expect(errors[0]!.constraints).toEqual({
       IsUsernameConstraint: "username must fulfill username's criteria",
     });
-    expect(errors[0].value).toEqual("@123Yest");
+    expect(errors[0]!.value).toEqual("@123Yest");
   });
 });

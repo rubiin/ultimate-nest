@@ -18,6 +18,12 @@ module.exports = rubiin({
     },
     typescript:
     {
+      "ts/no-misused-promises": [
+				"error",
+				{
+					checksVoidReturn: false,
+				},
+			],
       "deprecation/deprecation": "off",
       "unicorn/prefer-top-level-await": "off",
       "unicorn/no-null": "off",

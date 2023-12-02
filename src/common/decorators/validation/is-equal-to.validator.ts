@@ -11,17 +11,17 @@ import {
 @ValidatorConstraint({ async: true })
 class IsEqualToConstraint implements ValidatorConstraintInterface {
   async validate(value: string, arguments_: ValidationArguments) {
-    const [relatedPropertyName] = arguments_.constraints;
-    const relatedValue = (arguments_.object as Record<string, any>)[relatedPropertyName];
+    const [relatedPropertyName] = arguments_.constraints as unknown[];
+    const relatedValue = (arguments_.object as Record<string, any>)[relatedPropertyName as string] as string | boolean | number;
 
     return value === relatedValue;
   }
 
   defaultMessage(arguments_: ValidationArguments) {
     const property = arguments_.property;
-    const [relatedPropertyName] = arguments_.constraints;
+    const [relatedPropertyName] = arguments_.constraints as unknown[];
 
-    return `${property} should be equal to ${relatedPropertyName}`;
+    return `${property} should be equal to ${relatedPropertyName as string}`;
   }
 }
 

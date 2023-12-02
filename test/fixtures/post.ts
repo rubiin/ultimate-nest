@@ -7,7 +7,7 @@ export const postDto = {
   tags: [faker.company.name(), faker.company.name()],
 };
 
-export interface SuperTestBody<T = any> {
+export interface SuperTestBody<T = unknown> {
   body: T & {
     errors: string[]
   }

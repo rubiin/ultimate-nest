@@ -47,7 +47,7 @@ private readonly configService: ConfigService<Configs, true>,
         ),
       );
     }
-    await Promise.all(promises);
+    await Promise.allSettled(promises);
   }
 
   /**
