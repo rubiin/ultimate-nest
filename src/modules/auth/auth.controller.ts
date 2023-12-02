@@ -1,3 +1,4 @@
+import process from "node:process";
 import {
   Body,
   DefaultValuePipe,
@@ -49,10 +50,7 @@ export class AuthController {
   @Post("login/magic")
   @ApiOperation({ summary: "User Login with magic link" })
   loginByMagicLink(
-    @Req() request: NestifyRequest,
-    @Res() response: NestifyResponse,
-    @Body() dto: MagicLinkLogin,
-  ): Observable<void> {
+    @Req() request: NestifyRequest, @Res() response: NestifyResponse, @Body() dto: MagicLinkLogin): Observable<void> {
     return this.authService.validateUser(false, dto.destination).pipe(
       map((_user) => {
         this.magicStrategy.send(request, response);
@@ -163,10 +161,7 @@ export class AuthController {
   @ApiOperation({ summary: "Logout user" })
   @Post("logout")
   logout(
-    @LoggedInUser() user: User,
-    @Query("fromAll", new DefaultValuePipe(false), ParseBoolPipe) fromAll?: boolean,
-    @Body() refreshToken?: RefreshTokenDto,
-  ): Observable<User> {
+    @LoggedInUser() user: User, @Query("fromAll", new DefaultValuePipe(false), ParseBoolPipe) fromAll?: boolean, @Body() refreshToken?: RefreshTokenDto): Observable<User> {
     return fromAll
       ? this.authService.logoutFromAll(user)
       : this.authService.logout(user, refreshToken!.refreshToken);

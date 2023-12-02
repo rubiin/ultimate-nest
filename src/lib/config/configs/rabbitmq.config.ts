@@ -1,3 +1,4 @@
+import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 import { RABBIT_MQ_URI_REGEX } from "@common/constant";

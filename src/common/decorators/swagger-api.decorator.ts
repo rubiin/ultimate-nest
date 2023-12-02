@@ -2,7 +2,7 @@ import type { Type } from "@nestjs/common";
 import { applyDecorators } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 
-interface SwaggerResponseOptions<T, K> {
+interface SwaggerResponseOptions<T = unknown, K = unknown> {
   operation: string
   params?: string[]
   notFound?: string
@@ -11,34 +11,26 @@ interface SwaggerResponseOptions<T, K> {
   response?: Type<K>
 }
 
-export function SwaggerResponse({
-  operation,
-  notFound,
-  badRequest,
-  params,
-  // @ts-expect-error - This is intentional
-  body,
-  // @ts-expect-error - This is intentional
-  response,
-}: SwaggerResponseOptions<typeof body, typeof response>) {
-  const decsToApply = [ApiOperation({ summary: operation })];
+export function SwaggerResponse(options_: SwaggerResponseOptions) {
+  const options: SwaggerResponseOptions = { ...options_ };
+  const decsToApply = [ApiOperation({ summary: options.operation })];
 
-  if (params) {
-    for (const parameter of params)
+  if (options?.params) {
+    for (const parameter of options.params)
       decsToApply.push(ApiParam({ name: parameter, required: true, type: String }));
   }
 
-  if (badRequest)
-    decsToApply.push(ApiResponse({ status: 400, description: badRequest }));
+  if (options?.badRequest)
+    decsToApply.push(ApiResponse({ status: 400, description: options.badRequest }));
 
-  if (notFound)
-    decsToApply.push(ApiResponse({ status: 404, description: notFound }));
+  if (options?.notFound)
+    decsToApply.push(ApiResponse({ status: 404, description: options.notFound }));
 
-  if (body)
-    decsToApply.push(ApiBody({ type: body }));
+  if (options?.body)
+    decsToApply.push(ApiBody({ type: options.body }));
 
-  if (response)
-    decsToApply.push(ApiResponse({ type: response }));
+  if (options?.response)
+    decsToApply.push(ApiResponse({ type: options.response }));
 
   return applyDecorators(...decsToApply);
 }

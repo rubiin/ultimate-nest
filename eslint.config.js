@@ -1,4 +1,4 @@
-const rubiin = require("@rubiin/eslint-config").default;
+const rubiin = require("@antfu/eslint-config").default;
 
 module.exports = rubiin({
   stylistic: {
@@ -24,9 +24,10 @@ module.exports = rubiin({
 					checksVoidReturn: false,
 				},
 			],
-      "deprecation/deprecation": "off",
+      "ts/no-floating-promises":["error",{
+        "ignoreIIFE": true
+      }],
       "unicorn/prefer-top-level-await": "off",
-      "unicorn/no-null": "off",
       "unicorn/prevent-abbreviations": [
         "error",
         {

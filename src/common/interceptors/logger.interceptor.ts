@@ -57,7 +57,7 @@ export class LoggingInterceptor implements NestInterceptor {
         next: (value: unknown) => {
           this.logNext(value, context);
         },
-        error: (error) => {
+        error: (error: Error) => {
           this.logError(error, context);
         },
       }),

@@ -77,10 +77,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
 
   @SubscribeMessage("send")
   async create(
-        @MessageBody() createChatDto: CreateChatDto,
-        @ConnectedSocket() _client: Socket,
-        @LoggedInUser() user: User,
-  ) {
+        @MessageBody() createChatDto: CreateChatDto, @ConnectedSocket() _client: Socket, @LoggedInUser() user: User) {
     // send message to the receiver default room
     const receiver = this.connectionService.findBySocketId(createChatDto.to);
 
@@ -95,9 +92,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
 
   @SubscribeMessage("markAsSeen")
   async markAsSeen(
-        @MessageBody() markAsSeenDto: MessageSeenDto,
-        @ConnectedSocket() client: Socket,
-  ) {
+        @MessageBody() markAsSeenDto: MessageSeenDto, @ConnectedSocket() client: Socket) {
     // mark the message as seen
     const sender = this.connectionService.findBySocketId(client.id);
     const receiver = this.connectionService.findBySocketId(markAsSeenDto.receiver);

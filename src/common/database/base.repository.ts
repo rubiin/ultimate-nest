@@ -1,5 +1,7 @@
-/* // eslint-disable-file ts/dot-notation */
+/* eslint-disable ts/no-floating-promises */
+/* eslint-disable-file ts/dot-notation */
 
+import { Buffer } from "node:buffer";
 import type {
   Dictionary,
   EntityData,

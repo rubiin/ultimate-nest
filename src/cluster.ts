@@ -1,6 +1,7 @@
 import cluster from "node:cluster";
 import os from "node:os";
 
+import process from "node:process";
 import { Logger } from "@nestjs/common";
 import { isUndefined } from "helper-fns";
 import { HelperService } from "@common/helpers";
@@ -8,7 +9,7 @@ import { HelperService } from "@common/helpers";
 export class Cluster {
   private static readonly loggerService = new Logger(Cluster.name);
 
-  public static createCluster(main: () => Promise<void>) {
+  public static async createCluster(main: () => Promise<void>) {
     const cpuCount = this.getCpuCount();
 
     if (cluster.isPrimary) {
@@ -28,7 +29,7 @@ export class Cluster {
     }
     else {
       try {
-        main();
+        await main();
       }
       catch (error) {
         this.loggerService.error(error);

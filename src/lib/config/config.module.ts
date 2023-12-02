@@ -1,3 +1,4 @@
+import process from "node:process";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import Joi from "joi";
