@@ -3,6 +3,7 @@ import { ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsOptional } from "class-v
 import { Transform } from "class-transformer";
 import type { EmailFieldOptions } from "@common/@types";
 import { validationI18nMessage } from "@lib/i18n";
+import { normalizeEmail } from "helper-fns";
 
 export function IsEmailField(options_?: EmailFieldOptions) {
   const options: EmailFieldOptions = {
@@ -12,6 +13,11 @@ export function IsEmailField(options_?: EmailFieldOptions) {
   };
   const decoratorsToApply = [
     Transform(({ value }: { value: string }) => value.toLowerCase(), { toClassOnly: true }),
+    Transform(
+      ({ value }): string =>
+        typeof value === 'string' ? normalizeEmail(value) : value,
+      { toClassOnly: true },
+    ),
     IsEmail(
       {},
       {

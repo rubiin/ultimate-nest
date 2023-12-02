@@ -313,7 +313,7 @@ export class AuthService {
 
         return from(
           this.em.transactional(async (em) => {
-            await Promise.all([
+            await Promise.allSettled([
               em.nativeUpdate(
                 User,
                 {

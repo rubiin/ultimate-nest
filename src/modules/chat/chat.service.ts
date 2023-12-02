@@ -58,7 +58,7 @@ export class ChatService {
 
       messageNew.conversation = ref(conversationNew);
 
-      await Promise.all([
+      await Promise.allSettled([
         this.em.persistAndFlush(messageNew),
         this.em.persistAndFlush(conversationNew),
       ]);

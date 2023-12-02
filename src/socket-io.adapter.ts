@@ -26,7 +26,7 @@ export class SocketIOAdapter extends IoAdapter {
     });
     const subClient = pubClient.duplicate();
 
-    await Promise.all([pubClient.connect(), subClient.connect()]);
+    await Promise.allSettled([pubClient.connect(), subClient.connect()]);
 
     this.adapterConstructor = createAdapter(pubClient, subClient);
   }

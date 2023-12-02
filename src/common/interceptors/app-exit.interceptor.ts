@@ -8,7 +8,7 @@ import { catchError, map } from "rxjs/operators";
 export class ExitInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      catchError((error) => {
+      catchError((error: Error) => {
         return throwError(() => error);
       }),
       map((data: unknown) => data),

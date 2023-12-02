@@ -86,7 +86,7 @@ export const AppUtils = {
     const paths = Object.values((document).paths);
 
     for (const path of paths) {
-      const methods = Object.values(path);
+      const methods = Object.values(path) as { security: string[] }[];
 
       for (const method of methods) {
         if (

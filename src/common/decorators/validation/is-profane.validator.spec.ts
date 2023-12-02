@@ -25,7 +25,7 @@ describe("isProfane", () => {
 
     const errors = await validator.validate(model);
     expect(errors.length).toEqual(1);
-    expect(errors[0].constraints).toEqual({
+    expect(errors[0]!.constraints).toEqual({
       IsProfaneConstraint: "text has profane words",
     });
   });

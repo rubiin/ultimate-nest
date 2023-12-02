@@ -142,11 +142,11 @@ export class UserService {
 
     return from(
       this.em.transactional(async (em) => {
-        const { url } = await this.cloudinaryService.uploadFile(files);
+        const response = await this.cloudinaryService.uploadFile(files);
 
         // cloudinary gives a url key on response that is the full url to file
 
-        user.avatar = url;
+        user.avatar = response.url as string;
 
         await em.persistAndFlush(user);
         const link = this.configService.get("app.clientUrl", { infer: true });
