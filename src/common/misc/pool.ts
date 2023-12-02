@@ -19,18 +19,14 @@ const workerFile = path.join(
 export const pool = new DynamicThreadPool<
 WorkerData,
 WorkerResponse
->(Math.floor(availableParallelism() / 2),
-  availableParallelism(),
-  workerFile,
-  {
-    enableTasksQueue: true,
-    tasksQueueOptions: {
-      concurrency: 8,
-    },
-    errorHandler: error => logger.error(error),
-    onlineHandler: () => logger.log("⚡️ Worker is online"),
+>(Math.floor(availableParallelism() / 2), availableParallelism(), workerFile, {
+  enableTasksQueue: true,
+  tasksQueueOptions: {
+    concurrency: 8,
   },
-);
+  errorHandler: error => logger.error(error),
+  onlineHandler: () => logger.log("⚡️ Worker is online"),
+});
 
 pool.emitter?.on(PoolEvents.ready, () => logger.log("✅ Pool is ready"));
 pool.emitter?.on(PoolEvents.busy, () => logger.log("🔵 Pool is busy"));

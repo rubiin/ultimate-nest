@@ -48,7 +48,7 @@ export function ToBoolean() {
 
 export function Sanitize(): PropertyDecorator {
   return Transform(
-    ({ value }) => {
+    ({ value }: { value: unknown }) => {
       if (isArray(value)) {
         return value.map((v) => {
           if (isString(v))

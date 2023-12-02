@@ -1,3 +1,4 @@
+import type { Buffer } from "node:buffer";
 import type {
   Bucket,
 } from "@aws-sdk/client-s3";

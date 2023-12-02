@@ -39,7 +39,7 @@ export class SocketIOAdapter extends IoAdapter {
    * additional configuration options for the server. It is of type `ServerOptions`.
    * @returns a server object.
    */
-  createIOServer(port: number, options?: ServerOptions): any {
+  createIOServer(port: number, options?: ServerOptions) {
     const cors = {
       origin: this.configService.get("app.allowedOrigins", { infer: true }),
     };

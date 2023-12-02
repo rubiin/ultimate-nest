@@ -1,3 +1,4 @@
+import process from "node:process";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { Injectable, Logger } from "@nestjs/common";
 import { from, map, tap } from "rxjs";

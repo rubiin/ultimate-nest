@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { INestApplication, ValidationPipeOptions } from "@nestjs/common";
 import { Logger } from "@nestjs/common";
 import type { ConfigService } from "@nestjs/config";
@@ -40,7 +41,7 @@ export const AppUtils = {
       logger.log("✅ Http server closed.");
       process.exit(0);
     }
-    catch (error) {
+    catch (error: any) {
       logger.error(`❌ Http server closed with error: ${error}`);
       process.exit(1);
     }

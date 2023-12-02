@@ -11,10 +11,7 @@ export class TagsController extends ControllerFactory<
     CursorPaginationDto,
     CreateTagDto,
     EditTagDto
->(CursorPaginationDto,
-  CreateTagDto,
-  EditTagDto,
-) {
+>(CursorPaginationDto, CreateTagDto, EditTagDto) {
   constructor(protected service: TagsService) {
     super();
   }

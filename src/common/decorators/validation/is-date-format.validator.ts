@@ -38,7 +38,7 @@ class IsDateInFormatConstraint implements ValidatorConstraintInterface {
 
   defaultMessage(arguments_: ValidationArguments) {
     const property = arguments_.property;
-    const [format] = arguments_.constraints;
+    const [format] = arguments_.constraints as string[];
 
     return `${property} should be in ${format} format`;
   }

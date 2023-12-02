@@ -1,3 +1,4 @@
+import process from "node:process";
 import chalk from "chalk";
 import type { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";

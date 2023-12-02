@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { EntityProperty, Platform } from "@mikro-orm/core";
 import { Type, ValidationError } from "@mikro-orm/core";
 import { decrypt, encrypt, isString } from "helper-fns";

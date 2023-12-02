@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { Options } from "@mikro-orm/core";
 import { defineConfig } from "@mikro-orm/postgresql";
 import { Logger } from "@nestjs/common";

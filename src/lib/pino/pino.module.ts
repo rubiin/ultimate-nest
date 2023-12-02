@@ -24,7 +24,12 @@ const basePinoOptions = {
             context: "HTTP",
           }),
           serializers: {
-            req(request: Record<string, any>) {
+            req(request: {
+              body: Record<string, any>
+              raw: {
+                body: Record<string, any>
+              }
+            }) {
               request.body = request.raw.body;
 
               return request;
@@ -100,4 +105,4 @@ const basePinoOptions = {
   ],
   exports: [LoggerModule],
 })
-export class NestPinoModule {}
+export class NestPinoModule { }

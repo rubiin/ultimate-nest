@@ -187,7 +187,8 @@ export class UserService {
         if (image) {
           uploadImage$ = from(this.cloudinaryService.uploadFile(image)).pipe(
             switchMap(({ url }) => {
-              return of(url);
+              const stringUrl = url as string;
+              return of(stringUrl);
             }),
           );
         }

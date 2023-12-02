@@ -25,10 +25,10 @@ export class CacheKeyInterceptor extends CacheInterceptor {
   trackBy(context: ExecutionContext): string | undefined {
     const httpAdapter = this.httpAdapterHost.httpAdapter;
     const isHttpApp = httpAdapter && !!httpAdapter.getRequestMethod;
-    const cacheMetadata = this.reflector.get(CACHE_KEY_METADATA, context.getHandler());
+    const cacheMetadata = this.reflector.get<string>(CACHE_KEY_METADATA, context.getHandler());
 
-    const request = context.getArgByIndex(0);
-    const userId = request.user?.idx;
+    const request = context.getArgByIndex<NestifyRequest>(0);
+    const userId = request.user!.idx;
 
     if (!isHttpApp || cacheMetadata)
       return `${cacheMetadata}_${userId}`;

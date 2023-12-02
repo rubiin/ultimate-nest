@@ -1,3 +1,4 @@
+import process from "node:process";
 import { faker } from "@mikro-orm/seeder";
 import { Roles } from "@common/@types";
 

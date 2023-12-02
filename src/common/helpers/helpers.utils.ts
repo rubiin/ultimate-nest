@@ -1,6 +1,8 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
+import process from "node:process";
 
+import type { Buffer } from "node:buffer";
 import type { AuthenticationResponse } from "@common/@types";
 import type { User } from "@entities";
 import type { Options as ArgonOptions } from "argon2";

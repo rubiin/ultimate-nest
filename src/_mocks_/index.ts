@@ -1,4 +1,5 @@
 import path from "node:path";
+import { Buffer } from "node:buffer";
 import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
 import type { EntityManager } from "@mikro-orm/postgresql";
@@ -117,6 +118,7 @@ export const mockRequest = createMock<NestifyRequest>({
     password: payload.xss,
   },
 });
+
 export const mockResponse = createMock<NestifyResponse>();
 export const mockAmqConnection = createMock<AmqpConnection>();
 export const mockCloudinaryService = createMock<CloudinaryService>();

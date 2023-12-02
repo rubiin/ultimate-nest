@@ -1,3 +1,4 @@
+import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 import { SENTRY_DSN_REGEX } from "@common/constant";

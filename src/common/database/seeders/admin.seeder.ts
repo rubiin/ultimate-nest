@@ -1,3 +1,4 @@
+import process from "node:process";
 import type { EntityManager } from "@mikro-orm/core";
 import { Seeder } from "@mikro-orm/seeder";
 import { Roles } from "@common/@types";

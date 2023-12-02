@@ -1,5 +1,6 @@
 import "@total-typescript/ts-reset";
 
+import process from "node:process";
 import { AppUtils, HelperService } from "@common/helpers";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";

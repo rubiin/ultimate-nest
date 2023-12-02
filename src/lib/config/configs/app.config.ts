@@ -1,3 +1,4 @@
+import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
 import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant";
