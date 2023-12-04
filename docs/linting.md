@@ -31,6 +31,11 @@ npm run  lint
 npm run lint:fix
 ```
 
+```bash
+# View all eslint rules which are used in the project
+npm run lint:view
+```
+
 See `package.json` to update.
 
 ### Pre-commit
@@ -61,5 +66,5 @@ Note: This uses eslint flat config, which is the recommended way to configure es
   possible, because dynamic configurations are simply more powerful, able to respond to environment variables and much
   more.
 
-The linting rules can be found at [@rubiin/eslint-config](https://github.com/rubiin/eslint-config) which
+The linting rules can be found at [@antfu/eslint-config](https://github.com/antfu/eslint-config) which
 has more than 100 powerful ESLint rules that help prevent bugs and enforce conventions.

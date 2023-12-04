@@ -39,6 +39,7 @@
     "build": "nest build",
     "lint": "ESLINT_USE_FLAT_CONFIG=true eslint '{src,test}/**/*.ts' --cache",
     "lint:fix": "ESLINT_USE_FLAT_CONFIG=true eslint '{src,test}/**/*.ts' --cache --fix",
+    "lint:view": "npx eslint-flat-config-viewer",
     "orm": "npx mikro-orm",
     "sample": "cd env; npx  sample-env --env .env.dev",
     "start": "nest start",
