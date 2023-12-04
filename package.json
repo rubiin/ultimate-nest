@@ -74,7 +74,7 @@
     "@nestjs/core": "10.2.10",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
-    "@nestjs/passport": "^10.0.2",
+    "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.2.10",
     "@nestjs/platform-socket.io": "^10.2.10",
     "@nestjs/schedule": "^4.0.0",
@@ -200,8 +200,8 @@
   },
   "pnpm": {
     "overrides": {
-      "axios@>=0.8.1 <1.6.0": ">=1.6.0",
-      "sharp@<0.32.6": ">=0.32.6"
+      "axios@>=0.8.1 <1.6.0": "1.6.0",
+      "sharp": "^0.32.6"
     }
   }
 }
