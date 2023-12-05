@@ -13,7 +13,7 @@ import { MailModuleOptions } from "./mailer.options";
 
 interface MailOptions extends Partial<SendMailOptions> {
   template: string
-  replacements: Record<string, any>
+  replacements: Record<string, string>
 }
 
 @Injectable()

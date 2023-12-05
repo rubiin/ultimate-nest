@@ -1,3 +1,6 @@
+import type {
+  FilterQuery,
+} from "@mikro-orm/core";
 import {
   BeforeCreate,
 
@@ -129,3 +132,10 @@ export class User extends BaseEntity {
       this.password = await HelperService.hashString(this.password);
   }
 }
+
+type A = FilterQuery<User>;
+
+export const x: A = {
+  username: "1",
+  idx: "1",
+};

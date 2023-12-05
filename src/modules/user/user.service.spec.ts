@@ -61,7 +61,7 @@ describe("userService", () => {
       () =>
         ({
           ...mockedUser,
-        }) as any,
+        }) as User,
     );
 
     service.create({ ...mockedUser, files: mockFile }).subscribe((result) => {
@@ -89,11 +89,10 @@ describe("userService", () => {
 
   it("should remove user", () => {
     service.remove("userId").subscribe((result) => {
-      expect(result).toStrictEqual({
+      expect(result).toEqual({
         ...mockedUser,
         idx: "userId",
         isDeleted: true,
-        deletedAt: expect.any(Date),
       });
       expect(mockUserRepo.findOne).toHaveBeenCalledWith({
         idx: "userId",

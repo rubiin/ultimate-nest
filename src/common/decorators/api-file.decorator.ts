@@ -93,12 +93,12 @@ export function ApiFiles(options_?: ApiFilesOptions) {
  */
 
 export function ApiFileFields(options: (MulterField & { required?: boolean })[], localOptions?: MulterOptions) {
-  const bodyProperties: Record<string, SchemaObject | ReferenceObject> = Object.assign(
+  const bodyProperties = Object.assign(
     {},
     ...options.map((field) => {
       return { [field.name]: { type: "string", format: "binary" } };
     }),
-  );
+  ) as Record<string, SchemaObject | ReferenceObject>;
 
   return applyDecorators(
     UseInterceptors(FileFieldsInterceptor(options, localOptions)),
