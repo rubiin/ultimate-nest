@@ -22,7 +22,7 @@ export class RequestSanitizerInterceptor implements NestInterceptor {
       request.body = this.cleanObject(request.body);
   }
 
-  cleanObject(object: Record<string, any> | null | undefined) {
+  cleanObject(object: S) {
     if (!object)
       return object;
 

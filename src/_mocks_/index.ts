@@ -19,12 +19,14 @@ import type { CursorPaginationDto } from "@common/dtos";
 import type { BaseRepository } from "@common/database";
 import type { File } from "@common/@types";
 import { PaginationType, Roles } from "@common/@types";
+import type { FilterQuery } from "@mikro-orm/core";
 import { ref } from "@mikro-orm/core";
 
 export const mockedUser = {
   idx: "idx",
   username: "username",
   password: "password",
+  bio: "bio",
   firstName: "firstName",
   lastName: "lastName",
   email: "email",
@@ -119,6 +121,7 @@ export const mockRequest = createMock<NestifyRequest>({
   },
 });
 
+
 export const mockResponse = createMock<NestifyResponse>();
 export const mockAmqConnection = createMock<AmqpConnection>();
 export const mockCloudinaryService = createMock<CloudinaryService>();
@@ -155,8 +158,8 @@ mockUserRepo.softRemoveAndFlush.mockImplementation((entity) => {
   return of(entity);
 });
 
-mockUserRepo.findOne.mockImplementation((options: any) => {
-  if (options.idx) {
+mockUserRepo.findOne.mockImplementation((options: FilterQuery<User>) => {
+  if (options?.idx) {
     return Promise.resolve({
       user: mockedUser,
       idx: options.idx,
@@ -174,7 +177,7 @@ mockUserRepo.findOne.mockImplementation((options: any) => {
   } as any);
 });
 
-mockPostRepo.findOne.mockImplementation((options: any) => {
+mockPostRepo.findOne.mockImplementation((options) => {
   return Promise.resolve({
     user: mockedUser,
     ...mockedPost,
@@ -196,14 +199,14 @@ mockPostRepo.softRemoveAndFlush.mockImplementation((entity) => {
   return of(entity);
 });
 
-mockOtpLogRepo.findOne.mockImplementation((options: any) =>
+mockOtpLogRepo.findOne.mockImplementation(options =>
   Promise.resolve({
     user: mockedUser,
     idx: options.idx,
   } as any),
 );
 
-mockProtocolRepo.findOne.mockImplementation((options: any) =>
+mockProtocolRepo.findOne.mockImplementation(options =>
   Promise.resolve({
     ...mockedProtocol,
     idx: options.idx,

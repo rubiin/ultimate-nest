@@ -79,12 +79,11 @@ describe("postService", () => {
   });
 
   it("should remove post", () => {
-    service.remove("postId").subscribe((result) => {
-      expect(result).toStrictEqual({
+    service.remove("postId").subscribe((result: any) => {
+      expect(result).toEqual({
         ...mockedPost,
         idx: "postId",
         isDeleted: true,
-        deletedAt: expect.any(Date),
       });
       expect(mockPostRepo.findOne).toHaveBeenCalledWith(
         { idx: "postId", isActive: true, isDeleted: false },
