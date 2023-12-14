@@ -1,4 +1,4 @@
-import type { Ref } from "@mikro-orm/core";
+import type { Ref } from "@mikro-orm/postgresql";
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -12,7 +12,7 @@ import {
   OneToMany,
   Property,
   Rel,
-} from "@mikro-orm/core";
+} from "@mikro-orm/postgresql";
 import { slugify } from "helper-fns";
 import { BaseEntity } from "@common/database";
 import { PostStateEnum } from "@common/@types";
@@ -38,6 +38,10 @@ export class Post extends BaseEntity {
 
   @Property()
   readCount? = 0;
+
+
+  @Property()
+  published = false;
 
   @Property()
   favoritesCount? = 0;

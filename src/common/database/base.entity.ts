@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import { Entity, PrimaryKey, Property } from "@mikro-orm/postgresql";
 import { ApiHideProperty } from "@nestjs/swagger";
 import { HelperService } from "@common/helpers";
 

@@ -27,7 +27,7 @@ for [PostgreSQL](https://www.postgresql.org/), but you can use any database.
     ```ts
     // /src/entities/post.entity.ts
     import { BaseEntity } from "@common/database";
-    import { Entity, Property } from "@mikro-orm/core";
+    import { Entity, Property } from "@mikro-orm/postgresql";
 
     @Entity()
     export class Post extends BaseEntity {

@@ -9,7 +9,7 @@ import {
   EventArgs,
   ManyToMany,
   Property,
-} from "@mikro-orm/core";
+} from "@mikro-orm/postgresql";
 import { slugify } from "helper-fns";
 import { BaseEntity } from "@common/database";
 import { Post } from "./post.entity";

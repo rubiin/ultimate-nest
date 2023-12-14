@@ -1,6 +1,7 @@
-import type { EntityManager } from "@mikro-orm/core";
-import { Seeder, faker } from "@mikro-orm/seeder";
+import type { EntityManager } from "@mikro-orm/postgresql";
+import { Seeder } from "@mikro-orm/seeder";
 import { randomNumber } from "helper-fns";
+import { randAddress, randAmericanFootballTeam, randCatchPhrase } from "@ngneat/falso";
 import { PostFactory, UserFactory } from "../factories";
 
 /**
@@ -17,20 +18,20 @@ export class UserSeeder extends Seeder {
           author: user,
           comments: [
             {
-              body: faker.lorem.words(randomNumber(4, 8)),
+              body: randCatchPhrase(),
             },
             {
-              body: faker.lorem.words(randomNumber(4, 8)),
+              body: randCatchPhrase(),
             },
           ],
           tags: [
             {
-              title: faker.system.fileName() + Date.now(),
-              description: faker.lorem.sentence(1),
+              title: randAmericanFootballTeam(),
+              description: randCatchPhrase(),
             },
             {
-              title: faker.system.fileName() + Date.now(),
-              description: faker.lorem.sentence(1),
+              title: randAddress().street,
+              description: randCatchPhrase(),
             },
           ],
         });
