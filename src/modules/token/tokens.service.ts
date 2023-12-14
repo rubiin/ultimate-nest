@@ -1,5 +1,5 @@
 import { TokenExpiredError } from "jsonwebtoken";
-import { EntityRepository } from "@mikro-orm/core";
+import { EntityRepository } from "@mikro-orm/postgresql";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";

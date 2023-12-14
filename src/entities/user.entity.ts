@@ -1,6 +1,6 @@
 import type {
   FilterQuery,
-} from "@mikro-orm/core";
+} from "@mikro-orm/postgresql";
 import {
   BeforeCreate,
 
@@ -17,7 +17,7 @@ import {
   OneToMany,
   Property,
   wrap,
-} from "@mikro-orm/core";
+} from "@mikro-orm/postgresql";
 import { Roles } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import { HelperService } from "@common/helpers";

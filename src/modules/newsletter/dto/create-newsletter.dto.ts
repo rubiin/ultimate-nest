@@ -22,5 +22,5 @@ export class CreateNewsletterDto {
    */
   @IsDateField()
   @MinDate(new Date())
-    sentAt!: string;
+    sentAt!: Date;
 }

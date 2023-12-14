@@ -1,4 +1,4 @@
-import type { Faker } from "@mikro-orm/seeder";
+
 import { Factory } from "@mikro-orm/seeder";
 import { Protocol } from "@entities";
 
@@ -6,7 +6,7 @@ import { Protocol } from "@entities";
 export class ProtocolFactory extends Factory<Protocol> {
   model = Protocol;
 
-  definition(_faker: Faker): Partial<Protocol> {
+  definition(): Partial<Protocol> {
     return {
       loginAttemptnumbererval: 10,
       loginnumberervalUnit: "m",

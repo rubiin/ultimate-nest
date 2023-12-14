@@ -1,6 +1,6 @@
 import process from "node:process";
 import chalk from "chalk";
-import type { EntityManager } from "@mikro-orm/core";
+import type { EntityManager } from "@mikro-orm/postgresql";
 import { Seeder } from "@mikro-orm/seeder";
 import { Logger } from "@nestjs/common";
 import { UserSeeder } from "./user.seeder";

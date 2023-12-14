@@ -1,5 +1,5 @@
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { EntityManager } from "@mikro-orm/core";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { ConfigService } from "@nestjs/config";
 import type { TestingModule } from "@nestjs/testing";

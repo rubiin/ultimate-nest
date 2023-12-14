@@ -1,5 +1,5 @@
 import { createMock } from "@golevelup/ts-jest";
-import { EntityManager } from "@mikro-orm/core";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { Test } from "@nestjs/testing";
 import { User } from "@entities";
 import { IsUniqueConstraint } from "./is-unique.validator";

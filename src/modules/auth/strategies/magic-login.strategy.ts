@@ -1,4 +1,4 @@
-import type { Loaded } from "@mikro-orm/core";
+import type { Loaded } from "@mikro-orm/postgresql";
 import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
