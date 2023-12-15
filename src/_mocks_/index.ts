@@ -121,7 +121,6 @@ export const mockRequest = createMock<NestifyRequest>({
   },
 });
 
-
 export const mockResponse = createMock<NestifyResponse>();
 export const mockAmqConnection = createMock<AmqpConnection>();
 export const mockCloudinaryService = createMock<CloudinaryService>();
@@ -159,13 +158,13 @@ mockUserRepo.softRemoveAndFlush.mockImplementation((entity) => {
 });
 
 mockUserRepo.findOne.mockImplementation((options: FilterQuery<User>) => {
-  if (options?.idx) {
+  if ("idx" in options) {
     return Promise.resolve({
       user: mockedUser,
       idx: options.idx,
     } as any);
   }
-  else if (options.username) {
+  else if ("username" in options) {
     return Promise.resolve({
       ...mockedUser,
       username: options.username,
@@ -200,6 +199,7 @@ mockPostRepo.softRemoveAndFlush.mockImplementation((entity) => {
 });
 
 mockOtpLogRepo.findOne.mockImplementation(options =>
+
   Promise.resolve({
     user: mockedUser,
     idx: options.idx,

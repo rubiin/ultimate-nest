@@ -10,7 +10,6 @@ import { BaseRepository } from "@common/database";
 import type { OauthResponse } from "@common/@types";
 import { randAnimal, randCatchPhrase, randFirstName } from "@ngneat/falso";
 
-
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
   /**

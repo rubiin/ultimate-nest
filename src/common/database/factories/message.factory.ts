@@ -1,4 +1,4 @@
-import { randProductDescription } from '@ngneat/falso';
+import { randProductDescription } from "@ngneat/falso";
 import { Factory } from "@mikro-orm/seeder";
 import { Message } from "@entities";
 

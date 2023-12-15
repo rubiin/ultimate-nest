@@ -1,10 +1,10 @@
 import path from "node:path";
 
-import { faker } from "@mikro-orm/seeder";
 import { pick } from "helper-fns";
 import request from "supertest";
 import type { OffsetPaginationResponse } from "@common/@types";
 import { Roles } from "@common/@types";
+import { randEmail, randUserName } from "@ngneat/falso";
 import type { SuperTestBody } from "../fixtures";
 import { APP_URL, user, userDto } from "../fixtures";
 
@@ -45,8 +45,8 @@ describe("UserController (e2e)", () => {
     });
 
     it("should self register a new user /users/signup (POST)", () => {
-      const email = faker.internet.email();
-      const username = faker.internet.userName();
+      const email = randEmail();
+      const username = randUserName();
 
       return request(app)
         .post("/users/signup")
@@ -65,7 +65,7 @@ describe("UserController (e2e)", () => {
         .post("/users/signup")
         .send({
           ...pick(userDto, ["roles"]),
-          email: faker.internet.email(),
+          email: randEmail(),
         })
         .expect(({ body }: SuperTestBody) => {
           expect(body.errors).toStrictEqual(["property roles should not exist"]);

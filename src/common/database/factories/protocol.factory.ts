@@ -1,4 +1,3 @@
-
 import { Factory } from "@mikro-orm/seeder";
 import { Protocol } from "@entities";
 

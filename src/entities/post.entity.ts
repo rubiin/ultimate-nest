@@ -39,7 +39,6 @@ export class Post extends BaseEntity {
   @Property()
   readCount? = 0;
 
-
   @Property()
   published = false;
 
