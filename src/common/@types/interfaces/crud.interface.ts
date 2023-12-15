@@ -15,7 +15,7 @@ export interface Crud<
     Entity extends BaseEntity,
     PaginationRequest extends TPaginationRequest,
     CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
-    UpdateDto extends  Partial<EntityDTO<FromEntityType<Entity>>> =  Partial<EntityDTO<FromEntityType<Entity>>>,
+    UpdateDto extends Partial<EntityDTO<FromEntityType<Entity>>> = Partial<EntityDTO<FromEntityType<Entity>>>,
 > {
   findAll(query: PaginationRequest): Observable<PaginationResponse<Entity>>
 

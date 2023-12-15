@@ -21,7 +21,7 @@ import { baseOptions } from "@common/database/orm.config";
         }),
     }),
     MikroOrmModule.forFeature({
-      entities: baseOptions.entities
+      entities: baseOptions.entities,
     }),
   ],
   exports: [MikroOrmModule],

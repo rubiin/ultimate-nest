@@ -132,7 +132,7 @@ export class PostService {
             switchMap((tags) => {
               this.postRepository.assign(post, {
                 ...omit(dto, ["tags", "categories"]),
-                tags
+                tags,
               });
 
               return from(this.em.flush()).pipe(map(() => post));

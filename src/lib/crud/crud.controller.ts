@@ -52,7 +52,7 @@ export function ControllerFactory<
         T extends BaseEntity,
         Q extends PaginationRequest,
         C extends RequiredEntityData<T>,
-        U extends Partial<EntityDTO<FromEntityType<T>>>
+        U extends Partial<EntityDTO<FromEntityType<T>>>,
     > implements Crud<T, Q, C, U> {
     protected service!: BaseService<T, Q, C, U>;
 

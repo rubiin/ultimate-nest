@@ -1,6 +1,6 @@
 import process from "node:process";
-import { faker } from "@mikro-orm/seeder";
 import { Roles } from "@common/@types";
+import { randEmail, randFirstName, randLastName } from "@ngneat/falso";
 
 export const user: Record<string, { email: string, password: string }> = {
   admin: {
@@ -18,9 +18,9 @@ export const user: Record<string, { email: string, password: string }> = {
 };
 
 export const userDto = {
-  firstName: faker.name.firstName(),
-  lastName: faker.name.firstName(),
-  email: faker.internet.email(),
+  firstName: randFirstName(),
+  lastName: randLastName(),
+  email: randEmail(),
   username: "username",
   roles: [Roles.AUTHOR],
   password: process.env.USER_PASSWORD!,

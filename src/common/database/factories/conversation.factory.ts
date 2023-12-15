@@ -1,4 +1,4 @@
-import { randMovie } from '@ngneat/falso';
+import { randMovie } from "@ngneat/falso";
 import { Factory } from "@mikro-orm/seeder";
 import { Conversation } from "@entities";
 
