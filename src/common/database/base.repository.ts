@@ -1,5 +1,5 @@
+/* eslint-disable ts/dot-notation */
 /* eslint-disable ts/no-floating-promises */
-/* eslint-disable-file ts/dot-notation */
 
 import { Buffer } from "node:buffer";
 import type {
@@ -9,6 +9,7 @@ import type {
   FindOptions,
   Loaded,
   OrderDefinition,
+  QBFilterQuery,
   QueryOrderMap,
 } from "@mikro-orm/postgresql";
 import {
@@ -46,7 +47,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @param where - The `where` parameter is a filter query that specifies the conditions for the existence check.
    * @returns The method is returning an Observable of type boolean.
    */
-  exists(where: FilterQuery<T>): Observable<boolean> {
+  exists(where: QBFilterQuery<T>): Observable<boolean> {
     return from(this.qb().where(where).getCount()).pipe(map(count => count > 0));
   }
 
@@ -465,12 +466,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const countWhere = where;
 
       // @ts-expect-error - because of runtime issues
-
-      countWhere.$and = this.getFilters("createdAt", decoded, oppositeOrder);
+      countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
       // @ts-expect-error - because of runtime issues
-      where["$and "] = this.getFilters("createdAt", decoded, queryOrder);
+      where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
     }
 
     const [entities, count] = await repo.findAndCount(where, {
