@@ -1,8 +1,8 @@
-import type { EntityDTO, FromEntityType, RequiredEntityData } from "@mikro-orm/postgresql";
 import type { Observable } from "rxjs";
 
 import type { BaseEntity } from "@common/database";
 import type { User } from "@entities";
+import type { CreateEntityType, UpdateEntityType } from "../types/common.types";
 import type {
   PaginationResponse,
   PaginationRequest as TPaginationRequest,
@@ -14,8 +14,8 @@ import type {
 export interface Crud<
     Entity extends BaseEntity,
     PaginationRequest extends TPaginationRequest,
-    CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
-    UpdateDto extends Partial<EntityDTO<FromEntityType<Entity>>> = Partial<EntityDTO<FromEntityType<Entity>>>,
+    CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
+    UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
 > {
   findAll(query: PaginationRequest): Observable<PaginationResponse<Entity>>
 
