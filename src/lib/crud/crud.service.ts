@@ -1,9 +1,9 @@
-import type { Crud, PaginationRequest, PaginationResponse } from "@common/@types";
+import type { CreateEntityType, Crud, PaginationRequest, PaginationResponse, UpdateEntityType } from "@common/@types";
 import { CursorType, PaginationType, QueryOrder } from "@common/@types";
 import type { BaseEntity, BaseRepository } from "@common/database";
 import type { User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import type { EntityDTO, EntityData, FilterQuery, FromEntityType, RequiredEntityData } from "@mikro-orm/postgresql";
+import type { EntityData, FilterQuery, FromEntityType } from "@mikro-orm/postgresql";
 import { NotFoundException } from "@nestjs/common";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
@@ -11,8 +11,8 @@ import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 export abstract class BaseService<
     Entity extends BaseEntity,
     PRequest extends PaginationRequest,
-    CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
-    UpdateDto extends Partial<EntityDTO<FromEntityType<Entity>>> = Partial<EntityDTO<FromEntityType<Entity>>>,
+    CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
+    UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
 > implements Crud<Entity, PRequest> {
   protected searchField!: keyof Entity;
   protected queryName = "entity";

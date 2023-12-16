@@ -2,7 +2,7 @@ import path from "node:path";
 import { Buffer } from "node:buffer";
 import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
-import type { EntityManager } from "@mikro-orm/postgresql";
+import type { EntityManager , FilterQuery} from "@mikro-orm/postgresql";
 import type { CallHandler, ExecutionContext } from "@nestjs/common";
 import type { ConfigService } from "@nestjs/config";
 import type { Reflector } from "@nestjs/core";
@@ -19,8 +19,7 @@ import type { CursorPaginationDto } from "@common/dtos";
 import type { BaseRepository } from "@common/database";
 import type { File } from "@common/@types";
 import { PaginationType, Roles } from "@common/@types";
-import type { FilterQuery } from "@mikro-orm/core";
-import { ref } from "@mikro-orm/core";
+import { ref } from "@mikro-orm/postgresql";
 
 export const mockedUser = {
   idx: "idx",
