@@ -25,6 +25,7 @@ for [PostgreSQL](https://www.postgresql.org/), but you can use any database.
 1. Create entity file with extension `.entity.ts`. For example `post.entity.ts`:
 
     ```ts
+
     // /src/entities/post.entity.ts
     import { BaseEntity } from "@common/database";
     import { Entity, Property } from "@mikro-orm/postgresql";
@@ -56,11 +57,12 @@ for [PostgreSQL](https://www.postgresql.org/), but you can use any database.
 
       // Here any fields what you need
     }
+
     ```
 
 2. Next, generate migration file:
 
-    ```bash
+    ```sh
     NODE_ENV=dev npm run orm migration:create
     ```
 
