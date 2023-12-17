@@ -453,7 +453,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     first: number,
     order: QueryOrder,
     repo: EntityRepository<T>,
-    where: FilterQuery<T>,
+    where: FilterQuery<T> & { $and: any },
     after?: string,
     afterCursor: CursorType = CursorType.STRING,
   ): Promise<CursorPaginationResponse<T>> {
@@ -465,11 +465,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const oppositeOrder = getOppositeOrder(order);
       const countWhere = where;
 
-      // @ts-expect-error - because of runtime issues
       countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
-      // @ts-expect-error - because of runtime issues
       where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
     }
 

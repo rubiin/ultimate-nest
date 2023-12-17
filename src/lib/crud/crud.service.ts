@@ -3,7 +3,7 @@ import { CursorType, PaginationType, QueryOrder } from "@common/@types";
 import type { BaseEntity, BaseRepository } from "@common/database";
 import type { User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import type { EntityData, FilterQuery, FromEntityType } from "@mikro-orm/postgresql";
+import type { EntityData, EntityKey, FilterQuery, FromEntityType } from "@mikro-orm/postgresql";
 import { NotFoundException } from "@nestjs/common";
 import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
@@ -14,7 +14,7 @@ export abstract class BaseService<
     CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
     UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
 > implements Crud<Entity, PRequest> {
-  protected searchField!: keyof Entity;
+  protected searchField!: EntityKey<Entity>;
   protected queryName = "entity";
 
   protected constructor(private readonly repository: BaseRepository<Entity>) {}

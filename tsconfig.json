@@ -22,9 +22,6 @@
         "./generated"
       ]
     },
-    "types": [
-      "./src/common/@types/typings/globals.d.ts"
-    ],
     "declaration": true,
     "outDir": "dist"
   },
@@ -32,5 +29,6 @@
     "test/**/*",
     "src/**/*",
     "eslint.config.js"
-  ]
+  ],
+  "typeRoots": ["./node_modules/@types", "./src/common/@types/typings"]
 }

@@ -1,4 +1,4 @@
-import type { AutoPath } from "@mikro-orm/core/typings";
+import type { AutoPath, EntityKey } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager, ref } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
@@ -58,7 +58,7 @@ export class PostService {
   }
 
   /* Finding a post by slug, and then returning the comments of that post */
-  findOne(slug: string, populate: AutoPath<Post, keyof Post>[] = []): Observable<Post> {
+  findOne(slug: string, populate: AutoPath<Post, EntityKey<Post>>[] = []): Observable<Post> {
     return from(
       this.postRepository.findOne(
         {
