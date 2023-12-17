@@ -171,7 +171,7 @@ mockUserRepo.findOne.mockImplementation((options: FilterQuery<User>) => {
   return Promise.resolve(mockedUser);
 });
 
-mockPostRepo.findOne.mockImplementation((options: FilterQuery<Post> ) => {
+mockPostRepo.findOne.mockImplementation((options: FilterQuery<Post>) => {
   return Promise.resolve({
     user: mockedUser,
     ...mockedPost,

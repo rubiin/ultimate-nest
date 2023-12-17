@@ -1,4 +1,4 @@
-import type { AutoPath } from "@mikro-orm/core/typings";
+import type { AutoPath, EntityKey } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
@@ -12,10 +12,10 @@ import type { ProfileData } from "@common/@types";
 @Injectable()
 export class ProfileService {
   constructor(
-        @InjectRepository(User)
-        private userRepository: BaseRepository<User>,
-        private readonly em: EntityManager,
-  ) {}
+    @InjectRepository(User)
+    private userRepository: BaseRepository<User>,
+    private readonly em: EntityManager,
+  ) { }
 
   /**
    * "Get a user by their username, and populate the specified fields."
@@ -23,12 +23,12 @@ export class ProfileService {
    * The first parameter is the username, which is a string. The second parameter is an array of fields
    * to populate
    * @param username - string - The username of the user to get.
-   * @param populate - AutoPath<User, keyof User>[] = []
+   * @param populate - AutoPath<User,EntityKey<User>>[] = []
    * @returns Observable<User>
    */
   getProfileByUsername(
     username: string,
-        populate: AutoPath<User, keyof User>[] = [],
+    populate: AutoPath<User, EntityKey<User>>[] = [],
   ): Observable<User> {
     return from(
       this.userRepository.findOne(

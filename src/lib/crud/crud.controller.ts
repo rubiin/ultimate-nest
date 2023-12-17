@@ -10,13 +10,12 @@ import type { BaseService } from "./crud.service";
 
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {
-  constructor(private readonly targetTypes: { body?: Type, query?: Type, param?: Type }) {
+  constructor(private readonly targetTypes: { body?: Type<any>, query?: Type<any>, param?: Type<any>, custom?: Type<any> }) {
     super(AppUtils.validationPipeOptions());
   }
 
   async transform(value: any, metadata: ArgumentMetadata) {
-    // @ts-expect-error "metatype" is a private property
-    const targetType = this.targetTypes[metadata.type] as Type;
+    const targetType = this.targetTypes[metadata.type] as Type<any>;
 
     if (!targetType)
       return super.transform(value, metadata);
