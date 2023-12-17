@@ -7,7 +7,7 @@ module.exports = rubiin({
   }, // enable stylistic rules
   yaml: true, // enable yaml rules,
   jsonc: true, // enable jsonc rules
-  markdown: true, // enable markdown rules
+  markdown: false, // enable markdown rules
   gitignore: true, // enable gitignore rules,
   typescript: {
     tsconfigPath: "tsconfig.json"

@@ -6,6 +6,7 @@ logger module that provides integration with the Pino logging library in a Nest.
 Import the LoggerModule from nestjs-pino in your module file:
 
 ```ts
+
 import { Module } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
 
@@ -22,6 +23,7 @@ import { LoggerModule } from "nestjs-pino";
 	exports: [LoggerModule],
 })
 export class NestPinoModule {}
+
 ```
 
 1. Configure the Pino logger options using the forRootAsync() method. In the provided factory function, you can specify
