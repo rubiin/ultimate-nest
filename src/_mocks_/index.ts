@@ -2,7 +2,7 @@ import path from "node:path";
 import { Buffer } from "node:buffer";
 import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
-import type { EntityManager , FilterQuery} from "@mikro-orm/postgresql";
+import type { EntityManager, FilterQuery } from "@mikro-orm/postgresql";
 import type { CallHandler, ExecutionContext } from "@nestjs/common";
 import type { ConfigService } from "@nestjs/config";
 import type { Reflector } from "@nestjs/core";
@@ -110,9 +110,7 @@ export const mockRequest = createMock<NestifyRequest>({
     clearCache: "true",
     ...payload,
   },
-  params: {
-    ...payload,
-  },
+  params: payload,
 
   body: {
     ...payload,
@@ -161,32 +159,29 @@ mockUserRepo.findOne.mockImplementation((options: FilterQuery<User>) => {
     return Promise.resolve({
       user: mockedUser,
       idx: options.idx,
-    } as any);
+    });
   }
   else if ("username" in options) {
     return Promise.resolve({
       ...mockedUser,
       username: options.username,
-    } as any);
+    });
   }
 
-  return Promise.resolve({
-    ...mockedUser,
-  } as any);
+  return Promise.resolve(mockedUser);
 });
 
-mockPostRepo.findOne.mockImplementation((options) => {
+mockPostRepo.findOne.mockImplementation((options: FilterQuery<Post> ) => {
   return Promise.resolve({
     user: mockedUser,
     ...mockedPost,
-    idx: options.idx,
-  } as any);
+    idx: options.title,
+  });
 });
 
 mockRefreshRepo.findOne.mockImplementation(() =>
-  Promise.resolve({
-    ...refreshToken,
-  } as any),
+  Promise.resolve(refreshToken,
+  ),
 );
 
 mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(1);
@@ -202,14 +197,14 @@ mockOtpLogRepo.findOne.mockImplementation(options =>
   Promise.resolve({
     user: mockedUser,
     idx: options.idx,
-  } as any),
+  }),
 );
 
 mockProtocolRepo.findOne.mockImplementation(options =>
   Promise.resolve({
     ...mockedProtocol,
     idx: options.idx,
-  } as any),
+  }),
 );
 
 mockUserRepo.findAndPaginate.mockImplementation(() =>
