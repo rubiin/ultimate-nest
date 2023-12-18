@@ -175,13 +175,12 @@ mockPostRepo.findOne.mockImplementation((options: FilterQuery<Post>) => {
   return Promise.resolve({
     user: mockedUser,
     ...mockedPost,
-    idx: options.title,
+    title: options.title,
   });
 });
 
 mockRefreshRepo.findOne.mockImplementation(() =>
-  Promise.resolve(refreshToken,
-  ),
+  Promise.resolve(refreshToken)
 );
 
 mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(1);
