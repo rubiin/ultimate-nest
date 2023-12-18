@@ -1,4 +1,4 @@
-import type { Faker } from "@mikro-orm/seeder";
+import { randAwsRequestId, randProductDescription } from "@ngneat/falso";
 import { Factory } from "@mikro-orm/seeder";
 import { randomNumber } from "helper-fns";
 import { Post } from "@entities";
@@ -7,11 +7,11 @@ import { Post } from "@entities";
 export class PostFactory extends Factory<Post> {
   model = Post;
 
-  definition(faker: Faker): Partial<Post> {
+  definition(): Partial<Post> {
     return {
-      title: faker.music.songName() + Date.now(),
-      content: faker.lorem.sentence(randomNumber(2, 4)),
-      description: faker.lorem.words(randomNumber(10, 20)),
+      title: randAwsRequestId(),
+      content: randProductDescription(),
+      description: randProductDescription(),
       readingTime: randomNumber(10, 100),
       favoritesCount: randomNumber(1, 100),
       readCount: randomNumber(10, 100),

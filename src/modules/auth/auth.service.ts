@@ -1,5 +1,5 @@
 import process from "node:process";
-import type { FilterQuery } from "@mikro-orm/core";
+import type { FilterQuery } from "@mikro-orm/postgresql";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 import {

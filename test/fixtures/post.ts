@@ -1,10 +1,10 @@
-import { faker } from "@mikro-orm/seeder";
+import { randAbbreviation, randBrand, randCatchPhrase } from "@ngneat/falso";
 
 export const postDto = {
-  title: faker.name.firstName(),
-  description: faker.name.firstName(),
-  content: faker.lorem.sentence(),
-  tags: [faker.company.name(), faker.company.name()],
+  title: randBrand(),
+  description: randCatchPhrase(),
+  content: randCatchPhrase(),
+  tags: [randAbbreviation(), randAbbreviation()],
 };
 
 export interface SuperTestBody<T = unknown> {

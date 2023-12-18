@@ -1,7 +1,9 @@
 ## ===========================================================> The common stage
 FROM node:21.4.0-slim AS base
 
-RUN npm i -g pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+ENV PNPM_HOME=/usr/local/bin
+
 ## https://engineeringblog.yelp.com/2016/01/dumb-init-an-init-for-docker.html
 RUN apt-get update && apt-get install -y dumb-init curl
 
@@ -10,7 +12,6 @@ FROM base AS dependencies
 
 WORKDIR /app
 COPY pnpm-lock.yaml ./
-RUN --mount=type=cache,id=pnpm,target=/usr/app/.pnpm-store/v3 pnpm fetch
 COPY package.json ./
 RUN pnpm install --offline --shamefully-hoist=true --frozen-lockfile
 

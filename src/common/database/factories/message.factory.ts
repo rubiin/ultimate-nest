@@ -1,4 +1,4 @@
-import type { Faker } from "@mikro-orm/seeder";
+import { randProductDescription } from "@ngneat/falso";
 import { Factory } from "@mikro-orm/seeder";
 import { Message } from "@entities";
 
@@ -6,9 +6,9 @@ import { Message } from "@entities";
 export class MessageFactory extends Factory<Message> {
   model = Message;
 
-  definition(faker: Faker): Partial<Message> {
+  definition(): Partial<Message> {
     return {
-      body: faker.commerce.productDescription(),
+      body: randProductDescription(),
     };
   }
 }

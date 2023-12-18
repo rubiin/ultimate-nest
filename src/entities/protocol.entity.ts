@@ -1,4 +1,4 @@
-import { Entity, Property } from "@mikro-orm/core";
+import { Entity, Property } from "@mikro-orm/postgresql";
 import { BaseEntity } from "@common/database";
 
 // use this model to store the protocol

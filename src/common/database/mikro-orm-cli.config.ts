@@ -1,9 +1,11 @@
 import process from "node:process";
-import type { Options } from "@mikro-orm/core";
+import type { Options } from "@mikro-orm/postgresql";
 import { defineConfig } from "@mikro-orm/postgresql";
 import { Logger } from "@nestjs/common";
 import { config as environmentConfig } from "dotenv";
 import dotEnvExpand from "dotenv-expand";
+import { Migrator } from "@mikro-orm/migrations";
+import { SeedManager } from "@mikro-orm/seeder";
 import { baseOptions } from "./orm.config";
 
 /**
@@ -31,6 +33,7 @@ const config: Options = defineConfig({
   port: process.env.DB_PORT,
   user: process.env.DB_USERNAME,
   host: process.env.DB_HOST,
+  extensions: [Migrator, SeedManager],
 });
 
 export default config;

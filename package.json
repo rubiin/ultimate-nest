@@ -62,11 +62,11 @@
     "@golevelup/nestjs-stripe": "^0.6.4",
     "@golevelup/nestjs-webhooks": "^0.2.17",
     "@ladjs/consolidate": "^1.0.3",
-    "@mikro-orm/core": "^5.9.5",
-    "@mikro-orm/migrations": "^5.9.5",
+    "@mikro-orm/core": "6.0.0-rc.3",
+    "@mikro-orm/migrations": "6.0.0-rc.3",
     "@mikro-orm/nestjs": "^5.2.2",
-    "@mikro-orm/postgresql": "^5.9.5",
-    "@mikro-orm/reflection": "^5.9.5",
+    "@mikro-orm/postgresql": "6.0.0-rc.3",
+    "@mikro-orm/reflection": "6.0.0-rc.3",
     "@mikro-orm/sql-highlighter": "^1.0.1",
     "@nestjs/axios": "^3.0.1",
     "@nestjs/cache-manager": "^2.1.1",
@@ -84,6 +84,7 @@
     "@nestjs/terminus": "^10.2.0",
     "@nestjs/throttler": "^5.1.0",
     "@nestjs/websockets": "^10.2.10",
+    "@ngneat/falso": "^7.1.1",
     "@paralleldrive/cuid2": "^2.2.2",
     "@sentry/hub": "^7.88.0",
     "@sentry/node": "^7.88.0",
@@ -99,7 +100,7 @@
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "eta": "^3.2.0",
-    "firebase-admin": "^11.11.1",
+    "firebase-admin": "^12.0.0",
     "helmet": "^7.1.0",
     "helper-fns": "^2.6.43",
     "ioredis": "^5.3.2",
@@ -140,8 +141,8 @@
     "@firebase/app-compat": "^0.2.25",
     "@firebase/app-types": "^0.9.0",
     "@golevelup/ts-jest": "^0.4.0",
-    "@mikro-orm/cli": "^5.9.5",
-    "@mikro-orm/seeder": "^5.9.5",
+    "@mikro-orm/cli": "6.0.0-rc.3",
+    "@mikro-orm/seeder": "6.0.0-rc.3",
     "@nestjs/cli": "10.2.1",
     "@nestjs/schematics": "10.0.3",
     "@nestjs/testing": "10.2.10",
@@ -202,7 +203,7 @@
   "pnpm": {
     "overrides": {
       "axios@>=0.8.1 <1.6.0": "1.6.0",
-      "sharp": "^0.32.6"
+      "sharp": "^0.33.0"
     }
   }
 }

@@ -8,7 +8,7 @@ import { Strategy } from "passport-google-oauth20";
 import { User } from "@entities";
 import { BaseRepository } from "@common/database";
 import type { OauthResponse } from "@common/@types";
-import { faker } from "@mikro-orm/seeder";
+import { randAnimal, randCatchPhrase, randFirstName } from "@ngneat/falso";
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
@@ -43,8 +43,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
     const { name, emails, photos, username } = profile;
     const user: OauthResponse = {
       email: emails![0]!.value,
-      firstName: name?.givenName ?? faker.color.human(),
-      lastName: name?.familyName ?? faker.animal.cetacean(),
+      firstName: name?.givenName ?? randFirstName(),
+      lastName: name?.familyName ?? randAnimal(),
       accessToken,
     };
 
@@ -64,7 +64,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
         ...omit(user, ["accessToken"]),
         avatar: photos?.[0]?.value ?? randomAvatar(),
         username: username ?? emails![0]!.value,
-        bio: faker.lorem.paragraph(),
+        bio: randCatchPhrase(),
         password: randomString({ length: 10, symbols: true, numbers: true }),
       });
 

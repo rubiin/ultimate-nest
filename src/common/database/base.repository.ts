@@ -1,20 +1,24 @@
+/* eslint-disable ts/dot-notation */
 /* eslint-disable ts/no-floating-promises */
-/* eslint-disable-file ts/dot-notation */
 
 import { Buffer } from "node:buffer";
 import type {
   Dictionary,
-  EntityData,
   EntityManager,
   FilterQuery,
   FindOptions,
   Loaded,
-} from "@mikro-orm/core";
-import { EntityRepository } from "@mikro-orm/postgresql";
+  OrderDefinition,
+  QBFilterQuery,
+  QueryOrderMap,
+} from "@mikro-orm/postgresql";
+import {
+  EntityRepository,
+} from "@mikro-orm/postgresql";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
+import { formatSearch } from "helper-fns";
 import type { Observable } from "rxjs";
 import { from, map, of, switchMap, throwError } from "rxjs";
-import { formatSearch } from "helper-fns";
 
 import type {
   CursorPaginationResponse,
@@ -43,7 +47,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @param where - The `where` parameter is a filter query that specifies the conditions for the existence check.
    * @returns The method is returning an Observable of type boolean.
    */
-  exists(where: FilterQuery<T>): Observable<boolean> {
+  exists(where: QBFilterQuery<T>): Observable<boolean> {
     return from(this.qb().where(where).getCount()).pipe(map(count => count > 0));
   }
 
@@ -104,32 +108,6 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     this.em.remove(entity);
 
     return entity;
-  }
-
-  /**
-   * It finds an entity by the given `where` clause, and then updates it with the given `update` object
-   * @param where - FilterQuery<T>
-   * @param update - Partial<EntityDTO<Loaded<T>>>
-   * @returns The entity that was updated
-   */
-  findAndUpdate(where: FilterQuery<T>, update: EntityData<T>): Observable<T> {
-    return from(this.findOne(where)).pipe(
-      switchMap((entity) => {
-        if (!entity) {
-          return throwError(
-            () =>
-              new NotFoundException(
-                translate(itemDoesNotExistKey, {
-                  args: { item: this.getEntityName() },
-                }),
-              ),
-          );
-        }
-        this.em.assign(entity, update);
-
-        return from(this.em.persistAndFlush(entity)).pipe(map(() => entity));
-      }),
-    );
   }
 
   /**
@@ -258,10 +236,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   private getOrderBy<T>(
     cursor: keyof T,
     order: QueryOrder,
-  ): Record<string, QueryOrder | Record<string, QueryOrder>> {
+  ): OrderDefinition<T> {
     return {
       [cursor]: order,
-    };
+    } as QueryOrderMap<T>;
   }
 
   /**
@@ -475,7 +453,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     first: number,
     order: QueryOrder,
     repo: EntityRepository<T>,
-    where: FilterQuery<T>,
+    where: FilterQuery<T> & { $and: any },
     after?: string,
     afterCursor: CursorType = CursorType.STRING,
   ): Promise<CursorPaginationResponse<T>> {
@@ -487,13 +465,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const oppositeOrder = getOppositeOrder(order);
       const countWhere = where;
 
-      // @ts-expect-error - because of runtime issues
-
-      countWhere.$and = this.getFilters("createdAt", decoded, oppositeOrder);
+      countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
-      // @ts-expect-error - because of runtime issues
-      where["$and "] = this.getFilters("createdAt", decoded, queryOrder);
+      where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
     }
 
     const [entities, count] = await repo.findAndCount(where, {

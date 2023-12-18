@@ -1,11 +1,10 @@
-import type { AutoPath } from "@mikro-orm/core/typings";
+import type { AutoPath, EntityKey } from "@mikro-orm/core/typings";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager } from "@mikro-orm/postgresql";
+import { EntityManager, ref } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { omit } from "helper-fns";
 import type { Observable } from "rxjs";
 import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
-import { ref } from "@mikro-orm/core";
 
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { Category, Comment, Post, Tag, User } from "@entities";
@@ -59,7 +58,7 @@ export class PostService {
   }
 
   /* Finding a post by slug, and then returning the comments of that post */
-  findOne(slug: string, populate: AutoPath<Post, keyof Post>[] = []): Observable<Post> {
+  findOne(slug: string, populate: AutoPath<Post, EntityKey<Post>>[] = []): Observable<Post> {
     return from(
       this.postRepository.findOne(
         {
@@ -106,6 +105,7 @@ export class PostService {
           author,
           categories,
           tags,
+          published: dto.published ?? false,
         });
 
         return from(this.em.persistAndFlush(post)).pipe(map(() => post));

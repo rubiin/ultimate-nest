@@ -1,6 +1,7 @@
 FROM node:21.4.0-slim
 WORKDIR /usr/src/app
-RUN npm i -g pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+ENV PNPM_HOME=/usr/local/bin
 # pnpm fetch does require only lockfile
 COPY pnpm-lock.yaml package.json ./
 RUN apt-get -y update && apt-get -y install curl

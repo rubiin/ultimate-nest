@@ -38,7 +38,8 @@ export class LoggingInterceptor implements NestInterceptor {
    */
   intercept(context: ExecutionContext, call$: CallHandler): Observable<unknown> {
     const request = context.switchToHttp().getRequest<NestifyRequest>();
-    const { method, url, body, headers } = request;
+    const { method, url, headers } = request;
+    const body = request.body as Record<string, unknown>;
     const logContext = `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`;
     const message = `Request - ${method} - ${url}`;
 
@@ -93,7 +94,8 @@ export class LoggingInterceptor implements NestInterceptor {
    */
   private logError(error: Error, context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<NestifyRequest>();
-    const { method, url, body } = request;
+    const { method, url } = request;
+    const body = request.body as Record<string, unknown>;
 
     if (error instanceof HttpException) {
       const statusCode: number = error.getStatus();

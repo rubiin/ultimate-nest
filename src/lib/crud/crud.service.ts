@@ -1,20 +1,20 @@
-import type { EntityData, FilterQuery, RequiredEntityData } from "@mikro-orm/core";
-import { NotFoundException } from "@nestjs/common";
-import type { Observable } from "rxjs";
-import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
-import type { Crud, PaginationRequest, PaginationResponse } from "@common/@types";
+import type { CreateEntityType, Crud, PaginationRequest, PaginationResponse, UpdateEntityType } from "@common/@types";
 import { CursorType, PaginationType, QueryOrder } from "@common/@types";
 import type { BaseEntity, BaseRepository } from "@common/database";
 import type { User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import type { EntityData, EntityKey, FilterQuery, FromEntityType } from "@mikro-orm/postgresql";
+import { NotFoundException } from "@nestjs/common";
+import type { Observable } from "rxjs";
+import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 export abstract class BaseService<
     Entity extends BaseEntity,
     PRequest extends PaginationRequest,
-    CreateDto extends RequiredEntityData<Entity> = RequiredEntityData<Entity>,
-    UpdateDto extends EntityData<Entity> = EntityData<Entity>,
+    CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
+    UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
 > implements Crud<Entity, PRequest> {
-  protected searchField!: keyof Entity;
+  protected searchField!: EntityKey<Entity>;
   protected queryName = "entity";
 
   protected constructor(private readonly repository: BaseRepository<Entity>) {}
@@ -108,7 +108,7 @@ export abstract class BaseService<
   update(index: string, dto: UpdateDto): Observable<Entity> {
     return this.findOne(index).pipe(
       switchMap((item) => {
-        this.repository.assign(item, dto);
+        this.repository.assign(item, dto as EntityData<FromEntityType<Entity>>);
 
         return from(this.repository.getEntityManager().flush()).pipe(map(() => item));
       }),

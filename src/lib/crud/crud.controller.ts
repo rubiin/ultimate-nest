@@ -1,23 +1,21 @@
-import type { EntityData, RequiredEntityData } from "@mikro-orm/core";
-import type { ArgumentMetadata, Type } from "@nestjs/common";
-import { Body, Delete, Get, Injectable, Param, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
-import { Observable } from "rxjs";
-import type { Crud, PaginationRequest, PaginationResponse } from "@common/@types";
+import type { CreateEntityType, Crud, PaginationRequest, PaginationResponse, UpdateEntityType } from "@common/@types";
 import type { BaseEntity } from "@common/database";
 import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { AppUtils } from "@common/helpers";
 import { User } from "@entities";
+import type { ArgumentMetadata, Type } from "@nestjs/common";
+import { Body, Delete, Get, Injectable, Param, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Observable } from "rxjs";
 import type { BaseService } from "./crud.service";
 
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {
-  constructor(private readonly targetTypes: { body?: Type, query?: Type, param?: Type }) {
+  constructor(private readonly targetTypes: { body?: Type<any>, query?: Type<any>, param?: Type<any>, custom?: Type<any> }) {
     super(AppUtils.validationPipeOptions());
   }
 
   async transform(value: any, metadata: ArgumentMetadata) {
-    // @ts-expect-error "metatype" is a private property
-    const targetType = this.targetTypes[metadata.type] as Type;
+    const targetType = this.targetTypes[metadata.type] as Type<any>;
 
     if (!targetType)
       return super.transform(value, metadata);
@@ -36,8 +34,8 @@ export class AbstractValidationPipe extends ValidationPipe {
 export function ControllerFactory<
     T extends BaseEntity,
     Q extends PaginationRequest,
-    C extends RequiredEntityData<T>,
-    U extends EntityData<T>,
+    C extends CreateEntityType<T>,
+    U extends UpdateEntityType<T> ,
 >(queryDto: Type<Q>, createDto: Type<C>, updateDto: Type<U>): Type<Crud<T, Q, C, U>> {
   const createPipe = new AbstractValidationPipe({
     body: createDto,
@@ -51,8 +49,8 @@ export function ControllerFactory<
   class CrudController<
         T extends BaseEntity,
         Q extends PaginationRequest,
-        C extends RequiredEntityData<T>,
-        U extends EntityData<T>,
+        C extends CreateEntityType<T>,
+        U extends UpdateEntityType<T>,
     > implements Crud<T, Q, C, U> {
     protected service!: BaseService<T, Q, C, U>;
 

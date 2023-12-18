@@ -1,7 +1,6 @@
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager } from "@mikro-orm/postgresql";
+import { EntityManager, ref } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
-import { ref } from "@mikro-orm/core";
 import type { User } from "@entities";
 import { Conversation, Message } from "@entities";
 import { BaseRepository } from "@common/database";
