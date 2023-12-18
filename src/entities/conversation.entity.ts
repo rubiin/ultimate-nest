@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database";
-import { Collection, Entity, ManyToMany, OneToMany, Property } from "@mikro-orm/core";
+import { Collection, Entity, ManyToMany, OneToMany, Property } from "@mikro-orm/postgresql";
 import { Message, User } from "./index";
 
 @Entity()

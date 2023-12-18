@@ -2,7 +2,6 @@ import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { defineConfig } from "@mikro-orm/postgresql";
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import * as Entities from "@entities";
 import { baseOptions } from "@common/database/orm.config";
 
 @Global()
@@ -22,7 +21,7 @@ import { baseOptions } from "@common/database/orm.config";
         }),
     }),
     MikroOrmModule.forFeature({
-      entities: Object.values(Entities),
+      entities: baseOptions.entities,
     }),
   ],
   exports: [MikroOrmModule],

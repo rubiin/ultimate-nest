@@ -62,5 +62,5 @@ export class CreatePostDto {
       type: "boolean",
     }),
   })
-    published?: boolean;
+  published?: boolean;
 }

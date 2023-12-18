@@ -1,5 +1,5 @@
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { EntityManager, ref } from "@mikro-orm/core";
+import { EntityManager, ref } from "@mikro-orm/postgresql";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";

@@ -1,6 +1,6 @@
 import { BaseEntity } from "@common/database";
-import type { Ref } from "@mikro-orm/core";
-import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/core";
+import type { Ref } from "@mikro-orm/postgresql";
+import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/postgresql";
 import type { Conversation, User } from "./index";
 
 @Entity()

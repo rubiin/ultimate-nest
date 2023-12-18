@@ -1,4 +1,3 @@
-import type { Faker } from "@mikro-orm/seeder";
 import { Factory } from "@mikro-orm/seeder";
 import { NewsLetter } from "@entities";
 
@@ -6,7 +5,7 @@ import { NewsLetter } from "@entities";
 export class NewsLetterFactory extends Factory<NewsLetter> {
   model = NewsLetter;
 
-  definition(_faker: Faker): Partial<NewsLetter> {
+  definition(): Partial<NewsLetter> {
     return {
       content: `  <div class="header">
 <h1>Mastering JavaScript: Tips, Tricks, and Updates</h1>

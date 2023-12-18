@@ -2,7 +2,7 @@ import path from "node:path";
 import { Buffer } from "node:buffer";
 import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-jest";
-import type { EntityManager } from "@mikro-orm/postgresql";
+import type { EntityManager, FilterQuery } from "@mikro-orm/postgresql";
 import type { CallHandler, ExecutionContext } from "@nestjs/common";
 import type { ConfigService } from "@nestjs/config";
 import type { Reflector } from "@nestjs/core";
@@ -19,8 +19,7 @@ import type { CursorPaginationDto } from "@common/dtos";
 import type { BaseRepository } from "@common/database";
 import type { File } from "@common/@types";
 import { PaginationType, Roles } from "@common/@types";
-import type { FilterQuery } from "@mikro-orm/core";
-import { ref } from "@mikro-orm/core";
+import { ref } from "@mikro-orm/postgresql";
 
 export const mockedUser = {
   idx: "idx",
@@ -111,16 +110,13 @@ export const mockRequest = createMock<NestifyRequest>({
     clearCache: "true",
     ...payload,
   },
-  params: {
-    ...payload,
-  },
+  params: payload,
 
   body: {
     ...payload,
     password: payload.xss,
   },
 });
-
 
 export const mockResponse = createMock<NestifyResponse>();
 export const mockAmqConnection = createMock<AmqpConnection>();
@@ -159,36 +155,33 @@ mockUserRepo.softRemoveAndFlush.mockImplementation((entity) => {
 });
 
 mockUserRepo.findOne.mockImplementation((options: FilterQuery<User>) => {
-  if (options?.idx) {
+  if ("idx" in options) {
     return Promise.resolve({
       user: mockedUser,
       idx: options.idx,
-    } as any);
+    });
   }
-  else if (options.username) {
+  else if ("username" in options) {
     return Promise.resolve({
       ...mockedUser,
       username: options.username,
-    } as any);
+    });
   }
 
-  return Promise.resolve({
-    ...mockedUser,
-  } as any);
+  return Promise.resolve(mockedUser);
 });
 
-mockPostRepo.findOne.mockImplementation((options) => {
+mockPostRepo.findOne.mockImplementation((options: FilterQuery<Post>) => {
   return Promise.resolve({
     user: mockedUser,
     ...mockedPost,
-    idx: options.idx,
-  } as any);
+    idx: options.title,
+  });
 });
 
 mockRefreshRepo.findOne.mockImplementation(() =>
-  Promise.resolve({
-    ...refreshToken,
-  } as any),
+  Promise.resolve(refreshToken,
+  ),
 );
 
 mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(1);
@@ -200,17 +193,18 @@ mockPostRepo.softRemoveAndFlush.mockImplementation((entity) => {
 });
 
 mockOtpLogRepo.findOne.mockImplementation(options =>
+
   Promise.resolve({
     user: mockedUser,
     idx: options.idx,
-  } as any),
+  }),
 );
 
 mockProtocolRepo.findOne.mockImplementation(options =>
   Promise.resolve({
     ...mockedProtocol,
     idx: options.idx,
-  } as any),
+  }),
 );
 
 mockUserRepo.findAndPaginate.mockImplementation(() =>

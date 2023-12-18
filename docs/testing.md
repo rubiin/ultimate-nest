@@ -11,7 +11,8 @@ end-to-end (e2e) test.
 Like the Angular 's `TestBed`, Nestjs provide a similar `Test` facilities to assemble the Nestjs components for your
 testing codes.
 
-```typescript
+```ts
+
 beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -36,7 +37,8 @@ Also since we are not using app module, we need to separately run the server in 
 in another terminal.
 To run the e2e test, use `make test-e2e` command.
 
-```typescript
+```ts
+
 import * as request from 'supertest';
 import { APP_URL } from "../fixtures/constant";
 //...
@@ -64,7 +66,8 @@ describe('API endpoints testing (e2e)', () => {
 				.expect(200);
 		});
 }
+
 ```
 
 More details for the complete e2e tests, check Nestjs '
-s [test folder](https://github.com/hantsy/nestjs-sample/tree/master/test).
+s [test folder](https://github.com/rubiin/ultimate-nest/tree/master/test).

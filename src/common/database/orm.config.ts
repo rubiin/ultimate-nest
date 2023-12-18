@@ -1,4 +1,4 @@
-import { LoadStrategy } from "@mikro-orm/core";
+import { LoadStrategy } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { Logger, NotFoundException } from "@nestjs/common";

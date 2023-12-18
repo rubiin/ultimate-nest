@@ -1,8 +1,7 @@
 import type { TemplateEngine } from "@common/@types";
 import { Logger } from "@nestjs/common";
-
-// @ts-expect-error - consolidate has no types
-import cons from "@ladjs/consolidate";
+import type { SupportedTemplateEngines } from "@ladjs/consolidate";
+import consolidate from "@ladjs/consolidate";
 
 export interface Adapter {
   logger: Logger
@@ -14,6 +13,6 @@ export class BaseAdapter implements Adapter {
   constructor(private engine: TemplateEngine) {}
 
   async compile(template: string, data: Record<string, any>): Promise<string> {
-    return cons[this.engine](template, data);
+    return consolidate[this.engine as SupportedTemplateEngines](template, data);
   }
 }

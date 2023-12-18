@@ -49,7 +49,7 @@ export class SocketIOAdapter extends IoAdapter {
       cors,
     };
 
-    const server: Server = super.createIOServer(port, optionsWithCORS);
+    const server = super.createIOServer(port, optionsWithCORS) as Server;
 
     server.adapter(this.adapterConstructor);
 
