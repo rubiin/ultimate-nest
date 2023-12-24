@@ -143,7 +143,6 @@ export const mockNext = createMock<CallHandler>({
 });
 
 // mocks for orm functions
-
 mockUserRepo.assign.mockImplementation((entity, dto) => {
   return Object.assign(entity, dto);
 });
