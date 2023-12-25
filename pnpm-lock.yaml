@@ -52,7 +52,7 @@ dependencies:
     version: 3.0.1(@nestjs/common@10.3.0)(axios@1.6.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
   '@nestjs/cache-manager':
     specifier: ^2.1.1
-    version: 2.1.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(cache-manager@5.3.1)(reflect-metadata@0.2.1)(rxjs@7.8.1)
+    version: 2.1.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(cache-manager@5.3.2)(reflect-metadata@0.2.1)(rxjs@7.8.1)
   '@nestjs/common':
     specifier: 10.3.0
     version: 10.3.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
@@ -120,8 +120,8 @@ dependencies:
     specifier: ^0.31.2
     version: 0.31.2
   cache-manager:
-    specifier: 5.3.1
-    version: 5.3.1
+    specifier: 5.3.2
+    version: 5.3.2
   cache-manager-ioredis-yet:
     specifier: ^1.2.2
     version: 1.2.2
@@ -207,8 +207,8 @@ dependencies:
     specifier: ^10.3.0
     version: 10.3.0
   poolifier:
-    specifier: ^3.1.10
-    version: 3.1.10
+    specifier: ^3.1.11
+    version: 3.1.11
   preview-email:
     specifier: ^3.0.19
     version: 3.0.19
@@ -341,8 +341,8 @@ devDependencies:
     specifier: ^1.5.5
     version: 1.5.5
   '@types/qs':
-    specifier: 6.9.10
-    version: 6.9.10
+    specifier: 6.9.11
+    version: 6.9.11
   '@types/supertest':
     specifier: 2.0.16
     version: 2.0.16
@@ -2989,7 +2989,7 @@ packages:
       rxjs: 7.8.1
     dev: false
 
-  /@nestjs/cache-manager@2.1.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(cache-manager@5.3.1)(reflect-metadata@0.2.1)(rxjs@7.8.1):
+  /@nestjs/cache-manager@2.1.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(cache-manager@5.3.2)(reflect-metadata@0.2.1)(rxjs@7.8.1):
     resolution: {integrity: sha512-oYfRys4Ng0zp2HTUPNjH7gizf4vvG3PQZZ+3yGemb3xrF+p3JxDSK0cDq9NTjHzD5UmhjiyAftB9GkuL+t3r9g==}
     peerDependencies:
       '@nestjs/common': ^9.0.0 || ^10.0.0
@@ -3000,7 +3000,7 @@ packages:
     dependencies:
       '@nestjs/common': 10.3.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       '@nestjs/core': 10.3.0(@nestjs/common@10.3.0)(@nestjs/platform-express@10.3.0)(@nestjs/websockets@10.3.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
-      cache-manager: 5.3.1
+      cache-manager: 5.3.2
       reflect-metadata: 0.2.1
       rxjs: 7.8.1
     dev: false
@@ -4597,7 +4597,7 @@ packages:
     resolution: {integrity: sha512-OaJ7XLaelTgrvlZD8/aa0vvvxZdUmlCn6MtWeB7TkiKW70BQLc9XEPpDLPdbo52ZhXUCrznlWdCHWxJWtdyajA==}
     dependencies:
       '@types/node': 20.10.5
-      '@types/qs': 6.9.10
+      '@types/qs': 6.9.11
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
 
@@ -4606,7 +4606,7 @@ packages:
     dependencies:
       '@types/body-parser': 1.19.5
       '@types/express-serve-static-core': 4.17.41
-      '@types/qs': 6.9.10
+      '@types/qs': 6.9.11
       '@types/serve-static': 1.15.5
 
   /@types/graceful-fs@4.1.9:
@@ -4779,8 +4779,8 @@ packages:
       '@types/node': 20.10.5
     dev: true
 
-  /@types/qs@6.9.10:
-    resolution: {integrity: sha512-3Gnx08Ns1sEoCrWssEgTSJs/rsT2vhGP+Ja9cnnk9k4ALxinORlQneLXFeFKOTJMOeZUFD1s7w+w2AphTpvzZw==}
+  /@types/qs@6.9.11:
+    resolution: {integrity: sha512-oGk0gmhnEJK4Yyk+oI7EfXsLayXatCWPHary1MtcmbAifkobT9cM9yutG/hZKIseOU0MqbIwQ/u2nn/Gb+ltuQ==}
 
   /@types/range-parser@1.2.7:
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
@@ -5957,18 +5957,18 @@ packages:
     resolution: {integrity: sha512-o03N/tQxfFONZ1XLGgIxOFHuQQpjpRdnSAL1THG1YWZIVp1JMUfjU3ElSAjFN1LjbJXa55IpC8waG+VEoLUCUw==}
     engines: {node: '>= 16.17.0'}
     dependencies:
-      cache-manager: 5.3.1
+      cache-manager: 5.3.2
       ioredis: 5.3.2
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /cache-manager@5.3.1:
-    resolution: {integrity: sha512-9HP6nc1ZqyZgcVEpy5XS2ns9MYE6cPEM6InA1wQhR6M7GviJzLH2NTFYnf3NEfRmLE351NCSkDo2VISX8dlG+w==}
+  /cache-manager@5.3.2:
+    resolution: {integrity: sha512-MBpwYqCqf8LFSso5CjMs5Kj2i3RYYUP0fLwjMSnxyspYx0y8uT1SZbWiOk33fw5r+Sbpe5ERfk1+pgXEJ/omEw==}
     dependencies:
       lodash.clonedeep: 4.5.0
       lru-cache: 10.1.0
-      promise-coalesce: 1.1.1
+      promise-coalesce: 1.1.2
     dev: false
 
   /cachedir@2.3.0:
@@ -11049,8 +11049,8 @@ packages:
     engines: {node: '>=12.0.0'}
     dev: false
 
-  /poolifier@3.1.10:
-    resolution: {integrity: sha512-vKo9ph4mnKdd6ZfHBxE1CkVZMGXbZKnL6c/4yHyVM8O/OfEZ5ilb72/8oL0Ybp4wvhUBAtPHstz3f3r1aaiS2Q==}
+  /poolifier@3.1.11:
+    resolution: {integrity: sha512-yf0i22IiAmjAKehgT102RKHqcHnU8aluSfethe3AoO7oJPYVmlERGgVbHK6W3cqSnA0XQspc0s59+TDs04zDsg==}
     engines: {node: '>=18.0.0', pnpm: '>=8.6.0'}
     requiresBuild: true
     dev: false
@@ -11167,9 +11167,9 @@ packages:
     resolution: {integrity: sha512-mgsWQuG4kJ1dtO6e/QlNDLFtMkMzzecsC69aI5hlLEjGHFNpHrvGhFi4LiK5jg2SMQj74/diH+wZliL9LpGsyA==}
     dev: false
 
-  /promise-coalesce@1.1.1:
-    resolution: {integrity: sha512-k7+VaIwZc5dRfSF6RELqRY1+LCmcCkrnuNV9HzIpA6iwRHKke+j9yb0LBTTHQ2RRgf6AlMl9TntuTzcgV/BZwg==}
-    engines: {node: '>=18'}
+  /promise-coalesce@1.1.2:
+    resolution: {integrity: sha512-zLaJ9b8hnC564fnJH6NFSOGZYYdzrAJn2JUUIwzoQb32fG2QAakpDNM+CZo1km6keXkRXRM+hml1BFAPVnPkxg==}
+    engines: {node: '>=16'}
     dev: false
 
   /promise@7.3.1:
