@@ -100,24 +100,25 @@ Now you can start the application witt `npx cross-env NODE_ENV=dev npm run start
 
 ## Whats included
 
-- 🌐 **I18n** - Internationalization
-- 🧵 **Stats** - Swagger stats for common server metrics
-- 🧵 **Poolifier** - threads for cpu extensive tasks
-- 💬 **Twilio** - SMS support
-- 📱 **NestJS** — Latest version
-- 🎉 **TypeScript** - Type checking
-- ⚙️ **Dotenv** - Supports environment variables
-- 🗝 **Authentication** - JWT, RSA256, Oauth
-- 🏬 **Authorization** - RBAC with casl
-- 🏪 **MikroORM** - Database ORM
-- 🏪 **PostgreSQL** - Open-Source Relational Database
-- 🧠 **Configuration** - Single config for all
-- 📃 **Swagger** - API Documentation
-- 🐳 **Docker Compose** - Container Orchestration
-- 🔐 **Helmet** - Secure HTTP headers
-- 📏 **ESLint** — Pluggable JavaScript linter
-- ✅ **Commitlint** — Checks if your commit messages meet the conventional commit format.
-- 🐺 **Husky** — Helps you create Git hooks easily.
+- 🌐 [**I18n**](https://en.wikipedia.org/wiki/Internationalization_and_localization) - Internationalization
+- 🧵 [**Stats**](https://github.com/slanatech/swagger-stats/) - Swagger stats for common server metrics
+- 🧵 [**Poolifier**](https://github.com/twilio/twilio-node) - Threads for CPU extensive tasks
+- 💬 [**Twilio**](https://github.com/twilio/twilio-node) - SMS support
+- 📱 [**NestJS**](https://docs.nestjs.com) — Latest version
+- 🎉 [**TypeScript**](https://www.typescriptlang.org/) - Type checking
+- ⚙️ [**Dotenv**](https://github.com/motdotla/dotenv) - Supports environment variables
+- 🗝 [**Authentication**](https://jwt.io/), [RSA256](https://tools.ietf.org/html/rfc7518#section-6.3), [OAuth]([https://oauth.net/](https://docs.nestjs.com/security/authentication) - JWT, RSA256, OAuth
+- 🏬 [**Authorization**](https://github.com/stalniy/casl) - RBAC with casl
+- 🏪 [**MikroORM**](https://mikro-orm.io/) - Database ORM
+- 🏪 [**PostgreSQL**](https://www.postgresql.org/) - Open-Source Relational Database
+- 🧠 [**Configuration**](https://docs.nestjs.com/techniques/configuration) - Single config for all
+- 📃 [**Swagger**](https://swagger.io/) - API Documentation
+- 🐳 [**Docker Compose**](https://docs.docker.com/compose/) - Container Orchestration
+- 🔐 [**Helmet**](https://helmetjs.github.io/) - Secure HTTP headers
+- 📏 [**ESLint**](https://eslint.org/) — Pluggable JavaScript linter
+- ✅ [**Commitlint**](https://commitlint.js.org/) — Checks if your commit messages meet the conventional commit format.
+- 🐺 [**Husky**](https://github.com/typicode/husky) — Helps you create Git hooks easily.
+
 
 
 ## Available Scripts
