@@ -102,7 +102,7 @@ Now you can start the application witt `npx cross-env NODE_ENV=dev npm run start
 
 - 🌐 [**I18n**](https://en.wikipedia.org/wiki/Internationalization_and_localization) - Internationalization
 - 🧵 [**Stats**](https://github.com/slanatech/swagger-stats/) - Swagger stats for common server metrics
-- 🧵 [**Poolifier**](https://github.com/twilio/twilio-node) - Threads for CPU extensive tasks
+- 🧵 [**Poolifier**](https://github.com/poolifier/poolifier) - Threads for CPU extensive tasks
 - 💬 [**Twilio**](https://github.com/twilio/twilio-node) - SMS support
 - 📱 [**NestJS**](https://docs.nestjs.com) — Latest version
 - 🎉 [**TypeScript**](https://www.typescriptlang.org/) - Type checking
