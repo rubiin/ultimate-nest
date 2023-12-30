@@ -175,7 +175,7 @@ dependencies:
     version: 2.5.4(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)
   nestjs-pino:
     specifier: ^3.5.0
-    version: 3.5.0(@nestjs/common@10.3.0)(pino-http@8.6.0)
+    version: 3.5.0(@nestjs/common@10.3.0)(pino-http@9.0.0)
   nestjs-throttler-storage-redis:
     specifier: ^0.4.1
     version: 0.4.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(@nestjs/throttler@5.1.1)(ioredis@5.3.2)(reflect-metadata@0.2.1)
@@ -201,8 +201,8 @@ dependencies:
     specifier: ^1.2.2
     version: 1.2.2
   pino-http:
-    specifier: ^8.6.0
-    version: 8.6.0
+    specifier: ^9.0.0
+    version: 9.0.0
   pino-pretty:
     specifier: ^10.3.0
     version: 10.3.0
@@ -10376,7 +10376,7 @@ packages:
       minio: 7.1.3
     dev: false
 
-  /nestjs-pino@3.5.0(@nestjs/common@10.3.0)(pino-http@8.6.0):
+  /nestjs-pino@3.5.0(@nestjs/common@10.3.0)(pino-http@9.0.0):
     resolution: {integrity: sha512-IWJ3dzLVjg5istcd3Cz3rVO+gmvabfVAT1YmQgzL1HnC2hkc0H6qA6k6SZ7OIwQfewuRejYfPu3TlkxwRrqxHQ==}
     engines: {node: '>= 14'}
     requiresBuild: true
@@ -10385,7 +10385,7 @@ packages:
       pino-http: ^6.4.0 || ^7.0.0 || ^8.0.0
     dependencies:
       '@nestjs/common': 10.3.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
-      pino-http: 8.6.0
+      pino-http: 9.0.0
     dev: false
 
   /nestjs-throttler-storage-redis@0.4.1(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(@nestjs/throttler@5.1.1)(ioredis@5.3.2)(reflect-metadata@0.2.1):
@@ -10954,13 +10954,13 @@ packages:
       split2: 4.2.0
     dev: false
 
-  /pino-http@8.6.0:
-    resolution: {integrity: sha512-SMkt0R7nzoX76BhTlmCWg0s2F0UYKGeln8y+thL2OUcCxZbbPB1AqgrEMuHAjHyc7oBefext3Af3ZT3k9ieETw==}
+  /pino-http@9.0.0:
+    resolution: {integrity: sha512-Q9QDNEz0vQmbJtMFjOVr2c9yL92vHudjmr3s3m6J1hbw3DBGFZJm3TIj9TWyynZ4GEsEA9SOtni4heRUr6lNOg==}
     dependencies:
       get-caller-file: 2.0.5
       pino: 8.17.1
       pino-std-serializers: 6.2.2
-      process-warning: 2.3.2
+      process-warning: 3.0.0
     dev: false
 
   /pino-pretty@10.3.0:
@@ -11156,6 +11156,10 @@ packages:
 
   /process-warning@2.3.2:
     resolution: {integrity: sha512-n9wh8tvBe5sFmsqlg+XQhaQLumwpqoAUruLwjCopgTmUBjJ/fjtBsJzKleCaIGBOMXYEhp1YfKl4d7rJ5ZKJGA==}
+    dev: false
+
+  /process-warning@3.0.0:
+    resolution: {integrity: sha512-mqn0kFRl0EoqhnL0GQ0veqFHyIN1yig9RHh/InzORTUiZHFRAur+aMtRkELNwGs9aNwKS6tg/An4NYBPGwvtzQ==}
     dev: false
 
   /process@0.11.10:
