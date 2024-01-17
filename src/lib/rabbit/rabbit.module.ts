@@ -1,10 +1,14 @@
 import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
 import { Global, Logger, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { RabbitService } from "./rabbit.service";
 import { RabbitMQHealthCheckService } from "./healthcheck";
 
 const logger = new Logger("RabbitMQ");
+
+
+// for delayed messages, check the following links
+// https://reachmnadeem.wordpress.com/2022/02/19/adding-another-plugin-to-rabbit-management-docker-image/
+// https://github.com/golevelup/nestjs/issues/311
 
 @Global()
 @Module({
@@ -40,7 +44,7 @@ const logger = new Logger("RabbitMQ");
       }),
     }),
   ],
-  providers: [RabbitService, RabbitMQHealthCheckService],
-  exports: [RabbitService, RabbitMQModule],
+  providers: [ RabbitMQHealthCheckService],
+  exports: [RabbitMQModule],
 })
 export class NestRabbitModule {}
