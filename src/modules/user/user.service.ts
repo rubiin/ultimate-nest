@@ -1,15 +1,15 @@
-import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import process from "node:process";
+import { AmqpConnection, RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { EntityManager, ref } from "@mikro-orm/postgresql";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService } from "nestjs-cloudinary";
 import type { IFile } from "nestjs-cloudinary";
 import type { Observable } from "rxjs";
-import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
-
+import { from, map, mergeMap, of, switchMap, tap, throwError } from "rxjs";
 import type {
   PaginationResponse,
   RecordWithFile,
@@ -18,13 +18,18 @@ import {
   CursorType,
   EmailSubject,
   EmailTemplate,
+  MailPayload,
   QueryOrder,
+
+  Queues,
+
   RoutingKey,
 } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import type { CursorPaginationDto } from "@common/dtos";
 import { Referral, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { MailerService } from "@lib/mailer/mailer.service";
 import type { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
 
 @Injectable()
@@ -40,7 +45,25 @@ export class UserService {
         private readonly configService: ConfigService<Configs, true>,
         private readonly amqpConnection: AmqpConnection,
         private readonly cloudinaryService: CloudinaryService,
+        private readonly mailService: MailerService,
   ) {}
+
+  @RabbitSubscribe({
+    routingKey: RoutingKey.SEND_MAIL,
+    exchange: process.env.RABBITMQ_EXCHANGE,
+    queue: Queues.MAIL,
+  })
+  sendMail(payload: MailPayload) {
+    return from(
+      this.mailService.sendMail({
+        template: payload.template,
+        replacements: payload.replacements,
+        to: payload.to,
+        subject: payload.subject,
+        from: payload.from,
+      }),
+    ).pipe(map(tap(() => Logger.log(`✅ Sent mail to ${payload.to}`))));
+  }
 
   /**
    * The function checks if a user with a given mobile number already exists, and if not, creates a

@@ -9,6 +9,7 @@ export * from "./is-equal-to.validator";
 export * from "./is-greater-than.validator";
 export * from "./is-number-field.decorator";
 export * from "./is-password.validator";
+export * from "./is-nested.validator";
 export * from "./is-profane.validator";
 export * from "./is-string-field.decorator";
 export * from "./is-unique.validator";
