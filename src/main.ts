@@ -17,14 +17,20 @@ import { LoggerErrorInterceptor } from "nestjs-pino";
 import { AppModule } from "./modules/app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
 
-declare const module: { hot: { accept: () => void, dispose: (argument: () => Promise<void>) => void } };
+declare const module: {
+  hot: { accept: () => void; dispose: (argument: () => Promise<void>) => void };
+};
 
 const logger = new Logger("Bootstrap");
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, new ExpressAdapter(), {
-    snapshot: true,
-  });
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+    new ExpressAdapter(),
+    {
+      snapshot: true,
+    },
+  );
 
   const configService = app.get(ConfigService<Configs, true>);
 
@@ -32,8 +38,7 @@ async function bootstrap() {
   // configure swagger
   // =========================================================
 
-  if (!HelperService.isProd())
-    AppUtils.setupSwagger(app, configService);
+  if (!HelperService.isProd()) AppUtils.setupSwagger(app, configService);
 
   // ======================================================
   // security and middlewares
@@ -67,7 +72,9 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe(AppUtils.validationPipeOptions()));
 
-  app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
+  app.useGlobalFilters(
+    new I18nValidationExceptionFilter({ detailedErrors: false }),
+  );
 
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
@@ -95,7 +102,8 @@ async function bootstrap() {
     module.hot.dispose(() => app.close());
   }
 
-  const port = process.env.PORT ?? configService.get("app.port", { infer: true })!;
+  const port =
+    process.env.PORT ?? configService.get("app.port", { infer: true })!;
 
   await app.listen(port);
 
@@ -120,7 +128,6 @@ async function bootstrap() {
 
 try {
   (async () => await bootstrap())();
-}
-catch (error) {
+} catch (error) {
   logger.error(error);
 }
