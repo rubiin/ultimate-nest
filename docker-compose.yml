@@ -47,7 +47,7 @@ services:
 # This service runs the PostgreSQL database
     database:
         container_name: database
-        image: postgres:16.1-alpine
+        image: postgres:16.2-alpine
         restart: unless-stopped
         env_file: env/.env.${ENV}
         environment:
@@ -69,7 +69,7 @@ services:
 # Traefik service
 # This service runs the Traefik reverse proxy which is used to expose the other services
     traefik:
-        image: traefik:2.10.7
+        image: traefik:2.11.0
         container_name: traefik
         restart: unless-stopped
         command:
@@ -196,7 +196,7 @@ services:
 # This service runs the RabbitMQ message broker
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3.12.12-management-alpine
+        image: rabbitmq:3.12.13-management-alpine
         env_file: env/.env.${ENV}
         restart: unless-stopped
         depends_on:
