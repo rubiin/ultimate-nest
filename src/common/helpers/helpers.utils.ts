@@ -18,7 +18,6 @@ import type { RedisOptions } from "ioredis";
 const argon2Options: ArgonOptions & { raw?: false } = {
   type: argon2id,
   hashLength: 50,
-  saltLength: 32,
   timeCost: 4,
 };
 
@@ -60,7 +59,9 @@ directory of the module. */
     while (!existsSync(join(currentDirectory, "resources")))
       currentDirectory = join(currentDirectory, "..");
 
-    return process.env.NODE_ENV === "prod" ? join(currentDirectory, "dist") : currentDirectory;
+    return process.env.NODE_ENV === "prod"
+      ? join(currentDirectory, "dist")
+      : currentDirectory;
   },
 
   /* The `hashString` function is used to hash a user's password using the Argon2 algorithm. It takes a
@@ -74,7 +75,10 @@ user's password as input and returns a promise that resolves to the hashed passw
   /* The `verifyHash` function is used to compare a user's input password with a hashed password. It
 takes two parameters: `userPassword`, which is the user's input password, and `passwordToCompare`,
 which is the hashed password to compare against. */
-  verifyHash(userPassword: string, passwordToCompare: string): Observable<boolean> {
+  verifyHash(
+    userPassword: string,
+    passwordToCompare: string,
+  ): Observable<boolean> {
     return from(verify(userPassword, passwordToCompare, argon2Options));
   },
 
@@ -82,7 +86,10 @@ which is the hashed password to compare against. */
   containing the desired height and width of the thumbnail. It uses the `sharp` library to resize the
   input image according to the provided configuration. The resized image is then converted to the PNG
   format and returned as a `Buffer` wrapped in an `Observable`. */
-  generateThumb(input: Buffer, config: { height: number, width: number }): Observable<Buffer> {
+  generateThumb(
+    input: Buffer,
+    config: { height: number; width: number },
+  ): Observable<Buffer> {
     return from(sharp(input).resize(config).toFormat("png").toBuffer());
   },
 
@@ -96,8 +103,7 @@ which is the hashed password to compare against. */
   },
   /* The `redisUrlToOptions` function is used to convert a Redis URL string into a RedisOptions object. */
   redisUrlToOptions(url: string): RedisOptions {
-    if (!REDIS_URI_REGEX.test(url))
-      throw new Error("Invalid redis url");
+    if (!REDIS_URI_REGEX.test(url)) throw new Error("Invalid redis url");
 
     const separator = "://";
 
