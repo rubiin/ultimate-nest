@@ -3,6 +3,10 @@ queue_rules:
     conditions:
       - author=renovate[bot]
       - status-success=build
+  - name: dependabot
+    conditions:
+      - author=dependabot[bot]
+      - status-success=build
 
 pull_request_rules:
   - name: merge pull requests from renovate bot if CI passes
@@ -12,3 +16,10 @@ pull_request_rules:
     actions:
       queue:
         name: renovate
+  - name: merge pull requests from dependabot bot if CI passes
+    conditions:
+      - author=dependabot[bot]
+      - status-success=build
+    actions:
+      queue:
+        name: dependabot

@@ -1,4 +1,4 @@
-import { Entity, Opt ,Property} from "@mikro-orm/postgresql";
+import { Entity ,Property} from "@mikro-orm/postgresql";
 import { BaseEntity } from "@common/database";
 
 @Entity()
