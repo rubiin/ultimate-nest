@@ -39,6 +39,8 @@ import {
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import type { BaseEntity } from "./base.entity";
 
+
+
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   private readonly encoding: BufferEncoding = "base64";
 
@@ -453,7 +455,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     first: number,
     order: QueryOrder,
     repo: EntityRepository<T>,
-    where: FilterQuery<T> & { $and: any },
+    where: FilterQuery<T> ,
     after?: string,
     afterCursor: CursorType = CursorType.STRING,
   ): Promise<CursorPaginationResponse<T>> {
@@ -465,9 +467,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const oppositeOrder = getOppositeOrder(order);
       const countWhere = where;
 
+      // @ts-expect-error "and is a valid key for FilterQuery"
       countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
       previousCount = await repo.count(countWhere);
 
+      // @ts-expect-error "and is a valid key for FilterQuery"
       where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
     }
 
