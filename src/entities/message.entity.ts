@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database";
-import type { Ref } from "@mikro-orm/postgresql";
+import type { Opt , Ref } from "@mikro-orm/postgresql";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/postgresql";
 import type { Conversation, User } from "./index";
 
@@ -21,7 +21,7 @@ export class Message extends BaseEntity {
     conversation!: Rel<Ref<Conversation>>;
 
   @Property()
-    isRead? = false;
+    isRead: boolean & Opt = false;
 
   @Property()
     readAt?: Date;

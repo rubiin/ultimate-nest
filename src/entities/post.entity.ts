@@ -1,4 +1,4 @@
-import type { Ref } from "@mikro-orm/postgresql";
+import type { Opt, Ref } from "@mikro-orm/postgresql";
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -34,16 +34,16 @@ export class Post extends BaseEntity {
   content!: string;
 
   @Property()
-  readingTime? = 0;
+  readingTime: number & Opt = 0;
 
   @Property()
-  readCount? = 0;
+  readCount: number & Opt = 0;
 
   @Property()
-  published = false;
+  published: boolean & Opt = false;
 
   @Property()
-  favoritesCount? = 0;
+  favoritesCount: number & Opt = 0;
 
   @ManyToOne({
     eager: false,
@@ -54,7 +54,6 @@ export class Post extends BaseEntity {
   @OneToMany(() => Comment, comment => comment.post, {
     eager: false,
     orphanRemoval: true,
-    nullable: true,
   })
   comments = new Collection<Comment>(this);
 
@@ -65,7 +64,7 @@ export class Post extends BaseEntity {
   categories = new Collection<Category>(this);
 
   @Enum({ items: () => PostStateEnum })
-  state? = PostStateEnum.DRAFT;
+  state: PostStateEnum & Opt = PostStateEnum.DRAFT;
 
   constructor(partial?: Partial<Post>) {
     super();

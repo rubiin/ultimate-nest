@@ -1,4 +1,4 @@
-import { Entity, Property } from "@mikro-orm/postgresql";
+import { Entity, Opt ,Property} from "@mikro-orm/postgresql";
 import { BaseEntity } from "@common/database";
 
 @Entity()
@@ -9,7 +9,7 @@ export class NewsLetter extends BaseEntity {
   @Property({ columnType: "text" })
     content!: string;
 
-  @Property({ type: "date", nullable: true })
+  @Property()
     sentAt?: Date;
 
   constructor(partial?: Partial<NewsLetter>) {
