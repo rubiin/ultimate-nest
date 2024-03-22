@@ -46,7 +46,7 @@ export class ChatService {
       messageNew.conversation = ref(conversationExists);
       conversationExists.messages.add(messageNew);
 
-      await Promise.all([this.em.persistAndFlush(messageNew), this.em.flush()]);
+      await Promise.allSettled([this.em.persistAndFlush(messageNew), this.em.flush()]);
     }
     else {
       const conversationNew = this.conversationRepository.create({
