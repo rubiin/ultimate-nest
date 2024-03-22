@@ -1,4 +1,4 @@
-import type { Ref } from "@mikro-orm/postgresql";
+import type { Opt ,Ref } from "@mikro-orm/postgresql";
 import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/postgresql";
 import { BaseEntity } from "@common/database";
 import type { User } from "./user.entity";
@@ -21,7 +21,7 @@ export class OtpLog extends BaseEntity {
     user!: Rel<Ref<User>>;
 
   @Property()
-    isUsed? = false;
+    isUsed: boolean & Opt  = false;
 
   constructor(partial?: Partial<OtpLog>) {
     super();

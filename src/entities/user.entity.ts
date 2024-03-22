@@ -78,8 +78,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Post, post => post.author, {
     orphanRemoval: true,
-    eager: false,
-    nullable: true,
+    eager: false
   })
   posts = new Collection<Post>(this);
 

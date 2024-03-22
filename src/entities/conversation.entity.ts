@@ -12,7 +12,6 @@ export class Conversation extends BaseEntity {
 
   @OneToMany(() => Message, message => message.conversation, {
     orphanRemoval: true,
-    nullable: true,
   })
     messages = new Collection<Message>(this);
 
