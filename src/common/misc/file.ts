@@ -39,6 +39,7 @@ export function fileValidatorPipe({
     })
     .addMaxSizeValidator({
       maxSize: fileSize,
+      message: maxSize => `File size should be less than ${Math.round(maxSize / 1024 / 1024)} MB`,
     })
     .build({
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
