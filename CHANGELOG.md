@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.4](https://github.com/rubiin/ultimate-nest/compare/v2.2.3...v2.2.4) (2024-03-28)
+
+
+### Bug Fixes
+
+* add custom file validation msg for filesize ([acb84f7](https://github.com/rubiin/ultimate-nest/commit/acb84f7e9a0e3a8be1c7ea246b1ecb3298a0f055))
+
 ## [2.2.3](https://github.com/rubiin/ultimate-nest/compare/v2.2.2...v2.2.3) (2024-03-25)
 
 
