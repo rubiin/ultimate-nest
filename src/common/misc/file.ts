@@ -1,7 +1,7 @@
 import type { FileValidator } from "@common/@types";
 import { FileSize, FileType } from "@common/@types";
 import { MULTER_IMAGE_FILTER } from "@common/constant";
-import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
+import { HttpStatus, ParseFilePipeBuilder, UnprocessableEntityException } from "@nestjs/common";
 import type { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { memoryStorage } from "multer";
 
