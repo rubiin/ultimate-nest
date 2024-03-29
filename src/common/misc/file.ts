@@ -44,5 +44,11 @@ export function fileValidatorPipe({
     .build({
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       fileIsRequired: required,
+      exceptionFactory(error) {
+        if(error.includes("expected type"))
+          return new UnprocessableEntityException(`Invalid file type. Valid file types are ${String(fileType).replaceAll(/[$()/]/g, '')}`);
+
+        return new UnprocessableEntityException(error);
+      },
     });
 }
