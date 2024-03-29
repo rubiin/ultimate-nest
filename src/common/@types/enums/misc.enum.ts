@@ -38,7 +38,7 @@ export enum TemplateEngine {
 }
 
 export const FileType: Record<keyof typeof FileSize, RegExp> = {
-  IMAGE: /(jpg|jpeg|png|gif|svg)$/i,
+  IMAGE: /(jpg|jpeg|png|svg|webp|gif|svg)$/i,
   DOC: /(pdf|doc|txt|key|csv|docx|xls|xlsx|ppt|pptx)$/i,
 };
 
