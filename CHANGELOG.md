@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/rubiin/ultimate-nest/compare/v2.2.4...v2.3.0) (2024-04-03)
+
+
+### Features
+
+* add isBooleanField decorator ([49bd9c1](https://github.com/rubiin/ultimate-nest/commit/49bd9c13485db404e88e20a561ddf7deeed1df2b))
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([918c42f](https://github.com/rubiin/ultimate-nest/commit/918c42fae0d2536c3201d52ceea3e751bfb2b72c))
+
 ## [2.2.4](https://github.com/rubiin/ultimate-nest/compare/v2.2.3...v2.2.4) (2024-03-29)
 
 
