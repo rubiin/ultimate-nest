@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.1](https://github.com/rubiin/ultimate-nest/compare/v2.3.0...v2.3.1) (2024-04-06)
+
+
+### Bug Fixes
+
+* add indexes for faster query ([eae7e27](https://github.com/rubiin/ultimate-nest/commit/eae7e272a73a9870417ab1a3f7a4dcc33106fccb))
+* **deps:** update dependency date-fns-tz to v3 ([b86b84b](https://github.com/rubiin/ultimate-nest/commit/b86b84b42ec08c45d517e7fb3daa8b9a44b3f508))
+* zonedTime ([2ef5cb6](https://github.com/rubiin/ultimate-nest/commit/2ef5cb6fb3c1890abb0e938d96d9d17265b346a1))
+
 ## [2.3.0](https://github.com/rubiin/ultimate-nest/compare/v2.2.4...v2.3.0) (2024-04-03)
 
 
