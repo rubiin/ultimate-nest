@@ -7,7 +7,7 @@ import type { AuthenticationResponse } from "@common/@types";
 import type { User } from "@entities";
 import type { Options as ArgonOptions } from "argon2";
 import { argon2id, hash, verify } from "argon2";
-import { format, zonedTimeToUtc } from "date-fns-tz";
+import { format, fromZonedTime } from "date-fns-tz";
 import { pick } from "helper-fns";
 import type { Observable } from "rxjs";
 import { from } from "rxjs";
@@ -97,7 +97,7 @@ which is the hashed password to compare against. */
   returns a new `Date` object representing the same date and time in UTC timezone. */
   getTimeInUtc(date: Date | string): Date {
     const thatDate = date instanceof Date ? date : new Date(date);
-    const currentUtcTime = zonedTimeToUtc(thatDate, "UTC");
+    const currentUtcTime = fromZonedTime(thatDate, "UTC");
 
     return new Date(format(currentUtcTime, "yyyy-MM-dd HH:mm:ss"));
   },
