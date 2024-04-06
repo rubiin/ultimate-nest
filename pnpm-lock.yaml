@@ -138,8 +138,8 @@ dependencies:
     specifier: ^3.6.0
     version: 3.6.0
   date-fns-tz:
-    specifier: ^2.0.1
-    version: 2.0.1(date-fns@3.6.0)
+    specifier: ^3.0.0
+    version: 3.0.0(date-fns@3.6.0)
   eta:
     specifier: ^3.4.0
     version: 3.4.0
@@ -6831,12 +6831,13 @@ packages:
   /dataloader@2.2.2:
     resolution: {integrity: sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==}
 
-  /date-fns-tz@2.0.1(date-fns@3.6.0):
-    resolution: {integrity: sha512-fJCG3Pwx8HUoLhkepdsP7Z5RsucUi+ZBOxyM5d0ZZ6c4SdYustq0VMmOu6Wf7bli+yS/Jwp91TOCqn9jMcVrUA==}
+  /date-fns-tz@3.0.0(date-fns@3.6.0):
+    resolution: {integrity: sha512-YgRowJwvCAAjN1A5F2l1ZjnYKThX7YDq399qo+ThXFpeOqinN1u8SUqfM5IdRQSpai18Iy3EBMb6/CXTSnDstg==}
     peerDependencies:
-      date-fns: 2.x
+      date-fns: ^3.0.0
     dependencies:
       date-fns: 3.6.0
+      lodash.clonedeep: 4.5.0
     dev: false
 
   /date-fns@3.6.0:
