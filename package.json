@@ -33,7 +33,7 @@
     "typescript"
   ],
   "engines": {
-    "node": ">=20.12.0"
+    "node": ">=20.12.1"
   },
   "scripts": {
     "build": "nest build",
@@ -55,8 +55,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --runInBand --forceExit"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.540.0",
-    "@aws-sdk/client-ses": "^3.540.0",
+    "@aws-sdk/client-s3": "^3.550.0",
+    "@aws-sdk/client-ses": "^3.549.0",
     "@casl/ability": "^6.7.1",
     "@golevelup/nestjs-rabbitmq": "^5.1.0",
     "@golevelup/nestjs-stripe": "^0.6.5",
@@ -71,7 +71,7 @@
     "@nestjs/axios": "^3.0.2",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "10.3.7",
-    "@nestjs/config": "^3.2.1",
+    "@nestjs/config": "^3.2.2",
     "@nestjs/core": "10.3.7",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
@@ -92,8 +92,8 @@
     "@supercharge/request-ip": "^1.2.0",
     "@travelerdev/nestjs-sentry": "^4.3.0",
     "argon2": "^0.40.1",
-    "cache-manager": "5.4.0",
-    "cache-manager-ioredis-yet": "^2.0.2",
+    "cache-manager": "5.5.1",
+    "cache-manager-ioredis-yet": "^2.0.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "compression": "^1.7.4",
@@ -105,7 +105,7 @@
     "helper-fns": "^2.7.0",
     "ioredis": "^5.3.2",
     "isomorphic-dompurify": "^2.6.0",
-    "joi": "^17.12.2",
+    "joi": "^17.12.3",
     "mime-types": "^2.1.35",
     "nestjs-cloudinary": "^2.0.7",
     "nestjs-i18n": "^10.4.5",
@@ -130,14 +130,14 @@
     "rxjs": "^7.8.1",
     "sharp": "^0.33.3",
     "socket.io": "^4.7.5",
-    "stripe": "^14.23.0",
+    "stripe": "^14.24.0",
     "swagger-stats": "^0.99.7",
-    "twilio": "5.0.2",
+    "twilio": "5.0.3",
     "unprofane": "^1.0.6",
     "url-minify": "^2.8.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.12.1",
+    "@antfu/eslint-config": "^2.12.2",
     "@firebase/app-compat": "^0.2.30",
     "@firebase/app-types": "^0.9.1",
     "@golevelup/ts-jest": "^0.4.0",
@@ -149,7 +149,7 @@
     "@rubiin/tsconfig": "^1.1.2",
     "@sentry/types": "^7.109.0",
     "@side/jest-runtime": "^1.1.0",
-    "@swc/core": "^1.4.11",
+    "@swc/core": "^1.4.12",
     "@swc/jest": "^0.2.36",
     "@total-typescript/ts-reset": "^0.5.1",
     "@types/cache-manager": "^4.0.6",
@@ -159,7 +159,7 @@
     "@types/jest": "^29.5.12",
     "@types/mime-types": "^2.1.4",
     "@types/multer": "^1.4.11",
-    "@types/node": "^20.12.3",
+    "@types/node": "^20.12.5",
     "@types/nodemailer": "^6.4.14",
     "@types/passport": "^1.0.16",
     "@types/passport-facebook": "^3.0.3",
@@ -184,7 +184,7 @@
     "ts-loader": "9.5.1",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
-    "typescript": "^5.4.3",
+    "typescript": "^5.4.4",
     "webpack": "^5.91.0",
     "webpack-node-externals": "^3.0.0"
   },
