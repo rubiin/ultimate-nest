@@ -6,15 +6,15 @@ import type { User } from "./user.entity";
 @Entity()
 export class RefreshToken extends BaseEntity {
   @Property()
-    expiresIn!: Date;
+  expiresIn!: Date;
 
   @ManyToOne({
-    eager: false,
+    index: true,
   })
-    user!: Rel<Ref<User>>;
+  user!: Rel<Ref<User>>;
 
   @Property()
-    isRevoked: boolean & Opt = false;
+  isRevoked: boolean & Opt = false;
 
   constructor(partial?: Partial<RefreshToken>) {
     super();

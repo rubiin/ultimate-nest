@@ -6,18 +6,17 @@ import type { Post, User } from "./index";
 @Entity()
 export class Comment extends BaseEntity {
   @Property()
-    body!: string;
+  body!: string;
 
   @ManyToOne({
-    eager: false,
-  })
-    post!: Rel<Ref<Post>>;
-
-  @ManyToOne({
-    eager: false,
     index: true,
   })
-    author!: Rel<Ref<User>>;
+  post!: Rel<Ref<Post>>;
+
+  @ManyToOne({
+    index: true,
+  })
+  author!: Rel<Ref<User>>;
 
   constructor(partial?: Partial<Comment>) {
     super();

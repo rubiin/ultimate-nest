@@ -39,20 +39,18 @@ export class Post extends BaseEntity {
   @Property()
   readCount: number & Opt = 0;
 
-  @Property()
+  @Property({ index: true })
   published: boolean & Opt = false;
 
   @Property()
   favoritesCount: number & Opt = 0;
 
   @ManyToOne({
-    eager: false,
     index: true,
   })
   author!: Rel<Ref<User>>;
 
   @OneToMany(() => Comment, comment => comment.post, {
-    eager: false,
     orphanRemoval: true,
   })
   comments = new Collection<Comment>(this);
@@ -76,9 +74,9 @@ export class Post extends BaseEntity {
   @BeforeUpdate()
   async generateSlug(arguments_: EventArgs<this>) {
     if (arguments_.changeSet?.payload?.title) {
-      this.slug
-        = `${slugify(this.title)
-        }-${Math.trunc(Math.random() * 36 ** 6).toString(36)}`;
+      this.slug = `${slugify(
+        this.title,
+      )}-${Math.trunc(Math.random() * 36 ** 6).toString(36)}`;
     }
     this.readingTime = this.getReadingTime(this.content);
   }
