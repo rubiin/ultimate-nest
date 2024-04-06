@@ -6,13 +6,13 @@ import type { User } from "./user.entity";
 @Entity()
 export class PointRedemptionLog extends BaseEntity {
   @Property()
-    points!: number;
+  points!: number;
 
   @Property({ columnType: "numeric(9,2)" })
-    amount!: string;
+  amount!: string;
 
   @ManyToOne()
-    user!: Rel<Ref<User>>;
+  user!: Rel<Ref<User>>;
 
   constructor(partial?: Partial<PointRedemptionLog>) {
     super();

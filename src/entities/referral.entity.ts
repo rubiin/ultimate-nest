@@ -1,5 +1,12 @@
 import type { Opt, Ref } from "@mikro-orm/postgresql";
-import { Entity, Enum, Index, ManyToOne, Property, Rel } from "@mikro-orm/postgresql";
+import {
+  Entity,
+  Enum,
+  Index,
+  ManyToOne,
+  Property,
+  Rel,
+} from "@mikro-orm/postgresql";
 import { ReferralStatus } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import type { User } from "./user.entity";
@@ -9,12 +16,12 @@ export class Referral extends BaseEntity {
   @ManyToOne({
     index: true,
   })
-    referrer!: Rel<Ref<User>>;
+  referrer!: Rel<Ref<User>>;
 
   @Property({
     index: true,
   })
-    mobileNumber!: string;
+  mobileNumber!: string;
 
   @Index()
   @Enum(() => ReferralStatus)

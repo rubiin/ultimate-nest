@@ -1,11 +1,7 @@
-import type {
-  FilterQuery,
-} from "@mikro-orm/postgresql";
+import type { FilterQuery } from "@mikro-orm/postgresql";
 import {
   BeforeCreate,
-
   BeforeUpdate,
-
   BeforeUpsert,
   Collection,
   Embeddable,
@@ -13,6 +9,7 @@ import {
   Entity,
   Enum,
   EventArgs,
+  Index,
   ManyToMany,
   OneToMany,
   Property,
@@ -67,6 +64,7 @@ export class User extends BaseEntity {
   @Property()
   isTwoFactorEnabled? = false;
 
+  @Index()
   @Enum({ items: () => Roles, array: true })
   roles?: Roles[] = [Roles.AUTHOR];
 
@@ -78,7 +76,6 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Post, post => post.author, {
     orphanRemoval: true,
-    eager: false
   })
   posts = new Collection<Post>(this);
 
