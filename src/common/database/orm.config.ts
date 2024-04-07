@@ -13,13 +13,11 @@ export const baseOptions = {
     return new NotFoundException(`${entityName} not found for ${key}`);
   },
   migrations: {
-    migrations: {
-      fileName: (timestamp: string, name?: string) => {
-        if (!name)
-          return `Migration${timestamp}`;
+    fileName: (timestamp: string, name?: string) => {
+      if (!name)
+        return `Migration${timestamp}`;
 
-        return `Migration${timestamp}_${name}`;
-      },
+      return `Migration${timestamp}_${name}`;
     },
     tableName: "migrations", // name of database table with log of executed transactions
     path: "./migrations", // path to the folder with migrations
