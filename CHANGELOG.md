@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.2](https://github.com/rubiin/ultimate-nest/compare/v2.3.1...v2.3.2) (2024-04-07)
+
+
+### Bug Fixes
+
+* migration config fixes added ([57eb5b9](https://github.com/rubiin/ultimate-nest/commit/57eb5b9b816e8828d0db706d9554becb5e38e5be))
+
 ## [2.3.1](https://github.com/rubiin/ultimate-nest/compare/v2.3.0...v2.3.1) (2024-04-06)
 
 
