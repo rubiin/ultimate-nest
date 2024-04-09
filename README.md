@@ -153,13 +153,13 @@ installing [just](https://github.com/casey/just#packages) and then running `just
 Migrations are used to update the database schema. The migration files are stored in `migrations` directory.
 
 ```sh
-  npx cross-env NODE_ENV=dev npm run orm migration:up # applies migration for dev env
+npx cross-env NODE_ENV=dev npm run orm migration:up # applies migration for dev env
 ```
 
 Seeding is used to insert data into the database. The seeding files are stored in `common/database/seeders` directory.
 
 ```sh
-    npx cross-env USER_PASSWORD=Test@1234 NODE_ENV=dev npm run orm seeder:run   # seeds data for dev env with all user password set as Test@1234
+npx cross-env USER_PASSWORD=Test@1234 NODE_ENV=dev npm run orm seeder:run   # seeds data for dev env with all user password set as Test@1234
 ```
 
 ## Start application
@@ -211,8 +211,8 @@ authentication of the token.
 You need to have `docker` and `docker-compose` installed. The image environment variable values can be found at the compose file
 
 ```sh
-  ENV=dev sh ./scripts/deploy.sh   # deploys dev environment (.env.dev used)
-  ENV=prod sh ./scripts/deploy.sh   # deploys prod environment (.env.prod used)
+ENV=dev sh ./scripts/deploy.sh   # deploys dev environment (.env.dev used)
+ENV=prod sh ./scripts/deploy.sh   # deploys prod environment (.env.prod used)
 ```
 
 More docs found at `docs` folder
