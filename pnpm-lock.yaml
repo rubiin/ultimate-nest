@@ -22,7 +22,7 @@ dependencies:
     version: 5.2.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(reflect-metadata@0.2.2)(rxjs@7.8.1)
   '@golevelup/nestjs-stripe':
     specifier: ^0.7.0
-    version: 0.7.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(rxjs@7.8.1)(stripe@14.25.0)
+    version: 0.7.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(rxjs@7.8.1)(stripe@15.0.0)
   '@golevelup/nestjs-webhooks':
     specifier: ^0.2.18
     version: 0.2.18(@nestjs/common@10.3.7)(body-parser@1.20.2)(rxjs@7.8.1)
@@ -234,8 +234,8 @@ dependencies:
     specifier: ^4.7.5
     version: 4.7.5
   stripe:
-    specifier: ^14.25.0
-    version: 14.25.0
+    specifier: ^15.0.0
+    version: 15.0.0
   swagger-stats:
     specifier: ^0.99.7
     version: 0.99.7(prom-client@15.1.1)
@@ -1901,7 +1901,7 @@ packages:
       - supports-color
     dev: false
 
-  /@golevelup/nestjs-stripe@0.7.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(rxjs@7.8.1)(stripe@14.25.0):
+  /@golevelup/nestjs-stripe@0.7.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(rxjs@7.8.1)(stripe@15.0.0):
     resolution: {integrity: sha512-dKTopQIWu1UnvIqJteTXYkznO9/wHX+F52mb3LJtUDTOCs+noRozKOeKawbAX5fkI+/G5dohfP5SrwtwmtrJqw==}
     peerDependencies:
       stripe: ^14.19.0
@@ -1909,7 +1909,7 @@ packages:
       '@golevelup/nestjs-common': 2.0.0(@nestjs/common@10.3.7)
       '@golevelup/nestjs-discovery': 4.0.1(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)
       '@golevelup/nestjs-modules': 0.7.1(@nestjs/common@10.3.7)(rxjs@7.8.1)
-      stripe: 14.25.0
+      stripe: 15.0.0
     transitivePeerDependencies:
       - '@nestjs/common'
       - '@nestjs/core'
@@ -12608,8 +12608,8 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  /stripe@14.25.0:
-    resolution: {integrity: sha512-wQS3GNMofCXwH8TSje8E1SE8zr6ODiGtHQgPtO95p9Mb4FhKC9jvXR2NUTpZ9ZINlckJcFidCmaTFV4P6vsb9g==}
+  /stripe@15.0.0:
+    resolution: {integrity: sha512-QQ9JiLcKoGKT1/N0Ta5AsePGtdJejkKTWS9fnRWk9Z1Bcr6fiFkcdtlJwOg/hAQaDvXOB8cNc6J+UqXzH8ePCw==}
     engines: {node: '>=12.*'}
     dependencies:
       '@types/node': 20.12.7
