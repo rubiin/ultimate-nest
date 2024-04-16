@@ -4,7 +4,7 @@ import type {
   MulterField,
   MulterOptions,
 } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
-import { ApiBody, ApiConsumes } from "@nestjs/swagger";
+import { ApiBody, ApiConsumes, ApiOkResponse, ApiProduces } from "@nestjs/swagger";
 import type {
   ReferenceObject,
   SchemaObject,
@@ -110,5 +110,17 @@ export function ApiFileFields(options: (MulterField & { required?: boolean })[],
         required: options.filter(f => f.required).map(f => f.name),
       },
     }),
+  );
+}
+
+export function ApiFileResponse(...mimeTypes: string[]) {
+  return applyDecorators(
+    ApiOkResponse({
+      schema: {
+        type: 'string',
+        format: 'binary',
+      },
+    }),
+    ApiProduces(...mimeTypes),
   );
 }
