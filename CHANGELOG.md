@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.4.0](https://github.com/rubiin/ultimate-nest/compare/v2.3.2...v2.4.0) (2024-04-17)
+
+
+### Features
+
+* **file:** Add ApiFileResponse decorator for file downloads ([8b55cd5](https://github.com/rubiin/ultimate-nest/commit/8b55cd5374dea263c52c5a023c2139f5e8c4a104))
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([96b2dba](https://github.com/rubiin/ultimate-nest/commit/96b2dbac33d9ed1f822bbe8985e2550cfaf0839a))
+* **deps:** update all non-major dependencies ([d5586cd](https://github.com/rubiin/ultimate-nest/commit/d5586cdf9c2488ff1e55557abe6d8413d157f7be))
+* **deps:** update dependency stripe to v15 ([5ffc78d](https://github.com/rubiin/ultimate-nest/commit/5ffc78d0520afe2f28bd647e80518630f51d7807))
+* filetype detection on upload ([396287d](https://github.com/rubiin/ultimate-nest/commit/396287d19c23e0e7d0a18f8f04d6867961a51988))
+* filetype detection on upload ([96b2dba](https://github.com/rubiin/ultimate-nest/commit/96b2dbac33d9ed1f822bbe8985e2550cfaf0839a))
+
 ## [2.3.2](https://github.com/rubiin/ultimate-nest/compare/v2.3.1...v2.3.2) (2024-04-07)
 
 
