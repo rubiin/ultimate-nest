@@ -4,6 +4,7 @@ export * from "./is-after.validator";
 export * from "./is-date-field.validator";
 export * from "./is-date-format.validator";
 export * from "./is-email.validator";
+export * from "./file-format.validator";
 export * from "./is-enum-field.decorator";
 export * from "./is-equal-to.validator";
 export * from "./is-greater-than.validator";

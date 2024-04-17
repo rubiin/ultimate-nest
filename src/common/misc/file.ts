@@ -1,22 +1,8 @@
 import type { FileValidator } from "@common/@types";
 import { FileSize, FileType } from "@common/@types";
-import { MULTER_IMAGE_FILTER } from "@common/constant";
+import { CustomUploadFileTypeValidator } from "@common/decorators";
 import { HttpStatus, ParseFilePipeBuilder, UnprocessableEntityException } from "@nestjs/common";
-import type { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
-import { memoryStorage } from "multer";
 
-export const ImageMulterOption: MulterOptions = {
-  limits: {
-    fileSize: FileSize.IMAGE, // 5 MB
-  },
-  storage: memoryStorage(),
-  fileFilter: (_request: NestifyRequest, file, callback) => {
-    if (!FileType.IMAGE.test(file.mimetype))
-      return callback(new Error(MULTER_IMAGE_FILTER), false);
-
-    return callback(null, true);
-  },
-};
 
 /**
  *
@@ -34,10 +20,12 @@ export function fileValidatorPipe({
   required = true,
 }: FileValidator) {
   return new ParseFilePipeBuilder()
-    .addFileTypeValidator({
+  .addValidator(
+    new CustomUploadFileTypeValidator({
       fileType,
-    })
-    .addMaxSizeValidator({
+    }),
+  )
+  .addMaxSizeValidator({
       maxSize: fileSize,
       message: maxSize => `File size should be less than ${Math.round(maxSize / 1024 / 1024)} MB`,
     })

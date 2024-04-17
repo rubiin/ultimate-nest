@@ -31,7 +31,7 @@ export interface StringFieldOptions extends BaseValidator, BaseArrayValidator {
 }
 
 export interface FileValidator {
-  fileType?: RegExp | string;
+  fileType?: string[];
   fileSize?: number;
   required?: boolean;
 }
