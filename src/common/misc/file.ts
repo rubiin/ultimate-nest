@@ -1,7 +1,7 @@
 import type { FileValidator } from "@common/@types";
 import { FileSize, FileType } from "@common/@types";
 import { CustomUploadFileTypeValidator } from "@common/decorators";
-import { HttpStatus, ParseFilePipeBuilder, UnprocessableEntityException } from "@nestjs/common";
+import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 
 
 /**
@@ -32,11 +32,5 @@ export function fileValidatorPipe({
     .build({
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       fileIsRequired: required,
-      exceptionFactory(error) {
-        if(error.includes("expected type"))
-          return new UnprocessableEntityException(`Invalid file type. Valid file types are ${String(fileType).replaceAll(/[$()/]/g, '')}`);
-
-        return new UnprocessableEntityException(error);
-      },
     });
 }
