@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.1](https://github.com/rubiin/ultimate-nest/compare/v2.4.0...v2.4.1) (2024-04-21)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([74aceac](https://github.com/rubiin/ultimate-nest/commit/74aceace0bf14a001d091bca2737c9a2d939e5e8))
+
 ## [2.4.0](https://github.com/rubiin/ultimate-nest/compare/v2.3.2...v2.4.0) (2024-04-17)
 
 
