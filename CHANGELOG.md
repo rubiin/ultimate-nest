@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.2](https://github.com/rubiin/ultimate-nest/compare/v2.4.1...v2.4.2) (2024-04-24)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([7a92023](https://github.com/rubiin/ultimate-nest/commit/7a920237450d1379d25ec7f8cee36e8d366111ca))
+* **deps:** update all non-major dependencies to ^7.112.1 ([7d304fe](https://github.com/rubiin/ultimate-nest/commit/7d304fe5fd0c21bf27a4d8617e3d849135870793))
+* **docker:** use lts node docker image ([a5ad90c](https://github.com/rubiin/ultimate-nest/commit/a5ad90cf62395cac468f8605de7064e0302a8b14))
+
 ## [2.4.1](https://github.com/rubiin/ultimate-nest/compare/v2.4.0...v2.4.1) (2024-04-21)
 
 
