@@ -1,4 +1,4 @@
-FROM node:21.7.3-slim
+FROM node:20.12.2-slim
 WORKDIR /usr/src/app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 ENV PNPM_HOME=/usr/local/bin
