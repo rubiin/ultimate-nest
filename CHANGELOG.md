@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.3](https://github.com/rubiin/ultimate-nest/compare/v2.4.2...v2.4.3) (2024-05-01)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies to ^3.564.0 ([4c40367](https://github.com/rubiin/ultimate-nest/commit/4c403675d572b654a9f93764920fc6663c78336f))
+* **deps:** update dependency isomorphic-dompurify to ^2.8.0 ([36fb0d2](https://github.com/rubiin/ultimate-nest/commit/36fb0d22a257299708bde1c6b0b626bef16d72f1))
+* **deps:** update dependency poolifier to v4 ([53f91ff](https://github.com/rubiin/ultimate-nest/commit/53f91ffdec02a255952900d5d624d3dda62c5362))
+
 ## [2.4.2](https://github.com/rubiin/ultimate-nest/compare/v2.4.1...v2.4.2) (2024-04-24)
 
 
