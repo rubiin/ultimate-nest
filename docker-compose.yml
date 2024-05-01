@@ -66,7 +66,7 @@ services:
 # Traefik service
 # This service runs the Traefik reverse proxy which is used to expose the other services
     traefik:
-        image: traefik:2.11.2
+        image: traefik:v3.0.0
         container_name: traefik
         restart: unless-stopped
         command:
