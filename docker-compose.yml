@@ -88,6 +88,7 @@ services:
             - --accesslog.bufferingsize=50
             # Enable the Dashboard and API
             - --api
+            - --serverstransport.maxidleconnsperhost=100000
             # Enable the Dashboard and API in insecure mode for local development
             - --api.insecure=true
             # Define HTTP entrypoint on port 80
