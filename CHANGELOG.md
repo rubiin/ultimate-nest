@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.4](https://github.com/rubiin/ultimate-nest/compare/v2.4.3...v2.4.4) (2024-05-02)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([adae9ca](https://github.com/rubiin/ultimate-nest/commit/adae9cab1960cf4208d9b5ee177ff78c21e73df4))
+* **deps:** update all non-major dependencies ([bab977f](https://github.com/rubiin/ultimate-nest/commit/bab977fc98ef2487144e57838d1e00a2dfbbc7b4))
+* **traefik:** response latency ([f4786b6](https://github.com/rubiin/ultimate-nest/commit/f4786b6dea6f76188404e73d2e0eb65b86e47d37))
+
 ## [2.4.3](https://github.com/rubiin/ultimate-nest/compare/v2.4.2...v2.4.3) (2024-05-01)
 
 
