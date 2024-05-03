@@ -27,7 +27,7 @@ jobs:
       - uses: google-github-actions/release-please-action@v4
         id: release
         with:
-          release-type: simple
+          release-type: node
           package-name: ultimate-nest
       - uses: actions/checkout@v4
       - name: tag stable versions
