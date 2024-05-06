@@ -1,4 +1,12 @@
-import { Body, Delete, Get, Post, Put, Query, UploadedFile } from "@nestjs/common";
+import {
+  Body,
+  Delete,
+  Get,
+  Put as Patch,
+  Post,
+  Query,
+  UploadedFile,
+} from "@nestjs/common";
 import { Observable } from "rxjs";
 import type { PaginationResponse } from "@common/@types";
 import { Action, File, Roles } from "@common/@types";
@@ -16,7 +24,12 @@ import { fileValidatorPipe } from "@common/misc";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { UserService } from "./user.service";
-import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
+import {
+  CreateUserDto,
+  EditUserDto,
+  ReferUserDto,
+  UserRegistrationDto,
+} from "./dtos";
 
 @GenericController("users")
 export class UserController {
@@ -34,7 +47,9 @@ export class UserController {
   @Public()
   @ApiPaginatedResponse(User)
   @Get()
-  findAll(@Query() PaginationDto: CursorPaginationDto): Observable<PaginationResponse<User>> {
+  findAll(
+    @Query() PaginationDto: CursorPaginationDto,
+  ): Observable<PaginationResponse<User>> {
     return this.userService.findAll(PaginationDto);
   }
 
@@ -46,7 +61,10 @@ export class UserController {
   })
   @ApiFile({ fieldName: "avatar", required: true }) // fix this
   publicRegistration(
-        @Body() dto: UserRegistrationDto, @UploadedFile(fileValidatorPipe({})) image: File): Observable<User> {
+    @Body() dto: UserRegistrationDto,
+    @UploadedFile(fileValidatorPipe({}))
+    image: File,
+  ): Observable<User> {
     return this.userService.create({
       ...dto,
       roles: [Roles.AUTHOR],
@@ -73,11 +91,14 @@ export class UserController {
   @CheckPolicies(new GenericPolicyHandler(User, Action.Create))
   @ApiFile({ fieldName: "avatar", required: true })
   create(
-        @Body() dto: CreateUserDto, @UploadedFile(fileValidatorPipe({})) image: File): Observable<User> {
+    @Body() dto: CreateUserDto,
+    @UploadedFile(fileValidatorPipe({}))
+    image: File,
+  ): Observable<User> {
     return this.userService.create({ ...dto, files: image });
   }
 
-  @Put(":idx")
+  @Patch(":idx")
   @SwaggerResponse({
     operation: "User edit",
     badRequest: "User already registered with email.",
@@ -86,7 +107,12 @@ export class UserController {
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Update))
   update(
-        @UUIDParam("idx") index: string, @Body() dto: EditUserDto, @UploadedFile(fileValidatorPipe({ required: false })) image?: File): Observable<User> {
+    @UUIDParam("idx") index: string,
+    @Body()
+    dto: EditUserDto,
+    @UploadedFile(fileValidatorPipe({ required: false }))
+    image?: File,
+  ): Observable<User> {
     return this.userService.update(index, dto, image);
   }
 
