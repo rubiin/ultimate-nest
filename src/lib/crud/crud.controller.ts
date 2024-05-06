@@ -4,7 +4,7 @@ import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from "@common/dec
 import { AppUtils } from "@common/helpers";
 import { User } from "@entities";
 import type { ArgumentMetadata, Type } from "@nestjs/common";
-import { Body, Delete, Get, Injectable, Param, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Delete, Get, Injectable, Param, Patch, Post, Query, UsePipes, ValidationPipe } from "@nestjs/common";
 import { Observable } from "rxjs";
 import type { BaseService } from "./crud.service";
 
@@ -91,7 +91,7 @@ export function ControllerFactory<
       response: updateDto,
     })
     @UsePipes(updatePipe)
-    @Put(":idx")
+    @Patch(":idx")
     update(@Param("idx") index: string, @Body() body: U): Observable<T> {
       return this.service.update(index, body);
     }

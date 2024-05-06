@@ -4,8 +4,8 @@ import {
   DefaultValuePipe,
   Get,
   ParseBoolPipe,
+  Patch,
   Post,
-  Put,
   Query,
   Req,
   Res,
@@ -18,7 +18,12 @@ import { Observable, map } from "rxjs";
 import { TokensService } from "@modules/token/tokens.service";
 import { User } from "@entities";
 import type { OtpLog } from "@entities";
-import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import {
+  Auth,
+  GenericController,
+  LoggedInUser,
+  SwaggerResponse,
+} from "@common/decorators";
 import { OauthResponse } from "@common/@types";
 import type { AuthenticationResponse } from "@common/@types";
 import { AuthService } from "./auth.service";
@@ -50,7 +55,12 @@ export class AuthController {
   @Post("login/magic")
   @ApiOperation({ summary: "User Login with magic link" })
   loginByMagicLink(
-    @Req() request: NestifyRequest, @Res() response: NestifyResponse, @Body() dto: MagicLinkLogin): Observable<void> {
+    @Req() request: NestifyRequest,
+    @Res()
+    response: NestifyResponse,
+    @Body()
+    dto: MagicLinkLogin,
+  ): Observable<void> {
     return this.authService.validateUser(false, dto.destination).pipe(
       map((_user) => {
         this.magicStrategy.send(request, response);
@@ -69,7 +79,7 @@ export class AuthController {
   }
 
   @Auth()
-  @Put("forgot-password")
+  @Patch("forgot-password")
   @SwaggerResponse({
     operation: "Forgot password",
     notFound: "Account doesn't exist.",
@@ -145,7 +155,10 @@ export class AuthController {
     operation: "Change password",
     badRequest: "Username and password provided does not match.",
   })
-  changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User): Observable<User> {
+  changePassword(
+    @Body() dto: ChangePasswordDto,
+    @LoggedInUser() user: User,
+  ): Observable<User> {
     return this.authService.changePassword(dto, user);
   }
 
@@ -154,14 +167,19 @@ export class AuthController {
   refresh(@Body() body: RefreshTokenDto): Observable<any> {
     return this.tokenService
       .createAccessTokenFromRefreshToken(body.refreshToken)
-      .pipe(map(token => ({ token })));
+      .pipe(map((token) => ({ token })));
   }
 
   @Auth()
   @ApiOperation({ summary: "Logout user" })
   @Post("logout")
   logout(
-    @LoggedInUser() user: User, @Query("fromAll", new DefaultValuePipe(false), ParseBoolPipe) fromAll?: boolean, @Body() refreshToken?: RefreshTokenDto): Observable<User> {
+    @LoggedInUser() user: User,
+    @Query("fromAll", new DefaultValuePipe(false), ParseBoolPipe)
+    fromAll?: boolean,
+    @Body()
+    refreshToken?: RefreshTokenDto,
+  ): Observable<User> {
     return fromAll
       ? this.authService.logoutFromAll(user)
       : this.authService.logout(user, refreshToken!.refreshToken);
