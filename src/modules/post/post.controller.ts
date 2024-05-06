@@ -1,4 +1,4 @@
-import { Body, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
 import type { PaginationResponse } from "@common/@types";
 import { Action } from "@common/@types";
@@ -52,7 +52,7 @@ export class PostController {
     return this.postService.create(dto, author);
   }
 
-  @Put(":slug")
+  @Patch(":slug")
   @SwaggerResponse({
     operation: "Post update",
     notFound: "Post doesn't exist.",
@@ -82,11 +82,14 @@ export class PostController {
   })
   @CheckPolicies(new GenericPolicyHandler(Comment, Action.Create))
   createComment(
-        @LoggedInUser("id") user: number, @Param("slug") slug: string, @Body() commentData: CreateCommentDto) {
+        @LoggedInUser("id") user: number, @Param("slug")
+slug: string, @Body()
+commentData: CreateCommentDto,
+  ) {
     return this.postService.addComment(user, slug, commentData);
   }
 
-  @Put(":slug/comments/:commentIdx")
+  @Patch(":slug/comments/:commentIdx")
   @SwaggerResponse({
     operation: "Post comment edit",
     notFound: "Post doesn't exist.",
@@ -94,7 +97,10 @@ export class PostController {
   })
   @CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
   editComment(
-        @Param("slug") slug: string, @UUIDParam("commentIdx") commentIndex: string, @Body() commentData: CreateCommentDto) {
+        @Param("slug") slug: string, @UUIDParam("commentIdx")
+commentIndex: string, @Body()
+commentData: CreateCommentDto,
+  ) {
     return this.postService.editComment(slug, commentIndex, commentData);
   }
 
