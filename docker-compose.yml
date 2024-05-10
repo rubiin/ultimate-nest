@@ -44,7 +44,7 @@ services:
 # This service runs the PostgreSQL database
     database:
         container_name: database
-        image: postgres:16.2-alpine
+        image: postgres:16.3-alpine
         restart: unless-stopped
         env_file: env/.env.${ENV}
         environment:
