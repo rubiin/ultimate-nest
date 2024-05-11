@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.4.6](https://github.com/rubiin/ultimate-nest/compare/v2.4.5...v2.4.6) (2024-05-11)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([2dff84e](https://github.com/rubiin/ultimate-nest/commit/2dff84e37de38f76b40d3bec7f571cb9804cde8b))
+* **deps:** update dependency pino-http to v10 ([de60001](https://github.com/rubiin/ultimate-nest/commit/de600014184c3b40e7d588bf209e5f3769f929d9))
+
 ## [2.4.5](https://github.com/rubiin/ultimate-nest/compare/v2.4.4...v2.4.5) (2024-05-06)
 
 
