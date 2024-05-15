@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.4.7](https://github.com/rubiin/ultimate-nest/compare/v2.4.6...v2.4.7) (2024-05-15)
+
+
+### Bug Fixes
+
+* **deps:** update sentry-javascript monorepo to v8 ([3e88362](https://github.com/rubiin/ultimate-nest/commit/3e883624d084103ab7e9a2a72750ca3c0eb85cec))
+* remove axios overide ([bff248d](https://github.com/rubiin/ultimate-nest/commit/bff248d8c3240bbef7df0ca9f6d4723f4d7aa71e))
+
 ## [2.4.6](https://github.com/rubiin/ultimate-nest/compare/v2.4.5...v2.4.6) (2024-05-11)
 
 
