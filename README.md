@@ -8,7 +8,7 @@
 <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/rubiin/ultimate-nest">
 <img alt="Workflow test" src="https://github.com/rubiin/ultimate-nest/actions/workflows/github-ci.yml/badge.svg">
 <img alt="GitHub" src="https://img.shields.io/github/license/rubiin/ultimate-nest">
-<img alt="GitHub" src="  https://img.shields.io/github/commit-activity/w/rubiin/ultimate-nest">
+<img alt="GitHub" src="https://img.shields.io/github/commit-activity/w/rubiin/ultimate-nest">
 
 </p>
 <p align="center">
