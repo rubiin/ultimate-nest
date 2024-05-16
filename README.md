@@ -237,7 +237,7 @@ A collection of helper functions for typescrip development. It includes function
 
 [nestjs-easyconfig](https://github.com/rubiin/nestjs-easyconfig)
 
-[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-easyconfig?style=flat-square)](https://github.com/rubiin/nestjs-easyconfig)
+[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-easyconfig?style=flat-square)](https://github.com/NestCrafts/nestjs-easyconfig)
 [![npm](https://img.shields.io/npm/dm/nestjs-easyconfig?style=flat-square)](https://www.npmjs.com/package/nestjs-easyconfig)
 
 Platform config manager for nestjs. It supports multiple config files and environment variables.
@@ -246,7 +246,7 @@ Platform config manager for nestjs. It supports multiple config files and enviro
 
 [nestjs-minio](https://github.com/rubiin/nestjs-minio)
 
-[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-minio?style=flat-square)](https://github.com/rubiin/nestjs-minio)
+[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-minio?style=flat-square)](https://github.com/NestCrafts/nestjs-minio)
 [![npm](https://img.shields.io/npm/dm/nestjs-minio?style=flat-square)](https://www.npmjs.com/package/nestjs-sessminioion)
 
 This is a minio module for Nest.
@@ -255,7 +255,7 @@ This is a minio module for Nest.
 
 [nestjs-cloudinary](https://github.com/rubiin/nestjs-cloudinary)
 
-[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-cloudinary?style=flat-square)](https://github.com/rubiin/nestjs-cloudinary)
+[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-cloudinary?style=flat-square)](https://github.com/NestCrafts/nestjs-cloudinary)
 [![npm](https://img.shields.io/npm/dm/nestjs-cloudinary?style=flat-square)](https://www.npmjs.com/package/nestjs-cloudinary)
 
 This is a cloudinary module for Nest.
@@ -264,7 +264,7 @@ This is a cloudinary module for Nest.
 
 [nestjs-pgpromise](https://github.com/rubiin/nestjs-pgpromise)
 
-[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-pgpromise?style=flat-square)](https://github.com/rubiin/nestjs-pgpromise)
+[![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-pgpromise?style=flat-square)](https://github.com/NestCrafts/nestjs-pgpromise)
 [![npm](https://img.shields.io/npm/dm/nestjs-pgpromise?style=flat-square)](https://www.npmjs.com/package/nestjs-pgpromise)
 
 A Module for Utilizing Pg-promise with NestJS
