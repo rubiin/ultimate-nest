@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.4.8](https://github.com/rubiin/ultimate-nest/compare/v2.4.7...v2.4.8) (2024-05-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @mikro-orm/nestjs to v6 ([2d61d1a](https://github.com/rubiin/ultimate-nest/commit/2d61d1a8566432d2e47c0e55994375124fd19655))
+* **deps:** update dependency poolifier to ^4.0.9 ([fa702ca](https://github.com/rubiin/ultimate-nest/commit/fa702ca8307d83bba0a0dab755804ec914a4c355))
+
 ## [2.4.7](https://github.com/rubiin/ultimate-nest/compare/v2.4.6...v2.4.7) (2024-05-15)
 
 
