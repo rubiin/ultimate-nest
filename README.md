@@ -121,8 +121,6 @@ Now you can start the application witt `npx cross-env NODE_ENV=dev npm run start
 - ✅ [**Commitlint**](https://commitlint.js.org/) — Checks if your commit messages meet the conventional commit format.
 - 🐺 [**Husky**](https://github.com/typicode/husky) — Helps you create Git hooks easily.
 
-
-
 ## Available Scripts
 
 - `npm run start` - Start application
@@ -145,8 +143,8 @@ installing [just](https://github.com/casey/just#packages) and then running `just
 ## Setup
 
 - First if you don't want to use any libs from like redis, mailer etc. replace them from the app.module.tasks
-    - You will also need to remove the config from `validate.config.ts` from line ` load: []`
-    - Also remove the unwanted config variables from the env file
+  - You will also need to remove the config from `validate.config.ts` from line ` load: []`
+  - Also remove the unwanted config variables from the env file
 - Make sure you create a env file under `env` directory with name like `.env.something`.The portion after .env is
   the `NODE_ENV` value which will be required while running the app
 
@@ -226,7 +224,6 @@ More docs found at `docs` folder
 <a href="https://www.buymeacoffee.com/XbgWxt567"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=XbgWxt567&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
 
 Also if you are into NestJS ecosystem you may be interested in one of my other libs:
-
 
 [helper-fns](https://github.com/rubiin/helper-fns)
 
