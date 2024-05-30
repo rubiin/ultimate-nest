@@ -15,17 +15,16 @@ import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation } from "@nestjs/swagger";
 import { Observable, map } from "rxjs";
 
-import { TokensService } from "@modules/token/tokens.service";
-import { User } from "@entities";
-import type { OtpLog } from "@entities";
+import type { AuthenticationResponse } from "@common/@types";
+import { OauthResponse } from "@common/@types";
 import {
   Auth,
   GenericController,
   LoggedInUser,
   SwaggerResponse,
 } from "@common/decorators";
-import { OauthResponse } from "@common/@types";
-import type { AuthenticationResponse } from "@common/@types";
+import { User } from "@entities";
+import { TokensService } from "@modules/token/tokens.service";
 import { AuthService } from "./auth.service";
 import {
   ChangePasswordDto,
@@ -84,7 +83,7 @@ export class AuthController {
     operation: "Forgot password",
     notFound: "Account doesn't exist.",
   })
-  forgotPassword(@Body() dto: SendOtpDto): Observable<OtpLog> {
+  forgotPassword(@Body() dto: SendOtpDto): Observable< { message: string } > {
     return this.authService.forgotPassword(dto);
   }
 
@@ -167,7 +166,7 @@ export class AuthController {
   refresh(@Body() body: RefreshTokenDto): Observable<any> {
     return this.tokenService
       .createAccessTokenFromRefreshToken(body.refreshToken)
-      .pipe(map((token) => ({ token })));
+      .pipe(map(token => ({ token })));
   }
 
   @Auth()
