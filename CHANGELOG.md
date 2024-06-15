@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.4.10](https://github.com/rubiin/ultimate-nest/compare/v2.4.9...v2.4.10) (2024-06-15)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([4f1fb10](https://github.com/rubiin/ultimate-nest/commit/4f1fb1050cef213ad5dcdea9f25b52320ba4c258))
+* **deps:** update all non-major dependencies ([1b55f63](https://github.com/rubiin/ultimate-nest/commit/1b55f6302d82043f4080569d963e642aee8efb38))
+* remove otp leak ([61ee20c](https://github.com/rubiin/ultimate-nest/commit/61ee20c3957a0a1070c3c868b15845afdbd5bfa3))
+* **spell:** spell issues and file names ([838d731](https://github.com/rubiin/ultimate-nest/commit/838d73165c2148a0cef2b1f5952e3196e102fd63))
+
 ## [2.4.9](https://github.com/rubiin/ultimate-nest/compare/v2.4.8...v2.4.9) (2024-05-24)
 
 
