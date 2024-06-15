@@ -1,5 +1,5 @@
 
-# prints all availabe commands
+# prints all available commands
 default:
 	just --list
 
