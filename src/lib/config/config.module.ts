@@ -1,8 +1,8 @@
 import process from "node:process";
+import { HelperService } from "@common/helpers";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import Joi from "joi";
-import { HelperService } from "@common/helpers";
 import {
   app,
   appConfigValidationSchema,
@@ -23,8 +23,6 @@ import {
   redisConfigValidationSchema,
   sentry,
   sentryConfigurationValidationSchema,
-  stripe,
-  stripeonfigValidationSchema,
   throttle,
   throttleConfigValidationSchema,
 } from "./configs";
@@ -45,7 +43,6 @@ import {
         facebookOauth,
         throttle,
         sentry,
-        stripe,
       ],
       cache: true,
       isGlobal: true,
@@ -61,7 +58,6 @@ import {
         ...facebookOauthConfigValidationSchema,
         ...throttleConfigValidationSchema,
         ...sentryConfigurationValidationSchema,
-        ...stripeonfigValidationSchema,
       }),
       validationOptions: {
         abortEarly: true,
