@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.11](https://github.com/rubiin/ultimate-nest/compare/v2.4.10...v2.4.11) (2024-06-17)
+
+
+### Bug Fixes
+
+* dont include stripe by default ([17bfba9](https://github.com/rubiin/ultimate-nest/commit/17bfba93ae1d427f51fe6e153f91134e233a5790))
+
 ## [2.4.10](https://github.com/rubiin/ultimate-nest/compare/v2.4.9...v2.4.10) (2024-06-15)
 
 
