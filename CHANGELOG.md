@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.12](https://github.com/rubiin/ultimate-nest/compare/v2.4.11...v2.4.12) (2024-07-15)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([d94d50c](https://github.com/rubiin/ultimate-nest/commit/d94d50c4174abbb40f4f0da82cd44f9775342eca))
+* **deps:** update dependency @nestjs/throttler to v6 ([22c7648](https://github.com/rubiin/ultimate-nest/commit/22c76483b16d79f2085fc110f5b87136ed0e8213))
+* **deps:** update dependency stripe to v16 ([bc58631](https://github.com/rubiin/ultimate-nest/commit/bc58631c82cc368b41f8e2fa5b9575a067e94af7))
+
 ## [2.4.11](https://github.com/rubiin/ultimate-nest/compare/v2.4.10...v2.4.11) (2024-06-17)
 
 
