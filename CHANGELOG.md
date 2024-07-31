@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/rubiin/ultimate-nest/compare/v2.4.12...v2.5.0) (2024-07-31)
+
+
+### Features
+
+* use rabbitmq image with delayed plugin ([12b256f](https://github.com/rubiin/ultimate-nest/commit/12b256f4b7138d2b6ff179e37bb293f8f4c84ddf))
+
 ## [2.4.12](https://github.com/rubiin/ultimate-nest/compare/v2.4.11...v2.4.12) (2024-07-15)
 
 
