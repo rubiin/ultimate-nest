@@ -194,7 +194,7 @@ services:
 # This service runs the RabbitMQ message broker
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3.13.6-management-alpine
+        image: heidiks/rabbitmq-delayed-message-exchange:latest
         env_file: env/.env.${ENV}
         restart: unless-stopped
         depends_on:
