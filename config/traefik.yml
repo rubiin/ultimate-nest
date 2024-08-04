@@ -1,0 +1,28 @@
+api:
+  dashboard: true
+  debug: true
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+  websecure:
+    address: ":443"
+serversTransport:
+  insecureSkipVerify: true
+  maxidleconnsperhost: 100000
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+certificatesResolvers:
+  certresolver:
+    acme:
+      email: youremail@email.com
+      storage: acme.json
+      # caServer: https://acme-v02.api.letsencrypt.org/directory # prod (default)
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory # staging
+      tlschallenge:
