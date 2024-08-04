@@ -11,10 +11,10 @@ services:
         container_name: redis
         restart: unless-stopped
         env_file: env/.env.${ENV}
-        command: redis-server --loglevel warning --requirepass DwaLbTL84QaA
+        command: redis-server
         volumes:
             - redis-data:/data
-            - conf/redis.conf:/usr/local/etc/redis/redis.conf
+            - config/redis.conf:/usr/local/etc/redis/redis.conf
         networks:
             - nestify-network
         healthcheck:
@@ -69,43 +69,6 @@ services:
         image: traefik:v3.1.0
         container_name: traefik
         restart: unless-stopped
-        command:
-            # Enable Docker in Traefik, so that it reads labels from Docker services
-            - --providers.docker=true
-            # Do not expose all Docker services, only the ones explicitly exposed
-            - --providers.docker.exposedbydefault=false
-            # Disable Docker Swarm mode for local development
-            # - --providers.docker.swarmmode
-            # Enable the access log, with HTTP requests
-            - --accesslog
-            # Enable the Traefik log, for configurations and errors
-            - --log
-            - --log.level=DEBUG
-            - --log.format=json
-            - --log.filePath=/logs/traefik.log
-            - --accesslog=true
-            - --accesslog.filePath=/logs/access.log
-            - --accesslog.bufferingsize=50
-            # Enable the Dashboard and API
-            - --api
-            - --serverstransport.maxidleconnsperhost=100000
-            # Enable the Dashboard and API in insecure mode for local development
-            - --api.insecure=true
-            # Define HTTP entrypoint on port 80
-            - --entrypoints.web.address=:80
-            # Define HTTPS entrypoint on port 443
-            - --entrypoints.websecure.address=:443
-            # Enable Let's Encrypt certificate resolver
-            - --certificatesresolvers.certresolver.acme.tlschallenge=true
-            # Email address used for Let's Encrypt registration
-            - --certificatesresolvers.certresolver.acme.email=test@email.com
-            # Path to store Let's Encrypt certificates
-            - --certificatesresolvers.certresolver.acme.storage=/letsencrypt/acme.json
-            # Redirect HTTP requests to HTTPS
-            - --providers.middlewares.httpsredirect.redirectscheme.scheme=https
-            # Enable Let's Encrypt staging environment for local development , remove this line for production
-            - --certificatesresolvers.certresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-
         labels:
             - "traefik.enable=true"
             - "traefik.http.middlewares.traefik-compress.compress=true"
@@ -149,6 +112,7 @@ services:
             - ./letsencrypt:/letsencrypt
             - ./logs/:/logs/
             - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./config/traefik.yml:/traefik.yml:ro
 
 # Nestify service
 # This service runs the Nestify application
