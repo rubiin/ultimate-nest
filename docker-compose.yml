@@ -7,7 +7,7 @@ services:
 # Redis service
 # This service runs the Redis database
     redis:
-        image: redis:7.2.5-alpine
+        image: redis:7.4.0-alpine
         container_name: redis
         restart: unless-stopped
         env_file: env/.env.${ENV}
@@ -66,7 +66,7 @@ services:
 # Traefik service
 # This service runs the Traefik reverse proxy which is used to expose the other services
     traefik:
-        image: traefik:v3.1.0
+        image: traefik:v3.1.1
         container_name: traefik
         restart: unless-stopped
         labels:
