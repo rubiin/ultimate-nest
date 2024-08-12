@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.0](https://github.com/rubiin/ultimate-nest/compare/v2.4.12...v2.5.0) (2024-08-12)
+
+
+### Features
+
+* use rabbitmq image with delayed plugin ([905ff26](https://github.com/rubiin/ultimate-nest/commit/905ff266015a07c59c263de244962ba1814cd0ca))
+
+
+### Bug Fixes
+
+* move traefik config to file ([50d2dd4](https://github.com/rubiin/ultimate-nest/commit/50d2dd42137dc92fbc82f85be85e9d831a1a4875))
+
 ## [2.5.0](https://github.com/rubiin/ultimate-nest/compare/v2.4.12...v2.5.0) (2024-07-31)
 
 
