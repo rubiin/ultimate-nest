@@ -1,10 +1,9 @@
 import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
-import { SENTRY_DSN_REGEX } from "@common/constant";
 
 export const sentryConfigurationValidationSchema = {
-  SENTRY_DSN: Joi.string().pattern(SENTRY_DSN_REGEX).required(),
+  SENTRY_DSN: Joi.string().required(),
   SENTRY_ENVIRONMENT: Joi.string().required(),
 };
 
