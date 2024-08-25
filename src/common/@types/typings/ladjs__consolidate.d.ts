@@ -1,3 +1,4 @@
+/* eslint-disable */
 declare module "@ladjs/consolidate"{
 
   const cons: Consolidate;

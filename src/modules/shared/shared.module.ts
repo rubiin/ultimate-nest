@@ -1,4 +1,3 @@
-import { IsUniqueConstraint } from "@common/decorators/validation";
 import { CustomThrottlerGuard } from "@common/guards";
 import { ClearCacheInterceptor, HttpCacheInterceptor } from "@common/interceptors";
 import {
@@ -11,21 +10,10 @@ import {
   NestJwtModule,
   NestMailModule,
   NestPinoModule,
-  NestRabbitModule,
   NestSentryModule,
   NestServeStaticModule,
-  NestThrottlerModule,
-  OrmModule,
+  NestThrottlerModule
 } from "@lib/index";
-import { AuthModule } from "@modules/auth/auth.module";
-import { CategoryModule } from "@modules/category/category.module";
-import { ChatModule } from "@modules/chat/chat.module";
-import { HealthModule } from "@modules/health/health.module";
-import { PostModule } from "@modules/post/post.module";
-import { ProfileModule } from "@modules/profile/profile.module";
-import { TagsModule } from "@modules/tags/tags.module";
-import { TwoFactorModule } from "@modules/twofa/twofa.module";
-import { UserModule } from "@modules/user/user.module";
 import { Module } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { ScheduleModule } from "@nestjs/schedule";
@@ -33,17 +21,6 @@ import { SentryInterceptor } from "@travelerdev/nestjs-sentry";
 
 @Module({
   imports: [
-    AuthModule,
-    PostModule,
-    ProfileModule,
-    HealthModule,
-    UserModule,
-    ChatModule,
-    TagsModule,
-    CategoryModule,
-    OrmModule,
-    TwoFactorModule,
-    NestRabbitModule,
     NestMailModule,
     NestConfigModule,
     NestPinoModule,
@@ -59,7 +36,6 @@ import { SentryInterceptor } from "@travelerdev/nestjs-sentry";
     ScheduleModule.forRoot(),
   ],
   providers: [
-    IsUniqueConstraint,
     {
       provide: APP_INTERCEPTOR,
       useFactory: () => new SentryInterceptor(),
