@@ -28,6 +28,8 @@ module.exports = rubiin({
         "ignoreIIFE": true
       }],
       "unicorn/prefer-top-level-await": "off",
+      "ts/no-unsafe-assignment": "off",
+      "ts/no-unsafe-call": "off",
       "unicorn/prevent-abbreviations": [
         "error",
         {
