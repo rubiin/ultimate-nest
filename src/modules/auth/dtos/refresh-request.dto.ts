@@ -13,5 +13,5 @@ export class RefreshTokenDto {
       type: "jwt",
     }),
   })
-    refreshToken!: string;
+  refreshToken!: string;
 }

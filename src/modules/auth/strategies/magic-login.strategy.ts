@@ -10,10 +10,10 @@ import { MailerService } from "@lib/mailer/mailer.service";
 import { AuthService } from "../auth.service";
 
 interface MagicLoginPayload {
-  destination: string
-  code: string
-  iat: number
-  exp: number
+  destination: string;
+  code: string;
+  iat: number;
+  exp: number;
 }
 
 @Injectable()
@@ -76,6 +76,6 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 
   async validate(email: string) {
     // Accept the JWT and attempt to validate it using the user service
-    return await this.authService.findUser({ email });
+    return this.authService.findUser({ email });
   }
 }

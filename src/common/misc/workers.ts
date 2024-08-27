@@ -2,11 +2,11 @@ import { HelperService } from "@common/helpers";
 import { ThreadWorker } from "poolifier";
 
 export interface WorkerData<T = string> {
-  input: T
+  input: T;
 }
 
 export interface WorkerResponse<T = string> {
-  response: T
+  response: T;
 }
 
 class FunctionHandlerWorker<
@@ -24,6 +24,6 @@ class FunctionHandlerWorker<
 }
 
 export const requestHandlerWorker = new FunctionHandlerWorker<
-WorkerData,
-WorkerResponse
+  WorkerData,
+  WorkerResponse
 >();

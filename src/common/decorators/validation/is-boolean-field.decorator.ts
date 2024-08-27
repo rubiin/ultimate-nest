@@ -7,8 +7,8 @@ import {
   IsOptional,
 } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
+import type { BaseValidator } from "@common/@types";
 import { ToBoolean } from "./transform.decorator";
-import { BaseValidator } from "@common/@types";
 
 type IsBooleanValidator = BaseValidator & { each?: boolean };
 
@@ -43,7 +43,8 @@ export function IsBooleanField(options_?: IsBooleanValidator) {
         }),
       );
     }
-  } else {
+  }
+  else {
     decoratorsToApply.push(IsOptional());
   }
 

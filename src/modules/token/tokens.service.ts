@@ -71,7 +71,7 @@ export class TokensService {
    * @param encoded - string - The encoded refresh token
    * @returns An object with a user and a token.
    */
-  resolveRefreshToken(encoded: string): Observable<{ user: User, token: RefreshToken }> {
+  resolveRefreshToken(encoded: string): Observable<{ user: User; token: RefreshToken }> {
     return this.decodeRefreshToken(encoded).pipe(
       switchMap((payload) => {
         return this.getStoredTokenFromRefreshTokenPayload(payload).pipe(
@@ -100,7 +100,7 @@ export class TokensService {
 
             return this.getUserFromRefreshTokenPayload(payload).pipe(
               mergeMap((user) => {
-                if (!user) {
+                if (user == null) {
                   return throwError(
                     () =>
                       new UnauthorizedException(
@@ -125,7 +125,7 @@ export class TokensService {
    * @param refresh - string - The refresh token that was sent to the client.
    * @returns An object with a token and a user.
    */
-  createAccessTokenFromRefreshToken(refresh: string): Observable<{ token: string, user: User }> {
+  createAccessTokenFromRefreshToken(refresh: string): Observable<{ token: string; user: User }> {
     return this.resolveRefreshToken(refresh).pipe(
       switchMap(({ user }) => {
         return this.generateAccessToken(user).pipe(
@@ -183,7 +183,7 @@ export class TokensService {
   deleteRefreshToken(user: User, payload: JwtPayload): Observable<User> {
     const tokenId = payload.jti;
 
-    if (!tokenId) {
+    if (tokenId == null) {
       return throwError(
         () =>
           new UnauthorizedException(
@@ -237,7 +237,7 @@ export class TokensService {
   getStoredTokenFromRefreshTokenPayload(payload: JwtPayload): Observable<RefreshToken | null> {
     const tokenId = payload.jti;
 
-    if (!tokenId) {
+    if (tokenId == null) {
       return throwError(
         () =>
           new UnauthorizedException(

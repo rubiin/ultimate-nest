@@ -1,5 +1,4 @@
 /* eslint-disable ts/dot-notation */
-/* eslint-disable ts/no-floating-promises */
 
 import { Buffer } from "node:buffer";
 import type {
@@ -38,8 +37,6 @@ import {
 } from "@common/@types";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import type { BaseEntity } from "./base.entity";
-
-
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   private readonly encoding: BufferEncoding = "base64";
@@ -95,7 +92,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   findAndPaginate<Populate extends string = never>(
     where: FilterQuery<T>,
     options?: FindOptions<T, Populate>,
-  ): Observable<{ total: number, results: Loaded<T, Populate>[] }> {
+  ): Observable<{ total: number; results: Loaded<T, Populate>[] }> {
     return from(this.findAndCount(where, options)).pipe(
       map(([results, total]) => ({ total, results })),
     );
@@ -271,7 +268,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     } = pageOptionsDto;
     const selectedFields = [...new Set([...fields, "id"])];
 
-    if (search) {
+    if (search != null) {
       qb.andWhere({
         [searchField]: {
           $ilike: formatSearch(search),
@@ -279,7 +276,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       });
     }
 
-    if (relations) {
+    if (relations != null) {
       for (const relation of relations)
         qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
     }
@@ -346,7 +343,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       isDeleted: withDeleted,
     });
 
-    if (search && searchField) {
+    if (search != null && searchField != null) {
       qb.andWhere({
         [searchField]: {
           $ilike: formatSearch(search),
@@ -354,7 +351,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       });
     }
 
-    if (relations) {
+    if (relations != null) {
       for (const relation of relations)
         qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
     }
@@ -380,7 +377,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     const aliasCursor = `${alias}.${stringCursor}`;
     const selectedFields = [...new Set([...fields, "id"])];
 
-    if (after) {
+    if (after != null) {
       const decoded = this.decodeCursor(after, cursorType);
       const oppositeOd = getOppositeOrder(order);
       const temporaryQb = qb.clone();
@@ -455,13 +452,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     first: number,
     order: QueryOrder,
     repo: EntityRepository<T>,
-    where: FilterQuery<T> ,
+    where: FilterQuery<T>,
     after?: string,
     afterCursor: CursorType = CursorType.STRING,
   ): Promise<CursorPaginationResponse<T>> {
     let previousCount = 0;
 
-    if (after) {
+    if (after != null) {
       const decoded = this.decodeCursor(after, afterCursor);
       const queryOrder = getQueryOrder(order);
       const oppositeOrder = getOppositeOrder(order);

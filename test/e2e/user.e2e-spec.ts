@@ -18,8 +18,8 @@ describe("UserController (e2e)", () => {
     const { body } = await request(app)
       .post("/auth/login")
       .send(user.admin) as SuperTestBody<{ payload: {
-        accessToken: string
-      } }>;
+      accessToken: string;
+    }; }>;
 
     adminJwtToken = body.payload.accessToken;
   });
@@ -36,7 +36,7 @@ describe("UserController (e2e)", () => {
         .field("email", userDto.email)
         .field("roles[]", userDto.roles)
         .attach("avatar", path.resolve(__dirname, "../test.png"))
-        .expect(({ body }: SuperTestBody<{ email: string, idx: string }>) => {
+        .expect(({ body }: SuperTestBody<{ email: string; idx: string }>) => {
           expect(body).toBeDefined();
           expect(body.email).toStrictEqual(userDto.email);
           userIndex = body.idx;
@@ -51,7 +51,7 @@ describe("UserController (e2e)", () => {
       return request(app)
         .post("/users/signup")
         .send({ ...pick(userDto, ["roles"]), email, username })
-        .expect(({ body }: SuperTestBody<{ email: string, idx: string, roles: string[] }>) => {
+        .expect(({ body }: SuperTestBody<{ email: string; idx: string; roles: string[] }>) => {
           expect(body).toBeDefined();
           expect(body.email).toStrictEqual(email);
           expect(body.roles).toStrictEqual([Roles.AUTHOR]);

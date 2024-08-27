@@ -68,7 +68,7 @@ directory of the module. */
 user's password as input and returns a promise that resolves to the hashed password as a string. The
 `hash` function from the `argon2` library is used to perform the actual hashing, with the
 `userPassword` and `argon2Options` as the input parameters. */
-  hashString(userPassword: string): Promise<string> {
+  async hashString(userPassword: string): Promise<string> {
     return hash(userPassword, argon2Options);
   },
 
@@ -103,7 +103,8 @@ which is the hashed password to compare against. */
   },
   /* The `redisUrlToOptions` function is used to convert a Redis URL string into a RedisOptions object. */
   redisUrlToOptions(url: string): RedisOptions {
-    if (!REDIS_URI_REGEX.test(url)) throw new Error("Invalid redis url");
+    if (!REDIS_URI_REGEX.test(url))
+      throw new Error("Invalid redis url");
 
     const separator = "://";
 

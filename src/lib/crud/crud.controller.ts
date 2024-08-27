@@ -10,7 +10,7 @@ import type { BaseService } from "./crud.service";
 
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {
-  constructor(private readonly targetTypes: { body?: Type<any>, query?: Type<any>, param?: Type<any>, custom?: Type<any> }) {
+  constructor(private readonly targetTypes: { body?: Type<any>; query?: Type<any>; param?: Type<any>; custom?: Type<any> }) {
     super(AppUtils.validationPipeOptions());
   }
 
@@ -32,10 +32,10 @@ export class AbstractValidationPipe extends ValidationPipe {
  * @returns A controller class that implements the Crud interface
  */
 export function ControllerFactory<
-    T extends BaseEntity,
-    Q extends PaginationRequest,
-    C extends CreateEntityType<T>,
-    U extends UpdateEntityType<T> ,
+  T extends BaseEntity,
+  Q extends PaginationRequest,
+  C extends CreateEntityType<T>,
+  U extends UpdateEntityType<T> ,
 >(queryDto: Type<Q>, createDto: Type<C>, updateDto: Type<U>): Type<Crud<T, Q, C, U>> {
   const createPipe = new AbstractValidationPipe({
     body: createDto,
@@ -47,11 +47,11 @@ export function ControllerFactory<
   const queryPipe = new AbstractValidationPipe({ query: queryDto });
 
   class CrudController<
-        T extends BaseEntity,
-        Q extends PaginationRequest,
-        C extends CreateEntityType<T>,
-        U extends UpdateEntityType<T>,
-    > implements Crud<T, Q, C, U> {
+    T extends BaseEntity,
+    Q extends PaginationRequest,
+    C extends CreateEntityType<T>,
+    U extends UpdateEntityType<T>,
+  > implements Crud<T, Q, C, U> {
     protected service!: BaseService<T, Q, C, U>;
 
     @Get(":idx")
