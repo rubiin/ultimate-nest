@@ -216,6 +216,7 @@ importers:
         version: 11.2.2
       poolifier:
 <<<<<<< HEAD
+<<<<<<< HEAD
         specifier: ^4.2.5
         version: 4.2.5
 ||||||| parent of 22335fa (fix(deps): update all non-major dependencies)
@@ -225,6 +226,13 @@ importers:
         specifier: ^4.2.4
         version: 4.2.4
 >>>>>>> 22335fa (fix(deps): update all non-major dependencies)
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+        specifier: ^4.2.4
+        version: 4.2.4
+=======
+        specifier: ^4.2.5
+        version: 4.2.5
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
       preview-email:
         specifier: ^3.1.0
         version: 3.1.0
@@ -2176,6 +2184,10 @@ packages:
   '@sentry/types@8.26.0':
     resolution: {integrity: sha512-zKmh6SWsJh630rpt7a9vP4Cm4m1C2gDTUqUiH565CajCL/4cePpNWYrNwalSqsOSL7B9OrczA1+n6a6XvND+ng==}
 >>>>>>> 807f5eb (fix(deps): update dependency @sentry/node to v8)
+    engines: {node: '>=14.18'}
+
+  '@sentry/types@8.27.0':
+    resolution: {integrity: sha512-B6lrP46+m2x0lfqWc9F4VcUbN893mVGnPEd7KIMRk95mPzkFJ3sNxggTQF5/ZfNO7lDQYQb22uysB5sj/BqFiw==}
     engines: {node: '>=14.18'}
 
   '@sentry/utils@7.114.0':
@@ -4366,6 +4378,7 @@ packages:
     resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   fast-uri@3.0.1:
     resolution: {integrity: sha512-MWipKbbYiYI0UC7cl8m/i/IWTqfC8YXsqjzybjddLsFjStroQzsHXkc73JutMvBiXmOvapk+axIl79ig5t55Bw==}
 
@@ -4376,6 +4389,12 @@ packages:
 
 =======
 >>>>>>> 22335fa (fix(deps): update all non-major dependencies)
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+=======
+  fast-uri@3.0.1:
+    resolution: {integrity: sha512-MWipKbbYiYI0UC7cl8m/i/IWTqfC8YXsqjzybjddLsFjStroQzsHXkc73JutMvBiXmOvapk+axIl79ig5t55Bw==}
+
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
   fast-xml-parser@4.4.1:
     resolution: {integrity: sha512-xkjOecfnKGkSsOwtZ5Pz7Us/T6mrbPQrq0nh+aCO5V9nk5NLWmasAHumTKjiPJPWANe+kAZ84Jc8ooJkzZ88Sw==}
     hasBin: true
@@ -5879,9 +5898,17 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.6.0
 
+<<<<<<< HEAD
   optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
 >>>>>>> 807f5eb (fix(deps): update dependency @sentry/node to v8)
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+  optionator@0.9.3:
+    resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
+=======
+  optionator@0.9.4:
+    resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
     engines: {node: '>= 0.8.0'}
 
   ora@5.4.1:
@@ -6161,6 +6188,7 @@ packages:
     engines: {node: '>=12.0.0'}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   poolifier@4.2.5:
     resolution: {integrity: sha512-z3RLgTBZurCJo8pOJSxxnO4usZG6mIYGNd+TP7amhFSljVdTuc5jWWmHL6i66GUSDtb0CX8CvQ0EfIgtqZNgeg==}
 ||||||| parent of 22335fa (fix(deps): update all non-major dependencies)
@@ -6170,6 +6198,13 @@ packages:
   poolifier@4.2.4:
     resolution: {integrity: sha512-uUZqc+V/UizJTalqhI9vKJ+wVCfYQVHkb0DTgUHpv4uR5sz84l6XJzgsG/JowlybYYMeI5XQcJG4oTAfIRR7yg==}
 >>>>>>> 22335fa (fix(deps): update all non-major dependencies)
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+  poolifier@4.2.4:
+    resolution: {integrity: sha512-uUZqc+V/UizJTalqhI9vKJ+wVCfYQVHkb0DTgUHpv4uR5sz84l6XJzgsG/JowlybYYMeI5XQcJG4oTAfIRR7yg==}
+=======
+  poolifier@4.2.5:
+    resolution: {integrity: sha512-z3RLgTBZurCJo8pOJSxxnO4usZG6mIYGNd+TP7amhFSljVdTuc5jWWmHL6i66GUSDtb0CX8CvQ0EfIgtqZNgeg==}
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
     engines: {node: '>=18.0.0', pnpm: '>=9.0.0'}
 
   possible-typed-array-names@1.0.0:
@@ -9982,6 +10017,8 @@ snapshots:
   '@sentry/types@8.26.0': {}
 >>>>>>> 807f5eb (fix(deps): update dependency @sentry/node to v8)
 
+  '@sentry/types@8.27.0': {}
+
   '@sentry/utils@7.114.0':
     dependencies:
       '@sentry/types': 7.114.0
@@ -11074,11 +11111,19 @@ snapshots:
       acorn: 8.12.1
     optional: true
 
+<<<<<<< HEAD
   acorn-import-attributes@1.9.5(acorn@8.12.0):
     dependencies:
       acorn: 8.12.0
 
 >>>>>>> 807f5eb (fix(deps): update dependency @sentry/node to v8)
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+  acorn-import-attributes@1.9.5(acorn@8.12.0):
+    dependencies:
+      acorn: 8.12.0
+
+=======
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
   acorn-import-attributes@1.9.5(acorn@8.12.1):
     dependencies:
       acorn: 8.12.1
@@ -12598,6 +12643,7 @@ snapshots:
   fast-safe-stringify@2.1.1: {}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   fast-uri@3.0.1: {}
 
 ||||||| parent of 22335fa (fix(deps): update all non-major dependencies)
@@ -12607,6 +12653,11 @@ snapshots:
 
 =======
 >>>>>>> 22335fa (fix(deps): update all non-major dependencies)
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+=======
+  fast-uri@3.0.1: {}
+
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
   fast-xml-parser@4.4.1:
     dependencies:
       strnum: 1.0.5
@@ -13143,14 +13194,14 @@ snapshots:
     dependencies:
       acorn: 8.12.1
       acorn-import-attributes: 1.9.5(acorn@8.12.1)
-      cjs-module-lexer: 1.2.3
+      cjs-module-lexer: 1.4.0
       module-details-from-path: 1.0.3
 
   import-in-the-middle@1.7.1:
     dependencies:
       acorn: 8.12.1
       acorn-import-assertions: 1.9.0(acorn@8.12.1)
-      cjs-module-lexer: 1.2.3
+      cjs-module-lexer: 1.4.0
       module-details-from-path: 1.0.3
     optional: true
 
@@ -14229,8 +14280,14 @@ snapshots:
       ipaddr.js: 2.1.0
 =======
       fast-xml-parser: 4.4.1
+<<<<<<< HEAD
       ipaddr.js: 2.1.0
 >>>>>>> 22335fa (fix(deps): update all non-major dependencies)
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+      ipaddr.js: 2.1.0
+=======
+      ipaddr.js: 2.2.0
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
       lodash: 4.17.21
       mime-types: 2.1.35
       query-string: 7.1.3
@@ -14439,8 +14496,14 @@ snapshots:
       - supports-color
     optional: true
 
+<<<<<<< HEAD
   optionator@0.9.3:
 >>>>>>> 807f5eb (fix(deps): update dependency @sentry/node to v8)
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+  optionator@0.9.3:
+=======
+  optionator@0.9.4:
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
     dependencies:
       deep-is: 0.1.4
       fast-levenshtein: 2.0.6
@@ -14739,12 +14802,18 @@ snapshots:
   pony-cause@2.1.11: {}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   poolifier@4.2.5: {}
 ||||||| parent of 22335fa (fix(deps): update all non-major dependencies)
   poolifier@4.2.3: {}
 =======
   poolifier@4.2.4: {}
 >>>>>>> 22335fa (fix(deps): update all non-major dependencies)
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+  poolifier@4.2.4: {}
+=======
+  poolifier@4.2.5: {}
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
 
   possible-typed-array-names@1.0.0: {}
 
@@ -15636,9 +15705,19 @@ snapshots:
       cookies: 0.8.0
       debug: 4.3.6
       moment: 2.30.1
+<<<<<<< HEAD
       path-to-regexp: 6.2.2
       prom-client: 14.2.0
       qs: 6.13.0
+||||||| parent of 488984e (fix: remove sentry as required, its optional now)
+      path-to-regexp: 6.2.1
+      prom-client: 15.1.3
+      qs: 6.12.0
+=======
+      path-to-regexp: 6.2.2
+      prom-client: 15.1.3
+      qs: 6.13.0
+>>>>>>> 488984e (fix: remove sentry as required, its optional now)
       send: 0.18.0
       uuid: 9.0.1
     transitivePeerDependencies:
