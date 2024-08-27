@@ -114,7 +114,7 @@ export class User extends BaseEntity {
 
     o.avatar
       = this.avatar
-      || `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`;
+      ?? `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`;
 
     return o;
   }
