@@ -9,10 +9,10 @@ import { CreateNewsletterDto, EditNewsletterDto, SubscribeNewsletterDto } from "
 
 @GenericController("newsletter")
 export class NewsLetterController extends ControllerFactory<
-    NewsLetter,
-    CursorPaginationDto,
-    CreateNewsletterDto,
-    EditNewsletterDto
+  NewsLetter,
+  CursorPaginationDto,
+  CreateNewsletterDto,
+  EditNewsletterDto
 >(CursorPaginationDto, CreateNewsletterDto, EditNewsletterDto) {
   constructor(protected service: NewsLetterService) {
     super();

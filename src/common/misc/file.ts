@@ -3,7 +3,6 @@ import { FileSize, FileType } from "@common/@types";
 import { CustomUploadFileTypeValidator } from "@common/decorators";
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 
-
 /**
  *
  * It takes in a fileType, fileSize, and required boolean and returns a ParseFilePipeBuilder object
@@ -20,12 +19,12 @@ export function fileValidatorPipe({
   required = true,
 }: FileValidator) {
   return new ParseFilePipeBuilder()
-  .addValidator(
-    new CustomUploadFileTypeValidator({
-      fileType,
-    }),
-  )
-  .addMaxSizeValidator({
+    .addValidator(
+      new CustomUploadFileTypeValidator({
+        fileType,
+      }),
+    )
+    .addMaxSizeValidator({
       maxSize: fileSize,
       message: maxSize => `File size should be less than ${Math.round(maxSize / 1024 / 1024)} MB`,
     })

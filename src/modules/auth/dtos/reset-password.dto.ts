@@ -12,14 +12,14 @@ export class ResetPasswordDto {
     minLength: 6,
     maxLength: 6,
   })
-    otpCode!: string;
+  otpCode!: string;
 
   /**
    * New password of user
    * @example SomeThingNew7^#%
    */
   @IsPasswordField({ message: validationI18nMessage("validation.isPassword") })
-    password!: string;
+  password!: string;
 
   /**
    * New password of user
@@ -28,7 +28,7 @@ export class ResetPasswordDto {
 
   @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsEqualToField("password")
-    confirmPassword!: string;
+  confirmPassword!: string;
 }
 
 export class ChangePasswordDto extends PickType(ResetPasswordDto, [
@@ -40,5 +40,5 @@ export class ChangePasswordDto extends PickType(ResetPasswordDto, [
    * @example SomeThingNew7^#%
    */
   @IsPasswordField({ message: validationI18nMessage("validation.isPassword") })
-    oldPassword!: string;
+  oldPassword!: string;
 }

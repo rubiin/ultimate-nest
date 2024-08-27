@@ -11,11 +11,11 @@ import {
 } from "class-validator";
 
 export interface ValidationArguments<
-    Constraints extends unknown[] = [],
-    CustomObject extends object = object,
+  Constraints extends unknown[] = [],
+  CustomObject extends object = object,
 > extends BaseValidationArguments {
-  object: CustomObject
-  constraints: Constraints
+  object: CustomObject;
+  constraints: Constraints;
 }
 
 export type IsUniqueValidationContext = ValidationArguments<Parameters<typeof IsUnique>>;

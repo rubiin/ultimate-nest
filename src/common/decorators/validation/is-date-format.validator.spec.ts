@@ -6,7 +6,7 @@ const validator = new Validator();
 describe("isDateInFormat", () => {
   class MyClass {
     @IsDateInFormat("yyyy-MM-dd")
-        date!: string;
+    date!: string;
   }
 
   it("if date satisfies  the format then it should succeed", async () => {

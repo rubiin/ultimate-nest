@@ -8,7 +8,7 @@ describe("isEqualToField", () => {
     password!: string;
 
     @IsEqualToField("password")
-        confirmPassword!: string;
+    confirmPassword!: string;
   }
 
   it("if password and confirm password are same then it should succeed", async () => {

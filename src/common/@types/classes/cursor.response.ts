@@ -7,25 +7,25 @@ export class CursorMeta {
    * @example AdVxY2F0ZWdvcnlfaWQ9MjMx
    */
   @ApiProperty()
-    nextCursor!: string;
+  nextCursor!: string;
 
   /**
    * @example false
    */
   @ApiProperty()
-    hasNextPage!: boolean;
+  hasNextPage!: boolean;
 
   /**
    * @example true
    */
   @ApiProperty()
-    hasPreviousPage!: boolean;
+  hasPreviousPage!: boolean;
 
   /**
    * @example "lorem ipsum"
    */
   @ApiProperty()
-    search?: string;
+  search?: string;
 }
 
 export class CursorPaginationResponse<T> implements PaginationAbstractResponse<T, CursorMeta> {

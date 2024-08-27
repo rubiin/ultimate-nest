@@ -12,18 +12,18 @@ import type {
  * common interface that enforces common methods for controller and service
  */
 export interface Crud<
-    Entity extends BaseEntity,
-    PaginationRequest extends TPaginationRequest,
-    CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
-    UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
+  Entity extends BaseEntity,
+  PaginationRequest extends TPaginationRequest,
+  CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
+  UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
 > {
-  findAll(query: PaginationRequest): Observable<PaginationResponse<Entity>>
+  findAll: (query: PaginationRequest) => Observable<PaginationResponse<Entity>>;
 
-  findOne(index: string): Observable<Entity>
+  findOne: (index: string) => Observable<Entity>;
 
-  create(body: CreateDto, user?: User): Observable<Entity>
+  create: (body: CreateDto, user?: User) => Observable<Entity>;
 
-  update(index: string, body: UpdateDto): Observable<Entity>
+  update: (index: string, body: UpdateDto) => Observable<Entity>;
 
-  remove(index: string): Observable<Entity>
+  remove: (index: string) => Observable<Entity>;
 }
