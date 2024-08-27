@@ -7,10 +7,10 @@ import { CreateTagDto, EditTagDto } from "./dto";
 
 @GenericController("tags")
 export class TagsController extends ControllerFactory<
-    Tag,
-    CursorPaginationDto,
-    CreateTagDto,
-    EditTagDto
+  Tag,
+  CursorPaginationDto,
+  CreateTagDto,
+  EditTagDto
 >(CursorPaginationDto, CreateTagDto, EditTagDto) {
   constructor(protected service: TagsService) {
     super();

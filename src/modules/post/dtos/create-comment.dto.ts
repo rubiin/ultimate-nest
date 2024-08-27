@@ -7,5 +7,5 @@ export class CreateCommentDto {
    */
 
   @IsStringField()
-    body!: string;
+  body!: string;
 }

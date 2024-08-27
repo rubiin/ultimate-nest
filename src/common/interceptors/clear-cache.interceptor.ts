@@ -24,8 +24,9 @@ export class ClearCacheInterceptor implements NestInterceptor {
           request.method !== "GET"
           && response.statusCode >= 200
           && response.statusCode < 300
-        )
+        ) {
           return from(this.cacheService.resetCache());
+        }
 
         return of();
       }),

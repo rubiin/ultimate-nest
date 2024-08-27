@@ -26,7 +26,7 @@ export class TwoFactorService {
    * @returns An Observable that returns an object with a secret and otpAuthUrl.
    */
 
-  generateTwoFactorSecret(user: User): Observable<{ secret: string, otpAuthUrl: string }> {
+  generateTwoFactorSecret(user: User): Observable<{ secret: string; otpAuthUrl: string }> {
     const secret = authenticator.generateSecret();
 
     const otpAuthUrl = authenticator.keyuri(

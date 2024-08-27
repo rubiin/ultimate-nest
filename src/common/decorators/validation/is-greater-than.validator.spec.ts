@@ -8,7 +8,7 @@ describe("isGreaterThan", () => {
     passMarks!: number;
 
     @IsGreaterThan("passMarks")
-        totalMarks!: number;
+    totalMarks!: number;
   }
 
   it("if totalMarks is greater than passMarks then it should succeed", async () => {

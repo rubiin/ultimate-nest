@@ -13,8 +13,8 @@ describe("PostController (e2e)", () => {
     const { body } = await request(app)
       .post("/auth/login")
       .send(user.admin) as SuperTestBody<{ payload: {
-        accessToken: string
-      } }>;
+      accessToken: string;
+    }; }>;
 
     adminJwtToken = body.payload.accessToken;
   });
@@ -25,7 +25,7 @@ describe("PostController (e2e)", () => {
         .post("/posts")
         .auth(adminJwtToken, { type: "bearer" })
         .send(postDto)
-        .expect(({ body }: SuperTestBody<{ email: string, idx: string }>) => {
+        .expect(({ body }: SuperTestBody<{ email: string; idx: string }>) => {
           expect(body).toBeDefined();
           expect(body.email).toStrictEqual(userDto.email);
           postIndex = body.idx;

@@ -7,14 +7,14 @@ export class CreateNewsletterDto {
    * @example "React Newsletter"
    */
   @IsStringField()
-    name!: string;
+  name!: string;
 
   /**
    * content of newsletter
    * @example "React Newsletter"
    */
   @IsStringField()
-    content!: string;
+  content!: string;
 
   /**
    * Send date of newsletter
@@ -22,5 +22,5 @@ export class CreateNewsletterDto {
    */
   @IsDateField()
   @MinDate(new Date())
-    sentAt!: Date;
+  sentAt!: Date;
 }

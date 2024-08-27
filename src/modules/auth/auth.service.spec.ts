@@ -89,7 +89,7 @@ describe("authService", () => {
   });
 
   it("should reset password", () => {
-    mockOtpLogRepo.findOne.mockImplementation(() =>
+    mockOtpLogRepo.findOne.mockImplementation(async () =>
       Promise.resolve({ ...mockedOtpLog, user: loggedInUser }),
     );
 

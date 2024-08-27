@@ -12,8 +12,8 @@ import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
 import { MailModuleOptions } from "./mailer.options";
 
 interface MailOptions extends Partial<SendMailOptions> {
-  template: string
-  replacements: Record<string, string>
+  template: string;
+  replacements: Record<string, string>;
 }
 
 @Injectable()
@@ -80,7 +80,7 @@ export class MailerService {
 
         if (this.options?.previewEmail) {
           try {
-            (async () => await previewEmail(mailOptions))();
+            (async () => previewEmail(mailOptions))();
           }
           catch (error) {
             this.logger.error(error);

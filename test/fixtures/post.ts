@@ -9,6 +9,6 @@ export const postDto = {
 
 export interface SuperTestBody<T = unknown> {
   body: T & {
-    errors: string[]
-  }
+    errors: string[];
+  };
 }

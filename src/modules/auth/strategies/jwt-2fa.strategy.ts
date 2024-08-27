@@ -29,6 +29,6 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
     const { sub: id } = payload;
 
     // Accept the JWT and attempt to validate it using the user service
-    return await this.authService.findUser({ id });
+    return this.authService.findUser({ id });
   }
 }

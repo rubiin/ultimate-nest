@@ -8,7 +8,7 @@ describe("isAfter", () => {
     startDate!: Date;
 
     @IsAfterField("startDate")
-        endDate!: Date;
+    endDate!: Date;
   }
 
   it("if endDate is after than startDate then it should succeed", async () => {

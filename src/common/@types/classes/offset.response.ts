@@ -44,8 +44,8 @@ export class OffsetMeta {
     pageOptionsDto,
     itemCount,
   }: {
-    pageOptionsDto: Omit<OffsetPaginationDto, "type">
-    itemCount: number
+    pageOptionsDto: Omit<OffsetPaginationDto, "type">;
+    itemCount: number;
   }) {
     this.page = pageOptionsDto.page;
     this.limit = pageOptionsDto.limit;

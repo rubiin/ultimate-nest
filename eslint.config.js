@@ -18,6 +18,9 @@ module.exports = rubiin({
     },
     typescript:
     {
+      "ts/no-unsafe-assignment": "off",
+      "ts/no-unsafe-call": "off",
+      "ts/strict-boolean-expressions":"off",
       "ts/no-misused-promises": [
 				"error",
 				{

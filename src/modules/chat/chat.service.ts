@@ -6,8 +6,8 @@ import { Conversation, Message } from "@entities";
 import { BaseRepository } from "@common/database";
 
 interface IConversation {
-  users: User[]
-  message: string
+  users: User[];
+  message: string;
 }
 
 @Injectable()
@@ -42,7 +42,7 @@ export class ChatService {
       conversation: conversationExists,
     });
 
-    if (conversationExists) {
+    if (conversationExists !== null) {
       messageNew.conversation = ref(conversationExists);
       conversationExists.messages.add(messageNew);
 
@@ -72,7 +72,7 @@ export class ChatService {
   }
 
   async getConversationForUser(user: User) {
-    return await this.conversationRepository
+    return this.conversationRepository
       .qb("c")
       .select("c.*")
       .leftJoinAndSelect("c.messages", "m")

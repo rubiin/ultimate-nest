@@ -19,13 +19,13 @@ export class AuthGuard implements CanActivate {
 
     const token = request.headers.authorization;
 
-    if (!token)
+    if (token == null)
       throw new UnauthorizedException(translate("exception.apiUnauthorizedResponse"));
 
     try {
       const tokenValue = token.split(" ")[1];
 
-      if (!tokenValue)
+      if (tokenValue == null)
         return false;
 
       const decoded: { idx: string } = this.jwt.verify(tokenValue);

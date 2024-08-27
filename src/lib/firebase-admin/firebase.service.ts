@@ -6,7 +6,7 @@ import admin from "firebase-admin";
 import { FirebaseModuleOptions, MODULE_OPTIONS_TOKEN } from "./fire-base.module.definition";
 
 interface NestFirebase {
-  getFirebaseAdmin(): admin.app.App
+  getFirebaseAdmin: () => admin.app.App;
 }
 
 @Injectable()

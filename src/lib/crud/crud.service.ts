@@ -9,10 +9,10 @@ import type { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 export abstract class BaseService<
-    Entity extends BaseEntity,
-    PRequest extends PaginationRequest,
-    CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
-    UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
+  Entity extends BaseEntity,
+  PRequest extends PaginationRequest,
+  CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
+  UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
 > implements Crud<Entity, PRequest> {
   protected searchField!: EntityKey<Entity>;
   protected queryName = "entity";

@@ -11,9 +11,9 @@ export function Trim() {
     const value = parameters.value as string[] | string;
 
     if (isArray(value))
-      return value.map((v: string) => v.trim().replaceAll(/\s\s+/g, " "));
+      return value.map((v: string) => v.trim().replaceAll(/\s{2,}/g, " "));
 
-    return value.trim().replaceAll(/\s\s+/g, " ");
+    return value.trim().replaceAll(/\s{2,}/g, " ");
   });
 }
 

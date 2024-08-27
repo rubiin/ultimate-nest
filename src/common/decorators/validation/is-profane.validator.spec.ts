@@ -6,7 +6,7 @@ const validator = new Validator();
 describe("isProfane", () => {
   class MyClass {
     @IsProfane()
-        text!: string;
+    text!: string;
   }
 
   it("it should pass if text doesn't profane words", async () => {

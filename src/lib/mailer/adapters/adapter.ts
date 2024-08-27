@@ -4,8 +4,8 @@ import type { SupportedTemplateEngines } from "@ladjs/consolidate";
 import consolidate from "@ladjs/consolidate";
 
 export interface Adapter {
-  logger: Logger
-  compile(template: string, data: Record<string, any>): Promise<string>
+  logger: Logger;
+  compile: (template: string, data: Record<string, any>) => Promise<string>;
 }
 
 export class BaseAdapter implements Adapter {

@@ -134,7 +134,7 @@ export class LoggingInterceptor implements NestInterceptor {
           message: `Response - ${method} - ${url}`,
         },
         error.stack,
-                `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`,
+        `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`,
       );
     }
   }

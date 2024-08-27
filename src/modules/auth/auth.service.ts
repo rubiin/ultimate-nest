@@ -84,7 +84,7 @@ export class AuthService {
           );
         }
 
-        return user && isPasswordLogin
+        return user != null && isPasswordLogin
           ? HelperService.verifyHash(user.password, pass!).pipe(
             map((isValid) => {
               if (isValid)
@@ -121,7 +121,7 @@ export class AuthService {
       loginDto.password,
     ).pipe(
       switchMap((user: User) => {
-        if (!user) {
+        if (user == null) {
           return throwError(
             () =>
               new BadRequestException(

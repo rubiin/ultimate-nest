@@ -36,7 +36,7 @@ describe("twoFactorService", () => {
   jest.spyOn(authenticator, "verify").mockReturnValue(true);
   jest.spyOn(authenticator, "keyuri").mockReturnValue("some key uri");
   jest.spyOn(authenticator, "generateSecret").mockReturnValue("some secret");
-  jest.spyOn(qrCode, "toFileStream").mockImplementationOnce(() => Promise.resolve());
+  jest.spyOn(qrCode, "toFileStream").mockImplementationOnce(async () => Promise.resolve());
 
   it("should be defined", () => {
     expect(service).toBeDefined();

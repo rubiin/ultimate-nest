@@ -20,7 +20,7 @@ export class WsJwtGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const client = context.switchToWs().getClient<Socket>()?.handshake;
 
-    if (!client.headers.authorization)
+    if (client.headers.authorization == null)
       throw new WsException(translate("exception.apiUnauthorizedResponse"));
     const token = client.headers.authorization;
 

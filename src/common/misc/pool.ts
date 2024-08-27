@@ -17,8 +17,8 @@ const workerFile = path.join(
 
 /* Creating a new thread pool with half of available threads and a maximum of available threads. */
 export const pool = new DynamicThreadPool<
-WorkerData,
-WorkerResponse
+  WorkerData,
+  WorkerResponse
 >(Math.floor(availableParallelism() / 2), availableParallelism(), workerFile, {
   enableTasksQueue: true,
   tasksQueueOptions: {
