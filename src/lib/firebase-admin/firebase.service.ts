@@ -23,7 +23,7 @@ export class NestFirebaseService implements NestFirebase {
     if (!existsSync(filePath))
       throw new Error(`Unknown file ${filePath}`);
 
-    if (!this._firebaseConnection) {
+    if (this._firebaseConnection == null)  {
       try {
         this._firebaseConnection = admin.initializeApp({
           credential: admin.credential.cert(filePath),

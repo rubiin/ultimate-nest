@@ -32,7 +32,7 @@ export const HelperService = {
         ...pick(user, ["id", "idx"]),
       },
       accessToken,
-      ...(refreshToken ? { refresh_token: refreshToken } : {}),
+      ...(refreshToken != null ? { refresh_token: refreshToken } : {}),
     };
   },
 
