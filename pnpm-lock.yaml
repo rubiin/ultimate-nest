@@ -116,9 +116,6 @@ importers:
       '@supercharge/request-ip':
         specifier: ^1.2.0
         version: 1.2.0
-      '@travelerdev/nestjs-sentry':
-        specifier: ^4.3.0
-        version: 4.3.0(@nestjs/common@10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@sentry/hub@7.114.0)(@sentry/node@7.119.0)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       argon2:
         specifier: ^0.41.0
         version: 0.41.0
@@ -208,7 +205,7 @@ importers:
         version: 11.2.2
       poolifier:
         specifier: ^4.2.5
-        version: 4.2.6
+        version: 4.2.7
       preview-email:
         specifier: ^3.1.0
         version: 3.1.0
@@ -2338,15 +2335,6 @@ packages:
 
   '@total-typescript/ts-reset@0.6.0':
     resolution: {integrity: sha512-HWZnkM+5z3INAUZMohVXvX8/vm9sjmfmV2NRAswvv5WsU2m+OZsHAVZ0fl8xf2QH9kyPkinghVW6g3DOQ2xt5Q==}
-
-  '@travelerdev/nestjs-sentry@4.3.0':
-    resolution: {integrity: sha512-F55V6oaCzqjPlnuvKBGH/y9chKZyIHf/AqoQfNuqkneJxPQtXMHpgjKz+OfRs8kYVtvVtGJc7/ay63IKna8/7w==}
-    peerDependencies:
-      '@nestjs/common': ^9.0.0 || ^10.0.0
-      '@sentry/hub': ^7.12.0
-      '@sentry/node': ^7.12.0
-      reflect-metadata: ^0.1.13
-      rxjs: ^7.2.0
 
   '@ts-morph/common@0.24.0':
     resolution: {integrity: sha512-c1xMmNHWpNselmpIqursHeOHHBTIsJLbB+NuovbTTRCNiTLEr/U9dbJ8qy0jd/O2x5pc3seWuOUN5R2IoOTp8A==}
@@ -5918,8 +5906,8 @@ packages:
     resolution: {integrity: sha512-M7LhCsdNbNgiLYiP4WjsfLUuFmCfnjdF6jKe2R9NKl4WFN+HZPGHJZ9lnLP7f9ZnKe3U9nuWD0szirmj+migUg==}
     engines: {node: '>=12.0.0'}
 
-  poolifier@4.2.6:
-    resolution: {integrity: sha512-k0D9UYD+ECvNRoWDPREqUtj3XFtuPg7zz0EI1PV+6kicMlH64PT9aJTKng79zpHoaEH/gSu+J0olY6q87Quk0w==}
+  poolifier@4.2.7:
+    resolution: {integrity: sha512-R8ggfIlg7QNC4nCOF5DU3yGv/QouLZvqGl9lpp9yrjRgI1wKtPlhWGyEDXxo/TmTq86SpdhmaYszzEXl9pIDvQ==}
     engines: {node: '>=18.0.0', pnpm: '>=9.0.0'}
 
   possible-typed-array-names@1.0.0:
@@ -9947,14 +9935,6 @@ snapshots:
     optional: true
 
   '@total-typescript/ts-reset@0.6.0': {}
-
-  '@travelerdev/nestjs-sentry@4.3.0(@nestjs/common@10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@sentry/hub@7.114.0)(@sentry/node@7.119.0)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
-    dependencies:
-      '@nestjs/common': 10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@sentry/hub': 7.114.0
-      '@sentry/node': 7.119.0
-      reflect-metadata: 0.2.2
-      rxjs: 7.8.1
 
   '@ts-morph/common@0.24.0':
     dependencies:
@@ -14146,7 +14126,7 @@ snapshots:
 
   pony-cause@2.1.11: {}
 
-  poolifier@4.2.6: {}
+  poolifier@4.2.7: {}
 
   possible-typed-array-names@1.0.0: {}
 
