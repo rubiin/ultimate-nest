@@ -1,4 +1,7 @@
-import type { FilterQuery } from "@mikro-orm/postgresql";
+import { Roles } from "@common/@types";
+import { BaseEntity } from "@common/database";
+import { HelperService } from "@common/helpers";
+import { Conversation, Post } from "@entities";
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -15,10 +18,6 @@ import {
   Property,
   wrap,
 } from "@mikro-orm/postgresql";
-import { Roles } from "@common/@types";
-import { BaseEntity } from "@common/database";
-import { HelperService } from "@common/helpers";
-import { Conversation, Post } from "@entities";
 
 @Embeddable()
 export class Social {
@@ -128,10 +127,3 @@ export class User extends BaseEntity {
       this.password = await HelperService.hashString(this.password);
   }
 }
-
-type A = FilterQuery<User>;
-
-export const x: A = {
-  username: "1",
-  idx: "1",
-};

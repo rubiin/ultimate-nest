@@ -69,11 +69,13 @@ cp env/.env.example env/.env.dev
 
 # 4. Install dependencies (preferred: pnpm)
 
- npm install
  pnpm install
+ npm install
  yarn install
 
 ```
+> [!NOTE]
+> If you face any issues with dependencies when using yarn or npm, stick to pnpm for now
 
 ## Database
 
