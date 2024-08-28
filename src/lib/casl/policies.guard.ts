@@ -21,9 +21,7 @@ export class PoliciesGuard implements CanActivate {
     if (isPublic)
       return true;
 
-    const policyHandlers
-            = this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY_META, context.getHandler())
-            || [];
+    const policyHandlers = this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY_META, context.getHandler()) ?? [];
 
     const request = context.switchToHttp().getRequest<NestifyRequest>();
 
