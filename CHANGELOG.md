@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.6.2](https://github.com/rubiin/ultimate-nest/compare/v2.6.1...v2.6.2) (2024-08-28)
+
+
+### Bug Fixes
+
+* sentry package ([336eb78](https://github.com/rubiin/ultimate-nest/commit/336eb78bab3770ae2a75ea88f7c3dea1f9d2a2ff))
+* crud types ([94e6c5e](https://github.com/rubiin/ultimate-nest/commit/94e6c5e28d1fa9d93b522488c34f428600e5350a))
+* jwt guard signature ([22cbd29](https://github.com/rubiin/ultimate-nest/commit/22cbd294ebe4161b2164e3e81739cadfaaca8858))
+* lint fixes and depracted libs ([6fb1f98](https://github.com/rubiin/ultimate-nest/commit/6fb1f986fc60002a0b03a24b3139a6a43b05ff99))
+* mime aws ([28ea874](https://github.com/rubiin/ultimate-nest/commit/28ea87420deaf9dc303d9873fb4af33f5662ca87))
+
 ## [2.6.1](https://github.com/rubiin/ultimate-nest/compare/v2.6.0...v2.6.1) (2024-08-28)
 
 
