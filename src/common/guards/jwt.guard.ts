@@ -1,14 +1,15 @@
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
-import type { ExecutionContext } from "@nestjs/common";
 import {
+  ExecutionContext,
   ForbiddenException,
   Injectable,
-  UnauthorizedException,
+  UnauthorizedException
 } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { AuthGuard } from "@nestjs/passport";
+import { Reflector } from '@nestjs/core';
+import { AuthGuard } from '@nestjs/passport';
 import { translate } from "@lib/i18n";
 import { IS_PUBLIC_KEY_META } from "@common/constant";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {
@@ -16,14 +17,17 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     super();
   }
 
-  async canActivate(context: ExecutionContext) {
-    const isPublic = this.reflector.get<boolean>(IS_PUBLIC_KEY_META, context.getHandler());
-
-    if (isPublic)
-      return true;
-
+  canActivate(
+    context: ExecutionContext,
+  ): Promise<boolean> | boolean | Observable<boolean> {
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY_META, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (isPublic) return true;
     return super.canActivate(context);
-  }
+  
+}
 
   handleRequest<User>(error: any, user: User, info: { message: string }) {
     if (error != null || info != null || user == null) {
