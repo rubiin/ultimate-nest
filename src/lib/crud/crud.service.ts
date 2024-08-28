@@ -13,7 +13,7 @@ export abstract class BaseService<
   PRequest extends PaginationRequest,
   CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
   UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
-> implements Crud<Entity, PRequest> {
+> implements Crud<Entity, PRequest,CreateDto,UpdateDto> {
   protected searchField!: EntityKey<Entity>;
   protected queryName = "entity";
 
