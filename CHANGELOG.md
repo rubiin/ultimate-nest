@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.6.0](https://github.com/rubiin/ultimate-nest/compare/v2.5.0...v2.6.0) (2024-08-28)
+
+
+### Features
+
+
+* use rabbitmq image with delayed plugin ([905ff26](https://github.com/rubiin/ultimate-nest/commit/905ff266015a07c59c263de244962ba1814cd0ca))
+
+### Bug Fixes
+
+
+* **deps:** update all major deps ([478f7ab](https://github.com/rubiin/ultimate-nest/commit/478f7abb354041d6ab476621f450705e0e1c20df))
+* **deps:** update all non-major dependencies ([636f625](https://github.com/rubiin/ultimate-nest/commit/636f62517f7bd09c17aebfbaa20c5a45cf9a2c93))
+* **deps:** update all non-major dependencies ([d94d50c](https://github.com/rubiin/ultimate-nest/commit/d94d50c4174abbb40f4f0da82cd44f9775342eca))
+* **deps:** update all non-major dependencies ([4f1fb10](https://github.com/rubiin/ultimate-nest/commit/4f1fb1050cef213ad5dcdea9f25b52320ba4c258))
+* **deps:** update all non-major dependencies ([1b55f63](https://github.com/rubiin/ultimate-nest/commit/1b55f6302d82043f4080569d963e642aee8efb38))
+* **deps:** update all non-major dependencies ([4a4657e](https://github.com/rubiin/ultimate-nest/commit/4a4657e628c92631451438cb087658cb305baad9))
+* move traefik config to file ([50d2dd4](https://github.com/rubiin/ultimate-nest/commit/50d2dd42137dc92fbc82f85be85e9d831a1a4875))
+* new deps ([3843e13](https://github.com/rubiin/ultimate-nest/commit/3843e13ea3ddfd92fc46106764ee001ab023df91))
+
+
 ## [2.5.0](https://github.com/rubiin/ultimate-nest/compare/v2.4.12...v2.5.0) (2024-08-25)
 
 
