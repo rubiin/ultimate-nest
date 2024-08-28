@@ -2,7 +2,7 @@ import path from "node:path";
 import { FileValidator } from "@nestjs/common";
 
 export interface CustomUploadTypeValidatorOptions {
-  fileType: string[]
+  fileType: string[];
 }
 
 export class CustomUploadFileTypeValidator extends FileValidator {
@@ -14,7 +14,7 @@ export class CustomUploadFileTypeValidator extends FileValidator {
   }
 
   public isValid(file: Express.Multer.File): boolean {
-    const extension = path.extname(file.originalname).split('.').pop() ?? "";
+    const extension = path.extname(file.originalname).split(".").pop() ?? "";
     return this._allowedExtensions.includes(extension);
   }
 

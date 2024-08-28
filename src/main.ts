@@ -38,7 +38,8 @@ async function bootstrap() {
   // configure swagger
   // =========================================================
 
-  if (!HelperService.isProd()) AppUtils.setupSwagger(app, configService);
+  if (!HelperService.isProd())
+    AppUtils.setupSwagger(app, configService);
 
   // ======================================================
   // security and middlewares
@@ -97,13 +98,13 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  if (module.hot) {
+  if (module?.hot != null) {
     module.hot.accept();
-    module.hot.dispose(() => app.close());
+    module.hot.dispose(async () => app.close());
   }
 
-  const port =
-    process.env.PORT ?? configService.get("app.port", { infer: true })!;
+  const port
+    = process.env.PORT ?? configService.get("app.port", { infer: true })!;
 
   await app.listen(port);
 
@@ -127,7 +128,8 @@ async function bootstrap() {
 }
 
 try {
-  (async () => await bootstrap())();
-} catch (error) {
+  (async () => bootstrap())();
+}
+catch (error) {
   logger.error(error);
 }

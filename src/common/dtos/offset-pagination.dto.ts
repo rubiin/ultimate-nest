@@ -8,7 +8,7 @@ import { PaginationDto } from "./pagination.dto";
 export class OffsetPaginationDto extends PaginationDto {
   @ApiHideProperty()
   @Allow()
-    type: PaginationType.OFFSET = PaginationType.OFFSET;
+  type: PaginationType.OFFSET = PaginationType.OFFSET;
 
   /**
    * Results page you want to retrieve (0..N)

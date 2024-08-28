@@ -5,7 +5,6 @@ import { RabbitMQHealthCheckService } from "./healthcheck";
 
 const logger = new Logger("RabbitMQ");
 
-
 // for delayed messages, check the following links
 // https://reachmnadeem.wordpress.com/2022/02/19/adding-another-plugin-to-rabbit-management-docker-image/
 // https://github.com/golevelup/nestjs/issues/311
@@ -44,7 +43,7 @@ const logger = new Logger("RabbitMQ");
       }),
     }),
   ],
-  providers: [ RabbitMQHealthCheckService],
+  providers: [RabbitMQHealthCheckService],
   exports: [RabbitMQModule],
 })
 export class NestRabbitModule {}

@@ -94,8 +94,9 @@ export const AppUtils = {
           isArray(method.security)
 
           && method.security.includes(IS_PUBLIC_KEY_META)
-        )
+        ) {
           method.security = [];
+        }
       }
     }
 

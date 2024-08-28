@@ -114,7 +114,7 @@ export class User extends BaseEntity {
 
     o.avatar
       = this.avatar
-      || `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`;
+      ?? `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`;
 
     return o;
   }
@@ -122,8 +122,8 @@ export class User extends BaseEntity {
   @BeforeCreate()
   @BeforeUpdate()
   @BeforeUpsert()
-  async hashPassword(arguments_: EventArgs<this>) {
-    if (arguments_.changeSet?.payload?.password)
+  async hashPassword(eventArguments: EventArgs<this>) {
+    if (eventArguments?.changeSet?.payload?.password != null)
       this.password = await HelperService.hashString(this.password);
   }
 }

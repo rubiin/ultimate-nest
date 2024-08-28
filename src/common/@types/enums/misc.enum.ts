@@ -38,8 +38,8 @@ export enum TemplateEngine {
 }
 
 export const FileType: Record<keyof typeof FileSize, string[]> = {
-  IMAGE:["jpg", "jpeg", "png", "svg", "webp", "gif", "svg"],
-  DOC:["pdf", "doc", "txt", "key", "csv", "docx", "xls", "xlsx", "ppt", "pptx"],
+  IMAGE: ["jpg", "jpeg", "png", "svg", "webp", "gif", "svg"],
+  DOC: ["pdf", "doc", "txt", "key", "csv", "docx", "xls", "xlsx", "ppt", "pptx"],
 };
 
 export const ThreadFunctions = {

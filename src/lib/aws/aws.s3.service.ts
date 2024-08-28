@@ -14,7 +14,7 @@ import {
   UploadPartCommand,
 } from "@aws-sdk/client-s3";
 import { Inject, Injectable } from "@nestjs/common";
-import { lookup } from "mime-types";
+import mime from "mime";
 
 import { isEmpty, omit } from "helper-fns";
 import type { Observable } from "rxjs";
@@ -79,9 +79,9 @@ export class AwsS3Service {
       }),
     )).pipe(
       map((response) => {
-        if (response && response.Contents) {
+        if (response != null && response.Contents) {
           return response.Contents.map((value) => {
-            if (!value.Key)
+            if (value.Key == null)
               return {};
             const lastIndex = value.Key.lastIndexOf("/");
             const path = value.Key.slice(0, lastIndex);
@@ -117,7 +117,7 @@ export class AwsS3Service {
     filename: string,
     path?: string,
   ): Observable<Record<string, any>> {
-    const key: string = path ? `${path}/${filename}` : filename;
+    const key: string = path != null ? `${path}/${filename}` : filename;
     return from(this.s3Client.send(
       new GetObjectCommand({
         Bucket: this.bucket,
@@ -158,8 +158,8 @@ export class AwsS3Service {
     const extension = fileName
       .slice(fileName.lastIndexOf(".") + 1, fileName.length)
       .toUpperCase();
-    const fileMime = lookup(extension);
-    return fileMime || extension;
+    const fileMime = mime.getType(extension) ?? extension;
+    return fileMime;
   }
 
   /**
@@ -254,7 +254,7 @@ export class AwsS3Service {
 
     return listObjectsObservable.pipe(
       map((lists) => {
-        if (!lists || !lists?.Contents)
+        if (lists == null || lists?.Contents == null)
           return [];
 
         return lists.Contents.map(value => ({
@@ -369,10 +369,12 @@ export class AwsS3Service {
   ): Observable<any> {
     let path = options?.path ?? undefined;
 
-    if (path)
+    // TODO: handle for path null
+
+    if (path != null)
       path = path.startsWith("/") ? path.replace("/", "") : `${path}`;
 
-    const key = path ? `${path}/${fileName}` : fileName;
+    const key = path != null ? `${path}/${fileName}` : fileName;
 
     return from(this.s3Client.send(
       new UploadPartCommand({

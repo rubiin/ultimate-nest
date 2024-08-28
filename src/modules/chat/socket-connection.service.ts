@@ -3,8 +3,8 @@ import type { User } from "@entities";
 import { WsException } from "@nestjs/websockets";
 
 interface SocketConnection {
-  connectedUser: User
-  socketId: string
+  connectedUser: User;
+  socketId: string;
 }
 
 @Injectable()

@@ -85,7 +85,7 @@ private readonly configService: ConfigService<Configs, true>,
   subscribeNewsLetter(dto: SubscribeNewsletterDto): Observable<Subscriber> {
     return this.findOneSubscription(dto.email).pipe(
       switchMap((entity) => {
-        if (entity) {
+        if (entity == null) {
           return throwError(
             () =>
               new NotFoundException(

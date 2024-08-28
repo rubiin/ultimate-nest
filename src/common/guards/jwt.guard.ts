@@ -16,7 +16,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     super();
   }
 
-  canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.get<boolean>(IS_PUBLIC_KEY_META, context.getHandler());
 
     if (isPublic)
@@ -26,7 +26,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
   }
 
   handleRequest<User>(error: any, user: User, info: { message: string }) {
-    if (error || info || !user) {
+    if (error != null || info != null || user == null) {
       if (info instanceof TokenExpiredError) {
         throw new ForbiddenException(
           translate("exception.token", {

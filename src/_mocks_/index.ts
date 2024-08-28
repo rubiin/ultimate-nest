@@ -153,7 +153,7 @@ mockUserRepo.softRemoveAndFlush.mockImplementation((entity) => {
   return of(entity);
 });
 
-mockUserRepo.findOne.mockImplementation((options: FilterQuery<User>) => {
+mockUserRepo.findOne.mockImplementation(async (options: FilterQuery<User>) => {
   if ("idx" in options) {
     return Promise.resolve({
       user: mockedUser,
@@ -170,7 +170,7 @@ mockUserRepo.findOne.mockImplementation((options: FilterQuery<User>) => {
   return Promise.resolve(mockedUser);
 });
 
-mockPostRepo.findOne.mockImplementation((options: FilterQuery<Post>) => {
+mockPostRepo.findOne.mockImplementation(async (options: FilterQuery<Post>) => {
   return Promise.resolve({
     user: mockedUser,
     ...mockedPost,
@@ -178,8 +178,8 @@ mockPostRepo.findOne.mockImplementation((options: FilterQuery<Post>) => {
   });
 });
 
-mockRefreshRepo.findOne.mockImplementation(() =>
-  Promise.resolve(refreshToken)
+mockRefreshRepo.findOne.mockImplementation(async () =>
+  Promise.resolve(refreshToken),
 );
 
 mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(1);
@@ -190,7 +190,7 @@ mockPostRepo.softRemoveAndFlush.mockImplementation((entity) => {
   return of(entity);
 });
 
-mockOtpLogRepo.findOne.mockImplementation(options =>
+mockOtpLogRepo.findOne.mockImplementation(async options =>
 
   Promise.resolve({
     user: mockedUser,
@@ -198,7 +198,7 @@ mockOtpLogRepo.findOne.mockImplementation(options =>
   }),
 );
 
-mockProtocolRepo.findOne.mockImplementation(options =>
+mockProtocolRepo.findOne.mockImplementation(async options =>
   Promise.resolve({
     ...mockedProtocol,
     idx: options.idx,
