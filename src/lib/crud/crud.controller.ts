@@ -18,8 +18,10 @@ export class AbstractValidationPipe extends ValidationPipe {
     const targetType = this.targetTypes[metadata.type] as Type<any>;
 
     if (targetType == null)
+      // eslint-disable-next-line ts/no-unsafe-return
       return super.transform(value, metadata);
 
+    // eslint-disable-next-line ts/no-unsafe-return
     return super.transform(value, { ...metadata, metatype: targetType });
   }
 }

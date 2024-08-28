@@ -30,7 +30,7 @@ export const app = registerAs("app", () => ({
   url: process.env.API_URL,
   name: process.env.APP_NAME,
   clientUrl: process.env.CLIENT_URL,
-  allowedOrigins: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : "*",
+  allowedOrigins: process.env?.ALLOWED_ORIGINS?.split(",") ?? "*",
   sentryDsn: process.env.SENTRY_DSN,
   swaggerUser: process.env.SWAGGER_USER,
   swaggerPass: process.env.SWAGGER_PASSWORD,

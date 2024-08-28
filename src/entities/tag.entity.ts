@@ -38,8 +38,8 @@ export class Tag extends BaseEntity {
   @BeforeCreate()
   @BeforeUpsert()
   @BeforeUpdate()
-  generateSlug(arguments_: EventArgs<this>) {
-    if (arguments_.changeSet?.payload?.title)
+  generateSlug(eventArguments: EventArgs<this>) {
+    if (eventArguments?.changeSet?.payload?.title != null)
       this.slug = slugify(this.title);
   }
 }

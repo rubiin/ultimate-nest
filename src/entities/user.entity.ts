@@ -122,8 +122,8 @@ export class User extends BaseEntity {
   @BeforeCreate()
   @BeforeUpdate()
   @BeforeUpsert()
-  async hashPassword(arguments_: EventArgs<this>) {
-    if (arguments_.changeSet?.payload?.password)
+  async hashPassword(eventArguments: EventArgs<this>) {
+    if (eventArguments?.changeSet?.payload?.password != null)
       this.password = await HelperService.hashString(this.password);
   }
 }
