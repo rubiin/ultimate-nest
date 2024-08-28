@@ -11,6 +11,7 @@ import {
 } from "class-validator";
 import { i18nValidationMessage } from "nestjs-i18n";
 import { Type } from "class-transformer";
+import type { Class } from "helper-fns";
 
 /**
  * It's a decorator that validates a string field
@@ -18,7 +19,7 @@ import { Type } from "class-transformer";
  * @returns A function that returns a decorator.
  */
 
-export function IsNestedField(entity: Function, ops?: IsNestedFieldOptions) {
+export function IsNestedField(entity: Class, ops?: IsNestedFieldOptions) {
   const options: IsNestedFieldOptions = {
     required: true,
     each: false,
