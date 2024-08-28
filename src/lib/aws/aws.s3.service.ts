@@ -14,7 +14,7 @@ import {
   UploadPartCommand,
 } from "@aws-sdk/client-s3";
 import { Inject, Injectable } from "@nestjs/common";
-import mime from 'mime';
+import mime from "mime";
 
 import { isEmpty, omit } from "helper-fns";
 import type { Observable } from "rxjs";
@@ -159,7 +159,7 @@ export class AwsS3Service {
       .slice(fileName.lastIndexOf(".") + 1, fileName.length)
       .toUpperCase();
     const fileMime = mime.getType(extension) ?? extension;
-    return fileMime
+    return fileMime;
   }
 
   /**
