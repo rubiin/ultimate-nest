@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.2](https://github.com/rubiin/ultimate-nest/compare/v2.6.1...v2.6.2) (2024-08-28)
+
+
+### Bug Fixes
+
+* sentry package ([336eb78](https://github.com/rubiin/ultimate-nest/commit/336eb78bab3770ae2a75ea88f7c3dea1f9d2a2ff))
+
 ## [2.6.1](https://github.com/rubiin/ultimate-nest/compare/v2.6.0...v2.6.1) (2024-08-28)
 
 
