@@ -69,11 +69,13 @@ cp env/.env.example env/.env.dev
 
 # 4. Install dependencies (preferred: pnpm)
 
- npm install
  pnpm install
+ npm install
  yarn install
 
 ```
+> [!NOTE]
+> If you face any issues with dependencies when using yarn or npm, stick to pnpm for now
 
 ## Database
 
@@ -89,10 +91,11 @@ tracking, advanced queries, lazy/eager relations and much more.
 Copy sample env file and adjust the connection settings and other settings(jwt,redis,mail,etc) respectively on sample
 env file
 
-`Note`: Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage'].
-The env file name
-should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as
-NODE_ENV=dev npm run dev
+
+> [!NOTE]
+> Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage'].
+> The env file name should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as
+> NODE_ENV=dev npm run dev
 
 Start local Postgres server and run `npx cross-env NODE_ENV=dev just migrate` to apply migrations
 
