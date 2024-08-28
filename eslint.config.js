@@ -14,7 +14,9 @@ module.exports = rubiin({
     },
   overrides: {
     test: {
-      "ts/unbound-method": "off"
+      "ts/unbound-method": "off",
+      "ts/no-unsafe-assignment": "off",
+      "ts/no-unsafe-call": "off",
     },
     typescript:
     {
