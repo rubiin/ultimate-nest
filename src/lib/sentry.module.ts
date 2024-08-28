@@ -1,6 +1,6 @@
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { SentryModule } from "@travelerdev/nestjs-sentry";
+import { SentryModule } from "@ntegral/nestjs-sentry";
 
 @Global()
 @Module({
