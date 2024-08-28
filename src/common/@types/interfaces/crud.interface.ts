@@ -14,16 +14,16 @@ import type {
 export interface Crud<
   Entity extends BaseEntity,
   PaginationRequest extends TPaginationRequest,
-  CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
-  UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
+  CreateDto extends CreateEntityType<Entity>,
+  UpdateDto extends UpdateEntityType<Entity> ,
 > {
   findAll: (query: PaginationRequest) => Observable<PaginationResponse<Entity>>;
 
   findOne: (index: string) => Observable<Entity>;
 
-  create: (body: CreateDto, user?: User) => Observable<Entity>;
+  create: (dto: CreateDto, user?: User) => Observable<Entity>;
 
-  update: (index: string, body: UpdateDto) => Observable<Entity>;
+  update: (index: string, dto: UpdateDto) => Observable<Entity>;
 
   remove: (index: string) => Observable<Entity>;
 }
