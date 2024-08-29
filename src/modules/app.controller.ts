@@ -1,9 +1,9 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, InternalServerErrorException } from "@nestjs/common";
 
 @Controller()
 export class AppController {
   @Get("ping")
   ping(): "pong" {
-    return "pong";
+    throw new InternalServerErrorException("oh fish")
   }
 }

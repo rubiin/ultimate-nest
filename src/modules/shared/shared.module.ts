@@ -10,12 +10,13 @@ import {
   NestJwtModule,
   NestMailModule,
   NestPinoModule,
-  NestServeStaticModule,
-  NestThrottlerModule,
+  NestThrottlerModule
 } from "@lib/index";
+import { NestSentryModule } from "@lib/sentry.module";
 import { Module } from "@nestjs/common";
-import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
 import { ScheduleModule } from "@nestjs/schedule";
+import { SentryGlobalFilter } from "@sentry/nestjs/setup";
 
 @Module({
   imports: [
@@ -28,11 +29,15 @@ import { ScheduleModule } from "@nestjs/schedule";
     NestCaslModule,
     NestThrottlerModule,
     NestHttpModule,
-    NestServeStaticModule,
     NestJwtModule,
+    NestSentryModule,
     ScheduleModule.forRoot(),
   ],
   providers: [
+    {
+      provide: APP_FILTER,
+      useClass: SentryGlobalFilter,
+    },
     {
       provide: APP_GUARD,
       useClass: CustomThrottlerGuard,

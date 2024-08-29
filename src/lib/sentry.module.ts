@@ -1,21 +1,41 @@
-import { Global, Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { SentryModule } from "@ntegral/nestjs-sentry";
+import { Global, Module, OnApplicationBootstrap } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import * as Sentry from "@sentry/nestjs";
+import { SentryModule } from "@sentry/nestjs/setup";
+import { nodeProfilingIntegration } from '@sentry/profiling-node';
+
 
 @Global()
 @Module({
   imports: [
-    SentryModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService<Configs, true>) => ({
-        dsn: configService.get("sentry.sentryDsn", { infer: true }),
-        environment: configService.get("sentry.environment", { infer: true }),
-        debug: true,
-        tracesSampleRate: 1,
-      }),
-    }),
+    SentryModule.forRoot()
   ],
   exports: [SentryModule],
 })
-export class NestSentryModule {}
+export class NestSentryModule implements OnApplicationBootstrap {
+  constructor(private readonly configService: ConfigService) { }
+
+  onApplicationBootstrap() {
+
+    // Ensure to call this before importing any other modules!
+    Sentry.init({
+      dsn: this.configService.get("sentry.sentryDsn", { infer: true }),
+      environment: this.configService.get("sentry.environment", { infer: true }),
+      debug: true,
+      integrations: [
+        // Add our Profiling integration
+        nodeProfilingIntegration(),
+      ],
+
+      // Add Tracing by setting tracesSampleRate
+      // We recommend adjusting this value in production
+      tracesSampleRate: 1.0,
+
+      // Set sampling rate for profiling
+      // This is relative to tracesSampleRate
+      profilesSampleRate: 1.0,
+    });
+
+  }
+
+}
