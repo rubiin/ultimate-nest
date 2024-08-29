@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.1](https://github.com/rubiin/ultimate-nest/compare/v2.7.0...v2.7.1) (2024-08-29)
+
+
+### Bug Fixes
+
+* cache and throttle use ioredis ([0abe484](https://github.com/rubiin/ultimate-nest/commit/0abe484560842e257194689f8c259e819306f93e))
+
 ## [2.7.0](https://github.com/rubiin/ultimate-nest/compare/v2.6.2...v2.7.0) (2024-08-29)
 
 
