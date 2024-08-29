@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.7.0](https://github.com/rubiin/ultimate-nest/compare/v2.6.2...v2.7.0) (2024-08-29)
+
+
+
+### Bug Fixes
+
+* dont include stripe by default ([17bfba9](https://github.com/rubiin/ultimate-nest/commit/17bfba93ae1d427f51fe6e153f91134e233a5790))
+* jwt algorithm config ([fd0a333](https://github.com/rubiin/ultimate-nest/commit/fd0a333df36425eda46b662be0fab1dfcbc2e8bb))
+* jwt guard signature ([9d777c9](https://github.com/rubiin/ultimate-nest/commit/9d777c9102e3e181f80dff126c9b45e30cfac684))
+* remove sentry as required, its optional now ([91b0923](https://github.com/rubiin/ultimate-nest/commit/91b0923dd5f9ddbbbb76fecf41f11914276faa95))
+* sentry package ([bc20fd2](https://github.com/rubiin/ultimate-nest/commit/bc20fd265ded1f06a0bd7b45a017824adf6061a1))
+* use mikroorm new opt type ([7f283bf](https://github.com/rubiin/ultimate-nest/commit/7f283bf2e1cf2a70b9f2794c756e026be49097c9))
+* use variable exapansion on env ([828c7ca](https://github.com/rubiin/ultimate-nest/commit/828c7ca7380957471461c97f355188b96bc295d6))
+
+
 ## [2.6.2](https://github.com/rubiin/ultimate-nest/compare/v2.6.1...v2.6.2) (2024-08-28)
 
 
