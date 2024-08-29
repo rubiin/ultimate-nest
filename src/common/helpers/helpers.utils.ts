@@ -12,8 +12,7 @@ import { pick } from "helper-fns";
 import type { Observable } from "rxjs";
 import { from } from "rxjs";
 import sharp from "sharp";
-import { REDIS_URI_REGEX } from "@common/constant";
-import type { RedisOptions } from "ioredis";
+
 
 const argon2Options: ArgonOptions & { raw?: false } = {
   type: argon2id,
@@ -100,32 +99,5 @@ which is the hashed password to compare against. */
     const currentUtcTime = fromZonedTime(thatDate, "UTC");
 
     return new Date(format(currentUtcTime, "yyyy-MM-dd HH:mm:ss"));
-  },
-  /* The `redisUrlToOptions` function is used to convert a Redis URL string into a RedisOptions object. */
-  redisUrlToOptions(url: string): RedisOptions {
-    if (!REDIS_URI_REGEX.test(url))
-      throw new Error("Invalid redis url");
-
-    const separator = "://";
-
-    if (url.includes("://:")) {
-      const [_, credentials] = url.split(separator);
-      const [password, rest] = credentials!.split("@");
-      const [host, port] = rest!.split(":");
-
-      return {
-        password,
-        host,
-        port: Number.parseInt(port!, 10),
-      };
-    }
-
-    const connectionString = url.split(separator)[1];
-    const [host, port] = connectionString!.split(":");
-
-    return {
-      host,
-      port: Number.parseInt(port!, 10),
-    };
-  },
+  }
 };

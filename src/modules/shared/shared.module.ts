@@ -10,8 +10,7 @@ import {
   NestJwtModule,
   NestMailModule,
   NestPinoModule,
-  NestServeStaticModule,
-  NestThrottlerModule,
+  NestThrottlerModule
 } from "@lib/index";
 import { Module } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
@@ -28,7 +27,6 @@ import { ScheduleModule } from "@nestjs/schedule";
     NestCaslModule,
     NestThrottlerModule,
     NestHttpModule,
-    NestServeStaticModule,
     NestJwtModule,
     ScheduleModule.forRoot(),
   ],
