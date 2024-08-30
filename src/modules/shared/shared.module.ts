@@ -18,8 +18,8 @@ import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
-    NestMailModule,
     NestConfigModule,
+    NestMailModule,
     NestPinoModule,
     NestI18nModule,
     NestCloudinaryModule,
