@@ -58,8 +58,7 @@ export const AppUtils = {
   },
 
   setupSwagger(app: INestApplication, configService: ConfigService<Configs, true>) {
-    const userName = configService.get("app.swaggerUser", { infer: true });
-    const passWord = configService.get("app.swaggerPass", { infer: true });
+    const {username: userName ,password: passWord} = configService.get("app.swagger", { infer: true });
     const appName = configService.get("app.name", { infer: true });
 
     const options = new DocumentBuilder()
