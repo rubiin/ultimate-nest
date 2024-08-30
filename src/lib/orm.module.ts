@@ -13,11 +13,7 @@ import { baseOptions } from "@common/database/orm.config";
       useFactory: (configService: ConfigService<Configs, true>) =>
         defineConfig({
           ...baseOptions,
-          host: configService.get("database.host", { infer: true }),
-          port: configService.get("database.port", { infer: true }),
-          dbName: configService.get("database.dbName", { infer: true }),
-          user: configService.get("database.user", { infer: true }),
-          password: configService.get("database.password", { infer: true }),
+          ...configService.getOrThrow("database", { infer: true })
         }),
     }),
     MikroOrmModule.forFeature({

@@ -7,6 +7,7 @@ import type {
   googleOauth,
   jwt,
   mail,
+  minio,
   rabbitmq,
   redis,
   sentry,
@@ -29,4 +30,5 @@ export interface Config {
   sentry: ConfigType<typeof sentry>;
   throttle: ConfigType<typeof throttle>;
   twilio: ConfigType<typeof twilio>;
+  minio: ConfigType<typeof minio>
 }

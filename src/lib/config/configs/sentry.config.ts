@@ -8,6 +8,6 @@ export const sentryConfigurationValidationSchema = {
 };
 
 export const sentry = registerAs("sentry", () => ({
-  sentryDsn: process.env.SENTRY_DSN,
+  dsn: process.env.SENTRY_DSN,
   environment: process.env.SENTRY_ENVIRONMENT,
 }));

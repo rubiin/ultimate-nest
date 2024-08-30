@@ -8,11 +8,11 @@ import { ThrottlerStorageRedisService } from "@nest-lab/throttler-storage-redis"
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService<Configs, true>) => ({
-        ttl: config.get("throttle.ttl", { infer: true }),
-        limit: config.get("throttle.limit", { infer: true }),
+      useFactory: (configService: ConfigService<Configs, true>) => ({
+        ttl: configService.get("throttle.ttl", { infer: true }),
+        limit: configService.get("throttle.limit", { infer: true }),
         ignoreUserAgents: [/nestify/i],
-        storage: new ThrottlerStorageRedisService(config.get("redis.url", { infer: true })),
+        storage: new ThrottlerStorageRedisService(configService.getOrThrow("redis", { infer: true })),
         throttlers: [],
       }),
     }),

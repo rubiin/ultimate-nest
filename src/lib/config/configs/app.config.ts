@@ -1,7 +1,7 @@
 import process from "node:process";
+import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant";
 import { registerAs } from "@nestjs/config";
 import Joi from "joi";
-import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant";
 
 // validation schema
 
@@ -31,7 +31,8 @@ export const app = registerAs("app", () => ({
   name: process.env.APP_NAME,
   clientUrl: process.env.CLIENT_URL,
   allowedOrigins: process.env?.ALLOWED_ORIGINS?.split(",") ?? "*",
-  sentryDsn: process.env.SENTRY_DSN,
-  swaggerUser: process.env.SWAGGER_USER,
-  swaggerPass: process.env.SWAGGER_PASSWORD,
+  swagger: {
+    username: process.env.SWAGGER_USER,
+    password: process.env.SWAGGER_PASSWORD,
+  },
 }));

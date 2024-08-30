@@ -3,8 +3,8 @@ import type { ConfigService } from "@nestjs/config";
 import { IoAdapter } from "@nestjs/platform-socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { Redis } from "ioredis";
-import type { Adapter } from "socket.io-adapter";
 import type { Namespace, Server, ServerOptions } from "socket.io";
+import type { Adapter } from "socket.io-adapter";
 
 export class SocketIOAdapter extends IoAdapter {
   private adapterConstructor!: ((nsp: Namespace) => Adapter);
@@ -21,14 +21,7 @@ export class SocketIOAdapter extends IoAdapter {
    * @returns a promise that resolves to void.
    */
   async connectToRedis(): Promise<void> {
-    const pubClient = new Redis(
-      {
-        host: this.configService.get("redis.host", { infer: true }),
-        port: this.configService.get("redis.port", { infer: true }),
-        username: this.configService.get("redis.username", { infer: true }),
-        password: this.configService.get("redis.password", { infer: true }),
-      }
-    );
+    const pubClient = new Redis(this.configService.getOrThrow("redis",{infer: true}));
     const subClient = pubClient.duplicate();
 
     await Promise.allSettled([pubClient.connect(), subClient.connect()]);
