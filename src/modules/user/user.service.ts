@@ -76,7 +76,7 @@ export class UserService {
    * @returns The function `referUser` returns an Observable of type `Referral`.
    */
   referUser(dto: ReferUserDto, user: User): Observable<Referral> {
-    const userExists$ = from(this.userRepository.count({ mobileNumber: dto.mobileNumber, isActive: true }));
+    const userExists$ = from(this.userRepository.count({ mobileNumber: dto.mobileNumber, isActive: true, isDeleted: false }));
 
     return userExists$.pipe(
       switchMap((count: number, _index: number) => {
@@ -132,6 +132,7 @@ export class UserService {
     return from(
       this.userRepository.findOne({
         idx: index,
+        isDeleted: false
       }),
     ).pipe(
       mergeMap((user) => {
