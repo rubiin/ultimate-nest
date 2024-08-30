@@ -1,3 +1,4 @@
+import process from "node:process";
 import { LoadStrategy } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
@@ -36,7 +37,7 @@ export const baseOptions = {
   logger: logger.log.bind(logger),
   metadataProvider: TsMorphMetadataProvider,
   highlighter: new SqlHighlighter(),
-  debug: true,
+  debug:!process.env.NODE_ENV.startsWith("prod"),
   loadStrategy: LoadStrategy.JOINED,
   entityRepository: BaseRepository,
   forceUtcTimezone: true,
