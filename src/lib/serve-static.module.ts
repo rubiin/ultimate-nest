@@ -8,9 +8,9 @@ import { ServeStaticModule } from "@nestjs/serve-static";
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "resources"),
       serveStaticOptions: {
-        maxAge: 86_400, // 1 day
+        maxAge: 86_400, // 1 day,
       },
-      exclude: ["/v1*", "/api*", "/graphql", "/docs*", "/health*", "/swagger*"],
+      exclude: ['/api/(.*)', "/v1/(.*)", "/graphql/(.*)", "/docs/(.*)", "/health/(.*)","/swagger/(.*)"],
     }),
   ],
   exports: [ServeStaticModule],
