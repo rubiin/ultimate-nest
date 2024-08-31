@@ -14,7 +14,7 @@ import compression from "compression";
 import helmet from "helmet";
 import { I18nValidationExceptionFilter } from "nestjs-i18n";
 import { LoggerErrorInterceptor } from "nestjs-pino";
-import { InternalDisabledLogger } from "@lib/pino/inter.logger";
+import { InternalDisabledLogger } from "@lib/pino/internal.logger";
 import { AppModule } from "./modules/app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
 
