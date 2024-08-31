@@ -369,8 +369,6 @@ export class AwsS3Service {
   ): Observable<any> {
     let path = options?.path ?? undefined;
 
-    // TODO: handle for path null
-
     if (path != null)
       path = path.startsWith("/") ? path.replace("/", "") : `${path}`;
 
