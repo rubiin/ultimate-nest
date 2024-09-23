@@ -1,7 +1,7 @@
-import process from "node:process";
-import { registerAs } from "@nestjs/config";
-import Joi from "joi";
-import { SES_REGIONS } from "@common/constant";
+import process from "node:process"
+import { SES_REGIONS } from "@common/constant"
+import { registerAs } from "@nestjs/config"
+import Joi from "joi"
 
 export const mailConfigValidationSchema = {
   MAIL_SERVER: Joi.string().required().valid("SMTP", "SES"),
@@ -18,7 +18,7 @@ export const mailConfigValidationSchema = {
   MAIL_SES_REGION: Joi.string()
     .valid(...SES_REGIONS)
     .when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
-};
+}
 
 export const mail = registerAs("mail", () => ({
   username: process.env.MAIL_USERNAME,
@@ -33,4 +33,4 @@ export const mail = registerAs("mail", () => ({
   sesKey: process.env.MAIL_SES_KEY,
   sesAccessKey: process.env.MAIL_SES_ACCESS_KEY,
   sesRegion: process.env.MAIL_SES_REGION,
-}));
+}))

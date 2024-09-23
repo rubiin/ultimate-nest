@@ -1,51 +1,54 @@
-import process from "node:process";
-import { AmqpConnection, RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
-import { EntityManager, ref } from "@mikro-orm/postgresql";
-import { InjectRepository } from "@mikro-orm/nestjs";
-import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { createId } from "@paralleldrive/cuid2";
-import { capitalize, slugify } from "helper-fns";
-import { CloudinaryService } from "nestjs-cloudinary";
-import type { IFile } from "nestjs-cloudinary";
-import type { Observable } from "rxjs";
-import { from, map, mergeMap, of, switchMap, tap, throwError } from "rxjs";
 import type {
+  MailPayload,
   PaginationResponse,
+
   RecordWithFile,
-} from "@common/@types";
+} from "@common/@types"
+import type { BaseRepository } from "@common/database"
+import type { CursorPaginationDto } from "@common/dtos"
+import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
+import type { MailerService } from "@lib/mailer/mailer.service"
+import type { MikroORM } from "@mikro-orm/core"
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import type { ConfigService } from "@nestjs/config"
+import type { CloudinaryService, IFile } from "nestjs-cloudinary"
+import type { Observable } from "rxjs"
+import type { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos"
+import process from "node:process"
 import {
   CursorType,
   EmailSubject,
   EmailTemplate,
-  MailPayload,
   QueryOrder,
 
   Queues,
 
   RoutingKey,
-} from "@common/@types";
-import { BaseRepository } from "@common/database";
-import type { CursorPaginationDto } from "@common/dtos";
-import { Referral, User } from "@entities";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import { MailerService } from "@lib/mailer/mailer.service";
-import type { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
+} from "@common/@types"
+import { Referral, User } from "@entities"
+import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq"
+import { itemDoesNotExistKey, translate } from "@lib/i18n"
+import { InjectRepository } from "@mikro-orm/nestjs"
+import { ref } from "@mikro-orm/postgresql"
+import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common"
+import { createId } from "@paralleldrive/cuid2"
+import { capitalize, slugify } from "helper-fns"
+import { from, map, mergeMap, of, switchMap, tap, throwError } from "rxjs"
 
 @Injectable()
 export class UserService {
-  private readonly queryName = "u";
+  private readonly queryName = "u"
 
   constructor(
         @InjectRepository(User)
         private userRepository: BaseRepository<User>,
         @InjectRepository(Referral)
         private referralRepository: BaseRepository<Referral>,
-        private readonly em: EntityManager,
         private readonly configService: ConfigService<Configs, true>,
         private readonly amqpConnection: AmqpConnection,
         private readonly cloudinaryService: CloudinaryService,
         private readonly mailService: MailerService,
+        private readonly orm: MikroORM<PostgreSqlDriver>,
   ) {}
 
   @RabbitSubscribe({
@@ -62,7 +65,7 @@ export class UserService {
         subject: payload.subject,
         from: payload.from,
       }),
-    ).pipe(map(tap(() => Logger.log(`✅ Sent mail to ${payload.to}`))));
+    ).pipe(map(tap(() => Logger.log(`✅ Sent mail to ${payload.to}`))))
   }
 
   /**
@@ -76,7 +79,7 @@ export class UserService {
    * @returns The function `referUser` returns an Observable of type `Referral`.
    */
   referUser(dto: ReferUserDto, user: User): Observable<Referral> {
-    const userExists$ = from(this.userRepository.count({ mobileNumber: dto.mobileNumber, isActive: true, isDeleted: false }));
+    const userExists$ = from(this.userRepository.count({ mobileNumber: dto.mobileNumber, isActive: true, isDeleted: false }))
 
     return userExists$.pipe(
       switchMap((count: number, _index: number) => {
@@ -84,7 +87,7 @@ export class UserService {
           return throwError(
             () =>
               new BadRequestException("User already registered with mobile number."),
-          );
+          )
         }
 
         // return an empty observable or undefined based on your requirements
@@ -92,9 +95,9 @@ export class UserService {
 
           mobileNumber: dto.mobileNumber,
           referrer: ref(user),
-        }));
+        }))
       }),
-    );
+    )
   }
 
   /**
@@ -105,7 +108,7 @@ export class UserService {
    * @returns The method is returning an Observable of type PaginationResponse<User>.
    */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<User>> {
-    const qb = this.userRepository.createQueryBuilder(this.queryName);
+    const qb = this.userRepository.createQueryBuilder(this.queryName)
 
     return from(
       this.userRepository.qbCursorPagination({
@@ -119,7 +122,7 @@ export class UserService {
           ...dto,
         },
       }),
-    );
+    )
   }
 
   /**
@@ -132,7 +135,7 @@ export class UserService {
     return from(
       this.userRepository.findOne({
         idx: index,
-        isDeleted: false
+        isDeleted: false,
       }),
     ).pipe(
       mergeMap((user) => {
@@ -144,12 +147,12 @@ export class UserService {
                   args: { item: "User" },
                 }),
               ),
-          );
+          )
         }
 
-        return of(user);
+        return of(user)
       }),
-    );
+    )
   }
 
   /**
@@ -158,22 +161,22 @@ export class UserService {
    * @returns The user object
    */
   create(dto: RecordWithFile<CreateUserDto>): Observable<User> {
-    const { files, ...rest } = dto;
+    const { files, ...rest } = dto
     const user = this.userRepository.create({
       ...rest,
       avatar: "",
-    });
+    })
 
     return from(
-      this.em.transactional(async (em) => {
-        const response = await this.cloudinaryService.uploadFile(files);
+      this.orm.em.transactional(async (em) => {
+        const response = await this.cloudinaryService.uploadFile(files)
 
         // cloudinary gives a url key on response that is the full url to file
 
-        user.avatar = response.url as string;
+        user.avatar = response.url as string
 
-        await em.persistAndFlush(user);
-        const link = this.configService.get("app.clientUrl", { infer: true });
+        await em.persistAndFlush(user)
+        const link = this.configService.get("app.clientUrl", { infer: true })
 
         await this.amqpConnection.publish(
           this.configService.get("rabbitmq.exchange", { infer: true }),
@@ -188,9 +191,9 @@ export class UserService {
             subject: EmailSubject.WELCOME,
             from: this.configService.get("mail.senderEmail", { infer: true }),
           },
-        );
+        )
       }),
-    ).pipe(map(() => user));
+    ).pipe(map(() => user))
   }
 
   /**
@@ -204,35 +207,35 @@ export class UserService {
    * @returns Observable<User>
    */
   update(index: string, dto: EditUserDto, image?: IFile): Observable<User> {
-    let uploadImage$: Observable<string>;
+    let uploadImage$: Observable<string>
 
     return this.findOne(index).pipe(
       switchMap((user) => {
         if (image) {
           uploadImage$ = from(this.cloudinaryService.uploadFile(image)).pipe(
             switchMap(({ url }) => {
-              const stringUrl = url as string;
-              return of(stringUrl);
+              const stringUrl = url as string
+              return of(stringUrl)
             }),
-          );
+          )
         }
 
-        this.userRepository.assign(user, dto);
+        this.userRepository.assign(user, dto)
 
         return uploadImage$.pipe(
           switchMap((url) => {
             if (url)
-              user.avatar = url;
+              user.avatar = url
 
-            return from(this.em.flush()).pipe(
+            return from(this.userRepository.getEntityManager().flush()).pipe(
               switchMap(() => {
-                return of(user);
+                return of(user)
               }),
-            );
+            )
           }),
-        );
+        )
       }),
-    );
+    )
   }
 
   /**
@@ -245,9 +248,9 @@ export class UserService {
   remove(index: string): Observable<User> {
     return this.findOne(index).pipe(
       switchMap((user) => {
-        return this.userRepository.softRemoveAndFlush(user).pipe(map(() => user));
+        return this.userRepository.softRemoveAndFlush(user).pipe(map(() => user))
       }),
-    );
+    )
   }
 
   /**
@@ -258,7 +261,7 @@ export class UserService {
    * @returns An Observable of type string is being returned.
    */
   generateUsername(name: string): Observable<string> {
-    const pointSlug = slugify(`${name} ${createId().slice(0, 6)}`);
+    const pointSlug = slugify(`${name} ${createId().slice(0, 6)}`)
 
     return from(
       this.userRepository.count({
@@ -269,10 +272,10 @@ export class UserService {
     ).pipe(
       map((count) => {
         if (count > 0)
-          return `${pointSlug}${count}`;
+          return `${pointSlug}${count}`
 
-        return pointSlug;
+        return pointSlug
       }),
-    );
+    )
   }
 }

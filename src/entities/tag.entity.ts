@@ -1,16 +1,18 @@
+import type {
+  EventArgs,
+} from "@mikro-orm/postgresql"
+import { BaseEntity } from "@common/database"
 import {
   BeforeCreate,
   BeforeUpdate,
   BeforeUpsert,
   Collection,
   Entity,
-  EventArgs,
   ManyToMany,
   Property,
-} from "@mikro-orm/postgresql";
-import { slugify } from "helper-fns";
-import { BaseEntity } from "@common/database";
-import { Post } from "./post.entity";
+} from "@mikro-orm/postgresql"
+import { slugify } from "helper-fns"
+import { Post } from "./post.entity"
 
 @Entity()
 export class Tag extends BaseEntity {
@@ -19,20 +21,20 @@ export class Tag extends BaseEntity {
     index: true,
     unique: true,
   })
-  title!: string;
+  title!: string
 
   @Property({ columnType: "text" })
-  description!: string;
+  description!: string
 
   @Property({ index: true })
-  slug?: string;
+  slug?: string
 
   @ManyToMany(() => Post, post => post.tags)
-  posts = new Collection<Post>(this);
+  posts = new Collection<Post>(this)
 
   constructor(partial?: Partial<Tag>) {
-    super();
-    Object.assign(this, partial);
+    super()
+    Object.assign(this, partial)
   }
 
   @BeforeCreate()
@@ -40,6 +42,6 @@ export class Tag extends BaseEntity {
   @BeforeUpdate()
   generateSlug(eventArguments: EventArgs<this>) {
     if (eventArguments?.changeSet?.payload?.title != null)
-      this.slug = slugify(this.title);
+      this.slug = slugify(this.title)
   }
 }

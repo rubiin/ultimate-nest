@@ -1,14 +1,14 @@
-import { Module, RequestMethod } from "@nestjs/common";
-import { LoggerModule } from "nestjs-pino";
+import { Module, RequestMethod } from "@nestjs/common"
+import { LoggerModule } from "nestjs-pino"
 
 // Fields to redact from logs
-const redactFields = ["req.headers.authorization", "req.body.password", "req.body.confirmPassword"];
+const redactFields = ["req.headers.authorization", "req.body.password", "req.body.confirmPassword"]
 const basePinoOptions = {
   translateTime: true,
   ignore: "pid,hostname",
   singleLine: true,
   redact: redactFields,
-};
+}
 
 @Module({
   imports: [
@@ -21,14 +21,14 @@ const basePinoOptions = {
         }),
         serializers: {
           req(request: {
-            body: Record<string, any>;
+            body: Record<string, any>
             raw: {
-              body: Record<string, any>;
-            };
+              body: Record<string, any>
+            }
           }) {
-            request.body = request.raw.body;
+            request.body = request.raw.body
 
-            return request;
+            return request
           },
         },
         redact: {

@@ -1,17 +1,17 @@
-import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { EntityManager } from "@mikro-orm/postgresql";
-import type { TestingModule } from "@nestjs/testing";
-import { Test } from "@nestjs/testing";
+import type { TestingModule } from "@nestjs/testing"
+import { User } from "@entities"
+import { getRepositoryToken } from "@mikro-orm/nestjs"
+import { EntityManager } from "@mikro-orm/postgresql"
 
-import { mockEm, mockUserRepo, mockedUser } from "@mocks";
-import { User } from "@entities";
-import { ProfileService } from "./profile.service";
+import { mockedUser, mockEm, mockUserRepo } from "@mocks"
+import { Test } from "@nestjs/testing"
+import { ProfileService } from "./profile.service"
 
 describe("profileService", () => {
-  let service: ProfileService;
+  let service: ProfileService
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    jest.clearAllMocks()
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProfileService,
@@ -22,18 +22,18 @@ describe("profileService", () => {
           useValue: mockUserRepo,
         },
       ],
-    }).compile();
+    }).compile()
 
-    service = module.get<ProfileService>(ProfileService);
-  });
+    service = module.get<ProfileService>(ProfileService)
+  })
 
   it("should be defined", () => {
-    expect(service).toBeDefined();
-  });
+    expect(service).toBeDefined()
+  })
 
   it("should getProfileByUsername", () => {
     service.getProfileByUsername("username").subscribe((result) => {
-      expect(result).toStrictEqual(mockedUser);
+      expect(result).toStrictEqual(mockedUser)
       expect(mockUserRepo.findOne).toHaveBeenCalledWith(
         { username: "username" },
         {
@@ -45,7 +45,7 @@ describe("profileService", () => {
             favorites: { isActive: true, isDeleted: false },
           },
         },
-      );
-    });
-  });
-});
+      )
+    })
+  })
+})

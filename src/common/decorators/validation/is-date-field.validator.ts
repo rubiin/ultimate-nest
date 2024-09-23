@@ -1,7 +1,7 @@
-import { applyDecorators } from "@nestjs/common";
-import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional, MaxDate, MinDate } from "class-validator";
-import type { DateFieldOptions } from "@common/@types";
-import { validationI18nMessage } from "@lib/i18n";
+import type { DateFieldOptions } from "@common/@types"
+import { validationI18nMessage } from "@lib/i18n"
+import { applyDecorators } from "@nestjs/common"
+import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional, MaxDate, MinDate } from "class-validator"
 
 /**
  * It's a decorator that validates that the field is an date
@@ -18,7 +18,7 @@ export function IsDateField(options_?: DateFieldOptions) {
     lessThan: false,
     greaterThan: false,
     ...options_,
-  } satisfies DateFieldOptions;
+  } satisfies DateFieldOptions
 
   const decoratorsToApply = [
     IsDateString(
@@ -30,7 +30,7 @@ export function IsDateField(options_?: DateFieldOptions) {
         each: options.each,
       },
     ),
-  ];
+  ]
 
   if (options.required) {
     decoratorsToApply.push(
@@ -38,18 +38,18 @@ export function IsDateField(options_?: DateFieldOptions) {
         message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
       }),
-    );
+    )
 
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
           message: validationI18nMessage("validation.isNotEmpty"),
         }),
-      );
+      )
     }
   }
   else {
-    decoratorsToApply.push(IsOptional());
+    decoratorsToApply.push(IsOptional())
   }
 
   if (options.each) {
@@ -59,14 +59,14 @@ export function IsDateField(options_?: DateFieldOptions) {
           type: "array",
         }),
       }),
-    );
+    )
   }
 
   if (options.greaterThan)
-    decoratorsToApply.push(MinDate(options.date!));
+    decoratorsToApply.push(MinDate(options.date!))
 
   if (options.lessThan)
-    decoratorsToApply.push(MaxDate(options.date!));
+    decoratorsToApply.push(MaxDate(options.date!))
 
-  return applyDecorators(...decoratorsToApply);
+  return applyDecorators(...decoratorsToApply)
 }

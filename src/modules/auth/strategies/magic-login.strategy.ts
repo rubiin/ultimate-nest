@@ -1,19 +1,19 @@
-import type { Loaded } from "@mikro-orm/postgresql";
-import { Injectable, Logger } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { PassportStrategy } from "@nestjs/passport";
-import Strategy from "passport-magic-login";
+import type { User } from "@entities"
+import type { MailerService } from "@lib/mailer/mailer.service"
+import type { Loaded } from "@mikro-orm/postgresql"
+import type { ConfigService } from "@nestjs/config"
+import type { AuthService } from "../auth.service"
 
-import { EmailSubject, EmailTemplate } from "@common/@types";
-import type { User } from "@entities";
-import { MailerService } from "@lib/mailer/mailer.service";
-import { AuthService } from "../auth.service";
+import { EmailSubject, EmailTemplate } from "@common/@types"
+import { Injectable, Logger } from "@nestjs/common"
+import { PassportStrategy } from "@nestjs/passport"
+import Strategy from "passport-magic-login"
 
 interface MagicLoginPayload {
-  destination: string;
-  code: string;
-  iat: number;
-  exp: number;
+  destination: string
+  code: string
+  iat: number
+  exp: number
 }
 
 @Injectable()
@@ -28,7 +28,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
    *
    */
 
-  logger = new Logger(MagicLoginStrategy.name);
+  logger = new Logger(MagicLoginStrategy.name)
 
   constructor(
     private readonly authService: AuthService,
@@ -45,7 +45,7 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
       // The authentication callback URL
       callbackUrl: "auth/magiclogin/callback",
       sendMagicLink: async (destination: string, href: string) => {
-        this.logger.log(`Sending magic link to ${destination} with href ${href}`);
+        this.logger.log(`Sending magic link to ${destination} with href ${href}`)
 
         return this.mailService.sendMail({
           template: EmailTemplate.MAGIC_LOGIN_TEMPLATE,
@@ -56,16 +56,16 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
           to: destination,
           subject: EmailSubject.MAGIC_LOGIN,
           from: this.configService.get("mail.senderEmail", { infer: true }),
-        });
+        })
       },
       verify: (
         payload: MagicLoginPayload,
         callback: (callback_: undefined, user: Promise<Loaded<User>>) => void,
       ) => {
         // Get or create a user with the provided email from the database
-        callback(undefined, this.validate(payload.destination));
+        callback(undefined, this.validate(payload.destination))
       },
-    });
+    })
   }
 
   /**
@@ -76,6 +76,6 @@ export class MagicLoginStrategy extends PassportStrategy(Strategy, "magicLogin")
 
   async validate(email: string) {
     // Accept the JWT and attempt to validate it using the user service
-    return this.authService.findUser({ email });
+    return this.authService.findUser({ email })
   }
 }

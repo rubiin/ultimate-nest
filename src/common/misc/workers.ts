@@ -1,12 +1,12 @@
-import { HelperService } from "@common/helpers";
-import { ThreadWorker } from "poolifier";
+import { HelperService } from "@common/helpers"
+import { ThreadWorker } from "poolifier"
 
 export interface WorkerData<T = string> {
-  input: T;
+  input: T
 }
 
 export interface WorkerResponse<T = string> {
-  response: T;
+  response: T
 }
 
 class FunctionHandlerWorker<
@@ -16,14 +16,14 @@ class FunctionHandlerWorker<
   public constructor() {
     super({
       hashString: async (workerData?: Data) => {
-        const hashedString = await HelperService.hashString(JSON.stringify(workerData));
-        return { response: hashedString } as Response;
+        const hashedString = await HelperService.hashString(JSON.stringify(workerData))
+        return { response: hashedString } as Response
       },
-    });
+    })
   }
 }
 
 export const requestHandlerWorker = new FunctionHandlerWorker<
   WorkerData,
   WorkerResponse
->();
+>()

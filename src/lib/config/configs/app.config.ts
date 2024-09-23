@@ -1,7 +1,7 @@
-import process from "node:process";
-import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant";
-import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import process from "node:process"
+import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant"
+import { registerAs } from "@nestjs/config"
+import Joi from "joi"
 
 // validation schema
 
@@ -20,7 +20,7 @@ export const appConfigValidationSchema = {
   SWAGGER_USER: Joi.string().required(),
   SWAGGER_PASSWORD: Joi.string().required(),
 
-};
+}
 
 // config
 export const app = registerAs("app", () => ({
@@ -35,4 +35,4 @@ export const app = registerAs("app", () => ({
     username: process.env.SWAGGER_USER,
     password: process.env.SWAGGER_PASSWORD,
   },
-}));
+}))

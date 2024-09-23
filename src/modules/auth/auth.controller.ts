@@ -1,4 +1,26 @@
-import process from "node:process";
+import type { AuthenticationResponse, OauthResponse } from "@common/@types"
+import type { User } from "@entities"
+import type { TokensService } from "@modules/token/tokens.service"
+import type { Observable } from "rxjs"
+
+import type { AuthService } from "./auth.service"
+import type {
+  ChangePasswordDto,
+  MagicLinkLogin,
+  OtpVerifyDto,
+  RefreshTokenDto,
+  ResetPasswordDto,
+  SendOtpDto,
+  UserLoginDto,
+} from "./dtos"
+import type { MagicLoginStrategy } from "./strategies"
+import process from "node:process"
+import {
+  Auth,
+  GenericController,
+  LoggedInUser,
+  SwaggerResponse,
+} from "@common/decorators"
 import {
   Body,
   DefaultValuePipe,
@@ -10,32 +32,10 @@ import {
   Req,
   Res,
   UseGuards,
-} from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
-import { ApiOperation } from "@nestjs/swagger";
-import { Observable, map } from "rxjs";
-
-import type { AuthenticationResponse } from "@common/@types";
-import { OauthResponse } from "@common/@types";
-import {
-  Auth,
-  GenericController,
-  LoggedInUser,
-  SwaggerResponse,
-} from "@common/decorators";
-import { User } from "@entities";
-import { TokensService } from "@modules/token/tokens.service";
-import { AuthService } from "./auth.service";
-import {
-  ChangePasswordDto,
-  MagicLinkLogin,
-  OtpVerifyDto,
-  RefreshTokenDto,
-  ResetPasswordDto,
-  SendOtpDto,
-  UserLoginDto,
-} from "./dtos";
-import { MagicLoginStrategy } from "./strategies";
+} from "@nestjs/common"
+import { AuthGuard } from "@nestjs/passport"
+import { ApiOperation } from "@nestjs/swagger"
+import { map } from "rxjs"
 
 @GenericController("auth", false)
 export class AuthController {
@@ -48,7 +48,7 @@ export class AuthController {
   @Post("login")
   @ApiOperation({ summary: "User Login" })
   login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {
-    return this.authService.login(loginDto);
+    return this.authService.login(loginDto)
   }
 
   @Post("login/magic")
@@ -62,9 +62,9 @@ export class AuthController {
   ): Observable<void> {
     return this.authService.validateUser(false, dto.destination).pipe(
       map((_user) => {
-        this.magicStrategy.send(request, response);
+        this.magicStrategy.send(request, response)
       }),
-    );
+    )
   }
 
   @Post("reset-password")
@@ -74,7 +74,7 @@ export class AuthController {
     badRequest: "Otp is expired.",
   })
   resetUserPassword(@Body() dto: ResetPasswordDto): Observable<User> {
-    return this.authService.resetPassword(dto);
+    return this.authService.resetPassword(dto)
   }
 
   @Auth()
@@ -84,7 +84,7 @@ export class AuthController {
     notFound: "Account doesn't exist.",
   })
   forgotPassword(@Body() dto: SendOtpDto): Observable< { message: string } > {
-    return this.authService.forgotPassword(dto);
+    return this.authService.forgotPassword(dto)
   }
 
   @UseGuards(AuthGuard("magicLogin"))
@@ -95,9 +95,9 @@ export class AuthController {
         // client url
         return response.redirect(
           `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
-        );
+        )
       }),
-    );
+    )
   }
 
   @Get("google")
@@ -113,7 +113,7 @@ export class AuthController {
     user: OauthResponse,
     @Res() response: NestifyResponse,
   ) {
-    return this.authService.OauthHandler({ response, user });
+    return this.authService.OauthHandler({ response, user })
   }
 
   @Get("facebook")
@@ -129,13 +129,13 @@ export class AuthController {
     user: OauthResponse,
     @Res() response: NestifyResponse,
   ) {
-    return this.authService.OauthHandler({ response, user });
+    return this.authService.OauthHandler({ response, user })
   }
 
   // this simulates a frontend url for testing oauth login
   @Get("oauth/login")
   oauthMock(@Query() query: { token: string }) {
-    return { message: "successfully logged", token: query.token };
+    return { message: "successfully logged", token: query.token }
   }
 
   @Post("verify-otp")
@@ -145,7 +145,7 @@ export class AuthController {
     badRequest: "Otp is expired.",
   })
   verifyOtp(@Body() dto: OtpVerifyDto): Observable<User> {
-    return this.authService.verifyOtp(dto);
+    return this.authService.verifyOtp(dto)
   }
 
   @Auth()
@@ -158,7 +158,7 @@ export class AuthController {
     @Body() dto: ChangePasswordDto,
     @LoggedInUser() user: User,
   ): Observable<User> {
-    return this.authService.changePassword(dto, user);
+    return this.authService.changePassword(dto, user)
   }
 
   @ApiOperation({ summary: "Refresh token" })
@@ -166,7 +166,7 @@ export class AuthController {
   refresh(@Body() body: RefreshTokenDto): Observable<any> {
     return this.tokenService
       .createAccessTokenFromRefreshToken(body.refreshToken)
-      .pipe(map(token => ({ token })));
+      .pipe(map(token => ({ token })))
   }
 
   @Auth()
@@ -181,6 +181,6 @@ export class AuthController {
   ): Observable<User> {
     return fromAll
       ? this.authService.logoutFromAll(user)
-      : this.authService.logout(user, refreshToken!.refreshToken);
+      : this.authService.logout(user, refreshToken!.refreshToken)
   }
 }

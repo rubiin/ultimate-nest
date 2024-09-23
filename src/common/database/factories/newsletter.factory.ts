@@ -1,9 +1,9 @@
-import { Factory } from "@mikro-orm/seeder";
-import { NewsLetter } from "@entities";
+import { NewsLetter } from "@entities"
+import { Factory } from "@mikro-orm/seeder"
 
 /* `NewsLetterFactory` is a factory that creates `NewsLetter` instances */
 export class NewsLetterFactory extends Factory<NewsLetter> {
-  model = NewsLetter;
+  model = NewsLetter
 
   definition(): Partial<NewsLetter> {
     return {
@@ -34,6 +34,6 @@ export class NewsLetterFactory extends Factory<NewsLetter> {
 <div class="footer">
 <p>Thank you for subscribing to our JavaScript newsletter. For more updates, follow us on Twitter: <a href="https://twitter.com/example" target="_blank">@example</a></p>
 </div>`,
-    };
+    }
   }
 }

@@ -1,26 +1,26 @@
-import { resolve } from "node:path";
+import type { SendMailOptions, Transporter } from "nodemailer"
 
-import * as aws from "@aws-sdk/client-ses";
-import { Server } from "@common/@types";
-import { Inject, Injectable, Logger } from "@nestjs/common";
-import type { SendMailOptions, Transporter } from "nodemailer";
-import { createTransport } from "nodemailer";
-import previewEmail from "preview-email";
-import { from, retry, switchMap } from "rxjs";
-import { BaseAdapter } from "./adapters/adapter";
-import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
-import { MailModuleOptions } from "./mailer.options";
+import type { MailModuleOptions } from "./mailer.options"
+import { resolve } from "node:path"
+import * as aws from "@aws-sdk/client-ses"
+import { Server } from "@common/@types"
+import { Inject, Injectable, Logger } from "@nestjs/common"
+import { createTransport } from "nodemailer"
+import previewEmail from "preview-email"
+import { from, retry, switchMap } from "rxjs"
+import { BaseAdapter } from "./adapters/adapter"
+import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition"
 
 interface MailOptions extends Partial<SendMailOptions> {
-  template: string;
-  replacements: Record<string, string>;
+  template: string
+  replacements: Record<string, string>
 }
 
 @Injectable()
 export class MailerService {
-  readonly transporter: Transporter;
-  private readonly logger: Logger = new Logger(MailerService.name);
-  private readonly adapter: BaseAdapter;
+  readonly transporter: Transporter
+  private readonly logger: Logger = new Logger(MailerService.name)
+  private readonly adapter: BaseAdapter
 
   constructor(
         @Inject(MODULE_OPTIONS_TOKEN)
@@ -28,7 +28,7 @@ export class MailerService {
   ) {
     // render template
 
-    this.adapter = new BaseAdapter(this.options.templateEngine);
+    this.adapter = new BaseAdapter(this.options.templateEngine)
 
     // create Nodemailer SES transporter
 
@@ -40,12 +40,12 @@ export class MailerService {
           accessKeyId: this.options.credentials.sesKey,
           secretAccessKey: this.options.credentials.sesAccessKey,
         },
-      });
+      })
 
       this.transporter = createTransport({
         SES: { ses, aws },
         maxConnections: 14, // 14 is the maximum message rate per second for ses
-      });
+      })
     }
     else {
       this.transporter = createTransport({
@@ -62,7 +62,7 @@ export class MailerService {
           // do not fail on invalid certs
           rejectUnauthorized: false,
         },
-      });
+      })
     }
   }
 
@@ -72,34 +72,34 @@ export class MailerService {
    * @returns A promise that resolves to a boolean.
    */
   sendMail(mailOptions: MailOptions) {
-    const templatePath = resolve("}");
+    const templatePath = resolve("}")
 
     return from(this.adapter.compile(templatePath, mailOptions.replacements)).pipe(
       switchMap((html) => {
-        mailOptions.html = html;
+        mailOptions.html = html
 
         if (this.options?.previewEmail) {
           try {
-            (async () => previewEmail(mailOptions))();
+            (async () => previewEmail(mailOptions))()
           }
           catch (error) {
-            this.logger.error(error);
+            this.logger.error(error)
           }
         }
 
         return from(this.transporter.sendMail(mailOptions)).pipe(
           retry(this.options?.retryAttempts ?? 1),
-        );
+        )
       }),
-    );
+    )
   }
 
   async checkConnection() {
     return this.transporter.verify((error, _success) => {
       if (error)
-        this.logger.log(error);
+        this.logger.log(error)
       else
-        this.logger.log(`Mail server is ready to take our messages: ${_success}`);
-    });
+        this.logger.log(`Mail server is ready to take our messages: ${_success}`)
+    })
   }
 }

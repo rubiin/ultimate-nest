@@ -1,5 +1,5 @@
-import { PickType } from "@nestjs/swagger";
-import { IsEmailField, IsStringField } from "@common/decorators";
+import { IsEmailField, IsStringField } from "@common/decorators"
+import { PickType } from "@nestjs/swagger"
 
 export class OtpVerifyDto {
   /**
@@ -10,14 +10,14 @@ export class OtpVerifyDto {
     minLength: 6,
     maxLength: 6,
   })
-  otpCode!: string;
+  otpCode!: string
 
   /**
    * Email of user
    * @example someone@something.com
    */
   @IsEmailField()
-  email!: string;
+  email!: string
 }
 
 export class SendOtpDto extends PickType(OtpVerifyDto, ["email"] as const) {}

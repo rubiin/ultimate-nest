@@ -1,10 +1,10 @@
-import { EntityManager, EntityRepository } from "@mikro-orm/postgresql";
-import { InjectRepository } from "@mikro-orm/nestjs";
-import { Injectable } from "@nestjs/common";
-import type { Observable } from "rxjs";
-import { from, map } from "rxjs";
-import type { User } from "@entities";
-import { RefreshToken } from "@entities";
+import type { User } from "@entities"
+import type { EntityManager, EntityRepository } from "@mikro-orm/postgresql"
+import type { Observable } from "rxjs"
+import { RefreshToken } from "@entities"
+import { InjectRepository } from "@mikro-orm/nestjs"
+import { Injectable } from "@nestjs/common"
+import { from, map } from "rxjs"
 
 @Injectable()
 export class RefreshTokensRepository {
@@ -21,19 +21,19 @@ export class RefreshTokensRepository {
    * @returns A refresh token
    */
   createRefreshToken(user: User, ttl: number): Observable<RefreshToken> {
-    const expiration = new Date();
+    const expiration = new Date()
 
     // the input is treated as millis so *1000 is necessary
-    const ttlSeconds = ttl * 1000; // seconds
+    const ttlSeconds = ttl * 1000 // seconds
 
-    expiration.setTime(expiration.getTime() + ttlSeconds);
+    expiration.setTime(expiration.getTime() + ttlSeconds)
 
     const token = this.refreshTokenRepository.create({
       user: user.id,
       expiresIn: expiration,
-    });
+    })
 
-    return from(this.em.persistAndFlush(token)).pipe(map(() => token));
+    return from(this.em.persistAndFlush(token)).pipe(map(() => token))
   }
 
   /**
@@ -47,7 +47,7 @@ export class RefreshTokensRepository {
         id,
         isRevoked: false,
       }),
-    );
+    )
   }
 
   /**
@@ -58,7 +58,7 @@ export class RefreshTokensRepository {
   deleteTokensForUser(user: User): Observable<boolean> {
     return from(this.refreshTokenRepository.nativeUpdate({ user }, { isRevoked: true })).pipe(
       map(() => true),
-    );
+    )
   }
 
   /**
@@ -70,6 +70,6 @@ export class RefreshTokensRepository {
   deleteToken(user: User, tokenId: number): Observable<boolean> {
     return from(
       this.refreshTokenRepository.nativeUpdate({ user, id: tokenId }, { isRevoked: true }),
-    ).pipe(map(() => true));
+    ).pipe(map(() => true))
   }
 }

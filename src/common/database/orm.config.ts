@@ -1,24 +1,24 @@
-import { HelperService } from "@common/helpers";
-import { LoadStrategy } from "@mikro-orm/postgresql";
-import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
-import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
-import { Logger, NotFoundException } from "@nestjs/common";
-import { BaseRepository } from "./base.repository";
+import { HelperService } from "@common/helpers"
+import { LoadStrategy } from "@mikro-orm/postgresql"
+import { TsMorphMetadataProvider } from "@mikro-orm/reflection"
+import { SqlHighlighter } from "@mikro-orm/sql-highlighter"
+import { Logger, NotFoundException } from "@nestjs/common"
+import { BaseRepository } from "./base.repository"
 
-const logger = new Logger("MikroORM");
+const logger = new Logger("MikroORM")
 
 export const baseOptions = {
   entities: ["dist/entities/*.entity.js"],
   entitiesTs: ["src/entities/*.entity.ts"],
   findOneOrFailHandler: (entityName: string, key: any) => {
-    return new NotFoundException(`${entityName} not found for ${key}`);
+    return new NotFoundException(`${entityName} not found for ${key}`)
   },
   migrations: {
     fileName: (timestamp: string, name?: string) => {
       if (name == null)
-        return `Migration${timestamp}`;
+        return `Migration${timestamp}`
 
-      return `Migration${timestamp}_${name}`;
+      return `Migration${timestamp}_${name}`
     },
     tableName: "migrations", // name of database table with log of executed transactions
     path: "./migrations", // path to the folder with migrations
@@ -43,4 +43,4 @@ export const baseOptions = {
   forceUtcTimezone: true,
   registerRequestContext: true,
   pool: { min: 2, max: 10 },
-};
+}
