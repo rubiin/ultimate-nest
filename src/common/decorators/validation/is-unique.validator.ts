@@ -1,10 +1,11 @@
-import type { EntityManager } from "@mikro-orm/postgresql"
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { Type } from "@nestjs/common"
 import type {
   ValidationArguments as BaseValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
 } from "class-validator"
+import { EntityManager } from "@mikro-orm/core"
 import {
   registerDecorator,
   ValidatorConstraint,
@@ -22,7 +23,7 @@ export type IsUniqueValidationContext = ValidationArguments<Parameters<typeof Is
 
 @ValidatorConstraint({ async: true })
 export class IsUniqueConstraint implements ValidatorConstraintInterface {
-  constructor(private em: EntityManager) {}
+  constructor(private em: EntityManager<PostgreSqlDriver>) {}
 
   async validate<Entity, Field extends keyof Entity>(
     value: Entity[Field],

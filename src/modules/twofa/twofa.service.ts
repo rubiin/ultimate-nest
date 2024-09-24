@@ -1,9 +1,10 @@
 import type { BaseRepository } from "@common/database"
-import type { EntityManager } from "@mikro-orm/postgresql"
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { ConfigService } from "@nestjs/config"
 import type { Observable } from "rxjs"
 import { User } from "@entities"
 import { translate } from "@lib/i18n"
+import { EntityManager } from "@mikro-orm/core"
 import { InjectRepository } from "@mikro-orm/nestjs"
 import { Injectable } from "@nestjs/common"
 import { authenticator } from "otplib"
@@ -16,7 +17,7 @@ export class TwoFactorService {
         @InjectRepository(User)
         private userRepository: BaseRepository<User>,
         private readonly configService: ConfigService<Configs, true>,
-        private readonly em: EntityManager,
+        private readonly em: EntityManager<PostgreSqlDriver>,
   ) {}
 
   /**

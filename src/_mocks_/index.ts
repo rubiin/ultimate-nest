@@ -5,7 +5,8 @@ import type { Category, Comment, OtpLog, Post, Tag } from "@entities"
 import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
 import type { CacheService } from "@lib/cache/cache.service"
 import type { MailerService } from "@lib/mailer/mailer.service"
-import type { EntityManager, FilterQuery } from "@mikro-orm/postgresql"
+import type { EntityManager } from "@mikro-orm/core"
+import type { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository"
 import type { TokensService } from "@modules/token/tokens.service"
 import type { CallHandler, ExecutionContext } from "@nestjs/common"
@@ -99,7 +100,7 @@ export const refreshToken = new RefreshToken({
 
 export const protocol = new Protocol(mockedProtocol)
 
-export const mockEm = createMock<EntityManager>()
+export const mockEm = createMock<EntityManager<PostgreSqlDriver>>()
 
 const payload = {
   xss: "<option><iframe></select><b><script>alert(1)</script>",

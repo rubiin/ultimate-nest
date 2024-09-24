@@ -1,13 +1,14 @@
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { IsUniqueValidationContext } from "./is-unique.validator"
 import { User } from "@entities"
 import { createMock } from "@golevelup/ts-jest"
-import { EntityManager } from "@mikro-orm/postgresql"
+import { EntityManager } from "@mikro-orm/core"
 import { Test } from "@nestjs/testing"
 import { IsUniqueConstraint } from "./is-unique.validator"
 
 describe("isUnique", () => {
   let isUnique: IsUniqueConstraint
-  const mockEm = createMock<EntityManager>()
+  const mockEm = createMock<EntityManager<PostgreSqlDriver>>()
   const username = "tester"
 
   const validatorArguments: IsUniqueValidationContext = {
@@ -20,7 +21,7 @@ describe("isUnique", () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [IsUniqueConstraint, { provide: EntityManager, useValue: mockEm }],
+      providers: [IsUniqueConstraint, { provide: EntityManager<PostgreSqlDriver>, useValue: mockEm }],
     }).compile()
 
     isUnique = module.get<IsUniqueConstraint>(IsUniqueConstraint)

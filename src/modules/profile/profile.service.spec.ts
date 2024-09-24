@@ -1,8 +1,9 @@
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { TestingModule } from "@nestjs/testing"
 import { User } from "@entities"
-import { getRepositoryToken } from "@mikro-orm/nestjs"
-import { EntityManager } from "@mikro-orm/postgresql"
+import { EntityManager } from "@mikro-orm/core"
 
+import { getRepositoryToken } from "@mikro-orm/nestjs"
 import { mockedUser, mockEm, mockUserRepo } from "@mocks"
 import { Test } from "@nestjs/testing"
 import { ProfileService } from "./profile.service"
@@ -15,7 +16,7 @@ describe("profileService", () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProfileService,
-        { provide: EntityManager, useValue: mockEm },
+        { provide: EntityManager<PostgreSqlDriver>, useValue: mockEm },
 
         {
           provide: getRepositoryToken(User),

@@ -12,9 +12,11 @@ describe("PostController (e2e)", () => {
   beforeAll(async () => {
     const { body } = await request(app)
       .post("/auth/login")
-      .send(user.admin) as SuperTestBody<{ payload: {
-      accessToken: string
-    }; }>
+      .send(user.admin) as SuperTestBody<{
+      payload: {
+        accessToken: string
+      }
+    }>
 
     adminJwtToken = body.payload.accessToken
   })

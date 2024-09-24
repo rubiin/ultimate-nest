@@ -2,15 +2,15 @@ import type { PaginationResponse } from "@common/@types"
 import type { BaseRepository } from "@common/database"
 import type { CursorPaginationDto } from "@common/dtos"
 import type { AutoPath, EntityKey } from "@mikro-orm/core/typings"
-import type { EntityManager } from "@mikro-orm/postgresql"
 import type { Observable } from "rxjs"
-import type { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos"
 
+import type { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos"
 import { CursorType, QueryOrder } from "@common/@types"
 import { Category, Comment, Post, Tag, User } from "@entities"
 import { itemDoesNotExistKey, translate } from "@lib/i18n"
+import { EntityManager } from "@mikro-orm/core"
 import { InjectRepository } from "@mikro-orm/nestjs"
-import { ref } from "@mikro-orm/postgresql"
+import { PostgreSqlDriver, ref } from "@mikro-orm/postgresql"
 import { Injectable, NotFoundException } from "@nestjs/common"
 import { omit } from "helper-fns"
 import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs"
@@ -20,7 +20,7 @@ export class PostService {
   private readonly queryName = "p"
 
   constructor(
-    private readonly em: EntityManager,
+    private readonly em: EntityManager<PostgreSqlDriver>,
         @InjectRepository(Post)
         private readonly postRepository: BaseRepository<Post>,
         @InjectRepository(User)

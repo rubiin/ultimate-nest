@@ -2,8 +2,8 @@ import type { AuthenticationResponse, OauthResponse } from "@common/@types"
 import type { User } from "@entities"
 import type { TokensService } from "@modules/token/tokens.service"
 import type { Observable } from "rxjs"
-
 import type { AuthService } from "./auth.service"
+
 import type {
   ChangePasswordDto,
   MagicLinkLogin,

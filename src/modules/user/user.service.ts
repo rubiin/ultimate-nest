@@ -1,7 +1,6 @@
 import type {
   MailPayload,
   PaginationResponse,
-
   RecordWithFile,
 } from "@common/@types"
 import type { BaseRepository } from "@common/database"

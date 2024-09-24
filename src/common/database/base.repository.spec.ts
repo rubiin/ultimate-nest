@@ -1,12 +1,13 @@
-import type { EntityManager } from "@mikro-orm/postgresql"
+import type { EntityManager } from "@mikro-orm/core"
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { User } from "@entities"
-import { createMock } from "@golevelup/ts-jest"
 
+import { createMock } from "@golevelup/ts-jest"
 import { loggedInUser } from "@mocks"
 import { BaseRepository } from "./base.repository"
 
 describe("baseRepository", () => {
-  const mockEm = createMock<EntityManager>({
+  const mockEm = createMock<EntityManager<PostgreSqlDriver>>({
     findAndCount: jest.fn().mockResolvedValue([[], 0]),
   })
 

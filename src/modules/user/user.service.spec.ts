@@ -1,8 +1,9 @@
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { TestingModule } from "@nestjs/testing"
 import { User } from "@entities"
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
+import { EntityManager } from "@mikro-orm/core"
 import { getRepositoryToken } from "@mikro-orm/nestjs"
-import { EntityManager } from "@mikro-orm/postgresql"
 import {
   mockAmqConnection,
   mockCloudinaryService,
@@ -13,8 +14,8 @@ import {
   mockUserRepo,
   queryDto,
 } from "@mocks"
-import { ConfigService } from "@nestjs/config"
 
+import { ConfigService } from "@nestjs/config"
 import { Test } from "@nestjs/testing"
 import { CloudinaryService } from "nestjs-cloudinary"
 import { UserService } from "./user.service"
@@ -34,7 +35,7 @@ describe("userService", () => {
         { provide: ConfigService, useValue: mockConfigService },
         { provide: AmqpConnection, useValue: mockAmqConnection },
         { provide: CloudinaryService, useValue: mockCloudinaryService },
-        { provide: EntityManager, useValue: mockEm },
+        { provide: EntityManager<PostgreSqlDriver>, useValue: mockEm },
       ],
     }).compile()
 

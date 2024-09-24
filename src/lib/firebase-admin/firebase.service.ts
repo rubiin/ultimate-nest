@@ -1,6 +1,6 @@
 import type { FirebaseModuleOptions } from "./fire-base.module.definition"
-import { existsSync } from "node:fs"
 
+import { existsSync } from "node:fs"
 import path from "node:path"
 import { Inject, Injectable } from "@nestjs/common"
 import admin from "firebase-admin"

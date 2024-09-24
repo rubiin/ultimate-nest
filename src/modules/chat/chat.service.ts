@@ -1,9 +1,9 @@
 import type { BaseRepository } from "@common/database"
 import type { User } from "@entities"
-import type { EntityManager } from "@mikro-orm/postgresql"
 import { Conversation, Message } from "@entities"
+import { EntityManager } from "@mikro-orm/core"
 import { InjectRepository } from "@mikro-orm/nestjs"
-import { ref } from "@mikro-orm/postgresql"
+import { PostgreSqlDriver, ref } from "@mikro-orm/postgresql"
 import { Injectable } from "@nestjs/common"
 
 interface IConversation {
@@ -14,7 +14,7 @@ interface IConversation {
 @Injectable()
 export class ChatService {
   constructor(
-    private readonly em: EntityManager,
+    private readonly em: EntityManager<PostgreSqlDriver>,
         @InjectRepository(Conversation)
         private readonly conversationRepository: BaseRepository<Conversation>,
         @InjectRepository(Message)

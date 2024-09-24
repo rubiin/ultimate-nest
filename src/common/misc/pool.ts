@@ -1,5 +1,4 @@
 import type { WorkerData, WorkerResponse } from "./workers"
-
 import path from "node:path"
 import { Logger } from "@nestjs/common"
 import { availableParallelism, DynamicThreadPool, PoolEvents } from "poolifier"

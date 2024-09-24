@@ -1,7 +1,8 @@
 import type { User } from "@entities"
-import type { EntityManager, EntityRepository } from "@mikro-orm/postgresql"
+import type { EntityRepository, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { Observable } from "rxjs"
 import { RefreshToken } from "@entities"
+import { EntityManager } from "@mikro-orm/core"
 import { InjectRepository } from "@mikro-orm/nestjs"
 import { Injectable } from "@nestjs/common"
 import { from, map } from "rxjs"
@@ -9,7 +10,7 @@ import { from, map } from "rxjs"
 @Injectable()
 export class RefreshTokensRepository {
   constructor(
-    private readonly em: EntityManager,
+    private readonly em: EntityManager<PostgreSqlDriver>,
         @InjectRepository(RefreshToken)
         private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
   ) {}

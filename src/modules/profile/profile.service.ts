@@ -1,10 +1,11 @@
 import type { ProfileData } from "@common/@types"
 import type { BaseRepository } from "@common/database"
 import type { AutoPath, EntityKey } from "@mikro-orm/core/typings"
-import type { EntityManager } from "@mikro-orm/postgresql"
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { Observable } from "rxjs"
 import { User } from "@entities"
 import { itemDoesNotExistKey, translate } from "@lib/i18n"
+import { EntityManager } from "@mikro-orm/core"
 import { InjectRepository } from "@mikro-orm/nestjs"
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs"
@@ -14,7 +15,7 @@ export class ProfileService {
   constructor(
     @InjectRepository(User)
     private userRepository: BaseRepository<User>,
-    private readonly em: EntityManager,
+    private readonly em: EntityManager<PostgreSqlDriver>,
   ) { }
 
   /**

@@ -3,6 +3,7 @@ import type {
 } from "@aws-sdk/client-s3"
 import type { Buffer } from "node:buffer"
 import type { Observable } from "rxjs"
+
 import type {
 
   AwsModuleOptions,
@@ -11,7 +12,6 @@ import type {
 
   AwsS3PutItemOptions,
 } from "./aws.interface"
-
 import {
   CreateMultipartUploadCommand,
   DeleteObjectCommand,

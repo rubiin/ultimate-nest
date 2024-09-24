@@ -1,8 +1,9 @@
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { TestingModule } from "@nestjs/testing"
 import { Category, Comment, Post, Tag, User } from "@entities"
-import { getRepositoryToken } from "@mikro-orm/nestjs"
-import { EntityManager } from "@mikro-orm/postgresql"
+import { EntityManager } from "@mikro-orm/core"
 
+import { getRepositoryToken } from "@mikro-orm/nestjs"
 import {
   mockCategoryRepo,
   mockCommentRepo,
@@ -25,7 +26,7 @@ describe("postService", () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PostService,
-        { provide: EntityManager, useValue: mockEm },
+        { provide: EntityManager<PostgreSqlDriver>, useValue: mockEm },
 
         {
           provide: getRepositoryToken(Post),

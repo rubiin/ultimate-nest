@@ -1,7 +1,7 @@
 import type { AuthenticationResponse, OauthResponse } from "@common/@types"
 import type { BaseRepository } from "@common/database"
 import type { MailerService } from "@lib/mailer/mailer.service"
-import type { EntityManager, FilterQuery } from "@mikro-orm/postgresql"
+import type { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { TokensService } from "@modules/token/tokens.service"
 import type { ConfigService } from "@nestjs/config"
 import type { Observable } from "rxjs"
@@ -13,11 +13,12 @@ import type {
   UserLoginDto,
 } from "./dtos"
 import process from "node:process"
-import { EmailSubject, EmailTemplate } from "@common/@types"
 
+import { EmailSubject, EmailTemplate } from "@common/@types"
 import { HelperService } from "@common/helpers"
 import { OtpLog, Protocol, User } from "@entities"
 import { itemDoesNotExistKey, translate } from "@lib/i18n"
+import { EntityManager } from "@mikro-orm/core"
 import { InjectRepository } from "@mikro-orm/nestjs"
 import {
   BadRequestException,
@@ -43,7 +44,7 @@ export class AuthService {
     private readonly tokenService: TokensService,
     private readonly configService: ConfigService<Configs, true>,
     private readonly mailService: MailerService,
-    private readonly em: EntityManager,
+    private readonly em: EntityManager<PostgreSqlDriver>,
   ) {}
 
   /**

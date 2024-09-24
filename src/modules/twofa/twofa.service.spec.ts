@@ -1,11 +1,12 @@
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { TestingModule } from "@nestjs/testing"
 import { User } from "@entities"
+import { EntityManager } from "@mikro-orm/core"
 import { getRepositoryToken } from "@mikro-orm/nestjs"
-import { EntityManager } from "@mikro-orm/postgresql"
 import { loggedInUser, mockConfigService, mockEm, mockResponse, mockUserRepo } from "@mocks"
 import { ConfigService } from "@nestjs/config"
-import { Test } from "@nestjs/testing"
 
+import { Test } from "@nestjs/testing"
 import { authenticator } from "otplib"
 import qrCode from "qrcode"
 import { TwoFactorService } from "./twofa.service"
@@ -18,7 +19,7 @@ describe("twoFactorService", () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TwoFactorService,
-        { provide: EntityManager, useValue: mockEm },
+        { provide: EntityManager<PostgreSqlDriver>, useValue: mockEm },
 
         {
           provide: getRepositoryToken(User),

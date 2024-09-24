@@ -50,4 +50,9 @@ module.exports = rubiin({
       ],
     },
   },
+   // `.eslintignore` is no longer supported in Flat config, use `ignores` instead
+  ignores: [
+    '**/typings',
+    "i18n-generated.ts",
+  ]
 });

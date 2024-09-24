@@ -1,7 +1,8 @@
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import type { TestingModule } from "@nestjs/testing"
 import { User } from "@entities"
+import { EntityManager } from "@mikro-orm/core"
 import { getRepositoryToken } from "@mikro-orm/nestjs"
-import { EntityManager } from "@mikro-orm/postgresql"
 import {
   loggedInUser,
   mockEm,
@@ -11,8 +12,8 @@ import {
   refreshToken,
   refreshTokenPayload,
 } from "@mocks"
-import { TokensService } from "@modules/token/tokens.service"
 
+import { TokensService } from "@modules/token/tokens.service"
 import { JwtService } from "@nestjs/jwt"
 import { Test } from "@nestjs/testing"
 import { of } from "rxjs"
@@ -26,7 +27,7 @@ describe("tokensService", () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TokensService,
-        { provide: EntityManager, useValue: mockEm },
+        { provide: EntityManager<PostgreSqlDriver>, useValue: mockEm },
 
         {
           provide: getRepositoryToken(User),
