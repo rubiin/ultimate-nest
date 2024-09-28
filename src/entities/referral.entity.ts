@@ -5,7 +5,6 @@ import { BaseEntity } from "@common/database"
 import {
   Entity,
   Enum,
-  Index,
   ManyToOne,
   Property,
 } from "@mikro-orm/postgresql"
@@ -22,8 +21,7 @@ export class Referral extends BaseEntity {
   })
   mobileNumber!: string
 
-  @Index()
-  @Enum(() => ReferralStatus)
+  @Enum({ items: () => ReferralStatus, index: true })
   status: ReferralStatus & Opt = ReferralStatus.PENDING
 
   constructor(partial?: Partial<Referral>) {

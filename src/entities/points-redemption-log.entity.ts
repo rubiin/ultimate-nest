@@ -11,7 +11,7 @@ export class PointRedemptionLog extends BaseEntity {
   @Property({ columnType: "numeric(9,2)" })
   amount!: string
 
-  @ManyToOne()
+  @ManyToOne({ index: true })
   user!: Rel<Ref<User>>
 
   constructor(partial?: Partial<PointRedemptionLog>) {
