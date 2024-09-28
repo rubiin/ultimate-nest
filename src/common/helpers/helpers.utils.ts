@@ -5,10 +5,9 @@ import type { Buffer } from "node:buffer"
 import type { Observable } from "rxjs"
 import { existsSync } from "node:fs"
 import { join } from "node:path"
-
 import process from "node:process"
+import { UTCDate } from "@date-fns/utc"
 import { argon2id, hash, verify } from "argon2"
-import { format, fromZonedTime } from "date-fns-tz"
 import { pick } from "helper-fns"
 import { from } from "rxjs"
 import sharp from "sharp"
@@ -95,8 +94,8 @@ which is the hashed password to compare against. */
   returns a new `Date` object representing the same date and time in UTC timezone. */
   getTimeInUtc(date: Date | string): Date {
     const thatDate = date instanceof Date ? date : new Date(date)
-    const currentUtcTime = fromZonedTime(thatDate, "UTC")
+    const currentUtcTime = new UTCDate(thatDate)
 
-    return new Date(format(currentUtcTime, "yyyy-MM-dd HH:mm:ss"))
+    return new Date(currentUtcTime.toString())
   },
 }

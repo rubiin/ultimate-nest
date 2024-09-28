@@ -1,10 +1,10 @@
 import process from "node:process"
 import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant"
 import { registerAs } from "@nestjs/config"
+import { isValidTimeZone } from "helper-fns"
 import Joi from "joi"
 
 // validation schema
-
 export const appConfigValidationSchema = {
   NODE_ENV: Joi.string()
     .valid(...APP_ENVIRONMENTS)
@@ -19,7 +19,12 @@ export const appConfigValidationSchema = {
   ALLOWED_HOSTS: Joi.string().optional(),
   SWAGGER_USER: Joi.string().required(),
   SWAGGER_PASSWORD: Joi.string().required(),
-
+  TZ: Joi.string().required().custom((value: string, helpers) => {
+    if (!isValidTimeZone(value)) {
+      return helpers.error("Invalid timezone, please provide a valid timezone")
+    }
+    return value
+  }),
 }
 
 // config
