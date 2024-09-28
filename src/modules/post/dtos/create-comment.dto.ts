@@ -1,4 +1,4 @@
-import { IsStringField } from "@common/decorators";
+import { IsStringField } from "@common/decorators"
 
 export class CreateCommentDto {
   /**
@@ -7,5 +7,5 @@ export class CreateCommentDto {
    */
 
   @IsStringField()
-  body!: string;
+  body!: string
 }

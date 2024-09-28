@@ -1,7 +1,10 @@
-import { Roles } from "@common/@types";
-import { BaseEntity } from "@common/database";
-import { HelperService } from "@common/helpers";
-import { Conversation, Post } from "@entities";
+import type {
+  EventArgs,
+} from "@mikro-orm/postgresql"
+import { Roles } from "@common/@types"
+import { BaseEntity } from "@common/database"
+import { HelperService } from "@common/helpers"
+import { Conversation, Post } from "@entities"
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -11,81 +14,80 @@ import {
   Embedded,
   Entity,
   Enum,
-  EventArgs,
   Index,
   ManyToMany,
   OneToMany,
   Property,
   wrap,
-} from "@mikro-orm/postgresql";
+} from "@mikro-orm/postgresql"
 
 @Embeddable()
 export class Social {
   @Property()
-  twitter?: string;
+  twitter?: string
 
   @Property()
-  facebook?: string;
+  facebook?: string
 
   @Property()
-  linkedin?: string;
+  linkedin?: string
 }
 
 @Entity()
 export class User extends BaseEntity {
   @Property()
-  firstName!: string;
+  firstName!: string
 
   @Property()
-  middleName?: string;
+  middleName?: string
 
   @Property()
-  lastName!: string;
+  lastName!: string
 
   @Property({ index: true, unique: true })
-  username!: string;
+  username!: string
 
   @Property({ index: true, unique: true })
-  email!: string;
+  email!: string
 
   @Property({ columnType: "text" })
-  bio!: string;
+  bio!: string
 
   @Property({ columnType: "text" })
-  avatar!: string;
+  avatar!: string
 
   @Property({ hidden: true, columnType: "text", lazy: true })
-  password!: string;
+  password!: string
 
   @Property()
-  twoFactorSecret?: string;
+  twoFactorSecret?: string
 
   @Property()
-  isTwoFactorEnabled? = false;
+  isTwoFactorEnabled? = false
 
   @Index()
   @Enum({ items: () => Roles, array: true })
-  roles?: Roles[] = [Roles.AUTHOR];
+  roles?: Roles[] = [Roles.AUTHOR]
 
   @Property({ index: true, unique: true })
-  mobileNumber?: string;
+  mobileNumber?: string
 
   @Property()
-  isVerified? = false;
+  isVerified? = false
 
   @OneToMany(() => Post, post => post.author, {
     orphanRemoval: true,
   })
-  posts = new Collection<Post>(this);
+  posts = new Collection<Post>(this)
 
   @ManyToMany(() => Conversation, "users", { owner: true })
-  conversations = new Collection<Conversation>(this);
+  conversations = new Collection<Conversation>(this)
 
   @ManyToMany({ hidden: true })
-  favorites = new Collection<Post>(this);
+  favorites = new Collection<Post>(this)
 
   @Embedded(() => Social, { object: true, nullable: true })
-  social?: Social;
+  social?: Social
 
   @ManyToMany({
     entity: () => User,
@@ -96,27 +98,27 @@ export class User extends BaseEntity {
     inverseJoinColumn: "following",
     hidden: true,
   })
-  followers = new Collection<User>(this);
+  followers = new Collection<User>(this)
 
   @ManyToMany(() => User, u => u.followers)
-  followed = new Collection<User>(this);
+  followed = new Collection<User>(this)
 
   @Property()
-  lastLogin? = new Date();
+  lastLogin? = new Date()
 
   constructor(data?: Pick<User, "idx">) {
-    super();
-    Object.assign(this, data);
+    super()
+    Object.assign(this, data)
   }
 
   toJSON() {
-    const o = wrap<User>(this).toObject();
+    const o = wrap<User>(this).toObject()
 
     o.avatar
       = this.avatar
-      ?? `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`;
+      ?? `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`
 
-    return o;
+    return o
   }
 
   @BeforeCreate()
@@ -124,6 +126,6 @@ export class User extends BaseEntity {
   @BeforeUpsert()
   async hashPassword(eventArguments: EventArgs<this>) {
     if (eventArguments?.changeSet?.payload?.password != null)
-      this.password = await HelperService.hashString(this.password);
+      this.password = await HelperService.hashString(this.password)
   }
 }

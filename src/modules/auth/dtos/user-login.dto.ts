@@ -1,6 +1,6 @@
-import { IsNotEmpty } from "class-validator";
-import { IsEmailField } from "@common/decorators";
-import { validationI18nMessage } from "@lib/i18n";
+import { IsEmailField } from "@common/decorators"
+import { validationI18nMessage } from "@lib/i18n"
+import { IsNotEmpty } from "class-validator"
 
 export class UserLoginDto {
   /**
@@ -8,14 +8,14 @@ export class UserLoginDto {
    * @example someone@something.com
    */
   @IsEmailField()
-  email!: string;
+  email!: string
 
   /**
    * Password of user
    * @example AVeryGoodPassword@&67t75
    */
   @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
-  password?: string;
+  password?: string
 }
 
 export class MagicLinkLogin {
@@ -24,5 +24,5 @@ export class MagicLinkLogin {
    * @example someone@something.com
    */
   @IsEmailField()
-  destination!: string;
+  destination!: string
 }

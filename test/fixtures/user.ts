@@ -1,8 +1,8 @@
-import process from "node:process";
-import { Roles } from "@common/@types";
-import { randEmail, randFirstName, randLastName } from "@ngneat/falso";
+import process from "node:process"
+import { Roles } from "@common/@types"
+import { randEmail, randFirstName, randLastName } from "@ngneat/falso"
 
-export const user: Record<string, { email: string; password: string }> = {
+export const user: Record<string, { email: string, password: string }> = {
   admin: {
     email: "roobin.bhandari@gmail.com",
     password: process.env.USER_PASSWORD!,
@@ -15,7 +15,7 @@ export const user: Record<string, { email: string; password: string }> = {
     email: "unknown@someone.com",
     password: process.env.USER_PASSWORD!,
   },
-};
+}
 
 export const userDto = {
   firstName: randFirstName(),
@@ -24,4 +24,4 @@ export const userDto = {
   username: "username",
   roles: [Roles.AUTHOR],
   password: process.env.USER_PASSWORD!,
-};
+}

@@ -1,14 +1,14 @@
-import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { Injectable } from "@nestjs/common";
-import type { Observable } from "rxjs";
-import { fromEvent, map, merge, of } from "rxjs";
+import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
+import type { Observable } from "rxjs"
+import { Injectable } from "@nestjs/common"
+import { fromEvent, map, merge, of } from "rxjs"
 
 @Injectable()
 export class RabbitMQHealthCheckService {
   constructor(private readonly amqpConnection: AmqpConnection) {}
 
   check(): boolean {
-    return this.amqpConnection.managedConnection.isConnected();
+    return this.amqpConnection.managedConnection.isConnected()
   }
 
   watch(): Observable<boolean> {
@@ -19,6 +19,6 @@ export class RabbitMQHealthCheckService {
       ),
       fromEvent(this.amqpConnection.managedConnection, "error").pipe(map(() => false)),
       fromEvent(this.amqpConnection.managedConnection, "connect").pipe(map(() => true)),
-    );
+    )
   }
 }

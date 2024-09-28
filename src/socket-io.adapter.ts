@@ -1,19 +1,19 @@
-import type { INestApplicationContext } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
-import { IoAdapter } from "@nestjs/platform-socket.io";
-import { createAdapter } from "@socket.io/redis-adapter";
-import { Redis } from "ioredis";
-import type { Namespace, Server, ServerOptions } from "socket.io";
-import type { Adapter } from "socket.io-adapter";
+import type { INestApplicationContext } from "@nestjs/common"
+import type { ConfigService } from "@nestjs/config"
+import type { Namespace, Server, ServerOptions } from "socket.io"
+import type { Adapter } from "socket.io-adapter"
+import { IoAdapter } from "@nestjs/platform-socket.io"
+import { createAdapter } from "@socket.io/redis-adapter"
+import { Redis } from "ioredis"
 
 export class SocketIOAdapter extends IoAdapter {
-  private adapterConstructor!: ((nsp: Namespace) => Adapter);
+  private adapterConstructor!: ((nsp: Namespace) => Adapter)
 
   constructor(
     app: INestApplicationContext,
     private readonly configService: ConfigService<Configs, true>,
   ) {
-    super(app);
+    super(app)
   }
 
   /**
@@ -21,12 +21,12 @@ export class SocketIOAdapter extends IoAdapter {
    * @returns a promise that resolves to void.
    */
   async connectToRedis(): Promise<void> {
-    const pubClient = new Redis(this.configService.getOrThrow("redis",{infer: true}));
-    const subClient = pubClient.duplicate();
+    const pubClient = new Redis(this.configService.getOrThrow("redis", { infer: true }))
+    const subClient = pubClient.duplicate()
 
-    await Promise.allSettled([pubClient.connect(), subClient.connect()]);
+    await Promise.allSettled([pubClient.connect(), subClient.connect()])
 
-    this.adapterConstructor = createAdapter(pubClient, subClient);
+    this.adapterConstructor = createAdapter(pubClient, subClient)
   }
 
   /**
@@ -40,17 +40,17 @@ export class SocketIOAdapter extends IoAdapter {
   createIOServer(port: number, options?: ServerOptions) {
     const cors = {
       origin: this.configService.get("app.allowedOrigins", { infer: true }),
-    };
+    }
 
     const optionsWithCORS = {
       ...options,
       cors,
-    };
+    }
 
-    const server = super.createIOServer(port, optionsWithCORS) as Server;
+    const server = super.createIOServer(port, optionsWithCORS) as Server
 
-    server.adapter(this.adapterConstructor);
+    server.adapter(this.adapterConstructor)
 
-    return server;
+    return server
   }
 }

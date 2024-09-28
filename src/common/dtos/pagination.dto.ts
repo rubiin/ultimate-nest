@@ -1,6 +1,6 @@
-import { IsBoolean, IsOptional } from "class-validator";
-import { i18nValidationMessage } from "nestjs-i18n";
-import { IsDateField, IsStringField, ToBoolean } from "@common/decorators";
+import { IsDateField, IsStringField, ToBoolean } from "@common/decorators"
+import { IsBoolean, IsOptional } from "class-validator"
+import { i18nValidationMessage } from "nestjs-i18n"
 
 export abstract class PaginationDto {
   /**
@@ -9,7 +9,7 @@ export abstract class PaginationDto {
 
   @IsOptional()
   @IsDateField()
-  from?: Date;
+  from?: Date
 
   /**
    * From date filter
@@ -17,13 +17,13 @@ export abstract class PaginationDto {
 
   @IsOptional()
   @IsDateField()
-  to?: Date;
+  to?: Date
 
   /**
    *  The search query
    */
   @IsStringField({ required: false, minLength: 1, maxLength: 100 })
-  search?: string;
+  search?: string
 
   /**
    * The `withDeleted` property is a boolean flag that
@@ -37,7 +37,7 @@ export abstract class PaginationDto {
       type: "boolean",
     }),
   })
-  withDeleted = false;
+  withDeleted = false
 
   /**
    * The `relations` property is used to specify which related
@@ -45,7 +45,7 @@ export abstract class PaginationDto {
    * results.
    */
   @IsStringField({ required: false, each: true })
-  relations: string[] = [];
+  relations: string[] = []
 
   /**
    * The `fields` property is used to specify which
@@ -53,5 +53,5 @@ export abstract class PaginationDto {
    * results.
    */
   @IsStringField({ required: false, each: true })
-  fields: string[] = [];
+  fields: string[] = []
 }

@@ -1,25 +1,25 @@
-import type { Ref } from "@mikro-orm/postgresql";
-import { Entity, ManyToOne, Property, Rel } from "@mikro-orm/postgresql";
-import { BaseEntity } from "@common/database";
-import type { Post, User } from "./index";
+import type { Ref, Rel } from "@mikro-orm/postgresql"
+import type { Post, User } from "./index"
+import { BaseEntity } from "@common/database"
+import { Entity, ManyToOne, Property } from "@mikro-orm/postgresql"
 
 @Entity()
 export class Comment extends BaseEntity {
   @Property()
-  body!: string;
+  body!: string
 
   @ManyToOne({
     index: true,
   })
-  post!: Rel<Ref<Post>>;
+  post!: Rel<Ref<Post>>
 
   @ManyToOne({
     index: true,
   })
-  author!: Rel<Ref<User>>;
+  author!: Rel<Ref<User>>
 
   constructor(partial?: Partial<Comment>) {
-    super();
-    Object.assign(this, partial);
+    super()
+    Object.assign(this, partial)
   }
 }

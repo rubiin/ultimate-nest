@@ -1,6 +1,12 @@
-/* eslint-disable ts/dot-notation */
-
-import { Buffer } from "node:buffer";
+import type {
+  CursorPaginationResponse,
+  OppositeOrder,
+  Order,
+  PaginateOptions,
+  QBCursorPaginationOptions,
+  QBOffsetPaginationOptions,
+  QueryOrder,
+} from "@common/@types"
 import type {
   Dictionary,
   EntityManager,
@@ -10,36 +16,28 @@ import type {
   OrderDefinition,
   QBFilterQuery,
   QueryOrderMap,
-} from "@mikro-orm/postgresql";
-import {
-  EntityRepository,
-} from "@mikro-orm/postgresql";
-import { BadRequestException, NotFoundException } from "@nestjs/common";
-import { formatSearch } from "helper-fns";
-import type { Observable } from "rxjs";
-import { from, map, of, switchMap, throwError } from "rxjs";
-
-import type {
-  CursorPaginationResponse,
-  OppositeOrder,
-  Order,
-  PaginateOptions,
-  QBCursorPaginationOptions,
-  QBOffsetPaginationOptions,
-  QueryOrder,
-} from "@common/@types";
+} from "@mikro-orm/postgresql"
+import type { Observable } from "rxjs"
+import type { BaseEntity } from "./base.entity"
+import { Buffer } from "node:buffer"
 import {
   CursorType,
-  OffsetMeta,
-  OffsetPaginationResponse,
   getOppositeOrder,
   getQueryOrder,
-} from "@common/@types";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import type { BaseEntity } from "./base.entity";
+  OffsetMeta,
+  OffsetPaginationResponse,
+} from "@common/@types"
+
+import { itemDoesNotExistKey, translate } from "@lib/i18n"
+import {
+  EntityRepository,
+} from "@mikro-orm/postgresql"
+import { BadRequestException, NotFoundException } from "@nestjs/common"
+import { formatSearch } from "helper-fns"
+import { from, map, of, switchMap, throwError } from "rxjs"
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
-  private readonly encoding: BufferEncoding = "base64";
+  private readonly encoding: BufferEncoding = "base64"
 
   /**
    * The exists function checks if there are any records that match the given filter query.
@@ -47,7 +45,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @returns The method is returning an Observable of type boolean.
    */
   exists(where: QBFilterQuery<T>): Observable<boolean> {
-    return from(this.qb().where(where).getCount()).pipe(map(count => count > 0));
+    return from(this.qb().where(where).getCount()).pipe(map(count => count > 0))
   }
 
   /**
@@ -55,7 +53,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @returns The entity name as a string.
    */
   getEntityName(): string {
-    return this.entityName.toString();
+    return this.entityName.toString()
   }
 
   /**
@@ -64,11 +62,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @returns The entityManager
    */
   softRemove(entity: T): EntityManager {
-    entity.deletedAt = new Date();
-    entity.isDeleted = true;
-    this.em.persist(entity);
+    entity.deletedAt = new Date()
+    entity.isDeleted = true
+    this.em.persist(entity)
 
-    return this.em;
+    return this.em
   }
 
   /**
@@ -77,10 +75,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @returns observable of the removed entity
    */
   softRemoveAndFlush(entity: T): Observable<T> {
-    entity.deletedAt = new Date();
-    entity.isDeleted = true;
+    entity.deletedAt = new Date()
+    entity.isDeleted = true
 
-    return from(this.em.persistAndFlush(entity)).pipe(map(() => entity));
+    return from(this.em.persistAndFlush(entity)).pipe(map(() => entity))
   }
 
   /**
@@ -92,10 +90,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   findAndPaginate<Populate extends string = never>(
     where: FilterQuery<T>,
     options?: FindOptions<T, Populate>,
-  ): Observable<{ total: number; results: Loaded<T, Populate>[] }> {
+  ): Observable<{ total: number, results: Loaded<T, Populate>[] }> {
     return from(this.findAndCount(where, options)).pipe(
       map(([results, total]) => ({ total, results })),
-    );
+    )
   }
 
   /**
@@ -104,9 +102,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @returns The removed entity
    */
   delete(entity: T): T {
-    this.em.remove(entity);
+    this.em.remove(entity)
 
-    return entity;
+    return entity
   }
 
   /**
@@ -125,13 +123,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
                   args: { item: this.getEntityName() },
                 }),
               ),
-          );
+          )
         }
-        this.em.remove(entity);
+        this.em.remove(entity)
 
-        return of(entity);
+        return of(entity)
       }),
-    );
+    )
   }
 
   /**
@@ -150,12 +148,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
                   args: { item: this.getEntityName() },
                 }),
               ),
-          );
+          )
         }
 
-        return this.softRemoveAndFlush(entity);
+        return this.softRemoveAndFlush(entity)
       }),
-    );
+    )
   }
 
   /**
@@ -174,7 +172,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       [cursor]: {
         [order]: decoded,
       },
-    };
+    }
   }
 
   /**
@@ -187,27 +185,27 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     cursor: string,
     cursorType: CursorType = CursorType.STRING,
   ): string | number | Date {
-    const string = Buffer.from(cursor, this.encoding).toString("utf8");
+    const string = Buffer.from(cursor, this.encoding).toString("utf8")
 
     switch (cursorType) {
       case CursorType.DATE: {
-        const millisUnix = Number.parseInt(string, 10);
+        const millisUnix = Number.parseInt(string, 10)
 
         if (Number.isNaN(millisUnix))
-          throw new BadRequestException(translate("exception.cursorInvalidDate"));
+          throw new BadRequestException(translate("exception.cursorInvalidDate"))
 
-        return new Date(millisUnix);
+        return new Date(millisUnix)
       }
       case CursorType.NUMBER: {
-        const number = Number.parseInt(string, 10);
+        const number = Number.parseInt(string, 10)
 
         if (Number.isNaN(number))
-          throw new BadRequestException(translate("exception.cursorInvalidNumber"));
+          throw new BadRequestException(translate("exception.cursorInvalidNumber"))
 
-        return number;
+        return number
       }
       default: {
-        return string;
+        return string
       }
     }
   }
@@ -218,12 +216,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @returns The base64 encoded value
    */
   encodeCursor(value: Date | string | number): string {
-    let string = value.toString();
+    let string = value.toString()
 
     if (value instanceof Date)
-      string = value.getTime().toString();
+      string = value.getTime().toString()
 
-    return Buffer.from(string, "utf8").toString(this.encoding);
+    return Buffer.from(string, "utf8").toString(this.encoding)
   }
 
   /**
@@ -238,7 +236,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   ): OrderDefinition<T> {
     return {
       [cursor]: order,
-    } as QueryOrderMap<T>;
+    } as QueryOrderMap<T>
   }
 
   /**
@@ -251,7 +249,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   qbOffsetPagination<T extends Dictionary>(
     dto: QBOffsetPaginationOptions<T>,
   ): Observable<OffsetPaginationResponse<T>> {
-    const { qb, pageOptionsDto } = dto;
+    const { qb, pageOptionsDto } = dto
 
     const {
       limit,
@@ -265,20 +263,20 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       to,
       searchField,
       alias,
-    } = pageOptionsDto;
-    const selectedFields = [...new Set([...fields, "id"])];
+    } = pageOptionsDto
+    const selectedFields = [...new Set([...fields, "id"])]
 
     if (search != null) {
       qb.andWhere({
         [searchField]: {
           $ilike: formatSearch(search),
         },
-      });
+      })
     }
 
     if (relations != null) {
       for (const relation of relations)
-        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
+        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`)
     }
 
     if (fromDate) {
@@ -286,7 +284,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         createdAt: {
           $gte: fromDate,
         },
-      });
+      })
     }
 
     if (to) {
@@ -294,23 +292,23 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         createdAt: {
           $lte: to,
         },
-      });
+      })
     }
 
     qb.orderBy({ [sort]: order.toLowerCase() })
       .limit(limit)
       .select(selectedFields)
-      .offset(offset);
+      .offset(offset)
 
-    const pagination$ = from(qb.getResultAndCount());
+    const pagination$ = from(qb.getResultAndCount())
 
     return pagination$.pipe(
       map(([results, itemCount]) => {
-        const pageMetaDto = new OffsetMeta({ pageOptionsDto, itemCount });
+        const pageMetaDto = new OffsetMeta({ pageOptionsDto, itemCount })
 
-        return new OffsetPaginationResponse(results, pageMetaDto);
+        return new OffsetPaginationResponse(results, pageMetaDto)
       }),
-    );
+    )
   }
 
   /**
@@ -321,7 +319,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   async qbCursorPagination<T extends Dictionary>(
     dto: QBCursorPaginationOptions<T>,
   ): Promise<CursorPaginationResponse<T>> {
-    const { qb, pageOptionsDto } = dto;
+    const { qb, pageOptionsDto } = dto
 
     const {
       after,
@@ -337,23 +335,23 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       from: fromDate,
       to,
       searchField,
-    } = pageOptionsDto;
+    } = pageOptionsDto
 
     qb.where({
       isDeleted: withDeleted,
-    });
+    })
 
     if (search != null && searchField != null) {
       qb.andWhere({
         [searchField]: {
           $ilike: formatSearch(search),
         },
-      });
+      })
     }
 
     if (relations != null) {
       for (const relation of relations)
-        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
+        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`)
     }
 
     if (fromDate) {
@@ -361,7 +359,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         createdAt: {
           $gte: fromDate,
         },
-      });
+      })
     }
 
     if (to) {
@@ -369,32 +367,32 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         createdAt: {
           $lte: to,
         },
-      });
+      })
     }
 
-    let previousCount = 0;
-    const stringCursor = String(cursor); // because of runtime issues
-    const aliasCursor = `${alias}.${stringCursor}`;
-    const selectedFields = [...new Set([...fields, "id"])];
+    let previousCount = 0
+    const stringCursor = String(cursor) // because of runtime issues
+    const aliasCursor = `${alias}.${stringCursor}`
+    const selectedFields = [...new Set([...fields, "id"])]
 
     if (after != null) {
-      const decoded = this.decodeCursor(after, cursorType);
-      const oppositeOd = getOppositeOrder(order);
-      const temporaryQb = qb.clone();
+      const decoded = this.decodeCursor(after, cursorType)
+      const oppositeOd = getOppositeOrder(order)
+      const temporaryQb = qb.clone()
 
-      temporaryQb.andWhere(this.getFilters(cursor, decoded, oppositeOd));
-      previousCount = await temporaryQb.count(aliasCursor, true);
+      temporaryQb.andWhere(this.getFilters(cursor, decoded, oppositeOd))
+      previousCount = await temporaryQb.count(aliasCursor, true)
 
-      const normalOd = getQueryOrder(order);
+      const normalOd = getQueryOrder(order)
 
-      qb.andWhere(this.getFilters(cursor, decoded, normalOd));
+      qb.andWhere(this.getFilters(cursor, decoded, normalOd))
     }
 
     const [entities, count]: [T[], number] = await qb
       .select(selectedFields)
       .orderBy(this.getOrderBy(cursor, order))
       .limit(first)
-      .getResultAndCount();
+      .getResultAndCount()
 
     return this.paginateCursor({
       instances: entities,
@@ -403,7 +401,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       cursor,
       first,
       search,
-    });
+    })
   }
 
   /**
@@ -413,7 +411,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @returns The function `paginateCursor` returns an object of type `CursorPaginationResponse<T>`.
    */
   private paginateCursor<T>(dto: PaginateOptions<T>): CursorPaginationResponse<T> {
-    const { instances, currentCount, previousCount, cursor, first, search } = dto;
+    const { instances, currentCount, previousCount, cursor, first, search } = dto
     const pages: CursorPaginationResponse<T> = {
       data: instances,
       meta: {
@@ -422,18 +420,18 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         hasNextPage: false,
         search: search ?? "",
       },
-    };
-    const length = instances.length;
+    }
+    const length = instances.length
 
     if (length > 0) {
-      const last = instances[length - 1]![cursor] as string | number | Date;
+      const last = instances[length - 1]![cursor] as string | number | Date
 
-      pages.meta.nextCursor = this.encodeCursor(last);
-      pages.meta.hasNextPage = currentCount > first;
-      pages.meta.hasPreviousPage = previousCount > 0;
+      pages.meta.nextCursor = this.encodeCursor(last)
+      pages.meta.hasNextPage = currentCount > first
+      pages.meta.hasPreviousPage = previousCount > 0
     }
 
-    return pages;
+    return pages
   }
 
   /**
@@ -456,26 +454,26 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     after?: string,
     afterCursor: CursorType = CursorType.STRING,
   ): Promise<CursorPaginationResponse<T>> {
-    let previousCount = 0;
+    let previousCount = 0
 
     if (after != null) {
-      const decoded = this.decodeCursor(after, afterCursor);
-      const queryOrder = getQueryOrder(order);
-      const oppositeOrder = getOppositeOrder(order);
-      const countWhere = where;
+      const decoded = this.decodeCursor(after, afterCursor)
+      const queryOrder = getQueryOrder(order)
+      const oppositeOrder = getOppositeOrder(order)
+      const countWhere = where
 
       // @ts-expect-error "and is a valid key for FilterQuery"
-      countWhere["$and"] = this.getFilters("createdAt", decoded, oppositeOrder);
-      previousCount = await repo.count(countWhere);
+      countWhere.$and = this.getFilters("createdAt", decoded, oppositeOrder)
+      previousCount = await repo.count(countWhere)
 
       // @ts-expect-error "and is a valid key for FilterQuery"
-      where["$and"] = this.getFilters("createdAt", decoded, queryOrder);
+      where.$and = this.getFilters("createdAt", decoded, queryOrder)
     }
 
     const [entities, count] = await repo.findAndCount(where, {
       orderBy: this.getOrderBy(cursor, order),
       limit: first,
-    });
+    })
 
     return this.paginateCursor({
       instances: entities,
@@ -483,6 +481,6 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       previousCount,
       cursor,
       first,
-    });
+    })
   }
 }

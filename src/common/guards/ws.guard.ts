@@ -1,13 +1,13 @@
-import { InjectRepository } from "@mikro-orm/nestjs";
-import type { CanActivate, ExecutionContext } from "@nestjs/common";
-import { Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { WsException } from "@nestjs/websockets";
-import { User } from "@entities";
-import { BaseRepository } from "@common/database";
-import type { JwtPayload } from "@common/@types";
-import type { Socket } from "socket.io";
-import { translate } from "@lib/i18n";
+import type { JwtPayload } from "@common/@types"
+import type { BaseRepository } from "@common/database"
+import type { CanActivate, ExecutionContext } from "@nestjs/common"
+import type { JwtService } from "@nestjs/jwt"
+import type { Socket } from "socket.io"
+import { User } from "@entities"
+import { translate } from "@lib/i18n"
+import { InjectRepository } from "@mikro-orm/nestjs"
+import { Injectable } from "@nestjs/common"
+import { WsException } from "@nestjs/websockets"
 
 @Injectable()
 export class WsJwtGuard implements CanActivate {
@@ -18,18 +18,18 @@ export class WsJwtGuard implements CanActivate {
   ) { }
 
   async canActivate(context: ExecutionContext) {
-    const client = context.switchToWs().getClient<Socket>()?.handshake;
+    const client = context.switchToWs().getClient<Socket>()?.handshake
 
     if (client.headers.authorization == null)
-      throw new WsException(translate("exception.apiUnauthorizedResponse"));
-    const token = client.headers.authorization;
+      throw new WsException(translate("exception.apiUnauthorizedResponse"))
+    const token = client.headers.authorization
 
-    const payload: JwtPayload = await this.jwtService.verify(token);
-    const user = await this.userRepository.findOne({ id: payload.sub });
+    const payload: JwtPayload = await this.jwtService.verify(token)
+    const user = await this.userRepository.findOne({ id: payload.sub })
 
     if (!user)
-      throw new WsException(translate("exception.apiUnauthorizedResponse"));
+      throw new WsException(translate("exception.apiUnauthorizedResponse"))
 
-    return true;
+    return true
   }
 }

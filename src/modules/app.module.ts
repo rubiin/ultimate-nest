@@ -1,13 +1,13 @@
-import { SWAGGER_API_ENDPOINT } from "@common/constant";
-import { ClearCacheMiddleware, RealIpMiddleware } from "@common/middlewares";
-import { applyRawBodyOnlyTo } from "@golevelup/nestjs-webhooks";
-import { SharedModule } from "@modules/shared/shared.module";
-import type { MiddlewareConsumer, NestModule } from "@nestjs/common";
-import { Module, RequestMethod } from "@nestjs/common";
-import { AppController } from "@modules/app.controller";
+import type { MiddlewareConsumer, NestModule } from "@nestjs/common"
+import { SWAGGER_API_ENDPOINT } from "@common/constant"
+import { ClearCacheMiddleware, RealIpMiddleware } from "@common/middlewares"
+import { applyRawBodyOnlyTo } from "@golevelup/nestjs-webhooks"
+import { AppController } from "@modules/app.controller"
+import { SharedModule } from "@modules/shared/shared.module"
+import { Module, RequestMethod } from "@nestjs/common"
 
-const stripeWebhookPath = "stripe/webhook";
-const excludedPaths = [stripeWebhookPath, SWAGGER_API_ENDPOINT];
+const stripeWebhookPath = "stripe/webhook"
+const excludedPaths = [stripeWebhookPath, SWAGGER_API_ENDPOINT]
 
 @Module({
   imports: [SharedModule],
@@ -18,7 +18,7 @@ export class AppModule implements NestModule {
     applyRawBodyOnlyTo(consumer, {
       path: stripeWebhookPath,
       method: RequestMethod.ALL,
-    });
+    })
     consumer
       .apply(RealIpMiddleware, ClearCacheMiddleware)
       .exclude(
@@ -30,6 +30,6 @@ export class AppModule implements NestModule {
       .forRoutes({
         path: "*",
         method: RequestMethod.ALL,
-      });
+      })
   }
 }

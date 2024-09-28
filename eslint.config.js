@@ -2,7 +2,7 @@ const rubiin = require("@antfu/eslint-config").default;
 
 module.exports = rubiin({
   stylistic: {
-    semi: true,
+    semi: false,
     quotes: "double",
   }, // enable stylistic rules
   yaml: true, // enable yaml rules,
@@ -33,8 +33,6 @@ module.exports = rubiin({
         "ignoreIIFE": true
       }],
       "unicorn/prefer-top-level-await": "off",
-      "ts/no-unsafe-assignment": "off",
-      "ts/no-unsafe-call": "off",
       "unicorn/prevent-abbreviations": [
         "error",
         {
@@ -52,4 +50,9 @@ module.exports = rubiin({
       ],
     },
   },
+   // `.eslintignore` is no longer supported in Flat config, use `ignores` instead
+  ignores: [
+    '**/typings',
+    "i18n-generated.ts",
+  ]
 });

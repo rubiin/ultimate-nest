@@ -1,10 +1,10 @@
-import { createMock } from "@golevelup/ts-jest";
-import type { ExecutionContext } from "@nestjs/common";
-import { mockReflector } from "@mocks";
-import { JwtAuthGuard } from "./jwt.guard";
+import type { ExecutionContext } from "@nestjs/common"
+import { createMock } from "@golevelup/ts-jest"
+import { mockReflector } from "@mocks"
+import { JwtAuthGuard } from "./jwt.guard"
 
 describe("jwtAuthGuard", () => {
-  let authenticatedGuard: JwtAuthGuard;
+  let authenticatedGuard: JwtAuthGuard
 
   const mockContext = createMock<ExecutionContext>({
     switchToHttp: () => ({
@@ -14,22 +14,22 @@ describe("jwtAuthGuard", () => {
         },
       }),
     }),
-  });
+  })
 
   beforeEach(() => {
-    authenticatedGuard = new JwtAuthGuard(mockReflector);
-  });
+    authenticatedGuard = new JwtAuthGuard(mockReflector)
+  })
 
   it("should be defined", () => {
-    expect(authenticatedGuard).toBeDefined();
-  });
+    expect(authenticatedGuard).toBeDefined()
+  })
 
   describe("canActivate", () => {
     it("should return true for public", () => {
       mockReflector.get.mockImplementationOnce(() => {
-        return true;
-      });
-      expect(authenticatedGuard.canActivate(mockContext)).toBe(true);
-    });
-  });
-});
+        return true
+      })
+      expect(authenticatedGuard.canActivate(mockContext)).toBe(true)
+    })
+  })
+})

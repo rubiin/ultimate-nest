@@ -18,6 +18,7 @@ providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
+    watch: true
 certificatesResolvers:
   certresolver:
     acme:

@@ -2,16 +2,16 @@ import type {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from "class-validator";
+} from "class-validator"
+import { PASSWORD_REGEX } from "@common/constant"
+import { validationI18nMessage } from "@lib/i18n"
+import { applyDecorators } from "@nestjs/common"
 import {
   IsNotEmpty,
-  ValidatorConstraint,
   registerDecorator,
-} from "class-validator";
-import { applyDecorators } from "@nestjs/common";
-import { PASSWORD_REGEX } from "@common/constant";
-import { validationI18nMessage } from "@lib/i18n";
-import { MinMaxLength } from "./min-max-length.decorator";
+  ValidatorConstraint,
+} from "class-validator"
+import { MinMaxLength } from "./min-max-length.decorator"
 
 /**
  *
@@ -26,13 +26,13 @@ import { MinMaxLength } from "./min-max-length.decorator";
 @ValidatorConstraint({ async: true })
 class IsPasswordConstraint implements ValidatorConstraintInterface {
   async validate(value: string, _arguments: ValidationArguments) {
-    return PASSWORD_REGEX.test(value);
+    return PASSWORD_REGEX.test(value)
   }
 
   defaultMessage(arguments_: ValidationArguments) {
-    const property = arguments_.property;
+    const property = arguments_.property
 
-    return `${property} should contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character`;
+    return `${property} should contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character`
   }
 }
 
@@ -44,11 +44,11 @@ export function IsPassword(validationOptions?: ValidationOptions): PropertyDecor
       options: validationOptions,
       constraints: [],
       validator: IsPasswordConstraint,
-    });
-  };
+    })
+  }
 }
 
-export function IsPasswordField(validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number }) {
+export function IsPasswordField(validationOptions?: ValidationOptions & { minLength?: number, maxLength?: number }) {
   return applyDecorators(
     IsNotEmpty({
       message: validationI18nMessage("validation.isNotEmpty"),
@@ -58,5 +58,5 @@ export function IsPasswordField(validationOptions?: ValidationOptions & { minLen
       maxLength: validationOptions?.maxLength ?? 40,
     }),
     IsPassword(validationOptions),
-  );
+  )
 }

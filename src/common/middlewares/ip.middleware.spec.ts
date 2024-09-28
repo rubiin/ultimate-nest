@@ -1,28 +1,28 @@
-import * as realIp from "@supercharge/request-ip";
-import { mockRequest, mockResponse } from "@mocks";
-import { RealIpMiddleware } from "./ip.middleware";
+import { mockRequest, mockResponse } from "@mocks"
+import * as realIp from "@supercharge/request-ip"
+import { RealIpMiddleware } from "./ip.middleware"
 
 describe("realIpMiddleware", () => {
-  let middleware: RealIpMiddleware;
+  let middleware: RealIpMiddleware
 
   beforeEach(() => {
-    middleware = new RealIpMiddleware();
-  });
+    middleware = new RealIpMiddleware()
+  })
   it("should be defined", () => {
-    expect(middleware).toBeDefined();
-  });
+    expect(middleware).toBeDefined()
+  })
 
   describe("use", () => {
     it("should return real ip", () => {
-      jest.spyOn(realIp, "getClientIp").mockReturnValue("192.168.1.1");
+      jest.spyOn(realIp, "getClientIp").mockReturnValue("192.168.1.1")
 
-      const mockNext = jest.fn();
+      const mockNext = jest.fn()
 
-      middleware.use(mockRequest, mockResponse, mockNext);
+      middleware.use(mockRequest, mockResponse, mockNext)
 
-      expect(realIp.getClientIp).toHaveBeenCalled();
-      expect(mockRequest.realIp).toBe("192.168.1.1");
-      expect(mockNext).toHaveBeenCalled();
-    });
-  });
-});
+      expect(realIp.getClientIp).toHaveBeenCalled()
+      expect(mockRequest.realIp).toBe("192.168.1.1")
+      expect(mockNext).toHaveBeenCalled()
+    })
+  })
+})

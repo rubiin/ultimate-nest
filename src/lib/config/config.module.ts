@@ -1,8 +1,8 @@
-import process from "node:process";
-import { HelperService } from "@common/helpers";
-import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import Joi from "joi";
+import process from "node:process"
+import { HelperService } from "@common/helpers"
+import { Module } from "@nestjs/common"
+import { ConfigModule, ConfigService } from "@nestjs/config"
+import Joi from "joi"
 import {
   app,
   appConfigValidationSchema,
@@ -24,7 +24,7 @@ import {
   redisConfigValidationSchema,
   throttle,
   throttleConfigValidationSchema,
-} from "./configs";
+} from "./configs"
 
 @Module({
   imports: [

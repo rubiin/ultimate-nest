@@ -1,9 +1,9 @@
-import { GenericController } from "@common/decorators";
-import { OffsetPaginationDto } from "@common/dtos";
-import type { Category } from "@entities";
-import { ControllerFactory } from "@lib/crud/crud.controller";
-import { CreateCategoryDto, EditCategoryDto } from "./dto";
-import { CategoryService } from "./category.service";
+import type { Category } from "@entities"
+import type { CategoryService } from "./category.service"
+import { GenericController } from "@common/decorators"
+import { OffsetPaginationDto } from "@common/dtos"
+import { ControllerFactory } from "@lib/crud/crud.controller"
+import { CreateCategoryDto, EditCategoryDto } from "./dto"
 
 @GenericController("categories", false)
 export class CategoryController extends ControllerFactory<
@@ -13,6 +13,6 @@ export class CategoryController extends ControllerFactory<
   EditCategoryDto
 >(OffsetPaginationDto, CreateCategoryDto, EditCategoryDto) {
   constructor(protected service: CategoryService) {
-    super();
+    super()
   }
 }

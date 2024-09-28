@@ -1,6 +1,4 @@
-import { Type } from "class-transformer";
-import { IsNotEmpty, IsUrl, ValidateNested } from "class-validator";
-import { Roles } from "@common/@types";
+import { Roles } from "@common/@types"
 import {
   IsEmailField,
   IsEnumField,
@@ -8,9 +6,11 @@ import {
   IsStringField,
   IsUnique,
   IsUsernameField,
-} from "@common/decorators";
-import { User } from "@entities";
-import { validationI18nMessage } from "@lib/i18n";
+} from "@common/decorators"
+import { User } from "@entities"
+import { validationI18nMessage } from "@lib/i18n"
+import { Type } from "class-transformer"
+import { IsNotEmpty, IsUrl, ValidateNested } from "class-validator"
 
 export class SocialDto {
   /**
@@ -19,7 +19,7 @@ export class SocialDto {
    */
   @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsUrl()
-  twitter?: string;
+  twitter?: string
 
   /**
    * Facebook url of user
@@ -27,7 +27,7 @@ export class SocialDto {
    */
   @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsUrl()
-  facebook?: string;
+  facebook?: string
 
   /**
    * Linkedin url of user
@@ -35,7 +35,7 @@ export class SocialDto {
    */
   @IsNotEmpty({ message: validationI18nMessage("validation.isNotEmpty") })
   @IsUrl()
-  linkedin?: string;
+  linkedin?: string
 }
 
 export class CreateUserDto {
@@ -46,7 +46,7 @@ export class CreateUserDto {
 
   @IsUsernameField()
   @IsUnique(() => User, "username")
-  username!: string;
+  username!: string
 
   /**
    * Firstname of user
@@ -54,7 +54,7 @@ export class CreateUserDto {
    */
 
   @IsStringField({ maxLength: 50 })
-  firstName!: string;
+  firstName!: string
 
   /**
    * Middlename of user
@@ -62,7 +62,7 @@ export class CreateUserDto {
    */
 
   @IsStringField({ required: false, maxLength: 50 })
-  middleName?: string;
+  middleName?: string
 
   /**
    * Lastname of user
@@ -70,7 +70,7 @@ export class CreateUserDto {
    */
 
   @IsStringField({ maxLength: 50 })
-  lastName!: string;
+  lastName!: string
 
   /**
    * Email of user
@@ -78,7 +78,7 @@ export class CreateUserDto {
    */
   @IsUnique(() => User, "email")
   @IsEmailField()
-  email!: string;
+  email!: string
 
   /**
    * Bio of user
@@ -86,7 +86,7 @@ export class CreateUserDto {
    */
 
   @IsStringField({ maxLength: 1000 })
-  bio!: string;
+  bio!: string
 
   /**
    * Password of user
@@ -94,14 +94,14 @@ export class CreateUserDto {
    */
 
   @IsPasswordField({ message: validationI18nMessage("validation.isPassword") })
-  password!: string;
+  password!: string
 
   /**
    * Roles of user
    * @example ["ADMIN"]
    */
   @IsEnumField(Roles, { each: true })
-  roles!: Roles[];
+  roles!: Roles[]
 
   /**
    * Social handles of user
@@ -109,5 +109,5 @@ export class CreateUserDto {
    */
   @ValidateNested()
   @Type(() => SocialDto)
-  social?: SocialDto;
+  social?: SocialDto
 }

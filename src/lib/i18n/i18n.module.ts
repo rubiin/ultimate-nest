@@ -1,10 +1,10 @@
-import path from "node:path";
+import path from "node:path"
 
-import process from "node:process";
-import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n";
-import { HelperService } from "@common/helpers";
+import process from "node:process"
+import { HelperService } from "@common/helpers"
+import { Module } from "@nestjs/common"
+import { ConfigModule, ConfigService } from "@nestjs/config"
+import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n"
 
 @Module({
   imports: [

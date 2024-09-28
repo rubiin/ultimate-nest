@@ -1,7 +1,7 @@
-import { Get } from "@nestjs/common";
-import { GenericController, LoggedInUser } from "@common/decorators";
-import { User } from "@entities";
-import { ChatService } from "./chat.service";
+import type { User } from "@entities"
+import type { ChatService } from "./chat.service"
+import { GenericController, LoggedInUser } from "@common/decorators"
+import { Get } from "@nestjs/common"
 
 @GenericController("chat")
 export class ChatController {
@@ -9,6 +9,6 @@ export class ChatController {
 
   @Get()
   async getConversationForUser(@LoggedInUser() user: User) {
-    return this.chatService.getConversationForUser(user);
+    return this.chatService.getConversationForUser(user)
   }
 }

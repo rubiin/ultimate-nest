@@ -1,6 +1,6 @@
-import process from "node:process";
-import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import process from "node:process"
+import { registerAs } from "@nestjs/config"
+import Joi from "joi"
 
 export const redisConfigValidationSchema = {
   REDIS_TTL: Joi.number().integer().min(1).required(),
@@ -9,7 +9,7 @@ export const redisConfigValidationSchema = {
   REDIS_USERNAME: Joi.string().required(),
   REDIS_PASSWORD: Joi.string().required(),
 
-};
+}
 
 export const redis = registerAs("redis", () => ({
   host: process.env.REDIS_HOST,
@@ -17,4 +17,4 @@ export const redis = registerAs("redis", () => ({
   password: process.env.REDIS_PASSWORD,
   port: +process.env.REDIS_PORT,
   ttl: +process.env.REDIS_TTL,
-}));
+}))

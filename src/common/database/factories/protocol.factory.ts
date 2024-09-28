@@ -1,9 +1,9 @@
-import { Factory } from "@mikro-orm/seeder";
-import { Protocol } from "@entities";
+import { Protocol } from "@entities"
+import { Factory } from "@mikro-orm/seeder"
 
 /* `ProtocolFactory` is a factory that creates `Protocol` instances */
 export class ProtocolFactory extends Factory<Protocol> {
-  model = Protocol;
+  model = Protocol
 
   definition(): Partial<Protocol> {
     return {
@@ -11,6 +11,6 @@ export class ProtocolFactory extends Factory<Protocol> {
       loginnumberervalUnit: "m",
       loginMaxRetry: 10,
       otpExpiryInMinutes: 5,
-    };
+    }
   }
 }
