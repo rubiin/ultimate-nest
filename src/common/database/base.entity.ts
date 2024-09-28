@@ -10,7 +10,7 @@ import { ApiHideProperty } from "@nestjs/swagger"
 @Entity({ abstract: true })
 export abstract class BaseEntity {
   @ApiHideProperty()
-  @PrimaryKey({ hidden: true, index: true })
+  @PrimaryKey({ hidden: true })
   id!: number
 
   /**
@@ -28,7 +28,7 @@ export abstract class BaseEntity {
   /**
    *  Marked true when entity is soft deleted
    */
-  @Property({ hidden: true })
+  @Property({ hidden: true, index: true })
   isDeleted? = false
 
   /**

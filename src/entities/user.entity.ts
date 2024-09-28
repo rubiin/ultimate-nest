@@ -14,7 +14,6 @@ import {
   Embedded,
   Entity,
   Enum,
-  Index,
   ManyToMany,
   OneToMany,
   Property,
@@ -65,8 +64,7 @@ export class User extends BaseEntity {
   @Property()
   isTwoFactorEnabled? = false
 
-  @Index()
-  @Enum({ items: () => Roles, array: true })
+  @Enum({ items: () => Roles, array: true, index: true })
   roles?: Roles[] = [Roles.AUTHOR]
 
   @Property({ index: true, unique: true })

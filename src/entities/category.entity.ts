@@ -12,7 +12,7 @@ export class Category extends BaseEntity {
   @Property({ index: true })
   name!: string
 
-  @Property()
+  @Property({ columnType: "text" })
   description!: string
 
   @ManyToMany(() => Post, post => post.categories)

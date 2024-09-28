@@ -13,7 +13,7 @@ export class RefreshToken extends BaseEntity {
   })
   user!: Rel<Ref<User>>
 
-  @Property()
+  @Property({ index: true })
   isRevoked: boolean & Opt = false
 
   constructor(partial?: Partial<RefreshToken>) {
