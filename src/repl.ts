@@ -1,33 +1,33 @@
-import { existsSync, mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync } from "node:fs"
+import { join } from "node:path"
 
-import { Logger } from "@nestjs/common";
-import { repl } from "@nestjs/core";
-import { AppModule } from "./modules/app.module";
+import { Logger } from "@nestjs/common"
+import { repl } from "@nestjs/core"
+import { AppModule } from "./modules/app.module"
 
-const logger = new Logger("Repl");
+const logger = new Logger("Repl")
 
 /**
  *  Bootstrap the application
  */
 async function bootstrap() {
-  const replServer = await repl(AppModule);
+  const replServer = await repl(AppModule)
 
   // sets up history file for repl
-  const cacheDirectory = join("node_modules", ".cache");
+  const cacheDirectory = join("node_modules", ".cache")
 
   if (!existsSync(cacheDirectory))
-    mkdirSync(cacheDirectory);
+    mkdirSync(cacheDirectory)
 
   replServer.setupHistory(join(cacheDirectory, ".nestjs_repl_history"), (error) => {
     if (error)
-      logger.error(error);
-  });
+      logger.error(error)
+  })
 }
 
 try {
-  (async () => bootstrap())();
+  (async () => bootstrap())()
 }
 catch (error) {
-  logger.error(error);
+  logger.error(error)
 }

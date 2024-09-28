@@ -1,5 +1,5 @@
-import { CustomThrottlerGuard } from "@common/guards";
-import { ClearCacheInterceptor, HttpCacheInterceptor } from "@common/interceptors";
+import { CustomThrottlerGuard } from "@common/guards"
+import { ClearCacheInterceptor, HttpCacheInterceptor } from "@common/interceptors"
 import {
   NestCacheModule,
   NestCaslModule,
@@ -10,11 +10,14 @@ import {
   NestJwtModule,
   NestMailModule,
   NestPinoModule,
-  NestThrottlerModule
-} from "@lib/index";
-import { Module } from "@nestjs/common";
-import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
-import { ScheduleModule } from "@nestjs/schedule";
+  NestRabbitModule,
+  NestThrottlerModule,
+  OrmModule,
+} from "@lib/index"
+import { UserModule } from "@modules/user/user.module"
+import { Module } from "@nestjs/common"
+import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core"
+import { ScheduleModule } from "@nestjs/schedule"
 
 @Module({
   imports: [
@@ -26,8 +29,11 @@ import { ScheduleModule } from "@nestjs/schedule";
     NestCacheModule,
     NestCaslModule,
     NestThrottlerModule,
+    NestRabbitModule,
     NestHttpModule,
     NestJwtModule,
+    OrmModule,
+    UserModule,
     ScheduleModule.forRoot(),
   ],
   providers: [

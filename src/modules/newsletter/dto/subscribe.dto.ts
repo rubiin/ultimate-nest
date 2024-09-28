@@ -1,4 +1,4 @@
-import { IsEmailField } from "@common/decorators";
+import { IsEmailField } from "@common/decorators"
 
 export class SubscribeNewsletterDto {
   /**
@@ -7,5 +7,5 @@ export class SubscribeNewsletterDto {
    */
 
   @IsEmailField()
-  email!: string;
+  email!: string
 }

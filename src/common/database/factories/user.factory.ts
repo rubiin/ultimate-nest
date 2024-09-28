@@ -1,13 +1,13 @@
-import process from "node:process";
-import { Factory } from "@mikro-orm/seeder";
-import { Roles } from "@common/@types";
-import { User } from "@entities";
-import { randCatchPhrase, randEmail, randFirstName, randFutureDate, randLastName, randUrl, randUserName } from "@ngneat/falso";
-import { randomAvatar } from "helper-fns";
+import process from "node:process"
+import { Roles } from "@common/@types"
+import { User } from "@entities"
+import { Factory } from "@mikro-orm/seeder"
+import { randCatchPhrase, randEmail, randFirstName, randFutureDate, randLastName, randUrl, randUserName } from "@ngneat/falso"
+import { randomAvatar } from "helper-fns"
 
 /* `UserFactory` is a factory that creates `User` instances */
 export class UserFactory extends Factory<User> {
-  model = User;
+  model = User
 
   definition(): Partial<User> {
     return {
@@ -26,6 +26,6 @@ export class UserFactory extends Factory<User> {
         facebook: randUrl(),
         linkedin: randUrl(),
       },
-    };
+    }
   }
 }

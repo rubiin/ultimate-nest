@@ -1,6 +1,6 @@
-import { Action } from "@common/@types";
-import type { AppAbility } from "./casl-ability.factory";
-import type { PoliciesHandler } from "./policy.interface";
+import type { AppAbility } from "./casl-ability.factory"
+import type { PoliciesHandler } from "./policy.interface"
+import { Action } from "@common/@types"
 
 export class GenericPolicyHandler implements PoliciesHandler {
   constructor(
@@ -15,12 +15,10 @@ export class GenericPolicyHandler implements PoliciesHandler {
 
     if ([Action.Create, Action.Read, Action.Delete].includes(this.action))
 
-      // eslint-disable-next-line ts/no-unsafe-argument
-      return ability.can(this.action, this.ClassType);
+      return ability.can(this.action, this.ClassType)
 
-    const id = request.params.id;
+    const id = request.params.id
 
-    // eslint-disable-next-line ts/no-unsafe-argument, ts/no-unsafe-call
-    return ability.can(Action.Update, new this.ClassType({ id }));
+    return ability.can(Action.Update, new this.ClassType({ id }))
   }
 }

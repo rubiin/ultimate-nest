@@ -1,8 +1,8 @@
-import { applyDecorators } from "@nestjs/common";
-import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
-import { enumToString } from "helper-fns";
-import { i18nValidationMessage } from "nestjs-i18n";
-import type { EnumFieldOptions } from "@common/@types";
+import type { EnumFieldOptions } from "@common/@types"
+import { applyDecorators } from "@nestjs/common"
+import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsOptional } from "class-validator"
+import { enumToString } from "helper-fns"
+import { i18nValidationMessage } from "nestjs-i18n"
 
 /**
  * It's a decorator that validates that the field is an enum value
@@ -17,13 +17,13 @@ export function IsEnumField(entity: Record<string, string>, options_?: EnumField
     arrayMinSize: 0,
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
     ...options_,
-  };
+  }
   const decoratorsToApply = [
     IsEnum(entity, {
       each: options.each,
       message: `must be a valid enum value,${enumToString(entity)}`,
     }),
-  ];
+  ]
 
   if (options.required) {
     decoratorsToApply.push(
@@ -31,18 +31,18 @@ export function IsEnumField(entity: Record<string, string>, options_?: EnumField
         message: i18nValidationMessage("validation.isNotEmpty"),
         each: options.each,
       }),
-    );
+    )
 
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
           message: i18nValidationMessage("validation.isNotEmpty"),
         }),
-      );
+      )
     }
   }
   else {
-    decoratorsToApply.push(IsOptional());
+    decoratorsToApply.push(IsOptional())
   }
 
   if (options.each) {
@@ -52,8 +52,8 @@ export function IsEnumField(entity: Record<string, string>, options_?: EnumField
           type: "array",
         }),
       }),
-    );
+    )
   }
 
-  return applyDecorators(...decoratorsToApply);
+  return applyDecorators(...decoratorsToApply)
 }

@@ -12,10 +12,10 @@ function CaseInsensitiveFilterPlugin() {
       ) => {
         return taggedOps.filter((_tagObject: unknown, tag: string): boolean =>
           tag.toLowerCase().includes(phrase.toLowerCase()),
-        ) as unknown as { filter: (argument: (_tagObject: unknown, tag: string) => boolean) => any };
+        ) as unknown as { filter: (argument: (_tagObject: unknown, tag: string) => boolean) => any }
       },
     },
-  };
+  }
 }
 
 /* The `swaggerOptions` object is being exported as a constant. It contains various configuration
@@ -32,12 +32,12 @@ export const swaggerOptions = {
     a: { get: (argument: string) => string },
     b: { get: (argument: string) => string },
   ) => {
-    const methodsOrder = ["get", "post", "put", "patch", "delete", "options", "trace"];
-    let result = methodsOrder.indexOf(a.get("method")) - methodsOrder.indexOf(b.get("method"));
+    const methodsOrder = ["get", "post", "put", "patch", "delete", "options", "trace"]
+    let result = methodsOrder.indexOf(a.get("method")) - methodsOrder.indexOf(b.get("method"))
 
     if (result === 0)
-      result = a.get("path").localeCompare(b.get("path"));
+      result = a.get("path").localeCompare(b.get("path"))
 
-    return result;
+    return result
   },
-};
+}
