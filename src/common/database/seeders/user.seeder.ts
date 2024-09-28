@@ -1,8 +1,8 @@
-import type { EntityManager } from "@mikro-orm/postgresql";
-import { Seeder } from "@mikro-orm/seeder";
-import { randomNumber } from "helper-fns";
-import { randAddress, randAmericanFootballTeam, randCatchPhrase } from "@ngneat/falso";
-import { PostFactory, UserFactory } from "../factories";
+import type { EntityManager } from "@mikro-orm/postgresql"
+import { Seeder } from "@mikro-orm/seeder"
+import { randAddress, randAmericanFootballTeam, randCatchPhrase } from "@ngneat/falso"
+import { randomNumber } from "helper-fns"
+import { PostFactory, UserFactory } from "../factories"
 
 /**
  * Runs the UserSeeder, creating new users with associated posts, comments, and tags.
@@ -34,10 +34,10 @@ export class UserSeeder extends Seeder {
               description: randCatchPhrase(),
             },
           ],
-        });
+        })
 
-        user.posts.set(posts);
+        user.posts.set(posts)
       })
-      .make(50);
+      .make(50)
   }
 }

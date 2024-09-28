@@ -1,7 +1,7 @@
-import type { FileValidator } from "@common/@types";
-import { FileSize, FileType } from "@common/@types";
-import { CustomUploadFileTypeValidator } from "@common/decorators";
-import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
+import type { FileValidator } from "@common/@types"
+import { FileSize, FileType } from "@common/@types"
+import { CustomUploadFileTypeValidator } from "@common/decorators"
+import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common"
 
 /**
  *
@@ -31,5 +31,5 @@ export function fileValidatorPipe({
     .build({
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       fileIsRequired: required,
-    });
+    })
 }

@@ -1,14 +1,15 @@
-import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityManager } from "@mikro-orm/postgresql";
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { authenticator } from "otplib";
-import { toFileStream } from "qrcode";
-import type { Observable } from "rxjs";
-import { from, map, throwError } from "rxjs";
-import { translate } from "@lib/i18n";
-import { User } from "@entities";
-import { BaseRepository } from "@common/database";
+import type { BaseRepository } from "@common/database"
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import type { ConfigService } from "@nestjs/config"
+import type { Observable } from "rxjs"
+import { User } from "@entities"
+import { translate } from "@lib/i18n"
+import { EntityManager } from "@mikro-orm/core"
+import { InjectRepository } from "@mikro-orm/nestjs"
+import { Injectable } from "@nestjs/common"
+import { authenticator } from "otplib"
+import { toFileStream } from "qrcode"
+import { from, map, throwError } from "rxjs"
 
 @Injectable()
 export class TwoFactorService {
@@ -16,7 +17,7 @@ export class TwoFactorService {
         @InjectRepository(User)
         private userRepository: BaseRepository<User>,
         private readonly configService: ConfigService<Configs, true>,
-        private readonly em: EntityManager,
+        private readonly em: EntityManager<PostgreSqlDriver>,
   ) {}
 
   /**
@@ -26,22 +27,22 @@ export class TwoFactorService {
    * @returns An Observable that returns an object with a secret and otpAuthUrl.
    */
 
-  generateTwoFactorSecret(user: User): Observable<{ secret: string; otpAuthUrl: string }> {
-    const secret = authenticator.generateSecret();
+  generateTwoFactorSecret(user: User): Observable<{ secret: string, otpAuthUrl: string }> {
+    const secret = authenticator.generateSecret()
 
     const otpAuthUrl = authenticator.keyuri(
       user.email,
       this.configService.get("app.name", { infer: true }),
       secret,
-    );
+    )
 
-    this.userRepository.assign(user, { twoFactorSecret: secret });
+    this.userRepository.assign(user, { twoFactorSecret: secret })
 
     return from(this.em.flush()).pipe(
       map(() => {
-        return { secret, otpAuthUrl };
+        return { secret, otpAuthUrl }
       }),
-    );
+    )
   }
 
   /**
@@ -52,7 +53,7 @@ export class TwoFactorService {
    * @returns Observable<unknown>
    */
   pipeQrCodeStream(stream: NestifyResponse, otpAuthUrl: string): Observable<unknown> {
-    return from(toFileStream(stream, otpAuthUrl));
+    return from(toFileStream(stream, otpAuthUrl))
   }
 
   /**
@@ -65,7 +66,7 @@ export class TwoFactorService {
     return authenticator.verify({
       token: twoFactorAuthenticationCode,
       secret: user.twoFactorSecret!,
-    });
+    })
   }
 
   /**
@@ -79,18 +80,18 @@ export class TwoFactorService {
     twoFactorAuthenticationCode: string,
     user: User,
   ): Observable<User> {
-    const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user);
+    const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user)
 
     if (!isCodeValid) {
       return throwError(() =>
         translate("exception.refreshToken", {
           args: { error: "malformed" },
         }),
-      );
+      )
     }
 
-    this.userRepository.assign(user, { isTwoFactorEnabled: true });
+    this.userRepository.assign(user, { isTwoFactorEnabled: true })
 
-    return from(this.em.flush()).pipe(map(() => user));
+    return from(this.em.flush()).pipe(map(() => user))
   }
 }

@@ -1,8 +1,8 @@
-import process from "node:process";
-import { registerAs } from "@nestjs/config";
-import Joi from "joi";
-import { JWT_EXPIRY_REGEX } from "@common/constant";
-import { isNumber } from "helper-fns";
+import process from "node:process"
+import { JWT_EXPIRY_REGEX } from "@common/constant"
+import { registerAs } from "@nestjs/config"
+import { isNumber } from "helper-fns"
+import Joi from "joi"
 
 /**
  * NOTE:
@@ -18,8 +18,7 @@ export const jwtConfigValidationSchema = {
   JWT_REFRESH_EXPIRY: Joi.string().regex(JWT_EXPIRY_REGEX).required(),
   JWT_ACCESS_EXPIRY: Joi.string().regex(JWT_EXPIRY_REGEX).required(),
   MAGIC_LINK_EXPIRY: Joi.string().regex(JWT_EXPIRY_REGEX).required(),
-};
-
+}
 
 export const jwt = registerAs("jwt", () => ({
   secret: process.env.JWT_SECRET,
@@ -33,4 +32,4 @@ export const jwt = registerAs("jwt", () => ({
   magicLinkExpiry: isNumber(process.env.MAGIC_LINK_EXPIRY)
     ? +process.env.MAGIC_LINK_EXPIRY
     : process.env.MAGIC_LINK_EXPIRY,
-}));
+}))

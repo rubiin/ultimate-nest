@@ -1,41 +1,42 @@
-import { EntityManager } from "@mikro-orm/postgresql";
-import type { Type } from "@nestjs/common";
+import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import type { Type } from "@nestjs/common"
 import type {
   ValidationArguments as BaseValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from "class-validator";
+} from "class-validator"
+import { EntityManager } from "@mikro-orm/core"
 import {
-  ValidatorConstraint,
   registerDecorator,
-} from "class-validator";
+  ValidatorConstraint,
+} from "class-validator"
 
 export interface ValidationArguments<
   Constraints extends unknown[] = [],
   CustomObject extends object = object,
 > extends BaseValidationArguments {
-  object: CustomObject;
-  constraints: Constraints;
+  object: CustomObject
+  constraints: Constraints
 }
 
-export type IsUniqueValidationContext = ValidationArguments<Parameters<typeof IsUnique>>;
+export type IsUniqueValidationContext = ValidationArguments<Parameters<typeof IsUnique>>
 
 @ValidatorConstraint({ async: true })
 export class IsUniqueConstraint implements ValidatorConstraintInterface {
-  constructor(private em: EntityManager) {}
+  constructor(private em: EntityManager<PostgreSqlDriver>) {}
 
   async validate<Entity, Field extends keyof Entity>(
     value: Entity[Field],
     context: IsUniqueValidationContext,
   ): Promise<boolean> {
-    const [entityType, field] = context.constraints;
-    const result = await this.em.count(entityType(), { [field]: value });
+    const [entityType, field] = context.constraints
+    const result = await this.em.count(entityType(), { [field]: value })
 
-    return result === 0;
+    return result === 0
   }
 
   defaultMessage(context: IsUniqueValidationContext): string {
-    return `${context.property} must be unique`;
+    return `${context.property} must be unique`
   }
 }
 
@@ -46,5 +47,5 @@ export function IsUnique<Entity>(entityType: () => Type<Entity>, field: keyof En
     options,
     propertyName,
     validator: IsUniqueConstraint,
-  });
+  })
 }

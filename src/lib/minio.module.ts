@@ -1,6 +1,6 @@
-import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { NestMinioModule } from "nestjs-minio";
+import { Module } from "@nestjs/common"
+import { ConfigModule, ConfigService } from "@nestjs/config"
+import { NestMinioModule } from "nestjs-minio"
 
 @Module({
   imports: [
@@ -8,7 +8,7 @@ import { NestMinioModule } from "nestjs-minio";
       imports: [ConfigModule],
       inject: [ConfigService],
       isGlobal: true,
-      useFactory: async (configService: ConfigService<Configs, true>) => (configService.getOrThrow("minio",{infer: true})),
+      useFactory: async (configService: ConfigService<Configs, true>) => (configService.getOrThrow("minio", { infer: true })),
     }),
   ],
   exports: [NestMinioModule],

@@ -2,24 +2,24 @@ import type {
   CallHandler,
   ExecutionContext,
   NestInterceptor,
-} from "@nestjs/common";
+} from "@nestjs/common"
+import type { Observable } from "rxjs"
 import {
   HttpException,
   HttpStatus,
   Injectable,
   Logger,
-} from "@nestjs/common";
-import type { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+} from "@nestjs/common"
+import { tap } from "rxjs/operators"
 
 /**
  * Interceptor that logs input/output requests
  */
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  private readonly ctxPrefix: string = LoggingInterceptor.name;
-  private readonly logger: Logger = new Logger(this.ctxPrefix);
-  private userPrefix = "";
+  private readonly ctxPrefix: string = LoggingInterceptor.name
+  private readonly logger: Logger = new Logger(this.ctxPrefix)
+  private userPrefix = ""
 
   /**
    *  Prefix setter
@@ -27,7 +27,7 @@ export class LoggingInterceptor implements NestInterceptor {
    * @param prefix - prefix to be added to the log
    */
   setUserPrefix(prefix: string) {
-    this.userPrefix = `${prefix} - `;
+    this.userPrefix = `${prefix} - `
   }
 
   /**
@@ -37,11 +37,11 @@ export class LoggingInterceptor implements NestInterceptor {
    * @returns Observable of unknown type
    */
   intercept(context: ExecutionContext, call$: CallHandler): Observable<unknown> {
-    const request = context.switchToHttp().getRequest<NestifyRequest>();
-    const { method, url, headers } = request;
-    const body = request.body as Record<string, unknown>;
-    const logContext = `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`;
-    const message = `Request - ${method} - ${url}`;
+    const request = context.switchToHttp().getRequest<NestifyRequest>()
+    const { method, url, headers } = request
+    const body = request.body as Record<string, unknown>
+    const logContext = `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`
+    const message = `Request - ${method} - ${url}`
 
     this.logger.log(
       {
@@ -51,18 +51,18 @@ export class LoggingInterceptor implements NestInterceptor {
         headers,
       },
       logContext,
-    );
+    )
 
     return call$.handle().pipe(
       tap({
         next: (value: unknown) => {
-          this.logNext(value, context);
+          this.logNext(value, context)
         },
         error: (error: Error) => {
-          this.logError(error, context);
+          this.logError(error, context)
         },
       }),
-    );
+    )
   }
 
   /**
@@ -71,12 +71,12 @@ export class LoggingInterceptor implements NestInterceptor {
    * @param context details about the current request
    */
   private logNext(body: unknown, context: ExecutionContext) {
-    const request = context.switchToHttp().getRequest<NestifyRequest>();
-    const response = context.switchToHttp().getResponse<NestifyResponse>();
-    const { method, url } = request;
-    const { statusCode } = response;
-    const logContext = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`;
-    const message = `Response - ${statusCode} - ${method} - ${url}`;
+    const request = context.switchToHttp().getRequest<NestifyRequest>()
+    const response = context.switchToHttp().getResponse<NestifyResponse>()
+    const { method, url } = request
+    const { statusCode } = response
+    const logContext = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`
+    const message = `Response - ${statusCode} - ${method} - ${url}`
 
     this.logger.log(
       {
@@ -84,7 +84,7 @@ export class LoggingInterceptor implements NestInterceptor {
         body,
       },
       logContext,
-    );
+    )
   }
 
   /**
@@ -93,14 +93,14 @@ export class LoggingInterceptor implements NestInterceptor {
    * @param context details about the current request
    */
   private logError(error: Error, context: ExecutionContext) {
-    const request = context.switchToHttp().getRequest<NestifyRequest>();
-    const { method, url } = request;
-    const body = request.body as Record<string, unknown>;
+    const request = context.switchToHttp().getRequest<NestifyRequest>()
+    const { method, url } = request
+    const body = request.body as Record<string, unknown>
 
     if (error instanceof HttpException) {
-      const statusCode: number = error.getStatus();
-      const logContext = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`;
-      const message = `Response - ${statusCode} - ${method} - ${url}`;
+      const statusCode: number = error.getStatus()
+      const logContext = `${this.userPrefix}${this.ctxPrefix} - ${statusCode} - ${method} - ${url}`
+      const message = `Response - ${statusCode} - ${method} - ${url}`
 
       if (statusCode >= HttpStatus.INTERNAL_SERVER_ERROR) {
         this.logger.error(
@@ -113,7 +113,7 @@ export class LoggingInterceptor implements NestInterceptor {
           },
           error.stack,
           logContext,
-        );
+        )
       }
       else {
         this.logger.warn(
@@ -125,7 +125,7 @@ export class LoggingInterceptor implements NestInterceptor {
             message,
           },
           logContext,
-        );
+        )
       }
     }
     else {
@@ -135,7 +135,7 @@ export class LoggingInterceptor implements NestInterceptor {
         },
         error.stack,
         `${this.userPrefix}${this.ctxPrefix} - ${method} - ${url}`,
-      );
+      )
     }
   }
 }

@@ -1,6 +1,6 @@
-import type { TEmailSubject } from "../interfaces";
+import type { TEmailSubject } from "../interfaces"
 
-export const BYTE_TO_MB = 1024 * 1024;
+export const BYTE_TO_MB = 1024 * 1024
 
 export enum EmailTemplate {
   RESET_PASSWORD_TEMPLATE = "reset",
@@ -14,12 +14,12 @@ export const EmailSubject: Record<TEmailSubject, string> = {
   WELCOME: "Welcome to the app",
   MAGIC_LOGIN: "Login to the app",
   NEWSLETTER: "Newsletter",
-};
+}
 
 export const FileSize = {
   IMAGE: 5 * BYTE_TO_MB, // 5MB
   DOC: 10 * BYTE_TO_MB, // 10MB
-};
+}
 
 export enum PostStateEnum {
   DRAFT = "DRAFT",
@@ -40,21 +40,21 @@ export enum TemplateEngine {
 export const FileType: Record<keyof typeof FileSize, string[]> = {
   IMAGE: ["jpg", "jpeg", "png", "svg", "webp", "gif", "svg"],
   DOC: ["pdf", "doc", "txt", "key", "csv", "docx", "xls", "xlsx", "ppt", "pptx"],
-};
+}
 
 export const ThreadFunctions = {
   HASH_STRING: "hashString",
-};
+}
 
 export const RoutingKey = {
   SEND_MAIL: "send-mail",
   SEND_NEWSLETTER: "send-newsletter",
-};
+}
 
 export const Queues = {
   MAIL: "mail",
   HTTP: "http",
-};
+}
 
 // database enums
 

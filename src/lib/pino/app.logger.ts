@@ -1,7 +1,7 @@
-import { Module } from "@nestjs/common";
-import { NestFactory } from "@nestjs/core";
-import { Logger } from "nestjs-pino";
-import { NestPinoModule } from "./pino.module";
+import { Module } from "@nestjs/common"
+import { NestFactory } from "@nestjs/core"
+import { Logger } from "nestjs-pino"
+import { NestPinoModule } from "./pino.module"
 
 /**
  *  Creates a logger instance
@@ -20,9 +20,9 @@ export async function createLogger(): Promise<Logger> {
     // thus we must not crash the app on errors at TempModule
     // initialization, otherwise we won't see any error messages
     abortOnError: false,
-  });
+  })
 
-  await temporaryApp.close();
+  await temporaryApp.close()
 
-  return temporaryApp.get(Logger); // retrieve the created instance
+  return temporaryApp.get(Logger) // retrieve the created instance
 }
