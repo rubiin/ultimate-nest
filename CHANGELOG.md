@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/rubiin/ultimate-nest/compare/v2.8.0...v2.9.0) (2024-09-28)
+
+
+### Features
+
+* add index on foreign keys for better perf ([8019f4a](https://github.com/rubiin/ultimate-nest/commit/8019f4a7e8133ba8f9120da54089e288ed76e513))
+
 ## [2.8.0](https://github.com/rubiin/ultimate-nest/compare/v2.7.1...v2.8.0) (2024-09-23)
 
 
