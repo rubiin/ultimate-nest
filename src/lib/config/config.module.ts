@@ -29,7 +29,7 @@ import {
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: [`${process.cwd()}/env/.env.${process.env.NODE_ENV}`],
+      envFilePath: [`env/.env.${process.env.NODE_ENV}`],
       load: [
         app,
         jwt,

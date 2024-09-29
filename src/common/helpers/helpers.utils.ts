@@ -37,6 +37,7 @@ export const HelperService = {
 the string "dev". It returns `true` if the environment is set to development, and `false` otherwise.
 This function is used to determine if the application is running in a development environment. */
   isDev(): boolean {
+    console.log("env",process.env)
     return process.env.NODE_ENV.startsWith("dev")
   },
 
@@ -44,6 +45,7 @@ This function is used to determine if the application is running in a developmen
 the string "prod". It returns `true` if the environment is set to production, and `false` otherwise.
 This function is used to determine if the application is running in a production environment. */
   isProd(): boolean {
+    console.log("env", process.env)
     return process.env.NODE_ENV.startsWith("prod")
   },
 
