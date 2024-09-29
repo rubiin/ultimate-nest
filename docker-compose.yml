@@ -1,111 +1,12 @@
 
 services:
-    nestify:
-        container_name: nestify
-        env_file: env/.env.${ENV}
-        build:
-            context: .
-            dockerfile: ./docker/dev.Dockerfile
-        image: nestify
-        depends_on:
-            - traefik
-            - redis
-            - rabbitmq
-            - database
-        restart: unless-stopped
-        command: npm run start:dev
-        labels:
-            - traefik.enable=true
-            - traefik.http.routers.nestify.rule=Host(`${API_URL}`)
-            - traefik.http.services.nestify.loadbalancer.server.port=3000
-            - traefik.http.middlewares.test-ratelimit.ratelimit.average=100
-            - traefik.http.middlewares.test-ratelimit.ratelimit.burst=50
-            - traefik.http.middlewares.test-ratelimit.ratelimit.period=1m
-            - traefik.http.middlewares.traefik-headers.headers.framedeny=true
-            - traefik.http.middlewares.traefik-headers.headers.browserxssfilter=true
-            - traefik.http.middlewares.traefik-headers.headers.contentTypeNosniff=true
-            - traefik.http.middlewares.test-compress.compress=true
-            - traefik.http.middlewares.traefik-headers.headers.permissionsPolicy=camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';
-        stdin_open: true
-        tty: true
-        networks:
-            - nestify-network
-        volumes:
-            - .:/usr/src/app
-            - /usr/src/app/node_modules
-
-    traefik:
-        image: traefik:v2.10.1
-        container_name: traefik
-        command:
-            # Enable Docker in Traefik, so that it reads labels from Docker services
-            - --providers.docker=true
-            # Do not expose all Docker services, only the ones explicitly exposed
-            - --providers.docker.exposedbydefault=false
-            # Disable Docker Swarm mode for local development
-            # - --providers.docker.swarmmode
-            # Enable the access log, with HTTP requests
-            - --accesslog
-            # Enable the Traefik log, for configurations and errors
-            - --log
-            # Enable the Dashboard and API
-            - --api
-            # Enable the Dashboard and API in insecure mode for local development
-            - --api.insecure=true
-            # Define HTTP entrypoint on port 80
-            - --entrypoints.web.address=:80
-        labels:
-            - traefik.enable=true
-        networks:
-            - nestify-network
-        ports:
-            - "80:80"
-            - "8080:8080"
-        volumes:
-            - ./letsencrypt:/letsencrypt
-            - /var/run/docker.sock:/var/run/docker.sock:ro
-
-    redis:
-        container_name: redis
-        image: redis:7.0.11-alpine
-        env_file: env/.env.${ENV}
-        restart: always
-        depends_on:
-            - traefik
-        ports:
-            - "6379:6379"
-        networks:
-            - nestify-network
-        command: redis-server --loglevel warning --requirepass ${PASSWORD}
-        volumes:
-            - redis-data:/data
-
-    rabbitmq:
-        container_name: rabbitmq
-        image: rabbitmq:3.12.0-management-alpine
-        env_file: env/.env.${ENV}
-        networks:
-            - nestify-network
-        depends_on:
-            - traefik
-        environment:
-            - RABBITMQ_DEFAULT_USER=nestify
-            - RABBITMQ_DEFAULT_PASS=${PASSWORD}
-        ports:
-            - "5672:5672"
-            - "15672:15672"
-        volumes:
-            - rabbitmq-data:/var/lib/rabbitmq/mnesia/
-
     database:
         container_name: database
-        image: postgres:15.3-alpine
+        image: postgres:15.3-${MAIL_USERNAME}
         restart: unless-stopped
         env_file: env/.env.${ENV}
         volumes:
             - postgres_data:/var/lib/postgresql/data/
-        depends_on:
-            - traefik
         environment:
             - POSTGRES_USER=${DB_USERNAME}
             - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -116,8 +17,6 @@ services:
             - "5432:5432"
 
 volumes:
-    redis-data:
-    rabbitmq-data:
     postgres_data:
 
 networks:
