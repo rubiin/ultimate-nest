@@ -1,4 +1,4 @@
-version: 3.9
+
 services:
     nestify:
         container_name: nestify
@@ -12,16 +12,12 @@ services:
             - redis
             - rabbitmq
             - database
-
         restart: unless-stopped
         command: npm run start:dev
         labels:
             - traefik.enable=true
             - traefik.http.routers.nestify.rule=Host(`${API_URL}`)
             - traefik.http.services.nestify.loadbalancer.server.port=3000
-            - traefik.http.routers.nestify.entrypoints=websecure
-            - traefik.http.routers.nestify.tls=true
-            - traefik.http.routers.nestify.tls.certresolver=myresolver
             - traefik.http.middlewares.test-ratelimit.ratelimit.average=100
             - traefik.http.middlewares.test-ratelimit.ratelimit.burst=50
             - traefik.http.middlewares.test-ratelimit.ratelimit.period=1m
@@ -30,7 +26,6 @@ services:
             - traefik.http.middlewares.traefik-headers.headers.contentTypeNosniff=true
             - traefik.http.middlewares.test-compress.compress=true
             - traefik.http.middlewares.traefik-headers.headers.permissionsPolicy=camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';
-
         stdin_open: true
         tty: true
         networks:
@@ -59,27 +54,11 @@ services:
             - --api.insecure=true
             # Define HTTP entrypoint on port 80
             - --entrypoints.web.address=:80
-            # Define HTTPS entrypoint on port 443
-            - --entrypoints.websecure.address=:443
-            # Enable Let's Encrypt certificate resolver
-            - --certificatesresolvers.myresolver.acme.tlschallenge=true
-            # Email address used for Let's Encrypt registration
-            - --certificatesresolvers.myresolver.acme.email=test@email.com
-            # Path to store Let's Encrypt certificates
-            - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
-            # Redirect HTTP requests to HTTPS
-            - --providers.middlewares.httpsredirect.redirectscheme.scheme=https
-            # Enable basic authentication for Traefik dashboard
-            - --api.dashboard.auth.basic.users=user:$$apr1$$<encrypted-password-here>
-            # Enable Let's Encrypt staging environment for local development , remove this line for production
-            - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-
         labels:
             - traefik.enable=true
         networks:
             - nestify-network
         ports:
-            - "443:443"
             - "80:80"
             - "8080:8080"
         volumes:
@@ -136,39 +115,10 @@ services:
         ports:
             - "5432:5432"
 
-    pgadmin:
-        container_name: pgadmin4_container
-        image: dpage/pgadmin4:7.3
-        env_file: env/.env.${ENV}
-        restart: unless-stopped
-        environment:
-            - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-            - PGADMIN_DEFAULT_PASSWORDsecret
-            - PGADMIN_LISTEN_PORT=80
-        ports:
-            - "8090:8090"
-        volumes:
-            - pgadmin-data:/var/lib/pgadmin
-        depends_on:
-            - traefik
-        networks:
-            - nestify-network
-        labels:
-            - traefik.enable=true
-            # Set routing rule for HTTPS requests
-            - traefik.http.routers.web.rule=Host(`${API_URL}`)
-            # Use HTTPS entrypoint for this service
-            - traefik.http.routers.web.entrypoints=websecure
-            # Enable TLS for this service
-            - traefik.http.routers.web.tls=true
-            # Use the myresolver certificate resolver for this service
-            - traefik.http.routers.web.tls.certresolver=myresolver
-
 volumes:
     redis-data:
     rabbitmq-data:
     postgres_data:
-    pgadmin-data:
 
 networks:
     nestify-network:
