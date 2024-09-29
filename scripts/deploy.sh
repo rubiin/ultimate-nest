@@ -28,3 +28,6 @@ eval "$deploy_command"
 
 # Remove dangling Docker images (if needed)
 docker rmi -f $(docker images -f "dangling=true" -q)
+
+# this syntax only works with docker-compose version 1.27.0 or later
+#docker compose --env-file ./config/.env.dev up
