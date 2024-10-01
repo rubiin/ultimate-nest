@@ -85,7 +85,7 @@ npx degit rubiin/ultimate-nest my-nest-app
 cd ultimate-nest
 
 # 3. Create Environment variables file.
-cp env/.env.example env/.env.dev
+cp env/.env.sample env/.env.dev
 
 # 4. Install dependencies (preferred: pnpm)
  pnpm install
