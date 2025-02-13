@@ -7,8 +7,7 @@ import type { BaseRepository } from "@common/database"
 import type { CursorPaginationDto } from "@common/dtos"
 import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
 import type { MailerService } from "@lib/mailer/mailer.service"
-import type { MikroORM } from "@mikro-orm/core"
-import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import type { MikroORM } from "@mikro-orm/postgresql"
 import type { ConfigService } from "@nestjs/config"
 import type { CloudinaryService, IFile } from "nestjs-cloudinary"
 import type { Observable } from "rxjs"
@@ -47,7 +46,7 @@ export class UserService {
         private readonly amqpConnection: AmqpConnection,
         private readonly cloudinaryService: CloudinaryService,
         private readonly mailService: MailerService,
-        private readonly orm: MikroORM<PostgreSqlDriver>,
+        private readonly orm: MikroORM,
   ) {}
 
   @RabbitSubscribe({

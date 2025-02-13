@@ -2,7 +2,7 @@ import { BaseRepository } from "@common/database"
 import { baseOptions } from "@common/database/orm.config"
 import * as Entities from "@entities"
 import { MikroOrmModule } from "@mikro-orm/nestjs"
-import { defineConfig } from "@mikro-orm/postgresql"
+import { defineConfig, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { Global, Module } from "@nestjs/common"
 import { ConfigModule, ConfigService } from "@nestjs/config"
 
@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config"
     MikroOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
+      driver: PostgreSqlDriver,
       useFactory: (configService: ConfigService<Configs, true>) =>
         defineConfig({
           ...baseOptions,

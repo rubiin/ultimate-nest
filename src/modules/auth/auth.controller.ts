@@ -6,14 +6,12 @@ import type { AuthService } from "./auth.service"
 
 import type {
   ChangePasswordDto,
-  MagicLinkLogin,
   OtpVerifyDto,
   RefreshTokenDto,
   ResetPasswordDto,
   SendOtpDto,
   UserLoginDto,
 } from "./dtos"
-import type { MagicLoginStrategy } from "./strategies"
 import process from "node:process"
 import {
   Auth,
@@ -42,7 +40,6 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly tokenService: TokensService,
-    private readonly magicStrategy: MagicLoginStrategy,
   ) {}
 
   @Post("login")
@@ -51,21 +48,7 @@ export class AuthController {
     return this.authService.login(loginDto)
   }
 
-  @Post("login/magic")
-  @ApiOperation({ summary: "User Login with magic link" })
-  loginByMagicLink(
-    @Req() request: NestifyRequest,
-    @Res()
-    response: NestifyResponse,
-    @Body()
-    dto: MagicLinkLogin,
-  ): Observable<void> {
-    return this.authService.validateUser(false, dto.destination).pipe(
-      map((_user) => {
-        this.magicStrategy.send(request, response)
-      }),
-    )
-  }
+
 
   @Post("reset-password")
   @SwaggerResponse({
