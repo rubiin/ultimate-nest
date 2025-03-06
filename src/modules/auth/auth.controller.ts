@@ -1,20 +1,9 @@
-import  { AuthenticationResponse, OauthResponse } from "@common/@types"
-import  { User } from "@entities"
-import  { TokensService } from "@modules/token/tokens.service"
-import  { Observable } from "rxjs"
-import  { AuthService } from "./auth.service"
+import { AuthenticationResponse, OauthResponse } from "@common/@types"
+import { User } from "@entities"
+import { TokensService } from "@modules/token/tokens.service"
+import { Observable } from "rxjs"
+import { AuthService } from "./auth.service"
 
-import  {
-  ChangePasswordDto,
-  MagicLinkLogin,
-  OtpVerifyDto,
-  RefreshTokenDto,
-  ResetPasswordDto,
-  SendOtpDto,
-  UserLoginDto,
-} from "./dtos"
-import  { MagicLoginStrategy } from "./strategies"
-import process from "node:process"
 import {
   Auth,
   GenericController,
@@ -36,13 +25,20 @@ import {
 import { AuthGuard } from "@nestjs/passport"
 import { ApiOperation } from "@nestjs/swagger"
 import { map } from "rxjs"
+import {
+  ChangePasswordDto,
+  OtpVerifyDto,
+  RefreshTokenDto,
+  ResetPasswordDto,
+  SendOtpDto,
+  UserLoginDto,
+} from "./dtos"
 
 @GenericController("auth", false)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly tokenService: TokensService,
-    private readonly magicStrategy: MagicLoginStrategy,
   ) {}
 
   @Post("login")
@@ -51,21 +47,6 @@ export class AuthController {
     return this.authService.login(loginDto)
   }
 
-  @Post("login/magic")
-  @ApiOperation({ summary: "User Login with magic link" })
-  loginByMagicLink(
-    @Req() request: NestifyRequest,
-    @Res()
-    response: NestifyResponse,
-    @Body()
-    dto: MagicLinkLogin,
-  ): Observable<void> {
-    return this.authService.validateUser(false, dto.destination).pipe(
-      map((_user) => {
-        this.magicStrategy.send(request, response)
-      }),
-    )
-  }
 
   @Post("reset-password")
   @SwaggerResponse({
@@ -87,18 +68,6 @@ export class AuthController {
     return this.authService.forgotPassword(dto)
   }
 
-  @UseGuards(AuthGuard("magicLogin"))
-  @Get("magiclogin/callback")
-  magicCallback(@LoggedInUser() user: User, @Res() response: NestifyResponse) {
-    return this.authService.login({ email: user.email }, false).pipe(
-      map((data) => {
-        // client url
-        return response.redirect(
-          `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
-        )
-      }),
-    )
-  }
 
   @Get("google")
   @UseGuards(AuthGuard("google"))
