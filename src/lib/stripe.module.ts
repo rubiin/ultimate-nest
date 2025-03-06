@@ -8,7 +8,7 @@ const logger = new Logger("Stripe")
 @Global()
 @Module({
   imports: [
-    StripeModule.forRootAsync(StripeModule, {
+    StripeModule.forRootAsync( {
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({

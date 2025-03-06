@@ -1,4 +1,4 @@
-import type { ExecutionContext } from "@nestjs/common"
+import  { ExecutionContext } from "@nestjs/common"
 import { createMock } from "@golevelup/ts-jest"
 import { mockReflector } from "@mocks"
 import { JwtAuthGuard } from "./jwt.guard"

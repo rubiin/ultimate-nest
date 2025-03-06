@@ -1,5 +1,5 @@
-import type { Buffer } from "node:buffer"
-import type { Readable } from "node:stream"
+import  { Buffer } from "node:buffer"
+import  { Readable } from "node:stream"
 
 /** Object containing file metadata and access information. */
 export interface File {

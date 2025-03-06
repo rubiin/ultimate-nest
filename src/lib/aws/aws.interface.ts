@@ -1,4 +1,4 @@
-import type { ObjectCannedACL, S3ClientConfig } from "@aws-sdk/client-s3"
+import  { ObjectCannedACL, S3ClientConfig } from "@aws-sdk/client-s3"
 
 export interface AwsS3 {
   baseUrl: string

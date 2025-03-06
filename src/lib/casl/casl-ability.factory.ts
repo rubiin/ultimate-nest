@@ -1,5 +1,5 @@
-import type { ExtractSubjectType, InferSubjects, MongoAbility } from "@casl/ability"
-import type { Tag } from "@entities"
+import  { ExtractSubjectType, InferSubjects, MongoAbility } from "@casl/ability"
+import  { Tag } from "@entities"
 import { AbilityBuilder, createMongoAbility } from "@casl/ability"
 import { Action, Roles } from "@common/@types"
 import { Comment, Post, User } from "@entities"

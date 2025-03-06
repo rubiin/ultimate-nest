@@ -1,4 +1,4 @@
-import type { EmailFieldOptions } from "@common/@types"
+import  { EmailFieldOptions } from "@common/@types"
 import { validationI18nMessage } from "@lib/i18n"
 import { applyDecorators } from "@nestjs/common"
 import { Transform } from "class-transformer"

@@ -1,4 +1,4 @@
-import type { BaseValidator } from "@common/@types"
+import  { BaseValidator } from "@common/@types"
 import { applyDecorators } from "@nestjs/common"
 import {
   ArrayNotEmpty,

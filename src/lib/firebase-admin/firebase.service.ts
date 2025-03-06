@@ -1,4 +1,4 @@
-import type { FirebaseModuleOptions } from "./fire-base.module.definition"
+import  { FirebaseModuleOptions } from "./fire-base.module.definition"
 
 import { existsSync } from "node:fs"
 import path from "node:path"

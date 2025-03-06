@@ -1,5 +1,5 @@
-import type { ConfigType } from "@nestjs/config"
-import type {
+import  { ConfigType } from "@nestjs/config"
+import  {
   app,
   cloudinary,
   database,

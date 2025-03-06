@@ -1,5 +1,5 @@
-import type { ConfigService } from "@nestjs/config"
-import type {
+import  { ConfigService } from "@nestjs/config"
+import  {
   DiskHealthIndicator,
   HealthCheckService,
   HttpHealthIndicator,

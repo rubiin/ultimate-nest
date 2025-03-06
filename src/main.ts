@@ -1,4 +1,4 @@
-import type { NestExpressApplication } from "@nestjs/platform-express"
+import  { NestExpressApplication } from "@nestjs/platform-express"
 import process from "node:process"
 
 import { AppUtils, HelperService } from "@common/helpers"

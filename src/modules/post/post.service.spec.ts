@@ -1,5 +1,5 @@
-import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
-import type { TestingModule } from "@nestjs/testing"
+import  { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import  { TestingModule } from "@nestjs/testing"
 import { Category, Comment, Post, Tag, User } from "@entities"
 import { EntityManager } from "@mikro-orm/core"
 

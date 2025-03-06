@@ -1,5 +1,5 @@
-import type { Tag } from "@entities"
-import type { TagsService } from "./tags.service"
+import  { Tag } from "@entities"
+import  { TagsService } from "./tags.service"
 import { GenericController } from "@common/decorators"
 import { CursorPaginationDto } from "@common/dtos"
 import { ControllerFactory } from "@lib/crud/crud.controller"

@@ -1,5 +1,5 @@
-import type { OffsetPaginationResponse } from "@common/@types"
-import type { SuperTestBody } from "../fixtures"
+import  { OffsetPaginationResponse } from "@common/@types"
+import  { SuperTestBody } from "../fixtures"
 import path from "node:path"
 import { Roles } from "@common/@types"
 import { randEmail, randUserName } from "@ngneat/falso"

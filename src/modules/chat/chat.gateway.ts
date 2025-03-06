@@ -1,17 +1,17 @@
-import type { JwtPayload } from "@common/@types"
-import type { User } from "@entities"
-import type { AuthService } from "@modules/auth/auth.service"
-import type { JwtService } from "@nestjs/jwt"
-import type {
+import  { JwtPayload } from "@common/@types"
+import  { User } from "@entities"
+import  { AuthService } from "@modules/auth/auth.service"
+import  { JwtService } from "@nestjs/jwt"
+import  {
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
 } from "@nestjs/websockets"
 
-import type { Namespace, Socket } from "socket.io"
-import type { ChatService } from "./chat.service"
-import type { CreateChatDto, MessageSeenDto } from "./dto"
-import type { SocketConnectionService } from "./socket-connection.service"
+import  { Namespace, Socket } from "socket.io"
+import  { ChatService } from "./chat.service"
+import  { CreateChatDto, MessageSeenDto } from "./dto"
+import  { SocketConnectionService } from "./socket-connection.service"
 import { LoggedInUser } from "@common/decorators"
 import { WsJwtGuard } from "@common/guards"
 import { WsValidationPipe } from "@common/pipes/ws-validation.pipe"

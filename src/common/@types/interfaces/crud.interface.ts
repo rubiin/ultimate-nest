@@ -1,9 +1,9 @@
-import type { BaseEntity } from "@common/database"
+import  { BaseEntity } from "@common/database"
 
-import type { User } from "@entities"
-import type { Observable } from "rxjs"
-import type { CreateEntityType, UpdateEntityType } from "../types/common.types"
-import type {
+import  { User } from "@entities"
+import  { Observable } from "rxjs"
+import  { CreateEntityType, UpdateEntityType } from "../types/common.types"
+import  {
   PaginationResponse,
   PaginationRequest as TPaginationRequest,
 } from "./pagination.interface"

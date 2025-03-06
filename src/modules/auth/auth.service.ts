@@ -1,11 +1,11 @@
-import type { AuthenticationResponse, OauthResponse } from "@common/@types"
-import type { BaseRepository } from "@common/database"
-import type { MailerService } from "@lib/mailer/mailer.service"
-import type { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql"
-import type { TokensService } from "@modules/token/tokens.service"
-import type { ConfigService } from "@nestjs/config"
-import type { Observable } from "rxjs"
-import type {
+import  { AuthenticationResponse, OauthResponse } from "@common/@types"
+import  { BaseRepository } from "@common/database"
+import  { MailerService } from "@lib/mailer/mailer.service"
+import  { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql"
+import  { TokensService } from "@modules/token/tokens.service"
+import  { ConfigService } from "@nestjs/config"
+import  { Observable } from "rxjs"
+import  {
   ChangePasswordDto,
   OtpVerifyDto,
   ResetPasswordDto,

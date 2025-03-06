@@ -1,4 +1,4 @@
-import type { ArgumentsHost, ExceptionFilter } from "@nestjs/common"
+import  { ArgumentsHost, ExceptionFilter } from "@nestjs/common"
 import { Catch, HttpException } from "@nestjs/common"
 import { I18nContext } from "nestjs-i18n"
 

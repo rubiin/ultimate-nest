@@ -1,5 +1,5 @@
-import type { BaseRepository } from "@common/database"
-import type { CursorPaginationDto } from "@common/dtos"
+import  { BaseRepository } from "@common/database"
+import  { CursorPaginationDto } from "@common/dtos"
 import { Tag } from "@entities"
 import { BaseService } from "@lib/crud/crud.service"
 import { InjectRepository } from "@mikro-orm/nestjs"

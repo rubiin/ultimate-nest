@@ -1,4 +1,4 @@
-import type { UUIDFieldOptions } from "@common/@types"
+import  { UUIDFieldOptions } from "@common/@types"
 import { validationI18nMessage } from "@lib/i18n"
 import { applyDecorators } from "@nestjs/common"
 import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsUUID } from "class-validator"

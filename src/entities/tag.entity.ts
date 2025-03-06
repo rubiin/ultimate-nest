@@ -1,4 +1,4 @@
-import type {
+import  {
   EventArgs,
 } from "@mikro-orm/postgresql"
 import { BaseEntity } from "@common/database"

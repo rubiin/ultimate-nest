@@ -1,5 +1,5 @@
-import type { File } from "@common/@types"
-import type { PipeTransform } from "@nestjs/common"
+import  { File } from "@common/@types"
+import  { PipeTransform } from "@nestjs/common"
 
 import path from "node:path"
 import { Injectable } from "@nestjs/common"

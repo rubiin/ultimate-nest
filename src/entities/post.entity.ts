@@ -1,5 +1,5 @@
-import type { EventArgs, Opt, Ref, Rel } from "@mikro-orm/postgresql"
-import type { User } from "./index"
+import  { EventArgs, Opt, Ref, Rel } from "@mikro-orm/postgresql"
+import  { User } from "./index"
 import { PostStateEnum } from "@common/@types"
 import { BaseEntity } from "@common/database"
 import {

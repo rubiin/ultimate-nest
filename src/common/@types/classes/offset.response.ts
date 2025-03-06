@@ -1,5 +1,5 @@
-import type { OffsetPaginationDto } from "@common/dtos/offset-pagination.dto"
-import type { PaginationAbstractResponse } from "../interfaces"
+import  { OffsetPaginationDto } from "@common/dtos/offset-pagination.dto"
+import  { PaginationAbstractResponse } from "../interfaces"
 import { ApiProperty } from "@nestjs/swagger"
 import { IsArray } from "class-validator"
 

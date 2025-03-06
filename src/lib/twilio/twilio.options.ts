@@ -1,4 +1,4 @@
-import type { ClientOpts as IClientOptions } from "twilio"
+import  { ClientOpts as IClientOptions } from "twilio"
 
 export interface TwilioModuleOptions extends IClientOptions {
   accountSid: string

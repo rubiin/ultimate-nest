@@ -1,5 +1,5 @@
-import type { File } from "@common/@types"
-import type { EntityDTO, FromEntityType, RequiredEntityData } from "@mikro-orm/postgresql"
+import  { File } from "@common/@types"
+import  { EntityDTO, FromEntityType, RequiredEntityData } from "@mikro-orm/postgresql"
 
 export type Optional<T> = T | undefined
 export type Nullable<T> = T | null

@@ -1,4 +1,4 @@
-import type { AppAbility } from "./casl-ability.factory"
+import  { AppAbility } from "./casl-ability.factory"
 
 export interface PoliciesHandler {
   handle: (request: NestifyRequest, ability: AppAbility) => boolean

@@ -1,5 +1,5 @@
-import type { IsNestedFieldOptions } from "@common/@types"
-import type { Class } from "helper-fns"
+import  { IsNestedFieldOptions } from "@common/@types"
+import  { Class } from "helper-fns"
 import { applyDecorators } from "@nestjs/common"
 import { Type } from "class-transformer"
 import {

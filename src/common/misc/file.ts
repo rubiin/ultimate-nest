@@ -1,4 +1,4 @@
-import type { FileValidator } from "@common/@types"
+import  { FileValidator } from "@common/@types"
 import { FileSize, FileType } from "@common/@types"
 import { CustomUploadFileTypeValidator } from "@common/decorators"
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common"

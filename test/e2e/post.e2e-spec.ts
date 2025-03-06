@@ -1,5 +1,5 @@
-import type { OffsetPaginationResponse } from "@common/@types"
-import type { SuperTestBody } from "../fixtures"
+import  { OffsetPaginationResponse } from "@common/@types"
+import  { SuperTestBody } from "../fixtures"
 import request from "supertest"
 import { APP_URL, postDto, user, userDto } from "../fixtures"
 

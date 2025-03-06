@@ -1,4 +1,4 @@
-import type { Server } from "@common/@types"
+import  { Server } from "@common/@types"
 import { TemplateEngine } from "@common/@types"
 import { Global, Module } from "@nestjs/common"
 import { ConfigModule, ConfigService } from "@nestjs/config"

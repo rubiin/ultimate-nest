@@ -1,4 +1,4 @@
-import type admin from "firebase-admin"
+import  admin from "firebase-admin"
 import { NestFirebaseService } from "./firebase.service"
 import { FIREBASE_ADMIN_TOKEN } from "./firebase-admin.constant"
 

@@ -1,5 +1,5 @@
-import type { User } from "@entities"
-import type { ChatService } from "./chat.service"
+import  { User } from "@entities"
+import  { ChatService } from "./chat.service"
 import { GenericController, LoggedInUser } from "@common/decorators"
 import { Get } from "@nestjs/common"
 

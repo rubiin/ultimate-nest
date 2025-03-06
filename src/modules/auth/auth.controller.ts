@@ -1,10 +1,10 @@
-import type { AuthenticationResponse, OauthResponse } from "@common/@types"
-import type { User } from "@entities"
-import type { TokensService } from "@modules/token/tokens.service"
-import type { Observable } from "rxjs"
-import type { AuthService } from "./auth.service"
+import  { AuthenticationResponse, OauthResponse } from "@common/@types"
+import  { User } from "@entities"
+import  { TokensService } from "@modules/token/tokens.service"
+import  { Observable } from "rxjs"
+import  { AuthService } from "./auth.service"
 
-import type {
+import  {
   ChangePasswordDto,
   MagicLinkLogin,
   OtpVerifyDto,
@@ -13,7 +13,7 @@ import type {
   SendOtpDto,
   UserLoginDto,
 } from "./dtos"
-import type { MagicLoginStrategy } from "./strategies"
+import  { MagicLoginStrategy } from "./strategies"
 import process from "node:process"
 import {
   Auth,

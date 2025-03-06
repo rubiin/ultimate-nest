@@ -1,4 +1,4 @@
-import type { DateFieldOptions } from "@common/@types"
+import  { DateFieldOptions } from "@common/@types"
 import { validationI18nMessage } from "@lib/i18n"
 import { applyDecorators } from "@nestjs/common"
 import { ArrayNotEmpty, IsArray, IsDateString, IsNotEmpty, IsOptional, MaxDate, MinDate } from "class-validator"

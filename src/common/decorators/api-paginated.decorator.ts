@@ -1,4 +1,4 @@
-import type { Type } from "@nestjs/common"
+import  { Type } from "@nestjs/common"
 import { CursorPaginationResponse, OffsetPaginationResponse } from "@common/@types"
 import { applyDecorators } from "@nestjs/common"
 import { ApiExtraModels, ApiOkResponse, ApiOperation, getSchemaPath } from "@nestjs/swagger"

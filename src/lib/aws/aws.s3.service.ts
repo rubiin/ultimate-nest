@@ -1,10 +1,10 @@
-import type {
+import  {
   Bucket,
 } from "@aws-sdk/client-s3"
-import type { Buffer } from "node:buffer"
-import type { Observable } from "rxjs"
+import  { Buffer } from "node:buffer"
+import  { Observable } from "rxjs"
 
-import type {
+import  {
 
   AwsModuleOptions,
   AwsS3,

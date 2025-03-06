@@ -1,4 +1,4 @@
-import type { Server, TemplateEngine } from "@common/@types"
+import  { Server, TemplateEngine } from "@common/@types"
 
 export type engineOptions = Record<string, any>
 

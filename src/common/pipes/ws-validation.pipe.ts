@@ -1,4 +1,4 @@
-import type { ValidationError, ValidationPipeOptions } from "@nestjs/common"
+import  { ValidationError, ValidationPipeOptions } from "@nestjs/common"
 import { Injectable, ValidationPipe } from "@nestjs/common"
 import { WsException } from "@nestjs/websockets"
 
