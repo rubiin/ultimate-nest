@@ -5,7 +5,7 @@ import { Module } from "@nestjs/common"
 import { PassportModule } from "@nestjs/passport"
 import { AuthController } from "./auth.controller"
 import { AuthService } from "./auth.service"
-import { FacebookStrategy, GoogleStrategy, JwtStrategy, MagicLoginStrategy } from "./strategies"
+import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies"
 
 @Module({
   imports: [PassportModule, UserModule],
@@ -17,7 +17,6 @@ import { FacebookStrategy, GoogleStrategy, JwtStrategy, MagicLoginStrategy } fro
     JwtStrategy,
     GoogleStrategy,
     FacebookStrategy,
-    MagicLoginStrategy,
   ],
   exports: [AuthService, JwtStrategy, TokensService, RefreshTokensRepository],
 })
