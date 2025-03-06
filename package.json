@@ -38,9 +38,8 @@
   },
   "scripts": {
     "build": "nest build",
-    "lint": "ESLINT_USE_FLAT_CONFIG=true eslint '{src,test}/**/*.ts' --cache",
-    "lint:fix": "ESLINT_USE_FLAT_CONFIG=true eslint '{src,test}/**/*.ts' --cache --fix",
-    "lint:view": "npx eslint-flat-config-viewer",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
     "orm": "npx mikro-orm",
     "sample": "cd env; npx  sample-env --env .env.dev",
     "start": "nest start",
@@ -116,6 +115,7 @@
     "nestjs-pino": "^4.3.1",
     "nodemailer": "^6.10.0",
     "otplib": "^12.0.1",
+    "oxlint": "^0.15.13",
     "passport": "0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
@@ -138,7 +138,6 @@
     "url-minify": "^2.8.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.6.0",
     "@firebase/app-compat": "^0.2.51",
     "@firebase/app-types": "^0.9.3",
     "@golevelup/ts-jest": "^0.6.2",
@@ -172,7 +171,6 @@
     "@types/swagger-ui-express": "^4.1.8",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "3.3.0",
-    "eslint": "^9.21.0",
     "husky": "^9.1.7",
     "jest": "29.7.0",
     "lint-staged": "^15.4.3",

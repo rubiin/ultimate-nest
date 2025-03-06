@@ -14,6 +14,7 @@ import {
   NestThrottlerModule,
   OrmModule,
 } from "@lib/index"
+import { TagsModule } from "@modules/tags/tags.module"
 import { UserModule } from "@modules/user/user.module"
 import { Module } from "@nestjs/common"
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core"
@@ -34,6 +35,7 @@ import { ScheduleModule } from "@nestjs/schedule"
     NestJwtModule,
     OrmModule,
     UserModule,
+    TagsModule ,
     ScheduleModule.forRoot(),
   ],
   providers: [
