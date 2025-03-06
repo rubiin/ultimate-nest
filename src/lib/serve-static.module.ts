@@ -10,7 +10,7 @@ import { ServeStaticModule } from "@nestjs/serve-static"
       serveStaticOptions: {
         maxAge: 86_400, // 1 day,
       },
-      exclude: ["/api/(.*)", "/v1/(.*)", "/graphql/(.*)", "/docs/(.*)", "/health/(.*)", "/swagger/(.*)"],
+      exclude: ["/api/(.*path)", "/v1/(.*path)", "/graphql/(.*path)", "/docs/(.*path)", "/health/(.*path)", "/swagger/(.*path)"],
     }),
   ],
   exports: [ServeStaticModule],
