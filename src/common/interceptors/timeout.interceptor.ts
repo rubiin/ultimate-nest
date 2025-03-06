@@ -1,9 +1,9 @@
-import type {
+import  {
   CallHandler,
   ExecutionContext,
   NestInterceptor,
 } from "@nestjs/common"
-import type { Observable } from "rxjs"
+import  { Observable } from "rxjs"
 import {
   Injectable,
   RequestTimeoutException,

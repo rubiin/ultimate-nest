@@ -1,5 +1,5 @@
-import type { TemplateEngine } from "@common/@types"
-import type { SupportedTemplateEngines } from "@ladjs/consolidate"
+import  { TemplateEngine } from "@common/@types"
+import  { SupportedTemplateEngines } from "@ladjs/consolidate"
 import consolidate from "@ladjs/consolidate"
 import { Logger } from "@nestjs/common"
 

@@ -1,4 +1,4 @@
-import type { TEmailSubject } from "../interfaces"
+import  { TEmailSubject } from "../interfaces"
 
 export const BYTE_TO_MB = 1024 * 1024
 

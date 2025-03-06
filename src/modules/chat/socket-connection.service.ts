@@ -1,4 +1,4 @@
-import type { User } from "@entities"
+import  { User } from "@entities"
 import { Injectable } from "@nestjs/common"
 import { WsException } from "@nestjs/websockets"
 

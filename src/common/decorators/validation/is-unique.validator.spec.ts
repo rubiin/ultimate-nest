@@ -1,5 +1,5 @@
-import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
-import type { IsUniqueValidationContext } from "./is-unique.validator"
+import  { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import  { IsUniqueValidationContext } from "./is-unique.validator"
 import { User } from "@entities"
 import { createMock } from "@golevelup/ts-jest"
 import { EntityManager } from "@mikro-orm/core"

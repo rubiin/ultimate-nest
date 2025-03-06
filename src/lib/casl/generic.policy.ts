@@ -1,5 +1,5 @@
-import type { AppAbility } from "./casl-ability.factory"
-import type { PoliciesHandler } from "./policy.interface"
+import  { AppAbility } from "./casl-ability.factory"
+import  { PoliciesHandler } from "./policy.interface"
 import { Action } from "@common/@types"
 
 export class GenericPolicyHandler implements PoliciesHandler {

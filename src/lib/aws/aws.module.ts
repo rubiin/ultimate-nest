@@ -1,4 +1,4 @@
-import type { AwsModuleOptions } from "./aws.interface"
+import  { AwsModuleOptions } from "./aws.interface"
 import { ConfigurableModuleBuilder, Module } from "@nestjs/common"
 
 import { AwsS3Service } from "./aws.s3.service"

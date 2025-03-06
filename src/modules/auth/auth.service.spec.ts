@@ -1,5 +1,5 @@
-import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
-import type { TestingModule } from "@nestjs/testing"
+import  { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import  { TestingModule } from "@nestjs/testing"
 import { HelperService } from "@common/helpers"
 import { OtpLog, Protocol, User } from "@entities"
 import { MailerService } from "@lib/mailer/mailer.service"

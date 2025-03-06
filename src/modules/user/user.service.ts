@@ -1,18 +1,18 @@
-import type {
+import  {
   MailPayload,
   PaginationResponse,
   RecordWithFile,
 } from "@common/@types"
-import type { BaseRepository } from "@common/database"
-import type { CursorPaginationDto } from "@common/dtos"
-import type { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
-import type { MailerService } from "@lib/mailer/mailer.service"
-import type { MikroORM } from "@mikro-orm/core"
-import type { PostgreSqlDriver } from "@mikro-orm/postgresql"
-import type { ConfigService } from "@nestjs/config"
-import type { CloudinaryService, IFile } from "nestjs-cloudinary"
-import type { Observable } from "rxjs"
-import type { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos"
+import  { BaseRepository } from "@common/database"
+import  { CursorPaginationDto } from "@common/dtos"
+import  { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
+import  { MailerService } from "@lib/mailer/mailer.service"
+import  { MikroORM } from "@mikro-orm/core"
+import  { PostgreSqlDriver } from "@mikro-orm/postgresql"
+import  { ConfigService } from "@nestjs/config"
+import  { CloudinaryService, IFile } from "nestjs-cloudinary"
+import  { Observable } from "rxjs"
+import  { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos"
 import process from "node:process"
 import {
   CursorType,

@@ -1,5 +1,5 @@
-import type { BaseRepository } from "@common/database"
-import type { OffsetPaginationDto } from "@common/dtos"
+import  { BaseRepository } from "@common/database"
+import  { OffsetPaginationDto } from "@common/dtos"
 import { Category } from "@entities"
 import { BaseService } from "@lib/crud/crud.service"
 import { InjectRepository } from "@mikro-orm/nestjs"

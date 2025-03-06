@@ -1,4 +1,4 @@
-import type { CanActivate, Type } from "@nestjs/common"
+import  { CanActivate, Type } from "@nestjs/common"
 import { API_UNAUTHORISED_RESPONSE } from "@common/constant"
 import { JwtAuthGuard } from "@common/guards"
 import { PoliciesGuard } from "@lib/casl/policies.guard"

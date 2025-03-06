@@ -1,4 +1,4 @@
-import type { Type } from "@nestjs/common"
+import  { Type } from "@nestjs/common"
 import { applyDecorators } from "@nestjs/common"
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger"
 

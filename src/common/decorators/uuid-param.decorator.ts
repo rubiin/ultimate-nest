@@ -1,4 +1,4 @@
-import type { PipeTransform, Type } from "@nestjs/common"
+import  { PipeTransform, Type } from "@nestjs/common"
 import { HttpStatus, Param, ParseUUIDPipe } from "@nestjs/common"
 
 /**

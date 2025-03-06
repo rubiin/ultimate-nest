@@ -1,5 +1,5 @@
-import type { BaseRepository } from "@common/database"
-import type { User } from "@entities"
+import  { BaseRepository } from "@common/database"
+import  { User } from "@entities"
 import { Conversation, Message } from "@entities"
 import { EntityManager } from "@mikro-orm/core"
 import { InjectRepository } from "@mikro-orm/nestjs"

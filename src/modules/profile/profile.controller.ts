@@ -1,7 +1,7 @@
-import type { ProfileData } from "@common/@types"
-import type { User } from "@entities"
-import type { Observable } from "rxjs"
-import type { ProfileService } from "./profile.service"
+import  { ProfileData } from "@common/@types"
+import  { User } from "@entities"
+import  { Observable } from "rxjs"
+import  { ProfileService } from "./profile.service"
 import {
   ApplyCustomCache,
   GenericController,

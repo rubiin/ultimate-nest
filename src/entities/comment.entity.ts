@@ -1,5 +1,5 @@
-import type { Ref, Rel } from "@mikro-orm/postgresql"
-import type { Post, User } from "./index"
+import  { Ref, Rel } from "@mikro-orm/postgresql"
+import  { Post, User } from "./index"
 import { BaseEntity } from "@common/database"
 import { Entity, ManyToOne, Property } from "@mikro-orm/postgresql"
 

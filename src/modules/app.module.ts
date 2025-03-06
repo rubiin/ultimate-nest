@@ -1,4 +1,4 @@
-import type { MiddlewareConsumer, NestModule } from "@nestjs/common"
+import  { MiddlewareConsumer, NestModule } from "@nestjs/common"
 import { SWAGGER_API_ENDPOINT } from "@common/constant"
 import { ClearCacheMiddleware, RealIpMiddleware } from "@common/middlewares"
 import { applyRawBodyOnlyTo } from "@golevelup/nestjs-webhooks"

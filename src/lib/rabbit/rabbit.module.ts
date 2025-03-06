@@ -12,7 +12,7 @@ const logger = new Logger("RabbitMQ")
 @Global()
 @Module({
   imports: [
-    RabbitMQModule.forRootAsync(RabbitMQModule, {
+    RabbitMQModule.forRootAsync( {
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({

@@ -1,4 +1,4 @@
-import type { PaginationAbstractResponse } from "../interfaces"
+import  { PaginationAbstractResponse } from "../interfaces"
 import { ApiProperty } from "@nestjs/swagger"
 import { IsArray } from "class-validator"
 

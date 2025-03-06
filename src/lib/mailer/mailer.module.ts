@@ -1,4 +1,4 @@
-import type { OnModuleInit } from "@nestjs/common"
+import  { OnModuleInit } from "@nestjs/common"
 import { Module } from "@nestjs/common"
 import { ConfigurableModuleClass } from "./mail.module-definition"
 import { MailerService } from "./mailer.service"

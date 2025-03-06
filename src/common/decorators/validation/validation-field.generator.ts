@@ -1,4 +1,4 @@
-import type { NumberFieldOptions, StringFieldOptions } from "@common/@types"
+import  { NumberFieldOptions, StringFieldOptions } from "@common/@types"
 import { MinMaxLength } from "@common/decorators"
 import { validationI18nMessage } from "@lib/i18n"
 import { Type } from "class-transformer"

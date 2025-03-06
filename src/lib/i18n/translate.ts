@@ -1,5 +1,5 @@
-import type { I18nTranslations } from "@generated"
-import type { Path, TranslateOptions } from "nestjs-i18n"
+import  { I18nTranslations } from "@generated"
+import  { Path, TranslateOptions } from "nestjs-i18n"
 import { I18nContext, i18nValidationMessage } from "nestjs-i18n"
 
 export const itemDoesNotExistKey: Path<I18nTranslations> = "exception.itemDoesNotExist"

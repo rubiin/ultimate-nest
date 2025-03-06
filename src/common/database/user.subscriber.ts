@@ -1,4 +1,4 @@
-import type { EntityName, EventArgs, EventSubscriber } from "@mikro-orm/postgresql"
+import  { EntityName, EventArgs, EventSubscriber } from "@mikro-orm/postgresql"
 import { HelperService } from "@common/helpers"
 import { User } from "@entities"
 import { Injectable } from "@nestjs/common"

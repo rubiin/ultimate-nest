@@ -1,5 +1,5 @@
-import type { CanActivate, ExecutionContext } from "@nestjs/common"
-import type { JwtService } from "@nestjs/jwt"
+import  { CanActivate, ExecutionContext } from "@nestjs/common"
+import  { JwtService } from "@nestjs/jwt"
 import { translate } from "@lib/i18n"
 import { Injectable, UnauthorizedException } from "@nestjs/common"
 import { TokenExpiredError } from "jsonwebtoken"

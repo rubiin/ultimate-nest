@@ -1,5 +1,5 @@
-import type { SendMailOptions, Transporter } from "nodemailer"
-import type { MailModuleOptions } from "./mailer.options"
+import  { SendMailOptions, Transporter } from "nodemailer"
+import  { MailModuleOptions } from "./mailer.options"
 import { resolve } from "node:path"
 import * as aws from "@aws-sdk/client-ses"
 import { Server } from "@common/@types"

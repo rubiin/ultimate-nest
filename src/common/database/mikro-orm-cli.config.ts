@@ -1,4 +1,4 @@
-import type { Options } from "@mikro-orm/postgresql"
+import  { Options } from "@mikro-orm/postgresql"
 import process from "node:process"
 import { Migrator } from "@mikro-orm/migrations"
 import { defineConfig } from "@mikro-orm/postgresql"

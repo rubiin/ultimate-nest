@@ -1,4 +1,4 @@
-import type { StringFieldOptions } from "@common/@types"
+import  { StringFieldOptions } from "@common/@types"
 import { validationI18nMessage } from "@lib/i18n"
 import { applyDecorators } from "@nestjs/common"
 import {

@@ -1,5 +1,5 @@
-import type { Category } from "@entities"
-import type { CategoryService } from "./category.service"
+import  { Category } from "@entities"
+import  { CategoryService } from "./category.service"
 import { GenericController } from "@common/decorators"
 import { OffsetPaginationDto } from "@common/dtos"
 import { ControllerFactory } from "@lib/crud/crud.controller"

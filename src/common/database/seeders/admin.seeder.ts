@@ -1,4 +1,4 @@
-import type { EntityManager } from "@mikro-orm/postgresql"
+import  { EntityManager } from "@mikro-orm/postgresql"
 import process from "node:process"
 import { Roles } from "@common/@types"
 import { Seeder } from "@mikro-orm/seeder"

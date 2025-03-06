@@ -1,4 +1,4 @@
-import type { NumberFieldOptions } from "@common/@types"
+import  { NumberFieldOptions } from "@common/@types"
 import { validationI18nMessage } from "@lib/i18n"
 import { applyDecorators } from "@nestjs/common"
 import { Type } from "class-transformer"

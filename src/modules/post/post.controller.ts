@@ -1,9 +1,9 @@
-import type { PaginationResponse } from "@common/@types"
-import type { CursorPaginationDto } from "@common/dtos"
-import type { User } from "@entities"
-import type { Observable } from "rxjs"
-import type { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos"
-import type { PostService } from "./post.service"
+import  { PaginationResponse } from "@common/@types"
+import  { CursorPaginationDto } from "@common/dtos"
+import  { User } from "@entities"
+import  { Observable } from "rxjs"
+import  { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos"
+import  { PostService } from "./post.service"
 import { Action } from "@common/@types"
 import {
   ApiPaginatedResponse,
