@@ -1,7 +1,7 @@
 import  { PaginationResponse } from "@common/@types"
 import  { BaseRepository } from "@common/database"
 import  { CursorPaginationDto } from "@common/dtos"
-import  { AutoPath, EntityKey } from "@mikro-orm/core/typings"
+import  { AutoPath, EntityKey } from "@mikro-orm/core"
 import  { Observable } from "rxjs"
 
 import  { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos"
