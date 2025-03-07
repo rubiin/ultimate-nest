@@ -1,6 +1,6 @@
 import  { ProfileData } from "@common/@types"
 import  { BaseRepository } from "@common/database"
-import  { AutoPath, EntityKey } from "@mikro-orm/core/typings"
+import  { AutoPath, EntityKey } from "@mikro-orm/core"
 import  { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import  { Observable } from "rxjs"
 import { User } from "@entities"
