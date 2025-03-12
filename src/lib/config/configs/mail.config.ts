@@ -1,3 +1,5 @@
+/* oxlint-disable no-thenable */
+
 import process from "node:process"
 import { SES_REGIONS } from "@common/constant"
 import { registerAs } from "@nestjs/config"

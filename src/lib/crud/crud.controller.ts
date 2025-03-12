@@ -17,7 +17,7 @@ export class AbstractValidationPipe extends ValidationPipe {
   async transform(value: any, metadata: ArgumentMetadata) {
     const targetType = this.targetTypes[metadata.type] as Type<any>
 
-    if (targetType == null)
+    if (targetType === null)
 
       return super.transform(value, metadata)
 

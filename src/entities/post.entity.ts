@@ -71,7 +71,7 @@ export class Post extends BaseEntity {
   @BeforeCreate()
   @BeforeUpdate()
   async generateSlug(eventArguments: EventArgs<this>) {
-    if (eventArguments.changeSet?.payload?.title != null) {
+    if (eventArguments.changeSet?.payload?.title) {
       this.slug = `${slugify(
         this.title,
       )}-${Math.trunc(Math.random() * 36 ** 6).toString(36)}`

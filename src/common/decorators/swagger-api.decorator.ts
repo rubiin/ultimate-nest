@@ -15,21 +15,21 @@ export function SwaggerResponse(options_: SwaggerResponseOptions) {
   const options: SwaggerResponseOptions = { ...options_ }
   const decsToApply = [ApiOperation({ summary: options.operation })]
 
-  if (options?.params != null) {
+  if (options?.params) {
     for (const parameter of options.params)
       decsToApply.push(ApiParam({ name: parameter, required: true, type: String }))
   }
 
-  if (options?.badRequest != null)
+  if (options?.badRequest )
     decsToApply.push(ApiResponse({ status: 400, description: options.badRequest }))
 
-  if (options?.notFound != null)
+  if (options?.notFound )
     decsToApply.push(ApiResponse({ status: 404, description: options.notFound }))
 
-  if (options?.body != null)
+  if (options?.body )
     decsToApply.push(ApiBody({ type: options.body }))
 
-  if (options?.response != null)
+  if (options?.response )
     decsToApply.push(ApiResponse({ type: options.response }))
 
   return applyDecorators(...decsToApply)

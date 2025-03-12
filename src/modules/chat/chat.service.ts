@@ -43,7 +43,7 @@ export class ChatService {
       conversation: conversationExists,
     })
 
-    if (conversationExists !== null) {
+    if (conversationExists) {
       messageNew.conversation = ref(conversationExists)
       conversationExists.messages.add(messageNew)
 

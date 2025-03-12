@@ -8,12 +8,12 @@
 - [Configuration](#configuration)
 - [FAQ](#faq)
 
-This project uses Typescript Eslint to catch errors and avoid bike-shedding by enforcing a common code
+This project uses Typescript oxlint to catch errors and avoid bike-shedding by enforcing a common code
 style.
 
 ## Languages
 
-- **TypeScript** is linted and formatted by Typescript Eslint.
+- **TypeScript** is linted and formatted by Typescript oxlint.
 
 ## Scripts
 
@@ -31,11 +31,6 @@ npm run  lint
 npm run lint:fix
 ```
 
-```bash
-# View all eslint rules which are used in the project
-npm run lint:view
-```
-
 See `package.json` to update.
 
 ### Pre-commit
@@ -51,10 +46,10 @@ In supported editors, all files will be linted and show under the linter errors 
 This boilerplate ships with opinionated defaults, but you can edit each tools configuration in the following config
 files:
 
-- [ESLint](https://eslint.org/docs/latest/use/configure/configuration-files-new)
-    - `eslint.config.js`
+- [Oxlint](https://oxc.rs/docs/guide/usage/linter/config.html)
+    - `.oxlintrc.json`
 
-Note: This uses eslint flat config, which is the recommended way to configure eslint.
+Note: This uses oxlint flat config, which is the recommended way to configure oxlint.
 
 ## FAQ
 
@@ -66,5 +61,5 @@ Note: This uses eslint flat config, which is the recommended way to configure es
   possible, because dynamic configurations are simply more powerful, able to respond to environment variables and much
   more.
 
-The linting rules can be found at [@antfu/eslint-config](https://github.com/antfu/eslint-config) which
-has more than 100 powerful ESLint rules that help prevent bugs and enforce conventions.
+The linting rules can be found at [oxlint rules](https://oxc.rs/docs/guide/usage/linter/rules.html) which
+has more than 100 powerful rules that help prevent bugs and enforce conventions.

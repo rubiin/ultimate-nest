@@ -266,7 +266,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     } = pageOptionsDto
     const selectedFields = [...new Set([...fields, "id"])]
 
-    if (search != null) {
+    if (search) {
       qb.andWhere({
         [searchField]: {
           $ilike: formatSearch(search),
@@ -274,7 +274,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       })
     }
 
-    if (relations != null) {
+    if (relations) {
       for (const relation of relations)
         qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`)
     }
@@ -341,7 +341,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       isDeleted: withDeleted,
     })
 
-    if (search != null && searchField != null) {
+    if (search && searchField) {
       qb.andWhere({
         [searchField]: {
           $ilike: formatSearch(search),
@@ -349,7 +349,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       })
     }
 
-    if (relations != null) {
+    if (relations) {
       for (const relation of relations)
         qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`)
     }
@@ -375,7 +375,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     const aliasCursor = `${alias}.${stringCursor}`
     const selectedFields = [...new Set([...fields, "id"])]
 
-    if (after != null) {
+    if (after) {
       const decoded = this.decodeCursor(after, cursorType)
       const oppositeOd = getOppositeOrder(order)
       const temporaryQb = qb.clone()
@@ -456,7 +456,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   ): Promise<CursorPaginationResponse<T>> {
     let previousCount = 0
 
-    if (after != null) {
+    if (after) {
       const decoded = this.decodeCursor(after, afterCursor)
       const queryOrder = getQueryOrder(order)
       const oppositeOrder = getOppositeOrder(order)

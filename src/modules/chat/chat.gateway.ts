@@ -46,7 +46,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
       const payload: JwtPayload = await this.jwtService.verify(client.handshake.headers.authorization!)
       const user = await this.authService.findUser(payload.sub)
 
-      if (user == null)
+      if (user === null)
         return this.handleDisconnect(client)
 
       // save the connection of user to our connection's map

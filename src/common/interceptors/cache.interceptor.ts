@@ -24,7 +24,7 @@ export class HttpCacheInterceptor extends CacheInterceptor {
 export class CacheKeyInterceptor extends CacheInterceptor {
   trackBy(context: ExecutionContext): string | undefined {
     const httpAdapter = this.httpAdapterHost.httpAdapter
-    const isHttpApp = httpAdapter != null && httpAdapter.getRequestMethod != null
+    const isHttpApp = httpAdapter  && httpAdapter.getRequestMethod
     const cacheMetadata = this.reflector.get<string>(CACHE_KEY_METADATA, context.getHandler())
 
     const request = context.getArgByIndex<NestifyRequest>(0)

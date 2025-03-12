@@ -35,7 +35,7 @@ const basePinoOptions = {
           paths: redactFields,
           censor: "**GDPR COMPLIANT**",
         },
-        transport: true
+        transport: process.env.NODE_ENV === "production"
           ? {
               targets: [
                 {

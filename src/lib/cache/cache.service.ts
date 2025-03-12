@@ -1,7 +1,6 @@
 import  { Cache } from "cache-manager"
 import { CACHE_MANAGER } from "@nestjs/cache-manager"
 import { Inject, Injectable } from "@nestjs/common"
-import { toArray, map,concatMap, from, Observable } from "rxjs"
 
 @Injectable()
 export class CacheService {

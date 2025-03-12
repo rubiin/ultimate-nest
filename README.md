@@ -52,7 +52,7 @@ read [here](https://betterprogramming.pub/observables-vs-promises-which-one-shou
 - 📃 [**Swagger**](https://swagger.io/) - API Documentation
 - 🐳 [**Docker Compose**](https://docs.docker.com/compose/) - Container Orchestration
 - 🔐 [**Helmet**](https://helmetjs.github.io/) - Secure HTTP headers
-- 📏 [**ESLint**](https://eslint.org/) — Pluggable JavaScript linter
+- 📏 [**Oxlint**](https://oxc.rs/docs/guide/usage/linter.html/) —50~100x faster than ESLint 500+ rules and growing
 - ✅ [**Commitlint**](https://commitlint.js.org/) — Checks if your commit messages meet the conventional commit format.
 - 🐺 [**Husky**](https://github.com/typicode/husky) — Helps you create Git hooks easily.
 
@@ -106,7 +106,7 @@ cp env/.env.sample env/.env.dev
 - `npm run start:dev` - Start application in watch mode
 - `npm run start:prod` - Start built application
 - `npm run start:hmr` - Start application with hot module replacement
-- `npm run lint` - Uses eslint to lint all the files inside src with config provided in `eslint.config.js`
+- `npm run lint` - Uses oxlint to lint all the files inside src with config provided in `.oxlintrx.json`
 - `npm run orm migration:create` - Uses Mikroorm to create a migration file
 - `npm run orm migration:up` - This command is used to run availablexisting migration files.
 - `npm run orm migration:down` - This command is used to rollback migration.

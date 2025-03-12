@@ -75,7 +75,7 @@ export class ValidatorFieldBuilder {
   }
 
   addMinMaxLength() {
-    if (this.options?.minLength != null && this.options?.maxLength != null) {
+    if (this.options?.minLength && this.options?.maxLength) {
       MinMaxLength({
         minLength: this.options.minLength,
         maxLength: this.options.maxLength,
