@@ -17,7 +17,7 @@ export class InternalDisabledLogger extends ConsoleLogger {
   ]
 
   log(message: any, context?: string): void {
-    if ((context != null) && !InternalDisabledLogger.contextsToIgnore.includes(context)) {
+    if (context && !InternalDisabledLogger.contextsToIgnore.includes(context)) {
       super.log(message, context)
     }
   }

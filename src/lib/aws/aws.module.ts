@@ -1,7 +1,6 @@
 import  { AwsModuleOptions } from "./aws.interface"
-import { ConfigurableModuleBuilder, Module } from "@nestjs/common"
+import { ConfigurableModuleBuilder } from "@nestjs/common"
 
-import { AwsS3Service } from "./aws.s3.service"
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
     = new ConfigurableModuleBuilder<AwsModuleOptions>({
@@ -19,8 +18,3 @@ export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN }
       .setClassMethodName("forRoot")
       .build()
 
-@Module({
-  providers: [AwsS3Service],
-  exports: [AwsS3Service],
-})
-export class NestAwsModule extends ConfigurableModuleClass {}

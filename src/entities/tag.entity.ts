@@ -41,7 +41,7 @@ export class Tag extends BaseEntity {
   @BeforeUpsert()
   @BeforeUpdate()
   generateSlug(eventArguments: EventArgs<this>) {
-    if (eventArguments?.changeSet?.payload?.title != null)
+    if (eventArguments?.changeSet?.payload?.title)
       this.slug = slugify(this.title)
   }
 }

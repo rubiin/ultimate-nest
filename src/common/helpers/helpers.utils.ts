@@ -29,7 +29,7 @@ export const HelperService = {
         ...pick(user, ["id", "idx"]),
       },
       accessToken,
-      ...(refreshToken != null ? { refresh_token: refreshToken } : {}),
+      ...(refreshToken ? { refresh_token: refreshToken } : {}),
     }
   },
 

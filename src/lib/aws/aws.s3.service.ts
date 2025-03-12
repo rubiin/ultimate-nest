@@ -78,9 +78,9 @@ export class AwsS3Service {
       }),
     )).pipe(
       map((response) => {
-        if (response != null && response.Contents) {
+        if (response && response.Contents) {
           return response.Contents.map((value) => {
-            if (value.Key == null)
+            if (value.Key === null || value.Key === undefined)
               return {}
             const lastIndex = value.Key.lastIndexOf("/")
             const path = value.Key.slice(0, lastIndex)
@@ -116,7 +116,7 @@ export class AwsS3Service {
     filename: string,
     path?: string,
   ): Observable<Record<string, any>> {
-    const key: string = path != null ? `${path}/${filename}` : filename
+    const key: string = path ? `${path}/${filename}` : filename
     return from(this.s3Client.send(
       new GetObjectCommand({
         Bucket: this.bucket,
@@ -253,7 +253,7 @@ export class AwsS3Service {
 
     return listObjectsObservable.pipe(
       map((lists) => {
-        if (lists == null || lists?.Contents == null)
+        if (lists === null || lists?.Contents === null || lists?.Contents === undefined)
           return []
 
         return lists.Contents.map(value => ({
@@ -368,10 +368,10 @@ export class AwsS3Service {
   ): Observable<any> {
     let path = options?.path ?? undefined
 
-    if (path != null)
+    if (path)
       path = path.startsWith("/") ? path.replace("/", "") : `${path}`
 
-    const key = path != null ? `${path}/${fileName}` : fileName
+    const key = path ? `${path}/${fileName}` : fileName
 
     return from(this.s3Client.send(
       new UploadPartCommand({

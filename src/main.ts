@@ -101,7 +101,7 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true })
 
-  if (module?.hot != null) {
+  if (module?.hot) {
     module.hot.accept()
     module.hot.dispose(async () => app.close())
   }

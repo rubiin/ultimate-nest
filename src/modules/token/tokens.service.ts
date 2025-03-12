@@ -99,7 +99,7 @@ export class TokensService {
 
             return this.getUserFromRefreshTokenPayload(payload).pipe(
               mergeMap((user) => {
-                if (user == null) {
+                if (user === null || user === undefined) {
                   return throwError(
                     () =>
                       new UnauthorizedException(
@@ -182,7 +182,7 @@ export class TokensService {
   deleteRefreshToken(user: User, payload: JwtPayload): Observable<User> {
     const tokenId = payload.jti
 
-    if (tokenId == null) {
+    if (tokenId === null || tokenId === undefined) {
       return throwError(
         () =>
           new UnauthorizedException(
@@ -236,7 +236,7 @@ export class TokensService {
   getStoredTokenFromRefreshTokenPayload(payload: JwtPayload): Observable<RefreshToken | null> {
     const tokenId = payload.jti
 
-    if (tokenId == null) {
+    if (tokenId === null || tokenId === undefined) {
       return throwError(
         () =>
           new UnauthorizedException(
