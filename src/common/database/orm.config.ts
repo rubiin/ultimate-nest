@@ -15,7 +15,7 @@ export const baseOptions = {
   },
   migrations: {
     fileName: (timestamp: string, name?: string) => {
-      if (name == null)
+      if (name === null)
         return `Migration${timestamp}`
 
       return `Migration${timestamp}_${name}`
