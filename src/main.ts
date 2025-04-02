@@ -35,6 +35,8 @@ async function bootstrap() {
     },
   )
 
+  app.set('query parser', 'extended'); 
+
   const configService = app.get(ConfigService<Configs, true>)
 
   // =========================================================
