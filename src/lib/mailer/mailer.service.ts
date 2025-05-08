@@ -1,7 +1,7 @@
 import  { SendMailOptions, Transporter } from "nodemailer"
 import  { MailModuleOptions } from "./mailer.options"
 import { resolve } from "node:path"
-import * as aws from "@aws-sdk/client-ses"
+import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import { Server } from "@common/@types"
 import { Inject, Injectable, Logger } from "@nestjs/common"
 import { createTransport } from "nodemailer"
@@ -32,7 +32,7 @@ export class MailerService {
     // create Nodemailer SES transporter
 
     if (this.options.credentials.type === Server.SES) {
-      const ses = new aws.SES({
+      const sesClient = new SESv2Client({
         apiVersion: "2010-12-01",
         region: this.options.credentials.sesRegion,
         credentials: {
@@ -42,7 +42,7 @@ export class MailerService {
       })
 
       this.transporter = createTransport({
-        SES: { ses, aws },
+        SES: { sesClient, SendEmailCommand },
         maxConnections: 14, // 14 is the maximum message rate per second for ses
       })
     }
