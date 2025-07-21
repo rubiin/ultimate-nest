@@ -30,8 +30,8 @@ importers:
         specifier: ^0.2.21
         version: 0.2.21(body-parser@2.2.0)
       '@keyv/redis':
-        specifier: ^4.6.0
-        version: 4.6.0(keyv@5.4.0)
+        specifier: ^5.0.0
+        version: 5.0.0(keyv@5.4.0)
       '@ladjs/consolidate':
         specifier: ^1.0.4
         version: 1.0.4(@babel/core@7.27.4)(lodash@4.17.21)(pug@3.0.3)
@@ -1581,11 +1581,11 @@ packages:
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 
-  '@keyv/redis@4.6.0':
-    resolution: {integrity: sha512-FP3FP42RiQ3j0UC6f4Maf7ISTLAIivm37/SdfG5xvhqceMMq3kabtC6T4a2h5byMnh4S8PjP51DY/9CpyrcfsQ==}
+  '@keyv/redis@5.0.0':
+    resolution: {integrity: sha512-4f1fqmxa8QZFlnO9WDEAHVXaq9xLc6n6gIwwx6A9XyJ4RLocw5czFlStmp8ihbXZjQk0baNe+UAAJ47G7W+Giw==}
     engines: {node: '>= 18'}
     peerDependencies:
-      keyv: ^5.3.4
+      keyv: ^5.4.0
 
   '@keyv/serialize@1.1.0':
     resolution: {integrity: sha512-RlDgexML7Z63Q8BSaqhXdCYNBy/JQnqYIwxofUrNLGCblOMHp+xux2Q8nLMLlPpgHQPoU0Do8Z6btCpRBEqZ8g==}
@@ -2443,9 +2443,9 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@redis/client@1.6.1':
-    resolution: {integrity: sha512-/KCsg3xSlR+nCK8/8ZYSknYxvXHwubJrU82F3Lm1Fp6789VQ0/3RJKfsmRXjqfaTA++23CvC3hqmqe/2GEt6Kw==}
-    engines: {node: '>=14'}
+  '@redis/client@5.6.0':
+    resolution: {integrity: sha512-wmP9kCFElCSr4MM4+1E4VckDuN4wLtiXSM/J0rKVQppajxQhowci89RGZr2OdLualowb8SRJ/R6OjsXrn9ZNFA==}
+    engines: {node: '>= 18'}
 
   '@rubiin/tsconfig@1.2.1':
     resolution: {integrity: sha512-4QYqQV2LSND5XqX5ZpAfuJQAQcknnJSbqIW2F5dtRe8YX/q6jgkyQ1D2sLt1JVDPsg2/Te2QVueShJM0Lc3RDA==}
@@ -4668,10 +4668,6 @@ packages:
   gcp-metadata@6.1.1:
     resolution: {integrity: sha512-a4tiq7E0/5fTjxPAaH4jpjkSv/uCaU2p5KC6HVGrvl0cDjA8iBZv4vv1gyzlmK0ZUKqwpOyQMKzZQe3lTit77A==}
     engines: {node: '>=14'}
-
-  generic-pool@3.9.0:
-    resolution: {integrity: sha512-hymDOu5B53XvN4QT9dBmZxPX4CWhBPPLguTZ9MMFeFa/Kg0xWVfylOVNlJji/E7yTZWFd/q9GO5TxDLq156D7g==}
-    engines: {node: '>= 4'}
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -9252,9 +9248,9 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
-  '@keyv/redis@4.6.0(keyv@5.4.0)':
+  '@keyv/redis@5.0.0(keyv@5.4.0)':
     dependencies:
-      '@redis/client': 1.6.1
+      '@redis/client': 5.6.0
       cluster-key-slot: 1.1.2
       hookified: 1.10.0
       keyv: 5.4.0
@@ -10059,11 +10055,9 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@redis/client@1.6.1':
+  '@redis/client@5.6.0':
     dependencies:
       cluster-key-slot: 1.1.2
-      generic-pool: 3.9.0
-      yallist: 4.0.0
 
   '@rubiin/tsconfig@1.2.1': {}
 
@@ -12631,8 +12625,6 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
-
-  generic-pool@3.9.0: {}
 
   gensync@1.0.0-beta.2: {}
 
