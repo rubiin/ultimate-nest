@@ -162,8 +162,8 @@ importers:
         specifier: ^2.26.0
         version: 2.26.0
       joi:
-        specifier: ^17.13.3
-        version: 17.13.3
+        specifier: ^18.0.0
+        version: 18.0.0
       keyv:
         specifier: ^5.4.0
         version: 5.4.0
@@ -975,6 +975,10 @@ packages:
   '@hapi/accept@6.0.3':
     resolution: {integrity: sha512-p72f9k56EuF0n3MwlBNThyVE5PXX40g+aQh+C/xbKrfzahM2Oispv3AXmOIU51t3j77zay1qrX7IIziZXspMlw==}
 
+  '@hapi/address@5.1.1':
+    resolution: {integrity: sha512-A+po2d/dVoY7cYajycYI43ZbYMXukuopIsqCjh5QzsBCipDtdofHntljDlpccMjIfTy6UOkg+5KPriwYch2bXA==}
+    engines: {node: '>=14.0.0'}
+
   '@hapi/ammo@6.0.1':
     resolution: {integrity: sha512-pmL+nPod4g58kXrMcsGLp05O2jF4P2Q3GiL8qYV7nKYEh3cGf+rV4P5Jyi2Uq0agGhVU63GtaSAfBEZOlrJn9w==}
 
@@ -1009,6 +1013,9 @@ packages:
   '@hapi/file@3.0.0':
     resolution: {integrity: sha512-w+lKW+yRrLhJu620jT3y+5g2mHqnKfepreykvdOcl9/6up8GrQQn+l3FRTsjHTKbkbfQFkuksHpdv2EcpKcJ4Q==}
 
+  '@hapi/formula@3.0.2':
+    resolution: {integrity: sha512-hY5YPNXzw1He7s0iqkRQi+uMGh383CGdyyIGYtB+W5N3KHPXoqychklvHhKCC9M3Xtv0OCs/IHw+r4dcHtBYWw==}
+
   '@hapi/hapi@21.1.0':
     resolution: {integrity: sha512-het7j9yLXZMVU1IvtN2JXkPkn/UcU1j8gsZxMS0Mu1q7791IQeyhT37tpRPUhqerOtL6L0E8Z8CvVVFOYxoN6w==}
     engines: {node: '>=14.15.0'}
@@ -1038,6 +1045,9 @@ packages:
   '@hapi/pez@6.1.0':
     resolution: {integrity: sha512-+FE3sFPYuXCpuVeHQ/Qag1b45clR2o54QoonE/gKHv9gukxQ8oJJZPR7o3/ydDTK6racnCJXxOyT1T93FCJMIg==}
 
+  '@hapi/pinpoint@2.0.1':
+    resolution: {integrity: sha512-EKQmr16tM8s16vTT3cA5L0kZZcTMU5DUOZTuvpnY738m+jyP3JIUj+Mm1xc1rsLkGBQ/gVnfKYPwOmPg1tUR4Q==}
+
   '@hapi/podium@5.0.2':
     resolution: {integrity: sha512-T7gf2JYHQQfEfewTQFbsaXoZxSvuXO/QBIGljucUQ/lmPnTTNAepoIKOakWNVWvo2fMEDjycu77r8k6dhreqHA==}
 
@@ -1055,6 +1065,10 @@ packages:
 
   '@hapi/teamwork@6.0.0':
     resolution: {integrity: sha512-05HumSy3LWfXpmJ9cr6HzwhAavrHkJ1ZRCmNE2qJMihdM5YcWreWPfyN0yKT2ZjCM92au3ZkuodjBxOibxM67A==}
+    engines: {node: '>=14.0.0'}
+
+  '@hapi/tlds@1.1.2':
+    resolution: {integrity: sha512-1jkwm1WY9VIb6WhdANRmWDkXQUcIRpxqZpSdS+HD9vhoVL3zwoFvP8doQNEgT6k3VST0Ewu50wZnXIceRYp5tw==}
     engines: {node: '>=14.0.0'}
 
   '@hapi/topo@5.1.0':
@@ -2776,6 +2790,9 @@ packages:
     engines: {node: '>=10.0.0'}
     peerDependencies:
       socket.io-adapter: ^2.5.4
+
+  '@standard-schema/spec@1.0.0':
+    resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
   '@supercharge/request-ip@1.2.0':
     resolution: {integrity: sha512-wlt6JW69MHqLY2M6Sm/jVyCojNRKq2CBvwH0Hbx24SFhDQQGkgEjeKxVutDxHSyrWixFaOSLXC27euzxijhyMQ==}
@@ -5296,6 +5313,10 @@ packages:
 
   joi@17.13.3:
     resolution: {integrity: sha512-otDA4ldcIx+ZXsKHWmp0YizCweVRZG96J10b0FevjfuncLO1oX59THoAmHkNubYJ+9gWsYsp5k8v4ib6oDv1fA==}
+
+  joi@18.0.0:
+    resolution: {integrity: sha512-fpbpXN/TD04Xz1/cCXzUR3ghDkhyiHjbzTILx3wNyKXIzQJ55uYAkUGWwhX72uHge/6MdFA/kp1ZUh35DlYmaA==}
+    engines: {node: '>= 20'}
 
   jose@4.15.9:
     resolution: {integrity: sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==}
@@ -8542,6 +8563,10 @@ snapshots:
       '@hapi/boom': 10.0.1
       '@hapi/hoek': 11.0.7
 
+  '@hapi/address@5.1.1':
+    dependencies:
+      '@hapi/hoek': 11.0.7
+
   '@hapi/ammo@6.0.1':
     dependencies:
       '@hapi/hoek': 11.0.7
@@ -8587,6 +8612,8 @@ snapshots:
       '@hapi/boom': 10.0.1
 
   '@hapi/file@3.0.0': {}
+
+  '@hapi/formula@3.0.2': {}
 
   '@hapi/hapi@21.1.0':
     dependencies:
@@ -8647,6 +8674,8 @@ snapshots:
       '@hapi/hoek': 11.0.7
       '@hapi/nigel': 5.0.1
 
+  '@hapi/pinpoint@2.0.1': {}
+
   '@hapi/podium@5.0.2':
     dependencies:
       '@hapi/hoek': 11.0.7
@@ -8684,6 +8713,8 @@ snapshots:
       '@hapi/wreck': 18.1.0
 
   '@hapi/teamwork@6.0.0': {}
+
+  '@hapi/tlds@1.1.2': {}
 
   '@hapi/topo@5.1.0':
     dependencies:
@@ -10581,6 +10612,8 @@ snapshots:
       uid2: 1.0.0
     transitivePeerDependencies:
       - supports-color
+
+  '@standard-schema/spec@1.0.0': {}
 
   '@supercharge/request-ip@1.2.0': {}
 
@@ -13540,6 +13573,16 @@ snapshots:
       '@sideway/address': 4.1.5
       '@sideway/formula': 3.0.1
       '@sideway/pinpoint': 2.0.0
+
+  joi@18.0.0:
+    dependencies:
+      '@hapi/address': 5.1.1
+      '@hapi/formula': 3.0.2
+      '@hapi/hoek': 11.0.7
+      '@hapi/pinpoint': 2.0.1
+      '@hapi/tlds': 1.1.2
+      '@hapi/topo': 6.0.2
+      '@standard-schema/spec': 1.0.0
 
   jose@4.15.9: {}
 
