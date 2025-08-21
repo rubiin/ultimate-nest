@@ -42,8 +42,7 @@ export class MailerService {
       })
 
       this.transporter = createTransport({
-        SES: { sesClient, SendEmailCommand },
-        maxConnections: 14, // 14 is the maximum message rate per second for ses
+        SES: { sesClient, SendEmailCommand }
       })
     }
     else {
