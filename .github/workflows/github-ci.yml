@@ -42,7 +42,7 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please@v4
         id: release
         with:
           release-type: node
