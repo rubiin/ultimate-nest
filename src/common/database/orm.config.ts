@@ -38,7 +38,7 @@ export const baseOptions = {
   metadataProvider: TsMorphMetadataProvider,
   highlighter: new SqlHighlighter(),
   debug: !HelperService.isProd(),
-  loadStrategy: LoadStrategy.JOINED,
+  loadStrategy: LoadStrategy.BALANCED,
   entityRepository: BaseRepository,
   forceUtcTimezone: true,
   registerRequestContext: true,
