@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
@@ -47,7 +47,7 @@ jobs:
         with:
           release-type: node
           package-name: ultimate-nest
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: tag stable versions
         if: ${{ steps.release.outputs.release_created }}
         run: |
