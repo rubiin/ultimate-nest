@@ -12,8 +12,8 @@ importers:
         specifier: ^3.937.0
         version: 3.937.0
       '@aws-sdk/client-sesv2':
-        specifier: ^3.936.0
-        version: 3.936.0
+        specifier: ^3.938.0
+        version: 3.938.0
       '@casl/ability':
         specifier: ^6.7.3
         version: 6.7.3
@@ -159,8 +159,8 @@ importers:
         specifier: ^5.8.2
         version: 5.8.2
       isomorphic-dompurify:
-        specifier: ^2.32.0
-        version: 2.32.0(postcss@8.5.6)
+        specifier: ^2.33.0
+        version: 2.33.0(postcss@8.5.6)
       joi:
         specifier: ^18.0.2
         version: 18.0.2
@@ -473,8 +473,8 @@ packages:
     resolution: {integrity: sha512-ioeNe6HSc7PxjsUQY7foSHmgesxM5KwAeUtPhIHgKx99nrM+7xYCfW4FMvHypUzz7ZOvqlCdH7CEAZ8ParBvVg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/client-sesv2@3.936.0':
-    resolution: {integrity: sha512-jRWRuFixdCB9x56Hs3GyOZwolD0W6EgJXdkLyjC7CxudMHSt5NHdAt5dDxof54azjT9Lnt3Fiae2gZ4SsGqOVg==}
+  '@aws-sdk/client-sesv2@3.938.0':
+    resolution: {integrity: sha512-GW07FQuZkW5ASm0WP+CWLetcortqup9l3+p1OlvuUN3rLBIzlWRqYd5Nf2GTS72sPbaNowE3dYJXCtwu1IlLuQ==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/client-sso@3.936.0':
@@ -5271,8 +5271,8 @@ packages:
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  isomorphic-dompurify@2.32.0:
-    resolution: {integrity: sha512-4i6G4ICY57wQpiaNd6WcwhHUAqGDAJGWRlfWKLunBchJjtF2HV4eUeJtUupoEddbnnxYUiRhqfd9e4aDYR7ROA==}
+  isomorphic-dompurify@2.33.0:
+    resolution: {integrity: sha512-pXGR3rAHAXb5Bvr56pc5aV0Lh8laubLo7/60F+soOzDFmwks6MtgDhL7p46VoxLnwgIsjgmVhQpUt4mUlL/XEw==}
     engines: {node: '>=20.19.5'}
 
   istanbul-lib-coverage@3.2.2:
@@ -7878,7 +7878,7 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/client-sesv2@3.936.0':
+  '@aws-sdk/client-sesv2@3.938.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
@@ -11190,7 +11190,7 @@ snapshots:
 
   '@types/nodemailer@7.0.4':
     dependencies:
-      '@aws-sdk/client-sesv2': 3.936.0
+      '@aws-sdk/client-sesv2': 3.938.0
       '@types/node': 24.10.1
     transitivePeerDependencies:
       - aws-crt
@@ -13468,7 +13468,7 @@ snapshots:
 
   isexe@2.0.0: {}
 
-  isomorphic-dompurify@2.32.0(postcss@8.5.6):
+  isomorphic-dompurify@2.33.0(postcss@8.5.6):
     dependencies:
       dompurify: 3.3.0
       jsdom: 27.2.0(postcss@8.5.6)
