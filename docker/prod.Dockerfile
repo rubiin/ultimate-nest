@@ -1,5 +1,5 @@
 ## ===========================================================> The common stage
-FROM node:24.11.1-slim AS base
+FROM node:24.12.0-slim AS base
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 ENV PNPM_HOME=/usr/local/bin
