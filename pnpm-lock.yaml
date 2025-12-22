@@ -256,8 +256,8 @@ importers:
         specifier: ^0.9.3
         version: 0.9.3
       '@golevelup/ts-jest':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^1.1.1
+        version: 1.1.1
       '@mikro-orm/cli':
         specifier: ^6.6.2
         version: 6.6.2(pg@8.16.3)
@@ -942,8 +942,8 @@ packages:
     peerDependencies:
       body-parser: ^2.2.0
 
-  '@golevelup/ts-jest@0.7.0':
-    resolution: {integrity: sha512-b5Kf+NiEfWuMGUD5bl/Gm/RqojS4Sr/4Q0ySXN4xn3xlkhgPYG6nGLBeNjk3MiM2I3ztVVFfI7SB8ajqDy6Idw==}
+  '@golevelup/ts-jest@1.1.1':
+    resolution: {integrity: sha512-F5MKhEoNWDHK3YBTKnViBjWijHeDMS/5d4Pug/DCI5UWSqfCg5oGCve2W+/WM0x/hhUM9GedDT3ztHHwbIYjQA==}
 
   '@google-cloud/firestore@7.11.3':
     resolution: {integrity: sha512-qsM3/WHpawF07SRVvEJJVRwhYzM7o9qtuksyuqnrMig6fxIrwWnsezECWsG/D5TyYru51Fv5c/RTqNDQ2yU+4w==}
@@ -6580,6 +6580,7 @@ packages:
 
   scmp@2.1.0:
     resolution: {integrity: sha512-o/mRQGk9Rcer/jEEw/yw4mwo3EU/NvYvp577/Btqrym9Qy5/MdWGBqipbALgd2lrdWTJ5/gqDusxfnQBxOxT2Q==}
+    deprecated: Just use Node.js's crypto.timingSafeEqual()
 
   secure-json-parse@2.7.0:
     resolution: {integrity: sha512-6aU+Rwsezw7VR8/nyvKTx8QpWH9FrcYiXXlqC4z5d5XQBDRqtbfsRjnwGyqbi3gddNtWHuEk9OANUotL26qKUw==}
@@ -8537,7 +8538,7 @@ snapshots:
     dependencies:
       body-parser: 2.2.0
 
-  '@golevelup/ts-jest@0.7.0': {}
+  '@golevelup/ts-jest@1.1.1': {}
 
   '@google-cloud/firestore@7.11.3':
     dependencies:
