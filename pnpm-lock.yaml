@@ -186,8 +186,8 @@ importers:
         specifier: ^7.0.12
         version: 7.0.12
       otplib:
-        specifier: ^12.0.1
-        version: 12.0.1
+        specifier: ^13.1.1
+        version: 13.1.1
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -2378,23 +2378,23 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
 
-  '@otplib/core@12.0.1':
-    resolution: {integrity: sha512-4sGntwbA/AC+SbPhbsziRiD+jNDdIzsZ3JUyfZwjtKyc/wufl1pnSIaG4Uqx8ymPagujub0o92kgBnB89cuAMA==}
+  '@otplib/core@13.1.1':
+    resolution: {integrity: sha512-K7167w5T5fBtI7FCTrcTyqHPNEKIvyBHFACvJGXci60V30Rt4VDsRHWw/LYtOZRbUqJbPH9orn4N10dYRVi3bw==}
 
-  '@otplib/plugin-crypto@12.0.1':
-    resolution: {integrity: sha512-qPuhN3QrT7ZZLcLCyKOSNhuijUi9G5guMRVrxq63r9YNOxxQjPm59gVxLM+7xGnHnM6cimY57tuKsjK7y9LM1g==}
-    deprecated: Please upgrade to v13 of otplib. Refer to otplib docs for migration paths
+  '@otplib/hotp@13.1.1':
+    resolution: {integrity: sha512-2Zht/w3kb9Cv/BPNWC/KvFspztFae38BlteW4KQOn1U+jBj02EMpO3V75OaLGFyz3ZCWzYdLoTRhMkVDCVklDw==}
 
-  '@otplib/plugin-thirty-two@12.0.1':
-    resolution: {integrity: sha512-MtT+uqRso909UkbrrYpJ6XFjj9D+x2Py7KjTO9JDPhL0bJUYVu5kFP4TFZW4NFAywrAtFRxOVY261u0qwb93gA==}
-    deprecated: Please upgrade to v13 of otplib. Refer to otplib docs for migration paths
+  '@otplib/plugin-base32-scure@13.1.1':
+    resolution: {integrity: sha512-PAKmU60DOQyfwSP6VDcwP5wRO3GYCC8UgH0+J2wY2XI5OetHDPv27wNjBibE1iO7NMwCnUf1pv0rsTVE5TR9ew==}
 
-  '@otplib/preset-default@12.0.1':
-    resolution: {integrity: sha512-xf1v9oOJRyXfluBhMdpOkr+bsE+Irt+0D5uHtvg6x1eosfmHCsCC6ej/m7FXiWqdo0+ZUI6xSKDhJwc8yfiOPQ==}
-    deprecated: Please upgrade to v13 of otplib. Refer to otplib docs for migration paths
+  '@otplib/plugin-crypto-noble@13.1.1':
+    resolution: {integrity: sha512-MbgmPWGzhlUG+Jq4sX1UHgdNVEcXqinZy9GUtu2iotHRya815oBVwkiviM/y2qorxuCOIMNTAArD6jKlVv/qiQ==}
 
-  '@otplib/preset-v11@12.0.1':
-    resolution: {integrity: sha512-9hSetMI7ECqbFiKICrNa4w70deTUfArtwXykPUvSHWOdzOlfa9ajglu7mNCntlvxycTiOAXkQGwjQCzzDEMRMg==}
+  '@otplib/totp@13.1.1':
+    resolution: {integrity: sha512-Bbr8C3fLQeUIiAU5sBltPIvPTsGOCmTBln2TjU8wt36nnWMK1p7SsV+VeAk4VYEsGCc4W/ds4M0Pbx4gJMt88A==}
+
+  '@otplib/uri@13.1.1':
+    resolution: {integrity: sha512-UMdz/41JIKPLw6/VeExc3MJaCHZYEZXlF5WVyhtWT5nfzQKAcgp6HI8Tar0lDN+lXXKCjbGwlyCKOWCMAISNXg==}
 
   '@oxlint/darwin-arm64@1.38.0':
     resolution: {integrity: sha512-9rN3047QTyA4i73FKikDUBdczRcLtOsIwZ5TsEx5Q7jr5nBjolhYQOFQf9QdhBLdInxw1iX4+lgdMCf1g74zjg==}
@@ -2519,6 +2519,9 @@ packages:
 
   '@scarf/scarf@1.4.0':
     resolution: {integrity: sha512-xxeapPiUXdZAE3che6f3xogoJPeZgig6omHEy1rIY5WVsB3H2BHNnZH+gHG6x91SCWyQCzWGsuL2Hh3ClO5/qQ==}
+
+  '@scure/base@2.0.0':
+    resolution: {integrity: sha512-3E1kpuZginKkek01ovG8krQ0Z44E3DHPjc5S2rjJw9lZn3KSQOs8S7wqikF/AH7iRanHypj85uGyxk0XAyC37w==}
 
   '@selderee/plugin-htmlparser2@0.11.0':
     resolution: {integrity: sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ==}
@@ -5994,8 +5997,8 @@ packages:
     resolution: {integrity: sha512-D2FR03Vir7FIu45XBY20mTb+/ZSWB00sjU9jdQXt83gDrI4Ztz5Fs7/yy74g2N5SVQY4xY1qDr4rNddwYRVX0g==}
     engines: {node: '>=0.10.0'}
 
-  otplib@12.0.1:
-    resolution: {integrity: sha512-xDGvUOQjop7RDgxTQ+o4pOol0/3xSZzawTiPKRrHnQWAy0WjhNs/5HdIDJCrqC4MBynmjXgULc6YfioaxZeFgg==}
+  otplib@13.1.1:
+    resolution: {integrity: sha512-cjNU7ENJPwqNK7Qesl6P357B0WB4XmbptHCsGzy14jYcRmQyNwkvl0eT0nzUX0c1djrkOFVIHtNp3Px1vDIpfw==}
 
   oxlint@1.38.0:
     resolution: {integrity: sha512-XT7tBinQS+hVLxtfJOnokJ9qVBiQvZqng40tDgR6qEJMRMnpVq/JwYfbYyGntSq8MO+Y+N9M1NG4bAMFUtCJiw==}
@@ -7079,10 +7082,6 @@ packages:
 
   text-decoder@1.2.3:
     resolution: {integrity: sha512-3/o9z3X0X0fTupwsYvR03pJ/DjWuqqrfwBgTQzdWDiQSm9KitAyz/9WqsT2JQW7KV2m+bC2ol/zqpW37NHxLaA==}
-
-  thirty-two@1.0.2:
-    resolution: {integrity: sha512-OEI0IWCe+Dw46019YLl6V10Us5bi574EvlJEOcAkB29IzQ/mYD1A6RyNHLjZPiHCmuodxvgF6U+vZO1L15lxVA==}
-    engines: {node: '>=0.2.6'}
 
   thread-stream@3.1.0:
     resolution: {integrity: sha512-OqyPZ9u96VohAyMfJykzmivOrY2wfMSf3C5TtFJVgN+Hm6aj+voFhlK+kZEIv2FBh1X6Xp3DlnCOfEQ3B2J86A==}
@@ -10117,28 +10116,32 @@ snapshots:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.2.0(@opentelemetry/api@1.9.0)
 
-  '@otplib/core@12.0.1': {}
+  '@otplib/core@13.1.1': {}
 
-  '@otplib/plugin-crypto@12.0.1':
+  '@otplib/hotp@13.1.1':
     dependencies:
-      '@otplib/core': 12.0.1
+      '@otplib/core': 13.1.1
+      '@otplib/uri': 13.1.1
 
-  '@otplib/plugin-thirty-two@12.0.1':
+  '@otplib/plugin-base32-scure@13.1.1':
     dependencies:
-      '@otplib/core': 12.0.1
-      thirty-two: 1.0.2
+      '@otplib/core': 13.1.1
+      '@scure/base': 2.0.0
 
-  '@otplib/preset-default@12.0.1':
+  '@otplib/plugin-crypto-noble@13.1.1':
     dependencies:
-      '@otplib/core': 12.0.1
-      '@otplib/plugin-crypto': 12.0.1
-      '@otplib/plugin-thirty-two': 12.0.1
+      '@noble/hashes': 2.0.1
+      '@otplib/core': 13.1.1
 
-  '@otplib/preset-v11@12.0.1':
+  '@otplib/totp@13.1.1':
     dependencies:
-      '@otplib/core': 12.0.1
-      '@otplib/plugin-crypto': 12.0.1
-      '@otplib/plugin-thirty-two': 12.0.1
+      '@otplib/core': 13.1.1
+      '@otplib/hotp': 13.1.1
+      '@otplib/uri': 13.1.1
+
+  '@otplib/uri@13.1.1':
+    dependencies:
+      '@otplib/core': 13.1.1
 
   '@oxlint/darwin-arm64@1.38.0':
     optional: true
@@ -10247,6 +10250,8 @@ snapshots:
       - '@types/node'
 
   '@scarf/scarf@1.4.0': {}
+
+  '@scure/base@2.0.0': {}
 
   '@selderee/plugin-htmlparser2@0.11.0':
     dependencies:
@@ -14321,11 +14326,14 @@ snapshots:
 
   os-tmpdir@1.0.2: {}
 
-  otplib@12.0.1:
+  otplib@13.1.1:
     dependencies:
-      '@otplib/core': 12.0.1
-      '@otplib/preset-default': 12.0.1
-      '@otplib/preset-v11': 12.0.1
+      '@otplib/core': 13.1.1
+      '@otplib/hotp': 13.1.1
+      '@otplib/plugin-base32-scure': 13.1.1
+      '@otplib/plugin-crypto-noble': 13.1.1
+      '@otplib/totp': 13.1.1
+      '@otplib/uri': 13.1.1
 
   oxlint@1.38.0:
     optionalDependencies:
@@ -15590,8 +15598,6 @@ snapshots:
   text-decoder@1.2.3:
     dependencies:
       b4a: 1.6.7
-
-  thirty-two@1.0.2: {}
 
   thread-stream@3.1.0:
     dependencies:
