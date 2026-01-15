@@ -35,15 +35,18 @@ export class TwoFactorController {
     @LoggedInUser() user: User, @Body()
 twoFaAuthDto: TwofaDto,
   ): Observable<AuthenticationResponse> {
-    const isCodeValid = this.twoFactorAuthenticationService.isTwoFactorCodeValid(
-      twoFaAuthDto.code,
-      user,
+  
+
+    return this.twoFactorAuthenticationService.isTwoFactorCodeValid(
+      twoFaAuthDto.code, user,
+    ).pipe(
+      switchMap((isCodeValid) => {
+        if (!isCodeValid)
+          return throwError(() => new UnauthorizedException())
+
+        return this.authService.login(user, true)
+      })
     )
-
-    if (!isCodeValid)
-      return throwError(() => new UnauthorizedException())
-
-    return this.authService.login(user, true)
   }
 
   @Auth()
