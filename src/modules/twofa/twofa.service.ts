@@ -7,18 +7,24 @@ import { translate } from "@lib/i18n"
 import { EntityManager } from "@mikro-orm/core"
 import { InjectRepository } from "@mikro-orm/nestjs"
 import { Injectable } from "@nestjs/common"
-import { authenticator } from "otplib"
+import { OTP } from "otplib"
 import { toFileStream } from "qrcode"
 import { from, map, throwError } from "rxjs"
+import { generateTOTP } from "@otplib/uri";
 
 @Injectable()
 export class TwoFactorService {
+  private readonly otp: OTP;
+
+
   constructor(
         @InjectRepository(User)
         private userRepository: BaseRepository<User>,
         private readonly configService: ConfigService<Configs, true>,
         private readonly em: EntityManager<PostgreSqlDriver>,
-  ) {}
+  ) {
+    this.otp = new OTP()
+  }
 
   /**
    * It generates a secret, creates an OTP Auth URL, assigns the secret to the user, and flushes the user
@@ -28,12 +34,14 @@ export class TwoFactorService {
    */
 
   generateTwoFactorSecret(user: User): Observable<{ secret: string, otpAuthUrl: string }> {
-    const secret = authenticator.generateSecret()
+    const secret = this.otp.generateSecret()
 
-    const otpAuthUrl = authenticator.keyuri(
-      user.email,
-      this.configService.get("app.name", { infer: true }),
-      secret,
+    const otpAuthUrl = generateTOTP(
+    {
+        issuer: this.configService.get("app.name", { infer: true }),
+      label: user.email,
+      secret: secret,
+    }
     )
 
     this.userRepository.assign(user, { twoFactorSecret: secret })
@@ -62,11 +70,11 @@ export class TwoFactorService {
    * @param user - The user object that we're checking the two factor authentication code for.
    * @returns A boolean value.
    */
-  isTwoFactorCodeValid(twoFactorAuthenticationCode: string, user: User): boolean {
-    return authenticator.verify({
+  isTwoFactorCodeValid(twoFactorAuthenticationCode: string, user: User): Observable<boolean> {
+    return from(this.otp.verify({
       token: twoFactorAuthenticationCode,
       secret: user.twoFactorSecret!,
-    })
+    })).pipe(map((result) => result.valid))
   }
 
   /**
