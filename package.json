@@ -34,7 +34,7 @@
     "typescript"
   ],
   "engines": {
-    "node": ">=24.12.0"
+    "node": ">=24.13.0"
   },
   "scripts": {
     "build": "nest build",
@@ -55,9 +55,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --runInBand --forceExit"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.969.0",
-    "@aws-sdk/client-sesv2": "^3.969.0",
-    "@casl/ability": "^6.7.5",
+    "@aws-sdk/client-s3": "^3.971.0",
+    "@aws-sdk/client-sesv2": "^3.971.0",
+    "@casl/ability": "^6.8.0",
     "@date-fns/utc": "^2.1.1",
     "@golevelup/nestjs-rabbitmq": "^7.1.1",
     "@golevelup/nestjs-stripe": "^1.1.1",
@@ -130,7 +130,7 @@
     "rxjs": "^7.8.2",
     "sharp": "^0.34.5",
     "socket.io": "^4.8.3",
-    "stripe": "^20.1.2",
+    "stripe": "^20.2.0",
     "swagger-stats": "^0.99.7",
     "twilio": "^5.11.2",
     "unprofane": "^1.0.6",
@@ -142,7 +142,7 @@
     "@golevelup/ts-jest": "^1.2.0",
     "@mikro-orm/cli": "^6.6.4",
     "@mikro-orm/seeder": "^6.6.4",
-    "@nestjs/cli": "^11.0.15",
+    "@nestjs/cli": "^11.0.16",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.12",
     "@rubiin/tsconfig": "^1.2.1",
@@ -156,7 +156,7 @@
     "@types/jest": "^30.0.0",
     "@types/mime-types": "^3.0.1",
     "@types/multer": "^2.0.0",
-    "@types/node": "^24.10.8",
+    "@types/node": "^24.10.9",
     "@types/nodemailer": "^7.0.5",
     "@types/passport": "^1.0.17",
     "@types/passport-facebook": "^3.0.4",
