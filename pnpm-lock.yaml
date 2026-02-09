@@ -183,8 +183,8 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(@nestjs/common@11.1.12(class-transformer@0.5.1)(class-validator@0.14.3)(reflect-metadata@0.2.2)(rxjs@7.8.2))(pino-http@11.0.0)(pino@10.0.0)(rxjs@7.8.2)
       nodemailer:
-        specifier: ^7.0.13
-        version: 7.0.13
+        specifier: ^8.0.1
+        version: 8.0.1
       otplib:
         specifier: ^13.2.1
         version: 13.2.1
@@ -5980,6 +5980,10 @@ packages:
 
   nodemailer@7.0.13:
     resolution: {integrity: sha512-PNDFSJdP+KFgdsG3ZzMXCgquO7I6McjY2vlqILjtJd0hy8wEvtugS9xKRF2NWlPNGxvLCXlTNIae4serI7dinw==}
+    engines: {node: '>=6.0.0'}
+
+  nodemailer@8.0.1:
+    resolution: {integrity: sha512-5kcldIXmaEjZcHR6F28IKGSgpmZHaF1IXLWFTG+Xh3S+Cce4MiakLtWY+PlBU69fLbRa8HlaGIrC/QolUpHkhg==}
     engines: {node: '>=6.0.0'}
 
   normalize-path@3.0.0:
@@ -14306,6 +14310,8 @@ snapshots:
   nodemailer@7.0.11: {}
 
   nodemailer@7.0.13: {}
+
+  nodemailer@8.0.1: {}
 
   normalize-path@3.0.0: {}
 
