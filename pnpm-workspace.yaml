@@ -11,3 +11,12 @@ onlyBuiltDependencies:
   - sharp
   - ssh2
   - unrs-resolver
+allowBuilds:
+  '@nestjs/core': true
+  '@scarf/scarf': true
+  argon2: true
+  puppeteer: true
+dedupe-direct-deps: true
+hoist: true
+legacy-peer-deps: true
+shamefully-hoist: true
