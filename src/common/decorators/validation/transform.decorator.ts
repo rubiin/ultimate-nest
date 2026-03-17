@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer"
 import { isArray, isString } from "helper-fns"
-import DOMPurify from "isomorphic-dompurify"
+import { sanitize } from "isomorphic-dompurify"
 
 /**
  * It trims the value of a property and replaces multiple spaces with a single space
@@ -52,14 +52,14 @@ export function Sanitize(): PropertyDecorator {
       if (isArray(value)) {
         return value.map((v) => {
           if (isString(v))
-            return DOMPurify.sanitize(v)
+            return sanitize(v)
 
           return v
         })
       }
 
       if (isString(value))
-        return DOMPurify.sanitize(value)
+        return sanitize(value)
 
       return value
     },
