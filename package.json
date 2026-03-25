@@ -1,7 +1,7 @@
 {
   "name": "ultimate-nest",
   "version": "2.8.0",
-  "packageManager": "pnpm@10.32.1",
+  "packageManager": "pnpm@10.33.0",
   "description": "NestJS + MikroORM blog example with batteries included",
   "author": {
     "email": "roobin.bhandari@gmail.com",
@@ -34,7 +34,7 @@
     "typescript"
   ],
   "engines": {
-    "node": ">=24.14.0"
+    "node": ">=24.14.1"
   },
   "scripts": {
     "build": "nest build",
@@ -55,8 +55,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --runInBand --forceExit"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1010.0",
-    "@aws-sdk/client-sesv2": "^3.1009.0",
+    "@aws-sdk/client-s3": "^3.1016.0",
+    "@aws-sdk/client-sesv2": "^3.1016.0",
     "@casl/ability": "^6.8.0",
     "@date-fns/utc": "^2.1.1",
     "@golevelup/nestjs-rabbitmq": "^7.1.2",
@@ -91,7 +91,7 @@
     "@ntegral/nestjs-sentry": "^4.0.1",
     "@paralleldrive/cuid2": "^3.3.0",
     "@sentry/hub": "^7.120.4",
-    "@sentry/node": "^10.43.0",
+    "@sentry/node": "^10.46.0",
     "@socket.io/redis-adapter": "^8.3.0",
     "@supercharge/request-ip": "^1.2.0",
     "argon2": "^0.44.0",
@@ -104,17 +104,17 @@
     "firebase-admin": "^13.7.0",
     "helmet": "^8.1.0",
     "helper-fns": "^2.9.3",
-    "ioredis": "^5.10.0",
-    "isomorphic-dompurify": "^3.4.0",
-    "joi": "^18.0.2",
+    "ioredis": "^5.10.1",
+    "isomorphic-dompurify": "^3.7.1",
+    "joi": "^18.1.1",
     "keyv": "^5.6.0",
     "mime": "^4.1.0",
     "nestjs-cloudinary": "^2.1.1",
     "nestjs-i18n": "^10.6.0",
     "nestjs-minio": "^2.6.3",
     "nestjs-pino": "^4.6.1",
-    "nodemailer": "^8.0.2",
-    "otplib": "^13.3.0",
+    "nodemailer": "^8.0.4",
+    "otplib": "^13.4.0",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
@@ -132,12 +132,12 @@
     "socket.io": "^4.8.3",
     "stripe": "^20.4.1",
     "swagger-stats": "^0.99.7",
-    "twilio": "^5.13.0",
+    "twilio": "^5.13.1",
     "unprofane": "^1.0.6",
     "url-minify": "^2.8.5"
   },
   "devDependencies": {
-    "@firebase/app-compat": "^0.5.9",
+    "@firebase/app-compat": "^0.5.10",
     "@firebase/app-types": "^0.9.3",
     "@golevelup/ts-jest": "^1.2.1",
     "@mikro-orm/cli": "^6.6.9",
@@ -146,9 +146,9 @@
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.17",
     "@rubiin/tsconfig": "^1.2.1",
-    "@sentry/types": "^10.43.0",
+    "@sentry/types": "^10.46.0",
     "@side/jest-runtime": "^1.1.0",
-    "@swc/core": "^1.15.18",
+    "@swc/core": "^1.15.21",
     "@swc/jest": "^0.2.39",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/compression": "^1.8.1",
@@ -173,7 +173,7 @@
     "husky": "^9.1.7",
     "jest": "^30.3.0",
     "lint-staged": "^16.4.0",
-    "oxlint": "^1.56.0",
+    "oxlint": "^1.57.0",
     "run-script-webpack-plugin": "^0.2.3",
     "sample-env": "^2.1.6",
     "supertest": "^7.2.2",
