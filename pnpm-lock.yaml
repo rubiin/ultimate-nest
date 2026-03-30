@@ -27,8 +27,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(stripe@20.4.1(@types/node@24.12.0))
       '@golevelup/nestjs-webhooks':
-        specifier: ^1.1.1
-        version: 1.1.1(body-parser@2.2.1)
+        specifier: ^2.0.0
+        version: 2.0.0(body-parser@2.2.1)
       '@keyv/redis':
         specifier: ^5.1.6
         version: 5.1.6(keyv@5.6.0)
@@ -36,7 +36,7 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(@babel/core@7.28.3)(lodash@4.17.21)(pug@3.0.3)
       '@mikro-orm/core':
-        specifier: ^6.6.9
+        specifier: ^6.6.10
         version: 6.6.10
       '@mikro-orm/migrations':
         specifier: ^6.6.9
@@ -955,8 +955,8 @@ packages:
     peerDependencies:
       stripe: ^20.3.0
 
-  '@golevelup/nestjs-webhooks@1.1.1':
-    resolution: {integrity: sha512-4lmlHJZQMou8ZOq3pN1oiAVEUdlySEQD9IEPcbM2y9/t3tFBPTCU0pnNbaYQz2ofUOl6lJyt0V5EabynH5d/hg==}
+  '@golevelup/nestjs-webhooks@2.0.0':
+    resolution: {integrity: sha512-ysMV5V29CQGJ5gF1WQlFNMWLBm87f6xoaRBpinjdy2Nd1Xk3LVZYb8YJu1/4S58rJK9OW7ohRkCHkAt8DfWsaQ==}
     peerDependencies:
       body-parser: ^2.2.0
 
@@ -8783,7 +8783,7 @@ snapshots:
       - '@nestjs/common'
       - '@nestjs/core'
 
-  '@golevelup/nestjs-webhooks@1.1.1(body-parser@2.2.1)':
+  '@golevelup/nestjs-webhooks@2.0.0(body-parser@2.2.1)':
     dependencies:
       body-parser: 2.2.1
 
