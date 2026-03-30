@@ -1,6 +1,6 @@
-import { Transform } from "class-transformer"
-import { isArray, isString } from "helper-fns"
-import { sanitize } from "isomorphic-dompurify"
+import { Transform } from "class-transformer";
+import { isArray, isString } from "helper-fns";
+import { sanitize } from "isomorphic-dompurify";
 
 /**
  * It trims the value of a property and replaces multiple spaces with a single space
@@ -8,13 +8,12 @@ import { sanitize } from "isomorphic-dompurify"
  */
 export function Trim() {
   return Transform((parameters) => {
-    const value = parameters.value as string[] | string
+    const value = parameters.value as string[] | string;
 
-    if (isArray(value))
-      return value.map((v: string) => v.trim().replaceAll(/\s{2,}/g, " "))
+    if (isArray(value)) return value.map((v: string) => v.trim().replaceAll(/\s{2,}/g, " "));
 
-    return value.trim().replaceAll(/\s{2,}/g, " ")
-  })
+    return value.trim().replaceAll(/\s{2,}/g, " ");
+  });
 }
 
 /**
@@ -27,18 +26,18 @@ export function ToBoolean() {
     (parameters) => {
       switch (parameters.value) {
         case "true": {
-          return true
+          return true;
         }
         case "false": {
-          return false
+          return false;
         }
         default: {
-          return parameters.value as boolean
+          return parameters.value as boolean;
         }
       }
     },
     { toClassOnly: true },
-  )
+  );
 }
 
 /**
@@ -51,18 +50,16 @@ export function Sanitize(): PropertyDecorator {
     ({ value }: { value: unknown }) => {
       if (isArray(value)) {
         return value.map((v) => {
-          if (isString(v))
-            return sanitize(v)
+          if (isString(v)) return sanitize(v);
 
-          return v
-        })
+          return v;
+        });
       }
 
-      if (isString(value))
-        return sanitize(value)
+      if (isString(value)) return sanitize(value);
 
-      return value
+      return value;
     },
     { toClassOnly: true },
-  )
+  );
 }

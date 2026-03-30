@@ -1,7 +1,7 @@
-import { ThrottlerStorageRedisService } from "@nest-lab/throttler-storage-redis"
-import { Module } from "@nestjs/common"
-import { ConfigModule, ConfigService } from "@nestjs/config"
-import { ThrottlerModule } from "@nestjs/throttler"
+import { ThrottlerStorageRedisService } from "@nest-lab/throttler-storage-redis";
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
   imports: [
@@ -12,7 +12,9 @@ import { ThrottlerModule } from "@nestjs/throttler"
         ttl: configService.get("throttle.ttl", { infer: true }),
         limit: configService.get("throttle.limit", { infer: true }),
         ignoreUserAgents: [/nestify/i],
-        storage: new ThrottlerStorageRedisService(configService.getOrThrow("redis", { infer: true })),
+        storage: new ThrottlerStorageRedisService(
+          configService.getOrThrow("redis", { infer: true }),
+        ),
         throttlers: [],
       }),
     }),

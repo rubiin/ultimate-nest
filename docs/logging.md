@@ -6,24 +6,22 @@ logger module that provides integration with the Pino logging library in a Nest.
 Import the LoggerModule from nestjs-pino in your module file:
 
 ```ts
-
 import { Module } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
 
 @Module({
-	imports: [
-		LoggerModule.forRootAsync({
-			useFactory: () => {
-				return {
-					// Pino logger options
-				};
-			},
-		}),
-	],
-	exports: [LoggerModule],
+  imports: [
+    LoggerModule.forRootAsync({
+      useFactory: () => {
+        return {
+          // Pino logger options
+        };
+      },
+    }),
+  ],
+  exports: [LoggerModule],
 })
 export class NestPinoModule {}
-
 ```
 
 1. Configure the Pino logger options using the forRootAsync() method. In the provided factory function, you can specify
@@ -47,43 +45,39 @@ export class NestPinoModule {}
    example:
 
 ```ts
-import { Module } from '@nestjs/common';
-import { NestPinoModule } from './nest-pino.module';
+import { Module } from "@nestjs/common";
+import { NestPinoModule } from "./nest-pino.module";
 
 @Module({
   imports: [NestPinoModule],
 })
 export class AppModule {}
-
-
 ```
 
 1. You can now use the LoggerService provided by nestjs-pino in your application's components, services, or controllers
    to log messages. For example:
 
 ```ts
-import { Logger } from '@nestjs/common';
-import { Injectable } from '@nestjs/common';
+import { Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class MyService {
-    private readonly logger = new Logger(MyService.name);
+  private readonly logger = new Logger(MyService.name);
 
-    public doSomething() {
-        // Log info level message
-        this.logger.log('This is an info level');
-// Log error level message
-        this.logger.error('This is an error level log message.');
+  public doSomething() {
+    // Log info level message
+    this.logger.log("This is an info level");
+    // Log error level message
+    this.logger.error("This is an error level log message.");
 
-// Log warning level message
-        this.logger.warn('This is a warning level log message.');
+    // Log warning level message
+    this.logger.warn("This is a warning level log message.");
 
-// Log debug level message
-        this.logger.debug('This is a debug level log message.');
-    }
+    // Log debug level message
+    this.logger.debug("This is a debug level log message.");
+  }
 }
-
-
 ```
 
 Note: The `LoggerService` provided by `nestjs-pino` is just a wrapper around the Pino logger and provides additional

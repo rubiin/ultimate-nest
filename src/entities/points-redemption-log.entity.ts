@@ -1,21 +1,21 @@
-import  { Ref, Rel } from "@mikro-orm/postgresql"
-import  { User } from "./user.entity"
-import { BaseEntity } from "@common/database"
-import { Entity, ManyToOne, Property } from "@mikro-orm/postgresql"
+import { Ref, Rel } from "@mikro-orm/postgresql";
+import { User } from "./user.entity";
+import { BaseEntity } from "@common/database";
+import { Entity, ManyToOne, Property } from "@mikro-orm/postgresql";
 
 @Entity()
 export class PointRedemptionLog extends BaseEntity {
   @Property()
-  points!: number
+  points!: number;
 
   @Property({ columnType: "numeric(9,2)" })
-  amount!: string
+  amount!: string;
 
   @ManyToOne({ index: true })
-  user!: Rel<Ref<User>>
+  user!: Rel<Ref<User>>;
 
   constructor(partial?: Partial<PointRedemptionLog>) {
-    super()
-    Object.assign(this, partial)
+    super();
+    Object.assign(this, partial);
   }
 }

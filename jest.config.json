@@ -1,9 +1,5 @@
 {
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "ts"
-  ],
+  "moduleFileExtensions": ["js", "json", "ts"],
   "testTimeout": 30000,
   "moduleNameMapper": {
     "^@entities": "<rootDir>/entities/index",
@@ -20,8 +16,5 @@
   "runtime": "@side/jest-runtime",
   "coverageDirectory": "../coverage",
   "testEnvironment": "node",
-  "coverageReporters": [
-    "text",
-    "html"
-  ]
+  "coverageReporters": ["text", "html"]
 }

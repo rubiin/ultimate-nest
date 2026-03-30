@@ -1,7 +1,7 @@
-import  { IsNestedFieldOptions } from "@common/@types"
-import  { Class } from "helper-fns"
-import { applyDecorators } from "@nestjs/common"
-import { Type } from "class-transformer"
+import { IsNestedFieldOptions } from "@common/@types";
+import { Class } from "helper-fns";
+import { applyDecorators } from "@nestjs/common";
+import { Type } from "class-transformer";
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -10,8 +10,8 @@ import {
   IsNotEmpty,
   IsOptional,
   ValidateNested,
-} from "class-validator"
-import { i18nValidationMessage } from "nestjs-i18n"
+} from "class-validator";
+import { i18nValidationMessage } from "nestjs-i18n";
 
 /**
  * It's a decorator that validates a string field
@@ -26,13 +26,13 @@ export function IsNestedField(entity: Class, ops?: IsNestedFieldOptions) {
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
     arrayMinSize: 0,
     ...ops,
-  }
+  };
   const decoratorsToApply = [
     ValidateNested({
       each: options.each,
     }),
     Type(() => entity),
-  ]
+  ];
 
   if (options.required) {
     decoratorsToApply.push(
@@ -40,18 +40,17 @@ export function IsNestedField(entity: Class, ops?: IsNestedFieldOptions) {
         message: i18nValidationMessage("validation.isNotEmpty"),
         each: options.each,
       }),
-    )
+    );
 
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
           message: i18nValidationMessage("validation.isNotEmpty"),
         }),
-      )
+      );
     }
-  }
-  else {
-    decoratorsToApply.push(IsOptional())
+  } else {
+    decoratorsToApply.push(IsOptional());
   }
 
   if (options.each) {
@@ -63,8 +62,8 @@ export function IsNestedField(entity: Class, ops?: IsNestedFieldOptions) {
       }),
       ArrayMaxSize(options.arrayMaxSize),
       ArrayMinSize(options.arrayMinSize),
-    )
+    );
   }
 
-  return applyDecorators(...decoratorsToApply)
+  return applyDecorators(...decoratorsToApply);
 }

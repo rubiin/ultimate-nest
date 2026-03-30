@@ -1,18 +1,18 @@
-import  { User } from "@entities"
-import  { EntityRepository, PostgreSqlDriver } from "@mikro-orm/postgresql"
-import  { Observable } from "rxjs"
-import { RefreshToken } from "@entities"
-import { EntityManager } from "@mikro-orm/core"
-import { InjectRepository } from "@mikro-orm/nestjs"
-import { Injectable } from "@nestjs/common"
-import { from, map } from "rxjs"
+import { User } from "@entities";
+import { EntityRepository, PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { Observable } from "rxjs";
+import { RefreshToken } from "@entities";
+import { EntityManager } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable } from "@nestjs/common";
+import { from, map } from "rxjs";
 
 @Injectable()
 export class RefreshTokensRepository {
   constructor(
     private readonly em: EntityManager<PostgreSqlDriver>,
-        @InjectRepository(RefreshToken)
-        private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
+    @InjectRepository(RefreshToken)
+    private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
   ) {}
 
   /**
@@ -22,19 +22,19 @@ export class RefreshTokensRepository {
    * @returns A refresh token
    */
   createRefreshToken(user: User, ttl: number): Observable<RefreshToken> {
-    const expiration = new Date()
+    const expiration = new Date();
 
     // the input is treated as millis so *1000 is necessary
-    const ttlSeconds = ttl * 1000 // seconds
+    const ttlSeconds = ttl * 1000; // seconds
 
-    expiration.setTime(expiration.getTime() + ttlSeconds)
+    expiration.setTime(expiration.getTime() + ttlSeconds);
 
     const token = this.refreshTokenRepository.create({
       user: user.id,
       expiresIn: expiration,
-    })
+    });
 
-    return from(this.em.persistAndFlush(token)).pipe(map(() => token))
+    return from(this.em.persistAndFlush(token)).pipe(map(() => token));
   }
 
   /**
@@ -48,7 +48,7 @@ export class RefreshTokensRepository {
         id,
         isRevoked: false,
       }),
-    )
+    );
   }
 
   /**
@@ -59,7 +59,7 @@ export class RefreshTokensRepository {
   deleteTokensForUser(user: User): Observable<boolean> {
     return from(this.refreshTokenRepository.nativeUpdate({ user }, { isRevoked: true })).pipe(
       map(() => true),
-    )
+    );
   }
 
   /**
@@ -71,6 +71,6 @@ export class RefreshTokensRepository {
   deleteToken(user: User, tokenId: number): Observable<boolean> {
     return from(
       this.refreshTokenRepository.nativeUpdate({ user, id: tokenId }, { isRevoked: true }),
-    ).pipe(map(() => true))
+    ).pipe(map(() => true));
   }
 }

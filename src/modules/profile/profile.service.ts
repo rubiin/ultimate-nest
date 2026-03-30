@@ -1,14 +1,14 @@
-import  { ProfileData } from "@common/@types"
-import  { BaseRepository } from "@common/database"
-import  { AutoPath, EntityKey } from "@mikro-orm/core"
-import  { PostgreSqlDriver } from "@mikro-orm/postgresql"
-import  { Observable } from "rxjs"
-import { User } from "@entities"
-import { itemDoesNotExistKey, translate } from "@lib/i18n"
-import { EntityManager } from "@mikro-orm/core"
-import { InjectRepository } from "@mikro-orm/nestjs"
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
-import { from, map, mergeMap, of, switchMap, throwError } from "rxjs"
+import { ProfileData } from "@common/@types";
+import { BaseRepository } from "@common/database";
+import { AutoPath, EntityKey } from "@mikro-orm/core";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { Observable } from "rxjs";
+import { User } from "@entities";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { EntityManager } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 @Injectable()
 export class ProfileService {
@@ -16,7 +16,7 @@ export class ProfileService {
     @InjectRepository(User)
     private userRepository: BaseRepository<User>,
     private readonly em: EntityManager<PostgreSqlDriver>,
-  ) { }
+  ) {}
 
   /**
    * "Get a user by their username, and populate the specified fields."
@@ -56,12 +56,12 @@ export class ProfileService {
                   args: { item: "Profile" },
                 }),
               ),
-          )
+          );
         }
 
-        return of(user)
+        return of(user);
       }),
-    )
+    );
   }
 
   /**
@@ -76,9 +76,7 @@ export class ProfileService {
    */
   follow(loggedInUser: User, usernameToFollow: string): Observable<ProfileData> {
     if (!usernameToFollow) {
-      return throwError(
-        () => new BadRequestException(translate("exception.usernameRequired")),
-      )
+      return throwError(() => new BadRequestException(translate("exception.usernameRequired")));
     }
 
     return this.getProfileByUsername(usernameToFollow, ["followers"]).pipe(
@@ -86,20 +84,20 @@ export class ProfileService {
         if (loggedInUser.username === usernameToFollow) {
           return throwError(
             () => new BadRequestException(translate("exception.followerFollowingSame")),
-          )
+          );
         }
 
-        followingUser.followers.add(loggedInUser)
+        followingUser.followers.add(loggedInUser);
 
         const profile: ProfileData = {
           following: true,
           avatar: followingUser.avatar,
           username: followingUser.username,
-        }
+        };
 
-        return from(this.em.flush()).pipe(map(() => profile))
+        return from(this.em.flush()).pipe(map(() => profile));
       }),
-    )
+    );
   }
 
   /**
@@ -110,31 +108,29 @@ export class ProfileService {
    */
   unFollow(loggedInUser: User, username: string): Observable<ProfileData> {
     if (!username) {
-      return throwError(
-        () => new BadRequestException(translate("exception.usernameRequired")),
-      )
+      return throwError(() => new BadRequestException(translate("exception.usernameRequired")));
     }
 
     return this.getProfileByUsername(username, ["followers"]).pipe(
       switchMap((followingUser) => {
-        const followerUser = this.userRepository.getReference(loggedInUser.id)
+        const followerUser = this.userRepository.getReference(loggedInUser.id);
 
         if (followingUser.id === loggedInUser.id) {
           return throwError(
             () => new BadRequestException(translate("exception.followerFollowingSame")),
-          )
+          );
         }
 
-        followingUser.followers.remove(followerUser)
+        followingUser.followers.remove(followerUser);
 
         const profile: ProfileData = {
           following: false,
           avatar: followingUser.avatar,
           username: followingUser.username,
-        }
+        };
 
-        return from(this.em.flush()).pipe(map(() => profile))
+        return from(this.em.flush()).pipe(map(() => profile));
       }),
-    )
+    );
   }
 }

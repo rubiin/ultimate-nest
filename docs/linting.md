@@ -2,9 +2,9 @@
 
 - [Languages](#languages)
 - [Scripts](#scripts)
-    - [Terminal](#terminal)
-    - [Pre-commit](#pre-commit)
-    - [Editor](#editor)
+  - [Terminal](#terminal)
+  - [Pre-commit](#pre-commit)
+  - [Editor](#editor)
 - [Configuration](#configuration)
 - [FAQ](#faq)
 
@@ -47,7 +47,7 @@ This boilerplate ships with opinionated defaults, but you can edit each tools co
 files:
 
 - [Oxlint](https://oxc.rs/docs/guide/usage/linter/config.html)
-    - `.oxlintrc.json`
+  - `.oxlintrc.json`
 
 Note: This uses oxlint flat config, which is the recommended way to configure oxlint.
 

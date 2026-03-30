@@ -1,13 +1,13 @@
-import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq"
-import { Global, Logger, Module } from "@nestjs/common"
-import { ConfigModule, ConfigService } from "@nestjs/config"
+import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
+import { Global, Logger, Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
-const logger = new Logger("RabbitMQ")
+const logger = new Logger("RabbitMQ");
 
 @Global()
 @Module({
   imports: [
-    RabbitMQModule.forRootAsync( {
+    RabbitMQModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({

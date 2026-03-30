@@ -1,30 +1,26 @@
-import  {
+import {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from "class-validator"
-import {
-  registerDecorator,
-  ValidatorConstraint,
-} from "class-validator"
-import { isArray } from "helper-fns"
-import Unprofane from "unprofane"
+} from "class-validator";
+import { registerDecorator, ValidatorConstraint } from "class-validator";
+import { isArray } from "helper-fns";
+import Unprofane from "unprofane";
 
 @ValidatorConstraint({ async: true })
 class IsProfaneConstraint implements ValidatorConstraintInterface {
   async validate(value: string | string[]) {
-    const isProfane = new Unprofane({ lang: "all" })
+    const isProfane = new Unprofane({ lang: "all" });
 
-    if (isArray(value))
-      return value.some(v => isProfane.check(v))
+    if (isArray(value)) return value.some((v) => isProfane.check(v));
 
-    return !isProfane.check(value)
+    return !isProfane.check(value);
   }
 
   defaultMessage(arguments_: ValidationArguments) {
-    const property = arguments_.property
+    const property = arguments_.property;
 
-    return `${property} has profane words`
+    return `${property} has profane words`;
   }
 }
 
@@ -35,6 +31,6 @@ export function IsProfane(validationOptions?: ValidationOptions): PropertyDecora
       propertyName: propertyName as string,
       options: validationOptions,
       validator: IsProfaneConstraint,
-    })
-  }
+    });
+  };
 }

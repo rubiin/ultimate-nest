@@ -1,7 +1,7 @@
-import  { EventArgs, Opt, Ref, Rel } from "@mikro-orm/postgresql"
-import  { User } from "./index"
-import { PostStateEnum } from "@common/@types"
-import { BaseEntity } from "@common/database"
+import { EventArgs, Opt, Ref, Rel } from "@mikro-orm/postgresql";
+import { User } from "./index";
+import { PostStateEnum } from "@common/@types";
+import { BaseEntity } from "@common/database";
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -13,58 +13,58 @@ import {
   ManyToOne,
   OneToMany,
   Property,
-} from "@mikro-orm/postgresql"
-import { slugify } from "helper-fns"
-import { Category, Comment, Tag } from "./index"
+} from "@mikro-orm/postgresql";
+import { slugify } from "helper-fns";
+import { Category, Comment, Tag } from "./index";
 
 @Entity()
 export class Post extends BaseEntity {
   @Property({ index: true })
-  slug?: string
+  slug?: string;
 
   @Property({ index: true })
-  title!: string
+  title!: string;
 
   @Property({ type: "text" })
-  description!: string
+  description!: string;
 
   @Property({ type: "text" })
-  content!: string
+  content!: string;
 
   @Property()
-  readingTime: number & Opt = 0
+  readingTime: number & Opt = 0;
 
   @Property()
-  readCount: number & Opt = 0
+  readCount: number & Opt = 0;
 
   @Property({ index: true })
-  published: boolean & Opt = false
+  published: boolean & Opt = false;
 
   @Property()
-  favoritesCount: number & Opt = 0
+  favoritesCount: number & Opt = 0;
 
   @ManyToOne({
     index: true,
   })
-  author!: Rel<Ref<User>>
+  author!: Rel<Ref<User>>;
 
-  @OneToMany(() => Comment, comment => comment.post, {
+  @OneToMany(() => Comment, (comment) => comment.post, {
     orphanRemoval: true,
   })
-  comments = new Collection<Comment>(this)
+  comments = new Collection<Comment>(this);
 
   @ManyToMany(() => Tag, "posts", { owner: true })
-  tags = new Collection<Tag>(this)
+  tags = new Collection<Tag>(this);
 
   @ManyToMany(() => Category, "posts", { owner: true })
-  categories = new Collection<Category>(this)
+  categories = new Collection<Category>(this);
 
   @Enum({ items: () => PostStateEnum })
-  state: PostStateEnum & Opt = PostStateEnum.DRAFT
+  state: PostStateEnum & Opt = PostStateEnum.DRAFT;
 
   constructor(partial?: Partial<Post>) {
-    super()
-    Object.assign(this, partial)
+    super();
+    Object.assign(this, partial);
   }
 
   @BeforeUpsert()
@@ -72,17 +72,15 @@ export class Post extends BaseEntity {
   @BeforeUpdate()
   async generateSlug(eventArguments: EventArgs<this>) {
     if (eventArguments.changeSet?.payload?.title) {
-      this.slug = `${slugify(
-        this.title,
-      )}-${Math.trunc(Math.random() * 36 ** 6).toString(36)}`
+      this.slug = `${slugify(this.title)}-${Math.trunc(Math.random() * 36 ** 6).toString(36)}`;
     }
-    this.readingTime = this.getReadingTime(this.content)
+    this.readingTime = this.getReadingTime(this.content);
   }
 
   getReadingTime(content: string) {
-    const avgWordsPerMin = 250
-    const count = content.match(/\w+/g)?.length ?? 0
+    const avgWordsPerMin = 250;
+    const count = content.match(/\w+/g)?.length ?? 0;
 
-    return Math.ceil(count / avgWordsPerMin)
+    return Math.ceil(count / avgWordsPerMin);
   }
 }

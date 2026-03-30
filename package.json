@@ -1,41 +1,37 @@
 {
   "name": "ultimate-nest",
   "version": "2.8.0",
-  "packageManager": "pnpm@10.32.1",
   "description": "NestJS + MikroORM blog example with batteries included",
-  "author": {
-    "email": "roobin.bhandari@gmail.com",
-    "name": "Rubin Bhandari",
-    "url": "https://rubiin.vercel.app"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/rubiin/ultimate-nest#readme",
-  "repository": "https://github.com/rubiin/ultimate-nest",
-  "bugs": "https://github.com/rubiin/ultimate-nest/issues",
   "keywords": [
     "casl",
-    "jwt",
     "jest",
     "jsonwebtoken",
+    "jwt",
     "mikroorm",
-    "nodejs",
-    "node.js",
-    "node",
     "nest",
-    "nestjs",
     "nest.js",
+    "nestjs",
     "nestjs-boilerplate",
     "nestjs-mikroorm",
     "nestjs-starter-template",
     "nestjs-template",
+    "node",
+    "node.js",
+    "nodejs",
     "orm",
     "passport",
     "swagger",
     "typescript"
   ],
-  "engines": {
-    "node": ">=24.14.0"
+  "homepage": "https://github.com/rubiin/ultimate-nest#readme",
+  "bugs": "https://github.com/rubiin/ultimate-nest/issues",
+  "license": "MIT",
+  "author": {
+    "name": "Rubin Bhandari",
+    "email": "roobin.bhandari@gmail.com",
+    "url": "https://rubiin.vercel.app"
   },
+  "repository": "https://github.com/rubiin/ultimate-nest",
   "scripts": {
     "build": "nest build",
     "lint": "oxlint",
@@ -43,6 +39,8 @@
     "orm": "npx mikro-orm",
     "sample": "cd env; npx  sample-env --env .env.dev",
     "start": "nest start",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "start:dev": "nest start --watch",
     "start:hmr": "nest build --watch --webpack --webpackPath webpack-hmr.js",
     "start:prod": "node dist/main",
@@ -89,6 +87,7 @@
     "@nestjs/websockets": "^11.1.17",
     "@ngneat/falso": "^8.0.2",
     "@ntegral/nestjs-sentry": "^4.0.1",
+    "@otplib/uri": "^13.4.0",
     "@paralleldrive/cuid2": "^3.3.0",
     "@sentry/hub": "^7.120.4",
     "@sentry/node": "^10.43.0",
@@ -104,9 +103,9 @@
     "firebase-admin": "^13.7.0",
     "helmet": "^8.1.0",
     "helper-fns": "^2.9.3",
-    "ioredis": "^5.10.0",
-    "isomorphic-dompurify": "^3.4.0",
-    "joi": "^18.0.2",
+    "ioredis": "^5.10.1",
+    "isomorphic-dompurify": "^3.7.1",
+    "joi": "^18.1.1",
     "keyv": "^5.6.0",
     "mime": "^4.1.0",
     "nestjs-cloudinary": "^2.1.1",
@@ -114,7 +113,7 @@
     "nestjs-minio": "^2.6.3",
     "nestjs-pino": "^4.6.1",
     "nodemailer": "^8.0.2",
-    "otplib": "^13.3.0",
+    "otplib": "^13.4.0",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
@@ -132,12 +131,12 @@
     "socket.io": "^4.8.3",
     "stripe": "^20.4.1",
     "swagger-stats": "^0.99.7",
-    "twilio": "^5.13.0",
+    "twilio": "^5.13.1",
     "unprofane": "^1.0.6",
     "url-minify": "^2.8.5"
   },
   "devDependencies": {
-    "@firebase/app-compat": "^0.5.9",
+    "@firebase/app-compat": "^0.5.10",
     "@firebase/app-types": "^0.9.3",
     "@golevelup/ts-jest": "^1.2.1",
     "@mikro-orm/cli": "^6.6.9",
@@ -148,7 +147,7 @@
     "@rubiin/tsconfig": "^1.2.1",
     "@sentry/types": "^10.43.0",
     "@side/jest-runtime": "^1.1.0",
-    "@swc/core": "^1.15.18",
+    "@swc/core": "^1.15.21",
     "@swc/jest": "^0.2.39",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/compression": "^1.8.1",
@@ -173,7 +172,8 @@
     "husky": "^9.1.7",
     "jest": "^30.3.0",
     "lint-staged": "^16.4.0",
-    "oxlint": "^1.56.0",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.57.0",
     "run-script-webpack-plugin": "^0.2.3",
     "sample-env": "^2.1.6",
     "supertest": "^7.2.2",
@@ -185,16 +185,20 @@
     "webpack": "^5.105.4",
     "webpack-node-externals": "^3.0.0"
   },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "engines": {
+    "node": ">=24.14.0"
+  },
+  "packageManager": "pnpm@10.33.0",
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [
       "./src/common/database/mikro-orm-cli.config.ts",
       "./dist/common/database/mikro-orm-cli.config.js"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }

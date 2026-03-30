@@ -1,6 +1,6 @@
-import  { AppAbility } from "./casl-ability.factory"
-import  { PoliciesHandler } from "./policy.interface"
-import { Action } from "@common/@types"
+import { AppAbility } from "./casl-ability.factory";
+import { PoliciesHandler } from "./policy.interface";
+import { Action } from "@common/@types";
 
 export class GenericPolicyHandler implements PoliciesHandler {
   constructor(
@@ -14,11 +14,10 @@ export class GenericPolicyHandler implements PoliciesHandler {
             ability.can(Action.Update, new this.type({ id })) method. */
 
     if ([Action.Create, Action.Read, Action.Delete].includes(this.action))
+      return ability.can(this.action, this.ClassType);
 
-      return ability.can(this.action, this.ClassType)
+    const id = request.params.id;
 
-    const id = request.params.id
-
-    return ability.can(Action.Update, new this.ClassType({ id }))
+    return ability.can(Action.Update, new this.ClassType({ id }));
   }
 }

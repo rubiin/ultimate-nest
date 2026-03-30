@@ -1,37 +1,37 @@
-import  { BaseRepository } from "@common/database"
-import  { CursorPaginationDto } from "@common/dtos"
-import  { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
-import  { ConfigService } from "@nestjs/config"
-import  { Observable } from "rxjs"
-import  { SubscribeNewsletterDto } from "./dto"
+import { BaseRepository } from "@common/database";
+import { CursorPaginationDto } from "@common/dtos";
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import { ConfigService } from "@nestjs/config";
+import { Observable } from "rxjs";
+import { SubscribeNewsletterDto } from "./dto";
 
-import { EmailSubject, EmailTemplate, RoutingKey } from "@common/@types"
-import { NewsLetter, Subscriber } from "@entities"
-import { BaseService } from "@lib/crud/crud.service"
-import { itemDoesNotExistKey, translate } from "@lib/i18n"
-import { InjectRepository } from "@mikro-orm/nestjs"
-import { Injectable, NotFoundException } from "@nestjs/common"
-import { Cron, CronExpression } from "@nestjs/schedule"
-import { from, map, mergeMap, of, switchMap, throwError } from "rxjs"
+import { EmailSubject, EmailTemplate, RoutingKey } from "@common/@types";
+import { NewsLetter, Subscriber } from "@entities";
+import { BaseService } from "@lib/crud/crud.service";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { Cron, CronExpression } from "@nestjs/schedule";
+import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 @Injectable()
 export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationDto> {
-  protected readonly queryName = "t" // the name of the query used in the pagination
-  protected readonly searchField = "name" // the field to search for when searching for tags
+  protected readonly queryName = "t"; // the name of the query used in the pagination
+  protected readonly searchField = "name"; // the field to search for when searching for tags
   constructor(
-// @ts-expect-error: Unused import error
-@InjectRepository(NewsLetter) private newsLetterRepository: BaseRepository<NewsLetter>,
-@InjectRepository(Subscriber) private subscriberRepository: BaseRepository<Subscriber>,
-private readonly amqpConnection: AmqpConnection,
-private readonly configService: ConfigService<Configs, true>,
+    // @ts-expect-error: Unused import error
+    @InjectRepository(NewsLetter) private newsLetterRepository: BaseRepository<NewsLetter>,
+    @InjectRepository(Subscriber) private subscriberRepository: BaseRepository<Subscriber>,
+    private readonly amqpConnection: AmqpConnection,
+    private readonly configService: ConfigService<Configs, true>,
   ) {
-    super(newsLetterRepository)
+    super(newsLetterRepository);
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async sendNewsLetter() {
-    const subscribers = await this.subscriberRepository.findAll({})
-    const promises = []
+    const subscribers = await this.subscriberRepository.findAll({});
+    const promises = [];
 
     for (const subscriber of subscribers) {
       promises.push(
@@ -45,9 +45,9 @@ private readonly configService: ConfigService<Configs, true>,
             from: this.configService.get("mail.senderEmail", { infer: true }),
           },
         ),
-      )
+      );
     }
-    await Promise.allSettled(promises)
+    await Promise.allSettled(promises);
   }
 
   /**
@@ -68,12 +68,12 @@ private readonly configService: ConfigService<Configs, true>,
                   args: { item: "subscriber" },
                 }),
               ),
-          )
+          );
         }
 
-        return of(entity)
+        return of(entity);
       }),
-    )
+    );
   }
 
   /**
@@ -93,15 +93,15 @@ private readonly configService: ConfigService<Configs, true>,
                   args: { item: "subscriber", property: "email" },
                 }),
               ),
-          )
+          );
         }
-        const subscriber = this.subscriberRepository.create(dto)
+        const subscriber = this.subscriberRepository.create(dto);
 
-        return from(
-          this.subscriberRepository.getEntityManager().persistAndFlush(subscriber),
-        ).pipe(map(() => subscriber))
+        return from(this.subscriberRepository.getEntityManager().persistAndFlush(subscriber)).pipe(
+          map(() => subscriber),
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -114,10 +114,8 @@ private readonly configService: ConfigService<Configs, true>,
   unSubscribeNewsLetter(dto: SubscribeNewsletterDto): Observable<Subscriber> {
     return this.findOneSubscription(dto.email).pipe(
       switchMap((subscriber) => {
-        return this.subscriberRepository
-          .softRemoveAndFlush(subscriber)
-          .pipe(map(() => subscriber))
+        return this.subscriberRepository.softRemoveAndFlush(subscriber).pipe(map(() => subscriber));
       }),
-    )
+    );
   }
 }

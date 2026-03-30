@@ -5,7 +5,7 @@ Most decorators are combination of multiple decorators to make code more lesser
 ## Validation decorators
 
 | Decorator                                        | Description                                                                           |
-|--------------------------------------------------|---------------------------------------------------------------------------------------|
+| ------------------------------------------------ | ------------------------------------------------------------------------------------- |
 | `@MinMaxLength(options?:IsMinMaxLengthOptions)`  | Checks if value is has supplied minlength and maxlength                               |
 | `@IsNumberField(options?:IsNumberFieldOptions)`  | Checks if given value is number, is required and has supplied min and max value       |
 | `@IsStringField(options?: IsStringFieldOptions)` | Checks if given value is string, is required and has supplied minlength and maxlength |
@@ -25,7 +25,7 @@ Most decorators are combination of multiple decorators to make code more lesser
 Most decorators are combination of multiple decorators to make code more lesser
 
 | Decorator                                    | Description                                                                                                                                               |
-|----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@Public()`                                  | Adding this to a controller method marks that controller as public and wont require any credentials for usage                                             |
 | `@LoggedInUser()`                            | Use this to retrieve current logged in user                                                                                                               |
 | `@Auth()`                                    | Applies Jwt guard and casl guard along with swagger decoartores for auth. Using this on a controller or controller method makes them protected with `jwt` |

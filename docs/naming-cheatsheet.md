@@ -7,10 +7,10 @@
 - [Avoid context duplication](#avoid-context-duplication)
 - [Reflect the expected result](#reflect-the-expected-result)
 - [Naming functions](#naming-functions)
-    - [A/HC/LC pattern](#ahclc-pattern)
-        - [Actions](#actions)
-        - [Context](#context)
-        - [Prefixes](#prefixes)
+  - [A/HC/LC pattern](#ahclc-pattern)
+    - [Actions](#actions)
+    - [Context](#context)
+    - [Prefixes](#prefixes)
 - [Singular and Plurals](#singular-and-plurals)
 
 ---
@@ -25,15 +25,13 @@ practice.
 Use English language when naming your variables and functions.
 
 ```js
-
 /* Bad */
-const primerNombre = 'Gustavo'
-const amigos = ['Kate', 'John']
+const primerNombre = "Gustavo";
+const amigos = ["Kate", "John"];
 
 /* Good */
-const firstName = 'Gustavo'
-const friends = ['Kate', 'John']
-
+const firstName = "Gustavo";
+const friends = ["Kate", "John"];
 ```
 
 > Like it or not, English is the dominant language in programming: the syntax of all programming languages is written in
@@ -45,17 +43,15 @@ const friends = ['Kate', 'John']
 Pick **camelCase** naming convention and follow it.
 
 ```js
-
 /* Bad */
-const page_count = 5
-const active = true
-const ShouldUpdate = true
+const page_count = 5;
+const active = true;
+const ShouldUpdate = true;
 
 /* Good */
-const pageCount = 5
-const isActive = true
-const shouldUpdate = true
-
+const pageCount = 5;
+const isActive = true;
+const shouldUpdate = true;
 ```
 
 ## S-I-D
@@ -68,14 +64,14 @@ A name must be _short_, _intuitive_ and _descriptive_:
 
 ```js
 /* Bad */
-const a = 5 // "a" could mean anything
-const isPaginatable = a > 10 // "Paginatable" sounds extremely unnatural
-const shouldPaginatize = a > 10 // Made up verbs are so much fun!
+const a = 5; // "a" could mean anything
+const isPaginatable = a > 10; // "Paginatable" sounds extremely unnatural
+const shouldPaginatize = a > 10; // Made up verbs are so much fun!
 
 /* Good */
-const postCount = 5
-const hasPagination = postCount > 10
-const shouldPaginate = postCount > 10 // alternatively
+const postCount = 5;
+const hasPagination = postCount > 10;
+const shouldPaginate = postCount > 10; // alternatively
 ```
 
 ## Avoid contractions
@@ -84,7 +80,6 @@ Do **not** use contractions. They contribute to nothing but decreased readabilit
 descriptive name may be hard, but contraction is not an excuse for not doing so.
 
 ```js
-
 /* Bad */
 function getUsrNme() {
   // ...
@@ -94,7 +89,6 @@ function getUsrNme() {
 function getUserName() {
   // ...
 }
-
 ```
 
 ## Avoid context duplication
@@ -103,7 +97,6 @@ A name should not duplicate the context in which it is defined. Always remove th
 decrease its readability.
 
 ```js
-
 class UserService {
   /* Method name duplicates the context (which is "User") */
   getUserSettings(event) {
@@ -122,19 +115,17 @@ class UserService {
 A name should reflect the expected result.
 
 ```js
-
 /* Bad */
-const isEnabled = itemCount > 3
-if(!isEnabled) {
+const isEnabled = itemCount > 3;
+if (!isEnabled) {
   // ...
 }
 
 /* Good */
-const isDisabled = itemCount <= 3
-if(isDisabled) {
+const isDisabled = itemCount <= 3;
+if (isDisabled) {
   // ...
 }
-
 ```
 
 ---
@@ -152,7 +143,7 @@ prefix? + action (A) + high context (HC) + low context? (LC)
 Take a look at how this pattern may be applied in the table below.
 
 | Name                   | Prefix   | Action (A) | High context (HC) | Low context (LC) |
-|------------------------|----------|------------|-------------------|------------------|
+| ---------------------- | -------- | ---------- | ----------------- | ---------------- |
 | `getUser`              |          | `get`      | `User`            |                  |
 | `getUserMessages`      |          | `get`      | `User`            | `Messages`       |
 | `shouldDisplayMessage` | `should` | `Display`  | `Message`         |                  |
@@ -169,11 +160,9 @@ The verb part of your function name. The most important part responsible for des
 Accesses data immediately (i.e. shorthand getter of internal data).
 
 ```js
-
 function getUserFullName() {
-  return this.firstName + ' ' + this.lastName;
+  return this.firstName + " " + this.lastName;
 }
-
 ```
 
 > See also [compose](#compose).
@@ -183,7 +172,6 @@ function getUserFullName() {
 Sets a variable in a declarative way, with value `A` to value `B`.
 
 ```js
-
 let fruits = 0;
 
 function setFruits(nextFruits) {
@@ -192,7 +180,6 @@ function setFruits(nextFruits) {
 
 setFruits(5);
 console.log(fruits); // 5
-
 ```
 
 ### `reset`
@@ -200,19 +187,17 @@ console.log(fruits); // 5
 Sets a variable back to its initial value or state.
 
 ```js
-
-const initialFruits = 5
-let fruits = initialFruits
-setFruits(10)
-console.log(fruits) // 10
+const initialFruits = 5;
+let fruits = initialFruits;
+setFruits(10);
+console.log(fruits); // 10
 
 function resetFruits() {
-  fruits = initialFruits
+  fruits = initialFruits;
 }
 
-resetFruits()
-console.log(fruits) // 5
-
+resetFruits();
+console.log(fruits); // 5
 ```
 
 ### `fetch`
@@ -220,13 +205,12 @@ console.log(fruits) // 5
 Request for some data, which takes some indeterminate time (i.e. database request).
 
 ```js
-
 function getUsers() {
-  return this.userRepository.createQueryBuilder()
-    .where('user.isActive = :isActive', { isActive: true })
+  return this.userRepository
+    .createQueryBuilder()
+    .where("user.isActive = :isActive", { isActive: true })
     .getMany();
 }
-
 ```
 
 ### `remove`
@@ -237,14 +221,12 @@ For example, if you have a collection of selected filters on a search page, remo
 is `removeFilter`, **not** `deleteFilter` (and this is how you would naturally say it in English as well):
 
 ```js
-
 function removeFilter(filters, filterName) {
-  return filters.filter((name) => name !== filterName)
+  return filters.filter((name) => name !== filterName);
 }
 
-const selectedFilters = ['price', 'availability', 'size']
-removeFilter(selectedFilters, 'price')
-
+const selectedFilters = ["price", "availability", "size"];
+removeFilter(selectedFilters, "price");
 ```
 
 > See also [delete](#delete).
@@ -257,11 +239,9 @@ Imagine you are a content editor, and there is that notorious post you wish to g
 Delete post" button, the CMS performed a `deletePost` action, **not** `removePost`.
 
 ```js
-
 function deleteUser(id) {
-   return this.userRepository.delete(id);
+  return this.userRepository.delete(id);
 }
-
 ```
 
 > See also [remove](#remove).
@@ -271,11 +251,9 @@ function deleteUser(id) {
 Creates new data from the existing one. Mostly applicable to strings, objects, or functions.
 
 ```js
-
 function composePageUrl(pageName, pageId) {
-  return (pageName.toLowerCase() + '-' + pageId)
+  return pageName.toLowerCase() + "-" + pageId;
 }
-
 ```
 
 > See also [get](#get).
@@ -290,17 +268,15 @@ A function is often an action on _something_. It is important to state what its 
 expected data type.
 
 ```js
-
 /* A pure function operating with primitives */
 function filter(list, predicate) {
-  return list.filter(predicate)
+  return list.filter(predicate);
 }
 
 /* Function operating exactly on posts */
 function getRecentPosts(posts) {
-  return filter(posts, (post) => post.date === Date.now())
+  return filter(posts, (post) => post.date === Date.now());
 }
-
 ```
 
 > Some language-specific assumptions may allow omitting the context. For example, in JavaScript, it's common
@@ -317,15 +293,13 @@ Prefix enhances the meaning of a variable. It is rarely used in function names.
 Describes a characteristic or state of the current context (usually `boolean`).
 
 ```js
-
-const color = 'blue'
-const isBlue = color === 'blue' // characteristic
-const isPresent = true // state
+const color = "blue";
+const isBlue = color === "blue"; // characteristic
+const isPresent = true; // state
 
 if (isBlue && isPresent) {
-  console.log('Blue is present!')
+  console.log("Blue is present!");
 }
-
 ```
 
 ### `has`
@@ -333,14 +307,12 @@ if (isBlue && isPresent) {
 Describes whether the current context possesses a certain value or state (usually `boolean`).
 
 ```js
-
 /* Bad */
-const isProductsExist = productsCount > 0
-const areProductsPresent = productsCount > 0
+const isProductsExist = productsCount > 0;
+const areProductsPresent = productsCount > 0;
 
 /* Good */
-const hasProducts = productsCount > 0
-
+const hasProducts = productsCount > 0;
 ```
 
 ### `should`
@@ -348,11 +320,9 @@ const hasProducts = productsCount > 0
 Reflects a positive conditional statement (usually `boolean`) coupled with a certain action.
 
 ```js
-
 function shouldUpdateUrl(url, expectedUrl) {
-  return url !== expectedUrl
+  return url !== expectedUrl;
 }
-
 ```
 
 ### `min`/`max`
@@ -360,15 +330,13 @@ function shouldUpdateUrl(url, expectedUrl) {
 Represents a minimum or maximum value. Used when describing boundaries or limits.
 
 ```js
-
 /**
  * Renders a random amount of posts within
  * the given min/max boundaries.
  */
 function renderPosts(posts, minPosts, maxPosts) {
-  return posts.slice(0, randomBetween(minPosts, maxPosts))
+  return posts.slice(0, randomBetween(minPosts, maxPosts));
 }
-
 ```
 
 ## Singular and Plurals
@@ -377,15 +345,13 @@ Like a prefix, variable names can be made singular or plural depending on whethe
 values.
 
 ```js
-
 /* Bad */
-const friends = 'Bob'
-const friend = ['Bob', 'Tony', 'Tanya']
+const friends = "Bob";
+const friend = ["Bob", "Tony", "Tanya"];
 
 /* Good */
-const friend = 'Bob'
-const friends = ['Bob', 'Tony', 'Tanya']
-
+const friend = "Bob";
+const friends = ["Bob", "Tony", "Tanya"];
 ```
 
 More naming convention for typescript can be found [here](https://basarat.gitbook.io/typescript/styleguide#class)

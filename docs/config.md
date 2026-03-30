@@ -9,7 +9,6 @@ the application, such as app settings, JWT settings, database settings, mail set
 To use this module, follow the instructions below:
 
 ```ts
-
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import Joi from "joi";
@@ -76,7 +75,6 @@ import {
   exports: [ConfigService],
 })
 export class NestConfigModule {}
-
 ```
 
 Define your configuration settings in the configs module under `libs/configs/configs`. For example, you can define the
@@ -94,7 +92,6 @@ export const appConfigValidationSchema = {
   env: Joi.string().valid("development", "production", "test").default("development"),
   // add validation rules for other app configuration parameters
 };
-
 ```
 
 - app: Configuration for app settings.
@@ -145,8 +142,6 @@ export class DatabaseService {
 
   // ... other methods to access configuration settings related to database
 }
-
-
 ```
 
 Update the configuration settings in the configs module or the environment files as needed to reflect changes in your

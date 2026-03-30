@@ -1,7 +1,7 @@
-import  { Type } from "@nestjs/common"
-import { CursorPaginationResponse, OffsetPaginationResponse } from "@common/@types"
-import { applyDecorators } from "@nestjs/common"
-import { ApiExtraModels, ApiOkResponse, ApiOperation, getSchemaPath } from "@nestjs/swagger"
+import { Type } from "@nestjs/common";
+import { CursorPaginationResponse, OffsetPaginationResponse } from "@common/@types";
+import { applyDecorators } from "@nestjs/common";
+import { ApiExtraModels, ApiOkResponse, ApiOperation, getSchemaPath } from "@nestjs/swagger";
 
 /**
  * The `ApiPaginatedResponse` function is a TypeScript function that generates decorators for Swagger
@@ -48,5 +48,5 @@ export function ApiPaginatedResponse<TModel extends Type>(model: TModel) {
         ],
       },
     }),
-  )
+  );
 }

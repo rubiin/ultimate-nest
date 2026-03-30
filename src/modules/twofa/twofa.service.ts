@@ -1,29 +1,28 @@
-import  { BaseRepository } from "@common/database"
-import  { PostgreSqlDriver } from "@mikro-orm/postgresql"
-import  { ConfigService } from "@nestjs/config"
-import  { Observable } from "rxjs"
-import { User } from "@entities"
-import { translate } from "@lib/i18n"
-import { EntityManager } from "@mikro-orm/core"
-import { InjectRepository } from "@mikro-orm/nestjs"
-import { Injectable } from "@nestjs/common"
-import { OTP } from "otplib"
-import { toFileStream } from "qrcode"
-import { from, map, throwError } from "rxjs"
+import { BaseRepository } from "@common/database";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { ConfigService } from "@nestjs/config";
+import { Observable } from "rxjs";
+import { User } from "@entities";
+import { translate } from "@lib/i18n";
+import { EntityManager } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { Injectable } from "@nestjs/common";
+import { OTP } from "otplib";
+import { toFileStream } from "qrcode";
+import { from, map, throwError } from "rxjs";
 import { generateTOTP } from "@otplib/uri";
 
 @Injectable()
 export class TwoFactorService {
   private readonly otp: OTP;
 
-
   constructor(
-        @InjectRepository(User)
-        private userRepository: BaseRepository<User>,
-        private readonly configService: ConfigService<Configs, true>,
-        private readonly em: EntityManager<PostgreSqlDriver>,
+    @InjectRepository(User)
+    private userRepository: BaseRepository<User>,
+    private readonly configService: ConfigService<Configs, true>,
+    private readonly em: EntityManager<PostgreSqlDriver>,
   ) {
-    this.otp = new OTP()
+    this.otp = new OTP();
   }
 
   /**
@@ -33,24 +32,22 @@ export class TwoFactorService {
    * @returns An Observable that returns an object with a secret and otpAuthUrl.
    */
 
-  generateTwoFactorSecret(user: User): Observable<{ secret: string, otpAuthUrl: string }> {
-    const secret = this.otp.generateSecret()
+  generateTwoFactorSecret(user: User): Observable<{ secret: string; otpAuthUrl: string }> {
+    const secret = this.otp.generateSecret();
 
-    const otpAuthUrl = generateTOTP(
-    {
-        issuer: this.configService.get("app.name", { infer: true }),
+    const otpAuthUrl = generateTOTP({
+      issuer: this.configService.get("app.name", { infer: true }),
       label: user.email,
       secret: secret,
-    }
-    )
+    });
 
-    this.userRepository.assign(user, { twoFactorSecret: secret })
+    this.userRepository.assign(user, { twoFactorSecret: secret });
 
     return from(this.em.flush()).pipe(
       map(() => {
-        return { secret, otpAuthUrl }
+        return { secret, otpAuthUrl };
       }),
-    )
+    );
   }
 
   /**
@@ -61,7 +58,7 @@ export class TwoFactorService {
    * @returns Observable<unknown>
    */
   pipeQrCodeStream(stream: NestifyResponse, otpAuthUrl: string): Observable<unknown> {
-    return from(toFileStream(stream, otpAuthUrl))
+    return from(toFileStream(stream, otpAuthUrl));
   }
 
   /**
@@ -71,10 +68,12 @@ export class TwoFactorService {
    * @returns A boolean value.
    */
   isTwoFactorCodeValid(twoFactorAuthenticationCode: string, user: User): Observable<boolean> {
-    return from(this.otp.verify({
-      token: twoFactorAuthenticationCode,
-      secret: user.twoFactorSecret!,
-    })).pipe(map((result) => result.valid))
+    return from(
+      this.otp.verify({
+        token: twoFactorAuthenticationCode,
+        secret: user.twoFactorSecret!,
+      }),
+    ).pipe(map((result) => result.valid));
   }
 
   /**
@@ -84,22 +83,19 @@ export class TwoFactorService {
    * @param user - User - the user that is trying to turn on two factor authentication
    * @returns Observable<User>
    */
-  turnOnTwoFactorAuthentication(
-    twoFactorAuthenticationCode: string,
-    user: User,
-  ): Observable<User> {
-    const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user)
+  turnOnTwoFactorAuthentication(twoFactorAuthenticationCode: string, user: User): Observable<User> {
+    const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user);
 
     if (!isCodeValid) {
       return throwError(() =>
         translate("exception.refreshToken", {
           args: { error: "malformed" },
         }),
-      )
+      );
     }
 
-    this.userRepository.assign(user, { isTwoFactorEnabled: true })
+    this.userRepository.assign(user, { isTwoFactorEnabled: true });
 
-    return from(this.em.flush()).pipe(map(() => user))
+    return from(this.em.flush()).pipe(map(() => user));
   }
 }
