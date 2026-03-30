@@ -26,6 +26,7 @@ read [here](https://betterprogramming.pub/observables-vs-promises-which-one-shou
 <br/>
 
 ## Table of Contents
+
 - [Whats included](#Whats-included)
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
@@ -55,7 +56,6 @@ read [here](https://betterprogramming.pub/observables-vs-promises-which-one-shou
 - 📏 [**Oxlint**](https://oxc.rs/docs/guide/usage/linter.html/) —50~100x faster than ESLint 500+ rules and growing
 - ✅ [**Commitlint**](https://commitlint.js.org/) — Checks if your commit messages meet the conventional commit format.
 - 🐺 [**Husky**](https://github.com/typicode/husky) — Helps you create Git hooks easily.
-
 
 ## Prerequisites
 
@@ -92,6 +92,7 @@ cp env/.env.sample env/.env.dev
  npm install
  yarn install
 ```
+
 > [!NOTE]
 > If you face any issues with dependencies when using yarn or npm, stick to pnpm for now
 
@@ -138,9 +139,11 @@ Seeding is used to insert data into the database. The seeding files are stored i
 ```sh
 USER_PASSWORD=Test@1234 NODE_ENV=dev npm run orm seeder:run   # seeds data for dev env with all user password set as Test@1234
 ```
+
 Seeding is optional
 
 ## Start application
+
 - `NODE_ENV=dev npm run start`
 - View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
 - View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and

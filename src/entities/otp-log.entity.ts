@@ -1,29 +1,29 @@
-import  { Opt, Ref, Rel } from "@mikro-orm/postgresql"
-import  { User } from "./user.entity"
-import { BaseEntity } from "@common/database"
-import { Entity, ManyToOne, Property } from "@mikro-orm/postgresql"
+import { Opt, Ref, Rel } from "@mikro-orm/postgresql";
+import { User } from "./user.entity";
+import { BaseEntity } from "@common/database";
+import { Entity, ManyToOne, Property } from "@mikro-orm/postgresql";
 
 @Entity()
 export class OtpLog extends BaseEntity {
   @Property()
-  expiresIn!: Date
+  expiresIn!: Date;
 
   @Property({
     length: 20,
     index: true,
   })
-  otpCode?: string
+  otpCode?: string;
 
   @ManyToOne({
     index: true,
   })
-  user!: Rel<Ref<User>>
+  user!: Rel<Ref<User>>;
 
   @Property()
-  isUsed: boolean & Opt = false
+  isUsed: boolean & Opt = false;
 
   constructor(partial?: Partial<OtpLog>) {
-    super()
-    Object.assign(this, partial)
+    super();
+    Object.assign(this, partial);
   }
 }

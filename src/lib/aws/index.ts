@@ -6,4 +6,4 @@ import { AwsS3Service } from "./aws.s3.service";
   providers: [AwsS3Service],
   exports: [AwsS3Service],
 })
-export class NestAwsModule extends ConfigurableModuleClass { }
+export class NestAwsModule extends ConfigurableModuleClass {}

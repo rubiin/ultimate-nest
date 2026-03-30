@@ -1,27 +1,49 @@
-import  { CreateEntityType, Crud, PaginationRequest, PaginationResponse, UpdateEntityType } from "@common/@types"
-import  { BaseEntity } from "@common/database"
-import  { User } from "@entities"
-import  { ArgumentMetadata, Type } from "@nestjs/common"
-import  { Observable } from "rxjs"
-import  { BaseService } from "./crud.service"
-import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from "@common/decorators"
-import { AppUtils } from "@common/helpers"
-import { Body, Delete, Get, Injectable, Param, Patch, Post, Query, UsePipes, ValidationPipe } from "@nestjs/common"
+import {
+  CreateEntityType,
+  Crud,
+  PaginationRequest,
+  PaginationResponse,
+  UpdateEntityType,
+} from "@common/@types";
+import { BaseEntity } from "@common/database";
+import { User } from "@entities";
+import { ArgumentMetadata, Type } from "@nestjs/common";
+import { Observable } from "rxjs";
+import { BaseService } from "./crud.service";
+import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import { AppUtils } from "@common/helpers";
+import {
+  Body,
+  Delete,
+  Get,
+  Injectable,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from "@nestjs/common";
 
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {
-  constructor(private readonly targetTypes: { body?: Type<any>, query?: Type<any>, param?: Type<any>, custom?: Type<any> }) {
-    super(AppUtils.validationPipeOptions())
+  constructor(
+    private readonly targetTypes: {
+      body?: Type<any>;
+      query?: Type<any>;
+      param?: Type<any>;
+      custom?: Type<any>;
+    },
+  ) {
+    super(AppUtils.validationPipeOptions());
   }
 
   async transform(value: any, metadata: ArgumentMetadata) {
-    const targetType = this.targetTypes[metadata.type] as Type<any>
+    const targetType = this.targetTypes[metadata.type] as Type<any>;
 
-    if (targetType === null)
+    if (targetType === null) return super.transform(value, metadata);
 
-      return super.transform(value, metadata)
-
-    return super.transform(value, { ...metadata, metatype: targetType })
+    return super.transform(value, { ...metadata, metatype: targetType });
   }
 }
 
@@ -36,16 +58,16 @@ export function ControllerFactory<
   T extends BaseEntity,
   Q extends PaginationRequest,
   C extends CreateEntityType<T>,
-  U extends UpdateEntityType<T> ,
+  U extends UpdateEntityType<T>,
 >(queryDto: Type<Q>, createDto: Type<C>, updateDto: Type<U>): Type<Crud<T, Q, C, U>> {
   const createPipe = new AbstractValidationPipe({
     body: createDto,
-  })
+  });
   const updatePipe = new AbstractValidationPipe({
     body: updateDto,
-  })
+  });
 
-  const queryPipe = new AbstractValidationPipe({ query: queryDto })
+  const queryPipe = new AbstractValidationPipe({ query: queryDto });
 
   class CrudController<
     T extends BaseEntity,
@@ -53,7 +75,7 @@ export function ControllerFactory<
     C extends CreateEntityType<T>,
     U extends UpdateEntityType<T>,
   > implements Crud<T, Q, C, U> {
-    protected service!: BaseService<T, Q, C, U>
+    protected service!: BaseService<T, Q, C, U>;
 
     @Get(":idx")
     @SwaggerResponse({
@@ -62,14 +84,14 @@ export function ControllerFactory<
       params: ["idx"],
     })
     findOne(@Param("idx") index: string): Observable<T> {
-      return this.service.findOne(index)
+      return this.service.findOne(index);
     }
 
     @ApiPaginatedResponse(updateDto)
     @UsePipes(queryPipe)
     @Get()
     findAll(@Query() query: Q): Observable<PaginationResponse<T>> {
-      return this.service.findAll(query)
+      return this.service.findAll(query);
     }
 
     @SwaggerResponse({
@@ -81,7 +103,7 @@ export function ControllerFactory<
     @UsePipes(createPipe)
     @Post()
     create(@Body() body: C, @LoggedInUser() user?: User): Observable<T> {
-      return this.service.create(body, user)
+      return this.service.create(body, user);
     }
 
     @SwaggerResponse({
@@ -94,7 +116,7 @@ export function ControllerFactory<
     @UsePipes(updatePipe)
     @Patch(":idx")
     update(@Param("idx") index: string, @Body() body: U): Observable<T> {
-      return this.service.update(index, body)
+      return this.service.update(index, body);
     }
 
     @SwaggerResponse({
@@ -105,9 +127,9 @@ export function ControllerFactory<
     })
     @Delete(":idx")
     remove(@Param("idx") index: string): Observable<T> {
-      return this.service.remove(index)
+      return this.service.remove(index);
     }
   }
 
-  return CrudController
+  return CrudController;
 }

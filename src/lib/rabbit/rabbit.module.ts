@@ -1,9 +1,9 @@
-import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq"
-import { Global, Logger, Module } from "@nestjs/common"
-import { ConfigModule, ConfigService } from "@nestjs/config"
-import { RabbitMQHealthCheckService } from "./healthcheck"
+import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
+import { Global, Logger, Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { RabbitMQHealthCheckService } from "./healthcheck";
 
-const logger = new Logger("RabbitMQ")
+const logger = new Logger("RabbitMQ");
 
 // for delayed messages, check the following links
 // https://reachmnadeem.wordpress.com/2022/02/19/adding-another-plugin-to-rabbit-management-docker-image/
@@ -12,7 +12,7 @@ const logger = new Logger("RabbitMQ")
 @Global()
 @Module({
   imports: [
-    RabbitMQModule.forRootAsync( {
+    RabbitMQModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({

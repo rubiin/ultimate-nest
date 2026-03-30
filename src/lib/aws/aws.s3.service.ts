@@ -1,17 +1,8 @@
-import  {
-  Bucket,
-} from "@aws-sdk/client-s3"
-import  { Buffer } from "node:buffer"
-import  { Observable } from "rxjs"
+import { Bucket } from "@aws-sdk/client-s3";
+import { Buffer } from "node:buffer";
+import { Observable } from "rxjs";
 
-import  {
-
-  AwsModuleOptions,
-  AwsS3,
-  AwsS3MultiPart,
-
-  AwsS3PutItemOptions,
-} from "./aws.interface"
+import { AwsModuleOptions, AwsS3, AwsS3MultiPart, AwsS3PutItemOptions } from "./aws.interface";
 import {
   CreateMultipartUploadCommand,
   DeleteObjectCommand,
@@ -22,27 +13,27 @@ import {
   PutObjectCommand,
   S3Client,
   UploadPartCommand,
-} from "@aws-sdk/client-s3"
-import { Inject, Injectable } from "@nestjs/common"
-import { isEmpty, omit } from "helper-fns"
-import mime from "mime"
-import { forkJoin, from, map, of, switchMap, throwError } from "rxjs"
-import { MODULE_OPTIONS_TOKEN } from "./aws.module"
+} from "@aws-sdk/client-s3";
+import { Inject, Injectable } from "@nestjs/common";
+import { isEmpty, omit } from "helper-fns";
+import mime from "mime";
+import { forkJoin, from, map, of, switchMap, throwError } from "rxjs";
+import { MODULE_OPTIONS_TOKEN } from "./aws.module";
 
 @Injectable()
 export class AwsS3Service {
-  private readonly s3Client: S3Client
-  private readonly bucket: string
-  private readonly baseUrl: string
+  private readonly s3Client: S3Client;
+  private readonly bucket: string;
+  private readonly baseUrl: string;
 
   constructor(
     @Inject(MODULE_OPTIONS_TOKEN)
     private readonly options: AwsModuleOptions,
   ) {
-    this.s3Client = new S3Client(omit(options, ["bucket", "baseUrl"]))
+    this.s3Client = new S3Client(omit(options, ["bucket", "baseUrl"]));
 
-    this.bucket = this.options.bucket
-    this.baseUrl = this.options.baseUrl
+    this.bucket = this.options.bucket;
+    this.baseUrl = this.options.baseUrl;
   }
 
   /**
@@ -53,12 +44,11 @@ export class AwsS3Service {
   listBucket(): Observable<string[]> {
     return from(this.s3Client.send(new ListBucketsCommand({}))).pipe(
       switchMap((listBucket) => {
-        if (!listBucket?.Buckets)
-          return of([])
+        if (!listBucket?.Buckets) return of([]);
 
-        return of(listBucket.Buckets.map((value: Bucket) => value.Name ?? ""))
+        return of(listBucket.Buckets.map((value: Bucket) => value.Name ?? ""));
       }),
-    )
+    );
   }
 
   /**
@@ -71,22 +61,23 @@ export class AwsS3Service {
    */
 
   listItemInBucket(prefix?: string): Observable<AwsS3[]> {
-    return from(this.s3Client.send(
-      new ListObjectsV2Command({
-        Bucket: this.bucket,
-        Prefix: prefix,
-      }),
-    )).pipe(
+    return from(
+      this.s3Client.send(
+        new ListObjectsV2Command({
+          Bucket: this.bucket,
+          Prefix: prefix,
+        }),
+      ),
+    ).pipe(
       map((response) => {
         if (response && response.Contents) {
           return response.Contents.map((value) => {
-            if (value.Key === null || value.Key === undefined)
-              return {}
-            const lastIndex = value.Key.lastIndexOf("/")
-            const path = value.Key.slice(0, lastIndex)
-            const filename = value.Key.slice(lastIndex, value.Key.length)
+            if (value.Key === null || value.Key === undefined) return {};
+            const lastIndex = value.Key.lastIndexOf("/");
+            const path = value.Key.slice(0, lastIndex);
+            const filename = value.Key.slice(lastIndex, value.Key.length);
 
-            const mime = this.getMime(filename)
+            const mime = this.getMime(filename);
             return {
               path,
               pathWithFilename: value.Key,
@@ -94,12 +85,12 @@ export class AwsS3Service {
               completedUrl: `${this.baseUrl}/${value.Key}`,
               baseUrl: this.baseUrl,
               mime,
-            }
-          }).filter(value => isEmpty(value)) as AwsS3[]
+            };
+          }).filter((value) => isEmpty(value)) as AwsS3[];
         }
-        return []
+        return [];
       }),
-    )
+    );
   }
 
   /**
@@ -112,22 +103,22 @@ export class AwsS3Service {
    * filename to form the complete key for retrieving the file from the bucket.
    * @returns the body of the item retrieved from the specified bucket in the AWS S3 storage.
    */
-  getItemInBucket(
-    filename: string,
-    path?: string,
-  ): Observable<Record<string, any>> {
-    const key: string = path ? `${path}/${filename}` : filename
-    return from(this.s3Client.send(
-      new GetObjectCommand({
-        Bucket: this.bucket,
-        Key: key,
-      }),
-    )).pipe(switchMap((item) => {
-      if (!item.Body)
-        return throwError(() => "Item not found")
+  getItemInBucket(filename: string, path?: string): Observable<Record<string, any>> {
+    const key: string = path ? `${path}/${filename}` : filename;
+    return from(
+      this.s3Client.send(
+        new GetObjectCommand({
+          Bucket: this.bucket,
+          Key: key,
+        }),
+      ),
+    ).pipe(
+      switchMap((item) => {
+        if (!item.Body) return throwError(() => "Item not found");
 
-      return of(item.Body)
-    }))
+        return of(item.Body);
+      }),
+    );
   }
 
   /**
@@ -138,12 +129,10 @@ export class AwsS3Service {
    * @returns A string value.
    */
   private generateFileName(originalFilename: string): string {
-    const [name, extension] = originalFilename.split(".")
-    const fileName = `${Date.now()}-${Math.round(
-      Math.random() * 10_000,
-    )}-${name}.${extension}`
+    const [name, extension] = originalFilename.split(".");
+    const fileName = `${Date.now()}-${Math.round(Math.random() * 10_000)}-${name}.${extension}`;
 
-    return fileName.replaceAll(" ", "-")
+    return fileName.replaceAll(" ", "-");
   }
 
   /**
@@ -154,11 +143,9 @@ export class AwsS3Service {
    * @returns A string, which is the MIME type associated with the file extension.
    */
   private getMime(fileName: string): string {
-    const extension = fileName
-      .slice(fileName.lastIndexOf(".") + 1, fileName.length)
-      .toUpperCase()
-    const fileMime = mime.getType(extension) ?? extension
-    return fileMime
+    const extension = fileName.slice(fileName.lastIndexOf(".") + 1, fileName.length).toUpperCase();
+    const fileMime = mime.getType(extension) ?? extension;
+    return fileMime;
   }
 
   /**
@@ -179,23 +166,29 @@ export class AwsS3Service {
     content: Uint8Array | Buffer,
     options?: AwsS3PutItemOptions,
   ): Observable<AwsS3> {
-    const filename = options?.keepOriginalName ? originalFilename : this.generateFileName(originalFilename)
-    const { key, mime, path } = this.getOptions(filename, options)
-    return from(this.s3Client.send(
-      new PutObjectCommand({
-        Bucket: this.bucket,
-        Key: key,
-        Body: content,
-        ContentType: mime,
-      }),
-    )).pipe(map(_response => ({
-      path,
-      pathWithFilename: key,
-      filename,
-      completedUrl: `${this.baseUrl}/${key}`,
-      baseUrl: this.baseUrl,
-      mime,
-    })))
+    const filename = options?.keepOriginalName
+      ? originalFilename
+      : this.generateFileName(originalFilename);
+    const { key, mime, path } = this.getOptions(filename, options);
+    return from(
+      this.s3Client.send(
+        new PutObjectCommand({
+          Bucket: this.bucket,
+          Key: key,
+          Body: content,
+          ContentType: mime,
+        }),
+      ),
+    ).pipe(
+      map((_response) => ({
+        path,
+        pathWithFilename: key,
+        filename,
+        completedUrl: `${this.baseUrl}/${key}`,
+        baseUrl: this.baseUrl,
+        mime,
+      })),
+    );
   }
 
   /**
@@ -205,12 +198,14 @@ export class AwsS3Service {
    * @returns The function `deleteItemInBucket` returns a Promise that resolves to void.
    */
   deleteItemInBucket(filename: string): Observable<any> {
-    return from(this.s3Client.send(
-      new DeleteObjectCommand({
-        Bucket: this.bucket,
-        Key: filename,
-      }),
-    ))
+    return from(
+      this.s3Client.send(
+        new DeleteObjectCommand({
+          Bucket: this.bucket,
+          Key: filename,
+        }),
+      ),
+    );
   }
 
   /**
@@ -221,18 +216,20 @@ export class AwsS3Service {
    */
 
   deleteItemsInBucket(filenames: string[]): Observable<any> {
-    const keys = filenames.map(value => ({
+    const keys = filenames.map((value) => ({
       Key: value,
-    }))
+    }));
 
-    return from(this.s3Client.send(
-      new DeleteObjectsCommand({
-        Bucket: this.bucket,
-        Delete: {
-          Objects: keys,
-        },
-      }),
-    ))
+    return from(
+      this.s3Client.send(
+        new DeleteObjectsCommand({
+          Bucket: this.bucket,
+          Delete: {
+            Objects: keys,
+          },
+        }),
+      ),
+    );
   }
 
   /**
@@ -249,19 +246,17 @@ export class AwsS3Service {
           Prefix: directory,
         }),
       ),
-    )
+    );
 
     return listObjectsObservable.pipe(
       map((lists) => {
-        if (lists === null || lists?.Contents === null || lists?.Contents === undefined)
-          return []
+        if (lists === null || lists?.Contents === null || lists?.Contents === undefined) return [];
 
-        return lists.Contents.map(value => ({
+        return lists.Contents.map((value) => ({
           Key: value.Key,
-        }))
-      },
-      ),
-      switchMap(listItems =>
+        }));
+      }),
+      switchMap((listItems) =>
         forkJoin([
           from(
             this.s3Client.send(
@@ -283,7 +278,7 @@ export class AwsS3Service {
           ),
         ]),
       ),
-    )
+    );
   }
 
   /**
@@ -296,27 +291,28 @@ export class AwsS3Service {
    * @returns The function `createMultiPart` returns a Promise that resolves to an object of type
    * `AwsS3MultiPart`.
    */
-  createMultiPart(
-    filename: string,
-    options?: AwsS3PutItemOptions,
-  ): Observable<AwsS3MultiPart> {
-    const { key, mime, path, acl } = this.getOptions(filename, options)
+  createMultiPart(filename: string, options?: AwsS3PutItemOptions): Observable<AwsS3MultiPart> {
+    const { key, mime, path, acl } = this.getOptions(filename, options);
 
-    return from(this.s3Client.send(
-      new CreateMultipartUploadCommand({
-        Bucket: this.bucket,
-        Key: key,
-        ACL: acl,
-      }),
-    )).pipe(map(response => ({
-      uploadId: response?.UploadId ?? "",
-      path,
-      pathWithFilename: key,
-      filename,
-      completedUrl: `${this.baseUrl}/${key}`,
-      baseUrl: this.baseUrl,
-      mime,
-    })))
+    return from(
+      this.s3Client.send(
+        new CreateMultipartUploadCommand({
+          Bucket: this.bucket,
+          Key: key,
+          ACL: acl,
+        }),
+      ),
+    ).pipe(
+      map((response) => ({
+        uploadId: response?.UploadId ?? "",
+        path,
+        pathWithFilename: key,
+        filename,
+        completedUrl: `${this.baseUrl}/${key}`,
+        baseUrl: this.baseUrl,
+        mime,
+      })),
+    );
   }
 
   /**
@@ -329,16 +325,15 @@ export class AwsS3Service {
    * @returns An object with the properties `key`, `mime`, `path`, and `acl`.
    */
   private getOptions(fileName: string, options?: AwsS3PutItemOptions) {
-    let path = options?.path ?? fileName
-    const acl = options?.acl ?? "public-read"
+    let path = options?.path ?? fileName;
+    const acl = options?.acl ?? "public-read";
 
-    if (path)
-      path = path.startsWith("/") ? path.replace("/", "") : `${path}`
+    if (path) path = path.startsWith("/") ? path.replace("/", "") : `${path}`;
 
-    const key = path ? `${path}/${fileName}` : fileName
-    const mime = this.getMime(fileName)
+    const key = path ? `${path}/${fileName}` : fileName;
+    const mime = this.getMime(fileName);
 
-    return { key, mime, path, acl }
+    return { key, mime, path, acl };
   }
 
   /**
@@ -366,21 +361,22 @@ export class AwsS3Service {
     partNumber: number,
     options?: AwsS3PutItemOptions,
   ): Observable<any> {
-    let path = options?.path ?? undefined
+    let path = options?.path ?? undefined;
 
-    if (path)
-      path = path.startsWith("/") ? path.replace("/", "") : `${path}`
+    if (path) path = path.startsWith("/") ? path.replace("/", "") : `${path}`;
 
-    const key = path ? `${path}/${fileName}` : fileName
+    const key = path ? `${path}/${fileName}` : fileName;
 
-    return from(this.s3Client.send(
-      new UploadPartCommand({
-        Bucket: this.bucket,
-        Key: key,
-        Body: content,
-        PartNumber: partNumber,
-        UploadId: uploadId,
-      }),
-    ))
+    return from(
+      this.s3Client.send(
+        new UploadPartCommand({
+          Bucket: this.bucket,
+          Key: key,
+          Body: content,
+          PartNumber: partNumber,
+          UploadId: uploadId,
+        }),
+      ),
+    );
   }
 }

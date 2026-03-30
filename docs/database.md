@@ -9,12 +9,12 @@ for [PostgreSQL](https://www.postgresql.org/), but you can use any database.
 ## Table of Contents
 
 - [Working with database schema](#working-with-database-schema)
-    - [Generate migration](#generate-migration)
-    - [Run migration](#run-migration)
-    - [Revert migration](#revert-migration)
-    - [Drop the database and migrate up to the latest version](#drop-the-database-and-migrate-up-to-the-latest-version)
+  - [Generate migration](#generate-migration)
+  - [Run migration](#run-migration)
+  - [Revert migration](#revert-migration)
+  - [Drop the database and migrate up to the latest version](#drop-the-database-and-migrate-up-to-the-latest-version)
 - [Performance optimization](#performance-optimization)
-    - [Indexes and Foreign Keys](#indexes-and-foreign-keys)
+  - [Indexes and Foreign Keys](#indexes-and-foreign-keys)
 
 ---
 
@@ -24,47 +24,45 @@ for [PostgreSQL](https://www.postgresql.org/), but you can use any database.
 
 1. Create entity file with extension `.entity.ts`. For example `post.entity.ts`:
 
-    ```ts
+   ```ts
+   // /src/entities/post.entity.ts
+   import { BaseEntity } from "@common/database";
+   import { Entity, Property } from "@mikro-orm/postgresql";
 
-    // /src/entities/post.entity.ts
-    import { BaseEntity } from "@common/database";
-    import { Entity, Property } from "@mikro-orm/postgresql";
+   @Entity()
+   export class Post extends BaseEntity {
+     @Property({
+       length: 50,
+     })
+     activityType?: string;
 
-    @Entity()
-    export class Post extends BaseEntity {
-    @Property({
-        length: 50,
-    })
-    activityType?: string;
+     @Property({
+       length: 50,
+     })
+     loginType?: string;
 
-    @Property({
-        length: 50,
-    })
-    loginType?: string;
+     @Property({
+       length: 50,
+     })
+     ipAddress?: string;
 
-    @Property({
-        length: 50,
-    })
-    ipAddress?: string;
+     @Property({
+       length: 50,
+     })
+     deviceId?: string;
 
-    @Property({
-        length: 50,
-    })
-    deviceId?: string;
+     @Property()
+     status = true;
 
-    @Property()
-    status = true;
-
-      // Here any fields what you need
-    }
-
-    ```
+     // Here any fields what you need
+   }
+   ```
 
 2. Next, generate migration file:
 
-    ```sh
-    NODE_ENV=dev npm run orm migration:create
-    ```
+   ```sh
+   NODE_ENV=dev npm run orm migration:create
+   ```
 
 3. Apply this migration to database via [npm run run orm migration:up](#run-migration).
 
@@ -117,8 +115,7 @@ To run the generated seeder:
 NODE_ENV=dev npm run orm seeder:run AuthorSeeder  # runs the authorseeder
 ```
 
-More info for the seeding can be found at: https://mikro-orm.io/docs/seeding
----
+## More info for the seeding can be found at: https://mikro-orm.io/docs/seeding
 
 ## Performance optimization
 
@@ -128,6 +125,5 @@ Don't forget to create `indexes` on the Foreign Keys (FK) columns (if needed), b
 PostgreSQL [does not automatically add indexes to FK](https://stackoverflow.com/a/970605/18140714).
 
 ---
-
 
 More info for the cli can be found at: https://mikro-orm.io/docs/migrations

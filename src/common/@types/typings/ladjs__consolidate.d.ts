@@ -1,6 +1,5 @@
 /* oxlint-disable */
-declare module "@ladjs/consolidate"{
-
+declare module "@ladjs/consolidate" {
   const cons: Consolidate;
 
   export default cons;
@@ -50,49 +49,55 @@ declare module "@ladjs/consolidate"{
     | "walrus"
     | "whiskers";
 
-type Requires = SupportedTemplateEngines | "extend" | "ReactDOM" | "babel";
+  type Requires = SupportedTemplateEngines | "extend" | "ReactDOM" | "babel";
 
-type ConsolidateType = {
-  [engine in SupportedTemplateEngines]: RendererInterface;
-};
+  type ConsolidateType = {
+    [engine in SupportedTemplateEngines]: RendererInterface;
+  };
 
-type RequiresType = {
-  [engine in Requires]: any;
-};
+  type RequiresType = {
+    [engine in Requires]: any;
+  };
 
-interface Consolidate extends ConsolidateType {
-  /**
-   * expose the instance of the engine
-   */
-  requires: RequiresType
+  interface Consolidate extends ConsolidateType {
+    /**
+     * expose the instance of the engine
+     */
+    requires: RequiresType;
 
-  /**
-   * Clear the cache.
-   *
-   * @api public
-   */
-  clearCache(): void
-}
+    /**
+     * Clear the cache.
+     *
+     * @api public
+     */
+    clearCache(): void;
+  }
 
-interface RendererInterface {
-  render(path: string, function_: (error: Error, html: string) => any): any
+  interface RendererInterface {
+    render(path: string, function_: (error: Error, html: string) => any): any;
 
-  render(
-    path: string,
-    options: { cache?: boolean | undefined, [otherOptions: string]: any },
-    function_: (error: Error, html: string) => any,
-  ): any
+    render(
+      path: string,
+      options: { cache?: boolean | undefined; [otherOptions: string]: any },
+      function_: (error: Error, html: string) => any,
+    ): any;
 
-  render(path: string, options?: { cache?: boolean | undefined, [otherOptions: string]: any }): Promise<string>
+    render(
+      path: string,
+      options?: { cache?: boolean | undefined; [otherOptions: string]: any },
+    ): Promise<string>;
 
-  (path: string, function_: (error: Error, html: string) => any): any
+    (path: string, function_: (error: Error, html: string) => any): any;
 
-  (
-    path: string,
-    options: { cache?: boolean | undefined, [otherOptions: string]: any },
-    function_: (error: Error, html: string) => any,
-  ): any
+    (
+      path: string,
+      options: { cache?: boolean | undefined; [otherOptions: string]: any },
+      function_: (error: Error, html: string) => any,
+    ): any;
 
-  (path: string, options?: { cache?: boolean | undefined, [otherOptions: string]: any }): Promise<string>
-}
+    (
+      path: string,
+      options?: { cache?: boolean | undefined; [otherOptions: string]: any },
+    ): Promise<string>;
+  }
 }

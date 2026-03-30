@@ -1,7 +1,7 @@
-import  { NumberFieldOptions } from "@common/@types"
-import { validationI18nMessage } from "@lib/i18n"
-import { applyDecorators } from "@nestjs/common"
-import { Type } from "class-transformer"
+import { NumberFieldOptions } from "@common/@types";
+import { validationI18nMessage } from "@lib/i18n";
+import { applyDecorators } from "@nestjs/common";
+import { Type } from "class-transformer";
 import {
   ArrayNotEmpty,
   IsArray,
@@ -12,7 +12,7 @@ import {
   IsPositive,
   Max,
   Min,
-} from "class-validator"
+} from "class-validator";
 
 /**
  * It's a decorator that validates a number field
@@ -31,7 +31,7 @@ export function IsNumberField(options_?: NumberFieldOptions) {
     int: true,
     positive: true,
     ...options_,
-  } satisfies NumberFieldOptions
+  } satisfies NumberFieldOptions;
 
   const decoratorsToApply = [
     Type(() => Number),
@@ -43,7 +43,7 @@ export function IsNumberField(options_?: NumberFieldOptions) {
       message: validationI18nMessage("validation.max"),
       each: options.each,
     }),
-  ]
+  ];
 
   if (options.int) {
     decoratorsToApply.push(
@@ -53,9 +53,8 @@ export function IsNumberField(options_?: NumberFieldOptions) {
         }),
         each: options.each,
       }),
-    )
-  }
-  else {
+    );
+  } else {
     decoratorsToApply.push(
       IsNumber(
         {},
@@ -66,7 +65,7 @@ export function IsNumberField(options_?: NumberFieldOptions) {
           each: options.each,
         },
       ),
-    )
+    );
   }
 
   if (options.positive) {
@@ -77,7 +76,7 @@ export function IsNumberField(options_?: NumberFieldOptions) {
         }),
         each: options.each,
       }),
-    )
+    );
   }
 
   if (options.required) {
@@ -86,18 +85,17 @@ export function IsNumberField(options_?: NumberFieldOptions) {
         message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
       }),
-    )
+    );
 
     if (options.each) {
       decoratorsToApply.push(
         ArrayNotEmpty({
           message: validationI18nMessage("validation.isNotEmpty"),
         }),
-      )
+      );
     }
-  }
-  else {
-    decoratorsToApply.push(IsOptional())
+  } else {
+    decoratorsToApply.push(IsOptional());
   }
 
   if (options.each) {
@@ -107,8 +105,8 @@ export function IsNumberField(options_?: NumberFieldOptions) {
           type: "array",
         }),
       }),
-    )
+    );
   }
 
-  return applyDecorators(...decoratorsToApply)
+  return applyDecorators(...decoratorsToApply);
 }

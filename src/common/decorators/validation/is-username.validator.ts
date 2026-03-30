@@ -9,32 +9,28 @@
  *
  */
 
-import  {
+import {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
-} from "class-validator"
-import { USERNAME_REGEX } from "@common/constant"
-import { validationI18nMessage } from "@lib/i18n"
+} from "class-validator";
+import { USERNAME_REGEX } from "@common/constant";
+import { validationI18nMessage } from "@lib/i18n";
 
-import { applyDecorators } from "@nestjs/common"
-import {
-  IsNotEmpty,
-  registerDecorator,
-  ValidatorConstraint,
-} from "class-validator"
-import { MinMaxLength } from "./min-max-length.decorator"
+import { applyDecorators } from "@nestjs/common";
+import { IsNotEmpty, registerDecorator, ValidatorConstraint } from "class-validator";
+import { MinMaxLength } from "./min-max-length.decorator";
 
 @ValidatorConstraint({ async: true })
 class IsUsernameConstraint implements ValidatorConstraintInterface {
   async validate(value: string, _argument: ValidationArguments) {
-    return USERNAME_REGEX.test(value)
+    return USERNAME_REGEX.test(value);
   }
 
   defaultMessage(argument: ValidationArguments) {
-    const property = argument.property
+    const property = argument.property;
 
-    return `${property} must fulfill username's criteria`
+    return `${property} must fulfill username's criteria`;
   }
 }
 
@@ -46,11 +42,13 @@ export function IsUsername(validationOptions?: ValidationOptions): PropertyDecor
       options: validationOptions,
       constraints: [],
       validator: IsUsernameConstraint,
-    })
-  }
+    });
+  };
 }
 
-export function IsUsernameField(validationOptions?: ValidationOptions & { minLength?: number, maxLength?: number }) {
+export function IsUsernameField(
+  validationOptions?: ValidationOptions & { minLength?: number; maxLength?: number },
+) {
   return applyDecorators(
     IsNotEmpty({
       message: validationI18nMessage("validation.isNotEmpty"),
@@ -60,5 +58,5 @@ export function IsUsernameField(validationOptions?: ValidationOptions & { minLen
       maxLength: validationOptions?.maxLength ?? 50,
     }),
     IsUsername(validationOptions),
-  )
+  );
 }

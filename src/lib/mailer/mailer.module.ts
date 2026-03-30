@@ -1,7 +1,7 @@
-import  { OnModuleInit } from "@nestjs/common"
-import { Module } from "@nestjs/common"
-import { ConfigurableModuleClass } from "./mail.module-definition"
-import { MailerService } from "./mailer.service"
+import { OnModuleInit } from "@nestjs/common";
+import { Module } from "@nestjs/common";
+import { ConfigurableModuleClass } from "./mail.module-definition";
+import { MailerService } from "./mailer.service";
 
 @Module({
   providers: [MailerService],
@@ -9,10 +9,10 @@ import { MailerService } from "./mailer.service"
 })
 export class MailModule extends ConfigurableModuleClass implements OnModuleInit {
   constructor(private readonly mailService: MailerService) {
-    super()
+    super();
   }
 
   async onModuleInit() {
-    await this.mailService.checkConnection()
+    await this.mailService.checkConnection();
   }
 }

@@ -1,8 +1,8 @@
-import process from "node:process"
-import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant"
-import { registerAs } from "@nestjs/config"
-import { isValidTimeZone } from "helper-fns"
-import Joi from "joi"
+import process from "node:process";
+import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant";
+import { registerAs } from "@nestjs/config";
+import { isValidTimeZone } from "helper-fns";
+import Joi from "joi";
 
 // validation schema
 export const appConfigValidationSchema = {
@@ -19,13 +19,15 @@ export const appConfigValidationSchema = {
   ALLOWED_HOSTS: Joi.string().optional(),
   SWAGGER_USER: Joi.string().required(),
   SWAGGER_PASSWORD: Joi.string().required(),
-  TZ: Joi.string().required().custom((value: string, helpers) => {
-    if (!isValidTimeZone(value)) {
-      return helpers.error("Invalid timezone, please provide a valid timezone")
-    }
-    return value
-  }),
-}
+  TZ: Joi.string()
+    .required()
+    .custom((value: string, helpers) => {
+      if (!isValidTimeZone(value)) {
+        return helpers.error("Invalid timezone, please provide a valid timezone");
+      }
+      return value;
+    }),
+};
 
 // config
 export const app = registerAs("app", () => ({
@@ -40,4 +42,4 @@ export const app = registerAs("app", () => ({
     username: process.env.SWAGGER_USER,
     password: process.env.SWAGGER_PASSWORD,
   },
-}))
+}));

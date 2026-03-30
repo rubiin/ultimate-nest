@@ -1,14 +1,9 @@
-import  { File, PaginationResponse } from "@common/@types"
-import  { CursorPaginationDto } from "@common/dtos"
-import  { Observable } from "rxjs"
-import  {
-  CreateUserDto,
-  EditUserDto,
-  ReferUserDto,
-  UserRegistrationDto,
-} from "./dtos"
-import  { UserService } from "./user.service"
-import { Action, Roles } from "@common/@types"
+import { File, PaginationResponse } from "@common/@types";
+import { CursorPaginationDto } from "@common/dtos";
+import { Observable } from "rxjs";
+import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
+import { UserService } from "./user.service";
+import { Action, Roles } from "@common/@types";
 import {
   ApiFile,
   ApiPaginatedResponse,
@@ -17,19 +12,11 @@ import {
   Public,
   SwaggerResponse,
   UUIDParam,
-} from "@common/decorators"
-import { fileValidatorPipe } from "@common/misc"
-import { User } from "@entities"
-import { CheckPolicies, GenericPolicyHandler } from "@lib/casl"
-import {
-  Body,
-  Delete,
-  Get,
-  Put as Patch,
-  Post,
-  Query,
-  UploadedFile,
-} from "@nestjs/common"
+} from "@common/decorators";
+import { fileValidatorPipe } from "@common/misc";
+import { User } from "@entities";
+import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
+import { Body, Delete, Get, Put as Patch, Post, Query, UploadedFile } from "@nestjs/common";
 
 @GenericController("users")
 export class UserController {
@@ -41,16 +28,14 @@ export class UserController {
     badRequest: "User already registered with email.",
   })
   referUser(@Body() dto: ReferUserDto, @LoggedInUser() user: User) {
-    return this.userService.referUser(dto, user)
+    return this.userService.referUser(dto, user);
   }
 
   @Public()
   @ApiPaginatedResponse(User)
   @Get()
-  findAll(
-    @Query() PaginationDto: CursorPaginationDto,
-  ): Observable<PaginationResponse<User>> {
-    return this.userService.findAll(PaginationDto)
+  findAll(@Query() PaginationDto: CursorPaginationDto): Observable<PaginationResponse<User>> {
+    return this.userService.findAll(PaginationDto);
   }
 
   @Public()
@@ -69,7 +54,7 @@ export class UserController {
       ...dto,
       roles: [Roles.AUTHOR],
       files: image,
-    })
+    });
   }
 
   @Get(":idx")
@@ -80,7 +65,7 @@ export class UserController {
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Read))
   findOne(@UUIDParam("idx") index: string): Observable<User> {
-    return this.userService.findOne(index)
+    return this.userService.findOne(index);
   }
 
   @Post()
@@ -95,7 +80,7 @@ export class UserController {
     @UploadedFile(fileValidatorPipe({}))
     image: File,
   ): Observable<User> {
-    return this.userService.create({ ...dto, files: image })
+    return this.userService.create({ ...dto, files: image });
   }
 
   @Patch(":idx")
@@ -113,7 +98,7 @@ export class UserController {
     @UploadedFile(fileValidatorPipe({ required: false }))
     image?: File,
   ): Observable<User> {
-    return this.userService.update(index, dto, image)
+    return this.userService.update(index, dto, image);
   }
 
   @Delete(":idx")
@@ -124,6 +109,6 @@ export class UserController {
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Delete))
   remove(@UUIDParam("idx") index: string): Observable<User> {
-    return this.userService.remove(index)
+    return this.userService.remove(index);
   }
 }

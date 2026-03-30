@@ -1,18 +1,14 @@
-import  { ConfigService } from "@nestjs/config"
-import  {
+import { ConfigService } from "@nestjs/config";
+import {
   DiskHealthIndicator,
   HealthCheckService,
   HttpHealthIndicator,
-
   MemoryHealthIndicator,
-
   MikroOrmHealthIndicator,
-} from "@nestjs/terminus"
-import { GenericController } from "@common/decorators"
-import { Get } from "@nestjs/common"
-import {
-  HealthCheck,
-} from "@nestjs/terminus"
+} from "@nestjs/terminus";
+import { GenericController } from "@common/decorators";
+import { Get } from "@nestjs/common";
+import { HealthCheck } from "@nestjs/terminus";
 
 @GenericController("health", false)
 export class HealthController {
@@ -27,7 +23,7 @@ export class HealthController {
 
   @Get("test")
   healthCheck() {
-    return "Http working fine"
+    return "Http working fine";
   }
 
   @Get()
@@ -65,6 +61,6 @@ export class HealthController {
           threshold: 250 * 1024 * 1024 * 1024,
           path: "/",
         }),
-    ])
+    ]);
   }
 }

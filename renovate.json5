@@ -1,40 +1,25 @@
 {
-  extends: [
-    'config:recommended',
-    'schedule:weekly',
-  ],
-  labels: [
-    'dependencies',
-  ],
+  extends: ["config:recommended", "schedule:weekly"],
+  labels: ["dependencies"],
   pin: {
     enabled: false,
   },
-  rangeStrategy: 'bump',
+  rangeStrategy: "bump",
   packageRules: [
     {
-      matchDepTypes: [
-        'peerDependencies',
-      ],
+      matchDepTypes: ["peerDependencies"],
       enabled: false,
     },
     {
-      matchFileNames: [
-        'examples/**',
-      ],
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-      ],
-      groupName: 'all non-major examples dependencies',
-      groupSlug: 'all-minor-patch-examples',
+      matchFileNames: ["examples/**"],
+      matchUpdateTypes: ["minor", "patch"],
+      groupName: "all non-major examples dependencies",
+      groupSlug: "all-minor-patch-examples",
     },
     {
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-      ],
-      groupName: 'all non-major dependencies',
-      groupSlug: 'all-minor-patch',
+      matchUpdateTypes: ["minor", "patch"],
+      groupName: "all non-major dependencies",
+      groupSlug: "all-minor-patch",
     },
   ],
 }

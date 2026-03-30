@@ -1,23 +1,23 @@
-import  {
+import {
   MulterField,
   MulterOptions,
-} from "@nestjs/platform-express/multer/interfaces/multer-options.interface"
-import  {
+} from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
+import {
   ReferenceObject,
   SchemaObject,
-} from "@nestjs/swagger/dist/interfaces/open-api-spec.interface"
-import { applyDecorators, UseInterceptors } from "@nestjs/common"
-import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from "@nestjs/platform-express"
-import { ApiBody, ApiConsumes, ApiOkResponse, ApiProduces } from "@nestjs/swagger"
+} from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
+import { applyDecorators, UseInterceptors } from "@nestjs/common";
+import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
+import { ApiBody, ApiConsumes, ApiOkResponse, ApiProduces } from "@nestjs/swagger";
 
 interface ApiFileOptions {
-  fieldName?: string
-  required?: boolean
-  localOptions?: MulterOptions
+  fieldName?: string;
+  required?: boolean;
+  localOptions?: MulterOptions;
 }
 
 interface ApiFilesOptions extends ApiFileOptions {
-  maxCount?: number
+  maxCount?: number;
 }
 
 /**
@@ -27,7 +27,7 @@ interface ApiFilesOptions extends ApiFileOptions {
  * @returns A function that returns a decorator.
  */
 export function ApiFile(options_?: ApiFileOptions) {
-  const options = { fieldName: "file", required: false, ...options_ } satisfies ApiFilesOptions
+  const options = { fieldName: "file", required: false, ...options_ } satisfies ApiFilesOptions;
 
   return applyDecorators(
     UseInterceptors(FileInterceptor(options.fieldName, options.localOptions)),
@@ -44,7 +44,7 @@ export function ApiFile(options_?: ApiFileOptions) {
         },
       },
     }),
-  )
+  );
 }
 
 /**
@@ -59,12 +59,10 @@ export function ApiFiles(options_?: ApiFilesOptions) {
     required: false,
     maxCount: 10,
     ...options_,
-  } satisfies ApiFilesOptions
+  } satisfies ApiFilesOptions;
 
   return applyDecorators(
-    UseInterceptors(
-      FilesInterceptor(options.fieldName, options.maxCount, options.localOptions),
-    ),
+    UseInterceptors(FilesInterceptor(options.fieldName, options.maxCount, options.localOptions)),
     ApiConsumes("multipart/form-data"),
     ApiBody({
       schema: {
@@ -81,7 +79,7 @@ export function ApiFiles(options_?: ApiFilesOptions) {
         },
       },
     }),
-  )
+  );
 }
 
 /**
@@ -92,13 +90,16 @@ export function ApiFiles(options_?: ApiFilesOptions) {
  * multer.
  */
 
-export function ApiFileFields(options: (MulterField & { required?: boolean })[], localOptions?: MulterOptions) {
+export function ApiFileFields(
+  options: (MulterField & { required?: boolean })[],
+  localOptions?: MulterOptions,
+) {
   const bodyProperties = Object.assign(
     {},
     ...options.map((field) => {
-      return { [field.name]: { type: "string", format: "binary" } }
+      return { [field.name]: { type: "string", format: "binary" } };
     }),
-  ) as Record<string, SchemaObject | ReferenceObject>
+  ) as Record<string, SchemaObject | ReferenceObject>;
 
   return applyDecorators(
     UseInterceptors(FileFieldsInterceptor(options, localOptions)),
@@ -107,10 +108,10 @@ export function ApiFileFields(options: (MulterField & { required?: boolean })[],
       schema: {
         type: "object",
         properties: bodyProperties,
-        required: options.filter(f => f.required).map(f => f.name),
+        required: options.filter((f) => f.required).map((f) => f.name),
       },
     }),
-  )
+  );
 }
 
 export function ApiFileResponse(...mimeTypes: string[]) {
@@ -122,5 +123,5 @@ export function ApiFileResponse(...mimeTypes: string[]) {
       },
     }),
     ApiProduces(...mimeTypes),
-  )
+  );
 }

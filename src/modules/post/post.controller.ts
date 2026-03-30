@@ -1,20 +1,20 @@
-import  { PaginationResponse } from "@common/@types"
-import  { CursorPaginationDto } from "@common/dtos"
-import  { User } from "@entities"
-import  { Observable } from "rxjs"
-import  { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos"
-import  { PostService } from "./post.service"
-import { Action } from "@common/@types"
+import { PaginationResponse } from "@common/@types";
+import { CursorPaginationDto } from "@common/dtos";
+import { User } from "@entities";
+import { Observable } from "rxjs";
+import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
+import { PostService } from "./post.service";
+import { Action } from "@common/@types";
 import {
   ApiPaginatedResponse,
   GenericController,
   LoggedInUser,
   SwaggerResponse,
   UUIDParam,
-} from "@common/decorators"
-import { Comment, Post as PostEntity } from "@entities"
-import { CheckPolicies, GenericPolicyHandler } from "@lib/casl"
-import { Body, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common"
+} from "@common/decorators";
+import { Comment, Post as PostEntity } from "@entities";
+import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
+import { Body, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 
 @GenericController("posts")
 export class PostController {
@@ -23,7 +23,7 @@ export class PostController {
   @Get()
   @ApiPaginatedResponse(PostEntity)
   findAll(@Query() dto: CursorPaginationDto): Observable<PaginationResponse<PostEntity>> {
-    return this.postService.findAll(dto)
+    return this.postService.findAll(dto);
   }
 
   @Get(":slug")
@@ -33,7 +33,7 @@ export class PostController {
     params: ["slug"],
   })
   getById(@Param("slug") slug: string): Observable<PostEntity> {
-    return this.postService.findOne(slug)
+    return this.postService.findOne(slug);
   }
 
   @Get(":slug/comments")
@@ -43,14 +43,14 @@ export class PostController {
     params: ["slug"],
   })
   findComments(@Param("slug") slug: string): Observable<Comment[]> {
-    return this.postService.findComments(slug)
+    return this.postService.findComments(slug);
   }
 
   @Post()
   @SwaggerResponse({ operation: "create post" })
   @CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Create))
   create(@Body() dto: CreatePostDto, @LoggedInUser() author: User) {
-    return this.postService.create(dto, author)
+    return this.postService.create(dto, author);
   }
 
   @Patch(":slug")
@@ -61,7 +61,7 @@ export class PostController {
   })
   @CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Update))
   update(@Param("slug") slug: string, @Body() dto: EditPostDto): Observable<PostEntity> {
-    return this.postService.update(slug, dto)
+    return this.postService.update(slug, dto);
   }
 
   @Delete(":slug")
@@ -72,7 +72,7 @@ export class PostController {
   })
   @CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Delete))
   remove(@Param("slug") slug: string): Observable<PostEntity> {
-    return this.postService.remove(slug)
+    return this.postService.remove(slug);
   }
 
   @Post(":slug/comments")
@@ -83,11 +83,13 @@ export class PostController {
   })
   @CheckPolicies(new GenericPolicyHandler(Comment, Action.Create))
   createComment(
-        @LoggedInUser("id") user: number, @Param("slug")
-slug: string, @Body()
-commentData: CreateCommentDto,
+    @LoggedInUser("id") user: number,
+    @Param("slug")
+    slug: string,
+    @Body()
+    commentData: CreateCommentDto,
   ) {
-    return this.postService.addComment(user, slug, commentData)
+    return this.postService.addComment(user, slug, commentData);
   }
 
   @Patch(":slug/comments/:commentIdx")
@@ -98,11 +100,13 @@ commentData: CreateCommentDto,
   })
   @CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
   editComment(
-        @Param("slug") slug: string, @UUIDParam("commentIdx")
-commentIndex: string, @Body()
-commentData: CreateCommentDto,
+    @Param("slug") slug: string,
+    @UUIDParam("commentIdx")
+    commentIndex: string,
+    @Body()
+    commentData: CreateCommentDto,
   ) {
-    return this.postService.editComment(slug, commentIndex, commentData)
+    return this.postService.editComment(slug, commentIndex, commentData);
   }
 
   @Delete(":slug/comments/:commentIdx")
@@ -113,7 +117,7 @@ commentData: CreateCommentDto,
   })
   @CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
   deleteComment(@Param("slug") slug: string, @UUIDParam("commentIdx") commentIndex: string) {
-    return this.postService.deleteComment(slug, commentIndex)
+    return this.postService.deleteComment(slug, commentIndex);
   }
 
   @Post(":slug/favorite")
@@ -123,7 +127,7 @@ commentData: CreateCommentDto,
     params: ["slug"],
   })
   favorite(@LoggedInUser("id") userId: number, @UUIDParam("slug") slug: string) {
-    return this.postService.favorite(userId, slug)
+    return this.postService.favorite(userId, slug);
   }
 
   @Delete(":slug/favorite")
@@ -133,6 +137,6 @@ commentData: CreateCommentDto,
     params: ["slug"],
   })
   unFavorite(@LoggedInUser("id") userId: number, @Param("slug") slug: string) {
-    return this.postService.unFavorite(userId, slug)
+    return this.postService.unFavorite(userId, slug);
   }
 }

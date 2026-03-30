@@ -1,10 +1,10 @@
-import path from "node:path"
+import path from "node:path";
 
-import process from "node:process"
-import { HelperService } from "@common/helpers"
-import { Module } from "@nestjs/common"
-import { ConfigModule, ConfigService } from "@nestjs/config"
-import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n"
+import process from "node:process";
+import { HelperService } from "@common/helpers";
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n";
 
 @Module({
   imports: [
@@ -18,8 +18,8 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
           "en-*": "en",
           "np_*": "np",
           "en_*": "en",
-          "en": "en",
-          "np": "np",
+          en: "en",
+          np: "np",
         },
         logging: true,
         loaderOptions: {
@@ -27,7 +27,9 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
           watch: true,
           includeSubfolders: true,
         },
-        typesOutputPath: HelperService.isProd() ? undefined : path.join(`${process.cwd()}/src/generated/i18n-generated.ts`),
+        typesOutputPath: HelperService.isProd()
+          ? undefined
+          : path.join(`${process.cwd()}/src/generated/i18n-generated.ts`),
       }),
       resolvers: [
         { use: QueryResolver, options: ["lang"] },

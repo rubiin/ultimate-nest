@@ -1,12 +1,18 @@
-import  { CreateEntityType, Crud, PaginationRequest, PaginationResponse, UpdateEntityType } from "@common/@types"
-import  { BaseEntity, BaseRepository } from "@common/database"
-import  { User } from "@entities"
-import  { EntityData, EntityKey, FilterQuery, FromEntityType } from "@mikro-orm/postgresql"
-import  { Observable } from "rxjs"
-import { CursorType, PaginationType, QueryOrder } from "@common/@types"
-import { itemDoesNotExistKey, translate } from "@lib/i18n"
-import { NotFoundException } from "@nestjs/common"
-import { from, map, mergeMap, of, switchMap, throwError } from "rxjs"
+import {
+  CreateEntityType,
+  Crud,
+  PaginationRequest,
+  PaginationResponse,
+  UpdateEntityType,
+} from "@common/@types";
+import { BaseEntity, BaseRepository } from "@common/database";
+import { User } from "@entities";
+import { EntityData, EntityKey, FilterQuery, FromEntityType } from "@mikro-orm/postgresql";
+import { Observable } from "rxjs";
+import { CursorType, PaginationType, QueryOrder } from "@common/@types";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { NotFoundException } from "@nestjs/common";
+import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 export abstract class BaseService<
   Entity extends BaseEntity,
@@ -14,8 +20,8 @@ export abstract class BaseService<
   CreateDto extends CreateEntityType<Entity> = CreateEntityType<Entity>,
   UpdateDto extends UpdateEntityType<Entity> = UpdateEntityType<Entity>,
 > implements Crud<Entity, PRequest, CreateDto, UpdateDto> {
-  protected searchField!: EntityKey<Entity>
-  protected queryName = "entity"
+  protected searchField!: EntityKey<Entity>;
+  protected queryName = "entity";
 
   protected constructor(private readonly repository: BaseRepository<Entity>) {}
 
@@ -30,11 +36,9 @@ export abstract class BaseService<
    */
 
   create(dto: CreateDto, _user?: User): Observable<Entity> {
-    const entity = this.repository.create(dto)
+    const entity = this.repository.create(dto);
 
-    return from(this.repository.getEntityManager().persistAndFlush(entity)).pipe(
-      map(() => entity),
-    )
+    return from(this.repository.getEntityManager().persistAndFlush(entity)).pipe(map(() => entity));
   }
 
   /**
@@ -43,7 +47,7 @@ export abstract class BaseService<
    * @returns An observable of a pagination object.
    */
   findAll(dto: PaginationRequest): Observable<PaginationResponse<Entity>> {
-    const qb = this.repository.createQueryBuilder(this.queryName)
+    const qb = this.repository.createQueryBuilder(this.queryName);
 
     if (dto.type === PaginationType.CURSOR) {
       // by default, the id is used as cursor
@@ -60,7 +64,7 @@ export abstract class BaseService<
             ...dto,
           },
         }),
-      )
+      );
     }
 
     return this.repository.qbOffsetPagination({
@@ -72,7 +76,7 @@ export abstract class BaseService<
         searchField: this.searchField,
       },
       qb,
-    })
+    });
   }
 
   /**
@@ -91,12 +95,12 @@ export abstract class BaseService<
                   args: { item: this.repository.getEntityName() },
                 }),
               ),
-          )
+          );
         }
 
-        return of(entity)
+        return of(entity);
       }),
-    )
+    );
   }
 
   /**
@@ -108,11 +112,11 @@ export abstract class BaseService<
   update(index: string, dto: UpdateDto): Observable<Entity> {
     return this.findOne(index).pipe(
       switchMap((item) => {
-        this.repository.assign(item, dto as EntityData<FromEntityType<Entity>>)
+        this.repository.assign(item, dto as EntityData<FromEntityType<Entity>>);
 
-        return from(this.repository.getEntityManager().flush()).pipe(map(() => item))
+        return from(this.repository.getEntityManager().flush()).pipe(map(() => item));
       }),
-    )
+    );
   }
 
   /**
@@ -123,8 +127,8 @@ export abstract class BaseService<
   remove(index: string): Observable<Entity> {
     return this.findOne(index).pipe(
       switchMap((item) => {
-        return this.repository.softRemoveAndFlush(item).pipe(map(() => item))
+        return this.repository.softRemoveAndFlush(item).pipe(map(() => item));
       }),
-    )
+    );
   }
 }

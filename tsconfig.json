@@ -3,32 +3,17 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@lib/*": [
-        "./lib/*"
-      ],
-      "@common/*": [
-        "./common/*"
-      ],
-      "@modules/*": [
-        "./modules/*"
-      ],
-      "@entities": [
-        "./entities"
-      ],
-      "@mocks": [
-        "./_mocks_"
-      ],
-      "@generated": [
-        "./generated"
-      ]
+      "@lib/*": ["./lib/*"],
+      "@common/*": ["./common/*"],
+      "@modules/*": ["./modules/*"],
+      "@entities": ["./entities"],
+      "@mocks": ["./_mocks_"],
+      "@generated": ["./generated"]
     },
     "declaration": true,
     "outDir": "dist",
     "esModuleInterop": true
   },
-  "include": [
-    "test/**/*",
-    "src/**/*"
-  ],
+  "include": ["test/**/*", "src/**/*"],
   "typeRoots": ["./src/common/@types/typings"]
 }

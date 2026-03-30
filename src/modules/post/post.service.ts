@@ -1,36 +1,36 @@
-import  { PaginationResponse } from "@common/@types"
-import  { BaseRepository } from "@common/database"
-import  { CursorPaginationDto } from "@common/dtos"
-import  { AutoPath, EntityKey } from "@mikro-orm/core"
-import  { Observable } from "rxjs"
+import { PaginationResponse } from "@common/@types";
+import { BaseRepository } from "@common/database";
+import { CursorPaginationDto } from "@common/dtos";
+import { AutoPath, EntityKey } from "@mikro-orm/core";
+import { Observable } from "rxjs";
 
-import  { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos"
-import { CursorType, QueryOrder } from "@common/@types"
-import { Category, Comment, Post, Tag, User } from "@entities"
-import { itemDoesNotExistKey, translate } from "@lib/i18n"
-import { EntityManager } from "@mikro-orm/core"
-import { InjectRepository } from "@mikro-orm/nestjs"
-import { PostgreSqlDriver, ref } from "@mikro-orm/postgresql"
-import { Injectable, NotFoundException } from "@nestjs/common"
-import { omit } from "helper-fns"
-import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs"
+import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
+import { CursorType, QueryOrder } from "@common/@types";
+import { Category, Comment, Post, Tag, User } from "@entities";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { EntityManager } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver, ref } from "@mikro-orm/postgresql";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { omit } from "helper-fns";
+import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
 @Injectable()
 export class PostService {
-  private readonly queryName = "p"
+  private readonly queryName = "p";
 
   constructor(
     private readonly em: EntityManager<PostgreSqlDriver>,
-        @InjectRepository(Post)
-        private readonly postRepository: BaseRepository<Post>,
-        @InjectRepository(User)
-        private readonly userRepository: BaseRepository<User>,
-        @InjectRepository(Comment)
-        private readonly commentRepository: BaseRepository<Comment>,
-        @InjectRepository(Tag)
-        private readonly tagRepository: BaseRepository<Tag>,
-        @InjectRepository(Category)
-        private readonly categoryRepository: BaseRepository<Category>,
+    @InjectRepository(Post)
+    private readonly postRepository: BaseRepository<Post>,
+    @InjectRepository(User)
+    private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(Comment)
+    private readonly commentRepository: BaseRepository<Comment>,
+    @InjectRepository(Tag)
+    private readonly tagRepository: BaseRepository<Tag>,
+    @InjectRepository(Category)
+    private readonly categoryRepository: BaseRepository<Category>,
   ) {}
 
   /**
@@ -41,7 +41,7 @@ export class PostService {
    * @returns An observable of a pagination object.
    */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<Post>> {
-    const qb = this.postRepository.createQueryBuilder(this.queryName)
+    const qb = this.postRepository.createQueryBuilder(this.queryName);
 
     return from(
       this.postRepository.qbCursorPagination({
@@ -55,7 +55,7 @@ export class PostService {
           ...dto,
         },
       }),
-    )
+    );
   }
 
   /* Finding a post by slug, and then returning the comments of that post */
@@ -77,12 +77,12 @@ export class PostService {
                   args: { item: "Post" },
                 }),
               ),
-          )
+          );
         }
 
-        return of(post)
+        return of(post);
       }),
-    )
+    );
   }
 
   /**
@@ -107,11 +107,11 @@ export class PostService {
           categories,
           tags,
           published: dto.published ?? false,
-        })
+        });
 
-        return from(this.em.persistAndFlush(post)).pipe(map(() => post))
+        return from(this.em.persistAndFlush(post)).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -134,17 +134,17 @@ export class PostService {
               this.postRepository.assign(post, {
                 ...omit(dto, ["tags", "categories"]),
                 tags,
-              })
+              });
 
-              return from(this.em.flush()).pipe(map(() => post))
+              return from(this.em.flush()).pipe(map(() => post));
             }),
-          )
+          );
         }
-        this.postRepository.assign(post, omit(dto, ["tags", "categories"]))
+        this.postRepository.assign(post, omit(dto, ["tags", "categories"]));
 
-        return from(this.em.flush()).pipe(map(() => post))
+        return from(this.em.flush()).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -155,9 +155,9 @@ export class PostService {
   remove(slug: string): Observable<Post> {
     return this.findOne(slug).pipe(
       switchMap((post) => {
-        return this.postRepository.softRemoveAndFlush(post).pipe(map(() => post))
+        return this.postRepository.softRemoveAndFlush(post).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -168,7 +168,7 @@ export class PostService {
    * @returns A post object
    */
   favorite(userId: number, slug: string): Observable<Post> {
-    const post$ = from(this.postRepository.findOneOrFail({ idx: slug }))
+    const post$ = from(this.postRepository.findOneOrFail({ idx: slug }));
     const user$ = from(
       this.userRepository.findOneOrFail(
         { id: userId },
@@ -179,18 +179,18 @@ export class PostService {
           },
         },
       ),
-    )
+    );
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
         if (!user.favorites.contains(post)) {
-          user.favorites.add(post)
-          post.favoritesCount = (post.favoritesCount ?? 0) + 1
+          user.favorites.add(post);
+          post.favoritesCount = (post.favoritesCount ?? 0) + 1;
         }
 
-        return from(this.em.flush()).pipe(map(() => post))
+        return from(this.em.flush()).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -206,7 +206,7 @@ export class PostService {
       this.postRepository.findOneOrFail({
         idx: slug,
       }),
-    )
+    );
     const user$ = from(
       this.userRepository.findOneOrFail(
         { id: userId },
@@ -217,18 +217,18 @@ export class PostService {
           },
         },
       ),
-    )
+    );
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
         if (!user.favorites.contains(post)) {
-          user.favorites.remove(post)
-          post.favoritesCount = (post.favoritesCount ?? 0) - 1
+          user.favorites.remove(post);
+          post.favoritesCount = (post.favoritesCount ?? 0) - 1;
         }
 
-        return from(this.em.flush()).pipe(map(() => post))
+        return from(this.em.flush()).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -247,19 +247,21 @@ export class PostService {
           },
         },
       ),
-    ).pipe(switchMap((post) => {
-      if (!post) {
-        return throwError(
-          () =>
-            new NotFoundException(
-              translate(itemDoesNotExistKey, {
-                args: { item: "Post" },
-              }),
-            ),
-        )
-      }
-      return of(post.comments.getItems())
-    }))
+    ).pipe(
+      switchMap((post) => {
+        if (!post) {
+          return throwError(
+            () =>
+              new NotFoundException(
+                translate(itemDoesNotExistKey, {
+                  args: { item: "Post" },
+                }),
+              ),
+          );
+        }
+        return of(post.comments.getItems());
+      }),
+    );
   }
 
   /**
@@ -270,18 +272,18 @@ export class PostService {
    * @returns Post
    */
   addComment(userId: number, slug: string, dto: CreateCommentDto): Observable<Post> {
-    const post$ = this.findOne(slug)
-    const user$ = from(this.userRepository.findOneOrFail(userId))
+    const post$ = this.findOne(slug);
+    const user$ = from(this.userRepository.findOneOrFail(userId));
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
-        const comment = new Comment({ body: dto.body, author: ref(user) })
+        const comment = new Comment({ body: dto.body, author: ref(user) });
 
-        post.comments.add(comment)
+        post.comments.add(comment);
 
-        return from(this.em.flush()).pipe(map(() => post))
+        return from(this.em.flush()).pipe(map(() => post));
       }),
-    )
+    );
   }
 
   /**
@@ -297,13 +299,13 @@ export class PostService {
       switchMap((_post) => {
         return from(this.commentRepository.findOneOrFail({ idx: commentIndex })).pipe(
           switchMap((comment) => {
-            this.commentRepository.assign(comment, commentData)
+            this.commentRepository.assign(comment, commentData);
 
-            return from(this.em.flush()).pipe(map(() => _post))
+            return from(this.em.flush()).pipe(map(() => _post));
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -318,15 +320,15 @@ export class PostService {
       from(this.commentRepository.findOneOrFail({ idx: commentIndex })),
     ]).pipe(
       switchMap(([post, comment]) => {
-        const commentReference = this.commentRepository.getReference(comment.id)
+        const commentReference = this.commentRepository.getReference(comment.id);
 
         if (post.comments.contains(commentReference)) {
-          post.comments.remove(commentReference)
-          from(this.em.removeAndFlush(commentReference)).pipe(map(() => post))
+          post.comments.remove(commentReference);
+          from(this.em.removeAndFlush(commentReference)).pipe(map(() => post));
         }
 
-        return of(post)
+        return of(post);
       }),
-    )
+    );
   }
 }

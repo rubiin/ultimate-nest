@@ -1,36 +1,36 @@
-import  { AuthenticationResponse, OauthResponse } from "@common/@types"
-import  { BaseRepository } from "@common/database"
-import  { MailerService } from "@lib/mailer/mailer.service"
-import  { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql"
-import  { TokensService } from "@modules/token/tokens.service"
-import  { ConfigService } from "@nestjs/config"
-import  { Observable } from "rxjs"
-import  {
+import { AuthenticationResponse, OauthResponse } from "@common/@types";
+import { BaseRepository } from "@common/database";
+import { MailerService } from "@lib/mailer/mailer.service";
+import { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { TokensService } from "@modules/token/tokens.service";
+import { ConfigService } from "@nestjs/config";
+import { Observable } from "rxjs";
+import {
   ChangePasswordDto,
   OtpVerifyDto,
   ResetPasswordDto,
   SendOtpDto,
   UserLoginDto,
-} from "./dtos"
-import process from "node:process"
+} from "./dtos";
+import process from "node:process";
 
-import { EmailSubject, EmailTemplate } from "@common/@types"
-import { HelperService } from "@common/helpers"
-import { OtpLog, Protocol, User } from "@entities"
-import { itemDoesNotExistKey, translate } from "@lib/i18n"
-import { EntityManager } from "@mikro-orm/core"
-import { InjectRepository } from "@mikro-orm/nestjs"
+import { EmailSubject, EmailTemplate } from "@common/@types";
+import { HelperService } from "@common/helpers";
+import { OtpLog, Protocol, User } from "@entities";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { EntityManager } from "@mikro-orm/core";
+import { InjectRepository } from "@mikro-orm/nestjs";
 import {
   BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
-} from "@nestjs/common"
-import { init } from "@paralleldrive/cuid2"
-import { isAfter } from "date-fns"
-import { capitalize, omit } from "helper-fns"
-import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs"
+} from "@nestjs/common";
+import { init } from "@paralleldrive/cuid2";
+import { isAfter } from "date-fns";
+import { capitalize, omit } from "helper-fns";
+import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
 @Injectable()
 export class AuthService {
@@ -56,11 +56,7 @@ export class AuthService {
    * @returns The user object without the password property.
    */
 
-  validateUser(
-    isPasswordLogin: boolean,
-    email: string,
-    pass?: string,
-  ): Observable<any> {
+  validateUser(isPasswordLogin: boolean, email: string, pass?: string): Observable<any> {
     return from(
       this.userRepository.findOne({
         email,
@@ -75,32 +71,26 @@ export class AuthService {
                   args: { item: "Account" },
                 }),
               ),
-          )
+          );
         }
 
         if (!user.isActive) {
-          return throwError(
-            () => new ForbiddenException(translate("exception.inactiveUser")),
-          )
+          return throwError(() => new ForbiddenException(translate("exception.inactiveUser")));
         }
 
         return user && isPasswordLogin
           ? HelperService.verifyHash(user.password, pass!).pipe(
-            map((isValid) => {
-              if (isValid)
-                return omit(user, ["password"])
+              map((isValid) => {
+                if (isValid) return omit(user, ["password"]);
 
-              return throwError(
-                () =>
-                  new BadRequestException(
-                    translate("exception.invalidCredentials"),
-                  ),
-              )
-            }),
-          )
-          : of(omit(user, ["password"]))
+                return throwError(
+                  () => new BadRequestException(translate("exception.invalidCredentials")),
+                );
+              }),
+            )
+          : of(omit(user, ["password"]));
       }),
-    )
+    );
   }
 
   /**
@@ -111,38 +101,25 @@ export class AuthService {
    * @returns An observable of type IAuthenticationResponse
    */
 
-  login(
-    loginDto: UserLoginDto,
-    isPasswordLogin = false,
-  ): Observable<AuthenticationResponse> {
-    return this.validateUser(
-      isPasswordLogin,
-      loginDto.email,
-      loginDto.password,
-    ).pipe(
+  login(loginDto: UserLoginDto, isPasswordLogin = false): Observable<AuthenticationResponse> {
+    return this.validateUser(isPasswordLogin, loginDto.email, loginDto.password).pipe(
       switchMap((user: User) => {
         if (user === null) {
           return throwError(
-            () =>
-              new BadRequestException(
-                translate("exception.invalidCredentials"),
-              ),
-          )
+            () => new BadRequestException(translate("exception.invalidCredentials")),
+          );
         }
 
         if (user.isTwoFactorEnabled) {
           return this.tokenService.generateAccessToken(user).pipe(
             map((accessToken) => {
-              return HelperService.buildPayloadResponse(user, accessToken)
+              return HelperService.buildPayloadResponse(user, accessToken);
             }),
-          )
+          );
         }
 
         return zip(
-          this.userRepository.nativeUpdate(
-            { id: user.id },
-            { lastLogin: new Date() },
-          ),
+          this.userRepository.nativeUpdate({ id: user.id }, { lastLogin: new Date() }),
           this.tokenService.generateAccessToken(user),
           this.tokenService.generateRefreshToken(
             user,
@@ -150,15 +127,11 @@ export class AuthService {
           ),
         ).pipe(
           map(([_, accessToken, refreshToken]) => {
-            return HelperService.buildPayloadResponse(
-              user,
-              accessToken,
-              refreshToken,
-            )
+            return HelperService.buildPayloadResponse(user, accessToken, refreshToken);
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -167,7 +140,7 @@ export class AuthService {
    * @returns Observable<any>
    */
   logoutFromAll(user: User): Observable<User> {
-    return this.tokenService.deleteRefreshTokenForUser(user)
+    return this.tokenService.deleteRefreshTokenForUser(user);
   }
 
   /**
@@ -179,9 +152,9 @@ export class AuthService {
   logout(user: User, refreshToken: string): Observable<User> {
     return from(this.tokenService.decodeRefreshToken(refreshToken)).pipe(
       switchMap((payload) => {
-        return this.tokenService.deleteRefreshToken(user, payload)
+        return this.tokenService.deleteRefreshToken(user, payload);
       }),
-    )
+    );
   }
 
   /**
@@ -190,7 +163,7 @@ export class AuthService {
    * @returns Observable of type OtpLog
    */
   forgotPassword(sendOtp: SendOtpDto): Observable<{ message: string }> {
-    const { email } = sendOtp
+    const { email } = sendOtp;
 
     return from(
       this.userRepository.findOne({
@@ -206,7 +179,7 @@ export class AuthService {
                   args: { item: "Account" },
                 }),
               ),
-          )
+          );
         }
 
         return from(
@@ -216,17 +189,17 @@ export class AuthService {
           }),
         ).pipe(
           switchMap((protocol) => {
-            const otpNumber = init({ length: 6 })() // random six digit otp
+            const otpNumber = init({ length: 6 })(); // random six digit otp
 
             const otp = this.otpRepository.create({
               user: userExists,
               otpCode: otpNumber,
               expiresIn: new Date(Date.now() + (protocol?.otpExpiryInMinutes ?? 5 * 60_000)), // prettier-ignore
-            })
+            });
 
             return from(
               this.em.transactional(async (em) => {
-                await em.persistAndFlush(otp)
+                await em.persistAndFlush(otp);
 
                 return this.mailService.sendMail({
                   template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
@@ -240,13 +213,13 @@ export class AuthService {
                   from: this.configService.get("mail.senderEmail", {
                     infer: true,
                   }),
-                })
+                });
               }),
-            ).pipe(map(() => ({ message: "Otp sent successfully" })))
+            ).pipe(map(() => ({ message: "Otp sent successfully" })));
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -257,7 +230,7 @@ export class AuthService {
    */
 
   resetPassword(resetPassword: ResetPasswordDto): Observable<User> {
-    const { password, otpCode } = resetPassword
+    const { password, otpCode } = resetPassword;
 
     return from(
       this.otpRepository.findOne(
@@ -276,15 +249,15 @@ export class AuthService {
                   args: { item: "Otp" },
                 }),
               ),
-          )
+          );
         }
 
-        const user = details.user.getEntity()
-        this.userRepository.assign(user, { password })
+        const user = details.user.getEntity();
+        this.userRepository.assign(user, { password });
 
-        return from(this.em.flush()).pipe(map(() => user))
+        return from(this.em.flush()).pipe(map(() => user));
       }),
-    )
+    );
   }
 
   /**
@@ -296,7 +269,7 @@ export class AuthService {
    */
 
   verifyOtp(otpDto: OtpVerifyDto): Observable<User> {
-    const { otpCode } = otpDto
+    const { otpCode } = otpDto;
 
     return from(
       this.otpRepository.findOne(
@@ -317,10 +290,10 @@ export class AuthService {
                   args: { item: "Otp" },
                 }),
               ),
-          )
+          );
         }
 
-        const isExpired = isAfter(new Date(), new Date(codeDetails.expiresIn))
+        const isExpired = isAfter(new Date(), new Date(codeDetails.expiresIn));
 
         if (isExpired) {
           return throwError(
@@ -330,11 +303,11 @@ export class AuthService {
                   args: { item: "Otp" },
                 }),
               ),
-          )
+          );
         }
         this.otpRepository.assign(codeDetails, {
           isUsed: true,
-        })
+        });
 
         return from(
           this.em.transactional(async (em) => {
@@ -347,11 +320,11 @@ export class AuthService {
                 { isVerified: true },
               ),
               em.flush(),
-            ])
+            ]);
           }),
-        ).pipe(map(() => codeDetails.user.getEntity()))
+        ).pipe(map(() => codeDetails.user.getEntity()));
       }),
-    )
+    );
   }
 
   /**
@@ -363,7 +336,7 @@ export class AuthService {
    */
 
   changePassword(dto: ChangePasswordDto, user: User): Observable<User> {
-    const { password, oldPassword } = dto
+    const { password, oldPassword } = dto;
 
     return from(
       this.userRepository.findOne({
@@ -379,28 +352,25 @@ export class AuthService {
                   args: { item: "Account" },
                 }),
               ),
-          )
+          );
         }
 
         return HelperService.verifyHash(userDetails.password, oldPassword).pipe(
           switchMap((isValid) => {
             if (!isValid) {
               return throwError(
-                () =>
-                  new BadRequestException(
-                    translate("exception.invalidCredentials"),
-                  ),
-              )
+                () => new BadRequestException(translate("exception.invalidCredentials")),
+              );
             }
             this.userRepository.assign(userDetails, {
               password,
-            })
+            });
 
-            return from(this.em.flush()).pipe(map(() => userDetails))
+            return from(this.em.flush()).pipe(map(() => userDetails));
           }),
-        )
+        );
       }),
-    )
+    );
   }
 
   /**
@@ -412,11 +382,10 @@ export class AuthService {
    * @returns a Promise that resolves to a User object.
    */
   async findUser(condition: FilterQuery<User>): Promise<User> {
-    const user = await this.userRepository.findOne(condition)
+    const user = await this.userRepository.findOne(condition);
 
-    if (!user)
-      throw new UnauthorizedException()
-    return user
+    if (!user) throw new UnauthorizedException();
+    return user;
   }
 
   /**
@@ -424,20 +393,14 @@ export class AuthService {
    * with the access token.
    * @returns a redirect response to a client URL with an access token as a query parameter.
    */
-  OauthHandler({
-    response,
-    user,
-  }: {
-    response: NestifyResponse
-    user: OauthResponse
-  }) {
+  OauthHandler({ response, user }: { response: NestifyResponse; user: OauthResponse }) {
     return this.login({ email: user.email }, false).pipe(
       map((data) => {
         // client url
         return response.redirect(
           `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
-        )
+        );
       }),
-    )
+    );
   }
 }
