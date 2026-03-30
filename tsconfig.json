@@ -1,19 +1,44 @@
 {
   "extends": "@rubiin/tsconfig",
   "compilerOptions": {
-    "baseUrl": "src",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": [
+      "node",
+      "jest",
+      "express",
+      "multer"
+    ], // @types are no longer auto-discovered (see §1.6)
+    "rootDir": "./src", // no longer inferred from source files (see §1.5)
     "paths": {
-      "@lib/*": ["./lib/*"],
-      "@common/*": ["./common/*"],
-      "@modules/*": ["./modules/*"],
-      "@entities": ["./entities"],
-      "@mocks": ["./_mocks_"],
-      "@generated": ["./generated"]
+      "@lib/*": [
+        "./src/lib/*"
+      ],
+      "@common/*": [
+        "./src/common/*"
+      ],
+      "@modules/*": [
+        "./src/modules/*"
+      ],
+      "@entities": [
+        "./src/entities"
+      ],
+      "@mocks": [
+        "./src/_mocks_"
+      ],
+      "@generated": [
+        "./src/generated"
+      ]
     },
     "declaration": true,
     "outDir": "dist",
     "esModuleInterop": true
   },
-  "include": ["test/**/*", "src/**/*"],
-  "typeRoots": ["./src/common/@types/typings"]
+  "include": [
+    "test/**/*",
+    "src/**/*"
+  ],
+  "typeRoots": [
+    "./src/common/@types/typings"
+  ]
 }
