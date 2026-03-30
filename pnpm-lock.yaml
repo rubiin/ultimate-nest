@@ -21,8 +21,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@golevelup/nestjs-rabbitmq':
-        specifier: ^7.1.2
-        version: 7.1.2(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        specifier: ^9.0.0
+        version: 9.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@golevelup/nestjs-stripe':
         specifier: ^1.2.0
         version: 1.2.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(stripe@20.4.1(@types/node@24.12.0))
@@ -34,9 +34,9 @@ importers:
         version: 5.1.6(keyv@5.6.0)
       '@ladjs/consolidate':
         specifier: ^1.0.4
-        version: 1.0.4(@babel/core@7.28.3)(lodash@4.17.21)(pug@3.0.3)
+        version: 1.0.4(@babel/core@7.28.3)(lodash@4.17.23)(pug@3.0.3)
       '@mikro-orm/core':
-        specifier: ^6.6.9
+        specifier: ^6.6.10
         version: 6.6.10
       '@mikro-orm/migrations':
         specifier: ^6.6.9
@@ -942,11 +942,17 @@ packages:
       '@nestjs/common': ^11.1.12
       '@nestjs/core': ^11.1.12
 
-  '@golevelup/nestjs-rabbitmq@7.1.2':
-    resolution: {integrity: sha512-q2Xn9V+/Y4lq7Ik+LmLYC2PFwHiZrrez8EjaNodC2QG6CP7GROybclWf//PVzyTIKqq44B0dEh2+amrXFyN4zA==}
+  '@golevelup/nestjs-discovery@7.0.0':
+    resolution: {integrity: sha512-l2O4qokytyBwTqNKNOv3OITdJtYfV0f6eLqR5c0brS1Hy4MV4h9YXy+o534yczOcxWnDfeATArDpLxz88wonSQ==}
     peerDependencies:
-      '@nestjs/common': ^11.1.12
-      '@nestjs/core': ^11.1.12
+      '@nestjs/common': ^11.1.17
+      '@nestjs/core': ^11.1.17
+
+  '@golevelup/nestjs-rabbitmq@9.0.0':
+    resolution: {integrity: sha512-sPQuLk73ZqHSO9fs9+WvYRYh56cQZWNsnIhGcthVgADCb2gzzflVYFqMgOyP+ZbUDvdrahw6RXeC0Vn9nTLtNw==}
+    peerDependencies:
+      '@nestjs/common': ^11.1.17
+      '@nestjs/core': ^11.1.17
       reflect-metadata: ^0.2.2
       rxjs: ^7.8.1
 
@@ -8762,16 +8768,22 @@ snapshots:
     dependencies:
       '@nestjs/common': 11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.17(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.17)(@nestjs/websockets@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      lodash: 4.17.21
+      lodash: 4.17.23
 
-  '@golevelup/nestjs-rabbitmq@7.1.2(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
+  '@golevelup/nestjs-discovery@7.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)':
     dependencies:
-      '@golevelup/nestjs-discovery': 6.1.2(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)
+      '@nestjs/common': 11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/core': 11.1.17(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.17)(@nestjs/websockets@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      lodash: 4.17.23
+
+  '@golevelup/nestjs-rabbitmq@9.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
+    dependencies:
+      '@golevelup/nestjs-discovery': 7.0.0(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.17)
       '@nestjs/common': 11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.17(@nestjs/common@11.1.17(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.17)(@nestjs/websockets@11.1.17)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       amqp-connection-manager: 5.0.0(amqplib@0.10.9)
       amqplib: 0.10.9
-      lodash: 4.17.21
+      lodash: 4.17.23
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
 
@@ -9642,10 +9654,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@ladjs/consolidate@1.0.4(@babel/core@7.28.3)(lodash@4.17.21)(pug@3.0.3)':
+  '@ladjs/consolidate@1.0.4(@babel/core@7.28.3)(lodash@4.17.23)(pug@3.0.3)':
     optionalDependencies:
       '@babel/core': 7.28.3
-      lodash: 4.17.21
+      lodash: 4.17.23
       pug: 3.0.3
 
   '@lukeed/csprng@1.1.0': {}
@@ -12171,15 +12183,15 @@ snapshots:
 
   clone@1.0.4: {}
 
-  cloudinary-core@2.14.0(lodash@4.17.21):
+  cloudinary-core@2.14.0(lodash@4.17.23):
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   cloudinary@1.41.3:
     dependencies:
-      cloudinary-core: 2.14.0(lodash@4.17.21)
+      cloudinary-core: 2.14.0(lodash@4.17.23)
       core-js: 3.45.1
-      lodash: 4.17.21
+      lodash: 4.17.23
       q: 1.5.1
 
   cluster-key-slot@1.1.2: {}
@@ -13515,7 +13527,7 @@ snapshots:
       cli-width: 3.0.0
       external-editor: 3.1.0
       figures: 3.2.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       mute-stream: 0.0.8
       ora: 5.4.1
       run-async: 2.4.1
@@ -14469,7 +14481,7 @@ snapshots:
       eventemitter3: 5.0.1
       fast-xml-parser: 4.5.3
       ipaddr.js: 2.2.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       mime-types: 2.1.35
       query-string: 7.1.3
       stream-json: 1.9.1
@@ -14561,7 +14573,7 @@ snapshots:
 
   node-emoji@1.11.0:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   node-fetch@2.7.0:
     dependencies:
