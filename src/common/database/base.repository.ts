@@ -16,6 +16,7 @@ import {
   OrderDefinition,
   QBFilterQuery,
   QueryOrderMap,
+  EntityRepository
 } from "@mikro-orm/postgresql";
 import { Observable } from "rxjs";
 import { BaseEntity } from "./base.entity";
@@ -29,7 +30,6 @@ import {
 } from "@common/@types";
 
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import { EntityRepository } from "@mikro-orm/postgresql";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { formatSearch } from "helper-fns";
 import { from, map, of, switchMap, throwError } from "rxjs";
@@ -54,6 +54,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     return this.entityName.toString();
   }
 
+
   /**
    * The softRemove function soft deletes the entity and persists the changes to the database.
    * @param entity - The entity to be removed
@@ -64,7 +65,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     entity.isDeleted = true;
     this.em.persist(entity);
 
-    return this.em;
+    return this.em as EntityManager;
   }
 
   /**
@@ -76,7 +77,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     entity.deletedAt = new Date();
     entity.isDeleted = true;
 
-    return from(this.em.persistAndFlush(entity)).pipe(map(() => entity));
+    return from(this.em.persist(entity).flush()).pipe(map(() => entity));
   }
 
   /**

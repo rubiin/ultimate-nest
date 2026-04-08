@@ -27,7 +27,7 @@ export class ChatService {
       users: conversation.users,
     });
 
-    await this.em.persistAndFlush(conversationNew);
+    await this.em.persist(conversationNew).flush();
   }
 
   async sendMessage(data: IConversation) {
@@ -44,7 +44,7 @@ export class ChatService {
       messageNew.conversation = ref(conversationExists);
       conversationExists.messages.add(messageNew);
 
-      await Promise.allSettled([this.em.persistAndFlush(messageNew), this.em.flush()]);
+      await Promise.allSettled([this.em.persist(messageNew).flush(), this.em.flush()]);
     } else {
       const conversationNew = this.conversationRepository.create({
         chatName: data.users.map((user) => user.username).join(", "),
@@ -55,8 +55,8 @@ export class ChatService {
       messageNew.conversation = ref(conversationNew);
 
       await Promise.allSettled([
-        this.em.persistAndFlush(messageNew),
-        this.em.persistAndFlush(conversationNew),
+        this.em.persist(messageNew).flush(),
+        this.em.persist(conversationNew).flush(),
       ]);
     }
   }

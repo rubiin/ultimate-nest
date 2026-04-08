@@ -34,7 +34,7 @@ export class RefreshTokensRepository {
       expiresIn: expiration,
     });
 
-    return from(this.em.persistAndFlush(token)).pipe(map(() => token));
+    return from(this.em.persist(token).flush()).pipe(map(() => token));
   }
 
   /**

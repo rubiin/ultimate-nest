@@ -1,7 +1,7 @@
 import { Ref, Rel } from "@mikro-orm/postgresql";
 import { User } from "./user.entity";
 import { BaseEntity } from "@common/database";
-import { Entity, ManyToOne, Property } from "@mikro-orm/postgresql";
+import { Entity, ManyToOne, Property } from "@mikro-orm/decorators/legacy";
 
 @Entity()
 export class PointRedemptionLog extends BaseEntity {

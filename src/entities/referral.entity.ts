@@ -2,8 +2,13 @@ import { Opt, Ref, Rel } from "@mikro-orm/postgresql";
 import { User } from "./user.entity";
 import { ReferralStatus } from "@common/@types";
 import { BaseEntity } from "@common/database";
-import { Entity, Enum, ManyToOne, Property } from "@mikro-orm/postgresql";
+import {
+  Entity,
 
+  ManyToOne,
+  Property,
+  Enum,
+} from "@mikro-orm/decorators/legacy";
 @Entity()
 export class Referral extends BaseEntity {
   @ManyToOne({
