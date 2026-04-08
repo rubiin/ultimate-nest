@@ -263,12 +263,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         [searchField]: {
           $ilike: formatSearch(search),
         },
-      });
+      } as QBFilterQuery<T>);
     }
 
     if (relations) {
       for (const relation of relations)
-        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
+        qb.leftJoinAndSelect(`${alias}.${relation}` as any, `${alias}_${relation}`);
     }
 
     if (fromDate) {
@@ -276,7 +276,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         createdAt: {
           $gte: fromDate,
         },
-      });
+      } as unknown as QBFilterQuery<T>);
     }
 
     if (to) {
@@ -284,12 +284,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         createdAt: {
           $lte: to,
         },
-      });
+      } as unknown as QBFilterQuery<T>);
     }
 
     qb.orderBy({ [sort]: order.toLowerCase() })
       .limit(limit)
-      .select(selectedFields)
+      .select(selectedFields as any)
       .offset(offset);
 
     const pagination$ = from(qb.getResultAndCount());
@@ -331,19 +331,19 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
     qb.where({
       isDeleted: withDeleted,
-    });
+    } as unknown as QBFilterQuery<T>);
 
     if (search && searchField) {
       qb.andWhere({
         [searchField]: {
           $ilike: formatSearch(search),
         },
-      });
+      } as QBFilterQuery<T>);
     }
 
     if (relations) {
       for (const relation of relations)
-        qb.leftJoinAndSelect(`${alias}.${relation}`, `${alias}_${relation}`);
+        qb.leftJoinAndSelect(`${alias}.${relation}` as any, `${alias}_${relation}`);
     }
 
     if (fromDate) {
@@ -351,7 +351,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         createdAt: {
           $gte: fromDate,
         },
-      });
+      } as unknown as QBFilterQuery<T>);
     }
 
     if (to) {
@@ -359,7 +359,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         createdAt: {
           $lte: to,
         },
-      });
+      } as unknown as QBFilterQuery<T>);
     }
 
     let previousCount = 0;
@@ -372,16 +372,16 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const oppositeOd = getOppositeOrder(order);
       const temporaryQb = qb.clone();
 
-      temporaryQb.andWhere(this.getFilters(cursor, decoded, oppositeOd));
-      previousCount = await temporaryQb.count(aliasCursor, true);
+      temporaryQb.andWhere(this.getFilters(cursor, decoded, oppositeOd) as QBFilterQuery<T>);
+      previousCount = await temporaryQb.getCount(aliasCursor as any, true);
 
       const normalOd = getQueryOrder(order);
 
-      qb.andWhere(this.getFilters(cursor, decoded, normalOd));
+      qb.andWhere(this.getFilters(cursor, decoded, normalOd) as QBFilterQuery<T>);
     }
 
-    const [entities, count]: [T[], number] = await qb
-      .select(selectedFields)
+    const [entities, count] = await qb
+      .select(selectedFields as any)
       .orderBy(this.getOrderBy(cursor, order))
       .limit(first)
       .getResultAndCount();
