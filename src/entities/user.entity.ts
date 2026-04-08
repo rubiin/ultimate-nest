@@ -1,4 +1,4 @@
-import { EventArgs } from "@mikro-orm/postgresql";
+import { Collection, EventArgs, wrap } from "@mikro-orm/postgresql";
 import { Roles } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import { HelperService } from "@common/helpers";
@@ -7,7 +7,6 @@ import {
   BeforeCreate,
   BeforeUpdate,
   BeforeUpsert,
-  Collection,
   Embeddable,
   Embedded,
   Entity,
@@ -15,9 +14,7 @@ import {
   ManyToMany,
   OneToMany,
   Property,
-  wrap,
-} from "@mikro-orm/postgresql";
-
+} from "@mikro-orm/decorators/legacy";
 @Embeddable()
 export class Social {
   @Property()

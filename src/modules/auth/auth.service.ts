@@ -199,7 +199,7 @@ export class AuthService {
 
             return from(
               this.em.transactional(async (em) => {
-                await em.persistAndFlush(otp);
+                await em.persist(otp).flush();
 
                 return this.mailService.sendMail({
                   template: EmailTemplate.RESET_PASSWORD_TEMPLATE,

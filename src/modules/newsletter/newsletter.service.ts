@@ -97,7 +97,7 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
         }
         const subscriber = this.subscriberRepository.create(dto);
 
-        return from(this.subscriberRepository.getEntityManager().persistAndFlush(subscriber)).pipe(
+        return from(this.subscriberRepository.getEntityManager().persist(subscriber).flush()).pipe(
           map(() => subscriber),
         );
       }),

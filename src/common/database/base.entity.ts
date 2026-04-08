@@ -1,9 +1,8 @@
 import { randomUUID } from "node:crypto";
 
 import { HelperService } from "@common/helpers";
-import { Entity, PrimaryKey, Property } from "@mikro-orm/postgresql";
 import { ApiHideProperty } from "@nestjs/swagger";
-
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 /**
  * Base entity class for mikroorm models, that all other entities of the same type should extend.
  */

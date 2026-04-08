@@ -174,7 +174,7 @@ export class UserService {
 
         user.avatar = response.url as string;
 
-        await em.persistAndFlush(user);
+        await em.persist(user).flush();
         const link = this.configService.get("app.clientUrl", { infer: true });
 
         await this.amqpConnection.publish(

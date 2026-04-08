@@ -1,7 +1,8 @@
 import { Opt, Ref, Rel } from "@mikro-orm/postgresql";
 import { Conversation, User } from "./index";
 import { BaseEntity } from "@common/database";
-import { Entity, ManyToOne, Property } from "@mikro-orm/postgresql";
+
+import { Entity, ManyToOne, Property } from "@mikro-orm/decorators/legacy";
 
 @Entity()
 export class Message extends BaseEntity {

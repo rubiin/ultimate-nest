@@ -109,7 +109,7 @@ export class PostService {
           published: dto.published ?? false,
         });
 
-        return from(this.em.persistAndFlush(post)).pipe(map(() => post));
+        return from(this.em.persist(post).flush()).pipe(map(() => post));
       }),
     );
   }
@@ -324,7 +324,7 @@ export class PostService {
 
         if (post.comments.contains(commentReference)) {
           post.comments.remove(commentReference);
-          from(this.em.removeAndFlush(commentReference)).pipe(map(() => post));
+          from(this.em.remove(commentReference).flush()).pipe(map(() => post));
         }
 
         return of(post);

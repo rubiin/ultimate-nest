@@ -1,17 +1,16 @@
-import { EventArgs } from "@mikro-orm/postgresql";
+import { Collection, EventArgs } from "@mikro-orm/postgresql";
 import { BaseEntity } from "@common/database";
+import { slugify } from "helper-fns";
+import { Post } from "./post.entity";
 import {
   BeforeCreate,
   BeforeUpdate,
   BeforeUpsert,
-  Collection,
   Entity,
   ManyToMany,
-  Property,
-} from "@mikro-orm/postgresql";
-import { slugify } from "helper-fns";
-import { Post } from "./post.entity";
 
+  Property,
+} from "@mikro-orm/decorators/legacy";
 @Entity()
 export class Tag extends BaseEntity {
   @Property({
