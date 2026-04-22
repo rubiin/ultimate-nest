@@ -26,7 +26,7 @@ export class SocketIOAdapter extends IoAdapter {
 
     await Promise.allSettled([pubClient.connect(), subClient.connect()]);
 
-    this.adapterConstructor = createAdapter(pubClient, subClient);
+    this.adapterConstructor = createAdapter(pubClient, subClient) as any;
   }
 
   /**
@@ -49,7 +49,7 @@ export class SocketIOAdapter extends IoAdapter {
 
     const server = super.createIOServer(port, optionsWithCORS) as Server;
 
-    server.adapter(this.adapterConstructor);
+    server.adapter(this.adapterConstructor as any);
 
     return server;
   }
