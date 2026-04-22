@@ -8,6 +8,10 @@ often used in TypeScript files that only contain type declarations or interfaces
 code or exports. This statement ensures that the file is treated as a module and not as a script. */
 export {};
 
+declare module "nestjs-i18n" {
+  interface I18nTranslations extends I18nTranslationTypes {}
+}
+
 declare global {
   namespace Express {
     export interface Request {

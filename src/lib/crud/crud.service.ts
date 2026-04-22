@@ -36,7 +36,7 @@ export abstract class BaseService<
    */
 
   create(dto: CreateDto, _user?: User): Observable<Entity> {
-    const entity = this.repository.create(dto);
+    const entity = this.repository.create(dto as any);
 
     return from(this.repository.getEntityManager().persist(entity).flush()).pipe(map(() => entity));
   }

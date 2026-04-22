@@ -287,7 +287,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       } as unknown as QBFilterQuery<T>);
     }
 
-    qb.orderBy({ [sort]: order.toLowerCase() })
+    qb.orderBy(this.getOrderBy(sort as keyof T, order))
       .limit(limit)
       .select(selectedFields as any)
       .offset(offset);
