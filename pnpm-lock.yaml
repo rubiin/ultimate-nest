@@ -42,8 +42,8 @@ importers:
         specifier: ^7.0.12
         version: 7.0.12(@mikro-orm/core@7.0.11(dataloader@2.2.3))(reflect-metadata@0.2.2)
       '@mikro-orm/migrations':
-        specifier: ^7.0.11
-        version: 7.0.11(@mikro-orm/core@7.0.11(dataloader@2.2.3))
+        specifier: ^7.0.12
+        version: 7.0.12(@mikro-orm/core@7.0.11(dataloader@2.2.3))
       '@mikro-orm/nestjs':
         specifier: ^7.0.1
         version: 7.0.1(@mikro-orm/core@7.0.11(dataloader@2.2.3))(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)
@@ -1867,11 +1867,11 @@ packages:
       reflect-metadata:
         optional: true
 
-  '@mikro-orm/migrations@7.0.11':
-    resolution: {integrity: sha512-YhvHQmTrlnbVf7KK04rRuNAK+8oJpUxktB2U65f74akuHl4echGr/kfsBwK2HMOYjnxFFBtCilB8mQhiVKkgFw==}
+  '@mikro-orm/migrations@7.0.12':
+    resolution: {integrity: sha512-8I0tga98tvPkwXF+tlAn9AzCTy7+4jsXmCOwDIY/NprJpkCvXWwEPds/ad19w0OMeG98wpCMikFc9PvHIOz/0g==}
     engines: {node: '>= 22.17.0'}
     peerDependencies:
-      '@mikro-orm/core': 7.0.11
+      '@mikro-orm/core': 7.0.12
 
   '@mikro-orm/nestjs@7.0.1':
     resolution: {integrity: sha512-0VWaGIsVLMI6XDrrblX5om5lyf4msjlRu405jtuUYQ+nULK+XU2gb2mvzo7UvYZd//eEoXtMlkY5oEykm5Hriw==}
@@ -1903,12 +1903,6 @@ packages:
   '@mikro-orm/sql-highlighter@1.0.1':
     resolution: {integrity: sha512-iO+FwRNuqNDVlIo5zfgOu2mMGVicX/FqzP+F/A0xpJLHyqvWyXzVwntgAMimBjQaxiX9Rpmc0u3Jq6/A6V6JQA==}
     engines: {node: '>= 10.13.0'}
-
-  '@mikro-orm/sql@7.0.11':
-    resolution: {integrity: sha512-vOizQlJrCLAF4S20yZPYdOzUoIotl+Wk7MAhhJd1n2A9yeMfW/zRSOjQcMycLxCMzeFZV6b22lpCE551TKPmlQ==}
-    engines: {node: '>= 22.17.0'}
-    peerDependencies:
-      '@mikro-orm/core': 7.0.11
 
   '@mikro-orm/sql@7.0.12':
     resolution: {integrity: sha512-k9nNyGbZn1VNuVaIgTe7b4HCjbzUeth7BNPsw9tzgcR/3nMpWD8lLWc6iGPh2f6+eXLyLYppit/CUyphZX6ZBw==}
@@ -9726,10 +9720,10 @@ snapshots:
     optionalDependencies:
       reflect-metadata: 0.2.2
 
-  '@mikro-orm/migrations@7.0.11(@mikro-orm/core@7.0.11(dataloader@2.2.3))':
+  '@mikro-orm/migrations@7.0.12(@mikro-orm/core@7.0.11(dataloader@2.2.3))':
     dependencies:
       '@mikro-orm/core': 7.0.11(dataloader@2.2.3)
-      '@mikro-orm/sql': 7.0.11(@mikro-orm/core@7.0.11(dataloader@2.2.3))
+      '@mikro-orm/sql': 7.0.12(@mikro-orm/core@7.0.11(dataloader@2.2.3))
 
   '@mikro-orm/nestjs@7.0.1(@mikro-orm/core@7.0.11(dataloader@2.2.3))(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)':
     dependencies:
@@ -9763,11 +9757,6 @@ snapshots:
   '@mikro-orm/sql-highlighter@1.0.1':
     dependencies:
       ansi-colors: 4.1.3
-
-  '@mikro-orm/sql@7.0.11(@mikro-orm/core@7.0.11(dataloader@2.2.3))':
-    dependencies:
-      '@mikro-orm/core': 7.0.11(dataloader@2.2.3)
-      kysely: 0.28.16
 
   '@mikro-orm/sql@7.0.12(@mikro-orm/core@7.0.11(dataloader@2.2.3))':
     dependencies:
