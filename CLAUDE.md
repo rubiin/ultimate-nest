@@ -17,18 +17,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Scripts Overview
 
-| Script | Purpose |
-|-------|---------|
-| `start` | Start application (uses NODE_ENV=prod by default) |
-| `start:dev` | Development server with hot reload |
-| `start:prod` | Production build execution |
-| `lint` | Code linting with oxlint |
-| `test` | Run Jest tests |
-| `test:cov` | Run tests with coverage report |
-| `migration:create` | Generate new MikroORM migration |
-| `migration:up` | Apply pending migrations |
-| `migration:down` | Rollback last migration |
-| `seeder:run` | Load seed data |
+| Script             | Purpose                                           |
+| ------------------ | ------------------------------------------------- |
+| `start`            | Start application (uses NODE_ENV=prod by default) |
+| `start:dev`        | Development server with hot reload                |
+| `start:prod`       | Production build execution                        |
+| `lint`             | Code linting with oxlint                          |
+| `test`             | Run Jest tests                                    |
+| `test:cov`         | Run tests with coverage report                    |
+| `migration:create` | Generate new MikroORM migration                   |
+| `migration:up`     | Apply pending migrations                          |
+| `migration:down`   | Rollback last migration                           |
+| `seeder:run`       | Load seed data                                    |
 
 ## Project Structure Highlights
 

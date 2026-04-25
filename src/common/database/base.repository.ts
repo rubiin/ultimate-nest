@@ -16,7 +16,7 @@ import {
   OrderDefinition,
   QBFilterQuery,
   QueryOrderMap,
-  EntityRepository
+  EntityRepository,
 } from "@mikro-orm/postgresql";
 import { Observable } from "rxjs";
 import { BaseEntity } from "./base.entity";
@@ -53,7 +53,6 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   getEntityName(): string {
     return this.entityName.toString();
   }
-
 
   /**
    * The softRemove function soft deletes the entity and persists the changes to the database.

@@ -1,5 +1,5 @@
 import { BaseEntity } from "@common/database";
-import { Entity,Property } from "@mikro-orm/decorators/legacy";
+import { Entity, Property } from "@mikro-orm/decorators/legacy";
 
 @Entity()
 export class Subscriber extends BaseEntity {
