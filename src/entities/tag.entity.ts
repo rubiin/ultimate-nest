@@ -8,7 +8,6 @@ import {
   BeforeUpsert,
   Entity,
   ManyToMany,
-
   Property,
 } from "@mikro-orm/decorators/legacy";
 @Entity()

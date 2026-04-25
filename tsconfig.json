@@ -1,8 +1,6 @@
 {
-  "extends": "@rubiin/tsconfig",
+  "extends": "@rubiin/tsconfig/tsconfig.node.json",
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
     "types": ["node", "jest", "express", "multer"], // @types are no longer auto-discovered (see §1.6)
     "rootDir": "./src", // no longer inferred from source files (see §1.5)
     "paths": {
@@ -13,10 +11,8 @@
       "@mocks": ["./src/_mocks_"],
       "@generated": ["./src/generated"]
     },
-    "declaration": true,
-    "outDir": "dist",
-    "esModuleInterop": true
+    "declaration": true
   },
-  "include": [ "src/**/*"],
+  "include": ["src/**/*"],
   "typeRoots": ["./src/common/@types/typings"]
 }
