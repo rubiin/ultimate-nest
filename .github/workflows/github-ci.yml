@@ -1,36 +1,22 @@
 name: CI
-
-on:
-  push:
-    branches:
-      - master
-
-  pull_request:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-
-      - name: Set node
-        uses: actions/setup-node@v6
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
         with:
-          node-version: lts/*
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: pnpm
 
-      - name: Setup
-        run: npm i -g @antfu/ni
-
-      - name: Install
-        run: nci
-
-      - name: Build
-        run: nr build
+      - run: pnpm install --shamefully-hoist
+      - run: pnpm build
+      - run: pnpm test
 
   release:
     if: ${{ github.ref == 'refs/heads/master' }}
