@@ -3,6 +3,7 @@
   "compilerOptions": {
     "types": ["node", "jest", "express", "multer"], // @types are no longer auto-discovered (see §1.6)
     "rootDir": "./src", // no longer inferred from source files (see §1.5)
+    "outDir": "dist",
     "paths": {
       "@lib/*": ["./src/lib/*"],
       "@common/*": ["./src/common/*"],
