@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.9.1](https://github.com/rubiin/ultimate-nest/compare/v2.9.0...v2.9.1) (2026-04-30)
+
+
+### Bug Fixes
+
+* add missing outDir configuration in tsconfig.json ([68d4fcf](https://github.com/rubiin/ultimate-nest/commit/68d4fcfce3c0900a0e830c1d2d2b84ac8cbf8982))
+* **deps:** update all non-major dependencies ([1473db4](https://github.com/rubiin/ultimate-nest/commit/1473db45fd833d72236f736a0792839759e3bde9))
+* **deps:** update all non-major dependencies ([bc27c2b](https://github.com/rubiin/ultimate-nest/commit/bc27c2b4304a831702b1910bbadbeb7eebd72fc9))
+* **tsconfig:** update output directory path to be relative ([fabb004](https://github.com/rubiin/ultimate-nest/commit/fabb0047380467162af42b1ddfc5a87c2a77cb20))
+
 ## [2.9.0](https://github.com/rubiin/ultimate-nest/compare/v2.8.0...v2.9.0) (2026-04-25)
 
 ### Features
