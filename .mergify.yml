@@ -1,6 +1,6 @@
 queue_rules:
   - name: renovate
-    conditions:
+    merge_conditions:
       - author=renovate[bot]
       - status-success=build
 
