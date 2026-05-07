@@ -9,14 +9,14 @@ import { getRepositoryToken } from "@mikro-orm/nestjs";
 import {
   loggedInUser,
   mockConfigService,
-  mockedOtpLog,
-  mockedProtocol,
   mockEm,
   mockMailService,
   mockOtpLogRepo,
   mockResetPasswordDto,
   mockTokenService,
   mockUserRepo,
+  mockedOtpLog,
+  mockedProtocol,
 } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
@@ -61,12 +61,12 @@ describe("authService", () => {
 
   it("should logout", () => {
     const decodedToken = {
+      aud: "12",
+      exp: 1_516_239_022,
+      iat: 1_516_239_022,
+      iss: "12",
       jti: 1,
       sub: 1_234_567_890,
-      iat: 1_516_239_022,
-      exp: 1_516_239_022,
-      aud: "12",
-      iss: "12",
     };
 
     mockTokenService.decodeRefreshToken.mockImplementation(() => of(decodedToken));
@@ -104,9 +104,9 @@ describe("authService", () => {
 
   it("should change password", () => {
     const dto = {
-      password: "newPassword",
       confirmPassword: "confirmPassword",
       oldPassword: "oldPassword",
+      password: "newPassword",
     };
 
     HelperService.verifyHash = jest.fn().mockImplementation(() => of(true));

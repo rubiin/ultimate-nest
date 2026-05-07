@@ -1,8 +1,7 @@
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { TestingModule } from "@nestjs/testing";
 import { User } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import {
   loggedInUser,
   mockEm,
@@ -12,6 +11,7 @@ import {
   refreshToken,
   refreshTokenPayload,
 } from "@mocks";
+import { TestingModule } from "@nestjs/testing";
 
 import { TokensService } from "@modules/token/tokens.service";
 import { JwtService } from "@nestjs/jwt";
@@ -65,7 +65,7 @@ describe("tokensService", () => {
   it("should create access token from refresh token", () => {
     jest
       .spyOn(service, "resolveRefreshToken")
-      .mockImplementation(() => of({ user: loggedInUser, token: refreshToken }));
+      .mockImplementation(() => of({ token: refreshToken, user: loggedInUser }));
     jest.spyOn(service, "generateAccessToken").mockImplementation(() => of("refreshToken"));
     service.createAccessTokenFromRefreshToken("refreshToken").subscribe((result) => {
       expect(result).toStrictEqual({ token: "refreshToken", user: loggedInUser });

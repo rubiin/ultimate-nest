@@ -12,11 +12,11 @@ describe("isUnique", () => {
   const username = "tester";
 
   const validatorArguments: IsUniqueValidationContext = {
-    object: { username },
     constraints: [() => User, "username" as never],
-    value: username,
-    targetName: "",
+    object: { username },
     property: "username",
+    targetName: "",
+    value: username,
   };
 
   beforeEach(async () => {

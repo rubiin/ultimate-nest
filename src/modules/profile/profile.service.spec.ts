@@ -4,7 +4,7 @@ import { User } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
 
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { mockedUser, mockEm, mockUserRepo } from "@mocks";
+import { mockEm, mockUserRepo, mockedUser } from "@mocks";
 import { Test } from "@nestjs/testing";
 import { ProfileService } from "./profile.service";
 
@@ -40,10 +40,10 @@ describe("profileService", () => {
         {
           populate: [],
           populateWhere: {
-            followers: { isActive: true, isDeleted: false },
-            followed: { isActive: true, isDeleted: false },
-            posts: { isActive: true, isDeleted: false },
             favorites: { isActive: true, isDeleted: false },
+            followed: { isActive: true, isDeleted: false },
+            followers: { isActive: true, isDeleted: false },
+            posts: { isActive: true, isDeleted: false },
           },
         },
       );
