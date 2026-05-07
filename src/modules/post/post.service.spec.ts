@@ -1,9 +1,7 @@
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { TestingModule } from "@nestjs/testing";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
-
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import {
   mockCategoryRepo,
   mockCommentRepo,
@@ -15,7 +13,9 @@ import {
   mockedUser,
   queryDto,
 } from "@mocks";
+import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
+
 import { PostService } from "./post.service";
 
 describe("postService", () => {

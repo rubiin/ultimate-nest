@@ -1,8 +1,6 @@
-import { Bucket } from "@aws-sdk/client-s3";
 import { Buffer } from "node:buffer";
-import { Observable } from "rxjs";
 
-import { AwsModuleOptions, AwsS3, AwsS3MultiPart, AwsS3PutItemOptions } from "./aws.interface";
+import { Bucket } from "@aws-sdk/client-s3";
 import {
   CreateMultipartUploadCommand,
   DeleteObjectCommand,
@@ -17,7 +15,10 @@ import {
 import { Inject, Injectable } from "@nestjs/common";
 import { isEmpty, omit } from "helper-fns";
 import mime from "mime";
+import { Observable } from "rxjs";
 import { forkJoin, from, map, of, switchMap, throwError } from "rxjs";
+
+import { AwsModuleOptions, AwsS3, AwsS3MultiPart, AwsS3PutItemOptions } from "./aws.interface";
 import { MODULE_OPTIONS_TOKEN } from "./aws.module";
 
 @Injectable()

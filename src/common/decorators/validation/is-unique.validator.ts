@@ -1,3 +1,4 @@
+import { EntityManager } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Type } from "@nestjs/common";
 import {
@@ -5,7 +6,6 @@ import {
   ValidationOptions,
   ValidatorConstraintInterface,
 } from "class-validator";
-import { EntityManager } from "@mikro-orm/core";
 import { registerDecorator, ValidatorConstraint } from "class-validator";
 
 export interface ValidationArguments<

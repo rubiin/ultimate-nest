@@ -1,5 +1,6 @@
-import { EntityProperty, Platform } from "@mikro-orm/postgresql";
 import process from "node:process";
+
+import { EntityProperty, Platform } from "@mikro-orm/postgresql";
 import { Type, ValidationError } from "@mikro-orm/postgresql";
 import { decrypt, encrypt, isString } from "helper-fns";
 

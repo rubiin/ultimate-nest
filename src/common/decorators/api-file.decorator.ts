@@ -1,14 +1,14 @@
+import { applyDecorators, UseInterceptors } from "@nestjs/common";
+import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import {
   MulterField,
   MulterOptions,
 } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
+import { ApiBody, ApiConsumes, ApiOkResponse, ApiProduces } from "@nestjs/swagger";
 import {
   ReferenceObject,
   SchemaObject,
 } from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
-import { applyDecorators, UseInterceptors } from "@nestjs/common";
-import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
-import { ApiBody, ApiConsumes, ApiOkResponse, ApiProduces } from "@nestjs/swagger";
 
 interface ApiFileOptions {
   fieldName?: string;

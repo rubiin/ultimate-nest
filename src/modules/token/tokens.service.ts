@@ -1,17 +1,17 @@
 import { JwtPayload } from "@common/@types";
 import { RefreshToken } from "@entities";
-import { EntityRepository } from "@mikro-orm/postgresql";
-import { JwtService, JwtSignOptions } from "@nestjs/jwt";
-import { Observable } from "rxjs";
-import { RefreshTokensRepository } from "./refresh-tokens.repository";
 import { User } from "@entities";
-
 import { translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
+import { Observable } from "rxjs";
 import { catchError, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+
+import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 @Injectable()
 export class TokensService {

@@ -1,6 +1,7 @@
+import { createMock } from "@golevelup/ts-jest";
 import { ExecutionContext } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { createMock } from "@golevelup/ts-jest";
+
 import { CaslAbilityFactory } from "./casl-ability.factory";
 import { PoliciesGuard } from "./policies.guard";
 

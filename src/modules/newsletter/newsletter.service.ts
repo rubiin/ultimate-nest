@@ -1,18 +1,18 @@
+import { EmailSubject, EmailTemplate, RoutingKey } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
-import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { ConfigService } from "@nestjs/config";
-import { Observable } from "rxjs";
-import { SubscribeNewsletterDto } from "./dto";
-
-import { EmailSubject, EmailTemplate, RoutingKey } from "@common/@types";
 import { NewsLetter, Subscriber } from "@entities";
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { BaseService } from "@lib/crud/crud.service";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression } from "@nestjs/schedule";
+import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+
+import { SubscribeNewsletterDto } from "./dto";
 
 @Injectable()
 export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationDto> {

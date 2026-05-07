@@ -1,5 +1,4 @@
 import { IsNestedFieldOptions } from "@common/@types";
-import { Class } from "helper-fns";
 import { applyDecorators } from "@nestjs/common";
 import { Type } from "class-transformer";
 import {
@@ -11,6 +10,7 @@ import {
   IsOptional,
   ValidateNested,
 } from "class-validator";
+import { Class } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
 
 /**

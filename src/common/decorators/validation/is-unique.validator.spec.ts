@@ -1,9 +1,10 @@
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { IsUniqueValidationContext } from "./is-unique.validator";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-jest";
 import { EntityManager } from "@mikro-orm/core";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Test } from "@nestjs/testing";
+
+import { IsUniqueValidationContext } from "./is-unique.validator";
 import { IsUniqueConstraint } from "./is-unique.validator";
 
 describe("isUnique", () => {

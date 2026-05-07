@@ -1,8 +1,8 @@
-import { DriverException } from "@mikro-orm/postgresql";
-import { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
-
 import { STATUS_CODES } from "node:http";
+
+import { DriverException } from "@mikro-orm/postgresql";
 import { ServerException } from "@mikro-orm/postgresql";
+import { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
 import { Catch, HttpStatus } from "@nestjs/common";
 
 @Catch(ServerException)

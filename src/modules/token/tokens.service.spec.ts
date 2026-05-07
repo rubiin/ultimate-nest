@@ -11,12 +11,12 @@ import {
   refreshToken,
   refreshTokenPayload,
 } from "@mocks";
-import { TestingModule } from "@nestjs/testing";
-
 import { TokensService } from "@modules/token/tokens.service";
 import { JwtService } from "@nestjs/jwt";
+import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { of } from "rxjs";
+
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 describe("tokensService", () => {

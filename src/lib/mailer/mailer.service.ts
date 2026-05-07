@@ -1,14 +1,16 @@
-import { SendMailOptions, Transporter } from "nodemailer";
-import { MailModuleOptions } from "./mailer.options";
 import { resolve } from "node:path";
+
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import { Server } from "@common/@types";
 import { Inject, Injectable, Logger } from "@nestjs/common";
+import { SendMailOptions, Transporter } from "nodemailer";
 import { createTransport } from "nodemailer";
 import previewEmail from "preview-email";
 import { from, retry, switchMap } from "rxjs";
+
 import { BaseAdapter } from "./adapters/adapter";
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
+import { MailModuleOptions } from "./mailer.options";
 
 interface MailOptions extends Partial<SendMailOptions> {
   template: string;

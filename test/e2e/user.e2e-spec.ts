@@ -1,10 +1,12 @@
-import { OffsetPaginationResponse } from "@common/@types";
-import { SuperTestBody } from "../fixtures";
 import path from "node:path";
+
+import { OffsetPaginationResponse } from "@common/@types";
 import { Roles } from "@common/@types";
 import { randEmail, randUserName } from "@ngneat/falso";
 import { pick } from "helper-fns";
 import request from "supertest";
+
+import { SuperTestBody } from "../fixtures";
 import { APP_URL, user, userDto } from "../fixtures";
 
 describe("UserController (e2e)", () => {

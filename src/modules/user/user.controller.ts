@@ -1,8 +1,4 @@
 import { File, PaginationResponse } from "@common/@types";
-import { CursorPaginationDto } from "@common/dtos";
-import { Observable } from "rxjs";
-import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
-import { UserService } from "./user.service";
 import { Action, Roles } from "@common/@types";
 import {
   ApiFile,
@@ -13,10 +9,15 @@ import {
   SwaggerResponse,
   UUIDParam,
 } from "@common/decorators";
+import { CursorPaginationDto } from "@common/dtos";
 import { fileValidatorPipe } from "@common/misc";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Body, Delete, Get, Put as Patch, Post, Query, UploadedFile } from "@nestjs/common";
+import { Observable } from "rxjs";
+
+import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
+import { UserService } from "./user.service";
 
 @GenericController("users")
 export class UserController {

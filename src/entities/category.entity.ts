@@ -1,7 +1,8 @@
 import { BaseEntity } from "@common/database";
-import { Collection } from "@mikro-orm/postgresql";
-import { Post } from "./index";
 import { Entity, Property, ManyToMany } from "@mikro-orm/decorators/legacy";
+import { Collection } from "@mikro-orm/postgresql";
+
+import { Post } from "./index";
 
 @Entity()
 export class Category extends BaseEntity {

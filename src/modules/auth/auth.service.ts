@@ -1,25 +1,16 @@
-import { AuthenticationResponse, OauthResponse } from "@common/@types";
-import { BaseRepository } from "@common/database";
-import { MailerService } from "@lib/mailer/mailer.service";
-import { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { TokensService } from "@modules/token/tokens.service";
-import { ConfigService } from "@nestjs/config";
-import { Observable } from "rxjs";
-import {
-  ChangePasswordDto,
-  OtpVerifyDto,
-  ResetPasswordDto,
-  SendOtpDto,
-  UserLoginDto,
-} from "./dtos";
 import process from "node:process";
 
+import { AuthenticationResponse, OauthResponse } from "@common/@types";
 import { EmailSubject, EmailTemplate } from "@common/@types";
+import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { TokensService } from "@modules/token/tokens.service";
 import {
   BadRequestException,
   ForbiddenException,
@@ -27,10 +18,20 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
+import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
+
+import {
+  ChangePasswordDto,
+  OtpVerifyDto,
+  ResetPasswordDto,
+  SendOtpDto,
+  UserLoginDto,
+} from "./dtos";
 
 @Injectable()
 export class AuthService {

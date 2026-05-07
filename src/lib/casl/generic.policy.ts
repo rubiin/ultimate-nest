@@ -1,6 +1,7 @@
+import { Action } from "@common/@types";
+
 import { AppAbility } from "./casl-ability.factory";
 import { PoliciesHandler } from "./policy.interface";
-import { Action } from "@common/@types";
 
 export class GenericPolicyHandler implements PoliciesHandler {
   constructor(

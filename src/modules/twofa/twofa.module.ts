@@ -1,6 +1,7 @@
 import { AuthModule } from "@modules/auth/auth.module";
 import { JwtTwofaStrategy } from "@modules/auth/strategies";
 import { Module } from "@nestjs/common";
+
 import { TwoFactorController } from "./twofa.controller";
 import { TwoFactorService } from "./twofa.service";
 

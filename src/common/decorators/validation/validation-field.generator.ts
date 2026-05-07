@@ -2,7 +2,6 @@ import { NumberFieldOptions, StringFieldOptions } from "@common/@types";
 import { MinMaxLength } from "@common/decorators";
 import { validationI18nMessage } from "@lib/i18n";
 import { Type } from "class-transformer";
-
 import {
   ArrayNotEmpty,
   IsArray,
@@ -15,6 +14,7 @@ import {
 } from "class-validator";
 import { enumToString } from "helper-fns";
 import { i18nValidationMessage } from "nestjs-i18n";
+
 import { Sanitize, Trim } from "./transform.decorator";
 
 export class ValidatorFieldBuilder {

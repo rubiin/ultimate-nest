@@ -1,10 +1,7 @@
 import { AuthenticationResponse, OauthResponse } from "@common/@types";
+import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
-import { Observable } from "rxjs";
-import { AuthService } from "./auth.service";
-
-import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import {
   Body,
   DefaultValuePipe,
@@ -19,7 +16,10 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiOperation } from "@nestjs/swagger";
+import { Observable } from "rxjs";
 import { map } from "rxjs";
+
+import { AuthService } from "./auth.service";
 import {
   ChangePasswordDto,
   OtpVerifyDto,

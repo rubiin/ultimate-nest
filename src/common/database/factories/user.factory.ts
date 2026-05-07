@@ -1,4 +1,5 @@
 import process from "node:process";
+
 import { Roles } from "@common/@types";
 import { User } from "@entities";
 import { Factory } from "@mikro-orm/seeder";

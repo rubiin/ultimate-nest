@@ -1,6 +1,6 @@
-import { EntityName, EventArgs, EventSubscriber } from "@mikro-orm/postgresql";
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
+import { EntityName, EventArgs, EventSubscriber } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
 
 /* It's a class that implements the EventSubscriber interface, and it's responsible for hashing the

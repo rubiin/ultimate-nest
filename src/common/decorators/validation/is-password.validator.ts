@@ -1,12 +1,13 @@
+import { PASSWORD_REGEX } from "@common/constant";
+import { validationI18nMessage } from "@lib/i18n";
+import { applyDecorators } from "@nestjs/common";
 import {
   ValidationArguments,
   ValidationOptions,
   ValidatorConstraintInterface,
 } from "class-validator";
-import { PASSWORD_REGEX } from "@common/constant";
-import { validationI18nMessage } from "@lib/i18n";
-import { applyDecorators } from "@nestjs/common";
 import { IsNotEmpty, registerDecorator, ValidatorConstraint } from "class-validator";
+
 import { MinMaxLength } from "./min-max-length.decorator";
 
 /**

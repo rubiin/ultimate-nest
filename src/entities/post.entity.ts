@@ -1,11 +1,5 @@
-import { EventArgs, Opt, Ref, Rel } from "@mikro-orm/postgresql";
-import { User } from "./index";
 import { PostStateEnum } from "@common/@types";
 import { BaseEntity } from "@common/database";
-import { Collection } from "@mikro-orm/postgresql";
-import { slugify } from "helper-fns";
-import { Category, Comment, Tag } from "./index";
-
 import {
   Entity,
   ManyToMany,
@@ -17,6 +11,12 @@ import {
   BeforeUpsert,
   Enum,
 } from "@mikro-orm/decorators/legacy";
+import { EventArgs, Opt, Ref, Rel } from "@mikro-orm/postgresql";
+import { Collection } from "@mikro-orm/postgresql";
+import { slugify } from "helper-fns";
+
+import { User } from "./index";
+import { Category, Comment, Tag } from "./index";
 
 @Entity()
 export class Post extends BaseEntity {

@@ -5,10 +5,10 @@ import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { loggedInUser, mockConfigService, mockEm, mockResponse, mockUserRepo } from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
-
 import { Test } from "@nestjs/testing";
 import { authenticator } from "otplib";
 import qrCode from "qrcode";
+
 import { TwoFactorService } from "./twofa.service";
 
 describe("twoFactorService", () => {

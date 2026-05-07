@@ -1,7 +1,9 @@
-import { WorkerData, WorkerResponse } from "./workers";
 import path from "node:path";
+
 import { Logger } from "@nestjs/common";
 import { availableParallelism, DynamicThreadPool, PoolEvents } from "poolifier";
+
+import { WorkerData, WorkerResponse } from "./workers";
 
 const logger = new Logger("ThreadPool");
 

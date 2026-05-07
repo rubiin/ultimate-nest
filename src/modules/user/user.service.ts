@@ -1,15 +1,6 @@
-import { MailPayload, PaginationResponse, RecordWithFile } from "@common/@types";
-import { BaseRepository } from "@common/database";
-import { CursorPaginationDto } from "@common/dtos";
-import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { MailerService } from "@lib/mailer/mailer.service";
-import { MikroORM } from "@mikro-orm/core";
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { ConfigService } from "@nestjs/config";
-import { CloudinaryService, IFile } from "nestjs-cloudinary";
-import { Observable } from "rxjs";
-import { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
 import process from "node:process";
+
+import { MailPayload, PaginationResponse, RecordWithFile } from "@common/@types";
 import {
   CursorType,
   EmailSubject,
@@ -18,15 +9,26 @@ import {
   Queues,
   RoutingKey,
 } from "@common/@types";
+import { BaseRepository } from "@common/database";
+import { CursorPaginationDto } from "@common/dtos";
 import { Referral, User } from "@entities";
+import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { MailerService } from "@lib/mailer/mailer.service";
+import { MikroORM } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
+import { CloudinaryService, IFile } from "nestjs-cloudinary";
+import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, tap, throwError } from "rxjs";
+
+import { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
 
 @Injectable()
 export class UserService {

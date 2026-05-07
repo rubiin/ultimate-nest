@@ -1,13 +1,13 @@
 import { ProfileData } from "@common/@types";
 import { BaseRepository } from "@common/database";
-import { AutoPath, EntityKey } from "@mikro-orm/core";
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { Observable } from "rxjs";
 import { User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { AutoPath, EntityKey } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 @Injectable()
