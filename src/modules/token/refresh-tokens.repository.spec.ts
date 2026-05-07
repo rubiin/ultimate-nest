@@ -48,7 +48,7 @@ describe("refreshTokensRepository", () => {
       expect(result).toStrictEqual(true);
       expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledTimes(1);
       expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledWith(
-        { user: loggedInUser, id: 11 },
+        { id: 11, user: loggedInUser },
         { isRevoked: true },
       );
     });

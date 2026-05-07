@@ -7,12 +7,12 @@ import { getRepositoryToken } from "@mikro-orm/nestjs";
 import {
   mockCategoryRepo,
   mockCommentRepo,
-  mockedPost,
-  mockedUser,
   mockEm,
   mockPostRepo,
   mockTagsRepo,
   mockUserRepo,
+  mockedPost,
+  mockedUser,
   queryDto,
 } from "@mocks";
 import { Test } from "@nestjs/testing";
@@ -62,7 +62,7 @@ describe("postService", () => {
     const findOneSpy = mockPostRepo.findOne;
 
     service.findOne("postId").subscribe((result) => {
-      expect(result).toStrictEqual({ ...mockedPost, user: mockedUser, idx: "postId" });
+      expect(result).toStrictEqual({ ...mockedPost, idx: "postId", user: mockedUser });
       expect(findOneSpy).toHaveBeenCalledWith(
         {
           idx: "postId",
@@ -103,8 +103,8 @@ describe("postService", () => {
     service.update("postId", { content: "new content" }).subscribe((result) => {
       expect(result).toStrictEqual({
         ...mockedPost,
-        idx: "postId",
         content: "new content",
+        idx: "postId",
       });
       expect(mockPostRepo.findOne).toHaveBeenCalledWith({ idx: "postId" }, { populate: [] });
     });

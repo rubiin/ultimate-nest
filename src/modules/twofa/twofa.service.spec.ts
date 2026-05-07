@@ -1,10 +1,10 @@
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { TestingModule } from "@nestjs/testing";
 import { User } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { loggedInUser, mockConfigService, mockEm, mockResponse, mockUserRepo } from "@mocks";
 import { ConfigService } from "@nestjs/config";
+import { TestingModule } from "@nestjs/testing";
 
 import { Test } from "@nestjs/testing";
 import { authenticator } from "otplib";
@@ -49,8 +49,8 @@ describe("twoFactorService", () => {
     expect(response).toBeDefined();
     expect(response).toBeTruthy();
     expect(authenticator.verify).toHaveBeenCalledWith({
-      token: "someCode",
       secret: loggedInUser.twoFactorSecret,
+      token: "someCode",
     });
   });
 
@@ -63,8 +63,8 @@ describe("twoFactorService", () => {
       expect(mockUserRepo.assign).toHaveBeenCalled();
       expect(mockEm.flush).toHaveBeenCalled();
       expect(twoFactorValidSpy).toHaveBeenCalledWith({
-        token: "someCode",
         secret: loggedInUser.twoFactorSecret,
+        token: "someCode",
       });
     });
   });
@@ -80,8 +80,8 @@ describe("twoFactorService", () => {
       expect(mockUserRepo.assign).toHaveBeenCalled();
       expect(mockEm.flush).toHaveBeenCalled();
       expect(twoFactorValidSpy).toHaveBeenCalledWith({
-        token: "someCode",
         secret: loggedInUser.twoFactorSecret,
+        token: "someCode",
       });
     });
   });

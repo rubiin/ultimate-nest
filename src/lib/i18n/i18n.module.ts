@@ -1,7 +1,4 @@
 import path from "node:path";
-
-import process from "node:process";
-import { HelperService } from "@common/helpers";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from "nestjs-i18n";
@@ -27,9 +24,6 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
           watch: true,
           includeSubfolders: true,
         },
-        typesOutputPath: HelperService.isProd()
-          ? undefined
-          : path.join(`${process.cwd()}/src/generated/i18n-generated.ts`),
       }),
       resolvers: [
         { use: QueryResolver, options: ["lang"] },

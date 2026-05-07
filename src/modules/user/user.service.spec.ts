@@ -8,10 +8,10 @@ import {
   mockAmqConnection,
   mockCloudinaryService,
   mockConfigService,
-  mockedUser,
   mockEm,
   mockFile,
   mockUserRepo,
+  mockedUser,
   queryDto,
 } from "@mocks";
 
