@@ -1,5 +1,6 @@
 import { mockRequest, mockResponse } from "@mocks";
 import * as realIp from "@supercharge/request-ip";
+
 import { RealIpMiddleware } from "./ip.middleware";
 
 describe("realIpMiddleware", () => {

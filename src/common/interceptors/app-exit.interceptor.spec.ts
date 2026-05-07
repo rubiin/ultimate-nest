@@ -1,4 +1,5 @@
 import { mockContext, mockNext } from "@mocks";
+
 import { ExitInterceptor } from "./app-exit.interceptor";
 
 describe("exitInterceptor", () => {

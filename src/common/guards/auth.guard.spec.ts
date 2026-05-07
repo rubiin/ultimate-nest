@@ -1,7 +1,8 @@
-import { ExecutionContext } from "@nestjs/common";
 import { createMock } from "@golevelup/ts-jest";
 import { mockJwtService } from "@mocks";
+import { ExecutionContext } from "@nestjs/common";
 import { HttpException } from "@nestjs/common";
+
 import { AuthGuard } from "./auth.guard";
 
 describe("authenticatedGuard", () => {

@@ -1,9 +1,4 @@
 import { PaginationResponse } from "@common/@types";
-import { CursorPaginationDto } from "@common/dtos";
-import { User } from "@entities";
-import { Observable } from "rxjs";
-import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
-import { PostService } from "./post.service";
 import { Action } from "@common/@types";
 import {
   ApiPaginatedResponse,
@@ -12,9 +7,15 @@ import {
   SwaggerResponse,
   UUIDParam,
 } from "@common/decorators";
+import { CursorPaginationDto } from "@common/dtos";
+import { User } from "@entities";
 import { Comment, Post as PostEntity } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Body, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { Observable } from "rxjs";
+
+import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
+import { PostService } from "./post.service";
 
 @GenericController("posts")
 export class PostController {

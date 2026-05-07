@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+
 import { ConfigurableModuleClass } from "./aws.module";
 import { AwsS3Service } from "./aws.s3.service";
 

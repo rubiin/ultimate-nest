@@ -1,10 +1,10 @@
 import { INestApplicationContext } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Namespace, Server, ServerOptions } from "socket.io";
-import { Adapter } from "socket.io-adapter";
 import { IoAdapter } from "@nestjs/platform-socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { Redis } from "ioredis";
+import { Namespace, Server, ServerOptions } from "socket.io";
+import { Adapter } from "socket.io-adapter";
 
 export class SocketIOAdapter extends IoAdapter {
   private adapterConstructor!: (nsp: Namespace) => Adapter;

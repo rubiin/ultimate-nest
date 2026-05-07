@@ -1,4 +1,5 @@
 import { Validator } from "class-validator";
+
 import { IsProfane } from "./is-profane.validator";
 
 const validator = new Validator();

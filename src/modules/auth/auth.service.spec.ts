@@ -1,11 +1,9 @@
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { TestingModule } from "@nestjs/testing";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
-
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import {
   loggedInUser,
   mockConfigService,
@@ -20,8 +18,10 @@ import {
 } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
+import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { of } from "rxjs";
+
 import { AuthService } from "./auth.service";
 
 describe("authService", () => {

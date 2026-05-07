@@ -1,4 +1,5 @@
 import { mockContext, mockNext } from "@mocks";
+
 import { TimeoutInterceptor } from "./timeout.interceptor";
 
 describe("timeoutInterceptor", () => {

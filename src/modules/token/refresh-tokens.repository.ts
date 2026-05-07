@@ -1,10 +1,10 @@
 import { User } from "@entities";
-import { EntityRepository, PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { Observable } from "rxjs";
 import { RefreshToken } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityRepository, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
+import { Observable } from "rxjs";
 import { from, map } from "rxjs";
 
 @Injectable()

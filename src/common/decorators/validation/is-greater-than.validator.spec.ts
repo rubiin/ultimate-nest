@@ -1,4 +1,5 @@
 import { Validator } from "class-validator";
+
 import { IsGreaterThan } from "./is-greater-than.validator";
 
 const validator = new Validator();

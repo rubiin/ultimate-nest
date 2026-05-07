@@ -1,4 +1,3 @@
-import { NestExpressApplication } from "@nestjs/platform-express";
 import process from "node:process";
 
 import { AppUtils, HelperService } from "@common/helpers";
@@ -6,6 +5,7 @@ import { InternalDisabledLogger } from "@lib/pino/internal.logger";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { ExpressAdapter } from "@nestjs/platform-express";
 import bodyParser from "body-parser";
 import chalk from "chalk";
@@ -14,6 +14,7 @@ import compression from "compression";
 import helmet from "helmet";
 import { I18nValidationExceptionFilter } from "nestjs-i18n";
 import { LoggerErrorInterceptor } from "nestjs-pino";
+
 import { AppModule } from "./modules/app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
 import "@total-typescript/ts-reset";

@@ -1,5 +1,6 @@
 import { createMock } from "@golevelup/ts-jest";
 import { mockCacheService, mockResponse } from "@mocks";
+
 import { ClearCacheMiddleware } from "./cache.middleware";
 
 describe("clearCacheMiddleware", () => {

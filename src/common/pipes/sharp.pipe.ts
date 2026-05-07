@@ -1,7 +1,7 @@
+import path from "node:path";
+
 import { File } from "@common/@types";
 import { PipeTransform } from "@nestjs/common";
-
-import path from "node:path";
 import { Injectable } from "@nestjs/common";
 import sharp from "sharp";
 

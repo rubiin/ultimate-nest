@@ -1,11 +1,11 @@
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { TestingModule } from "@nestjs/testing";
 import { RefreshToken } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
-
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { loggedInUser, mockEm, mockRefreshRepo, refreshToken } from "@mocks";
+import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
+
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 describe("refreshTokensRepository", () => {

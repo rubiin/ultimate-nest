@@ -1,11 +1,13 @@
-import { Options } from "@mikro-orm/postgresql";
 import process from "node:process";
+
 import { Migrator } from "@mikro-orm/migrations";
+import { Options } from "@mikro-orm/postgresql";
 import { defineConfig } from "@mikro-orm/postgresql";
 import { SeedManager } from "@mikro-orm/seeder";
 import { Logger } from "@nestjs/common";
 import { config as environmentConfig } from "dotenv";
 import dotEnvExpand from "dotenv-expand";
+
 import { baseOptions } from "./orm.config";
 
 /**

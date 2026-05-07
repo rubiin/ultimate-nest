@@ -1,4 +1,5 @@
 import { Validator } from "class-validator";
+
 import { IsUsernameField } from "./is-username.validator";
 
 const validator = new Validator();

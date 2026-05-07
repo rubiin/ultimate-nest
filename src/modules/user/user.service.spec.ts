@@ -1,9 +1,8 @@
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { TestingModule } from "@nestjs/testing";
 import { User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import {
   mockAmqConnection,
   mockCloudinaryService,
@@ -14,10 +13,11 @@ import {
   mockedUser,
   queryDto,
 } from "@mocks";
-
 import { ConfigService } from "@nestjs/config";
+import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { CloudinaryService } from "nestjs-cloudinary";
+
 import { UserService } from "./user.service";
 
 describe("userService", () => {

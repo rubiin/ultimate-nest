@@ -1,8 +1,9 @@
-import { Category } from "@entities";
-import { CategoryService } from "./category.service";
 import { GenericController } from "@common/decorators";
 import { OffsetPaginationDto } from "@common/dtos";
+import { Category } from "@entities";
 import { ControllerFactory } from "@lib/crud/crud.controller";
+
+import { CategoryService } from "./category.service";
 import { CreateCategoryDto, EditCategoryDto } from "./dto";
 
 @GenericController("categories", false)

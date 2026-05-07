@@ -1,4 +1,5 @@
 import { Validator } from "class-validator";
+
 import { IsEqualToField } from "./is-equal-to.validator";
 
 const validator = new Validator();

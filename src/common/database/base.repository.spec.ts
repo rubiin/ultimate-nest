@@ -1,9 +1,9 @@
+import { User } from "@entities";
+import { createMock } from "@golevelup/ts-jest";
 import { EntityManager } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { User } from "@entities";
-
-import { createMock } from "@golevelup/ts-jest";
 import { loggedInUser } from "@mocks";
+
 import { BaseRepository } from "./base.repository";
 
 describe("baseRepository", () => {

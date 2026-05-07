@@ -1,7 +1,9 @@
-import { EntityManager } from "@mikro-orm/postgresql";
 import process from "node:process";
+
 import { Roles } from "@common/@types";
+import { EntityManager } from "@mikro-orm/postgresql";
 import { Seeder } from "@mikro-orm/seeder";
+
 import { UserFactory } from "../factories";
 
 /*

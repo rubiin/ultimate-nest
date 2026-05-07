@@ -1,6 +1,6 @@
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { Observable } from "rxjs";
 import { Injectable } from "@nestjs/common";
+import { Observable } from "rxjs";
 import { fromEvent, map, merge, of } from "rxjs";
 
 @Injectable()

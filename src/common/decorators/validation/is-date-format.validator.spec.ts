@@ -1,4 +1,5 @@
 import { Validator } from "class-validator";
+
 import { IsDateInFormat } from "./is-date-format.validator";
 
 const validator = new Validator();

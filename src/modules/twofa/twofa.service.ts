@@ -1,16 +1,16 @@
 import { BaseRepository } from "@common/database";
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { ConfigService } from "@nestjs/config";
-import { Observable } from "rxjs";
 import { User } from "@entities";
 import { translate } from "@lib/i18n";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { generateTOTP } from "@otplib/uri";
 import { OTP } from "otplib";
 import { toFileStream } from "qrcode";
+import { Observable } from "rxjs";
 import { from, map, throwError } from "rxjs";
-import { generateTOTP } from "@otplib/uri";
 
 @Injectable()
 export class TwoFactorService {

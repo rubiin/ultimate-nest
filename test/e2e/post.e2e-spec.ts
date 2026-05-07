@@ -1,6 +1,7 @@
 import { OffsetPaginationResponse } from "@common/@types";
-import { SuperTestBody } from "../fixtures";
 import request from "supertest";
+
+import { SuperTestBody } from "../fixtures";
 import { APP_URL, postDto, user, userDto } from "../fixtures";
 
 describe("PostController (e2e)", () => {

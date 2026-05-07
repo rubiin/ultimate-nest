@@ -1,13 +1,13 @@
 import { JwtPayload } from "@common/@types";
 import { BaseRepository } from "@common/database";
-import { CanActivate, ExecutionContext } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { Socket } from "socket.io";
 import { User } from "@entities";
 import { translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { CanActivate, ExecutionContext } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import { WsException } from "@nestjs/websockets";
+import { Socket } from "socket.io";
 
 @Injectable()
 export class WsJwtGuard implements CanActivate {

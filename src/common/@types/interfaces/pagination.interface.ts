@@ -1,7 +1,8 @@
 import { CursorPaginationDto, OffsetPaginationDto } from "@common/dtos";
 import { Dictionary, QueryBuilder } from "@mikro-orm/postgresql";
-import { CursorType, QueryCursor, QueryOrder } from "../enums";
+
 import { CursorPaginationResponse, OffsetPaginationResponse } from "../classes";
+import { CursorType, QueryCursor, QueryOrder } from "../enums";
 
 export interface QBCursorPaginationOptions<T extends Dictionary> {
   qb: QueryBuilder<T, any>;

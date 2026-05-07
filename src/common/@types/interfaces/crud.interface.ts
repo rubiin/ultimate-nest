@@ -1,7 +1,7 @@
 import { BaseEntity } from "@common/database";
-
 import { User } from "@entities";
 import { Observable } from "rxjs";
+
 import { CreateEntityType, UpdateEntityType } from "../types/common.types";
 import {
   PaginationResponse,

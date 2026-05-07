@@ -1,4 +1,3 @@
-import { Collection, EventArgs, wrap } from "@mikro-orm/postgresql";
 import { Roles } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import { HelperService } from "@common/helpers";
@@ -15,6 +14,7 @@ import {
   OneToMany,
   Property,
 } from "@mikro-orm/decorators/legacy";
+import { Collection, EventArgs, wrap } from "@mikro-orm/postgresql";
 @Embeddable()
 export class Social {
   @Property()

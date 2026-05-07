@@ -11,6 +11,7 @@ import {
   IsString,
   Matches,
 } from "class-validator";
+
 import { MinMaxLength } from "./min-max-length.decorator";
 import { Sanitize, Trim } from "./transform.decorator";
 

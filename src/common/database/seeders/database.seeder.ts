@@ -1,8 +1,10 @@
-import { EntityManager } from "@mikro-orm/postgresql";
 import process from "node:process";
+
+import { EntityManager } from "@mikro-orm/postgresql";
 import { Seeder } from "@mikro-orm/seeder";
 import { Logger } from "@nestjs/common";
 import chalk from "chalk";
+
 import { AdminSeeder } from "./admin.seeder";
 import { UserSeeder } from "./user.seeder";
 
