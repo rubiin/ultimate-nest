@@ -16,7 +16,11 @@ allowBuilds:
   "@scarf/scarf": true
   argon2: true
   puppeteer: true
-dedupe-direct-deps: true
+
+# hoisting behavior
 hoist: true
-legacy-peer-deps: true
-shamefully-hoist: true
+shamefullyHoist: true
+
+# dependency behavior
+dedupeDirectDeps: true
+legacyPeerDeps: true
