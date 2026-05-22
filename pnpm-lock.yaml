@@ -7279,6 +7279,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.20.1:
+    resolution: {integrity: sha512-It4dO0K5v//JtTXuPkfEOaI3uUN87iYPnqo/ZzqCoG3g8uhA66QUMs/SrM0YK7/NAu+r4LMh/9dq2A7k+rHs+w==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xml-name-validator@5.0.0:
     resolution: {integrity: sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg==}
     engines: {node: '>=18'}
@@ -9334,7 +9346,7 @@ snapshots:
       subscriptions-transport-ws: 0.11.0(graphql@16.11.0)
       tslib: 2.6.2
       uuid: 9.0.1
-      ws: 8.17.1
+      ws: 8.20.1
     optionalDependencies:
       class-transformer: 0.5.1
       class-validator: 0.14.0
@@ -15373,6 +15385,9 @@ snapshots:
     optional: true
 
   ws@8.17.1: {}
+
+  ws@8.20.1:
+    optional: true
 
   xml-name-validator@5.0.0: {}
 
