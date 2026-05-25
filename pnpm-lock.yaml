@@ -39,7 +39,7 @@ overrides:
   socket.io-parser@>=4.0.0 <4.2.6: '>=4.2.6'
   tmp@<=0.2.3: '>=0.2.5'
   uuid@>=11.0.0 <11.1.1: '>=11.1.1'
-  ws@>=8.0.0 <8.17.1: '>=8.17.1'
+  ws@>=8.0.0 <8.17.1: '>=8.20.1'
 
 importers:
 
@@ -7203,6 +7203,18 @@ packages:
       utf-8-validate:
         optional: true
 
+  ws@8.21.0:
+    resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xml-name-validator@5.0.0:
     resolution: {integrity: sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg==}
     engines: {node: '>=18'}
@@ -9056,7 +9068,7 @@ snapshots:
       subscriptions-transport-ws: 0.11.0(graphql@16.11.0)
       tslib: 2.6.2
       uuid: 9.0.1
-      ws: 8.17.1
+      ws: 8.21.0
     optionalDependencies:
       class-transformer: 0.5.1
       class-validator: 0.15.1
@@ -14879,6 +14891,9 @@ snapshots:
     optional: true
 
   ws@8.17.1: {}
+
+  ws@8.21.0:
+    optional: true
 
   xml-name-validator@5.0.0: {}
 
