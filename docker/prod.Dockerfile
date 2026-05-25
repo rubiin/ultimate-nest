@@ -11,8 +11,7 @@ RUN apt-get update && apt-get install -y dumb-init curl
 FROM base AS dependencies
 
 WORKDIR /app
-COPY pnpm-lock.yaml ./
-COPY package.json ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 RUN pnpm install --offline --shamefully-hoist=true --frozen-lockfile
 
 ## ======================================================> The build image stage
