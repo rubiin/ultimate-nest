@@ -1,17 +1,29 @@
 allowBuilds:
+  '@firebase/util': true
   "@nestjs/core": true
   "@scarf/scarf": true
+  '@swc/core': true
   argon2: true
+  cpu-features: false
+  protobufjs: false
   puppeteer: true
+  sharp: true
+  ssh2: false
+  unrs-resolver: false
+
+
+
+blockExoticSubdeps: false
+minimumReleaseAge: 0
 
 # dependency behavior
 dedupeDirectDeps: true
 
 # hoisting behavior
 hoist: true
+shamefullyHoist: true
 
 ignoreWorkspaceRootCheck: true
-legacyPeerDeps: true
 onlyBuiltDependencies:
   - "@firebase/util"
   - "@nestjs/core"
@@ -61,4 +73,3 @@ overrides:
   tmp@<=0.2.3: '>=0.2.5'
   uuid@>=11.0.0 <11.1.1: '>=11.1.1'
   ws@>=8.0.0 <8.17.1: '>=8.17.1'
-shamefullyHoist: true

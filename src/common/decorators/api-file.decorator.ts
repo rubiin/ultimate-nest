@@ -5,10 +5,6 @@ import {
   MulterOptions,
 } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { ApiBody, ApiConsumes, ApiOkResponse, ApiProduces } from "@nestjs/swagger";
-import {
-  ReferenceObject,
-  SchemaObject,
-} from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
 
 interface ApiFileOptions {
   fieldName?: string;
@@ -99,8 +95,8 @@ export function ApiFileFields(
     ...options.map((field) => {
       return { [field.name]: { type: "string", format: "binary" } };
     }),
-  ) as Record<string, SchemaObject | ReferenceObject>;
-
+  )
+  
   return applyDecorators(
     UseInterceptors(FileFieldsInterceptor(options, localOptions)),
     ApiConsumes("multipart/form-data"),
