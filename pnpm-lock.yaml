@@ -37,7 +37,7 @@ overrides:
   protobufjs@<7.5.5: '>=7.6.1'
   send@<0.19.0: '>=0.19.2'
   socket.io-parser@>=4.0.0 <4.2.6: '>=4.2.6'
-  tmp@<=0.2.3: '>=0.2.5'
+  tmp@<=0.2.3: '>=0.2.6'
   uuid@>=11.0.0 <11.1.1: '>=11.1.1'
   ws@>=8.0.0 <8.17.1: '>=8.20.1'
 
@@ -6838,6 +6838,10 @@ packages:
     resolution: {integrity: sha512-voyz6MApa1rQGUxT3E+BK7/ROe8itEx7vD8/HEvt4xwXucvQ5G5oeEiHkmHZJuBO21RpOf+YYm9MOivj709jow==}
     engines: {node: '>=14.14'}
 
+  tmp@0.2.7:
+    resolution: {integrity: sha512-e0votIpp4Uo2AJYSzVHV6xCcawuiez3DzqDAbrTc3YxBkplN6e+dM13ZeIcZnDg/QpSuU2zfZ3rzwY8ukEnaXw==}
+    engines: {node: '>=14.14'}
+
   tmpl@1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}
 
@@ -11598,7 +11602,7 @@ snapshots:
     dependencies:
       chardet: 0.7.0
       iconv-lite: 0.4.24
-      tmp: 0.2.5
+      tmp: 0.2.7
 
   farmhash-modern@1.1.0: {}
 
@@ -14486,6 +14490,8 @@ snapshots:
       tldts-core: 7.0.15
 
   tmp@0.2.5: {}
+
+  tmp@0.2.7: {}
 
   tmpl@1.0.5: {}
 
