@@ -5,7 +5,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
         with:
           version: 10.34.4
@@ -32,7 +32,7 @@ jobs:
         with:
           release-type: node
           package-name: ultimate-nest
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: tag stable versions
         if: ${{ steps.release.outputs.release_created }}
         run: |
