@@ -12,7 +12,7 @@ import { BaseAdapter } from "./adapters/adapter";
 import { MODULE_OPTIONS_TOKEN } from "./mail.module-definition";
 import { MailModuleOptions } from "./mailer.options";
 
-interface MailOptions extends Partial<SendMailOptions> {
+interface MailOptions extends SendMailOptions {
   template: string;
   replacements: Record<string, string>;
 }
