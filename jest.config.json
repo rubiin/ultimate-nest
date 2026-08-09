@@ -1,5 +1,9 @@
 {
-  "moduleFileExtensions": ["js", "json", "ts"],
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
   "testTimeout": 30000,
   "moduleNameMapper": {
     "^@entities": "<rootDir>/entities/index",
@@ -11,9 +15,27 @@
   "rootDir": "src",
   "testRegex": ".spec.ts$",
   "transform": {
-    "^.+\\.(t|j)s$": "@swc/jest"
+    "^.+\\.(t|j)s$": [
+      "@swc/jest",
+      {
+        "jsc": {
+          "parser": {
+            "syntax": "typescript",
+            "decorators": true
+          },
+          "transform": {
+            "legacyDecorator": true,
+            "decoratorMetadata": true
+          },
+          "target": "es2022"
+        }
+      }
+    ]
   },
   "coverageDirectory": "../coverage",
   "testEnvironment": "node",
-  "coverageReporters": ["text", "html"]
+  "coverageReporters": [
+    "text",
+    "html"
+  ]
 }
