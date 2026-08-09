@@ -1,4 +1,5 @@
 import { CacheService } from "@lib/cache";
+import { resourceCacheTag } from "@lib/cache/cache.constant";
 import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
 import { Observable } from "rxjs";
@@ -7,7 +8,8 @@ import { tap } from "rxjs/operators";
 
 /**
  *
- *  This interceptor is used to automatically clear the cache after a successful mutation.
+ *  This interceptor is used to automatically drop the cached responses of the
+ *  mutated resource. Other resources keep their cache.
  *
  */
 @Injectable()
@@ -21,7 +23,7 @@ export class ClearCacheInterceptor implements NestInterceptor {
         const request = context.switchToHttp().getRequest<NestifyRequest>();
 
         if (request.method !== "GET" && response.statusCode >= 200 && response.statusCode < 300) {
-          return from(this.cacheService.resetCache());
+          return from(this.cacheService.invalidateTag(resourceCacheTag(context)));
         }
 
         return of();
