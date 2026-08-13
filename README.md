@@ -250,11 +250,11 @@ A Module for Utilizing Pg-promise with NestJS
 
 ## Star History
 
-<a href="https://star-history.com/#rubiin/ultimate-nest&Timeline">
+<a href="https://star-history.dera.page/#rubiin/ultimate-nest&Timeline">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=rubiin/ultimate-nest&type=Timeline&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=rubiin/ultimate-nest&type=Timeline" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=rubiin/ultimate-nest&type=Timeline" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=rubiin/ultimate-nest&type=Timeline&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=rubiin/ultimate-nest&type=Timeline" />
+    <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=rubiin/ultimate-nest&type=Timeline" />
   </picture>
 </a>
 
