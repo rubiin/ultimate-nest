@@ -60,8 +60,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(@nestjs/throttler@6.5.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2))(ioredis@6.0.0(supports-color@8.1.1))(reflect-metadata@0.2.2)
       '@nestjs/axios':
-        specifier: ^4.0.1
-        version: 4.0.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2)
+        specifier: ^12.0.0
+        version: 12.0.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2)
       '@nestjs/cache-manager':
         specifier: ^3.1.3
         version: 3.1.3(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(cache-manager@7.2.9)(keyv@5.6.0)(rxjs@7.8.2)
@@ -100,7 +100,7 @@ importers:
         version: 11.4.7(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
       '@nestjs/terminus':
         specifier: ^11.1.1
-        version: 11.1.1(@grpc/grpc-js@1.13.4)(@grpc/proto-loader@0.8.1)(@mikro-orm/core@7.1.13)(@mikro-orm/nestjs@7.0.2(@mikro-orm/core@7.1.13)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2))(@nestjs/axios@4.0.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2))(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        version: 11.1.1(@grpc/grpc-js@1.13.4)(@grpc/proto-loader@0.8.1)(@mikro-orm/core@7.1.13)(@mikro-orm/nestjs@7.0.2(@mikro-orm/core@7.1.13)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2))(@nestjs/axios@12.0.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2))(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/throttler':
         specifier: ^6.5.0
         version: 6.5.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)
@@ -1899,10 +1899,11 @@ packages:
       ioredis: '>=5.0.0'
       reflect-metadata: ^0.2.1
 
-  '@nestjs/axios@4.0.1':
-    resolution: {integrity: sha512-68pFJgu+/AZbWkGu65Z3r55bTsCPlgyKaV4BSG8yUAD72q1PPuyVRgUwFv6BxdnibTUHlyxm06FmYWNC+bjN7A==}
+  '@nestjs/axios@12.0.0':
+    resolution: {integrity: sha512-FvCnxS7nvJB/AbRKlXWTx07k5m13fjjTosAVeeD4QHIQIeyquJiIp+/w69NKol928Ww4btxzSRiLi3XA9CT9eA==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
-      '@nestjs/common': ^10.0.0 || ^11.0.0
+      '@nestjs/common': ^10.0.0 || ^11.0.0 || ^12.0.0
       axios: ^1.3.1
       rxjs: ^7.0.0
 
@@ -6007,6 +6008,7 @@ packages:
   prom-client@14.0.0:
     resolution: {integrity: sha512-etPa4SMO4j6qTn2uaSZy7+uahGK0kXUZwO7WhoDpTf3yZ837I3jqUDYmG6N0caxuU6cyqrg0xmOxh+yneczvyA==}
     engines: {node: '>=10'}
+    deprecated: prom-client has been replaced by @prometheus-io/client
 
   promise-breaker@6.0.0:
     resolution: {integrity: sha512-BthzO9yTPswGf7etOBiHCVuugs2N01/Q/94dIPls48z2zCmrnDptUUZzfIb+41xq0MnYZ/BzmOd6ikDR4ibNZA==}
@@ -8855,7 +8857,7 @@ snapshots:
       reflect-metadata: 0.2.2
       tslib: 2.8.1
 
-  '@nestjs/axios@4.0.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2)':
+  '@nestjs/axios@12.0.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1)
       axios: 1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
@@ -9075,7 +9077,7 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.15.1
 
-  '@nestjs/terminus@11.1.1(@grpc/grpc-js@1.13.4)(@grpc/proto-loader@0.8.1)(@mikro-orm/core@7.1.13)(@mikro-orm/nestjs@7.0.2(@mikro-orm/core@7.1.13)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2))(@nestjs/axios@4.0.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2))(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
+  '@nestjs/terminus@11.1.1(@grpc/grpc-js@1.13.4)(@grpc/proto-loader@0.8.1)(@mikro-orm/core@7.1.13)(@mikro-orm/nestjs@7.0.2(@mikro-orm/core@7.1.13)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2))(@nestjs/axios@12.0.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2))(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1)
       '@nestjs/core': 11.2.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/platform-express@11.2.1)(@nestjs/websockets@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -9088,7 +9090,7 @@ snapshots:
       '@grpc/proto-loader': 0.8.1
       '@mikro-orm/core': 7.1.13
       '@mikro-orm/nestjs': 7.0.2(@mikro-orm/core@7.1.13)(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)
-      '@nestjs/axios': 4.0.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2)
+      '@nestjs/axios': 12.0.0(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(axios@1.18.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(rxjs@7.8.2)
 
   '@nestjs/testing@11.2.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.1)(@nestjs/platform-express@11.2.1)':
     dependencies:
