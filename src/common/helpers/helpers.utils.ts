@@ -6,17 +6,17 @@ import process from "node:process";
 import { AuthenticationResponse } from "@common/@types";
 import { UTCDate } from "@date-fns/utc";
 import { User } from "@entities";
-import { Options as ArgonOptions } from "argon2";
-import { argon2id, hash, verify } from "argon2";
+import { argon2id, hash, verify, HashOptions } from "argon2";
 import { pick } from "helper-fns";
 import { Observable } from "rxjs";
 import { from } from "rxjs";
 import sharp from "sharp";
 
-const argon2Options: ArgonOptions & { raw?: false } = {
+const argon2Options: HashOptions & { raw?: false } = {
   type: argon2id,
   hashLength: 50,
   timeCost: 4,
+  raw: false,
 };
 
 export const HelperService = {
