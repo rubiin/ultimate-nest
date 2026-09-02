@@ -1,6 +1,7 @@
 allowBuilds:
   "@firebase/util": true
   "@nestjs/core": true
+  '@parcel/watcher': true
   "@scarf/scarf": true
   "@swc/core": true
   argon2: true
@@ -22,16 +23,3 @@ hoist: true
 shamefullyHoist: true
 
 ignoreWorkspaceRootCheck: true
-onlyBuiltDependencies:
-  - "@firebase/util"
-  - "@nestjs/core"
-  - "@scarf/scarf"
-  - "@swc/core"
-  - argon2
-  - core-js
-  - cpu-features
-  - nestjs-pino
-  - protobufjs
-  - sharp
-  - ssh2
-  - unrs-resolver
