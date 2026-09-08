@@ -88,7 +88,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     where: FilterQuery<T>,
     options?: FindOptions<T, Populate>,
   ): Observable<{ total: number; results: Loaded<T, Populate>[] }> {
-    return from(this.findAndCount(where, options)).pipe(
+    return from(this.findAndCount(where as any, options)).pipe(
       map(([results, total]) => ({ total, results })),
     );
   }

@@ -79,7 +79,7 @@ export class MailerService {
 
         if (this.options?.previewEmail) {
           try {
-            (async () => previewEmail(mailOptions))();
+            (async () => previewEmail(mailOptions as Parameters<typeof previewEmail>[0]))();
           } catch (error) {
             this.logger.error(error);
           }
