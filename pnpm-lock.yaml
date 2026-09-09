@@ -112,7 +112,7 @@ importers:
         version: 8.0.2
       '@ntegral/nestjs-sentry':
         specifier: ^4.0.1
-        version: 4.0.1(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(@sentry/hub@7.120.4)(@sentry/node@10.73.0(@opentelemetry/core@2.11.0(@opentelemetry/api@1.9.1))(supports-color@8.1.1))(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rimraf@3.0.2)(rxjs@7.8.2)
+        version: 4.0.1(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(@sentry/hub@7.120.4)(@sentry/node@10.73.0(@opentelemetry/core@2.11.0(@opentelemetry/api@1.9.1))(supports-color@8.1.1))(class-transformer@0.5.1)(class-validator@0.15.1)(graphql@16.14.2)(reflect-metadata@0.2.2)(rimraf@3.0.2)(rxjs@7.8.2)
       '@otplib/uri':
         specifier: ^13.5.0
         version: 13.5.0
@@ -4788,6 +4788,10 @@ packages:
     peerDependencies:
       graphql: '>=0.11 <=16'
 
+  graphql@16.14.2:
+    resolution: {integrity: sha512-Chq1s4CY7jmh8gO2qvLIJyfCDIN+EHLFW/9iShnp1z8FjBQMoodWP1kDC36VAMXXIvAjj4ARa7ntfAV2BrjsbA==}
+    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
+
   gtoken@7.1.0:
     resolution: {integrity: sha512-pCcEwRi+TKpMlxAQObHDQ56KawURgyAf6jtIY046fJ5tIv3zDe/LEIubckAO8fj6JnAxLdmWkUfNyulQ2iKdEw==}
     engines: {node: '>=14.0.0'}
@@ -7917,29 +7921,34 @@ snapshots:
       - supports-color
     optional: true
 
-  '@graphql-tools/merge@9.0.0':
+  '@graphql-tools/merge@9.0.0(graphql@16.14.2)':
     dependencies:
-      '@graphql-tools/utils': 10.0.8
+      '@graphql-tools/utils': 10.0.8(graphql@16.14.2)
+      graphql: 16.14.2
       tslib: 2.6.2
     optional: true
 
-  '@graphql-tools/schema@10.0.0':
+  '@graphql-tools/schema@10.0.0(graphql@16.14.2)':
     dependencies:
-      '@graphql-tools/merge': 9.0.0
-      '@graphql-tools/utils': 10.0.8
+      '@graphql-tools/merge': 9.0.0(graphql@16.14.2)
+      '@graphql-tools/utils': 10.0.8(graphql@16.14.2)
+      graphql: 16.14.2
       tslib: 2.6.2
       value-or-promise: 1.0.12
     optional: true
 
-  '@graphql-tools/utils@10.0.8':
+  '@graphql-tools/utils@10.0.8(graphql@16.14.2)':
     dependencies:
-      '@graphql-typed-document-node/core': 3.2.0
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.14.2)
       cross-inspect: 1.0.0
       dset: 3.1.4
+      graphql: 16.14.2
       tslib: 2.6.2
     optional: true
 
-  '@graphql-typed-document-node/core@3.2.0':
+  '@graphql-typed-document-node/core@3.2.0(graphql@16.14.2)':
+    dependencies:
+      graphql: 16.14.2
     optional: true
 
   '@grpc/grpc-js@1.14.4':
@@ -8937,22 +8946,23 @@ snapshots:
       '@nestjs/platform-express': 11.2.3(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(supports-color@8.1.1)
       '@nestjs/websockets': 11.2.3(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(@nestjs/platform-socket.io@11.2.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
 
-  '@nestjs/graphql@12.0.11(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)':
+  '@nestjs/graphql@12.0.11(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(class-transformer@0.5.1)(class-validator@0.15.1)(graphql@16.14.2)(reflect-metadata@0.2.2)':
     dependencies:
-      '@graphql-tools/merge': 9.0.0
-      '@graphql-tools/schema': 10.0.0
-      '@graphql-tools/utils': 10.0.8
+      '@graphql-tools/merge': 9.0.0(graphql@16.14.2)
+      '@graphql-tools/schema': 10.0.0(graphql@16.14.2)
+      '@graphql-tools/utils': 10.0.8(graphql@16.14.2)
       '@nestjs/common': 11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1)
       '@nestjs/core': 11.2.3(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/platform-express@11.2.3)(@nestjs/websockets@11.2.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/mapped-types': 2.0.2(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
       chokidar: 3.5.3
       fast-glob: 3.3.2
-      graphql-tag: 2.12.6
-      graphql-ws: 5.14.2
+      graphql: 16.14.2
+      graphql-tag: 2.12.6(graphql@16.14.2)
+      graphql-ws: 5.14.2(graphql@16.14.2)
       lodash: 4.17.21
       normalize-path: 3.0.0
       reflect-metadata: 0.2.2
-      subscriptions-transport-ws: 0.11.0
+      subscriptions-transport-ws: 0.11.0(graphql@16.14.2)
       tslib: 2.6.2
       uuid: 9.0.1
       ws: 8.14.2
@@ -9197,7 +9207,7 @@ snapshots:
       fastq: 1.20.3
     optional: true
 
-  '@ntegral/nestjs-sentry@4.0.1(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(@sentry/hub@7.120.4)(@sentry/node@10.73.0(@opentelemetry/core@2.11.0(@opentelemetry/api@1.9.1))(supports-color@8.1.1))(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rimraf@3.0.2)(rxjs@7.8.2)':
+  '@ntegral/nestjs-sentry@4.0.1(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(@sentry/hub@7.120.4)(@sentry/node@10.73.0(@opentelemetry/core@2.11.0(@opentelemetry/api@1.9.1))(supports-color@8.1.1))(class-transformer@0.5.1)(class-validator@0.15.1)(graphql@16.14.2)(reflect-metadata@0.2.2)(rimraf@3.0.2)(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1)
       '@nestjs/core': 11.2.3(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/platform-express@11.2.3)(@nestjs/websockets@11.2.3)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -9207,7 +9217,7 @@ snapshots:
       rimraf: 3.0.2
       rxjs: 7.8.2
     optionalDependencies:
-      '@nestjs/graphql': 12.0.11(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
+      '@nestjs/graphql': 12.0.11(@nestjs/common@11.2.3(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.2.3)(class-transformer@0.5.1)(class-validator@0.15.1)(graphql@16.14.2)(reflect-metadata@0.2.2)
     transitivePeerDependencies:
       - '@apollo/subgraph'
       - bufferutil
@@ -11726,12 +11736,18 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  graphql-tag@2.12.6:
+  graphql-tag@2.12.6(graphql@16.14.2):
     dependencies:
+      graphql: 16.14.2
       tslib: 2.6.2
     optional: true
 
-  graphql-ws@5.14.2:
+  graphql-ws@5.14.2(graphql@16.14.2):
+    dependencies:
+      graphql: 16.14.2
+    optional: true
+
+  graphql@16.14.2:
     optional: true
 
   gtoken@7.1.0(supports-color@8.1.1):
@@ -13903,10 +13919,11 @@ snapshots:
   stubs@3.0.0:
     optional: true
 
-  subscriptions-transport-ws@0.11.0:
+  subscriptions-transport-ws@0.11.0(graphql@16.14.2):
     dependencies:
       backo2: 1.0.2
       eventemitter3: 3.1.2
+      graphql: 16.14.2
       iterall: 1.3.0
       symbol-observable: 1.2.0
       ws: 7.5.13
