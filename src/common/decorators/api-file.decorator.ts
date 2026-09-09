@@ -95,8 +95,8 @@ export function ApiFileFields(
     ...options.map((field) => {
       return { [field.name]: { type: "string", format: "binary" } };
     }),
-  )
-  
+  );
+
   return applyDecorators(
     UseInterceptors(FileFieldsInterceptor(options, localOptions)),
     ApiConsumes("multipart/form-data"),

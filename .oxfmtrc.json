@@ -1,12 +1,29 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "printWidth": 100,
-  "tabWidth": 2,
-  "useTabs": false,
-  "semi": true,
   "singleQuote": false,
+  "semi": true,
+  "tabWidth": 2,
   "trailingComma": "all",
-  "ignorePatterns": ["dist/**", "*.min.js", "temp/**", "coverage/**"],
-  "sortPackageJson": true,
-  "sortImports": true
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "ignorePatterns": [
+    "node_modules/**",
+    ".output/**",
+    ".nitro/**",
+    ".content-collections/**",
+    ".tanstack/**",
+    "src/routeTree.gen.ts",
+    "public/**",
+    "content/**",
+    "docs/**",
+    ".superpowers/**",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "README.md",
+    "LICENSE*",
+    "dist",
+    "out"
+  ]
 }
