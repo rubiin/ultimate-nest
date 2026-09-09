@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.9.2](https://github.com/rubiin/ultimate-nest/compare/v2.9.1...v2.9.2) (2026-09-09)
+
+
+### Bug Fixes
+
+* clean up code formatting and improve readability ([32543b4](https://github.com/rubiin/ultimate-nest/commit/32543b43d103cac0319451d4aad043b3a15aedd2))
+* **deps:** update all non-major dependencies ([#809](https://github.com/rubiin/ultimate-nest/issues/809)) ([d955819](https://github.com/rubiin/ultimate-nest/commit/d955819c914c01b7645f90543b3c11a534e01f27))
+* **deps:** update all non-major dependencies ([#816](https://github.com/rubiin/ultimate-nest/issues/816)) ([9374d9f](https://github.com/rubiin/ultimate-nest/commit/9374d9fa742948d68e5b664372c8666b22a8d8e3))
+* **deps:** update all non-major dependencies ([#818](https://github.com/rubiin/ultimate-nest/issues/818)) ([a4d185c](https://github.com/rubiin/ultimate-nest/commit/a4d185c34a1b412b2d26e2e2aebee2fea770b40b))
+* **deps:** update all non-major dependencies ([#820](https://github.com/rubiin/ultimate-nest/issues/820)) ([1cc1201](https://github.com/rubiin/ultimate-nest/commit/1cc12019a35066e3467584f52f08174ef83c559c))
+* **deps:** update all non-major dependencies ([#823](https://github.com/rubiin/ultimate-nest/issues/823)) ([f548bc9](https://github.com/rubiin/ultimate-nest/commit/f548bc965511bacbe8fa2f69005c6a128aeeb4bd))
+* **deps:** update all non-major dependencies ([#825](https://github.com/rubiin/ultimate-nest/issues/825)) ([b52882b](https://github.com/rubiin/ultimate-nest/commit/b52882bd682cc5b2af08244f73cb722b65d27dfb))
+* **deps:** update all non-major dependencies ([#828](https://github.com/rubiin/ultimate-nest/issues/828)) ([46695ad](https://github.com/rubiin/ultimate-nest/commit/46695ad0bb3370907a52ec55cf3c0ac3e7dde09e))
+* **deps:** update all non-major dependencies ([#830](https://github.com/rubiin/ultimate-nest/issues/830)) ([5e45364](https://github.com/rubiin/ultimate-nest/commit/5e4536471aefbef41a9c762ae46b9b1e93d1db4d))
+* **deps:** update all non-major dependencies ([#833](https://github.com/rubiin/ultimate-nest/issues/833)) ([d0d665e](https://github.com/rubiin/ultimate-nest/commit/d0d665ed87ff74eb5c5b97c71f7db3dba682618e))
+* **deps:** update all non-major dependencies ([#835](https://github.com/rubiin/ultimate-nest/issues/835)) ([0d15357](https://github.com/rubiin/ultimate-nest/commit/0d15357b91abfba5f6c162a117c827c0140dce32))
+* **deps:** update all non-major dependencies ([#838](https://github.com/rubiin/ultimate-nest/issues/838)) ([9936e56](https://github.com/rubiin/ultimate-nest/commit/9936e5633af2d57d56994769d1bc3216e4167ce0))
+* **deps:** update all non-major dependencies ([#840](https://github.com/rubiin/ultimate-nest/issues/840)) ([750c2fa](https://github.com/rubiin/ultimate-nest/commit/750c2fa1243c62cb4e6704ee87175dc78ecddbd2))
+* **deps:** update all non-major dependencies ([#842](https://github.com/rubiin/ultimate-nest/issues/842)) ([e338c63](https://github.com/rubiin/ultimate-nest/commit/e338c633236112b740e0b8bc990b56ea2e39afbd))
+* **deps:** update all non-major dependencies ([#844](https://github.com/rubiin/ultimate-nest/issues/844)) ([2cf9a38](https://github.com/rubiin/ultimate-nest/commit/2cf9a3844f6f91cbba519b9202d8301fc21feb96))
+* **deps:** update all non-major dependencies ([#846](https://github.com/rubiin/ultimate-nest/issues/846)) ([ccedc4d](https://github.com/rubiin/ultimate-nest/commit/ccedc4dc8d9225e07cd4c855c9d7540b3f8a29ea))
+* **deps:** update dependency @nestjs/axios to v12 ([#845](https://github.com/rubiin/ultimate-nest/issues/845)) ([1a912df](https://github.com/rubiin/ultimate-nest/commit/1a912dfa5f783fa2a223ba535e8b2ba582701aef))
+* **deps:** update dependency ioredis to v6 ([#836](https://github.com/rubiin/ultimate-nest/issues/836)) ([216d0d4](https://github.com/rubiin/ultimate-nest/commit/216d0d40c82c110f067956064938529f504e3b04))
+* remove cz ([010572b](https://github.com/rubiin/ultimate-nest/commit/010572b6f8993aba6cf08fed9fd3a8218d9b3e66))
+* Remove runtime configuration from jest-e2e.json ([e7c9026](https://github.com/rubiin/ultimate-nest/commit/e7c9026543f555a35609bd9cf6cd39749180ee16))
+* repair broken star history chart ([#839](https://github.com/rubiin/ultimate-nest/issues/839)) ([1972631](https://github.com/rubiin/ultimate-nest/commit/1972631b5ad6aaea6aa61e00f4ed3fc0479a881e))
+* update argon2 options type and add '@parcel/watcher' to allowBuilds ([4a576a8](https://github.com/rubiin/ultimate-nest/commit/4a576a8d25721380d881c1a2820156d8b245c549))
+
 ## [2.9.1](https://github.com/rubiin/ultimate-nest/compare/v2.9.0...v2.9.1) (2026-05-04)
 
 ### Bug Fixes
