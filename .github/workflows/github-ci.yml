@@ -8,10 +8,10 @@ jobs:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
         with:
-          version: 12.3.4
+          version: 12.4.1
       - uses: actions/setup-node@v6
         with:
-          node-version: 24.20.0
+          node-version: 24.21.0
           cache: pnpm
 
       - run: pnpm install --shamefully-hoist
