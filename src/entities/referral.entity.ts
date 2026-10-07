@@ -1,7 +1,8 @@
 import { ReferralStatus } from "@common/@types";
 import { BaseEntity } from "@common/database";
 import { Entity, ManyToOne, Property, Enum } from "@mikro-orm/decorators/legacy";
-import { Opt, Ref, Rel } from "@mikro-orm/postgresql";
+import type { Rel } from "@mikro-orm/postgresql";
+import { Opt, Ref } from "@mikro-orm/postgresql";
 
 import { User } from "./user.entity";
 @Entity()

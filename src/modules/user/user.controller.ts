@@ -1,4 +1,5 @@
-import { File, PaginationResponse } from "@common/@types";
+import type { File } from "@common/@types";
+import { PaginationResponse } from "@common/@types";
 import { Action, Roles } from "@common/@types";
 import {
   ApiFile,

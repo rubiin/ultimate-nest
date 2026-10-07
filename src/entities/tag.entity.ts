@@ -7,7 +7,8 @@ import {
   ManyToMany,
   Property,
 } from "@mikro-orm/decorators/legacy";
-import { Collection, EventArgs } from "@mikro-orm/postgresql";
+import type { EventArgs } from "@mikro-orm/postgresql";
+import { Collection } from "@mikro-orm/postgresql";
 import { slugify } from "helper-fns";
 
 import { Post } from "./post.entity";

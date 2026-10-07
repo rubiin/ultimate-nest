@@ -60,10 +60,14 @@ import {
         ...facebookOauthConfigValidationSchema,
       }),
       validationOptions: {
-        abortEarly: true,
-        cache: !HelperService.isProd(),
-        debug: !HelperService.isProd(),
-        stack: !HelperService.isProd(),
+        // Nest 12 validates through Standard Schema, so Joi-specific settings
+        // must be nested under `libraryOptions`.
+        libraryOptions: {
+          abortEarly: true,
+          cache: !HelperService.isProd(),
+          debug: !HelperService.isProd(),
+          stack: !HelperService.isProd(),
+        },
       },
     }),
   ],

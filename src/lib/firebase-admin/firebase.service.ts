@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { Inject, Injectable } from "@nestjs/common";
 
-import { FirebaseModuleOptions } from "./fire-base.module.definition";
+import type { FirebaseModuleOptions } from "./fire-base.module.definition";
 import { initializeApp, App, cert } from "firebase-admin/app";
 import { MODULE_OPTIONS_TOKEN } from "./fire-base.module.definition";
 

@@ -1,6 +1,7 @@
 import process from "node:process";
 
-import { MailPayload, PaginationResponse, RecordWithFile } from "@common/@types";
+import type { MailPayload } from "@common/@types";
+import { PaginationResponse, RecordWithFile } from "@common/@types";
 import {
   CursorType,
   EmailSubject,

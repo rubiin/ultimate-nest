@@ -18,7 +18,8 @@ import mime from "mime";
 import { Observable } from "rxjs";
 import { forkJoin, from, map, of, switchMap, throwError } from "rxjs";
 
-import { AwsModuleOptions, AwsS3, AwsS3MultiPart, AwsS3PutItemOptions } from "./aws.interface";
+import type { AwsModuleOptions } from "./aws.interface";
+import { AwsS3, AwsS3MultiPart, AwsS3PutItemOptions } from "./aws.interface";
 import { MODULE_OPTIONS_TOKEN } from "./aws.module";
 
 @Injectable()

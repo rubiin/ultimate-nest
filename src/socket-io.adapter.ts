@@ -37,6 +37,10 @@ export class SocketIOAdapter extends IoAdapter {
    * additional configuration options for the server. It is of type `ServerOptions`.
    * @returns a server object.
    */
+  // socket.io's ServerOptions marks fields like `parser`, `path`, `serveClient` and
+  // `adapter` as required even though it defaults every one of them at runtime, so a
+  // spread of the optional `options` argument cannot satisfy the type on its own.
+  // socket.io resolves the remaining fields itself.
   createIOServer(port: number, options?: ServerOptions) {
     const cors = {
       origin: this.configService.get("app.allowedOrigins", { infer: true }),
@@ -45,7 +49,7 @@ export class SocketIOAdapter extends IoAdapter {
     const optionsWithCORS = {
       ...options,
       cors,
-    };
+    } as ServerOptions;
 
     const server = super.createIOServer(port, optionsWithCORS) as Server;
 

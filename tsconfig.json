@@ -4,6 +4,13 @@
     "types": ["node", "jest", "express", "multer"], // @types are no longer auto-discovered (see §1.6)
     "rootDir": "./src", // no longer inferred from source files (see §1.5)
     "outDir": "./dist",
+    // Aligned with the NestJS 12 starter (nestjs/typescript-starter).
+    // resolvePackageJsonExports matters for Nest 12: its @nestjs/* packages ship
+    // as ESM with exports maps, which must be honoured.
+    "resolvePackageJsonExports": true,
+    "isolatedModules": true,
+    "importHelpers": true, // emits tslib imports; tslib added as a runtime dependency
+    "strictPropertyInitialization": false,
     "paths": {
       "@lib/*": ["./src/lib/*"],
       "@common/*": ["./src/common/*"],
