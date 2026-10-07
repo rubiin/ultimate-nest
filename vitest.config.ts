@@ -1,6 +1,5 @@
 import { createRequire } from "node:module";
 
-import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
 const require = createRequire(import.meta.url);
@@ -15,9 +14,9 @@ const require = createRequire(import.meta.url);
 const cjsEntry = (id: string) => require.resolve(id);
 
 export default defineConfig({
-  // Resolves the path aliases declared in tsconfig.json.
-  plugins: [tsconfigPaths()],
   resolve: {
+    // Resolves the path aliases declared in tsconfig.json natively (Vite 8).
+    tsconfigPaths: true,
     alias: [
       { find: /^helper-fns$/, replacement: cjsEntry("helper-fns") },
       { find: /^unprofane$/, replacement: cjsEntry("unprofane") },

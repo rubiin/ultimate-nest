@@ -1,9 +1,10 @@
-import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  // Resolves the path aliases declared in tsconfig.json.
-  plugins: [tsconfigPaths()],
+  resolve: {
+    // Resolves the path aliases declared in tsconfig.json natively (Vite 8).
+    tsconfigPaths: true,
+  },
   test: {
     globals: true,
     root: "./",
