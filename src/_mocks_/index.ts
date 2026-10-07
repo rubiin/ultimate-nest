@@ -6,9 +6,9 @@ import { PaginationType, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Category, Comment, OtpLog, Post, Tag } from "@entities";
-import { Protocol, RefreshToken, User } from "@entities";
+import { Protocol, Referral, RefreshToken, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { createMock } from "@golevelup/ts-jest";
+import { createMock } from "@golevelup/ts-vitest";
 import { CacheService } from "@lib/cache/cache.service";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";
@@ -126,6 +126,7 @@ export const mockCloudinaryService = createMock<CloudinaryService>();
 export const mockConfigService = createMock<ConfigService>();
 export const mockCacheService = createMock<CacheService>();
 export const mockUserRepo = createMock<BaseRepository<User>>();
+export const mockReferralRepo = createMock<BaseRepository<Referral>>();
 export const mockJwtService = createMock<JwtService>();
 export const mockRefreshRepo = createMock<BaseRepository<RefreshToken>>();
 export const mockRefreshTokenRepo = createMock<RefreshTokensRepository>();
@@ -141,7 +142,7 @@ export const mockContext = createMock<ExecutionContext>({});
 export const mockReflector = createMock<Reflector>();
 
 export const mockNext = createMock<CallHandler>({
-  handle: jest.fn(() => of({})),
+  handle: vi.fn(() => of({})),
 });
 
 // mocks for orm functions

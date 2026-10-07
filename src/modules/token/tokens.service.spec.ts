@@ -23,7 +23,7 @@ describe("tokensService", () => {
   let service: TokensService;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TokensService,
@@ -63,10 +63,10 @@ describe("tokensService", () => {
   });
 
   it("should create access token from refresh token", () => {
-    jest
+    vi
       .spyOn(service, "resolveRefreshToken")
       .mockImplementation(() => of({ token: refreshToken, user: loggedInUser }));
-    jest.spyOn(service, "generateAccessToken").mockImplementation(() => of("refreshToken"));
+    vi.spyOn(service, "generateAccessToken").mockImplementation(() => of("refreshToken"));
     service.createAccessTokenFromRefreshToken("refreshToken").subscribe((result) => {
       expect(result).toStrictEqual({ token: "refreshToken", user: loggedInUser });
       expect(service.resolveRefreshToken).toHaveBeenCalledTimes(1);

@@ -1,7 +1,7 @@
 {
   "extends": "@rubiin/tsconfig/configs/tsconfig.nest.json",
   "compilerOptions": {
-    "types": ["node", "jest", "express", "multer"], // @types are no longer auto-discovered (see §1.6)
+    "types": ["node", "vitest/globals", "express", "multer"], // @types are no longer auto-discovered (see §1.6)
     "rootDir": "./src", // no longer inferred from source files (see §1.5)
     "outDir": "./dist",
     // Aligned with the NestJS 12 starter (nestjs/typescript-starter).

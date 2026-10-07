@@ -22,7 +22,7 @@ describe("postService", () => {
   let service: PostService;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PostService,

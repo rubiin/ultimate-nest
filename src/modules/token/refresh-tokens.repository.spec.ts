@@ -12,7 +12,7 @@ describe("refreshTokensRepository", () => {
   let service: RefreshTokensRepository;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         RefreshTokensRepository,

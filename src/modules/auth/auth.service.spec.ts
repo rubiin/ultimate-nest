@@ -28,7 +28,7 @@ describe("authService", () => {
   let service: AuthService;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
@@ -109,7 +109,7 @@ describe("authService", () => {
       password: "newPassword",
     };
 
-    HelperService.verifyHash = jest.fn().mockImplementation(() => of(true));
+    HelperService.verifyHash = vi.fn().mockImplementation(() => of(true));
 
     service.changePassword(dto, loggedInUser).subscribe((result) => {
       expect(result).toStrictEqual({ ...loggedInUser, password: dto.password });

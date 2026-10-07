@@ -1,5 +1,5 @@
 import { User } from "@entities";
-import { createMock } from "@golevelup/ts-jest";
+import { createMock } from "@golevelup/ts-vitest";
 import { EntityManager } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { loggedInUser } from "@mocks";
@@ -8,7 +8,7 @@ import { BaseRepository } from "./base.repository";
 
 describe("baseRepository", () => {
   const mockEm = createMock<EntityManager<PostgreSqlDriver>>({
-    findAndCount: jest.fn().mockResolvedValue([[], 0]),
+    findAndCount: vi.fn().mockResolvedValue([[], 0]),
   });
 
   const userRepo = new BaseRepository(mockEm, User);

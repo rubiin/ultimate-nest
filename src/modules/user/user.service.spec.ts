@@ -1,14 +1,17 @@
-import { User } from "@entities";
+import { Referral, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { EntityManager } from "@mikro-orm/core";
+import { EntityManager, MikroORM } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { MailerService } from "@lib/mailer/mailer.service";
 import {
   mockAmqConnection,
   mockCloudinaryService,
   mockConfigService,
   mockEm,
   mockFile,
+  mockMailService,
+  mockReferralRepo,
   mockUserRepo,
   mockedUser,
   queryDto,
@@ -24,7 +27,7 @@ describe("userService", () => {
   let service: UserService;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
@@ -32,10 +35,17 @@ describe("userService", () => {
           provide: getRepositoryToken(User),
           useValue: mockUserRepo,
         },
+        {
+          provide: getRepositoryToken(Referral),
+          useValue: mockReferralRepo,
+        },
         { provide: ConfigService, useValue: mockConfigService },
         { provide: AmqpConnection, useValue: mockAmqConnection },
         { provide: CloudinaryService, useValue: mockCloudinaryService },
+        { provide: MailerService, useValue: mockMailService },
         { provide: EntityManager<PostgreSqlDriver>, useValue: mockEm },
+        // UserService reaches the EntityManager through `orm.em`.
+        { provide: MikroORM, useValue: { em: mockEm } },
       ],
     }).compile();
 
