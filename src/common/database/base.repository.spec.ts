@@ -11,7 +11,7 @@ describe("baseRepository", () => {
     findAndCount: vi.fn().mockResolvedValue([[], 0]),
   });
 
-  const userRepo = new BaseRepository(mockEm, User);
+  const userRepo = new BaseRepository(mockEm as never, User);
 
   it("should be defined", () => {
     expect(userRepo).toBeDefined();

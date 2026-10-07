@@ -20,7 +20,7 @@ import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import { of } from "rxjs";
+import { lastValueFrom, of } from "rxjs";
 
 import { AuthService } from "./auth.service";
 
@@ -29,6 +29,8 @@ describe("authService", () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    mockEm.flush.mockResolvedValue(undefined);
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
@@ -89,31 +91,37 @@ describe("authService", () => {
     });
   });
 
-  it("should reset password", () => {
+  it("should reset password", async () => {
     mockOtpLogRepo.findOne.mockImplementation(async () =>
-      Promise.resolve({ ...mockedOtpLog, user: loggedInUser }),
+      Promise.resolve({
+        ...mockedOtpLog,
+        user: { getEntity: () => loggedInUser },
+      }),
     );
 
-    service.resetPassword(mockResetPasswordDto).subscribe((result) => {
-      expect(result).toStrictEqual(loggedInUser);
-      expect(mockOtpLogRepo.findOne).toHaveBeenCalledWith({
-        otpCode: mockResetPasswordDto.otpCode,
-      });
-    });
+    const result = await lastValueFrom(service.resetPassword(mockResetPasswordDto));
+
+    expect(result).toStrictEqual(loggedInUser);
+    expect(mockOtpLogRepo.findOne).toHaveBeenCalledWith(
+      { otpCode: mockResetPasswordDto.otpCode },
+      { populate: ["user"] },
+    );
   });
 
-  it("should change password", () => {
+  it("should change password", async () => {
     const dto = {
       confirmPassword: "confirmPassword",
       oldPassword: "oldPassword",
       password: "newPassword",
     };
 
+    mockUserRepo.findOne.mockImplementation(async () => Promise.resolve(loggedInUser));
     HelperService.verifyHash = vi.fn().mockImplementation(() => of(true));
 
-    service.changePassword(dto, loggedInUser).subscribe((result) => {
-      expect(result).toStrictEqual({ ...loggedInUser, password: dto.password });
-      expect(HelperService.verifyHash).toHaveBeenCalled();
-    });
+    const result = await lastValueFrom(service.changePassword(dto, loggedInUser));
+
+    expect(result.idx).toBe(loggedInUser.idx);
+    expect(result.password).toBe(dto.password);
+    expect(HelperService.verifyHash).toHaveBeenCalled();
   });
 });

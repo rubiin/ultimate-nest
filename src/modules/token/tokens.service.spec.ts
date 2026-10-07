@@ -63,9 +63,9 @@ describe("tokensService", () => {
   });
 
   it("should create access token from refresh token", () => {
-    vi
-      .spyOn(service, "resolveRefreshToken")
-      .mockImplementation(() => of({ token: refreshToken, user: loggedInUser }));
+    vi.spyOn(service, "resolveRefreshToken").mockImplementation(() =>
+      of({ token: refreshToken, user: loggedInUser }),
+    );
     vi.spyOn(service, "generateAccessToken").mockImplementation(() => of("refreshToken"));
     service.createAccessTokenFromRefreshToken("refreshToken").subscribe((result) => {
       expect(result).toStrictEqual({ token: "refreshToken", user: loggedInUser });

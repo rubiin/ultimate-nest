@@ -39,7 +39,7 @@ describe("refreshTokensRepository", () => {
   it("should create refresh token", () => {
     service.createRefreshToken(loggedInUser, 1000).subscribe((result) => {
       expect(result).toEqual(refreshToken);
-      expect(mockEm.persistAndFlush).toHaveBeenCalledTimes(1);
+      expect(mockEm.persist).toHaveBeenCalledTimes(1);
     });
   });
 

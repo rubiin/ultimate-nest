@@ -22,7 +22,7 @@ describe("clearCacheMiddleware", () => {
 
   describe("use", () => {
     it("should clear cache", async () => {
-      mockCacheService.resetCache.mockReturnValue(Promise.resolve());
+      mockCacheService.resetCache.mockReturnValue(Promise.resolve(true));
 
       const mockNext = vi.fn();
 

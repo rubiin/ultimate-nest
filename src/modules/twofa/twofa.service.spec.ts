@@ -30,7 +30,7 @@ describe("twoFactorService", () => {
     // The service builds its own `new OTP()` in the constructor, so the
     // instance methods have to be stubbed on the prototype.
     vi.spyOn(OTP.prototype, "generateSecret").mockReturnValue("some secret");
-    vi.spyOn(OTP.prototype, "verify").mockResolvedValue({ valid: true });
+    vi.spyOn(OTP.prototype, "verify").mockResolvedValue({ valid: true } as never);
     mockConfigService.get.mockReturnValue("Test App");
     mockEm.flush.mockResolvedValue(undefined);
 
