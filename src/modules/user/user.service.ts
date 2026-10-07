@@ -60,7 +60,7 @@ export class UserService {
         subject: payload.subject,
         from: payload.from,
       }),
-    ).pipe(map(tap(() => Logger.log(`✅ Sent mail to ${payload.to}`))));
+    ).pipe(tap(() => Logger.log(`✅ Sent mail to ${payload.to}`)));
   }
 
   /**
