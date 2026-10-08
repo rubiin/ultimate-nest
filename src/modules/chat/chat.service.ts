@@ -32,27 +32,36 @@ export class ChatService {
 
   async sendMessage(data: IConversation) {
     const [sender, receiver] = data.users;
-    const conversationExists = await this.getConversation(sender!.id, receiver!.id);
-
-    const messageNew = this.messageRepository.create({
-      body: data.message,
-      sender: sender!,
-      conversation: conversationExists,
+    // A nullable lookup: the first message between two users has to open the
+    // conversation, so `getConversation` (which throws) cannot be used here.
+    const conversationExists = await this.conversationRepository.findOne({
+      users: [sender!.id, receiver!.id],
     });
 
     if (conversationExists) {
-      messageNew.conversation = ref(conversationExists);
+      const messageNew = this.messageRepository.create({
+        body: data.message,
+        sender: sender!,
+        conversation: ref(conversationExists),
+      });
+
       conversationExists.messages.add(messageNew);
 
       await Promise.allSettled([this.em.persist(messageNew).flush(), this.em.flush()]);
     } else {
+      // `Message.conversation` is required, so the conversation has to exist
+      // before the message. The owning side is enough for the ORM to fill the
+      // inverse `messages` collection.
       const conversationNew = this.conversationRepository.create({
         chatName: data.users.map((user) => user.username).join(", "),
         users: data.users,
-        messages: [messageNew],
       });
 
-      messageNew.conversation = ref(conversationNew);
+      const messageNew = this.messageRepository.create({
+        body: data.message,
+        sender: sender!,
+        conversation: ref(conversationNew),
+      });
 
       await Promise.allSettled([
         this.em.persist(messageNew).flush(),

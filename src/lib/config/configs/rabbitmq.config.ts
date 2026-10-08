@@ -2,13 +2,15 @@ import process from "node:process";
 
 import { RABBIT_MQ_URI_REGEX } from "@common/constant";
 import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import { z } from "zod";
 
-export const rabbitmqConfigValidationSchema = {
-  RABBITMQ_URI: Joi.string().pattern(RABBIT_MQ_URI_REGEX).required(),
-  RABBITMQ_EXCHANGE: Joi.string().required(),
-  RABBITMQ_DEFAULT_PREFETCH: Joi.number().required(),
-};
+import { envNumber, envString } from "./schema.helpers";
+
+export const rabbitmqConfigValidationSchema = z.object({
+  RABBITMQ_URI: z.string().regex(RABBIT_MQ_URI_REGEX),
+  RABBITMQ_EXCHANGE: envString(),
+  RABBITMQ_DEFAULT_PREFETCH: envNumber(),
+});
 
 export const rabbitmq = registerAs("rabbitmq", () => ({
   url: process.env.RABBITMQ_URI,

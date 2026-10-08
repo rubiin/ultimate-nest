@@ -1,4 +1,4 @@
-import { createMock } from "@golevelup/ts-jest";
+import { createMock } from "@golevelup/ts-vitest";
 import { ExecutionContext } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 
@@ -8,7 +8,7 @@ import { PoliciesGuard } from "./policies.guard";
 describe("policiesGuard", () => {
   const mockReflector = createMock<Reflector>();
   const mockExecutionContext = createMock<ExecutionContext>({
-    getHandler: jest.fn(),
+    getHandler: vi.fn(),
   });
   const caslFactory = new CaslAbilityFactory();
 

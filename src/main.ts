@@ -7,11 +7,9 @@ import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import { ExpressAdapter } from "@nestjs/platform-express";
-import bodyParser from "body-parser";
 import chalk from "chalk";
 import { useContainer } from "class-validator";
 import compression from "compression";
-import helmet from "helmet";
 import { I18nValidationExceptionFilter } from "nestjs-i18n";
 import { LoggerErrorInterceptor } from "nestjs-pino";
 
@@ -33,6 +31,10 @@ async function bootstrap() {
     {
       snapshot: true,
       logger: new InternalDisabledLogger(),
+      // Own parsers are registered below with an explicit limit.
+      bodyParser: false,
+      routeConflictPolicy: { duplicate: "warn", shadow: "warn" },
+      routeResolutionStrategy: "specificity",
     },
   );
 
@@ -52,14 +54,12 @@ async function bootstrap() {
 
   app.enable("trust proxy");
   app.set("etag", "strong");
-  app.use(
-    bodyParser.json({ limit: "10mb" }),
-    bodyParser.urlencoded({ limit: "10mb", extended: true }),
-  );
+  app.useBodyParser("json", { limit: "10mb" });
+  app.useBodyParser("urlencoded", { limit: "10mb", extended: true });
 
   if (!HelperService.isProd()) {
     app.use(compression());
-    app.use(helmet());
+    app.useSecurityHeaders();
     app.enableCors({
       credentials: true,
       methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],

@@ -1,4 +1,4 @@
-import { createMock } from "@golevelup/ts-jest";
+import { createMock } from "@golevelup/ts-vitest";
 import { mockCacheService, mockResponse } from "@mocks";
 
 import { ClearCacheMiddleware } from "./cache.middleware";
@@ -7,7 +7,7 @@ describe("clearCacheMiddleware", () => {
   let middleware: ClearCacheMiddleware;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     middleware = new ClearCacheMiddleware(mockCacheService);
   });
   const mockRequest = createMock<NestifyRequest>({
@@ -22,9 +22,9 @@ describe("clearCacheMiddleware", () => {
 
   describe("use", () => {
     it("should clear cache", async () => {
-      mockCacheService.resetCache.mockReturnValue(Promise.resolve());
+      mockCacheService.resetCache.mockReturnValue(Promise.resolve(true));
 
-      const mockNext = jest.fn();
+      const mockNext = vi.fn();
 
       await middleware.use(mockRequest, mockResponse, mockNext);
 

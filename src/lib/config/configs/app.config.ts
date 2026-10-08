@@ -3,32 +3,23 @@ import process from "node:process";
 import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant";
 import { registerAs } from "@nestjs/config";
 import { isValidTimeZone } from "helper-fns";
-import Joi from "joi";
+import { z } from "zod";
+
+import { envPort, envString, oneOf } from "./schema.helpers";
 
 // validation schema
-export const appConfigValidationSchema = {
-  NODE_ENV: Joi.string()
-    .valid(...APP_ENVIRONMENTS)
-    .required(),
-  APP_PORT: Joi.number().port().required(),
-  API_URL: Joi.string().uri().required(),
-  APP_PREFIX: Joi.string().required().pattern(/^v\d+/).required().messages({
-    "string.pattern.base": VERSION_VALIDATION_MESSAGE,
-  }),
-  APP_NAME: Joi.string().required(),
-  CLIENT_URL: Joi.string().uri().required(),
-  ALLOWED_HOSTS: Joi.string().optional(),
-  SWAGGER_USER: Joi.string().required(),
-  SWAGGER_PASSWORD: Joi.string().required(),
-  TZ: Joi.string()
-    .required()
-    .custom((value: string, helpers) => {
-      if (!isValidTimeZone(value)) {
-        return helpers.error("Invalid timezone, please provide a valid timezone");
-      }
-      return value;
-    }),
-};
+export const appConfigValidationSchema = z.object({
+  NODE_ENV: oneOf(APP_ENVIRONMENTS),
+  APP_PORT: envPort(),
+  API_URL: z.url(),
+  APP_PREFIX: z.string().regex(/^v\d+$/, VERSION_VALIDATION_MESSAGE),
+  APP_NAME: envString(),
+  CLIENT_URL: z.url(),
+  ALLOWED_HOSTS: envString().optional(),
+  SWAGGER_USER: envString(),
+  SWAGGER_PASSWORD: envString(),
+  TZ: z.string().refine(isValidTimeZone, "Invalid timezone, please provide a valid timezone"),
+});
 
 // config
 export const app = registerAs("app", () => ({

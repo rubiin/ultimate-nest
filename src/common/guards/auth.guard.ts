@@ -1,3 +1,4 @@
+import { ERROR_CODES } from "@common/constant";
 import { translate } from "@lib/i18n";
 import { CanActivate, ExecutionContext } from "@nestjs/common";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
@@ -20,7 +21,9 @@ export class AuthGuard implements CanActivate {
     const token = request.headers.authorization;
 
     if (token === null || token === undefined)
-      throw new UnauthorizedException(translate("exception.apiUnauthorizedResponse"));
+      throw new UnauthorizedException(translate("exception.apiUnauthorizedResponse"), {
+        errorCode: ERROR_CODES.AUTH_TOKEN_MISSING,
+      });
 
     try {
       const tokenValue = token.split(" ")[1];
@@ -38,11 +41,13 @@ export class AuthGuard implements CanActivate {
             translate("exception.token", {
               args: { error: "expired" },
             }),
+            { errorCode: ERROR_CODES.TOKEN_EXPIRED },
           )
         : new UnauthorizedException(
             translate("exception.token", {
               args: { error: "malformed" },
             }),
+            { errorCode: ERROR_CODES.TOKEN_MALFORMED },
           );
     }
   }

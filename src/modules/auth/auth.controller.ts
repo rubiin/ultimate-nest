@@ -1,4 +1,5 @@
-import { AuthenticationResponse, OauthResponse } from "@common/@types";
+import type { OauthResponse } from "@common/@types";
+import { AuthenticationResponse } from "@common/@types";
 import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";

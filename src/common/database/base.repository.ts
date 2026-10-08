@@ -14,15 +14,20 @@ import {
   QBOffsetPaginationOptions,
   QueryOrder,
 } from "@common/@types";
+import { ERROR_CODES } from "@common/constant";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import {
   Dictionary,
   EntityManager,
+  EntityKey,
   EntityRepository,
+  Field,
   FilterQuery,
   FindOptions,
+  IndexFilterQuery,
   Loaded,
   OrderDefinition,
+  QBField,
   QBFilterQuery,
   QueryOrderMap,
 } from "@mikro-orm/postgresql";
@@ -50,7 +55,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @returns The entity name as a string.
    */
   getEntityName(): string {
-    return this.entityName.toString();
+    // `entityName` holds the class/schema reference, not a name, so the metadata
+    // is the only reliable source for the string form.
+    return this.em.getMetadata(this.entityName).className;
   }
 
   /**
@@ -84,11 +91,11 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @param options - The options to use for the update
    * @returns An object containing the total number of entities and the entities
    */
-  findAndPaginate<Populate extends string = never>(
-    where: FilterQuery<T>,
-    options?: FindOptions<T, Populate>,
+  findAndPaginate<Populate extends string = never, Using extends string = never>(
+    where: [Using] extends [never] ? FilterQuery<T> : IndexFilterQuery<T, Using>,
+    options?: FindOptions<T, Populate> & { using?: Using | Using[] },
   ): Observable<{ total: number; results: Loaded<T, Populate>[] }> {
-    return from(this.findAndCount(where as any, options)).pipe(
+    return from(this.findAndCount<Populate, never, never, Using>(where, options)).pipe(
       map(([results, total]) => ({ total, results })),
     );
   }
@@ -186,7 +193,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         const millisUnix = Number.parseInt(string, 10);
 
         if (Number.isNaN(millisUnix))
-          throw new BadRequestException(translate("exception.cursorInvalidDate"));
+          throw new BadRequestException(translate("exception.cursorInvalidDate"), {
+            errorCode: ERROR_CODES.CURSOR_INVALID_DATE,
+          });
 
         return new Date(millisUnix);
       }
@@ -194,7 +203,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         const number = Number.parseInt(string, 10);
 
         if (Number.isNaN(number))
-          throw new BadRequestException(translate("exception.cursorInvalidNumber"));
+          throw new BadRequestException(translate("exception.cursorInvalidNumber"), {
+            errorCode: ERROR_CODES.CURSOR_INVALID_NUMBER,
+          });
 
         return number;
       }
@@ -266,7 +277,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
     if (relations) {
       for (const relation of relations)
-        qb.leftJoinAndSelect(`${alias}.${relation}` as any, `${alias}_${relation}`);
+        qb.leftJoinAndSelect(
+          `${alias}.${relation}` as QBField<T, string, never>,
+          `${alias}_${relation}`,
+        );
     }
 
     if (fromDate) {
@@ -287,7 +301,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
     qb.orderBy(this.getOrderBy(sort as keyof T, order))
       .limit(limit)
-      .select(selectedFields as any)
+      .select(selectedFields as EntityKey<T>[])
       .offset(offset);
 
     const pagination$ = from(qb.getResultAndCount());
@@ -341,7 +355,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
     if (relations) {
       for (const relation of relations)
-        qb.leftJoinAndSelect(`${alias}.${relation}` as any, `${alias}_${relation}`);
+        qb.leftJoinAndSelect(
+          `${alias}.${relation}` as QBField<T, string, never>,
+          `${alias}_${relation}`,
+        );
     }
 
     if (fromDate) {
@@ -371,7 +388,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       const temporaryQb = qb.clone();
 
       temporaryQb.andWhere(this.getFilters(cursor, decoded, oppositeOd) as QBFilterQuery<T>);
-      previousCount = await temporaryQb.getCount(aliasCursor as any, true);
+      previousCount = await temporaryQb.getCount(aliasCursor as Field<T, string, never>, true);
 
       const normalOd = getQueryOrder(order);
 
@@ -379,13 +396,15 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     }
 
     const [entities, count] = await qb
-      .select(selectedFields as any)
+      .select(selectedFields as EntityKey<T>[])
       .orderBy(this.getOrderBy(cursor, order))
       .limit(first)
       .getResultAndCount();
 
     return this.paginateCursor({
-      instances: entities,
+      // `select` narrows the result to the requested columns, but MikroORM still
+      // hydrates full entity instances (unselected keys are left undefined).
+      instances: entities as T[],
       currentCount: count,
       previousCount,
       cursor,

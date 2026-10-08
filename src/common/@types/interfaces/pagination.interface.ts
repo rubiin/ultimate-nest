@@ -5,7 +5,7 @@ import { CursorPaginationResponse, OffsetPaginationResponse } from "../classes";
 import { CursorType, QueryCursor, QueryOrder } from "../enums";
 
 export interface QBCursorPaginationOptions<T extends Dictionary> {
-  qb: QueryBuilder<T, any>;
+  qb: QueryBuilder<T, string>;
   pageOptionsDto: Omit<CursorPaginationDto, "type"> & {
     alias: string;
     cursor: keyof T;
@@ -17,7 +17,7 @@ export interface QBCursorPaginationOptions<T extends Dictionary> {
 
 export interface QBOffsetPaginationOptions<T extends Dictionary> {
   pageOptionsDto: Omit<OffsetPaginationDto, "type"> & { searchField: keyof T; alias: string };
-  qb: QueryBuilder<T, any>;
+  qb: QueryBuilder<T, string>;
 }
 
 export interface PaginateOptions<T> {

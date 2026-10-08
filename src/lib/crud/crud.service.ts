@@ -9,7 +9,7 @@ import { CursorType, PaginationType, QueryOrder } from "@common/@types";
 import { BaseEntity, BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import { EntityData, EntityKey, FilterQuery, FromEntityType } from "@mikro-orm/postgresql";
+import { EntityKey, FilterQuery } from "@mikro-orm/postgresql";
 import { NotFoundException } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
@@ -36,7 +36,7 @@ export abstract class BaseService<
    */
 
   create(dto: CreateDto, _user?: User): Observable<Entity> {
-    const entity = this.repository.create(dto as any);
+    const entity = this.repository.create<false, CreateEntityType<Entity>>(dto);
 
     return from(this.repository.getEntityManager().persist(entity).flush()).pipe(map(() => entity));
   }
@@ -112,7 +112,7 @@ export abstract class BaseService<
   update(index: string, dto: UpdateDto): Observable<Entity> {
     return this.findOne(index).pipe(
       switchMap((item) => {
-        this.repository.assign(item, dto as EntityData<FromEntityType<Entity>>);
+        this.repository.assign(item, dto);
 
         return from(this.repository.getEntityManager().flush()).pipe(map(() => item));
       }),

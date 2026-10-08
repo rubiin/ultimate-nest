@@ -1,15 +1,17 @@
 import process from "node:process";
 
 import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import { z } from "zod";
 
-export const databaseConfigValidationSchema = {
-  DB_HOST: Joi.string().required(),
-  DB_PORT: Joi.number().port().required(),
-  DB_USERNAME: Joi.string().required(),
-  DB_PASSWORD: Joi.string().required(),
-  DB_DATABASE: Joi.string().required(),
-};
+import { envPort, envString } from "./schema.helpers";
+
+export const databaseConfigValidationSchema = z.object({
+  DB_HOST: envString(),
+  DB_PORT: envPort(),
+  DB_USERNAME: envString(),
+  DB_PASSWORD: envString(),
+  DB_DATABASE: envString(),
+});
 
 export const database = registerAs("database", () => ({
   host: process.env.DB_HOST,

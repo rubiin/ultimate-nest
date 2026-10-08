@@ -1,12 +1,14 @@
 import process from "node:process";
 
 import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import { z } from "zod";
 
-export const sentryConfigurationValidationSchema = {
-  SENTRY_DSN: Joi.string().required(),
-  SENTRY_ENVIRONMENT: Joi.string().required(),
-};
+import { envString } from "./schema.helpers";
+
+export const sentryConfigurationValidationSchema = z.object({
+  SENTRY_DSN: envString(),
+  SENTRY_ENVIRONMENT: envString(),
+});
 
 export const sentry = registerAs("sentry", () => ({
   dsn: process.env.SENTRY_DSN,

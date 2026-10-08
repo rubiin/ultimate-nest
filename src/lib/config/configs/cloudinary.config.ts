@@ -1,13 +1,15 @@
 import process from "node:process";
 
 import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import { z } from "zod";
 
-export const cloudinaryConfigValidationSchema = {
-  CLOUDINARY_CLOUD_NAME: Joi.string().required(),
-  CLOUDINARY_API_KEY: Joi.string().required(),
-  CLOUDINARY_API_SECRET: Joi.string().required(),
-};
+import { envString } from "./schema.helpers";
+
+export const cloudinaryConfigValidationSchema = z.object({
+  CLOUDINARY_CLOUD_NAME: envString(),
+  CLOUDINARY_API_KEY: envString(),
+  CLOUDINARY_API_SECRET: envString(),
+});
 
 export const cloudinary = registerAs("cloudinary", () => ({
   cloudName: process.env.CLOUDINARY_CLOUD_NAME,

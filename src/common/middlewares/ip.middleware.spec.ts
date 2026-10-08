@@ -15,9 +15,9 @@ describe("realIpMiddleware", () => {
 
   describe("use", () => {
     it("should return real ip", () => {
-      jest.spyOn(realIp, "getClientIp").mockReturnValue("192.168.1.1");
+      vi.spyOn(realIp, "getClientIp").mockReturnValue("192.168.1.1");
 
-      const mockNext = jest.fn();
+      const mockNext = vi.fn();
 
       middleware.use(mockRequest, mockResponse, mockNext);
 

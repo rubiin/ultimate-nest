@@ -1,4 +1,4 @@
-import { createMock } from "@golevelup/ts-jest";
+import { createMock } from "@golevelup/ts-vitest";
 import { mockReflector } from "@mocks";
 import { ExecutionContext } from "@nestjs/common";
 

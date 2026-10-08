@@ -11,7 +11,9 @@ import {
   BeforeUpsert,
   Enum,
 } from "@mikro-orm/decorators/legacy";
-import { EventArgs, Opt, Ref, Rel } from "@mikro-orm/postgresql";
+import type { EventArgs } from "@mikro-orm/postgresql";
+import type { Rel } from "@mikro-orm/postgresql";
+import { Opt, Ref } from "@mikro-orm/postgresql";
 import { Collection } from "@mikro-orm/postgresql";
 import { slugify } from "helper-fns";
 
