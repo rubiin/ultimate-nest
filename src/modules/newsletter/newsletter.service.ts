@@ -6,7 +6,7 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { BaseService } from "@lib/crud/crud.service";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { Observable } from "rxjs";
@@ -83,18 +83,21 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
    * @returns The `subscribeNewsLetter` method returns an `Observable` that emits a `Subscriber` object.
    */
   subscribeNewsLetter(dto: SubscribeNewsletterDto): Observable<Subscriber> {
-    return this.findOneSubscription(dto.email).pipe(
+    // Looked up directly rather than through `findOneSubscription`, which throws
+    // when there is no match - exactly the case a new subscriber hits.
+    return from(this.subscriberRepository.findOne({ email: dto.email })).pipe(
       switchMap((entity) => {
-        if (entity === null) {
+        if (entity) {
           return throwError(
             () =>
-              new NotFoundException(
+              new BadRequestException(
                 translate("exception.itemExists", {
                   args: { item: "subscriber", property: "email" },
                 }),
               ),
           );
         }
+
         const subscriber = this.subscriberRepository.create(dto);
 
         return from(this.subscriberRepository.getEntityManager().persist(subscriber).flush()).pipe(

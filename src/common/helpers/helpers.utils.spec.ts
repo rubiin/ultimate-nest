@@ -127,24 +127,16 @@ describe("helperService", () => {
   });
 
   describe("verifyHash", () => {
-    // BUG (pinned, not fixed here): argon2's signature is `verify(digest, password)`,
-    // but `verifyHash` passes `(userPassword, passwordToCompare)`. The plaintext is
-    // therefore parsed as a phc digest and every call rejects with
-    // "pchstr must contain a $ as first char", so login can never succeed.
-    it("should reject even for a matching password because the arguments are swapped", async () => {
+    it("should verify a matching password", async () => {
       const hashed = await HelperService.hashString("Password@1234");
 
-      await expect(
-        lastValueFrom(HelperService.verifyHash("Password@1234", hashed)),
-      ).rejects.toThrow(/pchstr/);
+      expect(await lastValueFrom(HelperService.verifyHash("Password@1234", hashed))).toBe(true);
     });
 
-    it("should reject for a mismatched password", async () => {
+    it("should reject a mismatched password", async () => {
       const hashed = await HelperService.hashString("Password@1234");
 
-      await expect(
-        lastValueFrom(HelperService.verifyHash("wrong-password", hashed)),
-      ).rejects.toThrow(/pchstr/);
+      expect(await lastValueFrom(HelperService.verifyHash("wrong-password", hashed))).toBe(false);
     });
   });
 

@@ -54,7 +54,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
    * @returns The entity name as a string.
    */
   getEntityName(): string {
-    return this.entityName.toString();
+    // `entityName` holds the class/schema reference, not a name, so the metadata
+    // is the only reliable source for the string form.
+    return this.em.getMetadata(this.entityName).className;
   }
 
   /**

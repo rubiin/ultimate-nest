@@ -152,14 +152,10 @@ describe("baseRepository", () => {
   });
 
   describe("getEntityName", () => {
-    // NOTE: MikroORM's `entityName` resolves to the decorated class, so
-    // `.toString()` yields the class source rather than a name. That string is
-    // what ends up in the i18n `args.item` for not-found messages.
-    it("should stringify the entity class", () => {
-      const name = userRepo.getEntityName();
+    it("should return the entity class name from the ORM metadata", () => {
+      mockEm.getMetadata.mockReturnValue({ className: "User" } as never);
 
-      expect(typeof name).toEqual("string");
-      expect(name).toContain("class User");
+      expect(userRepo.getEntityName()).toEqual("User");
     });
   });
 

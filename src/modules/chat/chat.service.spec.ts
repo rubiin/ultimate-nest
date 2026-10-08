@@ -1,7 +1,7 @@
 import { Conversation, Message, User } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { PostgreSqlDriver, ref } from "@mikro-orm/postgresql";
 import { mockConversationRepo, mockEm, mockMessageRepo } from "@mocks";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
@@ -27,7 +27,11 @@ describe("chatService", () => {
 
     mockEm.persist.mockReturnValue(mockEm);
     mockEm.flush.mockResolvedValue(undefined);
-    mockConversationRepo.create.mockImplementation(((data: object) => ({ ...data })) as never);
+    mockConversationRepo.create.mockImplementation(
+      ((data: object) => new Conversation(data)) as never,
+    );
+    // A brand new conversation seeds no messages: the ORM fills the inverse
+    // collection from `Message.conversation` when it persists.
     mockMessageRepo.create.mockImplementation(((data: object) => new Message(data)) as never);
     mockConversationRepo.findOneOrFail.mockResolvedValue(existingConversation as never);
 
@@ -62,12 +66,14 @@ describe("chatService", () => {
 
   describe("sendMessage", () => {
     it("should attach the message to the existing conversation", async () => {
+      mockConversationRepo.findOne.mockResolvedValue(existingConversation as never);
+
       await service.sendMessage({ message: "hello", users: [alice, bob] });
 
-      expect(mockConversationRepo.findOneOrFail).toHaveBeenCalledWith({ users: [1, 2] });
+      expect(mockConversationRepo.findOne).toHaveBeenCalledWith({ users: [1, 2] });
       expect(mockMessageRepo.create).toHaveBeenCalledWith({
         body: "hello",
-        conversation: existingConversation,
+        conversation: ref(existingConversation),
         sender: alice,
       });
       expect(existingConversation.messages.add).toHaveBeenCalledWith(
@@ -76,17 +82,20 @@ describe("chatService", () => {
       expect(mockConversationRepo.create).not.toHaveBeenCalled();
     });
 
-    it("should propagate the error when no conversation exists", async () => {
-      // `getConversation` uses `findOneOrFail`, which throws rather than
-      // returning null, so the "create a conversation" branch below it in
-      // `sendMessage` is unreachable. Pinned here so the change is deliberate.
-      mockConversationRepo.findOneOrFail.mockRejectedValue(new Error("not found") as never);
+    it("should create a conversation when none exists", async () => {
+      mockConversationRepo.findOne.mockResolvedValue(null as never);
 
-      await expect(service.sendMessage({ message: "first", users: [alice, bob] })).rejects.toThrow(
-        "not found",
+      await service.sendMessage({ message: "first", users: [alice, bob] });
+
+      expect(mockConversationRepo.create).toHaveBeenCalledWith({
+        chatName: "alice, bob",
+        users: [alice, bob],
+      });
+      // Both the message and its new conversation are persisted.
+      expect(mockEm.persist).toHaveBeenCalledTimes(2);
+      expect(mockMessageRepo.create).toHaveBeenCalledWith(
+        expect.objectContaining({ body: "first", sender: alice }),
       );
-
-      expect(mockConversationRepo.create).not.toHaveBeenCalled();
     });
   });
 

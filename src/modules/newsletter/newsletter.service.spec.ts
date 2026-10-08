@@ -9,7 +9,7 @@ import {
   mockSubscriberRepo,
 } from "@mocks";
 import { ConfigService } from "@nestjs/config";
-import { NotFoundException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";
@@ -68,30 +68,26 @@ describe("newsLetterService", () => {
   });
 
   describe("subscribeNewsLetter", () => {
-    // BUG (pinned, not fixed here): `subscribeNewsLetter` pipes through
-    // `findOneSubscription`, which throws NotFoundException when the subscriber
-    // does not exist - the exact case a new subscription hits. So a fresh email
-    // always 404s, and the `entity === null` "already exists" branch below it is
-    // unreachable. Behaviour is asserted as-is so a future fix is visible in the diff.
-    it("should reject a brand new subscriber instead of creating one", async () => {
+    it("should create the subscriber when the email is new", async () => {
       mockSubscriberRepo.findOne.mockResolvedValue(null as never);
-
-      await expect(lastValueFrom(service.subscribeNewsLetter({ email }))).rejects.toBeInstanceOf(
-        NotFoundException,
-      );
-      expect(mockSubscriberRepo.create).not.toHaveBeenCalled();
-      expect(mockEm.persist).not.toHaveBeenCalled();
-    });
-
-    it("should create a duplicate record when the subscriber already exists", async () => {
-      mockSubscriberRepo.findOne.mockResolvedValue(subscriber as never);
 
       const result = await lastValueFrom(service.subscribeNewsLetter({ email }));
 
       expect(result).toBeInstanceOf(Subscriber);
       expect(result.email).toEqual(email);
+      expect(mockSubscriberRepo.findOne).toHaveBeenCalledWith({ email });
       expect(mockEm.persist).toHaveBeenCalled();
       expect(mockEm.flush).toHaveBeenCalled();
+    });
+
+    it("should reject with BadRequest when the email is already subscribed", async () => {
+      mockSubscriberRepo.findOne.mockResolvedValue(subscriber as never);
+
+      await expect(lastValueFrom(service.subscribeNewsLetter({ email }))).rejects.toBeInstanceOf(
+        BadRequestException,
+      );
+      expect(mockSubscriberRepo.create).not.toHaveBeenCalled();
+      expect(mockEm.persist).not.toHaveBeenCalled();
     });
   });
 
