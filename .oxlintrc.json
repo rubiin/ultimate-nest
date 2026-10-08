@@ -2,15 +2,23 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["import", "typescript", "unicorn"],
   "env": {
-    "browser": false
+    "node": true
   },
   "globals": {
     "foo": "readonly"
   },
   "settings": {},
   "rules": {
-    "eqeqeq": "warn",
-    "no-thenable": "error"
+    "@typescript-eslint/no-floating-promises": "warn",
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ]
   },
   "overrides": [
     {

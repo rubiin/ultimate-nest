@@ -234,9 +234,9 @@ migrations — and when you cannot, say so rather than reporting it green.
 If any gate fails, fix the cause and re-run until all pass. Do not mark the task done with
 checks failing.
 
-**Current baseline.** As of this writing: 24 test files, 72 passed / 1 skipped, and exactly
-one standing lint warning at `src/modules/auth/auth.service.ts:130`. If your run shows a
-different count, you broke something — find out why before reporting done.
+**Current baseline.** As of this writing: 24 test files, 72 passed / 1 skipped, and zero lint
+warnings. If your run shows a different count, you broke something — find out why before
+reporting done.
 
 **Also required:**
 
