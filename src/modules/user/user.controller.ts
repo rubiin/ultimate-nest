@@ -24,9 +24,9 @@ import { UserService } from "./user.service";
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post("refer")
   @SwaggerResponse({
-    operation: "User create",
+    operation: "User Refer",
     badRequest: "User already registered with email.",
   })
   referUser(@Body() dto: ReferUserDto, @LoggedInUser() user: User) {

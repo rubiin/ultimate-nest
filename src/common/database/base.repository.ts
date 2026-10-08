@@ -14,6 +14,7 @@ import {
   QBOffsetPaginationOptions,
   QueryOrder,
 } from "@common/@types";
+import { ERROR_CODES } from "@common/constant";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import {
   Dictionary,
@@ -192,7 +193,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         const millisUnix = Number.parseInt(string, 10);
 
         if (Number.isNaN(millisUnix))
-          throw new BadRequestException(translate("exception.cursorInvalidDate"));
+          throw new BadRequestException(translate("exception.cursorInvalidDate"), {
+            errorCode: ERROR_CODES.CURSOR_INVALID_DATE,
+          });
 
         return new Date(millisUnix);
       }
@@ -200,7 +203,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         const number = Number.parseInt(string, 10);
 
         if (Number.isNaN(number))
-          throw new BadRequestException(translate("exception.cursorInvalidNumber"));
+          throw new BadRequestException(translate("exception.cursorInvalidNumber"), {
+            errorCode: ERROR_CODES.CURSOR_INVALID_NUMBER,
+          });
 
         return number;
       }

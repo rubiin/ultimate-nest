@@ -6,7 +6,6 @@ import { z } from "zod";
 
 import { envPort, envString, oneOf } from "./schema.helpers";
 
-// Each transport needs its own set of credentials, so the required keys follow MAIL_SERVER.
 const requiredCredentials = {
   SES: ["MAIL_SES_ACCESS_KEY", "MAIL_SES_KEY", "MAIL_SES_REGION"],
   SMTP: ["MAIL_HOST", "MAIL_PASSWORD", "MAIL_PORT", "MAIL_USERNAME"],

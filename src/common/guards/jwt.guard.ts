@@ -1,4 +1,4 @@
-import { IS_PUBLIC_KEY_META } from "@common/constant";
+import { ERROR_CODES, IS_PUBLIC_KEY_META } from "@common/constant";
 import { translate } from "@lib/i18n";
 import { ExecutionContext } from "@nestjs/common";
 import { ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
@@ -29,15 +29,17 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
           translate("exception.token", {
             args: { error: "expired" },
           }),
+          { errorCode: ERROR_CODES.TOKEN_EXPIRED },
         );
       } else if (info instanceof JsonWebTokenError) {
         throw new UnauthorizedException(
           translate("exception.token", {
             args: { error: "malformed" },
           }),
+          { errorCode: ERROR_CODES.TOKEN_MALFORMED },
         );
       } else {
-        throw new UnauthorizedException(info?.message);
+        throw new UnauthorizedException(info?.message, { errorCode: ERROR_CODES.TOKEN_INVALID });
       }
     }
 
