@@ -1,19 +1,21 @@
 import process from "node:process";
 
 import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import { z } from "zod";
 
-export const minioConfigValidationSchema = {
-  MINIO_HOST: Joi.string().required(),
-  MINIO_PORT: Joi.number().port().required(),
-  MINIO_ACCESS_KEY: Joi.string().required(),
-  MINIO_SECRET_KEY: Joi.string().required(),
-  MINIO_USE_SSL: Joi.boolean().required(),
-};
+import { envPort, envString } from "./schema.helpers";
+
+export const minioConfigValidationSchema = z.object({
+  MINIO_HOST: envString(),
+  MINIO_PORT: envPort(),
+  MINIO_ACCESS_KEY: envString(),
+  MINIO_SECRET_KEY: envString(),
+  MINIO_USE_SSL: z.stringbool(),
+});
 
 export const minio = registerAs("minio", () => ({
-  // Non-null assertions are safe here: every field below is `.required()` in
-  // minioConfigValidationSchema, so Joi rejects the config at boot otherwise.
+  // Non-null assertions are safe here: every field below is required in
+  // minioConfigValidationSchema, so Zod rejects the config at boot otherwise.
   endPoint: process.env.MINIO_HOST!,
   port: Number.parseInt(process.env.MINIO_PORT!, 10),
   accessKey: process.env.MINIO_ACCESS_KEY!,

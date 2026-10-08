@@ -1,32 +1,21 @@
 import process from "node:process";
 
-import { HelperService } from "@common/helpers";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import Joi from "joi";
 
 import {
   app,
-  appConfigValidationSchema,
   cloudinary,
-  cloudinaryConfigValidationSchema,
   database,
-  databaseConfigValidationSchema,
   facebookOauth,
-  facebookOauthConfigValidationSchema,
   googleOauth,
-  googleOauthConfigValidationSchema,
   jwt,
-  jwtConfigValidationSchema,
   mail,
-  mailConfigValidationSchema,
   rabbitmq,
-  rabbitmqConfigValidationSchema,
   redis,
-  redisConfigValidationSchema,
   throttle,
-  throttleConfigValidationSchema,
 } from "./configs";
+import { configValidationSchema } from "./config.validation";
 
 @Module({
   imports: [
@@ -47,28 +36,7 @@ import {
       cache: true,
       isGlobal: true,
       expandVariables: true,
-      validationSchema: Joi.object({
-        ...appConfigValidationSchema,
-        ...jwtConfigValidationSchema,
-        ...databaseConfigValidationSchema,
-        ...mailConfigValidationSchema,
-        ...redisConfigValidationSchema,
-        ...cloudinaryConfigValidationSchema,
-        ...rabbitmqConfigValidationSchema,
-        ...throttleConfigValidationSchema,
-        ...googleOauthConfigValidationSchema,
-        ...facebookOauthConfigValidationSchema,
-      }),
-      validationOptions: {
-        // Nest 12 validates through Standard Schema, so Joi-specific settings
-        // must be nested under `libraryOptions`.
-        libraryOptions: {
-          abortEarly: true,
-          cache: !HelperService.isProd(),
-          debug: !HelperService.isProd(),
-          stack: !HelperService.isProd(),
-        },
-      },
+      validationSchema: configValidationSchema,
     }),
   ],
   providers: [ConfigService],
