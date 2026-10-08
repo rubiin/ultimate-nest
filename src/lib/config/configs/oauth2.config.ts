@@ -1,19 +1,21 @@
 import process from "node:process";
 
 import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import { z } from "zod";
 
-export const facebookOauthConfigValidationSchema = {
-  FACEBOOK_CLIENT_ID: Joi.string().required(),
-  FACEBOOK_CLIENT_SECRET: Joi.string().required(),
-  FACEBOOK_CALLBACK_URL: Joi.string().uri().required(),
-};
+import { envString } from "./schema.helpers";
 
-export const googleOauthConfigValidationSchema = {
-  GOOGLE_CLIENT_ID: Joi.string().required(),
-  GOOGLE_CLIENT_SECRET: Joi.string().required(),
-  GOOGLE_CALLBACK_URL: Joi.string().uri().required(),
-};
+export const facebookOauthConfigValidationSchema = z.object({
+  FACEBOOK_CLIENT_ID: envString(),
+  FACEBOOK_CLIENT_SECRET: envString(),
+  FACEBOOK_CALLBACK_URL: z.url(),
+});
+
+export const googleOauthConfigValidationSchema = z.object({
+  GOOGLE_CLIENT_ID: envString(),
+  GOOGLE_CLIENT_SECRET: envString(),
+  GOOGLE_CALLBACK_URL: z.url(),
+});
 
 export const googleOauth = registerAs("googleOauth", () => ({
   clientId: process.env.GOOGLE_CLIENT_ID,

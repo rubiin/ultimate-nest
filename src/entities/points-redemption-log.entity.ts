@@ -1,6 +1,7 @@
 import { BaseEntity } from "@common/database";
 import { Entity, ManyToOne, Property } from "@mikro-orm/decorators/legacy";
-import { Ref, Rel } from "@mikro-orm/postgresql";
+import type { Rel } from "@mikro-orm/postgresql";
+import { Ref } from "@mikro-orm/postgresql";
 
 import { User } from "./user.entity";
 

@@ -10,11 +10,11 @@ import {
   mockTagsRepo,
   mockUserRepo,
   mockedPost,
-  mockedUser,
   queryDto,
 } from "@mocks";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
+import { lastValueFrom, of } from "rxjs";
 
 import { PostService } from "./post.service";
 
@@ -22,7 +22,15 @@ describe("postService", () => {
   let service: PostService;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
+
+    // The shared mock returns a `{ user }` wrapper keyed on `title`; PostService
+    // looks posts up by slug and expects the entity itself.
+    mockPostRepo.findOne.mockImplementation((async (options: { slug?: string }) =>
+      Promise.resolve({ ...mockedPost, slug: options.slug })) as never);
+    mockEm.flush.mockResolvedValue(undefined);
+    mockPostRepo.qbCursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PostService,
@@ -58,55 +66,41 @@ describe("postService", () => {
     expect(service).toBeDefined();
   });
 
-  it("should findOne", () => {
+  it("should findOne", async () => {
     const findOneSpy = mockPostRepo.findOne;
 
-    service.findOne("postId").subscribe((result) => {
-      expect(result).toStrictEqual({ ...mockedPost, idx: "postId", user: mockedUser });
-      expect(findOneSpy).toHaveBeenCalledWith(
-        {
-          idx: "postId",
-        },
-        { populate: [] },
-      );
-    });
+    const result = await lastValueFrom(service.findOne("post-slug"));
+
+    expect(result).toStrictEqual({ ...mockedPost, slug: "post-slug" });
+    expect(findOneSpy).toHaveBeenCalledWith({ slug: "post-slug" }, { populate: [] });
   });
 
-  it("should get post list", () => {
-    service.findAll(queryDto).subscribe((result) => {
-      expect(result.meta).toBeDefined();
-      expect(result.data).toStrictEqual([]);
-    });
+  it("should get post list", async () => {
+    const result = await lastValueFrom(service.findAll(queryDto));
+
+    expect(result.meta).toBeDefined();
+    expect(result.data).toStrictEqual([]);
   });
 
-  it("should remove post", () => {
-    service.remove("postId").subscribe((result: any) => {
-      expect(result).toEqual({
-        ...mockedPost,
-        idx: "postId",
-        isDeleted: true,
-      });
-      expect(mockPostRepo.findOne).toHaveBeenCalledWith(
-        { idx: "postId", isActive: true, isDeleted: false },
-        { populate: [] },
-      );
+  it("should remove post", async () => {
+    const result = await lastValueFrom(service.remove("post-slug"));
 
-      expect(mockPostRepo.softRemoveAndFlush).toHaveBeenCalled();
-    });
+    expect(result).toMatchObject({ ...mockedPost, isDeleted: true, slug: "post-slug" });
+    expect(mockPostRepo.findOne).toHaveBeenCalledWith({ slug: "post-slug" }, { populate: [] });
+    expect(mockPostRepo.softRemoveAndFlush).toHaveBeenCalled();
   });
 
-  it("should edit post", () => {
-    mockPostRepo.assign.mockImplementation((entity, data) => {
-      return Object.assign(entity, data);
-    });
+  it("should edit post", async () => {
+    mockPostRepo.assign.mockImplementation(((entity: Record<string, unknown>, data: object) =>
+      Object.assign(entity, data)) as never);
 
-    service.update("postId", { content: "new content" }).subscribe((result) => {
-      expect(result).toStrictEqual({
-        ...mockedPost,
-        content: "new content",
-        idx: "postId",
-      });
-      expect(mockPostRepo.findOne).toHaveBeenCalledWith({ idx: "postId" }, { populate: [] });
+    const result = await lastValueFrom(service.update("post-slug", { content: "new content" }));
+
+    expect(result).toStrictEqual({
+      ...mockedPost,
+      content: "new content",
+      slug: "post-slug",
     });
+    expect(mockPostRepo.findOne).toHaveBeenCalledWith({ slug: "post-slug" }, { populate: [] });
   });
 });

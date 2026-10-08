@@ -5,14 +5,14 @@ import { File } from "@common/@types";
 import { PaginationType, Roles } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
-import { Category, Comment, OtpLog, Post, Tag } from "@entities";
-import { Protocol, RefreshToken, User } from "@entities";
+import { Category, Comment, Conversation, Message, OtpLog, Post, Tag } from "@entities";
+import { NewsLetter, Protocol, Referral, RefreshToken, Subscriber, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { createMock } from "@golevelup/ts-jest";
+import { createMock } from "@golevelup/ts-vitest";
 import { CacheService } from "@lib/cache/cache.service";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";
-import { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
 import { TokensService } from "@modules/token/tokens.service";
@@ -126,6 +126,7 @@ export const mockCloudinaryService = createMock<CloudinaryService>();
 export const mockConfigService = createMock<ConfigService>();
 export const mockCacheService = createMock<CacheService>();
 export const mockUserRepo = createMock<BaseRepository<User>>();
+export const mockReferralRepo = createMock<BaseRepository<Referral>>();
 export const mockJwtService = createMock<JwtService>();
 export const mockRefreshRepo = createMock<BaseRepository<RefreshToken>>();
 export const mockRefreshTokenRepo = createMock<RefreshTokensRepository>();
@@ -135,73 +136,77 @@ export const mockTagsRepo = createMock<BaseRepository<Tag>>();
 export const mockCategoryRepo = createMock<BaseRepository<Category>>();
 export const mockMailService = createMock<MailerService>();
 export const mockTokenService = createMock<TokensService>();
+export const mockConversationRepo = createMock<BaseRepository<Conversation>>();
+export const mockMessageRepo = createMock<BaseRepository<Message>>();
+export const mockNewsLetterRepo = createMock<BaseRepository<NewsLetter>>();
+export const mockSubscriberRepo = createMock<BaseRepository<Subscriber>>();
 export const mockOtpLogRepo = createMock<BaseRepository<OtpLog>>();
 export const mockProtocolRepo = createMock<BaseRepository<Protocol>>();
 export const mockContext = createMock<ExecutionContext>({});
 export const mockReflector = createMock<Reflector>();
 
 export const mockNext = createMock<CallHandler>({
-  handle: jest.fn(() => of({})),
+  handle: vi.fn(() => of({})),
 });
 
 // mocks for orm functions
-mockUserRepo.assign.mockImplementation((entity, dto) => {
-  return Object.assign(entity, dto);
-});
+//
+// MikroORM's `FilterQuery<T>` is a union that cannot be narrowed by property
+// access, and these doubles deliberately return synthetic shapes (e.g. a
+// `{ user, idx }` wrapper) rather than real entities. Each implementation is
+// therefore cast to the loose mock signature instead of fighting the ORM types.
+mockUserRepo.assign.mockImplementation(((entity: Record<string, unknown>, dto: object) =>
+  Object.assign(entity, dto)) as never);
 
-mockUserRepo.softRemoveAndFlush.mockImplementation((entity) => {
+mockUserRepo.softRemoveAndFlush.mockImplementation(((entity: Record<string, unknown>) => {
   Object.assign(entity, { deletedAt: new Date(), isDeleted: true });
 
   return of(entity);
-});
+}) as never);
 
-mockUserRepo.findOne.mockImplementation(async (options: FilterQuery<User>) => {
+mockUserRepo.findOne.mockImplementation((async (options: { idx?: string; username?: string }) => {
   if ("idx" in options) {
-    return Promise.resolve({
+    return {
       user: mockedUser,
       idx: options.idx,
-    });
+    };
   } else if ("username" in options) {
-    return Promise.resolve({
+    return {
       ...mockedUser,
       username: options.username,
-    });
+    };
   }
 
-  return Promise.resolve(mockedUser);
-});
+  return mockedUser;
+}) as never);
 
-mockPostRepo.findOne.mockImplementation(async (options: FilterQuery<Post>) => {
-  return Promise.resolve({
+mockPostRepo.findOne.mockImplementation((async (options: { title?: string }) => {
+  return {
     user: mockedUser,
     ...mockedPost,
     title: options.title,
-  });
-});
+  };
+}) as never);
 
 mockRefreshRepo.findOne.mockImplementation(async () => Promise.resolve(refreshToken));
 
 mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(1);
 
-mockPostRepo.softRemoveAndFlush.mockImplementation((entity) => {
+mockPostRepo.softRemoveAndFlush.mockImplementation(((entity: Record<string, unknown>) => {
   Object.assign(entity, { deletedAt: new Date(), isDeleted: true });
 
   return of(entity);
-});
+}) as never);
 
-mockOtpLogRepo.findOne.mockImplementation(async (options) =>
-  Promise.resolve({
-    user: mockedUser,
-    idx: options.idx,
-  }),
-);
+mockOtpLogRepo.findOne.mockImplementation((async (options: { idx?: string }) => ({
+  user: mockedUser,
+  idx: options.idx,
+})) as never);
 
-mockProtocolRepo.findOne.mockImplementation(async (options) =>
-  Promise.resolve({
-    ...mockedProtocol,
-    idx: options.idx,
-  }),
-);
+mockProtocolRepo.findOne.mockImplementation((async (options: { idx?: string }) => ({
+  ...mockedProtocol,
+  idx: options.idx,
+})) as never);
 
 mockUserRepo.findAndPaginate.mockImplementation(() =>
   of({

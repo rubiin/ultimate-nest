@@ -1,12 +1,14 @@
 import process from "node:process";
 
 import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import { z } from "zod";
 
-export const throttleConfigValidationSchema = {
-  THROTTLE_TTL: Joi.number().min(1).required(),
-  THROTTLE_LIMIT: Joi.number().required(),
-};
+import { envNumber } from "./schema.helpers";
+
+export const throttleConfigValidationSchema = z.object({
+  THROTTLE_TTL: envNumber(z.number().min(1)),
+  THROTTLE_LIMIT: envNumber(),
+});
 
 export const throttle = registerAs("throttle", () => ({
   limit: process.env.THROTTLE_LIMIT,

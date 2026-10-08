@@ -1,27 +1,42 @@
-/* oxlint-disable no-thenable */
-
 import process from "node:process";
 
 import { SES_REGIONS } from "@common/constant";
 import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import { z } from "zod";
 
-export const mailConfigValidationSchema = {
-  MAIL_SERVER: Joi.string().required().valid("SMTP", "SES"),
-  MAIL_USERNAME: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
-  MAIL_PASSWORD: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
-  MAIL_HOST: Joi.string().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
-  MAIL_PORT: Joi.number().port().when("MAIL_SERVER", { is: "SMTP", then: Joi.required() }),
-  MAIL_PREVIEW_EMAIL: Joi.boolean().default(false).optional(),
-  MAIL_BCC_LIST: Joi.string().optional(),
-  MAIL_TEMPLATE_DIR: Joi.string().required(),
-  MAIL_SENDER_EMAIL: Joi.string().required(),
-  MAIL_SES_KEY: Joi.string().when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
-  MAIL_SES_ACCESS_KEY: Joi.string().when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
-  MAIL_SES_REGION: Joi.string()
-    .valid(...SES_REGIONS)
-    .when("MAIL_SERVER", { is: "SES", then: Joi.required() }),
-};
+import { envPort, envString, oneOf } from "./schema.helpers";
+
+const requiredCredentials = {
+  SES: ["MAIL_SES_ACCESS_KEY", "MAIL_SES_KEY", "MAIL_SES_REGION"],
+  SMTP: ["MAIL_HOST", "MAIL_PASSWORD", "MAIL_PORT", "MAIL_USERNAME"],
+} as const;
+
+export const mailConfigValidationSchema = z
+  .object({
+    MAIL_SERVER: z.enum(["SMTP", "SES"]),
+    MAIL_USERNAME: envString().optional(),
+    MAIL_PASSWORD: envString().optional(),
+    MAIL_HOST: envString().optional(),
+    MAIL_PORT: envPort().optional(),
+    MAIL_PREVIEW_EMAIL: z.stringbool().default(false),
+    MAIL_BCC_LIST: envString().optional(),
+    MAIL_TEMPLATE_DIR: envString(),
+    MAIL_SENDER_EMAIL: envString(),
+    MAIL_SES_KEY: envString().optional(),
+    MAIL_SES_ACCESS_KEY: envString().optional(),
+    MAIL_SES_REGION: oneOf(SES_REGIONS).optional(),
+  })
+  .superRefine((env, ctx) => {
+    for (const key of requiredCredentials[env.MAIL_SERVER]) {
+      if (env[key] === undefined) {
+        ctx.addIssue({
+          code: "custom",
+          message: `${key} is required when MAIL_SERVER is ${env.MAIL_SERVER}`,
+          path: [key],
+        });
+      }
+    }
+  });
 
 export const mail = registerAs("mail", () => ({
   username: process.env.MAIL_USERNAME,

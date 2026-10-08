@@ -12,7 +12,7 @@ describe("refreshTokensRepository", () => {
   let service: RefreshTokensRepository;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         RefreshTokensRepository,
@@ -39,7 +39,7 @@ describe("refreshTokensRepository", () => {
   it("should create refresh token", () => {
     service.createRefreshToken(loggedInUser, 1000).subscribe((result) => {
       expect(result).toEqual(refreshToken);
-      expect(mockEm.persistAndFlush).toHaveBeenCalledTimes(1);
+      expect(mockEm.persist).toHaveBeenCalledTimes(1);
     });
   });
 

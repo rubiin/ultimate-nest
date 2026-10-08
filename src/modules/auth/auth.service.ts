@@ -3,6 +3,7 @@ import process from "node:process";
 import { AuthenticationResponse, OauthResponse } from "@common/@types";
 import { EmailSubject, EmailTemplate } from "@common/@types";
 import { BaseRepository } from "@common/database";
+import { ERROR_CODES } from "@common/constant";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
@@ -385,7 +386,8 @@ export class AuthService {
   async findUser(condition: FilterQuery<User>): Promise<User> {
     const user = await this.userRepository.findOne(condition);
 
-    if (!user) throw new UnauthorizedException();
+    if (!user)
+      throw new UnauthorizedException(undefined, { errorCode: ERROR_CODES.USER_NOT_FOUND });
     return user;
   }
 

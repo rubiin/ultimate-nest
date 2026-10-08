@@ -12,7 +12,7 @@ describe("profileService", () => {
   let service: ProfileService;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProfileService,

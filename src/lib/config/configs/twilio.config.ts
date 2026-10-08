@@ -1,13 +1,15 @@
 import process from "node:process";
 
 import { registerAs } from "@nestjs/config";
-import Joi from "joi";
+import { z } from "zod";
 
-export const twilioConfigValidationSchema = {
-  TWILIO_ACCOUNT_SID: Joi.string().required(),
-  TWILIO_AUTH_TOKEN: Joi.string().required(),
-  TWILIO_FROM: Joi.string().required(),
-};
+import { envString } from "./schema.helpers";
+
+export const twilioConfigValidationSchema = z.object({
+  TWILIO_ACCOUNT_SID: envString(),
+  TWILIO_AUTH_TOKEN: envString(),
+  TWILIO_FROM: envString(),
+});
 
 export const twilio = registerAs("twilio", () => ({
   accountSid: process.env.TWILIO_ACCOUNT_SID,

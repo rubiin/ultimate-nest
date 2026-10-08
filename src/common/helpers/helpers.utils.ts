@@ -72,7 +72,7 @@ user's password as input and returns a promise that resolves to the hashed passw
 takes two parameters: `userPassword`, which is the user's input password, and `passwordToCompare`,
 which is the hashed password to compare against. */
   verifyHash(userPassword: string, passwordToCompare: string): Observable<boolean> {
-    return from(verify(userPassword, passwordToCompare, argon2Options));
+    return from(verify(passwordToCompare, userPassword, argon2Options));
   },
 
   /* The `generateThumb` function takes an input image as a `Buffer` and a configuration object

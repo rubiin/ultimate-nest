@@ -11,29 +11,20 @@ To use this module, follow the instructions below:
 ```ts
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import Joi from "joi";
 
 import {
   app,
-  appConfigValidationSchema,
   cloudinary,
-  cloudinaryConfigValidationSchema,
   database,
-  databaseConfigValidationSchema,
   facebookOauth,
-  facebookOauthConfigValidationSchema,
   googleOauth,
-  googleOauthConfigValidationSchema,
   jwt,
   mail,
-  mailConfigValidationSchema,
   rabbitmq,
-  rabbitmqConfigValidationSchema,
   redis,
-  redisConfigValidationSchema,
   throttle,
-  throttleConfigValidationSchema,
 } from "./configs";
+import { configValidationSchema } from "./config.validation";
 
 @Module({
   imports: [
@@ -54,21 +45,7 @@ import {
       cache: true,
       isGlobal: true,
       expandVariables: true,
-      validationSchema: Joi.object({
-        ...appConfigValidationSchema,
-        ...databaseConfigValidationSchema,
-        ...mailConfigValidationSchema,
-        ...redisConfigValidationSchema,
-        ...cloudinaryConfigValidationSchema,
-        ...rabbitmqConfigValidationSchema,
-        ...googleOauthConfigValidationSchema,
-        ...facebookOauthConfigValidationSchema,
-        ...throttleConfigValidationSchema,
-      }),
-      validationOptions: {
-        abortEarly: true,
-        debug: true,
-      },
+      validationSchema: configValidationSchema,
     }),
   ],
   providers: [ConfigService],
@@ -87,11 +64,11 @@ export const app = () => ({
   // other app configuration parameters
 });
 
-export const appConfigValidationSchema = {
-  port: Joi.number().default(3000),
-  env: Joi.string().valid("development", "production", "test").default("development"),
+export const appConfigValidationSchema = z.object({
+  APP_PORT: envPort(),
+  NODE_ENV: oneOf(APP_ENVIRONMENTS),
   // add validation rules for other app configuration parameters
-};
+});
 ```
 
 - app: Configuration for app settings.
@@ -113,13 +90,15 @@ export const appConfigValidationSchema = {
 2. You can also enable caching of configuration values by setting cache option to true in the ConfigModule.forRoot()
    options. This can improve performance by reducing the need to re-parse configuration files on each request.
 
-3. The validationSchema option in the ConfigModule.forRoot() options allows you to define validation schemas for your
-   configuration settings using Joi, a popular validation library for JavaScript. You can define validation rules for
-   each configuration setting in the configs module, as shown in the example code.
+3. The validationSchema option in the ConfigModule.forRoot() options accepts any [Standard Schema](https://standardschema.dev/),
+   so this project uses [Zod](https://zod.dev/). Each config in the configs module exports its own `z.object(...)`, and
+   `config.validation.ts` merges them with `.extend()`. `.extend()` keeps the refinements of the schema it is called on
+   and drops the ones of the shape being merged in, which is why `mailConfigValidationSchema` — the only schema with a
+   cross-field refinement — is the base of the chain.
 
-4. The validationOptions option in the ConfigModule.forRoot() options allows you to customize the validation behavior.
-   In the example code, abortEarly is set to true to stop validation on the first error, and debug is set to true to
-   enable debug information in validation errors.
+4. Env vars always arrive as strings, so `configs/schema.helpers.ts` provides `envNumber()` and `envPort()` to coerce
+   them, and `oneOf()` to build a `z.enum()` from the shared string constants. Zod reports every issue at once, so a
+   missing value shows up next to all the other failures instead of one at a time.
 
 5. You can use the ConfigService provided by the NestConfigModule to access the configuration settings in your
    application's services, controllers, or other modules. The get() method of the ConfigService allows you to retrieve

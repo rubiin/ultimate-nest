@@ -6,16 +6,34 @@ import { loggedInUser, mockConfigService, mockEm, mockResponse, mockUserRepo } f
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import { authenticator } from "otplib";
+import { OTP } from "otplib";
 import qrCode from "qrcode";
+import { lastValueFrom, of } from "rxjs";
 
 import { TwoFactorService } from "./twofa.service";
+
+// The service imports the named binding `toFileStream`, so spying on the module
+// namespace object is not enough - the module itself has to be replaced.
+vi.mock("qrcode", async () => {
+  const { of } = await import("rxjs");
+  const toFileStream = vi.fn(() => of("qr-stream"));
+
+  return { default: { toFileStream }, toFileStream };
+});
 
 describe("twoFactorService", () => {
   let service: TwoFactorService;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
+
+    // The service builds its own `new OTP()` in the constructor, so the
+    // instance methods have to be stubbed on the prototype.
+    vi.spyOn(OTP.prototype, "generateSecret").mockReturnValue("some secret");
+    vi.spyOn(OTP.prototype, "verify").mockResolvedValue({ valid: true } as never);
+    mockConfigService.get.mockReturnValue("Test App");
+    mockEm.flush.mockResolvedValue(undefined);
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TwoFactorService,
@@ -32,63 +50,64 @@ describe("twoFactorService", () => {
     service = module.get<TwoFactorService>(TwoFactorService);
   });
 
-  // set up mocks
-
-  jest.spyOn(authenticator, "verify").mockReturnValue(true);
-  jest.spyOn(authenticator, "keyuri").mockReturnValue("some key uri");
-  jest.spyOn(authenticator, "generateSecret").mockReturnValue("some secret");
-  jest.spyOn(qrCode, "toFileStream").mockImplementationOnce(async () => Promise.resolve());
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   it("should be defined", () => {
     expect(service).toBeDefined();
   });
 
-  it("should if two factor authentication code is valid", () => {
-    const response = service.isTwoFactorCodeValid("someCode", loggedInUser);
+  it("should verify the two factor authentication code", async () => {
+    const result = await lastValueFrom(service.isTwoFactorCodeValid("someCode", loggedInUser));
 
-    expect(response).toBeDefined();
-    expect(response).toBeTruthy();
-    expect(authenticator.verify).toHaveBeenCalledWith({
+    expect(result).toBe(true);
+    expect(OTP.prototype.verify).toHaveBeenCalledWith({
       secret: loggedInUser.twoFactorSecret,
       token: "someCode",
     });
   });
 
-  it("should if turn on two factor authentication for logged in user", () => {
-    const twoFactorValidSpy = jest.spyOn(service, "isTwoFactorCodeValid").mockReturnValue(true);
+  it("should return false when the code is not valid", async () => {
+    vi.mocked(OTP.prototype.verify).mockResolvedValue({ valid: false });
 
-    service.turnOnTwoFactorAuthentication("someCode", loggedInUser).subscribe((result) => {
-      expect(result).toBeDefined();
-      expect(twoFactorValidSpy).toHaveBeenCalled();
-      expect(mockUserRepo.assign).toHaveBeenCalled();
-      expect(mockEm.flush).toHaveBeenCalled();
-      expect(twoFactorValidSpy).toHaveBeenCalledWith({
-        secret: loggedInUser.twoFactorSecret,
-        token: "someCode",
-      });
-    });
+    const result = await lastValueFrom(service.isTwoFactorCodeValid("badCode", loggedInUser));
+
+    expect(result).toBe(false);
   });
 
-  it("should generate two factor secret", () => {
-    const twoFactorValidSpy = jest.spyOn(service, "isTwoFactorCodeValid").mockReturnValue(true);
+  it("should turn on two factor authentication for logged in user", async () => {
+    const twoFactorValidSpy = vi
+      .spyOn(service, "isTwoFactorCodeValid")
+      .mockReturnValue(of(true) as never);
 
-    service.turnOnTwoFactorAuthentication("someCode", loggedInUser).subscribe((result) => {
-      expect(result).toBeDefined();
-      expect(twoFactorValidSpy).toHaveBeenCalled();
-      expect(authenticator.generateSecret).toHaveBeenCalled();
-      expect(authenticator.keyuri).toHaveBeenCalled();
-      expect(mockUserRepo.assign).toHaveBeenCalled();
-      expect(mockEm.flush).toHaveBeenCalled();
-      expect(twoFactorValidSpy).toHaveBeenCalledWith({
-        secret: loggedInUser.twoFactorSecret,
-        token: "someCode",
-      });
+    const result = await lastValueFrom(
+      service.turnOnTwoFactorAuthentication("someCode", loggedInUser),
+    );
+
+    expect(result).toBeDefined();
+    expect(twoFactorValidSpy).toHaveBeenCalledWith("someCode", loggedInUser);
+    expect(mockUserRepo.assign).toHaveBeenCalledWith(loggedInUser, {
+      isTwoFactorEnabled: true,
     });
+    expect(mockEm.flush).toHaveBeenCalled();
   });
 
-  it("should pipe qr code to response", () => {
-    service.pipeQrCodeStream(mockResponse, "www.link.com").subscribe((_result) => {
-      expect(qrCode.toFileStream).toHaveBeenCalled();
+  it("should generate two factor secret", async () => {
+    const result = await lastValueFrom(service.generateTwoFactorSecret(loggedInUser));
+
+    expect(result.secret).toBe("some secret");
+    expect(result.otpAuthUrl).toContain("some%20secret");
+    expect(OTP.prototype.generateSecret).toHaveBeenCalled();
+    expect(mockUserRepo.assign).toHaveBeenCalledWith(loggedInUser, {
+      twoFactorSecret: "some secret",
     });
+    expect(mockEm.flush).toHaveBeenCalled();
+  });
+
+  it("should pipe qr code to response", async () => {
+    await lastValueFrom(service.pipeQrCodeStream(mockResponse, "www.link.com"));
+
+    expect(qrCode.toFileStream).toHaveBeenCalledWith(mockResponse, "www.link.com");
   });
 });
