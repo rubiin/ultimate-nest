@@ -74,7 +74,8 @@ export class User extends BaseEntity {
   isTwoFactorEnabled? = false;
 
   @Enum({ items: () => Roles, array: true, index: true })
-  @Check({ expression: "cardinality(roles) > 0" })
+  // Named explicitly: the default "user_roles_check" is already taken by the enum-array check.
+  @Check({ name: "user_roles_not_empty_check", expression: "cardinality(roles) > 0" })
   roles?: Roles[] = [Roles.AUTHOR];
 
   @Property({ index: true, unique: true })
