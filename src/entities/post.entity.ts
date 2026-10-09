@@ -51,6 +51,11 @@ export class Post extends BaseEntity {
   @Check({ expression: "favorites_count >= 0" })
   favoritesCount: number & Opt = 0;
 
+  // Guards the read-modify-write of `favoritesCount`: a concurrent change makes
+  // the flush match zero rows and throw `OptimisticLockError`.
+  @Property({ version: true })
+  version: number & Opt = 1;
+
   @ManyToOne({
     index: true,
   })
