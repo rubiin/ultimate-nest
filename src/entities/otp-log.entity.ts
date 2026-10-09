@@ -13,6 +13,7 @@ export class OtpLog extends BaseEntity {
   @Property({
     length: 20,
     index: true,
+    hidden: true,
   })
   otpCode?: string;
 

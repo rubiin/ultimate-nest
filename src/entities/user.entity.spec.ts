@@ -61,4 +61,24 @@ describe("user entity serialization", () => {
     expect(json).not.toHaveProperty("password");
     expect(Object.keys(json).filter((k) => k.toLowerCase().includes("avatar"))).toEqual(["avatar"]);
   });
+
+  it("does not expose twoFactorSecret, directly or nested as post.author", () => {
+    const user = build();
+    user.twoFactorSecret = "totp-seed";
+    const post = orm.em.create(entities.Post, { author: user } as never);
+
+    expect(JSON.parse(JSON.stringify(user))).not.toHaveProperty("twoFactorSecret");
+    expect(JSON.parse(JSON.stringify(post)).author).not.toHaveProperty("twoFactorSecret");
+    expect(user.twoFactorSecret).toBe("totp-seed");
+  });
+
+  it("does not expose the otpCode of an OtpLog", () => {
+    const log = orm.em.create(entities.OtpLog, {
+      expiresIn: new Date(),
+      otpCode: "123456",
+      user: build(),
+    } as never);
+
+    expect(JSON.parse(JSON.stringify(log))).not.toHaveProperty("otpCode");
+  });
 });

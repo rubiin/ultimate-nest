@@ -67,7 +67,7 @@ export class User extends BaseEntity {
   @Property({ hidden: true, columnType: "text", lazy: true })
   password!: string;
 
-  @Property()
+  @Property({ hidden: true })
   twoFactorSecret?: string;
 
   @Property()
