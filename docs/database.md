@@ -124,6 +124,30 @@ NODE_ENV=dev npm run orm seeder:run AuthorSeeder  # runs the authorseeder
 Don't forget to create `indexes` on the Foreign Keys (FK) columns (if needed), because by default
 PostgreSQL [does not automatically add indexes to FK](https://stackoverflow.com/a/970605/18140714).
 
+### Row-level security (`rls`)
+
+Evaluated and **not enabled** for the `softDelete` filter. MikroORM 7.2 `FilterDef` has
+`rls?: boolean | { setting?: string }`; with `rls: true` the filter `{ isDeleted: false }` compiles to:
+
+```sql
+alter table "post" enable row level security;
+create policy "post_softDelete_policy" on "post" using ("is_deleted" = false);
+```
+
+The policy is `for all`, `permissive`, with no `with check`. Verified on PostgreSQL 16 with a
+non-owner role:
+
+- Soft delete breaks. `update post set is_deleted = true` fails with `new row violates row-level
+  security policy for table "post"`, because PostgreSQL reuses `USING` as `WITH CHECK` when none is
+  given, and the new row has `is_deleted = true`.
+- `withDeleted` reads break. The policy is static and does not know the ORM disabled the filter, so
+  `select` still returns only `is_deleted = false` rows.
+- Table owners bypass RLS unless `force row level security` is set, so it would only protect a
+  separate low-privilege role; the app role that runs migrations owns the tables.
+
+Revisit only if softDelete moves to a restrictive design (e.g. a separate `with check (true)` policy
+and a dedicated role that may read deleted rows). Keep using the ORM-level filter.
+
 ---
 
 More info for the cli can be found at: https://mikro-orm.io/docs/migrations
