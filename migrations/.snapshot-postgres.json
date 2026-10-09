@@ -230,20 +230,20 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
           "unique": false,
-          "length": 255,
+          "length": null,
           "precision": null,
           "scale": null,
           "default": null,
           "comment": null,
           "collation": null,
           "enumItems": [],
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "id": {
           "name": "id",
@@ -612,16 +612,14 @@
           "constraintName": "comment_author_id_foreign",
           "localTableName": "public.comment",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
+          "referencedTableName": "public.user"
         },
         "comment_post_id_foreign": {
           "columnNames": ["post_id"],
           "constraintName": "comment_post_id_foreign",
           "localTableName": "public.comment",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.post",
-          "updateRule": "cascade"
+          "referencedTableName": "public.post"
         }
       },
       "comment": null
@@ -1065,16 +1063,14 @@
           "constraintName": "message_conversation_id_foreign",
           "localTableName": "public.message",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.conversation",
-          "updateRule": "cascade"
+          "referencedTableName": "public.conversation"
         },
         "message_sender_id_foreign": {
           "columnNames": ["sender_id"],
           "constraintName": "message_sender_id_foreign",
           "localTableName": "public.message",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
+          "referencedTableName": "public.user"
         }
       },
       "comment": null
@@ -1543,8 +1539,7 @@
           "constraintName": "otp_log_user_id_foreign",
           "localTableName": "public.otp_log",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
+          "referencedTableName": "public.user"
         }
       },
       "comment": null
@@ -1945,8 +1940,7 @@
           "constraintName": "post_author_id_foreign",
           "localTableName": "public.post",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
+          "referencedTableName": "public.user"
         }
       },
       "comment": null
@@ -2509,8 +2503,7 @@
           "constraintName": "referral_referrer_id_foreign",
           "localTableName": "public.referral",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
+          "referencedTableName": "public.user"
         }
       },
       "comment": null
@@ -2740,8 +2733,7 @@
           "constraintName": "refresh_token_user_id_foreign",
           "localTableName": "public.refresh_token",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.user",
-          "updateRule": "cascade"
+          "referencedTableName": "public.user"
         }
       },
       "comment": null
@@ -3626,6 +3618,12 @@
         }
       ],
       "checks": [
+        {
+          "name": "user_roles_check",
+          "expression": "roles <@ ARRAY['ADMIN'::text, 'AUTHOR'::text]",
+          "definition": "CHECK ((roles <@ ARRAY['ADMIN'::text, 'AUTHOR'::text]))",
+          "columnName": "roles"
+        },
         {
           "name": "user_roles_not_empty_check",
           "expression": "cardinality(roles) > 0",

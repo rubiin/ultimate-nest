@@ -1,5 +1,28 @@
 import { Migration } from "@mikro-orm/migrations";
 
+const foreignKeys = [
+  [
+    "refresh_token",
+    "refresh_token_user_id_foreign",
+    `foreign key ("user_id") references "user" ("id")`,
+  ],
+  [
+    "referral",
+    "referral_referrer_id_foreign",
+    `foreign key ("referrer_id") references "user" ("id")`,
+  ],
+  ["post", "post_author_id_foreign", `foreign key ("author_id") references "user" ("id")`],
+  ["otp_log", "otp_log_user_id_foreign", `foreign key ("user_id") references "user" ("id")`],
+  [
+    "message",
+    "message_conversation_id_foreign",
+    `foreign key ("conversation_id") references "conversation" ("id")`,
+  ],
+  ["message", "message_sender_id_foreign", `foreign key ("sender_id") references "user" ("id")`],
+  ["comment", "comment_author_id_foreign", `foreign key ("author_id") references "user" ("id")`],
+  ["comment", "comment_post_id_foreign", `foreign key ("post_id") references "post" ("id")`],
+] as const;
+
 export class Migration20261009173003_schema_hardening extends Migration {
   override name = "Migration20261009173003_schema_hardening";
 
@@ -23,6 +46,9 @@ export class Migration20261009173003_schema_hardening extends Migration {
     this.addSql(
       `alter table "user" add constraint "user_roles_not_empty_check" check (cardinality(roles) > 0);`,
     );
+    this.addSql(
+      `alter table "user" add constraint "user_roles_check" check ("roles" <@ array['ADMIN'::text, 'AUTHOR'::text]);`,
+    );
 
     this.addSql(`alter table "post" add "version" int not null default 1;`);
     this.addSql(
@@ -31,13 +57,35 @@ export class Migration20261009173003_schema_hardening extends Migration {
     this.addSql(
       `alter table "post" add constraint "post_favorites_count_check" check (favorites_count >= 0);`,
     );
+
+    this.addSql(
+      `alter table "category" alter column "description" type text using ("description"::text);`,
+    );
+
+    // MikroORM 7 no longer emits `on update cascade` by default; align the FKs with the entities.
+    for (const [table, constraint, ref] of foreignKeys) {
+      this.addSql(`alter table "${table}" drop constraint "${constraint}";`);
+      this.addSql(`alter table "${table}" add constraint "${constraint}" ${ref};`);
+    }
   }
 
   override down(): void | Promise<void> {
+    for (const [table, constraint, ref] of foreignKeys) {
+      this.addSql(`alter table "${table}" drop constraint "${constraint}";`);
+      this.addSql(
+        `alter table "${table}" add constraint "${constraint}" ${ref} on update cascade;`,
+      );
+    }
+
+    this.addSql(
+      `alter table "category" alter column "description" type varchar(255) using ("description"::varchar(255));`,
+    );
+
     this.addSql(`alter table "post" drop constraint "post_favorites_count_check";`);
     this.addSql(`alter table "post" drop constraint "post_reading_time_check";`);
     this.addSql(`alter table "post" drop column "version";`);
 
+    this.addSql(`alter table "user" drop constraint "user_roles_check";`);
     this.addSql(`alter table "user" drop constraint "user_roles_not_empty_check";`);
 
     // The dropped values are gone; temporary defaults only let NOT NULL succeed on existing rows.
