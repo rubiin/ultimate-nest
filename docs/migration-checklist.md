@@ -235,3 +235,26 @@ Carried over from the audit, unrelated to the guide:
   re-entering `app.close()`, and reconsider the hard 5s `process.exit(1)` that truncates teardowns.
 - Revisit `supercharge/request-ip` — no Nest 12 built-in exists, but `app.enable("trust proxy")` is
   already set, so `request.ip` is viable.
+
+## `LazyModuleLoader` for optional integrations — not applicable
+
+Audit candidates: minio, stripe, twilio, sentry. None is eligible, so no code was changed.
+
+- **minio** (`src/lib/minio.module.ts`), **stripe** (`src/lib/stripe.module.ts`), **sentry**
+  (`src/lib/sentry.module.ts`) are exported from `src/lib/index.ts` but imported by no module:
+  `SharedModule` (`src/modules/shared/shared.module.ts:20-36`) does not list them, and no service
+  injects `NestMinioService`, `Stripe` or `Sentry`. They are not in the eager graph, so there is
+  nothing to defer.
+- **twilio** (`src/lib/twilio/twilio.module.ts`) is not imported anywhere, and `TwilioService` has no
+  consumer outside `src/lib/twilio`. It also needs `forRoot`/`forRootAsync` options, so it is not a
+  plain lazy-loadable module.
+- **stripe** is additionally route-bearing: `@golevelup/nestjs-stripe` registers the webhook
+  controller, and `src/modules/app.module.ts:9,19` wires raw-body handling for `stripe/webhook`.
+  `NestStripeModule` is `@Global()` and adds a `SkipThrottle` decorator, so it must stay eager if
+  ever enabled.
+- **sentry** is `@Global()` and must stay eager to capture boot and early errors.
+- **minio** is registered with `isGlobal: true`, so lazy loading would not make it visible to
+  already-built consumers.
+
+Revisit when a service actually consumes one of these: a non-route, non-global module with a single
+consumer (twilio is the best fit) can then be loaded via `LazyModuleLoader.load(() => import(...))`.
