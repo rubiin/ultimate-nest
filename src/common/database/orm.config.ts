@@ -15,8 +15,9 @@ export const baseOptions = {
     return new NotFoundException(`${entityName} not found for ${key}`);
   },
   migrations: {
+    // The CLI passes `undefined` for an unnamed migration, not `null`.
     fileName: (timestamp: string, name?: string) => {
-      if (name === null) return `Migration${timestamp}`;
+      if (!name) return `Migration${timestamp}`;
 
       return `Migration${timestamp}_${name}`;
     },
