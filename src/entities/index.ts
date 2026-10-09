@@ -6,7 +6,6 @@ export * from "./conversation.entity";
 export * from "./message.entity";
 export * from "./news-letter.entity";
 export * from "./otp-log.entity";
-export * from "./points-redemption-log.entity";
 export * from "./post.entity";
 export * from "./protocol.entity";
 export * from "./referral.entity";

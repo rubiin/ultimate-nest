@@ -55,9 +55,6 @@ export const mockedPost = {
 };
 
 export const mockedProtocol = {
-  loginMaxRetry: 5,
-  loginAttemptnumbererval: 5,
-  loginnumberervalUnit: "m",
   otpExpiryInMinutes: 5,
 };
 
