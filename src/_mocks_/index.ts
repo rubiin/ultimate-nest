@@ -100,6 +100,34 @@ export const protocol = new Protocol(mockedProtocol);
 
 export const mockEm = createMock<EntityManager<PostgreSqlDriver>>();
 
+// `@Transactional()` finds the service's EntityManager with `this.em instanceof EntityManager`,
+// which a createMock proxy fails. Giving mockEm the real prototype is not an option: createMock
+// would then wrap the real methods instead of auto-mocking them. Recognise mockEm explicitly.
+const defaultHasInstance = Function.prototype[Symbol.hasInstance];
+Object.defineProperty(EntityManager, Symbol.hasInstance, {
+  value(this: typeof EntityManager, instance: unknown) {
+    return instance === mockEm || defaultHasInstance.call(this, instance);
+  },
+});
+
+/**
+ * Makes `mockEm.transactional` run its callback and exposes whether a callback is currently
+ * running, so a test can assert that EM work happened inside the transaction.
+ */
+export function trackMockTransaction() {
+  let active = false;
+  mockEm.transactional.mockImplementation((async (cb: () => Promise<unknown>) => {
+    active = true;
+    try {
+      return await cb();
+    } finally {
+      active = false;
+    }
+  }) as never);
+
+  return () => active;
+}
+
 const payload = {
   xss: "<option><iframe></select><b><script>alert(1)</script>",
   test: "test",

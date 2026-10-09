@@ -17,7 +17,8 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { MikroORM } from "@mikro-orm/core";
+import { EntityManager } from "@mikro-orm/core";
+import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
@@ -44,7 +45,7 @@ export class UserService {
     private readonly amqpConnection: AmqpConnection,
     private readonly cloudinaryService: CloudinaryService,
     private readonly mailService: MailerService,
-    private readonly orm: MikroORM<PostgreSqlDriver>,
+    private readonly em: EntityManager<PostgreSqlDriver>,
   ) {}
 
   @RabbitSubscribe({
@@ -167,33 +168,39 @@ export class UserService {
       avatar: "",
     });
 
-    return from(
-      this.orm.em.transactional(async (em) => {
-        const response = await this.cloudinaryService.uploadFile(files);
+    return from(this.saveUserAndSendWelcome(user, files)).pipe(map(() => user));
+  }
 
-        // cloudinary gives a url key on response that is the full url to file
+  /**
+   * Uploads the avatar, persists the user and queues the welcome mail inside one transaction.
+   * `this.em` resolves to the transaction's fork here: `@Transactional()` runs the body inside a
+   * `TransactionContext`, which `EntityManager.getContext()` prefers.
+   */
+  @Transactional()
+  private async saveUserAndSendWelcome(user: User, files: RecordWithFile<CreateUserDto>["files"]) {
+    const response = await this.cloudinaryService.uploadFile(files);
 
-        user.avatar = response.url as string;
+    // cloudinary gives a url key on response that is the full url to file
 
-        await em.persist(user).flush();
-        const link = this.configService.get("app.clientUrl", { infer: true });
+    user.avatar = response.url as string;
 
-        await this.amqpConnection.publish(
-          this.configService.get("rabbitmq.exchange", { infer: true }),
-          RoutingKey.SEND_MAIL,
-          {
-            template: EmailTemplate.WELCOME_TEMPLATE,
-            replacements: {
-              firstName: capitalize(user.firstName),
-              link,
-            },
-            to: user.email,
-            subject: EmailSubject.WELCOME,
-            from: this.configService.get("mail.senderEmail", { infer: true }),
-          },
-        );
-      }),
-    ).pipe(map(() => user));
+    await this.em.persist(user).flush();
+    const link = this.configService.get("app.clientUrl", { infer: true });
+
+    await this.amqpConnection.publish(
+      this.configService.get("rabbitmq.exchange", { infer: true }),
+      RoutingKey.SEND_MAIL,
+      {
+        template: EmailTemplate.WELCOME_TEMPLATE,
+        replacements: {
+          firstName: capitalize(user.firstName),
+          link,
+        },
+        to: user.email,
+        subject: EmailSubject.WELCOME,
+        from: this.configService.get("mail.senderEmail", { infer: true }),
+      },
+    );
   }
 
   /**

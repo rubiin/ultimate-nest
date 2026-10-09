@@ -9,6 +9,7 @@ import { OtpLog, Protocol, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";
+import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { TokensService } from "@modules/token/tokens.service";
@@ -200,29 +201,37 @@ export class AuthService {
               ),
             });
 
-            return from(
-              this.em.transactional(async (em) => {
-                await em.persist(otp).flush();
-
-                return this.mailService.sendMail({
-                  template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
-                  replacements: {
-                    firstName: capitalize(userExists.firstName),
-                    lastName: capitalize(userExists.lastName),
-                    otp: otpNumber,
-                  },
-                  to: userExists.email,
-                  subject: EmailSubject.RESET_PASSWORD,
-                  from: this.configService.get("mail.senderEmail", {
-                    infer: true,
-                  }),
-                });
-              }),
-            ).pipe(map(() => ({ message: "Otp sent successfully" })));
+            return from(this.saveOtpAndSendMail(otp, userExists, otpNumber)).pipe(
+              map(() => ({ message: "Otp sent successfully" })),
+            );
           }),
         );
       }),
     );
+  }
+
+  /**
+   * Persists the OTP and sends the reset mail inside one transaction. `this.em` resolves to the
+   * transaction's fork here: `@Transactional()` runs the body inside a `TransactionContext`, which
+   * `EntityManager.getContext()` prefers.
+   */
+  @Transactional()
+  private async saveOtpAndSendMail(otp: OtpLog, user: User, otpNumber: string) {
+    await this.em.persist(otp).flush();
+
+    return this.mailService.sendMail({
+      template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
+      replacements: {
+        firstName: capitalize(user.firstName),
+        lastName: capitalize(user.lastName),
+        otp: otpNumber,
+      },
+      to: user.email,
+      subject: EmailSubject.RESET_PASSWORD,
+      from: this.configService.get("mail.senderEmail", {
+        infer: true,
+      }),
+    });
   }
 
   /**
@@ -312,22 +321,29 @@ export class AuthService {
           isUsed: true,
         });
 
-        return from(
-          this.em.transactional(async (em) => {
-            await Promise.allSettled([
-              em.nativeUpdate(
-                User,
-                {
-                  id: codeDetails.user.id,
-                },
-                { isVerified: true },
-              ),
-              em.flush(),
-            ]);
-          }),
-        ).pipe(map(() => codeDetails.user.getEntity()));
+        return from(this.markUserVerified(codeDetails.user.id)).pipe(
+          map(() => codeDetails.user.getEntity()),
+        );
       }),
     );
+  }
+
+  /**
+   * Marks the user verified and flushes the consumed OTP inside one transaction (`this.em` is the
+   * transaction's fork, see `saveOtpAndSendMail`).
+   */
+  @Transactional()
+  private async markUserVerified(userId: number) {
+    await Promise.allSettled([
+      this.em.nativeUpdate(
+        User,
+        {
+          id: userId,
+        },
+        { isVerified: true },
+      ),
+      this.em.flush(),
+    ]);
   }
 
   /**

@@ -1,6 +1,6 @@
 import { Referral, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { EntityManager, MikroORM } from "@mikro-orm/core";
+import { EntityManager, TransactionPropagation } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { MailerService } from "@lib/mailer/mailer.service";
@@ -15,6 +15,7 @@ import {
   mockUserRepo,
   mockedUser,
   queryDto,
+  trackMockTransaction,
 } from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
@@ -63,8 +64,6 @@ describe("userService", () => {
           provide: EntityManager<PostgreSqlDriver>,
           useValue: mockEm as unknown as EntityManager<PostgreSqlDriver>,
         },
-        // UserService reaches the EntityManager through `orm.em`.
-        { provide: MikroORM, useValue: { em: mockEm } },
       ],
     }).compile();
 
@@ -98,6 +97,36 @@ describe("userService", () => {
     });
     expect(mockUserRepo.create).toHaveBeenCalledWith({ ...mockedUser, avatar: "" });
     expect(mockEm.transactional).toHaveBeenCalled();
+  });
+
+  it("should upload, persist and publish inside a REQUIRED transaction", async () => {
+    mockUserRepo.create.mockImplementation(((dto: Record<string, unknown>) => ({
+      ...dto,
+    })) as never);
+    const inTransaction = trackMockTransaction();
+    const calls: [string, boolean][] = [];
+    mockCloudinaryService.uploadFile.mockImplementation((async () => {
+      calls.push(["uploadFile", inTransaction()]);
+      return { url: "https://cdn/avatar.png" };
+    }) as never);
+    mockEm.flush.mockImplementation((async () => {
+      calls.push(["flush", inTransaction()]);
+    }) as never);
+    mockAmqConnection.publish.mockImplementation((async () => {
+      calls.push(["publish", inTransaction()]);
+    }) as never);
+
+    await lastValueFrom(service.create({ ...mockedUser, files: mockFile } as never));
+
+    expect(mockEm.transactional).toHaveBeenCalledTimes(1);
+    expect(mockEm.transactional).toHaveBeenCalledWith(expect.any(Function), {
+      propagation: TransactionPropagation.REQUIRED,
+    });
+    expect(calls).toStrictEqual([
+      ["uploadFile", true],
+      ["flush", true],
+      ["publish", true],
+    ]);
   });
 
   it("should edit user", async () => {

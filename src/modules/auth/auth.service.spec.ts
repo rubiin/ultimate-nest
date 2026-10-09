@@ -1,7 +1,7 @@
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { EntityManager } from "@mikro-orm/core";
+import { EntityManager, TransactionPropagation } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import {
@@ -15,6 +15,7 @@ import {
   mockTokenService,
   mockUserRepo,
   mockedOtpLog,
+  trackMockTransaction,
 } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
@@ -148,6 +149,62 @@ describe("authService", () => {
     expect(expiresIn.getTime() - Date.now()).toBe(5 * 60_000);
 
     vi.useRealTimers();
+  });
+
+  it("should persist the otp inside a REQUIRED transaction", async () => {
+    mockUserRepo.findOne.mockImplementation((async () => Promise.resolve(loggedInUser)) as never);
+    mockProtocolRepo.findOne.mockImplementation((async () => Promise.resolve(null)) as never);
+    mockOtpLogRepo.create.mockImplementation(((data: object) => data) as never);
+    mockMailService.sendMail.mockReturnValue(of(undefined) as never);
+    const inTransaction = trackMockTransaction();
+    const flushedInTransaction: boolean[] = [];
+    mockEm.persist.mockReturnValue(mockEm);
+    mockEm.flush.mockImplementation((async () => {
+      flushedInTransaction.push(inTransaction());
+    }) as never);
+
+    await lastValueFrom(service.forgotPassword({ email: "test@example.com" }));
+
+    expect(mockEm.transactional).toHaveBeenCalledTimes(1);
+    expect(mockEm.transactional).toHaveBeenCalledWith(expect.any(Function), {
+      propagation: TransactionPropagation.REQUIRED,
+    });
+    expect(flushedInTransaction).toStrictEqual([true]);
+  });
+
+  it("should verify the user inside a REQUIRED transaction", async () => {
+    mockOtpLogRepo.findOne.mockImplementation((async () =>
+      Promise.resolve({
+        ...mockedOtpLog,
+        expiresIn: new Date(Date.now() + 60_000),
+        user: { getEntity: () => loggedInUser, id: loggedInUser.id },
+      })) as never);
+    const inTransaction = trackMockTransaction();
+    const calls: [string, boolean][] = [];
+    mockEm.nativeUpdate.mockImplementation((async () => {
+      calls.push(["nativeUpdate", inTransaction()]);
+      return 1;
+    }) as never);
+    mockEm.flush.mockImplementation((async () => {
+      calls.push(["flush", inTransaction()]);
+    }) as never);
+
+    const result = await lastValueFrom(service.verifyOtp({ otpCode: mockedOtpLog.otpCode }));
+
+    expect(result).toStrictEqual(loggedInUser);
+    expect(mockEm.transactional).toHaveBeenCalledTimes(1);
+    expect(mockEm.transactional).toHaveBeenCalledWith(expect.any(Function), {
+      propagation: TransactionPropagation.REQUIRED,
+    });
+    expect(mockEm.nativeUpdate).toHaveBeenCalledWith(
+      User,
+      { id: loggedInUser.id },
+      { isVerified: true },
+    );
+    expect(calls).toStrictEqual([
+      ["nativeUpdate", true],
+      ["flush", true],
+    ]);
   });
 
   it("should change password", async () => {
