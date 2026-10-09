@@ -18,6 +18,7 @@ import {
   trackMockTransaction,
 } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
+import { BadRequestException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
@@ -207,6 +208,38 @@ describe("authService", () => {
     ]);
   });
 
+  // Regression: `password` is a lazy property that was never loaded, `verifyHash` got its arguments
+  // swapped, and a mismatch was mapped to an Observable instead of an error, so no password was ever
+  // really checked.
+  describe("validateUser with a password", () => {
+    const storedUser = { email: "test@example.com", isActive: true, password: "stored-hash" };
+
+    beforeEach(() => {
+      mockUserRepo.findOne.mockResolvedValue(storedUser as never);
+    });
+
+    it("should reject a password that does not match the stored hash", async () => {
+      const verifyHash = vi.spyOn(HelperService, "verifyHash").mockReturnValue(of(false));
+
+      await expect(
+        lastValueFrom(service.validateUser(true, storedUser.email, "wrong")),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(mockUserRepo.findOne).toHaveBeenCalledWith(
+        { email: storedUser.email },
+        { populate: ["password"] },
+      );
+      expect(verifyHash).toHaveBeenCalledWith("wrong", "stored-hash");
+    });
+
+    it("should return the user without the password when it matches", async () => {
+      vi.spyOn(HelperService, "verifyHash").mockReturnValue(of(true));
+
+      const result = await lastValueFrom(service.validateUser(true, storedUser.email, "right"));
+
+      expect(result).toStrictEqual({ email: storedUser.email, isActive: true });
+    });
+  });
+
   it("should change password", async () => {
     const dto = {
       confirmPassword: "confirmPassword",
@@ -221,6 +254,11 @@ describe("authService", () => {
 
     expect(result.idx).toBe(loggedInUser.idx);
     expect(result.password).toBe(dto.password);
-    expect(HelperService.verifyHash).toHaveBeenCalled();
+    // The plain password comes first; the stored hash second.
+    expect(vi.mocked(HelperService.verifyHash).mock.calls[0]![0]).toBe(dto.oldPassword);
+    expect(mockUserRepo.findOne).toHaveBeenCalledWith(
+      { id: loggedInUser.id },
+      { populate: ["password"] },
+    );
   });
 });

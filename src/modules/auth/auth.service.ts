@@ -61,9 +61,13 @@ export class AuthService {
 
   validateUser(isPasswordLogin: boolean, email: string, pass?: string): Observable<any> {
     return from(
-      this.userRepository.findOne({
-        email,
-      }),
+      this.userRepository.findOne(
+        {
+          email,
+        },
+        // `password` is lazy, so it has to be asked for to be compared.
+        isPasswordLogin ? { populate: ["password"] } : {},
+      ),
     ).pipe(
       switchMap((user) => {
         if (!user) {
@@ -82,9 +86,9 @@ export class AuthService {
         }
 
         return user && isPasswordLogin
-          ? HelperService.verifyHash(user.password, pass!).pipe(
-              map((isValid) => {
-                if (isValid) return omit(user, ["password"]);
+          ? HelperService.verifyHash(pass!, user.password).pipe(
+              switchMap((isValid) => {
+                if (isValid) return of(omit(user, ["password"]));
 
                 return throwError(
                   () => new BadRequestException(translate("exception.invalidCredentials")),
@@ -358,9 +362,12 @@ export class AuthService {
     const { password, oldPassword } = dto;
 
     return from(
-      this.userRepository.findOne({
-        id: user.id,
-      }),
+      this.userRepository.findOne(
+        {
+          id: user.id,
+        },
+        { populate: ["password"] },
+      ),
     ).pipe(
       switchMap((userDetails) => {
         if (!userDetails) {
@@ -374,7 +381,7 @@ export class AuthService {
           );
         }
 
-        return HelperService.verifyHash(userDetails.password, oldPassword).pipe(
+        return HelperService.verifyHash(oldPassword, userDetails.password).pipe(
           switchMap((isValid) => {
             if (!isValid) {
               return throwError(

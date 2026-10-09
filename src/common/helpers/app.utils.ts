@@ -26,7 +26,8 @@ export const AppUtils = {
       whitelist: true,
       transform: true,
       forbidUnknownValues: false,
-      validateCustomDecorators: true,
+      // Custom param decorators only read server-side values (the logged-in user entity, headers).
+      validateCustomDecorators: false,
       enableDebugMessages: HelperService.isDev(),
       exceptionFactory: i18nValidationErrorFactory,
     };

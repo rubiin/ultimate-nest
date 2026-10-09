@@ -40,7 +40,7 @@ export class AuthController {
   @Post("login")
   @ApiOperation({ summary: "User Login" })
   login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {
-    return this.authService.login(loginDto);
+    return this.authService.login(loginDto, true);
   }
 
   @Post("reset-password")
