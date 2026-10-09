@@ -1,6 +1,6 @@
 import { Buffer } from "node:buffer";
 
-import { CursorType } from "@common/@types";
+import { CursorType, QueryOrder } from "@common/@types";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
 import { EntityManager } from "@mikro-orm/core";
@@ -148,6 +148,95 @@ describe("baseRepository", () => {
         NotFoundException,
       );
       expect(mockEm.remove).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("soft-delete filtering", () => {
+    // QueryBuilder never applies entity filters on its own, so the repository has to
+    // toggle `softDelete` explicitly. `withDeleted` means "also include deleted rows",
+    // which is the inverse of the filter's enabled state.
+    const stubQueryBuilder = () => {
+      const qb = {
+        andWhere: vi.fn(),
+        applyFilters: vi.fn().mockResolvedValue(undefined),
+        getResultAndCount: vi.fn().mockResolvedValue([[], 0]),
+        leftJoinAndSelect: vi.fn(),
+        limit: vi.fn(),
+        offset: vi.fn(),
+        orderBy: vi.fn(),
+        select: vi.fn(),
+        where: vi.fn(),
+      };
+
+      qb.select.mockReturnValue(qb);
+      qb.orderBy.mockReturnValue(qb);
+      qb.limit.mockReturnValue(qb);
+      qb.offset.mockReturnValue(qb);
+      qb.andWhere.mockReturnValue(qb);
+      qb.where.mockReturnValue(qb);
+
+      return qb;
+    };
+
+    const baseOptions = {
+      alias: "u",
+      cursor: "id",
+      cursorType: CursorType.NUMBER,
+      fields: [],
+      first: 10,
+      from: undefined,
+      limit: 10,
+      offset: 0,
+      order: QueryOrder.ASC,
+      relations: [],
+      search: "",
+      searchField: "username",
+      sort: "createdAt",
+      to: undefined,
+    };
+
+    it("should enable the softDelete filter for cursor pagination by default", async () => {
+      const qb = stubQueryBuilder();
+
+      await userRepo.qbCursorPagination({
+        pageOptionsDto: { ...baseOptions, withDeleted: false },
+        qb: qb as never,
+      });
+
+      expect(qb.applyFilters).toHaveBeenCalledWith({ softDelete: true });
+    });
+
+    it("should disable the softDelete filter when withDeleted is set", async () => {
+      const qb = stubQueryBuilder();
+
+      await userRepo.qbCursorPagination({
+        pageOptionsDto: { ...baseOptions, withDeleted: true },
+        qb: qb as never,
+      });
+
+      expect(qb.applyFilters).toHaveBeenCalledWith({ softDelete: false });
+    });
+
+    it("should enable the softDelete filter for offset pagination by default", async () => {
+      const qb = stubQueryBuilder();
+
+      await userRepo.qbOffsetPagination({
+        pageOptionsDto: { ...baseOptions, withDeleted: false },
+        qb: qb as never,
+      });
+
+      expect(qb.applyFilters).toHaveBeenCalledWith({ softDelete: true });
+    });
+
+    it("should disable the softDelete filter for offset pagination when withDeleted is set", async () => {
+      const qb = stubQueryBuilder();
+
+      await userRepo.qbOffsetPagination({
+        pageOptionsDto: { ...baseOptions, withDeleted: true },
+        qb: qb as never,
+      });
+
+      expect(qb.applyFilters).toHaveBeenCalledWith({ softDelete: false });
     });
   });
 

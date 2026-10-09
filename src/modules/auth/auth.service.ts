@@ -186,7 +186,6 @@ export class AuthService {
 
         return from(
           this.protocolRepository.findOne({
-            isDeleted: false,
             isActive: true,
           }),
         ).pipe(

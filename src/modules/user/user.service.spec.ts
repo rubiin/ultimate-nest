@@ -81,7 +81,6 @@ describe("userService", () => {
     expect(result).toStrictEqual({ ...mockedUser, idx: "userId" });
     expect(mockUserRepo.findOne).toHaveBeenCalledWith({
       idx: "userId",
-      isDeleted: false,
     });
   });
 
@@ -131,7 +130,6 @@ describe("userService", () => {
     expect(result).toMatchObject({ ...mockedUser, idx: "userId", isDeleted: true });
     expect(mockUserRepo.findOne).toHaveBeenCalledWith({
       idx: "userId",
-      isDeleted: false,
     });
     expect(mockUserRepo.softRemoveAndFlush).toHaveBeenCalled();
   });

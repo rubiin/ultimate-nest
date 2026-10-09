@@ -79,7 +79,6 @@ export class UserService {
       this.userRepository.count({
         mobileNumber: dto.mobileNumber,
         isActive: true,
-        isDeleted: false,
       }),
     );
 
@@ -137,7 +136,6 @@ export class UserService {
     return from(
       this.userRepository.findOne({
         idx: index,
-        isDeleted: false,
       }),
     ).pipe(
       mergeMap((user) => {

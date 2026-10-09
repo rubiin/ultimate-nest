@@ -67,16 +67,18 @@ export abstract class BaseService<
       );
     }
 
-    return this.repository.qbOffsetPagination({
-      pageOptionsDto: {
-        ...dto,
-        alias: this.queryName,
-        order: QueryOrder.ASC,
-        offset: dto.offset,
-        searchField: this.searchField,
-      },
-      qb,
-    });
+    return from(
+      this.repository.qbOffsetPagination({
+        pageOptionsDto: {
+          ...dto,
+          alias: this.queryName,
+          order: QueryOrder.ASC,
+          offset: dto.offset,
+          searchField: this.searchField,
+        },
+        qb,
+      }),
+    );
   }
 
   /**

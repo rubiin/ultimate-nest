@@ -52,7 +52,6 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
     // Check if the user already exists in your database
     const existingUser = await this.userRepo.findOne({
       email: emails![0]!.value,
-      isDeleted: false,
     });
 
     if (existingUser) {
