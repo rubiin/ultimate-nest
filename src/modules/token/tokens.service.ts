@@ -1,15 +1,16 @@
-import { JwtPayload } from "@common/@types";
+import { JwtPayload, TokenType } from "@common/@types";
 import { RefreshToken } from "@entities";
 import { User } from "@entities";
 import { translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityRepository } from "@mikro-orm/postgresql";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
 import { Observable } from "rxjs";
-import { catchError, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import { catchError, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
@@ -25,6 +26,7 @@ export class TokensService {
     private readonly userRepository: EntityRepository<User>,
     private readonly refreshTokenRepo: RefreshTokensRepository,
     private readonly jwt: JwtService,
+    private readonly configService: ConfigService<Configs, true>,
   ) {}
 
   /**
@@ -38,7 +40,12 @@ export class TokensService {
       subject: String(user.id),
     };
 
-    return from(this.jwt.signAsync({ ...pick(user, ["roles", "isTwoFactorEnabled"]) }, options));
+    return from(
+      this.jwt.signAsync(
+        { ...pick(user, ["roles", "isTwoFactorEnabled"]), type: "access" satisfies TokenType },
+        options,
+      ),
+    );
   }
 
   /**
@@ -57,7 +64,7 @@ export class TokensService {
           jwtid: String(token.id),
         };
 
-        return from(this.jwt.signAsync({}, options));
+        return from(this.jwt.signAsync({ type: "refresh" satisfies TokenType }, options));
       }),
     );
   }
@@ -118,30 +125,58 @@ export class TokensService {
   }
 
   /**
-   * It takes a refresh token, resolves it to a user, and then generates an access token for that user
+   * Rotates a refresh token: revokes the presented one and issues a new access/refresh pair, so a
+   * refresh token is single-use.
    * @param refresh - string - The refresh token that was sent to the client.
-   * @returns An object with a token and a user.
+   * @returns The user with the new access and refresh tokens.
    */
-  createAccessTokenFromRefreshToken(refresh: string): Observable<{ token: string; user: User }> {
+  rotateRefreshToken(
+    refresh: string,
+  ): Observable<{ user: User; accessToken: string; refreshToken: string }> {
     return this.resolveRefreshToken(refresh).pipe(
-      switchMap(({ user }) => {
-        return this.generateAccessToken(user).pipe(
-          map((token) => {
-            return { token, user };
+      switchMap(({ user, token }) =>
+        this.refreshTokenRepo.revokeToken(token.id).pipe(
+          switchMap((revoked) => {
+            // Lost a race with a concurrent rotation (or logout) of the same token.
+            if (!revoked) {
+              return throwError(
+                () =>
+                  new UnauthorizedException(
+                    translate("exception.refreshToken", {
+                      args: { error: "revoked" },
+                    }),
+                  ),
+              );
+            }
+
+            return zip(
+              this.generateAccessToken(user),
+              this.generateRefreshToken(
+                user,
+                this.configService.get("jwt.refreshExpiry", { infer: true }),
+              ),
+            ).pipe(map(([accessToken, refreshToken]) => ({ user, accessToken, refreshToken })));
           }),
-        );
-      }),
+        ),
+      ),
     );
   }
 
   /**
-   * It decodes the refresh token and throws an error if the token is expired or malformed
+   * It decodes the refresh token and throws an error if the token is expired, malformed or not a
+   * refresh token
    * @param token - The refresh token to decode.
    * @returns The payload of the token.
    */
   decodeRefreshToken(token: string): Observable<JwtPayload> {
-    return from(this.jwt.verifyAsync(token)).pipe(
-      map((payload: JwtPayload) => payload),
+    return from(this.jwt.verifyAsync<JwtPayload>(token)).pipe(
+      map((payload) => {
+        // Access tokens share the secret; only a token typed "refresh" may be redeemed. Thrown
+        // here so `catchError` reports it as malformed.
+        if (payload.type !== "refresh") throw new Error("not a refresh token");
+
+        return payload;
+      }),
       catchError((error_) => {
         throw error_ instanceof TokenExpiredError
           ? new UnauthorizedException(

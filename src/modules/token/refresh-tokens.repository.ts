@@ -52,6 +52,18 @@ export class RefreshTokensRepository {
   }
 
   /**
+   * Revokes a still-active refresh token. The `isRevoked: false` filter makes this a
+   * compare-and-set, so of two concurrent rotations of the same token only one wins.
+   * @param id - The id of the token to revoke.
+   * @returns true when this call revoked the token, false when it was already revoked or missing
+   */
+  revokeToken(id: number): Observable<boolean> {
+    return from(
+      this.refreshTokenRepository.nativeUpdate({ id, isRevoked: false }, { isRevoked: true }),
+    ).pipe(map((affected) => affected === 1));
+  }
+
+  /**
    * It deletes all refresh tokens for a given user
    * @param user - User - The user object that we want to delete the tokens for.
    * @returns A boolean value.

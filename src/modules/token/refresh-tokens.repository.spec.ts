@@ -65,6 +65,22 @@ describe("refreshTokensRepository", () => {
     });
   });
 
+  it("should revoke an active token", async () => {
+    mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(1);
+
+    await expect(lastValueFrom(service.revokeToken(11))).resolves.toBe(true);
+    expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledWith(
+      { id: 11, isRevoked: false },
+      { isRevoked: true },
+    );
+  });
+
+  it("should report a token that was already revoked", async () => {
+    mockRefreshRepo.nativeUpdate.mockResolvedValueOnce(0);
+
+    await expect(lastValueFrom(service.revokeToken(11))).resolves.toBe(false);
+  });
+
   it("should delete all token for user", () => {
     service.deleteTokensForUser(loggedInUser).subscribe((result) => {
       expect(result).toStrictEqual(true);

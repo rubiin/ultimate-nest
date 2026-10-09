@@ -1,6 +1,7 @@
 import type { OauthResponse } from "@common/@types";
 import { AuthenticationResponse } from "@common/@types";
 import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
 import {
@@ -123,10 +124,14 @@ export class AuthController {
 
   @ApiOperation({ summary: "Refresh token" })
   @Post("token/refresh")
-  refresh(@Body() body: RefreshTokenDto): Observable<any> {
+  refresh(@Body() body: RefreshTokenDto): Observable<AuthenticationResponse> {
     return this.tokenService
-      .createAccessTokenFromRefreshToken(body.refreshToken)
-      .pipe(map((token) => ({ token })));
+      .rotateRefreshToken(body.refreshToken)
+      .pipe(
+        map(({ user, accessToken, refreshToken }) =>
+          HelperService.buildPayloadResponse(user, accessToken, refreshToken),
+        ),
+      );
   }
 
   @Auth()
