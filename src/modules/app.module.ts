@@ -1,5 +1,9 @@
 import { SWAGGER_API_ENDPOINT } from "@common/constant";
-import { ClearCacheMiddleware, RealIpMiddleware } from "@common/middlewares";
+import {
+  AuditContextMiddleware,
+  ClearCacheMiddleware,
+  RealIpMiddleware,
+} from "@common/middlewares";
 import { applyRawBodyOnlyTo } from "@golevelup/nestjs-webhooks";
 import { AppController } from "@modules/app.controller";
 import { SharedModule } from "@modules/shared/shared.module";
@@ -20,7 +24,7 @@ export class AppModule implements NestModule {
       method: RequestMethod.ALL,
     });
     consumer
-      .apply(RealIpMiddleware, ClearCacheMiddleware)
+      .apply(RealIpMiddleware, AuditContextMiddleware, ClearCacheMiddleware)
       .exclude(
         ...excludedPaths.map((path) => ({
           path,

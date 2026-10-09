@@ -72,3 +72,9 @@ export enum PaginationType {
   OFFSET = "OFFSET",
   CURSOR = "CURSOR",
 }
+
+export enum AuditAction {
+  CREATE = "create",
+  UPDATE = "update",
+  DELETE = "delete",
+}
