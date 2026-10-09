@@ -10,11 +10,11 @@ import {
   mockEm,
   mockMailService,
   mockOtpLogRepo,
+  mockProtocolRepo,
   mockResetPasswordDto,
   mockTokenService,
   mockUserRepo,
   mockedOtpLog,
-  mockedProtocol,
 } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
 import { ConfigService } from "@nestjs/config";
@@ -45,7 +45,7 @@ describe("authService", () => {
         },
         {
           provide: getRepositoryToken(Protocol),
-          useValue: mockedProtocol,
+          useValue: mockProtocolRepo,
         },
         { provide: ConfigService, useValue: mockConfigService },
         { provide: MailerService, useValue: mockMailService },
@@ -106,6 +106,48 @@ describe("authService", () => {
       { otpCode: mockResetPasswordDto.otpCode },
       { populate: ["user"] },
     );
+  });
+
+  it("should set otp expiry from the protocol in minutes", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-01-01T00:00:00.000Z"));
+
+    mockUserRepo.findOne.mockImplementation((async () => Promise.resolve(loggedInUser)) as never);
+    mockProtocolRepo.findOne.mockImplementation((async () =>
+      Promise.resolve({ otpExpiryInMinutes: 5 })) as never);
+    mockOtpLogRepo.create.mockImplementation(((data: object) => data) as never);
+    mockMailService.sendMail.mockReturnValue(of(undefined) as never);
+    mockEm.transactional.mockImplementation((async (cb: (em: unknown) => Promise<unknown>) =>
+      cb(mockEm)) as never);
+
+    await lastValueFrom(service.forgotPassword({ email: "test@example.com" }));
+
+    // `otpExpiryInMinutes` is minutes and `Date.now()` is milliseconds, so the
+    // column has to be scaled before it is added. Asserting the absolute date
+    // catches both a missing multiplication and one applied to the wrong term.
+    const { expiresIn } = mockOtpLogRepo.create.mock.calls[0]![0] as { expiresIn: Date };
+    expect(expiresIn.getTime() - Date.now()).toBe(5 * 60_000);
+
+    vi.useRealTimers();
+  });
+
+  it("should default otp expiry to five minutes when no protocol exists", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-01-01T00:00:00.000Z"));
+
+    mockUserRepo.findOne.mockImplementation((async () => Promise.resolve(loggedInUser)) as never);
+    mockProtocolRepo.findOne.mockImplementation((async () => Promise.resolve(null)) as never);
+    mockOtpLogRepo.create.mockImplementation(((data: object) => data) as never);
+    mockMailService.sendMail.mockReturnValue(of(undefined) as never);
+    mockEm.transactional.mockImplementation((async (cb: (em: unknown) => Promise<unknown>) =>
+      cb(mockEm)) as never);
+
+    await lastValueFrom(service.forgotPassword({ email: "test@example.com" }));
+
+    const { expiresIn } = mockOtpLogRepo.create.mock.calls[0]![0] as { expiresIn: Date };
+    expect(expiresIn.getTime() - Date.now()).toBe(5 * 60_000);
+
+    vi.useRealTimers();
   });
 
   it("should change password", async () => {

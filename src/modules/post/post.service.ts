@@ -221,7 +221,7 @@ export class PostService {
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
-        if (!user.favorites.contains(post)) {
+        if (user.favorites.contains(post)) {
           user.favorites.remove(post);
           post.favoritesCount = (post.favoritesCount ?? 0) - 1;
         }
