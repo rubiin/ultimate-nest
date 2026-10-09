@@ -229,6 +229,25 @@ describe("authService", () => {
     ]);
   });
 
+  // Regression: Promise.allSettled swallowed a failed write, so the transaction committed with the
+  // OTP marked used but the user still unverified (or vice versa).
+  it("should reject and roll back when one of the verification writes fails", async () => {
+    mockOtpLogRepo.findOne.mockImplementation((async () =>
+      Promise.resolve({
+        ...mockedOtpLog,
+        expiresIn: new Date(Date.now() + 60_000),
+        user: { getEntity: () => loggedInUser, id: loggedInUser.id },
+      })) as never);
+    mockEm.nativeUpdate.mockRejectedValue(new Error("nativeUpdate failed") as never);
+
+    await expect(
+      lastValueFrom(service.verifyOtp({ otpCode: mockedOtpLog.otpCode })),
+    ).rejects.toThrow("nativeUpdate failed");
+    // The rejection escapes the transactional wrapper instead of being swallowed.
+    expect(mockEm.transactional).toHaveBeenCalledTimes(1);
+    expect(mockEm.flush).not.toHaveBeenCalled();
+  });
+
   // Regression: `password` is a lazy property that was never loaded, `verifyHash` got its arguments
   // swapped, and a mismatch was mapped to an Observable instead of an error, so no password was ever
   // really checked.

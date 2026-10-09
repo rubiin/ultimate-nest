@@ -353,16 +353,16 @@ export class AuthService {
    */
   @Transactional()
   private async markUserVerified(userId: number) {
-    await Promise.allSettled([
-      this.em.nativeUpdate(
-        User,
-        {
-          id: userId,
-        },
-        { isVerified: true },
-      ),
-      this.em.flush(),
-    ]);
+    // Sequential, not allSettled: a rejected write must propagate so the transaction rolls back
+    // instead of committing a half-verified state.
+    await this.em.nativeUpdate(
+      User,
+      {
+        id: userId,
+      },
+      { isVerified: true },
+    );
+    await this.em.flush();
   }
 
   /**
