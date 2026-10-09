@@ -54,6 +54,11 @@ export class Migration20261009173003_schema_hardening extends Migration {
     this.addSql(
       `alter table "post" add constraint "post_reading_time_check" check (reading_time >= 0);`,
     );
+    // The unguarded unfavorite could drive the counter negative; recompute it from the pivot so
+    // the check below can be added.
+    this.addSql(
+      `update "post" p set "favorites_count" = (select count(*) from "user_favorites" uf where uf."post_id" = p."id");`,
+    );
     this.addSql(
       `alter table "post" add constraint "post_favorites_count_check" check (favorites_count >= 0);`,
     );
@@ -81,6 +86,7 @@ export class Migration20261009173003_schema_hardening extends Migration {
       `alter table "category" alter column "description" type varchar(255) using ("description"::varchar(255));`,
     );
 
+    // The favorites_count recompute in up() is a data fix with nothing to reverse.
     this.addSql(`alter table "post" drop constraint "post_favorites_count_check";`);
     this.addSql(`alter table "post" drop constraint "post_reading_time_check";`);
     this.addSql(`alter table "post" drop column "version";`);
