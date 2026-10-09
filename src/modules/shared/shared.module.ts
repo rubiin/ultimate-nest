@@ -14,7 +14,11 @@ import {
   NestThrottlerModule,
   OrmModule,
 } from "@lib/index";
+import { AuthModule } from "@modules/auth/auth.module";
+import { PostModule } from "@modules/post/post.module";
+import { ProfileModule } from "@modules/profile/profile.module";
 import { TagsModule } from "@modules/tags/tags.module";
+import { TwoFactorModule } from "@modules/twofa/twofa.module";
 import { UserModule } from "@modules/user/user.module";
 import { Module } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
@@ -34,8 +38,12 @@ import { ScheduleModule } from "@nestjs/schedule";
     NestHttpModule,
     NestJwtModule,
     OrmModule,
+    AuthModule,
+    PostModule,
+    ProfileModule,
     UserModule,
     TagsModule,
+    TwoFactorModule,
     ScheduleModule.forRoot(),
   ],
   providers: [
