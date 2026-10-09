@@ -108,7 +108,7 @@ export class AuthService {
    * @returns An observable of type IAuthenticationResponse
    */
 
-  login(loginDto: UserLoginDto, isPasswordLogin = false): Observable<AuthenticationResponse> {
+  login(loginDto: UserLoginDto, isPasswordLogin: boolean): Observable<AuthenticationResponse> {
     return this.validateUser(isPasswordLogin, loginDto.email, loginDto.password).pipe(
       switchMap((user: User) => {
         if (user === null) {
