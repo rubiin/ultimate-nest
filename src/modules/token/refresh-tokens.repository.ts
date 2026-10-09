@@ -38,13 +38,13 @@ export class RefreshTokensRepository {
   }
 
   /**
-   * It finds a refresh token by its id and returns it as an observable
+   * It finds a non-revoked refresh token by its id and returns it as an observable
    * @param id - The id of the token to be found.
-   * @returns Observable<RefreshToken>
+   * @returns Observable<RefreshToken | null> - null when the token is revoked or missing
    */
-  findTokenById(id: number): Observable<RefreshToken> {
+  findTokenById(id: number): Observable<RefreshToken | null> {
     return from(
-      this.refreshTokenRepository.findOneOrFail({
+      this.refreshTokenRepository.findOne({
         id,
         isRevoked: false,
       }),
