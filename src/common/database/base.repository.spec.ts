@@ -150,6 +150,17 @@ describe("baseRepository", () => {
       );
     });
 
+    it("should load all columns when no fields are requested", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, fields: [] });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ fields: undefined }),
+      );
+    });
+
     it("should reject a malformed cursor as a bad request", async () => {
       mockEm.findByCursor.mockRejectedValue(
         CursorError.invalidCursor("User", new SyntaxError("Unexpected token")),
