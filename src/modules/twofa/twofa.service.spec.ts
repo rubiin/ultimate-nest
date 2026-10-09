@@ -3,6 +3,7 @@ import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { loggedInUser, mockConfigService, mockEm, mockResponse, mockUserRepo } from "@mocks";
+import { UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
@@ -13,10 +14,10 @@ import { lastValueFrom, of } from "rxjs";
 import { TwoFactorService } from "./twofa.service";
 
 // The service imports the named binding `toFileStream`, so spying on the module
-// namespace object is not enough - the module itself has to be replaced.
-vi.mock("qrcode", async () => {
-  const { of } = await import("rxjs");
-  const toFileStream = vi.fn(() => of("qr-stream"));
+// namespace object is not enough - the module itself has to be replaced. Like the real one, the
+// mock returns nothing: it writes into the stream.
+vi.mock("qrcode", () => {
+  const toFileStream = vi.fn();
 
   return { default: { toFileStream }, toFileStream };
 });
@@ -93,6 +94,18 @@ describe("twoFactorService", () => {
     expect(mockEm.flush).toHaveBeenCalled();
   });
 
+  // Regression: the validity check was an unsubscribed Observable (always truthy), so any code
+  // turned two factor authentication on.
+  it("should not turn on two factor authentication for an invalid code", async () => {
+    vi.spyOn(service, "isTwoFactorCodeValid").mockReturnValue(of(false) as never);
+
+    await expect(
+      lastValueFrom(service.turnOnTwoFactorAuthentication("badCode", loggedInUser)),
+    ).rejects.toBeInstanceOf(UnauthorizedException);
+    expect(mockUserRepo.assign).not.toHaveBeenCalled();
+    expect(mockEm.flush).not.toHaveBeenCalled();
+  });
+
   it("should generate two factor secret", async () => {
     const result = await lastValueFrom(service.generateTwoFactorSecret(loggedInUser));
 
@@ -105,9 +118,11 @@ describe("twoFactorService", () => {
     expect(mockEm.flush).toHaveBeenCalled();
   });
 
+  // Regression: `from(toFileStream(...))` wrapped `undefined` and threw, so /2fa/generate was a 500.
   it("should pipe qr code to response", async () => {
     await lastValueFrom(service.pipeQrCodeStream(mockResponse, "www.link.com"));
 
+    expect(mockResponse.type).toHaveBeenCalledWith("png");
     expect(qrCode.toFileStream).toHaveBeenCalledWith(mockResponse, "www.link.com");
   });
 });

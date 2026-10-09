@@ -1,16 +1,15 @@
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
-import { translate } from "@lib/i18n";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { generateTOTP } from "@otplib/uri";
 import { OTP } from "otplib";
 import { toFileStream } from "qrcode";
 import { Observable } from "rxjs";
-import { from, map, throwError } from "rxjs";
+import { from, map, of, switchMap, throwError } from "rxjs";
 
 @Injectable()
 export class TwoFactorService {
@@ -58,7 +57,11 @@ export class TwoFactorService {
    * @returns Observable<unknown>
    */
   pipeQrCodeStream(stream: NestifyResponse, otpAuthUrl: string): Observable<unknown> {
-    return from(toFileStream(stream, otpAuthUrl));
+    stream.type("png");
+    // `toFileStream` writes the PNG into the response and ends it; it returns nothing.
+    toFileStream(stream, otpAuthUrl);
+
+    return of(undefined);
   }
 
   /**
@@ -84,18 +87,14 @@ export class TwoFactorService {
    * @returns Observable<User>
    */
   turnOnTwoFactorAuthentication(twoFactorAuthenticationCode: string, user: User): Observable<User> {
-    const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user);
+    return this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user).pipe(
+      switchMap((isCodeValid) => {
+        if (!isCodeValid) return throwError(() => new UnauthorizedException());
 
-    if (!isCodeValid) {
-      return throwError(() =>
-        translate("exception.refreshToken", {
-          args: { error: "malformed" },
-        }),
-      );
-    }
+        this.userRepository.assign(user, { isTwoFactorEnabled: true });
 
-    this.userRepository.assign(user, { isTwoFactorEnabled: true });
-
-    return from(this.em.flush()).pipe(map(() => user));
+        return from(this.em.flush()).pipe(map(() => user));
+      }),
+    );
   }
 }
