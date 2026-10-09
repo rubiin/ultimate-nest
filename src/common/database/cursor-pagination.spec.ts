@@ -1,6 +1,7 @@
 import { QueryOrder } from "@common/@types";
 import { LoadStrategy, MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
+import { BadRequestException } from "@nestjs/common";
 
 import * as entities from "../../entities";
 import { User } from "../../entities";
@@ -67,7 +68,8 @@ describe("cursorPagination queries", () => {
     expect(queries[0]).not.toMatch(/count\(/i);
     expect(queries[0]).toMatch(/"u0"\."first_name" ilike \?/);
     expect(queries[0]).toMatch(/"u0"\."is_deleted" = \?/);
-    expect(queries[0]).toMatch(/order by "u0"\."username" asc limit \?/);
+    // The primary key breaks ties, so the order is total and no row is skipped across pages.
+    expect(queries[0]).toMatch(/order by "u0"\."username" asc, "u0"\."id" asc limit \?/);
     expect(result.data.map((user) => user.username)).toEqual(["a", "b"]);
     expect(result.meta).toMatchObject({ hasNextPage: true, hasPreviousPage: false });
   });
@@ -95,5 +97,21 @@ describe("cursorPagination queries", () => {
     await paginate({ withDeleted: true });
 
     expect(queries[0]).not.toMatch(/"u0"\."is_deleted" = \?/);
+  });
+
+  // The allowlist is read from the ORM metadata, so a real relation must pass through it.
+  it("should join an allowed relation", async () => {
+    rows = [{ id: 1, username: "a" }];
+
+    await paginate({ relations: ["posts"] });
+
+    // BALANCED strategy loads the collection in a follow-up query, so assert on that one.
+    expect(queries[1]).toMatch(/from "post" as "p0"/);
+    expect(queries[1]).toMatch(/"p0"\."author_id" in \(\?\)/);
+  });
+
+  it("should reject an unknown relation", async () => {
+    await expect(paginate({ relations: ["nope"] })).rejects.toBeInstanceOf(BadRequestException);
+    expect(queries).toHaveLength(0);
   });
 });

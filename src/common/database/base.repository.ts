@@ -165,6 +165,20 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
+   * Orders by the cursor field and breaks ties with the primary key. Without the tie-breaker the
+   * order is not total, so rows sharing the cursor value are skipped across pages.
+   * @param cursor - The field the client paginates on.
+   * @param order - The direction, applied to both keys.
+   * @returns The order by query for keyset pagination.
+   */
+  private getCursorOrderBy<T>(cursor: keyof T, order: QueryOrder): OrderDefinition<T> {
+    return {
+      [cursor]: order,
+      ...(cursor === ("id" as keyof T) ? {} : { id: order }),
+    } as QueryOrderMap<T>;
+  }
+
+  /**
    * Performs offset pagination on a query builder.
    * @param dto - The query builder plus the validated pagination options.
    * @returns The paginated results together with their offset page metadata.
@@ -260,6 +274,22 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     } = options;
     const where: Dictionary = {};
 
+    // Only the entity's own top-level relations may be populated: `*` and nested paths like
+    // `a.b` would let the client shape the join tree. Unknown names are rejected rather than
+    // dropped, so a client asking for data it cannot get finds out instead of silently
+    // receiving less.
+    if (relations.length > 0) {
+      const allowed = new Set<string>(
+        this.em.getMetadata(this.entityName).relations.map((property) => property.name),
+      );
+      const rejected = relations.filter((relation) => !allowed.has(relation));
+
+      if (rejected.length > 0)
+        throw new BadRequestException(
+          translate("exception.itemDoesNotExist", { args: { item: rejected.join(", ") } }),
+        );
+    }
+
     if (search && searchField) where[searchField as string] = { $ilike: formatSearch(search) };
 
     if (fromDate || to)
@@ -272,7 +302,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
         where: where as FilterQuery<T>,
         after,
         first,
-        orderBy: this.getOrderBy(cursor, order),
+        orderBy: this.getCursorOrderBy(cursor, order),
         // the cursor value is read off the last row, so it has to be selected
         fields: (fields.length > 0
           ? [...new Set([...fields, "id", cursor])]

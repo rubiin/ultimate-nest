@@ -60,6 +60,12 @@ describe("baseRepository", () => {
       withDeleted: false,
     };
 
+    beforeEach(() => {
+      mockEm.getMetadata.mockReturnValue({
+        relations: [{ name: "posts" }],
+      } as never);
+    });
+
     it("should fetch the first page ordered by the cursor field without a count", async () => {
       stubPage(["a", "b", "c"], {});
 
@@ -72,7 +78,7 @@ describe("baseRepository", () => {
           filters: { softDelete: true },
           first: 2,
           includeCount: false,
-          orderBy: { username: QueryOrder.ASC },
+          orderBy: { id: QueryOrder.ASC, username: QueryOrder.ASC },
           where: {},
         }),
       );
@@ -160,6 +166,55 @@ describe("baseRepository", () => {
         expect.objectContaining({ fields: undefined }),
       );
     });
+
+    // Regression: a single-field order is not total, so rows sharing the cursor value were
+    // skipped across pages. The primary key breaks the tie in the same direction.
+    it("should tie-break the cursor field with the primary key", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, order: QueryOrder.DESC });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ orderBy: { id: QueryOrder.DESC, username: QueryOrder.DESC } }),
+      );
+    });
+
+    it("should not duplicate the order when the cursor is the primary key", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, cursor: "id" });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ orderBy: { id: QueryOrder.ASC } }),
+      );
+    });
+
+    it("should populate an allowed relation", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, relations: ["posts"] });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ populate: ["posts"] }),
+      );
+    });
+
+    // Regression: client-supplied `relations` reached `populate` unfiltered, so `*` and nested
+    // paths like `author.posts` shaped the join tree.
+    it.each([["*"], ["posts.title"], ["password"]])(
+      "should reject the relation %s with a bad request",
+      async (relation) => {
+        stubPage([], {});
+
+        await expect(
+          userRepo.cursorPagination({ ...options, relations: [relation] }),
+        ).rejects.toBeInstanceOf(BadRequestException);
+        expect(mockEm.findByCursor).not.toHaveBeenCalled();
+      },
+    );
 
     it("should reject a malformed cursor as a bad request", async () => {
       mockEm.findByCursor.mockRejectedValue(
