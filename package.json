@@ -169,6 +169,7 @@
     "testcontainers": "^12.2.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "vitest": "^5.0.3",
     "webpack-node-externals": "^3.0.0"
@@ -178,6 +179,7 @@
   },
   "mikro-orm": {
     "preferTs": true,
+    "tsLoader": "tsx",
     "configPaths": [
       "./src/common/database/mikro-orm-cli.config.ts",
       "./dist/common/database/mikro-orm-cli.config.js"
