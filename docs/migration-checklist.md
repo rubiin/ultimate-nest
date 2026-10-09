@@ -6,7 +6,7 @@ checked against this repository, not assumed from the release notes.
 Legend: **Done** · **Verified N/A** (checked, does not apply) · **Open** (not adopted) ·
 **Broken** (started, not working)
 
-Progress: **9 Done · 9 Verified N/A · 4 Open · 0 Broken**
+Progress: **9 Done · 10 Verified N/A · 3 Open · 0 Broken**
 
 | #   | Guide item                                                                                                                                    | Status       |
 | --- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
@@ -28,7 +28,7 @@ Progress: **9 Done · 9 Verified N/A · 4 Open · 0 Broken**
 | 16  | GraphQL: `subscriptions-transport-ws` removed                                                                                                 | Verified N/A |
 | 17  | NATS v3 → `@nats-io/transport-node`                                                                                                           | Verified N/A |
 | 18  | Route decorator `schema` option                                                                                                               | Open         |
-| 19  | `StandardSchemaSerializerInterceptor`                                                                                                         | Open         |
+| 19  | `StandardSchemaSerializerInterceptor`                                                                                                         | Verified N/A |
 | 20  | `HttpExceptionOptions.errorCode`                                                                                                              | Done         |
 | 21  | `@nestjs/observe`                                                                                                                             | Open         |
 | 22  | New CLI commands/flags (`deploy`, `--rspackPath`, `--emit-declarations`, `--no-type-check`, `--silent`, `--parallel`, `includeLibraryAssets`) | Open         |
@@ -177,8 +177,14 @@ custom validators in `src/common/decorators/validation/`, `BaseService` generics
 coupling. There is also no `createZodDto` in `@nestjs/common` v12, so there is no drop-in DTO base
 class. The upside is that the same schemas feed OpenAPI generation.
 
-**19. `StandardSchemaSerializerInterceptor`.** Currently no `ClassSerializerInterceptor` anywhere in
-`src/`, so this is net-new capability rather than a swap.
+**19. `StandardSchemaSerializerInterceptor`.** Verified N/A: evaluated, not adopted. The interceptor only runs the
+response through a schema's `~standard.validate()` (set via `@SerializeOptions({ schema })`), so it
+validates or strips a whole response per route. It cannot express a per-entity computed field, and it
+never sees a `User` nested inside a `Post` or profile response. The one piece of presentation logic
+in `src/`, the default-avatar fallback in `User.toJSON()`, moved into the entity's serialization
+metadata instead: the stored `avatar` column is `hidden` and a `persist: false` `avatarUrl` getter is
+serialized as `avatar` (`serializedName`), so direct and nested users serialize as before. Pinned by
+`user.entity.spec.ts`.
 
 **20. `errorCode`.** Added. `ERROR_CODES` in
 `src/common/constant/error-code.constants.ts` holds the stable identifiers (also exported as an

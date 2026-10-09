@@ -16,7 +16,7 @@ import {
   Property,
 } from "@mikro-orm/decorators/legacy";
 import type { EventArgs } from "@mikro-orm/postgresql";
-import { Collection, wrap } from "@mikro-orm/postgresql";
+import { Collection, type Opt } from "@mikro-orm/postgresql";
 @Embeddable()
 export class Social {
   @Property()
@@ -49,8 +49,20 @@ export class User extends BaseEntity {
   @Property({ columnType: "text" })
   bio!: string;
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", hidden: true })
   avatar!: string;
+
+  /**
+   * Serialized as `avatar`: the stored avatar, or a generated ui-avatars URL when none is set.
+   * The persisted column is hidden so the response carries a single `avatar` key.
+   */
+  @Property({ persist: false, serializedName: "avatar" })
+  get avatarUrl(): string & Opt {
+    return (
+      this.avatar ??
+      `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`
+    );
+  }
 
   @Property({ hidden: true, columnType: "text", lazy: true })
   password!: string;
@@ -105,16 +117,6 @@ export class User extends BaseEntity {
   constructor(data?: Pick<User, "idx">) {
     super();
     Object.assign(this, data);
-  }
-
-  toJSON() {
-    const o = wrap<User>(this).toObject();
-
-    o.avatar =
-      this.avatar ??
-      `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`;
-
-    return o;
   }
 
   @BeforeCreate()
