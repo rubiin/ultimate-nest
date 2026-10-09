@@ -13,8 +13,12 @@ import { EncryptedType } from "./mikro-orm.encrypted";
 
 export const REDACTED = "[REDACTED]";
 
-/** Sensitive columns that are not `hidden`, so the metadata check alone would miss them. */
-const SENSITIVE_PROPERTIES = new Set(["password", "twoFactorSecret"]);
+/**
+ * Columns whose values never reach the audit log. Encrypted columns are redacted as well; other
+ * `hidden` columns (`isDeleted`, `deletedAt`, `avatar`, ...) are only hidden from API responses
+ * and stay readable here.
+ */
+const SENSITIVE_PROPERTIES = new Set(["password", "twoFactorSecret", "otpCode"]);
 
 const ACTIONS: Record<ChangeSetType, AuditAction> = {
   [ChangeSetType.CREATE]: AuditAction.CREATE,
@@ -94,9 +98,5 @@ function describeChanges(
 function isSensitive(meta: EntityMetadata, key: string): boolean {
   const property = meta.properties[key as keyof typeof meta.properties];
 
-  return (
-    SENSITIVE_PROPERTIES.has(key) ||
-    property?.hidden === true ||
-    property?.customType instanceof EncryptedType
-  );
+  return SENSITIVE_PROPERTIES.has(key) || property?.customType instanceof EncryptedType;
 }

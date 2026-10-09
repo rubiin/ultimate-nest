@@ -132,18 +132,20 @@ describe("AuditSubscriber", () => {
     });
   });
 
-  it("redacts password, hidden and other sensitive fields", async () => {
+  it("redacts password and twoFactorSecret but records other hidden fields in clear", async () => {
     const em = orm.em.fork();
     const user = newUser();
 
     await em.persist(user).flush();
 
     expect(audits[0].changes).toMatchObject({
-      avatar: REDACTED,
-      isDeleted: REDACTED,
+      avatar: "avatar.png",
+      isDeleted: false,
       password: REDACTED,
       twoFactorSecret: REDACTED,
     });
+    expect(JSON.stringify(audits[0].changes)).not.toContain(`"secret"`);
+    expect(JSON.stringify(audits[0].changes)).not.toContain(`"totp-seed"`);
     audits = [];
 
     user.password = "changed";
