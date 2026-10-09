@@ -1,10 +1,12 @@
 import { NewsLetter, Subscriber } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import { MikroORM, RequestContext } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import {
   mockAmqConnection,
   mockConfigService,
   mockEm,
+  mockMikroORM,
   mockNewsLetterRepo,
   mockSubscriberRepo,
 } from "@mocks";
@@ -38,6 +40,7 @@ describe("newsLetterService", () => {
         { provide: getRepositoryToken(Subscriber), useValue: mockSubscriberRepo },
         { provide: AmqpConnection, useValue: mockAmqConnection },
         { provide: ConfigService, useValue: mockConfigService },
+        { provide: MikroORM, useValue: mockMikroORM },
       ],
     }).compile();
 
@@ -148,6 +151,20 @@ describe("newsLetterService", () => {
       mockConfigService.get.mockReturnValue("some-value" as never);
 
       await expect(service.sendNewsLetter()).resolves.toBeUndefined();
+    });
+
+    it("should run the subscriber query inside a request context", async () => {
+      let hadContext = false;
+      mockSubscriberRepo.findAll.mockImplementation((async () => {
+        hadContext = RequestContext.currentRequestContext() !== undefined;
+
+        return Promise.resolve([]);
+      }) as never);
+
+      await service.sendNewsLetter();
+
+      expect(mockEm.fork).toHaveBeenCalled();
+      expect(hadContext).toBe(true);
     });
   });
 });

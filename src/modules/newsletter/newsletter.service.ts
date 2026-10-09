@@ -6,6 +6,7 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { BaseService } from "@lib/crud/crud.service";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { MikroORM, RequestContext } from "@mikro-orm/core";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression } from "@nestjs/schedule";
@@ -24,12 +25,19 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
     @InjectRepository(Subscriber) private subscriberRepository: BaseRepository<Subscriber>,
     private readonly amqpConnection: AmqpConnection,
     private readonly configService: ConfigService<Configs, true>,
+    private readonly orm: MikroORM,
   ) {
     super(newsLetterRepository);
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async sendNewsLetter() {
+    // A cron job runs outside any HTTP request, so there is no request context to
+    // fork from. Without this, the repository call runs on the global identity map.
+    return RequestContext.create(this.orm.em, async () => this.publishNewsLetter());
+  }
+
+  private async publishNewsLetter() {
     const subscribers = await this.subscriberRepository.findAll({});
     const promises = [];
 

@@ -11,7 +11,7 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-vitest";
 import { CacheService } from "@lib/cache/cache.service";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { EntityManager } from "@mikro-orm/core";
+import { EntityManager, MikroORM } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
@@ -144,6 +144,13 @@ export const mockOtpLogRepo = createMock<BaseRepository<OtpLog>>();
 export const mockProtocolRepo = createMock<BaseRepository<Protocol>>();
 export const mockContext = createMock<ExecutionContext>({});
 export const mockReflector = createMock<Reflector>();
+
+// `RequestContext.create` drives real `AsyncLocalStorage`, so a bare
+// `createMock<MikroORM>()` would never invoke the wrapped callback. Stand in a
+// minimal implementation that just runs it.
+export const mockMikroORM = {
+  em: mockEm,
+} as unknown as MikroORM;
 
 export const mockNext = createMock<CallHandler>({
   handle: vi.fn(() => of({})),

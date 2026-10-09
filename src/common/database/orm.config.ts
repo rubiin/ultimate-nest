@@ -36,11 +36,12 @@ export const baseOptions = {
   },
   logger: logger.log.bind(logger),
   metadataProvider: TsMorphMetadataProvider,
+  // Without this, TsMorphMetadataProvider re-analyses the whole AST on every boot.
+  metadataCache: { enabled: true },
   highlighter: new SqlHighlighter(),
   debug: !HelperService.isProd(),
   loadStrategy: LoadStrategy.BALANCED,
   entityRepository: BaseRepository,
-  forceUtcTimezone: true,
   registerRequestContext: true,
   pool: { min: 2, max: 10 },
 };

@@ -6,6 +6,7 @@ import {
   BeforeCreate,
   BeforeUpdate,
   BeforeUpsert,
+  Check,
   Embeddable,
   Embedded,
   Entity,
@@ -61,6 +62,7 @@ export class User extends BaseEntity {
   isTwoFactorEnabled? = false;
 
   @Enum({ items: () => Roles, array: true, index: true })
+  @Check({ expression: "cardinality(roles) > 0" })
   roles?: Roles[] = [Roles.AUTHOR];
 
   @Property({ index: true, unique: true })
