@@ -1,12 +1,15 @@
 import { randomUUID } from "node:crypto";
 
 import { HelperService } from "@common/helpers";
-import { Entity, PrimaryKey, Property } from "@mikro-orm/decorators/legacy";
+import { Entity, Filter, PrimaryKey, Property } from "@mikro-orm/decorators/legacy";
 import { ApiHideProperty } from "@nestjs/swagger";
 /**
  * Base entity class for mikroorm models, that all other entities of the same type should extend.
  */
 @Entity({ abstract: true })
+// Soft deletes are enforced by the ORM rather than by repeating `isDeleted: false`
+// in every query. Declared here so that all subclasses inherit it.
+@Filter({ name: "softDelete", cond: { isDeleted: false }, default: true })
 export abstract class BaseEntity {
   @ApiHideProperty()
   @PrimaryKey({ hidden: true })

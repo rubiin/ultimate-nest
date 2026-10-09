@@ -241,15 +241,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * This is a TypeScript function that performs offset pagination on a query builder and returns an
-   * observable of the paginated results.
-   * @param dto - An object containing two properties:
-   * @returns An Observable of OffsetPagination, which contains the results of a query with pagination
-   * options applied.
+   * Performs offset pagination on a query builder.
+   * @param dto - The query builder plus the validated pagination options.
+   * @returns The paginated results together with their offset page metadata.
    */
-  qbOffsetPagination<T extends Dictionary>(
+  async qbOffsetPagination<T extends Dictionary>(
     dto: QBOffsetPaginationOptions<T>,
-  ): Observable<OffsetPaginationResponse<T>> {
+  ): Promise<OffsetPaginationResponse<T>> {
     const { qb, pageOptionsDto } = dto;
 
     const {
@@ -264,8 +262,13 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       to,
       searchField,
       alias,
+      withDeleted,
     } = pageOptionsDto;
     const selectedFields = [...new Set([...fields, "id"])];
+
+    // QueryBuilder bypasses the entity filters `em.find()` applies, so the
+    // soft-delete filter has to be toggled explicitly to honour `withDeleted`.
+    await qb.applyFilters({ softDelete: !withDeleted });
 
     if (search) {
       qb.andWhere({
@@ -304,15 +307,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       .select(selectedFields as EntityKey<T>[])
       .offset(offset);
 
-    const pagination$ = from(qb.getResultAndCount());
+    const [results, itemCount] = await qb.getResultAndCount();
+    const pageMetaDto = new OffsetMeta({ pageOptionsDto, itemCount });
 
-    return pagination$.pipe(
-      map(([results, itemCount]) => {
-        const pageMetaDto = new OffsetMeta({ pageOptionsDto, itemCount });
-
-        return new OffsetPaginationResponse(results, pageMetaDto);
-      }),
-    );
+    return new OffsetPaginationResponse(results, pageMetaDto);
   }
 
   /**
@@ -341,9 +339,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       searchField,
     } = pageOptionsDto;
 
-    qb.where({
-      isDeleted: withDeleted,
-    } as unknown as QBFilterQuery<T>);
+    // QueryBuilder bypasses the entity filters `em.find()` applies, so the
+    // soft-delete filter has to be toggled explicitly to honour `withDeleted`.
+    await qb.applyFilters({ softDelete: !withDeleted });
 
     if (search && searchField) {
       qb.andWhere({
