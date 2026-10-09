@@ -17,8 +17,9 @@ export class CursorPaginationDto extends PaginationDto {
    * The cursor of the page you are requesting
    */
   @IsStringField({ required: false })
+  // `Cursor` tokens are base64url without padding
   @IsBase64(
-    {},
+    { urlSafe: true },
     {
       message: validationI18nMessage("validation.isDataType", {
         type: "base64",

@@ -43,7 +43,7 @@ describe("userService", () => {
     mockCloudinaryService.uploadFile.mockResolvedValue({ url: "https://cdn/avatar.png" } as never);
     mockAmqConnection.publish.mockResolvedValue(undefined as never);
     mockUserRepo.getEntityManager.mockReturnValue(mockEm as never);
-    mockUserRepo.qbCursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
+    mockUserRepo.cursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [

@@ -27,7 +27,7 @@ describe("tagsService", () => {
     mockTagsRepo.softRemoveAndFlush.mockReturnValue(of(tag) as never);
     mockTagsRepo.createQueryBuilder.mockReturnValue({} as never);
     mockTagsRepo.findOne.mockResolvedValue(tag as never);
-    mockTagsRepo.qbCursorPagination.mockReturnValue(
+    mockTagsRepo.cursorPagination.mockReturnValue(
       Promise.resolve({ data: [], meta: { total: 0 } }) as never,
     );
 
@@ -79,21 +79,14 @@ describe("tagsService", () => {
     expect(mockTagsRepo.softRemoveAndFlush).toHaveBeenCalledWith(tag);
   });
 
-  it("should paginate with the cursor query builder", async () => {
+  it("should paginate by cursor", async () => {
     const result = await lastValueFrom(
       service.findAll({ ...queryDto, type: PaginationType.CURSOR }),
     );
 
     expect(result).toEqual({ data: [], meta: { total: 0 } });
-    expect(mockTagsRepo.createQueryBuilder).toHaveBeenCalledWith("t");
-    expect(mockTagsRepo.qbCursorPagination).toHaveBeenCalledWith(
-      expect.objectContaining({
-        pageOptionsDto: expect.objectContaining({
-          alias: "t",
-          cursor: "id",
-          searchField: "title",
-        }),
-      }),
+    expect(mockTagsRepo.cursorPagination).toHaveBeenCalledWith(
+      expect.objectContaining({ cursor: "id", searchField: "title" }),
     );
   });
 });

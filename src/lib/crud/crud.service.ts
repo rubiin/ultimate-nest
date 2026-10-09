@@ -5,7 +5,7 @@ import {
   PaginationResponse,
   UpdateEntityType,
 } from "@common/@types";
-import { CursorType, PaginationType, QueryOrder } from "@common/@types";
+import { PaginationType, QueryOrder } from "@common/@types";
 import { BaseEntity, BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
@@ -47,25 +47,20 @@ export abstract class BaseService<
    * @returns An observable of a pagination object.
    */
   findAll(dto: PaginationRequest): Observable<PaginationResponse<Entity>> {
-    const qb = this.repository.createQueryBuilder(this.queryName);
-
     if (dto.type === PaginationType.CURSOR) {
       // by default, the id is used as cursor
 
       return from(
-        this.repository.qbCursorPagination({
-          qb,
-          pageOptionsDto: {
-            alias: this.queryName,
-            cursor: "id",
-            cursorType: CursorType.NUMBER,
-            order: QueryOrder.ASC,
-            searchField: this.searchField,
-            ...dto,
-          },
+        this.repository.cursorPagination({
+          cursor: "id",
+          order: QueryOrder.ASC,
+          searchField: this.searchField,
+          ...dto,
         }),
       );
     }
+
+    const qb = this.repository.createQueryBuilder(this.queryName);
 
     return from(
       this.repository.qbOffsetPagination({

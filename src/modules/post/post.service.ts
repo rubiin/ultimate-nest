@@ -1,5 +1,5 @@
 import { PaginationResponse } from "@common/@types";
-import { CursorType, QueryOrder } from "@common/@types";
+import { QueryOrder } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Category, Comment, Post, Tag, User } from "@entities";
@@ -17,8 +17,6 @@ import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
 export class PostService {
-  private readonly queryName = "p";
-
   constructor(
     private readonly em: EntityManager<PostgreSqlDriver>,
     @InjectRepository(Post)
@@ -41,19 +39,12 @@ export class PostService {
    * @returns An observable of a pagination object.
    */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<Post>> {
-    const qb = this.postRepository.createQueryBuilder(this.queryName);
-
     return from(
-      this.postRepository.qbCursorPagination({
-        qb,
-        pageOptionsDto: {
-          alias: this.queryName,
-          cursor: "title",
-          cursorType: CursorType.STRING,
-          order: QueryOrder.ASC,
-          searchField: "title",
-          ...dto,
-        },
+      this.postRepository.cursorPagination({
+        cursor: "title",
+        order: QueryOrder.ASC,
+        searchField: "title",
+        ...dto,
       }),
     );
   }

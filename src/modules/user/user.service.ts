@@ -2,14 +2,7 @@ import process from "node:process";
 
 import type { MailPayload } from "@common/@types";
 import { PaginationResponse, RecordWithFile } from "@common/@types";
-import {
-  CursorType,
-  EmailSubject,
-  EmailTemplate,
-  QueryOrder,
-  Queues,
-  RoutingKey,
-} from "@common/@types";
+import { EmailSubject, EmailTemplate, QueryOrder, Queues, RoutingKey } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Referral, User } from "@entities";
@@ -34,8 +27,6 @@ import { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
 
 @Injectable()
 export class UserService {
-  private readonly queryName = "u";
-
   constructor(
     @InjectRepository(User)
     private userRepository: BaseRepository<User>,
@@ -110,19 +101,12 @@ export class UserService {
    * @returns The method is returning an Observable of type PaginationResponse<User>.
    */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<User>> {
-    const qb = this.userRepository.createQueryBuilder(this.queryName);
-
     return from(
-      this.userRepository.qbCursorPagination({
-        qb,
-        pageOptionsDto: {
-          alias: this.queryName,
-          cursor: "username",
-          cursorType: CursorType.STRING,
-          order: QueryOrder.ASC,
-          searchField: "firstName",
-          ...dto,
-        },
+      this.userRepository.cursorPagination({
+        cursor: "username",
+        order: QueryOrder.ASC,
+        searchField: "firstName",
+        ...dto,
       }),
     );
   }

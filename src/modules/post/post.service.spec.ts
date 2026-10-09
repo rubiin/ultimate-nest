@@ -31,7 +31,7 @@ describe("postService", () => {
     mockPostRepo.findOneOrFail.mockImplementation((async (options: { idx?: string }) =>
       Promise.resolve({ ...mockedPost, favoritesCount: 0, slug: options.idx })) as never);
     mockEm.flush.mockResolvedValue(undefined);
-    mockPostRepo.qbCursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
+    mockPostRepo.cursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [

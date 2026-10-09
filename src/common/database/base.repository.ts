@@ -1,28 +1,22 @@
-import { Buffer } from "node:buffer";
-
 import {
+  CursorPaginationOptions,
   CursorPaginationResponse,
-  CursorType,
-  getOppositeOrder,
-  getQueryOrder,
   OffsetMeta,
   OffsetPaginationResponse,
-  OppositeOrder,
-  Order,
-  PaginateOptions,
-  QBCursorPaginationOptions,
   QBOffsetPaginationOptions,
   QueryOrder,
 } from "@common/@types";
 import { ERROR_CODES } from "@common/constant";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import {
+  Cursor,
+  CursorError,
   Dictionary,
   EntityManager,
   EntityKey,
   EntityRepository,
-  Field,
   FilterQuery,
+  FindByCursorOptions,
   FindOptions,
   IndexFilterQuery,
   Loaded,
@@ -39,8 +33,6 @@ import { from, map, of, switchMap, throwError } from "rxjs";
 import { BaseEntity } from "./base.entity";
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
-  private readonly encoding: BufferEncoding = "base64";
-
   /**
    * The exists function checks if there are any records that match the given filter query.
    * @param where - The `where` parameter is a filter query that specifies the conditions for the existence check.
@@ -161,74 +153,6 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * Gets the where clause filter logic for the query builder pagination methods.
-   * @param cursor - The cursor to use for the pagination
-   * @param decoded - The decoded cursor
-   * @param order - The order to use for the pagination
-   * @returns The where clause filter logic
-   */
-  private getFilters<T>(
-    cursor: keyof T,
-    decoded: string | number | Date,
-    order: Order | OppositeOrder,
-  ): FilterQuery<Dictionary<T>> {
-    return {
-      [cursor]: {
-        [order]: decoded,
-      },
-    };
-  }
-
-  /**
-   * Takes a base64 cursor and returns the string or number value of it.
-   * @param cursor - The base64 cursor
-   * @param cursorType - The type of the cursor
-   * @returns The decoded cursor
-   */
-  decodeCursor(cursor: string, cursorType: CursorType = CursorType.STRING): string | number | Date {
-    const string = Buffer.from(cursor, this.encoding).toString("utf8");
-
-    switch (cursorType) {
-      case CursorType.DATE: {
-        const millisUnix = Number.parseInt(string, 10);
-
-        if (Number.isNaN(millisUnix))
-          throw new BadRequestException(translate("exception.cursorInvalidDate"), {
-            errorCode: ERROR_CODES.CURSOR_INVALID_DATE,
-          });
-
-        return new Date(millisUnix);
-      }
-      case CursorType.NUMBER: {
-        const number = Number.parseInt(string, 10);
-
-        if (Number.isNaN(number))
-          throw new BadRequestException(translate("exception.cursorInvalidNumber"), {
-            errorCode: ERROR_CODES.CURSOR_INVALID_NUMBER,
-          });
-
-        return number;
-      }
-      default: {
-        return string;
-      }
-    }
-  }
-
-  /**
-   * Takes a date, string or number and returns the base64 representation of it.
-   * @param value - The value to encode
-   * @returns The base64 encoded value
-   */
-  encodeCursor(value: Date | string | number): string {
-    let string = value.toString();
-
-    if (value instanceof Date) string = value.getTime().toString();
-
-    return Buffer.from(string, "utf8").toString(this.encoding);
-  }
-
-  /**
    * Makes the order by query for MikroORM orderBy method.
    * @param cursor - The cursor to use for the pagination
    * @param order - The order to use for the pagination
@@ -314,180 +238,67 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
-   * Takes a query builder and returns the entities paginated using cursor pagination.
-   * @param dto - An object containing two properties
-   * @returns An Observable of CursorPaginationResponse, which contains the results of a query with
+   * Paginates the entities with keyset (cursor) pagination via `findByCursor`.
+   * @param options - The validated cursor pagination options.
+   * @returns The page of entities together with its cursor metadata.
    */
-  async qbCursorPagination<T extends Dictionary>(
-    dto: QBCursorPaginationOptions<T>,
+  async cursorPagination(
+    options: CursorPaginationOptions<T>,
   ): Promise<CursorPaginationResponse<T>> {
-    const { qb, pageOptionsDto } = dto;
-
     const {
       after,
       first,
       search,
       relations,
-      alias,
       cursor,
       order,
-      cursorType,
       fields,
       withDeleted,
       from: fromDate,
       to,
       searchField,
-    } = pageOptionsDto;
+    } = options;
+    const where: Dictionary = {};
 
-    // QueryBuilder bypasses the entity filters `em.find()` applies, so the
-    // soft-delete filter has to be toggled explicitly to honour `withDeleted`.
-    await qb.applyFilters({ softDelete: !withDeleted });
+    if (search && searchField) where[searchField as string] = { $ilike: formatSearch(search) };
 
-    if (search && searchField) {
-      qb.andWhere({
-        [searchField]: {
-          $ilike: formatSearch(search),
-        },
-      } as QBFilterQuery<T>);
+    if (fromDate || to)
+      where.createdAt = { ...(fromDate && { $gte: fromDate }), ...(to && { $lte: to }) };
+
+    let page: Cursor<T, never, never, never, false>;
+
+    try {
+      page = await this.findByCursor({
+        where: where as FilterQuery<T>,
+        after,
+        first,
+        orderBy: this.getOrderBy(cursor, order),
+        // the cursor value is read off the last row, so it has to be selected
+        fields: (fields.length > 0
+          ? [...new Set([...fields, "id", cursor])]
+          : undefined) as FindByCursorOptions<T>["fields"],
+        populate: relations as unknown as FindByCursorOptions<T>["populate"],
+        filters: { softDelete: !withDeleted },
+        // the response carries no total, so skip the extra count query
+        includeCount: false,
+      });
+    } catch (error) {
+      if (error instanceof CursorError)
+        throw new BadRequestException(translate("exception.invalidCursor"), {
+          errorCode: ERROR_CODES.CURSOR_INVALID,
+        });
+
+      throw error;
     }
 
-    if (relations) {
-      for (const relation of relations)
-        qb.leftJoinAndSelect(
-          `${alias}.${relation}` as QBField<T, string, never>,
-          `${alias}_${relation}`,
-        );
-    }
-
-    if (fromDate) {
-      qb.andWhere({
-        createdAt: {
-          $gte: fromDate,
-        },
-      } as unknown as QBFilterQuery<T>);
-    }
-
-    if (to) {
-      qb.andWhere({
-        createdAt: {
-          $lte: to,
-        },
-      } as unknown as QBFilterQuery<T>);
-    }
-
-    let previousCount = 0;
-    const stringCursor = String(cursor); // because of runtime issues
-    const aliasCursor = `${alias}.${stringCursor}`;
-    const selectedFields = [...new Set([...fields, "id"])];
-
-    if (after) {
-      const decoded = this.decodeCursor(after, cursorType);
-      const oppositeOd = getOppositeOrder(order);
-      const temporaryQb = qb.clone();
-
-      temporaryQb.andWhere(this.getFilters(cursor, decoded, oppositeOd) as QBFilterQuery<T>);
-      previousCount = await temporaryQb.getCount(aliasCursor as Field<T, string, never>, true);
-
-      const normalOd = getQueryOrder(order);
-
-      qb.andWhere(this.getFilters(cursor, decoded, normalOd) as QBFilterQuery<T>);
-    }
-
-    const [entities, count] = await qb
-      .select(selectedFields as EntityKey<T>[])
-      .orderBy(this.getOrderBy(cursor, order))
-      .limit(first)
-      .getResultAndCount();
-
-    return this.paginateCursor({
-      // `select` narrows the result to the requested columns, but MikroORM still
-      // hydrates full entity instances (unselected keys are left undefined).
-      instances: entities as T[],
-      currentCount: count,
-      previousCount,
-      cursor,
-      first,
-      search,
-    });
-  }
-
-  /**
-   * The `paginateCursor` function takes in a DTO and returns a paginated response with metadata such as the next cursor,
-   * whether there are previous or next pages, and the search term.
-   * @param dto - The `dto` parameter is an object that contains the following properties:
-   * @returns The function `paginateCursor` returns an object of type `CursorPaginationResponse<T>`.
-   */
-  private paginateCursor<T>(dto: PaginateOptions<T>): CursorPaginationResponse<T> {
-    const { instances, currentCount, previousCount, cursor, first, search } = dto;
-    const pages: CursorPaginationResponse<T> = {
-      data: instances,
+    return {
+      data: page.items,
       meta: {
-        nextCursor: "",
-        hasPreviousPage: false,
-        hasNextPage: false,
+        nextCursor: page.endCursor ?? "",
+        hasNextPage: page.hasNextPage,
+        hasPreviousPage: page.hasPrevPage,
         search: search ?? "",
       },
     };
-    const length = instances.length;
-
-    if (length > 0) {
-      const last = instances[length - 1]![cursor] as string | number | Date;
-
-      pages.meta.nextCursor = this.encodeCursor(last);
-      pages.meta.hasNextPage = currentCount > first;
-      pages.meta.hasPreviousPage = previousCount > 0;
-    }
-
-    return pages;
-  }
-
-  /**
-   * Takes an entity repository and a FilterQuery and returns the paginated entities
-   * @param cursor - The cursor to use for the pagination
-   * @param first - The number of entities to return
-   * @param order - The order to use for the pagination
-   * @param repo - The entity repository
-   * @param where - The where clause to use for the pagination
-   * @param after - The cursor to use for the pagination
-   * @param afterCursor - The type of the cursor
-   * @returns The paginated entities
-   */
-  async findAndCountPagination<T extends Dictionary>(
-    cursor: keyof T,
-    first: number,
-    order: QueryOrder,
-    repo: EntityRepository<T>,
-    where: FilterQuery<T>,
-    after?: string,
-    afterCursor: CursorType = CursorType.STRING,
-  ): Promise<CursorPaginationResponse<T>> {
-    let previousCount = 0;
-
-    if (after) {
-      const decoded = this.decodeCursor(after, afterCursor);
-      const queryOrder = getQueryOrder(order);
-      const oppositeOrder = getOppositeOrder(order);
-      const countWhere = where;
-
-      // @ts-expect-error "and is a valid key for FilterQuery"
-      countWhere.$and = this.getFilters("createdAt", decoded, oppositeOrder);
-      previousCount = await repo.count(countWhere);
-
-      // @ts-expect-error "and is a valid key for FilterQuery"
-      where.$and = this.getFilters("createdAt", decoded, queryOrder);
-    }
-
-    const [entities, count] = await repo.findAndCount(where, {
-      orderBy: this.getOrderBy(cursor, order),
-      limit: first,
-    });
-
-    return this.paginateCursor({
-      instances: entities,
-      currentCount: count,
-      previousCount,
-      cursor,
-      first,
-    });
   }
 }
