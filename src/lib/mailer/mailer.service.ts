@@ -1,4 +1,5 @@
-import { resolve } from "node:path";
+import { relative, resolve } from "node:path";
+import process from "node:process";
 
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import { Server } from "@common/@types";
@@ -71,7 +72,12 @@ export class MailerService {
    * @returns A promise that resolves to a boolean.
    */
   sendMail(mailOptions: MailOptions) {
-    const templatePath = resolve("}");
+    // consolidate's eta engine resolves templates against `views: "."`, so the path has to be
+    // relative to the working directory.
+    const templatePath = relative(
+      process.cwd(),
+      resolve(this.options.templateDir, `${mailOptions.template}.${this.options.templateEngine}`),
+    );
 
     return from(this.adapter.compile(templatePath, mailOptions.replacements)).pipe(
       switchMap((html) => {

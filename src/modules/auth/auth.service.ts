@@ -25,7 +25,7 @@ import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
 import { Observable } from "rxjs";
-import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
+import { firstValueFrom, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
 import {
   ChangePasswordDto,
@@ -223,19 +223,21 @@ export class AuthService {
   private async saveOtpAndSendMail(otp: OtpLog, user: User, otpNumber: string) {
     await this.em.persist(otp).flush();
 
-    return this.mailService.sendMail({
-      template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
-      replacements: {
-        firstName: capitalize(user.firstName),
-        lastName: capitalize(user.lastName),
-        otp: otpNumber,
-      },
-      to: user.email,
-      subject: EmailSubject.RESET_PASSWORD,
-      from: this.configService.get("mail.senderEmail", {
-        infer: true,
+    return firstValueFrom(
+      this.mailService.sendMail({
+        template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
+        replacements: {
+          firstName: capitalize(user.firstName),
+          lastName: capitalize(user.lastName),
+          otp: otpNumber,
+        },
+        to: user.email,
+        subject: EmailSubject.RESET_PASSWORD,
+        from: this.configService.get("mail.senderEmail", {
+          infer: true,
+        }),
       }),
-    });
+    );
   }
 
   /**

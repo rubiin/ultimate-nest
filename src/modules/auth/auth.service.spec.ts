@@ -22,7 +22,7 @@ import { BadRequestException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import { lastValueFrom, of } from "rxjs";
+import { defer, lastValueFrom, of } from "rxjs";
 
 import { AuthService } from "./auth.service";
 
@@ -171,6 +171,27 @@ describe("authService", () => {
       propagation: TransactionPropagation.REQUIRED,
     });
     expect(flushedInTransaction).toStrictEqual([true]);
+  });
+
+  // Regression: the transactional body returned `sendMail()`'s cold observable without subscribing,
+  // so no reset mail was ever sent while the endpoint still answered "Otp sent successfully".
+  it("should send the reset mail inside the transaction", async () => {
+    mockUserRepo.findOne.mockImplementation((async () => Promise.resolve(loggedInUser)) as never);
+    mockProtocolRepo.findOne.mockImplementation((async () => Promise.resolve(null)) as never);
+    mockOtpLogRepo.create.mockImplementation(((data: object) => data) as never);
+    const inTransaction = trackMockTransaction();
+    const sentInTransaction: boolean[] = [];
+    mockMailService.sendMail.mockReturnValue(
+      defer(() => {
+        sentInTransaction.push(inTransaction());
+
+        return of(undefined);
+      }) as never,
+    );
+
+    await lastValueFrom(service.forgotPassword({ email: "test@example.com" }));
+
+    expect(sentInTransaction).toStrictEqual([true]);
   });
 
   it("should verify the user inside a REQUIRED transaction", async () => {
