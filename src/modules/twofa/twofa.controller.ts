@@ -1,10 +1,17 @@
 import { AuthenticationResponse } from "@common/@types";
 import { Auth, GenericController, LoggedInUser } from "@common/decorators";
 import { User } from "@entities";
+import { translate } from "@lib/i18n";
 import { AuthService } from "@modules/auth/auth.service";
 import { Body, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiConflictResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiUnauthorizedResponse,
+} from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { switchMap, throwError } from "rxjs";
 
@@ -18,8 +25,12 @@ export class TwoFactorController {
     private readonly authService: AuthService,
   ) {}
 
+  // Setup routes take a full access token: a password-only (partial) token must not be able to
+  // set up or replace the second factor.
+  @Auth()
   @Post("generate")
-  @UseGuards(AuthGuard("jwt2fa"))
+  @ApiOperation({ summary: "Generate a 2FA secret and return its QR code (PNG)" })
+  @ApiConflictResponse({ description: "Two factor authentication is already enabled." })
   register(@Res() response: NestifyResponse, @LoggedInUser() user: User): Observable<unknown> {
     return this.twoFactorAuthenticationService.generateTwoFactorSecret(user).pipe(
       switchMap(({ otpAuthUrl }) => {
@@ -31,6 +42,13 @@ export class TwoFactorController {
   @ApiBearerAuth()
   @Post("authenticate")
   @UseGuards(AuthGuard("jwt2fa"))
+  @ApiOperation({
+    summary: "Exchange the partial token from login and a TOTP code for the full token pair",
+  })
+  @ApiOkResponse({ type: AuthenticationResponse })
+  @ApiUnauthorizedResponse({
+    description: "Missing or invalid partial (2fa) token, or invalid authentication code.",
+  })
   authenticate(
     @LoggedInUser() user: User,
     @Body()
@@ -38,9 +56,12 @@ export class TwoFactorController {
   ): Observable<AuthenticationResponse> {
     return this.twoFactorAuthenticationService.isTwoFactorCodeValid(twoFaAuthDto.code, user).pipe(
       switchMap((isCodeValid) => {
-        if (!isCodeValid) return throwError(() => new UnauthorizedException());
+        if (!isCodeValid)
+          return throwError(
+            () => new UnauthorizedException(translate("exception.invalidTwoFaCode")),
+          );
 
-        return this.authService.login(user, true);
+        return this.authService.issueTokens(user);
       }),
     );
   }

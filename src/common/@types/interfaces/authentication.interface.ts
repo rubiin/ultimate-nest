@@ -6,10 +6,11 @@ export interface OauthResponse {
 }
 
 /**
- * What a JWT may be used for. Access and refresh tokens share secret, issuer and audience, so
- * every consumer must check this claim before trusting a token.
+ * What a JWT may be used for. All token types share secret, issuer and audience, so every consumer
+ * must check this claim before trusting a token. A "2fa" token proves only the first factor
+ * (password or OAuth) and can only be exchanged at `POST /2fa/authenticate`.
  */
-export type TokenType = "access" | "refresh";
+export type TokenType = "access" | "refresh" | "2fa";
 
 export interface JwtPayload {
   jti?: number;

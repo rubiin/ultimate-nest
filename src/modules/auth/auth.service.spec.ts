@@ -282,4 +282,100 @@ describe("authService", () => {
       { populate: ["password"] },
     );
   });
+
+  describe("two factor login", () => {
+    const buildUser = (isTwoFactorEnabled: boolean) =>
+      new User({
+        email: "2fa@example.com",
+        id: 7,
+        idx: "user-7",
+        isActive: true,
+        isTwoFactorEnabled,
+      });
+
+    beforeEach(() => {
+      mockConfigService.get.mockReturnValue(3600 as never);
+      mockUserRepo.nativeUpdate.mockResolvedValue(1 as never);
+      mockTokenService.generateTwoFactorToken.mockReturnValue(of("partial-token"));
+      mockTokenService.generateAccessToken.mockReturnValue(of("access-token"));
+      mockTokenService.generateRefreshToken.mockReturnValue(of("refresh-token"));
+    });
+
+    // Regression: a 2FA-enabled user got a full access token from the password alone.
+    it("should return only a partial token for a 2fa-enabled user", async () => {
+      const user = buildUser(true);
+      mockUserRepo.findOne.mockResolvedValue(user as never);
+      vi.spyOn(HelperService, "verifyHash").mockReturnValue(of(true));
+
+      const result = await lastValueFrom(
+        service.login({ email: user.email, password: "Password@1234" }, true),
+      );
+
+      expect(result).toStrictEqual({
+        accessToken: "partial-token",
+        twoFactorRequired: true,
+        user: { id: 7, idx: "user-7" },
+      });
+      expect(mockTokenService.generateTwoFactorToken).toHaveBeenCalledWith(
+        expect.objectContaining({ id: 7 }),
+      );
+      expect(mockTokenService.generateAccessToken).not.toHaveBeenCalled();
+      expect(mockTokenService.generateRefreshToken).not.toHaveBeenCalled();
+      expect(mockUserRepo.nativeUpdate).not.toHaveBeenCalled();
+    });
+
+    it("should return the full pair for a user without 2fa", async () => {
+      const user = buildUser(false);
+      mockUserRepo.findOne.mockResolvedValue(user as never);
+      vi.spyOn(HelperService, "verifyHash").mockReturnValue(of(true));
+
+      const result = await lastValueFrom(
+        service.login({ email: user.email, password: "Password@1234" }, true),
+      );
+
+      expect(result).toStrictEqual({
+        accessToken: "access-token",
+        refresh_token: "refresh-token",
+        user: { id: 7, idx: "user-7" },
+      });
+      expect(mockTokenService.generateTwoFactorToken).not.toHaveBeenCalled();
+    });
+
+    it("should issue the full pair and record the login", async () => {
+      const user = buildUser(true);
+
+      const result = await lastValueFrom(service.issueTokens(user));
+
+      expect(result).toStrictEqual({
+        accessToken: "access-token",
+        refresh_token: "refresh-token",
+        user: { id: 7, idx: "user-7" },
+      });
+      expect(mockTokenService.generateRefreshToken).toHaveBeenCalledWith(user, 3600);
+      expect(mockUserRepo.nativeUpdate).toHaveBeenCalledWith(
+        { id: 7 },
+        { lastLogin: expect.any(Date) },
+      );
+    });
+
+    // Regression: the OAuth (passwordless) path redirected with a full access token.
+    it("should redirect an oauth login of a 2fa-enabled user with only the partial token", async () => {
+      const user = buildUser(true);
+      mockUserRepo.findOne.mockResolvedValue(user as never);
+      const response = { redirect: vi.fn() } as unknown as NestifyResponse;
+
+      await lastValueFrom(
+        service.OauthHandler({
+          response,
+          user: { accessToken: "provider-token", email: user.email, firstName: "a", lastName: "b" },
+        }),
+      );
+
+      expect(response.redirect).toHaveBeenCalledWith(
+        expect.stringMatching(/\?token=partial-token&twoFactorRequired=true$/),
+      );
+      expect(mockTokenService.generateAccessToken).not.toHaveBeenCalled();
+      expect(mockTokenService.generateRefreshToken).not.toHaveBeenCalled();
+    });
+  });
 });

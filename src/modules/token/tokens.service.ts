@@ -14,6 +14,9 @@ import { catchError, from, map, mergeMap, of, switchMap, throwError, zip } from 
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
+/** Time a user has to enter the TOTP code after the first factor. */
+const TWO_FACTOR_TOKEN_EXPIRY = "5m";
+
 @Injectable()
 export class TokensService {
   private readonly BASE_OPTIONS: JwtSignOptions = {
@@ -46,6 +49,22 @@ export class TokensService {
         options,
       ),
     );
+  }
+
+  /**
+   * Signs the partial token issued after the first factor for a user with two factor
+   * authentication enabled. It carries no roles and is only accepted by the `jwt2fa` strategy.
+   * @param user - Omit<User, "password">
+   * @returns An Observable of a string.
+   */
+  generateTwoFactorToken(user: Omit<User, "password">): Observable<string> {
+    const options: JwtSignOptions = {
+      ...this.BASE_OPTIONS,
+      expiresIn: TWO_FACTOR_TOKEN_EXPIRY,
+      subject: String(user.id),
+    };
+
+    return from(this.jwt.signAsync({ type: "2fa" satisfies TokenType }, options));
   }
 
   /**

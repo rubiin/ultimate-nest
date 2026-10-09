@@ -83,6 +83,18 @@ describe("tokensService", () => {
     expect(mockJwtService.signAsync.mock.calls[0]![0]).toStrictEqual({ type: "refresh" });
   });
 
+  it("should sign a short-lived 2fa token without roles", async () => {
+    mockJwtService.signAsync.mockResolvedValueOnce("partial token");
+
+    await expect(lastValueFrom(service.generateTwoFactorToken(loggedInUser))).resolves.toBe(
+      "partial token",
+    );
+
+    const [payload, options] = mockJwtService.signAsync.mock.calls[0]!;
+    expect(payload).toStrictEqual({ type: "2fa" });
+    expect(options).toMatchObject({ expiresIn: "5m", subject: String(loggedInUser.id) });
+  });
+
   it("should not rotate when the token was revoked concurrently", async () => {
     vi.spyOn(service, "resolveRefreshToken").mockImplementation(() =>
       of({ token: refreshToken, user: loggedInUser }),

@@ -3,7 +3,7 @@ import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { loggedInUser, mockConfigService, mockEm, mockResponse, mockUserRepo } from "@mocks";
-import { UnauthorizedException } from "@nestjs/common";
+import { ConflictException, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
@@ -107,15 +107,29 @@ describe("twoFactorService", () => {
   });
 
   it("should generate two factor secret", async () => {
-    const result = await lastValueFrom(service.generateTwoFactorSecret(loggedInUser));
+    const user = new User({ email: "user@example.com", id: 1, isTwoFactorEnabled: false });
+    const result = await lastValueFrom(service.generateTwoFactorSecret(user));
 
     expect(result.secret).toBe("some secret");
     expect(result.otpAuthUrl).toContain("some%20secret");
     expect(OTP.prototype.generateSecret).toHaveBeenCalled();
-    expect(mockUserRepo.assign).toHaveBeenCalledWith(loggedInUser, {
+    expect(mockUserRepo.assign).toHaveBeenCalledWith(user, {
       twoFactorSecret: "some secret",
     });
     expect(mockEm.flush).toHaveBeenCalled();
+  });
+
+  // Regression: /2fa/generate overwrote the secret of an already-enabled factor.
+  it("should refuse to replace the secret when two factor authentication is enabled", async () => {
+    const user = new User({ id: 1, isTwoFactorEnabled: true, twoFactorSecret: "existing" });
+
+    await expect(lastValueFrom(service.generateTwoFactorSecret(user))).rejects.toBeInstanceOf(
+      ConflictException,
+    );
+    expect(OTP.prototype.generateSecret).not.toHaveBeenCalled();
+    expect(mockUserRepo.assign).not.toHaveBeenCalled();
+    expect(mockEm.flush).not.toHaveBeenCalled();
+    expect(user.twoFactorSecret).toBe("existing");
   });
 
   // Regression: `from(toFileStream(...))` wrapped `undefined` and threw, so /2fa/generate was a 500.

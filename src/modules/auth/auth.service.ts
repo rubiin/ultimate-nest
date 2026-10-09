@@ -117,26 +117,39 @@ export class AuthService {
           );
         }
 
+        // The first factor alone must not grant access: hand out a partial token that can only be
+        // exchanged for the full pair at `POST /2fa/authenticate`.
         if (user.isTwoFactorEnabled) {
-          return this.tokenService.generateAccessToken(user).pipe(
-            map((accessToken) => {
-              return HelperService.buildPayloadResponse(user, accessToken);
-            }),
+          return this.tokenService.generateTwoFactorToken(user).pipe(
+            map((twoFactorToken) => ({
+              ...HelperService.buildPayloadResponse(user, twoFactorToken),
+              twoFactorRequired: true,
+            })),
           );
         }
 
-        return zip(
-          this.userRepository.nativeUpdate({ id: user.id }, { lastLogin: new Date() }),
-          this.tokenService.generateAccessToken(user),
-          this.tokenService.generateRefreshToken(
-            user,
-            this.configService.get("jwt.refreshExpiry", { infer: true }),
-          ),
-        ).pipe(
-          map(([_, accessToken, refreshToken]) => {
-            return HelperService.buildPayloadResponse(user, accessToken, refreshToken);
-          }),
-        );
+        return this.issueTokens(user);
+      }),
+    );
+  }
+
+  /**
+   * Issues the full access/refresh pair for a user whose authentication is complete (password or
+   * OAuth without 2FA, or a verified 2FA code) and records the login.
+   * @param user - The authenticated user.
+   * @returns An observable of type AuthenticationResponse
+   */
+  issueTokens(user: User): Observable<AuthenticationResponse> {
+    return zip(
+      this.userRepository.nativeUpdate({ id: user.id }, { lastLogin: new Date() }),
+      this.tokenService.generateAccessToken(user),
+      this.tokenService.generateRefreshToken(
+        user,
+        this.configService.get("jwt.refreshExpiry", { infer: true }),
+      ),
+    ).pipe(
+      map(([_, accessToken, refreshToken]) => {
+        return HelperService.buildPayloadResponse(user, accessToken, refreshToken);
       }),
     );
   }
@@ -425,9 +438,11 @@ export class AuthService {
   OauthHandler({ response, user }: { response: NestifyResponse; user: OauthResponse }) {
     return this.login({ email: user.email }, false).pipe(
       map((data) => {
-        // client url
+        // client url; a 2FA-enabled user gets the partial token and must call /2fa/authenticate
+        const twoFactor = data.twoFactorRequired ? "&twoFactorRequired=true" : "";
+
         return response.redirect(
-          `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
+          `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}${twoFactor}`,
         );
       }),
     );

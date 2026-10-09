@@ -43,6 +43,14 @@ describe("jwtStrategy", () => {
     expect(authService.findUser).not.toHaveBeenCalled();
   });
 
+  // The partial token issued after the first factor of a 2FA login must not reach @Auth() routes.
+  it("rejects a partial 2fa token", async () => {
+    await expect(strategy.validate({ ...basePayload, type: "2fa" })).rejects.toThrow(
+      UnauthorizedException,
+    );
+    expect(authService.findUser).not.toHaveBeenCalled();
+  });
+
   it("rejects a token without a type claim", async () => {
     await expect(strategy.validate(basePayload)).rejects.toThrow(UnauthorizedException);
     expect(authService.findUser).not.toHaveBeenCalled();

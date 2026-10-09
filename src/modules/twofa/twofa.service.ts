@@ -1,9 +1,10 @@
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
+import { translate } from "@lib/i18n";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { generateTOTP } from "@otplib/uri";
 import { OTP } from "otplib";
@@ -32,6 +33,18 @@ export class TwoFactorService {
    */
 
   generateTwoFactorSecret(user: User): Observable<{ secret: string; otpAuthUrl: string }> {
+    // Replacing the secret of an enabled factor would lock the user out of (or hand over) 2FA.
+    if (user.isTwoFactorEnabled) {
+      return throwError(
+        () =>
+          new ConflictException(
+            translate("exception.itemExists", {
+              args: { item: "Two factor authentication", property: "this account" },
+            }),
+          ),
+      );
+    }
+
     const secret = this.otp.generateSecret();
 
     const otpAuthUrl = generateTOTP({

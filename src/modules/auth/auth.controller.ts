@@ -17,7 +17,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ApiOperation } from "@nestjs/swagger";
+import { ApiOkResponse, ApiOperation } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { map } from "rxjs";
 
@@ -40,6 +40,13 @@ export class AuthController {
 
   @Post("login")
   @ApiOperation({ summary: "User Login" })
+  @ApiOkResponse({
+    type: AuthenticationResponse,
+    description:
+      "Full token pair. If the account has 2FA enabled, the response is instead " +
+      "`{ user, accessToken, twoFactorRequired: true }` with no refresh token: `accessToken` is a " +
+      "partial token valid for 5 minutes, accepted only by `POST /2fa/authenticate`.",
+  })
   login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {
     return this.authService.login(loginDto, true);
   }
