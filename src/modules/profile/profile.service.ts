@@ -39,10 +39,10 @@ export class ProfileService {
         {
           populate,
           populateWhere: {
-            favorites: { isActive: true, isDeleted: false },
-            followers: { isActive: true, isDeleted: false },
-            followed: { isActive: true, isDeleted: false },
-            posts: { isActive: true, isDeleted: false },
+            favorites: { isActive: true },
+            followers: { isActive: true },
+            followed: { isActive: true },
+            posts: { isActive: true },
           },
         },
       ),

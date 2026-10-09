@@ -131,6 +131,64 @@ describe("postService", () => {
     expect(result.favoritesCount).toBe(2);
   });
 
+  it("should delete a comment and flush the removal", async () => {
+    const comment = { id: 7, idx: "comment-idx" };
+    const comments = new Set<unknown>([comment]);
+
+    const post = {
+      ...mockedPost,
+      comments: {
+        contains: (c: unknown) => comments.has(c),
+        remove: (c: unknown) => comments.delete(c),
+      },
+      slug: "post-slug",
+    };
+
+    mockPostRepo.findOne.mockImplementation((async () => Promise.resolve(post)) as never);
+    mockCommentRepo.findOneOrFail.mockImplementation((async () =>
+      Promise.resolve(comment)) as never);
+    mockCommentRepo.getReference.mockImplementation((() => comment) as never);
+    mockEm.remove.mockImplementation(((entity: unknown) => {
+      comments.delete(entity);
+
+      return mockEm;
+    }) as never);
+    mockEm.flush.mockResolvedValue(undefined as never);
+
+    await lastValueFrom(service.deleteComment("post-slug", "comment-idx"));
+
+    expect(mockEm.remove).toHaveBeenCalled();
+    expect(mockEm.flush).toHaveBeenCalled();
+    expect(comments.size).toBe(0);
+  });
+
+  it("should surface a flush failure instead of silently reporting success", async () => {
+    const comment = { id: 7, idx: "comment-idx" };
+    const comments = new Set<unknown>([comment]);
+
+    const post = {
+      ...mockedPost,
+      comments: {
+        contains: (c: unknown) => comments.has(c),
+        remove: (c: unknown) => comments.delete(c),
+      },
+      slug: "post-slug",
+    };
+
+    mockPostRepo.findOne.mockImplementation((async () => Promise.resolve(post)) as never);
+    mockCommentRepo.findOneOrFail.mockImplementation((async () =>
+      Promise.resolve(comment)) as never);
+    mockCommentRepo.getReference.mockImplementation((() => comment) as never);
+    mockEm.remove.mockReturnValue(mockEm as never);
+    mockEm.flush.mockRejectedValue(new Error("constraint violation") as never);
+
+    // Building the flush observable without returning it means the caller gets
+    // `of(post)` back and the rejection is dropped on the floor.
+    await expect(lastValueFrom(service.deleteComment("post-slug", "comment-idx"))).rejects.toThrow(
+      "constraint violation",
+    );
+  });
+
   it("should edit post", async () => {
     mockPostRepo.assign.mockImplementation(((entity: Record<string, unknown>, data: object) =>
       Object.assign(entity, data)) as never);

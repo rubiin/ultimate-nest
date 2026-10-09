@@ -101,8 +101,6 @@ describe("userService", () => {
   });
 
   it("should edit user", async () => {
-    // `update` pipes through `uploadImage$`, which is only assigned when an image
-    // is supplied, so the call has to pass one.
     const result = await lastValueFrom(
       service.update("userId", { firstName: "updated" }, mockFile as never),
     );
@@ -113,6 +111,20 @@ describe("userService", () => {
       firstName: "updated",
       idx: "userId",
     });
+    expect(mockUserRepo.assign).toHaveBeenCalled();
+    expect(mockEm.flush).toHaveBeenCalled();
+  });
+
+  it("should edit user when no file is attached", async () => {
+    const result = await lastValueFrom(service.update("userId", { firstName: "updated" }));
+
+    expect(result).toMatchObject({
+      ...mockedUser,
+      firstName: "updated",
+      idx: "userId",
+    });
+    expect(result.avatar).toBe(mockedUser.avatar);
+    expect(mockCloudinaryService.uploadFile).not.toHaveBeenCalled();
     expect(mockUserRepo.assign).toHaveBeenCalled();
     expect(mockEm.flush).toHaveBeenCalled();
   });

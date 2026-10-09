@@ -1,5 +1,6 @@
 import process from "node:process";
 
+import { QueryFailedFilter } from "@common/filters";
 import { AppUtils, HelperService } from "@common/helpers";
 import { InternalDisabledLogger } from "@lib/pino/internal.logger";
 import { Logger, ValidationPipe } from "@nestjs/common";
@@ -78,7 +79,10 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe(AppUtils.validationPipeOptions()));
 
-  app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
+  app.useGlobalFilters(
+    new I18nValidationExceptionFilter({ detailedErrors: false }),
+    new QueryFailedFilter(),
+  );
 
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 

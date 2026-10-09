@@ -40,10 +40,10 @@ describe("profileService", () => {
         {
           populate: [],
           populateWhere: {
-            favorites: { isActive: true, isDeleted: false },
-            followed: { isActive: true, isDeleted: false },
-            followers: { isActive: true, isDeleted: false },
-            posts: { isActive: true, isDeleted: false },
+            favorites: { isActive: true },
+            followed: { isActive: true },
+            followers: { isActive: true },
+            posts: { isActive: true },
           },
         },
       );

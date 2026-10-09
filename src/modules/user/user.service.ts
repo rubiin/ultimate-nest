@@ -207,18 +207,13 @@ export class UserService {
    * @returns Observable<User>
    */
   update(index: string, dto: EditUserDto, image?: IFile): Observable<User> {
-    let uploadImage$: Observable<string>;
-
     return this.findOne(index).pipe(
       switchMap((user) => {
-        if (image) {
-          uploadImage$ = from(this.cloudinaryService.uploadFile(image)).pipe(
-            switchMap(({ url }) => {
-              const stringUrl = url as string;
-              return of(stringUrl);
-            }),
-          );
-        }
+        // `image` is optional, so the no-file path needs to fall through to a
+        // flush rather than to an undefined observable.
+        const uploadImage$: Observable<string | null> = image
+          ? from(this.cloudinaryService.uploadFile(image)).pipe(map(({ url }) => url as string))
+          : of(null);
 
         this.userRepository.assign(user, dto);
 
@@ -226,11 +221,7 @@ export class UserService {
           switchMap((url) => {
             if (url) user.avatar = url;
 
-            return from(this.userRepository.getEntityManager().flush()).pipe(
-              switchMap(() => {
-                return of(user);
-              }),
-            );
+            return from(this.userRepository.getEntityManager().flush()).pipe(map(() => user));
           }),
         );
       }),

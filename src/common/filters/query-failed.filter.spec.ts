@@ -23,15 +23,19 @@ describe("queryFailedFilter", () => {
     };
   };
 
+  const pgError = (message: string, fields: Record<string, string>) =>
+    Object.assign(new Error(message), fields);
+
   // These take the raw pg error as `previous` and copy its properties, mirroring
   // what `PostgreSqlExceptionConverter` hands to the driver.
   const buildUniqueViolation = () =>
-    new UniqueConstraintViolationException({
-      code: "23505",
-      constraint: "user_email_key",
-      message: 'duplicate key value violates unique constraint "user_email_key"',
-      table: "user",
-    });
+    new UniqueConstraintViolationException(
+      pgError('duplicate key value violates unique constraint "user_email_key"', {
+        code: "23505",
+        constraint: "user_email_key",
+        table: "user",
+      }),
+    );
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -65,12 +69,13 @@ describe("queryFailedFilter", () => {
     const { host, response, json } = buildHost();
 
     filter.catch(
-      new ForeignKeyConstraintViolationException({
-        code: "23503",
-        constraint: "post_author_id_foreign_key",
-        message: 'update or delete on table "post" violates foreign key constraint',
-        table: "post",
-      }),
+      new ForeignKeyConstraintViolationException(
+        pgError('update or delete on table "post" violates foreign key constraint', {
+          code: "23503",
+          constraint: "post_author_id_foreign_key",
+          table: "post",
+        }),
+      ),
       host as never,
     );
 
@@ -84,7 +89,7 @@ describe("queryFailedFilter", () => {
   it("should return 500 for a generic server exception", () => {
     const { host, response } = buildHost();
 
-    filter.catch(new ServerException("connection terminated"), host as never);
+    filter.catch(new ServerException(new Error("connection terminated")), host as never);
 
     expect(response.status).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
   });

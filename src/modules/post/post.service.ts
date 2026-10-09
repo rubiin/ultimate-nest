@@ -175,7 +175,7 @@ export class PostService {
         {
           populate: ["favorites"],
           populateWhere: {
-            favorites: { isActive: true, isDeleted: false },
+            favorites: { isActive: true },
           },
         },
       ),
@@ -213,7 +213,7 @@ export class PostService {
         {
           populate: ["favorites"],
           populateWhere: {
-            favorites: { isActive: true, isDeleted: false },
+            favorites: { isActive: true },
           },
         },
       ),
@@ -243,7 +243,7 @@ export class PostService {
         {
           populate: ["comments"],
           populateWhere: {
-            comments: { isActive: true, isDeleted: false },
+            comments: { isActive: true },
           },
         },
       ),
@@ -324,7 +324,8 @@ export class PostService {
 
         if (post.comments.contains(commentReference)) {
           post.comments.remove(commentReference);
-          from(this.em.remove(commentReference).flush()).pipe(map(() => post));
+
+          return from(this.em.remove(commentReference).flush()).pipe(map(() => post));
         }
 
         return of(post);
