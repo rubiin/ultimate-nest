@@ -47,7 +47,7 @@ export class ChatService {
 
       conversationExists.messages.add(messageNew);
 
-      await Promise.allSettled([this.em.persist(messageNew).flush(), this.em.flush()]);
+      await this.em.flush();
     } else {
       // `Message.conversation` is required, so the conversation has to exist
       // before the message. The owning side is enough for the ORM to fill the
@@ -63,10 +63,8 @@ export class ChatService {
         conversation: ref(conversationNew),
       });
 
-      await Promise.allSettled([
-        this.em.persist(messageNew).flush(),
-        this.em.persist(conversationNew).flush(),
-      ]);
+      this.em.persist([messageNew, conversationNew]);
+      await this.em.flush();
     }
   }
 
