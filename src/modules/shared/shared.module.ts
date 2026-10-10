@@ -1,4 +1,5 @@
 import { CustomThrottlerGuard } from "@common/guards";
+import { AppUtils } from "@common/helpers";
 import { ClearCacheInterceptor, HttpCacheInterceptor } from "@common/interceptors";
 import {
   NestCacheModule,
@@ -21,7 +22,8 @@ import { TagsModule } from "@modules/tags/tags.module";
 import { TwoFactorModule } from "@modules/twofa/twofa.module";
 import { UserModule } from "@modules/user/user.module";
 import { Module } from "@nestjs/common";
-import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
+import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
+import { I18nValidationPipe } from "@nestjs/i18n";
 
 @Module({
   imports: [
@@ -45,6 +47,10 @@ import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
     TwoFactorModule,
   ],
   providers: [
+    {
+      provide: APP_PIPE,
+      useValue: new I18nValidationPipe(AppUtils.validationPipeOptions()),
+    },
     {
       provide: APP_GUARD,
       useClass: CustomThrottlerGuard,

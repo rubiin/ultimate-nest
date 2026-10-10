@@ -3,7 +3,7 @@ import process from "node:process";
 import { OptimisticLockFilter, QueryFailedFilter } from "@common/filters";
 import { AppUtils, HelperService } from "@common/helpers";
 import { InternalDisabledLogger } from "@lib/pino/internal.logger";
-import { Logger, ValidationPipe } from "@nestjs/common";
+import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
@@ -11,7 +11,6 @@ import { ExpressAdapter } from "@nestjs/platform-express";
 import chalk from "chalk";
 import { useContainer } from "class-validator";
 import compression from "compression";
-import { I18nValidationExceptionFilter } from "nestjs-i18n";
 import { LoggerErrorInterceptor } from "nestjs-pino";
 
 import { AppModule } from "./modules/app.module";
@@ -90,13 +89,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix(globalPrefix);
 
-  app.useGlobalPipes(new ValidationPipe(AppUtils.validationPipeOptions()));
-
-  app.useGlobalFilters(
-    new I18nValidationExceptionFilter({ detailedErrors: false }),
-    new QueryFailedFilter(),
-    new OptimisticLockFilter(),
-  );
+  app.useGlobalFilters(new QueryFailedFilter(), new OptimisticLockFilter());
 
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 

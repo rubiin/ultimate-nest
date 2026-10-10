@@ -212,8 +212,8 @@ Two behaviours worth knowing, both pinned by `maintenance.middleware.spec.ts`:
 Not covered, deliberately: the four `WsException` sites (socket transport, no `HttpExceptionOptions`)
 and the three bare `throw new Error(...)` sites (not HTTP exceptions). `HttpExceptionFilter` and
 `QueryFailedFilter` in `src/common/filters/` also drop `errorCode`, but neither is registered anywhere
-in `src/` — the global handler is nestjs-i18n's `I18nValidationExceptionFilter`, which only handles
-validation errors and passes everything else to Nest's default filter.
+in `src/` — validation errors are translated by `@nestjs/i18n`'s `I18nValidationPipe`, so there is no global handler:
+everything else goes to Nest's default filter.
 
 **21. `@nestjs/observe`.** Official observability SDK via the `instrument` app option. Worth weighing
 against the current sentry setup (`@ntegral/nestjs-sentry`, `@sentry/node`, `@sentry/hub`,

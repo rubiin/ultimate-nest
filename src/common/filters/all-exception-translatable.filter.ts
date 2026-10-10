@@ -1,6 +1,6 @@
 import { ArgumentsHost, ExceptionFilter } from "@nestjs/common";
 import { Catch, HttpException } from "@nestjs/common";
-import { I18nContext } from "nestjs-i18n";
+import { I18nKey, t } from "@nestjs/i18n";
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -8,16 +8,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = host.switchToHttp().getResponse<NestifyResponse>();
     const statusCode = exception.getStatus();
 
-    let message = exception.getResponse() as {
-      key: string;
+    const { key, args } = exception.getResponse() as {
+      key: I18nKey;
       args: Record<string, any>;
     };
 
-    message = I18nContext.current()!.t(message.key, {
-      args: message.args,
-      lang: host.switchToHttp().getRequest<NestifyRequest>().i18nLang,
-    });
-
-    response.status(statusCode).json({ message, statusCode });
+    response.status(statusCode).json({ message: t(key, { args }), statusCode });
   }
 }

@@ -7,7 +7,6 @@ import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { isArray } from "helper-fns";
-import { i18nValidationErrorFactory } from "nestjs-i18n";
 import { getMiddleware } from "swagger-stats";
 
 import { HelperService } from "./helpers.utils";
@@ -107,7 +106,6 @@ export const AppUtils = {
       // Custom param decorators only read server-side values (the logged-in user entity, headers).
       validateCustomDecorators: false,
       enableDebugMessages: HelperService.isDev(),
-      exceptionFactory: i18nValidationErrorFactory,
     };
   },
 };
