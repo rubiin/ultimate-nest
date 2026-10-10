@@ -1,4 +1,4 @@
-import { Type } from "@nestjs/common";
+import { HttpStatus, Type } from "@nestjs/common";
 import { applyDecorators } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 
@@ -21,10 +21,12 @@ export function SwaggerResponse(options_: SwaggerResponseOptions) {
   }
 
   if (options?.badRequest)
-    decsToApply.push(ApiResponse({ description: options.badRequest, status: 400 }));
+    decsToApply.push(
+      ApiResponse({ description: options.badRequest, status: HttpStatus.BAD_REQUEST }),
+    );
 
   if (options?.notFound)
-    decsToApply.push(ApiResponse({ description: options.notFound, status: 404 }));
+    decsToApply.push(ApiResponse({ description: options.notFound, status: HttpStatus.NOT_FOUND }));
 
   if (options?.body) decsToApply.push(ApiBody({ type: options.body }));
 

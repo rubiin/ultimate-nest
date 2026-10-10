@@ -1,3 +1,4 @@
+import { MS_PER_SECOND } from "@common/constant";
 import { User } from "@entities";
 import { RefreshToken } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
@@ -24,10 +25,9 @@ export class RefreshTokensRepository {
   createRefreshToken(user: User, ttl: number): Observable<RefreshToken> {
     const expiration = new Date();
 
-    // the input is treated as millis so *1000 is necessary
-    const ttlSeconds = ttl * 1000; // seconds
+    const ttlMs = ttl * MS_PER_SECOND;
 
-    expiration.setTime(expiration.getTime() + ttlSeconds);
+    expiration.setTime(expiration.getTime() + ttlMs);
 
     const token = this.refreshTokenRepository.create({
       expiresIn: expiration,

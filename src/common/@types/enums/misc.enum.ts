@@ -1,4 +1,5 @@
 export const BYTE_TO_MB = 1024 * 1024;
+export const BYTE_TO_GB = 1024 * BYTE_TO_MB;
 
 export const FileSize = {
   DOC: 10 * BYTE_TO_MB, // 10MB

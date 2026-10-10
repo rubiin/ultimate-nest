@@ -1,4 +1,5 @@
 import { JwtPayload, TokenType } from "@common/@types";
+import { TWO_FACTOR_TOKEN_EXPIRY_MINUTES } from "@common/constant";
 import { RefreshToken } from "@entities";
 import { User } from "@entities";
 import { translate } from "@lib/i18n";
@@ -14,8 +15,7 @@ import { catchError, from, map, mergeMap, of, switchMap, throwError, zip } from 
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
-/** Time a user has to enter the TOTP code after the first factor. */
-const TWO_FACTOR_TOKEN_EXPIRY = "5m";
+const TWO_FACTOR_TOKEN_EXPIRY = `${TWO_FACTOR_TOKEN_EXPIRY_MINUTES}m` as const;
 
 @Injectable()
 export class TokensService {

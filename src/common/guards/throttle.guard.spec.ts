@@ -1,6 +1,8 @@
-import { THROTTLE_LIMIT_RESPONSE } from "@common/constant";
+import { translate } from "@lib/i18n";
 
 import { CustomThrottlerGuard } from "./throttle.guard";
+
+vi.mock("@lib/i18n", () => ({ translate: vi.fn<(key: string) => string>(() => "translated") }));
 
 describe("customThrottlerGuard", () => {
   let guard: CustomThrottlerGuard;
@@ -49,9 +51,12 @@ describe("customThrottlerGuard", () => {
     await expect(getTracker()(buildRequest([]))).rejects.toThrow("Unable to get IP address");
   });
 
-  it("should expose the shared throttler error message", () => {
-    expect((guard as unknown as { errorMessage: string }).errorMessage).toEqual(
-      THROTTLE_LIMIT_RESPONSE,
-    );
+  it("should translate the throttler error message", async () => {
+    const message = await (
+      guard as unknown as { getErrorMessage(): Promise<string> }
+    ).getErrorMessage();
+
+    expect(translate).toHaveBeenCalledWith("exception.tooManyRequests");
+    expect(message).toBe("translated");
   });
 });

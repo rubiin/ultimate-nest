@@ -2,7 +2,12 @@ import process from "node:process";
 
 import { AuthenticationResponse, OauthResponse } from "@common/@types";
 import { BaseRepository } from "@common/database";
-import { ERROR_CODES } from "@common/constant";
+import {
+  DEFAULT_OTP_EXPIRY_MINUTES,
+  ERROR_CODES,
+  MS_PER_MINUTE,
+  OTP_LENGTH,
+} from "@common/constant";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
@@ -208,11 +213,12 @@ export class AuthService {
           }),
         ).pipe(
           switchMap((protocol) => {
-            const otpNumber = init({ length: 6 })(); // random six digit otp
+            const otpNumber = init({ length: OTP_LENGTH })();
 
             const otp = this.otpRepository.create({
               expiresIn: new Date(
-                Date.now() + (protocol?.otpExpiryInMinutes ?? 5) * 60_000, // prettier-ignore
+                Date.now() +
+                  (protocol?.otpExpiryInMinutes ?? DEFAULT_OTP_EXPIRY_MINUTES) * MS_PER_MINUTE,
               ),
               otpCode: otpNumber,
               user: userExists,

@@ -1,3 +1,4 @@
+import { BYTE_TO_GB, BYTE_TO_MB } from "@common/@types";
 import { GenericController } from "@common/decorators";
 import { HelperService } from "@common/helpers";
 import { Get } from "@nestjs/common";
@@ -10,6 +11,11 @@ import {
   MikroOrmHealthIndicator,
 } from "@nestjs/terminus";
 import { HealthCheck, type HealthIndicatorFunction } from "@nestjs/terminus";
+
+const HEAP_THRESHOLD_BYTES = 200 * BYTE_TO_MB;
+const RSS_THRESHOLD_BYTES = 3000 * BYTE_TO_MB;
+const DISK_THRESHOLD_PERCENT = 0.5;
+const DISK_THRESHOLD_BYTES = 250 * BYTE_TO_GB;
 
 @GenericController("health", false)
 export class HealthController {
@@ -42,14 +48,17 @@ export class HealthController {
           `${base}/${this.configService.get("app.prefix", { infer: true })}/health/test`,
         ),
       async () => this.databaseHealth.pingCheck("mikroOrm"),
-      async () => this.memory.checkHeap("memory_heap", 200 * 1024 * 1024),
-      async () => this.memory.checkRSS("memory_rss", 3000 * 1024 * 1024),
+      async () => this.memory.checkHeap("memory_heap", HEAP_THRESHOLD_BYTES),
+      async () => this.memory.checkRSS("memory_rss", RSS_THRESHOLD_BYTES),
       async () =>
-        this.disk.checkStorage("disk usage percent", { path: "/", thresholdPercent: 0.5 }),
+        this.disk.checkStorage("disk usage percent", {
+          path: "/",
+          thresholdPercent: DISK_THRESHOLD_PERCENT,
+        }),
       async () =>
         this.disk.checkStorage("disk usage bytes", {
           path: "/",
-          threshold: 250 * 1024 * 1024 * 1024,
+          threshold: DISK_THRESHOLD_BYTES,
         }),
     ];
 

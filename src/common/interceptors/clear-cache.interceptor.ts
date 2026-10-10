@@ -1,5 +1,5 @@
 import { CacheService } from "@lib/cache";
-import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
+import { CallHandler, ExecutionContext, HttpStatus, NestInterceptor } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
 import { concat, from, Observable, of } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
@@ -45,7 +45,11 @@ export class ClearCacheInterceptor implements NestInterceptor {
   private clearIfMutation(context: ExecutionContext, response: NestifyResponse): Observable<void> {
     const request = context.switchToHttp().getRequest<NestifyRequest>();
 
-    if (request.method !== "GET" && response.statusCode >= 200 && response.statusCode < 300) {
+    if (
+      request.method !== "GET" &&
+      response.statusCode >= HttpStatus.OK &&
+      response.statusCode < HttpStatus.AMBIGUOUS
+    ) {
       return from(this.cacheService.resetCache()).pipe(map(() => undefined));
     }
 

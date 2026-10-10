@@ -1,5 +1,5 @@
 import { FileValidator } from "@common/@types";
-import { FileSize, FileType } from "@common/@types";
+import { BYTE_TO_MB, FileSize, FileType } from "@common/@types";
 import { CustomUploadFileTypeValidator } from "@common/decorators";
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 
@@ -26,7 +26,7 @@ export function fileValidatorPipe({
     )
     .addMaxSizeValidator({
       maxSize: fileSize,
-      message: (maxSize) => `File size should be less than ${Math.round(maxSize / 1024 / 1024)} MB`,
+      message: (maxSize) => `File size should be less than ${Math.round(maxSize / BYTE_TO_MB)} MB`,
     })
     .build({
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
