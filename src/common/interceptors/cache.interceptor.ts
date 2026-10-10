@@ -20,17 +20,15 @@ export class HttpCacheInterceptor extends CacheInterceptor {
 @Injectable()
 export class CacheKeyInterceptor extends CacheInterceptor {
   trackBy(context: ExecutionContext): string | undefined {
-    const httpAdapter = this.httpAdapterHost.httpAdapter;
-    const isHttpApp = httpAdapter && httpAdapter.getRequestMethod;
     const cacheMetadata = this.reflector.get<string>(CACHE_KEY_METADATA, context.getHandler());
-
     const request = context.getArgByIndex<NestifyRequest>(0);
-    const userId = request.user!.idx;
 
-    if (!isHttpApp || cacheMetadata) return `${cacheMetadata}_${userId}`;
+    if (cacheMetadata) return cacheMetadata;
 
     if (!this.isRequestCacheable(context)) return undefined;
 
-    return `${httpAdapter.getRequestUrl(request)}_${userId}`;
+    // `CacheInterceptor` declares `httpAdapterHost` but never assigns it, so reading it
+    // threw. The request already carries the path and query string.
+    return `${request.originalUrl ?? request.url}`;
   }
 }
