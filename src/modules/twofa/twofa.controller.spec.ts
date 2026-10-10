@@ -24,6 +24,8 @@ describe("twoFactorController", () => {
   });
 
   // Regression: `login(user, true)` ran the password check without a password and always failed.
+  const client = { ipAddress: "203.0.113.7", userAgent: "Firefox" };
+
   it("should issue the full pair for a valid code without a password login", async () => {
     const pair = {
       accessToken: "access",
@@ -33,11 +35,11 @@ describe("twoFactorController", () => {
     twoFactorService.isTwoFactorCodeValid.mockReturnValue(of(true));
     authService.issueTokens.mockReturnValue(of(pair));
 
-    await expect(lastValueFrom(controller.authenticate(user, { code: "123456" }))).resolves.toBe(
-      pair,
-    );
+    await expect(
+      lastValueFrom(controller.authenticate(user, { code: "123456" }, client)),
+    ).resolves.toBe(pair);
     expect(twoFactorService.isTwoFactorCodeValid).toHaveBeenCalledWith("123456", user);
-    expect(authService.issueTokens).toHaveBeenCalledWith(user);
+    expect(authService.issueTokens).toHaveBeenCalledWith(user, client);
     expect(authService.login).not.toHaveBeenCalled();
   });
 

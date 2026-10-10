@@ -1,5 +1,6 @@
+import type { ClientInfo } from "@common/@types";
 import { AuthenticationResponse } from "@common/@types";
-import { Auth, GenericController, LoggedInUser } from "@common/decorators";
+import { Auth, Client, GenericController, LoggedInUser } from "@common/decorators";
 import { User } from "@entities";
 import { translate } from "@lib/i18n";
 import { AuthService } from "@modules/auth/auth.service";
@@ -53,6 +54,7 @@ export class TwoFactorController {
     @LoggedInUser() user: User,
     @Body()
     twoFaAuthDto: TwofaDto,
+    @Client() client: ClientInfo,
   ): Observable<AuthenticationResponse> {
     return this.twoFactorAuthenticationService.isTwoFactorCodeValid(twoFaAuthDto.code, user).pipe(
       switchMap((isCodeValid) => {
@@ -61,7 +63,7 @@ export class TwoFactorController {
             () => new UnauthorizedException(translate("exception.invalidTwoFaCode")),
           );
 
-        return this.authService.issueTokens(user);
+        return this.authService.issueTokens(user, client);
       }),
     );
   }

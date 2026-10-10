@@ -13,7 +13,7 @@ import {
   refreshTokenPayload,
 } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
-import { UnauthorizedException } from "@nestjs/common";
+import { NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { TestingModule } from "@nestjs/testing";
@@ -106,6 +106,24 @@ describe("tokensService", () => {
       UnauthorizedException,
     );
     expect(service.generateAccessToken).not.toHaveBeenCalled();
+  });
+
+  describe("sessions", () => {
+    it("should revoke a session of the user", async () => {
+      mockRefreshTokenRepo.revokeUserToken.mockReturnValue(of(true));
+
+      await lastValueFrom(service.revokeSession(loggedInUser, "idx-1"));
+
+      expect(mockRefreshTokenRepo.revokeUserToken).toHaveBeenCalledWith(loggedInUser, "idx-1");
+    });
+
+    it("should 404 when the session is missing, revoked or someone else's", async () => {
+      mockRefreshTokenRepo.revokeUserToken.mockReturnValue(of(false));
+
+      await expect(
+        lastValueFrom(service.revokeSession(loggedInUser, "idx-1")),
+      ).rejects.toBeInstanceOf(NotFoundException);
+    });
   });
 
   it("should delete all refresh token for user", () => {

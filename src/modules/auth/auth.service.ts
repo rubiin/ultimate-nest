@@ -1,6 +1,6 @@
 import process from "node:process";
 
-import { AuthenticationResponse, OauthResponse, OtpPurpose } from "@common/@types";
+import { AuthenticationResponse, ClientInfo, OauthResponse, OtpPurpose } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import {
   DEFAULT_OTP_EXPIRY_MINUTES,
@@ -110,10 +110,15 @@ export class AuthService {
    * @param loginDto - UserLoginDto - This is the DTO that we created earlier.
    * @param isPasswordLogin - boolean - This is a boolean value that tells the function whether
    * the user is logging in with a password or oauth
+   * @param client - IP address and user agent recorded on the session
    * @returns An observable of type IAuthenticationResponse
    */
 
-  login(loginDto: UserLoginDto, isPasswordLogin: boolean): Observable<AuthenticationResponse> {
+  login(
+    loginDto: UserLoginDto,
+    isPasswordLogin: boolean,
+    client?: ClientInfo,
+  ): Observable<AuthenticationResponse> {
     return this.validateUser(isPasswordLogin, loginDto.email, loginDto.password).pipe(
       switchMap((user: User) => {
         if (user === null) {
@@ -133,7 +138,7 @@ export class AuthService {
           );
         }
 
-        return this.issueTokens(user);
+        return this.issueTokens(user, client);
       }),
     );
   }
@@ -142,15 +147,17 @@ export class AuthService {
    * Issues the full access/refresh pair for a user whose authentication is complete (password or
    * OAuth without 2FA, or a verified 2FA code) and records the login.
    * @param user - The authenticated user.
+   * @param client - IP address and user agent recorded on the session.
    * @returns An observable of type AuthenticationResponse
    */
-  issueTokens(user: User): Observable<AuthenticationResponse> {
+  issueTokens(user: User, client?: ClientInfo): Observable<AuthenticationResponse> {
     return zip(
       this.userRepository.nativeUpdate({ id: user.id }, { lastLogin: new Date() }),
       this.tokenService.generateAccessToken(user),
       this.tokenService.generateRefreshToken(
         user,
         this.configService.get("jwt.refreshExpiry", { infer: true }),
+        client,
       ),
     ).pipe(
       map(([_, accessToken, refreshToken]) => {
@@ -420,8 +427,16 @@ export class AuthService {
    * with the access token.
    * @returns a redirect response to a client URL with an access token as a query parameter.
    */
-  OauthHandler({ response, user }: { response: NestifyResponse; user: OauthResponse }) {
-    return this.login({ email: user.email }, false).pipe(
+  OauthHandler({
+    client,
+    response,
+    user,
+  }: {
+    client?: ClientInfo;
+    response: NestifyResponse;
+    user: OauthResponse;
+  }) {
+    return this.login({ email: user.email }, false, client).pipe(
       map((data) => {
         // client url; a 2FA-enabled user gets the partial token and must call /2fa/authenticate
         const twoFactor = data.twoFactorRequired ? "&twoFactorRequired=true" : "";

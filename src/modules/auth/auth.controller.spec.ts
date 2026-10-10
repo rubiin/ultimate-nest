@@ -8,6 +8,7 @@ import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 
 describe("AuthController", () => {
+  const client = { ipAddress: "203.0.113.7", userAgent: "Firefox" };
   const authService = createMock<AuthService>();
   const tokenService = createMock<TokensService>();
   const controller = new AuthController(authService, tokenService);
@@ -18,9 +19,9 @@ describe("AuthController", () => {
     const dto = { email: "test@example.com", password: "Password@1234" };
     authService.login.mockReturnValue(of({} as never));
 
-    controller.login(dto);
+    controller.login(dto, client);
 
-    expect(authService.login).toHaveBeenCalledWith(dto, true);
+    expect(authService.login).toHaveBeenCalledWith(dto, true, client);
   });
 
   it("should return the rotated token pair in the login response shape", async () => {
@@ -29,13 +30,61 @@ describe("AuthController", () => {
       of({ accessToken: "new-access", refreshToken: "new-refresh", user }),
     );
 
-    const result = await lastValueFrom(controller.refresh({ refreshToken: "old-refresh" }));
+    const result = await lastValueFrom(controller.refresh({ refreshToken: "old-refresh" }, client));
 
-    expect(tokenService.rotateRefreshToken).toHaveBeenCalledWith("old-refresh");
+    expect(tokenService.rotateRefreshToken).toHaveBeenCalledWith("old-refresh", client);
     expect(result).toStrictEqual({
       accessToken: "new-access",
       refresh_token: "new-refresh",
       user: { id: 1, idx: "some-idx" },
+    });
+  });
+
+  describe("sessions", () => {
+    const user = new User({ id: 1, idx: "some-idx" });
+
+    it("should list active sessions without leaking internal ids", async () => {
+      tokenService.listSessions.mockReturnValue(
+        of([
+          {
+            createdAt: new Date("2026-01-01"),
+            expiresIn: new Date("2026-02-01"),
+            id: 5,
+            idx: "session-idx",
+            ipAddress: "203.0.113.7",
+            userAgent: "Firefox",
+            user,
+          },
+        ] as never),
+      );
+
+      const result = await lastValueFrom(controller.sessions(user));
+
+      expect(result).toStrictEqual([
+        {
+          createdAt: new Date("2026-01-01"),
+          expiresIn: new Date("2026-02-01"),
+          id: "session-idx",
+          ipAddress: "203.0.113.7",
+          userAgent: "Firefox",
+        },
+      ]);
+    });
+
+    it("should revoke one session", async () => {
+      tokenService.revokeSession.mockReturnValue(of(undefined));
+
+      await lastValueFrom(controller.revokeSession(user, "session-idx"));
+
+      expect(tokenService.revokeSession).toHaveBeenCalledWith(user, "session-idx");
+    });
+
+    it("should revoke every session", async () => {
+      authService.logoutFromAll.mockReturnValue(of(user as never));
+
+      await lastValueFrom(controller.revokeAllSessions(user));
+
+      expect(authService.logoutFromAll).toHaveBeenCalledWith(user);
     });
   });
 
