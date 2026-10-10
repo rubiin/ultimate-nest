@@ -1,4 +1,4 @@
-import { RoutingKey } from "@common/@types";
+import { JwtPayload, RoutingKey } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { NewsLetter, Subscriber } from "@entities";
@@ -6,27 +6,30 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { BaseService } from "@lib/crud/crud.service";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { JwtService } from "@nestjs/jwt";
 import { MikroORM, RequestContext } from "@mikro-orm/core";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { Observable } from "rxjs";
-import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
+import { catchError, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 import { SubscribeNewsletterDto } from "./dto";
-import { capitalize } from "helper-fns";
+import type { NewsLetterMessage } from "./newsletter.message";
+
+const UNSUBSCRIBE_LINK_EXPIRY = "365d";
 
 @Injectable()
 export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationDto> {
   protected readonly queryName = "t"; // the name of the query used in the pagination
   protected readonly searchField = "name"; // the field to search for when searching for tags
   constructor(
-    // @ts-expect-error: Unused import error
     @InjectRepository(NewsLetter) private newsLetterRepository: BaseRepository<NewsLetter>,
     @InjectRepository(Subscriber) private subscriberRepository: BaseRepository<Subscriber>,
     private readonly amqpConnection: AmqpConnection,
     private readonly configService: ConfigService<Configs, true>,
     private readonly orm: MikroORM,
+    private readonly jwtService: JwtService,
   ) {
     super(newsLetterRepository);
   }
@@ -38,24 +41,77 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
     return RequestContext.create(this.orm.em, async () => this.publishNewsLetter());
   }
 
+  /**
+   * Queues every newsletter that has not been dispatched to every subscriber, then stamps it
+   * `sentAt`. A newsletter whose publishes did not all succeed stays unstamped and is retried on
+   * the next run; the consumer skips recipients it already mailed.
+   */
   private async publishNewsLetter() {
-    const subscribers = await this.subscriberRepository.findAll({});
-    const link = this.configService.get("app.clientUrl", { infer: true });
-    const promises = [];
+    const newsLetters = await this.newsLetterRepository.find({ sentAt: null });
 
-    for (const subscriber of subscribers) {
-      promises.push(
-        this.amqpConnection.publish(
-          this.configService.get("rabbitmq.exchange", { infer: true }),
-          RoutingKey.SEND_NEWSLETTER,
-          {
-            to: subscriber.email,
-            data: { firstName: capitalize(subscriber.email), link },
-          },
+    if (newsLetters.length === 0) return;
+
+    const subscribers = await this.subscriberRepository.findAll({});
+
+    if (subscribers.length === 0) return;
+
+    for (const newsLetter of newsLetters) {
+      const results = await Promise.allSettled(
+        subscribers.map(async (subscriber) =>
+          this.amqpConnection.publish(
+            this.configService.get("rabbitmq.exchange", { infer: true }),
+            RoutingKey.SEND_NEWSLETTER,
+            {
+              newsLetterIdx: newsLetter.idx!,
+              subscriberIdx: subscriber.idx!,
+            } satisfies NewsLetterMessage,
+          ),
         ),
       );
+
+      if (results.every((result) => result.status === "fulfilled")) newsLetter.sentAt = new Date();
     }
-    await Promise.allSettled(promises);
+
+    await this.newsLetterRepository.getEntityManager().flush();
+  }
+
+  /**
+   * Signed link a subscriber can follow, without logging in, to unsubscribe. It lives a year so
+   * old emails keep working.
+   * @param subscriber - The subscriber the link is for.
+   */
+  async unsubscribeUrl(subscriber: Subscriber): Promise<string> {
+    const token = await this.jwtService.signAsync(
+      { type: "unsubscribe" satisfies NonNullable<JwtPayload["type"]> },
+      { expiresIn: UNSUBSCRIBE_LINK_EXPIRY, subject: subscriber.idx! },
+    );
+    const url = this.configService.get("app.url", { infer: true });
+    const prefix = this.configService.get("app.prefix", { infer: true });
+
+    return `${url}/${prefix}/newsletter/unsubscribe/${token}`;
+  }
+
+  /**
+   * Unsubscribes the subscriber named by a link from `unsubscribeUrl`. Following it twice is fine.
+   * @param token - The token from the link.
+   * @throws BadRequestException when the token is invalid, expired or not an unsubscribe token.
+   */
+  unSubscribeWithToken(token: string): Observable<{ message: string }> {
+    return from(this.jwtService.verifyAsync<{ sub?: string; type?: string }>(token)).pipe(
+      catchError(() =>
+        throwError(() => new BadRequestException(translate("exception.badRequest"))),
+      ),
+      switchMap((payload) => {
+        if (payload.type !== "unsubscribe" || !payload.sub)
+          return throwError(() => new BadRequestException(translate("exception.badRequest")));
+
+        return from(this.subscriberRepository.findOne({ idx: payload.sub }));
+      }),
+      switchMap((subscriber) =>
+        subscriber ? this.subscriberRepository.softRemoveAndFlush(subscriber) : of(null),
+      ),
+      map(() => ({ message: "You have been unsubscribed" })),
+    );
   }
 
   /**

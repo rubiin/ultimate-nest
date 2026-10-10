@@ -13,7 +13,6 @@ const requiredCredentials = {
 
 export const mailConfigValidationSchema = z
   .object({
-    MAIL_BCC_LIST: envString().optional(),
     MAIL_HOST: envString().optional(),
     MAIL_PASSWORD: envString().optional(),
     MAIL_PORT: envPort().optional(),
@@ -48,7 +47,6 @@ export const mail = registerAs("mail", () => ({
   type: process.env.MAIL_SERVER,
   // The raw env value is a string, and "false" is truthy, so it has to be parsed.
   previewEmail: z.stringbool().catch(false).parse(process.env.MAIL_PREVIEW_EMAIL),
-  bccList: process.env?.MAIL_BCC_LIST?.split(",") ?? [],
   templateDir: process.env.MAIL_TEMPLATE_DIR,
   senderEmail: process.env.MAIL_SENDER_EMAIL,
   sesKey: process.env.MAIL_SES_KEY,

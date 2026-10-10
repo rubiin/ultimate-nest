@@ -13,7 +13,7 @@ import {
 import { Test } from "@nestjs/testing";
 
 import { mailTransport } from "./mail.module";
-import { ResetPasswordMail, VerifyEmailMail, WelcomeMail } from "./mails";
+import { NewsletterMail, ResetPasswordMail, VerifyEmailMail, WelcomeMail } from "./mails";
 
 const configWith = (values: Record<string, unknown>) =>
   ({ get: (key: string) => values[key] }) as unknown as ConfigService<Configs, true>;
@@ -34,7 +34,7 @@ describe("mails", () => {
           from: "Nestify <no-reply@example.com>",
         }),
       ],
-      providers: [ResetPasswordMail, VerifyEmailMail, WelcomeMail],
+      providers: [NewsletterMail, ResetPasswordMail, VerifyEmailMail, WelcomeMail],
     }).compile();
 
     await module.init();
@@ -70,6 +70,27 @@ describe("mails", () => {
     expect(mail.html).toContain("Hello Ada!");
     expect(mail.html).toContain("<strong>654321</strong>");
     expect(mail.html).not.toContain("{{");
+  });
+
+  it("renders the newsletter with an escaped body and an unsubscribe link", async () => {
+    await mailer.send(NewsletterMail, {
+      to: "ada@example.com",
+      data: {
+        content: "Hello <b>there</b>",
+        subject: "October news",
+        unsubscribeUrl: "https://api.example.com/v1/newsletter/unsubscribe/token",
+      },
+    });
+
+    const mail = mailbox.assertSent({ to: "ada@example.com", subject: "October news" });
+
+    expect(mail.html).toContain("Hello &lt;b&gt;there&lt;/b&gt;");
+    expect(mail.link("/newsletter/unsubscribe").href).toBe(
+      "https://api.example.com/v1/newsletter/unsubscribe/token",
+    );
+    expect(mail.headers["List-Unsubscribe"]).toBe(
+      "<https://api.example.com/v1/newsletter/unsubscribe/token>",
+    );
   });
 
   it("renders the welcome mail with the client link", async () => {

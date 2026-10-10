@@ -261,7 +261,6 @@ describe("configValidationSchema", () => {
     JWT_ACCESS_EXPIRY: "15m",
     JWT_REFRESH_EXPIRY: "7d",
     JWT_SECRET: "jwt-secret",
-    MAGIC_LINK_EXPIRY: "10m",
     RABBITMQ_DEFAULT_PREFETCH: "10",
     RABBITMQ_EXCHANGE: "ultimate-nest",
     RABBITMQ_URI: "amqp://user:pass@localhost:5672",

@@ -16,6 +16,11 @@ export enum OtpPurpose {
   VERIFY_EMAIL = "VERIFY_EMAIL",
 }
 
+export enum NewsLetterLogStatus {
+  SENT = "SENT",
+  FAILED = "FAILED",
+}
+
 export const FileType: Record<keyof typeof FileSize, string[]> = {
   DOC: ["pdf", "doc", "txt", "key", "csv", "docx", "xls", "xlsx", "ppt", "pptx"],
   IMAGE: ["jpg", "jpeg", "png", "svg", "webp", "gif", "svg"],
@@ -33,6 +38,7 @@ export const RoutingKey = {
 export const Queues = {
   HTTP: "http",
   MAIL: "mail",
+  NEWSLETTER: "newsletter",
 };
 
 // database enums

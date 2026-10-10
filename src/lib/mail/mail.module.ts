@@ -10,9 +10,9 @@ import {
   SmtpTransport,
 } from "@nestjs/mail";
 
-import { ResetPasswordMail, VerifyEmailMail, WelcomeMail } from "./mails";
+import { NewsletterMail, ResetPasswordMail, VerifyEmailMail, WelcomeMail } from "./mails";
 
-const mails = [ResetPasswordMail, VerifyEmailMail, WelcomeMail];
+const mails = [NewsletterMail, ResetPasswordMail, VerifyEmailMail, WelcomeMail];
 
 export const mailTransport = (config: ConfigService<Configs, true>): MailTransport => {
   // Preview writes `.eml` files instead of sending, so a dev box never reaches a real inbox.

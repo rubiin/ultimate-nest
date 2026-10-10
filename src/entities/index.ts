@@ -5,6 +5,7 @@ export * from "./category.entity";
 export * from "./comment.entity";
 export * from "./conversation.entity";
 export * from "./message.entity";
+export * from "./news-letter-log.entity";
 export * from "./news-letter.entity";
 export * from "./otp-log.entity";
 export * from "./post.entity";
