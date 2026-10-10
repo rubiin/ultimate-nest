@@ -68,6 +68,20 @@ declare global {
       SENTRY_DSN: string;
       SENTRY_ENVIRONMENT: string;
 
+      STRIPE_API_KEY: string;
+      STRIPE_ACCOUNT: string;
+      STRIPE_CONNECT: string;
+
+      TWILIO_ACCOUNT_SID: string;
+      TWILIO_AUTH_TOKEN: string;
+      TWILIO_FROM: string;
+
+      MINIO_HOST: string;
+      MINIO_PORT: string;
+      MINIO_ACCESS_KEY: string;
+      MINIO_SECRET_KEY: string;
+      MINIO_USE_SSL: string;
+
       GOOGLE_CLIENT_ID: string;
       GOOGLE_CLIENT_SECRET: string;
       GOOGLE_CALLBACK_URL: string;

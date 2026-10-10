@@ -296,4 +296,30 @@ describe("configValidationSchema", () => {
       }).sort(),
     ).toEqual(["REDIS_TTL", "THROTTLE_LIMIT"]);
   });
+
+  describe("optional integrations (stripe/sentry/twilio/minio)", () => {
+    it("accepts an env where none of the four integrations are configured", () => {
+      expect(configValidationSchema.safeParse(validEnv).success).toBe(true);
+    });
+
+    it("rejects an empty value when an optional integration is partially set", () => {
+      expect(issuesFor(configValidationSchema, { ...validEnv, STRIPE_API_KEY: "" })).toEqual([
+        "STRIPE_API_KEY",
+      ]);
+      expect(issuesFor(configValidationSchema, { ...validEnv, TWILIO_ACCOUNT_SID: "" })).toEqual([
+        "TWILIO_ACCOUNT_SID",
+      ]);
+    });
+
+    it("still type-checks the fields when the values are present", () => {
+      expect(
+        issuesFor(configValidationSchema, {
+          ...validEnv,
+          MINIO_PORT: "not-a-port",
+          MINIO_USE_SSL: "maybe",
+          SENTRY_DSN: "",
+        }).sort(),
+      ).toEqual(["MINIO_PORT", "MINIO_USE_SSL", "SENTRY_DSN"]);
+    });
+  });
 });
