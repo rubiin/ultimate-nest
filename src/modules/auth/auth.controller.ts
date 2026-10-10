@@ -1,5 +1,6 @@
 import type { OauthResponse } from "@common/@types";
 import { AuthenticationResponse } from "@common/@types";
+import { TWO_FACTOR_TOKEN_EXPIRY_MINUTES } from "@common/constant";
 import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
@@ -46,7 +47,8 @@ export class AuthController {
     description:
       "Full token pair. If the account has 2FA enabled, the response is instead " +
       "`{ user, accessToken, twoFactorRequired: true }` with no refresh token: `accessToken` is a " +
-      "partial token valid for 5 minutes, accepted only by `POST /2fa/authenticate`.",
+      `partial token valid for ${TWO_FACTOR_TOKEN_EXPIRY_MINUTES} minutes, accepted only by ` +
+      "`POST /2fa/authenticate`.",
     type: AuthenticationResponse,
   })
   login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {

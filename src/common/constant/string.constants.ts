@@ -3,10 +3,7 @@ import { capitalize, getPackageJson } from "helper-fns";
 export const REQUEST_ID_TOKEN_HEADER = "x-request-id";
 export const VERSION_VALIDATION_MESSAGE = 'Version must start with "v" followed by a number.';
 
-// TODO: Move messages to a i18n file
-
-export const THROTTLE_LIMIT_RESPONSE = "Too many requests, please try again later.";
-export const MULTER_IMAGE_FILTER = "Only image files are allowed!.";
+// Swagger metadata is static documentation, so it cannot be translated per request.
 export const API_UNAUTHORISED_RESPONSE = "No auth token in request.";
 
 // swagger constants

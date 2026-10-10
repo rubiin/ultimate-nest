@@ -24,6 +24,7 @@ import { UserModule } from "@modules/user/user.module";
 import { Module } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { I18nValidationPipe } from "@nestjs/i18n";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { I18nValidationPipe } from "@nestjs/i18n";
     UserModule,
     TagsModule,
     TwoFactorModule,
+    ScheduleModule.forRoot(),
   ],
   providers: [
     {
