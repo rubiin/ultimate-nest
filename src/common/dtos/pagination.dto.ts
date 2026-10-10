@@ -1,6 +1,6 @@
 import { IsDateField, IsStringField, ToBoolean } from "@common/decorators";
 import { IsBoolean, IsOptional } from "class-validator";
-import { i18nValidationMessage } from "nestjs-i18n";
+import { i18nValidationMessage } from "@nestjs/i18n";
 
 export abstract class PaginationDto {
   /**

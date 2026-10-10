@@ -1,18 +1,11 @@
-import { I18nTranslations } from "@generated";
-import { Path, TranslateOptions } from "nestjs-i18n";
-import { I18nContext, i18nValidationMessage } from "nestjs-i18n";
+import { I18nKey, I18nTranslateOptions, i18nValidationMessage, t } from "@nestjs/i18n";
 
-export const itemDoesNotExistKey: Path<I18nTranslations> = "exception.itemDoesNotExist";
+export const itemDoesNotExistKey: I18nKey = "exception.itemDoesNotExist";
 
-export function translate(key: Path<I18nTranslations>, options: TranslateOptions = {}) {
-  const i18nContext = I18nContext.current<I18nTranslations>();
-
-  if (i18nContext) return i18nContext.t(key, options);
-
-  // Handle the case when i18nContext is undefined
-  return ""; // or throw an error, return a default value, etc.
+export function translate(key: I18nKey, options: I18nTranslateOptions = {}) {
+  return t(key, options);
 }
 
-export function validationI18nMessage(key: Path<I18nTranslations>, arguments_?: any) {
+export function validationI18nMessage(key: I18nKey, arguments_?: Record<string, unknown>) {
   return i18nValidationMessage(key, arguments_);
 }

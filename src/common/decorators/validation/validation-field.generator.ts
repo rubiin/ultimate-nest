@@ -13,7 +13,7 @@ import {
   Min,
 } from "class-validator";
 import { enumToString } from "helper-fns";
-import { i18nValidationMessage } from "nestjs-i18n";
+import { i18nValidationMessage } from "@nestjs/i18n";
 
 import { Sanitize, Trim } from "./transform.decorator";
 

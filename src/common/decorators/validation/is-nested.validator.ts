@@ -11,7 +11,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Class } from "helper-fns";
-import { i18nValidationMessage } from "nestjs-i18n";
+import { i18nValidationMessage } from "@nestjs/i18n";
 
 /**
  * It's a decorator that validates a string field
