@@ -54,6 +54,47 @@ describe("refreshTokensRepository", () => {
     });
   });
 
+  it("should record the caller's ip and a truncated user agent on the token", async () => {
+    mockRefreshRepo.create.mockImplementation(((data: object) => data) as never);
+    mockEm.persist.mockReturnValue(mockEm);
+    mockEm.flush.mockResolvedValue(undefined);
+
+    await lastValueFrom(
+      service.createRefreshToken(loggedInUser, 1000, {
+        ipAddress: "203.0.113.7",
+        userAgent: "x".repeat(600),
+      }),
+    );
+
+    expect(mockRefreshRepo.create).toHaveBeenCalledWith(
+      expect.objectContaining({ ipAddress: "203.0.113.7", userAgent: "x".repeat(512) }),
+    );
+  });
+
+  it("should list only unexpired, unrevoked tokens of the user, newest first", async () => {
+    mockRefreshRepo.find.mockResolvedValue([refreshToken] as never);
+
+    const result = await lastValueFrom(service.findActiveTokensForUser(loggedInUser));
+
+    expect(result).toStrictEqual([refreshToken]);
+    expect(mockRefreshRepo.find).toHaveBeenCalledWith(
+      { expiresIn: { $gt: expect.any(Date) }, isRevoked: false, user: loggedInUser },
+      { orderBy: { createdAt: "desc" } },
+    );
+  });
+
+  it("should only revoke an active token owned by the user", async () => {
+    mockRefreshRepo.nativeUpdate.mockReset().mockResolvedValue(0 as never);
+
+    await expect(lastValueFrom(service.revokeUserToken(loggedInUser, "idx-1"))).resolves.toBe(
+      false,
+    );
+    expect(mockRefreshRepo.nativeUpdate).toHaveBeenCalledWith(
+      { idx: "idx-1", isRevoked: false, user: loggedInUser },
+      { isRevoked: true },
+    );
+  });
+
   it("should delete  token", () => {
     service.deleteToken(loggedInUser, 11).subscribe((result) => {
       expect(result).toStrictEqual(true);

@@ -403,14 +403,16 @@ describe("authService", () => {
     it("should issue the full pair and record the login", async () => {
       const user = buildUser(true);
 
-      const result = await lastValueFrom(service.issueTokens(user));
+      const client = { ipAddress: "203.0.113.7", userAgent: "Firefox" };
+
+      const result = await lastValueFrom(service.issueTokens(user, client));
 
       expect(result).toStrictEqual({
         accessToken: "access-token",
         refresh_token: "refresh-token",
         user: { id: 7, idx: "user-7" },
       });
-      expect(mockTokenService.generateRefreshToken).toHaveBeenCalledWith(user, 3600);
+      expect(mockTokenService.generateRefreshToken).toHaveBeenCalledWith(user, 3600, client);
       expect(mockUserRepo.nativeUpdate).toHaveBeenCalledWith(
         { id: 7 },
         { lastLogin: expect.any(Date) },

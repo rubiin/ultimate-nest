@@ -3,6 +3,7 @@
 export * from "./api-file.decorator";
 export * from "./api-paginated.decorator";
 export * from "./auth.decorator";
+export * from "./client-info.decorator";
 export * from "./client-timezone.decorator";
 export * from "./controller.decorator";
 export * from "./custom-cache.decorator";

@@ -15,6 +15,12 @@ export class RefreshToken extends BaseEntity {
   })
   user!: Rel<Ref<User>>;
 
+  @Property({ length: 45, nullable: true })
+  ipAddress?: string;
+
+  @Property({ length: 512, nullable: true })
+  userAgent?: string;
+
   @Property({ index: true })
   isRevoked: boolean & Opt = false;
 

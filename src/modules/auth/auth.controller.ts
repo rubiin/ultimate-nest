@@ -1,7 +1,15 @@
 import type { OauthResponse } from "@common/@types";
+import type { ClientInfo } from "@common/@types";
 import { AuthenticationResponse } from "@common/@types";
 import { TWO_FACTOR_TOKEN_EXPIRY_MINUTES } from "@common/constant";
-import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import {
+  Auth,
+  Client,
+  GenericController,
+  LoggedInUser,
+  SwaggerResponse,
+  UUIDParam,
+} from "@common/decorators";
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
@@ -10,6 +18,7 @@ import {
   Body,
   BadRequestException,
   DefaultValuePipe,
+  Delete,
   Get,
   ParseBoolPipe,
   Patch,
@@ -31,6 +40,7 @@ import {
   RefreshTokenDto,
   ResetPasswordDto,
   SendOtpDto,
+  SessionResponseDto,
   UserLoginDto,
 } from "./dtos";
 
@@ -51,8 +61,11 @@ export class AuthController {
       "`POST /2fa/authenticate`.",
     type: AuthenticationResponse,
   })
-  login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {
-    return this.authService.login(loginDto, true);
+  login(
+    @Body() loginDto: UserLoginDto,
+    @Client() client: ClientInfo,
+  ): Observable<AuthenticationResponse> {
+    return this.authService.login(loginDto, true, client);
   }
 
   @Post("reset-password")
@@ -87,8 +100,9 @@ export class AuthController {
     @LoggedInUser()
     user: OauthResponse,
     @Res() response: NestifyResponse,
+    @Client() client: ClientInfo,
   ) {
-    return this.authService.OauthHandler({ response, user });
+    return this.authService.OauthHandler({ client, response, user });
   }
 
   @Get("facebook")
@@ -103,8 +117,9 @@ export class AuthController {
     @LoggedInUser()
     user: OauthResponse,
     @Res() response: NestifyResponse,
+    @Client() client: ClientInfo,
   ) {
-    return this.authService.OauthHandler({ response, user });
+    return this.authService.OauthHandler({ client, response, user });
   }
 
   // this simulates a frontend url for testing oauth login
@@ -135,9 +150,12 @@ export class AuthController {
 
   @ApiOperation({ summary: "Refresh token" })
   @Post("token/refresh")
-  refresh(@Body() body: RefreshTokenDto): Observable<AuthenticationResponse> {
+  refresh(
+    @Body() body: RefreshTokenDto,
+    @Client() client: ClientInfo,
+  ): Observable<AuthenticationResponse> {
     return this.tokenService
-      .rotateRefreshToken(body.refreshToken)
+      .rotateRefreshToken(body.refreshToken, client)
       .pipe(
         map(({ user, accessToken, refreshToken }) =>
           HelperService.buildPayloadResponse(user, accessToken, refreshToken),
@@ -165,5 +183,29 @@ export class AuthController {
       );
 
     return this.authService.logout(user, refreshToken.refreshToken);
+  }
+
+  @Auth()
+  @ApiOperation({ summary: "List active sessions (refresh tokens) with device and IP" })
+  @ApiOkResponse({ type: [SessionResponseDto] })
+  @Get("sessions")
+  sessions(@LoggedInUser() user: User): Observable<SessionResponseDto[]> {
+    return this.tokenService
+      .listSessions(user)
+      .pipe(map((tokens) => tokens.map((token) => SessionResponseDto.from(token))));
+  }
+
+  @Auth()
+  @ApiOperation({ summary: "Log out everywhere: revoke all of the user's sessions" })
+  @Delete("sessions")
+  revokeAllSessions(@LoggedInUser() user: User): Observable<void> {
+    return this.authService.logoutFromAll(user).pipe(map(() => {}));
+  }
+
+  @Auth()
+  @SwaggerResponse({ notFound: "Session doesn't exist.", operation: "Revoke one session" })
+  @Delete("sessions/:id")
+  revokeSession(@LoggedInUser() user: User, @UUIDParam("id") id: string): Observable<void> {
+    return this.tokenService.revokeSession(user, id);
   }
 }

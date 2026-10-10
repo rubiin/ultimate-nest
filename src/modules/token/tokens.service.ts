@@ -1,11 +1,11 @@
-import { JwtPayload, TokenType } from "@common/@types";
+import { ClientInfo, JwtPayload, TokenType } from "@common/@types";
 import { TWO_FACTOR_TOKEN_EXPIRY_MINUTES } from "@common/constant";
 import { RefreshToken } from "@entities";
 import { User } from "@entities";
-import { translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityRepository } from "@mikro-orm/postgresql";
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "helper-fns";
@@ -71,10 +71,11 @@ export class TokensService {
    * It creates a refresh token in the database, then signs it with JWT
    * @param user - User - The user object that we want to generate a token for.
    * @param expiresIn - number - The number of seconds the token will be valid for.
+   * @param client - IP address and user agent of the caller.
    * @returns A string
    */
-  generateRefreshToken(user: User, expiresIn: number): Observable<string> {
-    return this.refreshTokenRepo.createRefreshToken(user, expiresIn).pipe(
+  generateRefreshToken(user: User, expiresIn: number, client?: ClientInfo): Observable<string> {
+    return this.refreshTokenRepo.createRefreshToken(user, expiresIn, client).pipe(
       switchMap((token) => {
         const options: JwtSignOptions = {
           ...this.BASE_OPTIONS,
@@ -147,10 +148,12 @@ export class TokensService {
    * Rotates a refresh token: revokes the presented one and issues a new access/refresh pair, so a
    * refresh token is single-use.
    * @param refresh - string - The refresh token that was sent to the client.
+   * @param client - IP address and user agent of the caller, recorded on the new token.
    * @returns The user with the new access and refresh tokens.
    */
   rotateRefreshToken(
     refresh: string,
+    client?: ClientInfo,
   ): Observable<{ user: User; accessToken: string; refreshToken: string }> {
     return this.resolveRefreshToken(refresh).pipe(
       switchMap(({ user, token }) =>
@@ -173,6 +176,7 @@ export class TokensService {
               this.generateRefreshToken(
                 user,
                 this.configService.get("jwt.refreshExpiry", { infer: true }),
+                client,
               ),
             ).pipe(map(([accessToken, refreshToken]) => ({ accessToken, refreshToken, user })));
           }),
@@ -221,6 +225,31 @@ export class TokensService {
     return this.refreshTokenRepo.deleteTokensForUser(user).pipe(
       map(() => {
         return user;
+      }),
+    );
+  }
+
+  /**
+   * Lists the user's active sessions.
+   * @param user - The logged in user.
+   */
+  listSessions(user: User): Observable<RefreshToken[]> {
+    return this.refreshTokenRepo.findActiveTokensForUser(user);
+  }
+
+  /**
+   * Revokes a single session of the user.
+   * @param user - The logged in user.
+   * @param idx - The public id of the session (refresh token) to revoke.
+   * @throws NotFoundException when the session does not exist, is not the user's, or is revoked
+   */
+  revokeSession(user: User, idx: string): Observable<void> {
+    return this.refreshTokenRepo.revokeUserToken(user, idx).pipe(
+      map((revoked) => {
+        if (!revoked)
+          throw new NotFoundException(
+            translate(itemDoesNotExistKey, { args: { item: "Session" } }),
+          );
       }),
     );
   }
