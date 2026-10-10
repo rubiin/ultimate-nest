@@ -42,7 +42,9 @@ export const mail = registerAs("mail", () => ({
   username: process.env.MAIL_USERNAME,
   password: process.env.MAIL_PASSWORD,
   host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT ?? +process.env.MAIL_PORT,
+  // `?? +` never fell through: `+"undefined"` is `NaN`, not `undefined`, so an
+  // unset MAIL_PORT produced NaN instead of staying absent.
+  port: process.env.MAIL_PORT ? +process.env.MAIL_PORT : undefined,
   type: process.env.MAIL_SERVER,
   previewEmail: process.env.MAIL_PREVIEW_EMAIL,
   bccList: process.env?.MAIL_BCC_LIST?.split(",") ?? [],

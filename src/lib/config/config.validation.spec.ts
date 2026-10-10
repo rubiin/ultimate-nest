@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { configValidationSchema } from "./config.validation";
 import { appConfigValidationSchema } from "./configs/app.config";
-import { mailConfigValidationSchema } from "./configs/mail.config";
+import { mail, mailConfigValidationSchema } from "./configs/mail.config";
 
 const validAppEnv = {
   API_URL: "http://localhost:3000/api",
@@ -142,6 +142,31 @@ describe("mailConfigValidationSchema", () => {
     expect(issuesFor(mailConfigValidationSchema, { ...smtpEnv, MAIL_PASSWORD: "" })).toEqual([
       "MAIL_PASSWORD",
     ]);
+  });
+});
+
+describe("mail config factory", () => {
+  const originalEnv = process.env.MAIL_PORT;
+
+  afterEach(() => {
+    if (originalEnv === undefined) delete process.env.MAIL_PORT;
+    else process.env.MAIL_PORT = originalEnv;
+  });
+
+  it("coerces a set MAIL_PORT to a number", () => {
+    process.env.MAIL_PORT = "465";
+
+    expect(mail()).toMatchObject({ port: 465 });
+  });
+
+  // Regression: `process.env.MAIL_PORT ?? +process.env.MAIL_PORT` never fell through —
+  // `+"undefined"` is `NaN`, so an unset port reached the mailer as `NaN` rather than absent.
+  it("leaves the port undefined when MAIL_PORT is unset instead of yielding NaN", () => {
+    delete process.env.MAIL_PORT;
+
+    const { port } = mail();
+
+    expect(port).toBeUndefined();
   });
 });
 
