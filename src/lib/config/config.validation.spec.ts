@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { configValidationSchema } from "./config.validation";
 import { appConfigValidationSchema } from "./configs/app.config";
+import { databaseConfigValidationSchema } from "./configs/database.config";
 import { mail, mailConfigValidationSchema } from "./configs/mail.config";
 
 const validAppEnv = {
@@ -185,6 +186,30 @@ describe("mail config factory", () => {
     const { port } = mail();
 
     expect(port).toBeUndefined();
+  });
+});
+
+describe("databaseConfigValidationSchema", () => {
+  const validDbEnv = {
+    DB_DATABASE: "ultimate_nest",
+    DB_HOST: "localhost",
+    DB_PASSWORD: "db-password",
+    DB_PORT: "5432",
+    DB_USERNAME: "db-user",
+  };
+
+  it("accepts the documented database env", () => {
+    expect(databaseConfigValidationSchema.safeParse(validDbEnv).success).toBe(true);
+  });
+
+  it("validates the per-process pool bounds", () => {
+    expect(databaseConfigValidationSchema.parse(validDbEnv).DB_POOL_MAX).toBe(10);
+    expect(
+      databaseConfigValidationSchema.parse({ ...validDbEnv, DB_POOL_MAX: "25" }).DB_POOL_MAX,
+    ).toBe(25);
+    expect(issuesFor(databaseConfigValidationSchema, { ...validDbEnv, DB_POOL_MAX: "0" })).toEqual([
+      "DB_POOL_MAX",
+    ]);
   });
 });
 

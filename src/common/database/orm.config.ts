@@ -44,5 +44,8 @@ export const baseOptions = {
   loadStrategy: LoadStrategy.BALANCED,
   entityRepository: BaseRepository,
   registerRequestContext: true,
-  pool: { min: 2, max: 10 },
+  pool: {
+    min: +(process.env.DB_POOL_MIN ?? 2),
+    max: +(process.env.DB_POOL_MAX ?? 10),
+  },
 };
