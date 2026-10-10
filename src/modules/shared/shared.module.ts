@@ -22,7 +22,6 @@ import { TwoFactorModule } from "@modules/twofa/twofa.module";
 import { UserModule } from "@modules/user/user.module";
 import { Module } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
-import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
@@ -44,7 +43,6 @@ import { ScheduleModule } from "@nestjs/schedule";
     UserModule,
     TagsModule,
     TwoFactorModule,
-    ScheduleModule.forRoot(),
   ],
   providers: [
     {
