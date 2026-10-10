@@ -228,8 +228,9 @@ Carried over from the audit, unrelated to the guide:
 
 - Re-run `pnpm test:e2e` against a live database. It has never been run, so `useSecurityHeaders()`,
   the 10mb body limit and the route conflict policy are only compile- and unit-checked.
-- Register `minio`, `sentry`, `stripe` and `twilio` in `configValidationSchema`. Those four schemas
-  are exported but never composed in, so they are dead validation.
+- ~~Register `minio`, `sentry`, `stripe` and `twilio` in `configValidationSchema`~~ — done; all
+  four are registered in `load` and composed in with optional fields, so unset integrations boot
+  while empty values are rejected.
 - Decide on `CrudController` (`src/lib/crud/crud.controller.ts:73`) — exported, never extended.
 - Guard `AppUtils.killAppWithGrace` (`src/common/helpers/app.utils.ts:50`) against a second signal
   re-entering `app.close()`, and reconsider the hard 5s `process.exit(1)` that truncates teardowns.
