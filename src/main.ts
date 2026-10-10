@@ -41,6 +41,10 @@ async function bootstrap() {
 
   app.set("query parser", "extended");
 
+  // `InternalDisabledLogger` is only the bootstrap logger; without this, every service
+  // `Logger.log` kept writing to stdout while requests went to the Pino files.
+  app.useLogger(app.get(Logger));
+
   const configService = app.get(ConfigService<Configs, true>);
 
   // =========================================================
