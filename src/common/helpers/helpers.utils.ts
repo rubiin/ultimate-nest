@@ -38,14 +38,15 @@ export const HelperService = {
 the string "dev". It returns `true` if the environment is set to development, and `false` otherwise.
 This function is used to determine if the application is running in a development environment. */
   isDev(): boolean {
-    return process.env.NODE_ENV.startsWith("dev");
+    return process.env.NODE_ENV?.startsWith("dev") ?? false;
   },
 
   /* The `isProd()` function is checking if the value of the `NODE_ENV` environment variable starts with
 the string "prod". It returns `true` if the environment is set to production, and `false` otherwise.
-This function is used to determine if the application is running in a production environment. */
+This function is used to determine if the application is running in a production environment.
+`orm.config.ts` evaluates it at import time, so an unset NODE_ENV must not throw here. */
   isProd(): boolean {
-    return process.env.NODE_ENV.startsWith("prod");
+    return process.env.NODE_ENV?.startsWith("prod") ?? false;
   },
 
   /* The `getAppRootDir()` function is used to determine the root directory of the application. It starts
