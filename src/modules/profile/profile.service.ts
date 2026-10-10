@@ -79,7 +79,7 @@ export class ProfileService {
       return throwError(() => new BadRequestException(translate("exception.usernameRequired")));
     }
 
-    return this.getProfileByUsername(usernameToFollow, ["followers"]).pipe(
+    return this.getProfileByUsername(usernameToFollow).pipe(
       switchMap((followingUser) => {
         if (loggedInUser.username === usernameToFollow) {
           return throwError(
@@ -87,15 +87,23 @@ export class ProfileService {
           );
         }
 
-        followingUser.followers.add(loggedInUser);
-
         const profile: ProfileData = {
           following: true,
           avatar: followingUser.avatar,
           username: followingUser.username,
         };
 
-        return from(this.em.flush()).pipe(map(() => profile));
+        // `followers` is left unpopulated, so the relation goes straight into the pivot.
+        // That pivot is keyed on (follower, following), so re-following would now raise a
+        // unique violation instead of silently no-opping; this bounded check keeps the
+        // idempotency without loading every follower row.
+        return this.userRepository.exists({ id: followingUser.id, followers: loggedInUser }).pipe(
+          switchMap((alreadyFollowing) => {
+            if (!alreadyFollowing) followingUser.followers.add(loggedInUser);
+
+            return from(this.em.flush()).pipe(map(() => profile));
+          }),
+        );
       }),
     );
   }
