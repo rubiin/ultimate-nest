@@ -1,5 +1,5 @@
 import { User } from "@entities";
-import { Injectable } from "@nestjs/common";
+import { Injectable, OnModuleDestroy } from "@nestjs/common";
 import { WsException } from "@nestjs/websockets";
 
 interface SocketConnection {
@@ -8,7 +8,7 @@ interface SocketConnection {
 }
 
 @Injectable()
-export class SocketConnectionService {
+export class SocketConnectionService implements OnModuleDestroy {
   private readonly socketConnections = new Map<string, User>();
 
   getAllOnlineUSers() {
@@ -19,16 +19,14 @@ export class SocketConnectionService {
     return this.socketConnections.set(connection.socketId, connection.connectedUser);
   }
 
+  // The scan had no `break`, so it returned the *last* match: a user with several tabs
+  // resolved to whichever socket connected most recently.
   findByUserId(id: number) {
-    let user;
-
-    for (const value of this.socketConnections.values()) {
-      if (value.id === id) user = value;
+    for (const user of this.socketConnections.values()) {
+      if (user.id === id) return user;
     }
 
-    if (!user) throw new WsException("User not found");
-
-    return user;
+    throw new WsException("User not found");
   }
 
   findBySocketId(id: string) {
@@ -40,5 +38,9 @@ export class SocketConnectionService {
 
   deleteBySocketId(id: string) {
     return this.socketConnections.delete(id);
+  }
+
+  onModuleDestroy() {
+    this.socketConnections.clear();
   }
 }
