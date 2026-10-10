@@ -1,6 +1,5 @@
 import { HelperService } from "@common/helpers";
 import { LoadStrategy } from "@mikro-orm/postgresql";
-import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { Logger, NotFoundException } from "@nestjs/common";
 
@@ -36,8 +35,9 @@ export const baseOptions = {
     pathTs: undefined, // path to the folder with TS seeders (if used, we should put path to compiled files in `path`)
   },
   logger: logger.log.bind(logger),
-  metadataProvider: TsMorphMetadataProvider,
-  // Without this, TsMorphMetadataProvider re-analyses the whole AST on every boot.
+  // Metadata resolution belongs in the CLI config only (TsMorphMetadataProvider re-builds
+  // the whole TS program on every boot). The runtime app uses MikroORM's default
+  // IndexedPrimaryKeyProvider, which reflects off the compiled entities.
   metadataCache: { enabled: true },
   highlighter: new SqlHighlighter(),
   debug: !HelperService.isProd(),

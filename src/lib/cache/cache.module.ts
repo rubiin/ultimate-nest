@@ -14,6 +14,9 @@ import { CacheService } from "./cache.service";
       inject: [ConfigService],
       isGlobal: true,
       useFactory: async (configService: ConfigService<Configs, true>) => ({
+        // Entries expire instead of living until the next wipe. A short default keeps
+        // per-user replay exposure bounded even when a route forgets @CacheTTL.
+        ttl: 5 * 60 * 1000,
         store: createKeyv(configService.getOrThrow("redis", { infer: true })),
       }),
     }),

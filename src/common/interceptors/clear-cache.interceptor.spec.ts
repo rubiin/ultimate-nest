@@ -79,4 +79,19 @@ describe("clearCacheInterceptor", () => {
 
     expect(mockCacheService.resetCache).not.toHaveBeenCalled();
   });
+
+  // Regression: the previous version used `tap` with a discarded `from(resetCache())`, so a
+  // cache-clear failure was never awaited and became an unhandled rejection while the handler
+  // still returned 200. `switchMap` now propagates the clear failure.
+  it("should propagate a cache-clear failure instead of swallowing it", async () => {
+    mockCacheService.resetCache.mockRejectedValue(new Error("redis went away"));
+
+    await expect(
+      lastValueFrom(
+        interceptor.intercept(buildContext("POST", 201) as never, {
+          handle: () => of({ ok: true }),
+        }),
+      ),
+    ).rejects.toThrow("redis went away");
+  });
 });

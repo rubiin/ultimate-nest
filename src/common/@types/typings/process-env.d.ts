@@ -92,6 +92,10 @@ declare global {
 
       THROTTLE_LIMIT: string;
       THROTTLE_TTL: number;
+
+      // Optional token that must accompany ?clearCache=true in production so an anonymous
+      // request cannot wipe the whole cache (audit item #1).
+      CACHE_CLEAR_TOKEN?: string;
     }
   }
 }
