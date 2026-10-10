@@ -16,6 +16,8 @@ export const appConfigValidationSchema = z.object({
   APP_NAME: envString(),
   CLIENT_URL: z.url(),
   ALLOWED_HOSTS: envString().optional(),
+  // `allowedOrigins` reads this, so it is what the config must validate.
+  ALLOWED_ORIGINS: envString().optional(),
   SWAGGER_USER: envString(),
   SWAGGER_PASSWORD: envString(),
   TZ: z.string().refine(isValidTimeZone, "Invalid timezone, please provide a valid timezone"),
@@ -29,7 +31,9 @@ export const app = registerAs("app", () => ({
   url: process.env.API_URL,
   name: process.env.APP_NAME,
   clientUrl: process.env.CLIENT_URL,
-  allowedOrigins: process.env?.ALLOWED_ORIGINS?.split(",") ?? "*",
+  // Absent stays absent: a "*" default here would be paired with `credentials: true`,
+  // which browsers reject and which would otherwise allow any origin.
+  allowedOrigins: process.env?.ALLOWED_ORIGINS?.split(",").filter(Boolean),
   swagger: {
     username: process.env.SWAGGER_USER,
     password: process.env.SWAGGER_PASSWORD,

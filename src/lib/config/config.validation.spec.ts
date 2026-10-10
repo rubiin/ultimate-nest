@@ -75,6 +75,13 @@ describe("appConfigValidationSchema", () => {
     expect(issuesFor(appConfigValidationSchema, { ...validAppEnv, ...override })).not.toEqual([]);
   });
 
+  it("validates ALLOWED_ORIGINS, the variable the config actually reads", () => {
+    expect(
+      appConfigValidationSchema.safeParse({ ...validAppEnv, ALLOWED_ORIGINS: "http://a.test" })
+        .success,
+    ).toBe(true);
+  });
+
   it("reports the shared version message for a bad APP_PREFIX", () => {
     const result = appConfigValidationSchema.safeParse({ ...validAppEnv, APP_PREFIX: "1" });
 

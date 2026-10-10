@@ -62,11 +62,15 @@ async function bootstrap() {
   if (!HelperService.isProd()) {
     app.use(compression());
     app.useSecurityHeaders();
+    const allowedOrigins = configService.get("app.allowedOrigins", { infer: true }) ?? [];
+
     app.enableCors({
       credentials: true,
       methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
       maxAge: 3600,
-      origin: configService.get("app.allowedOrigins", { infer: true }),
+      // An unset list blocks cross-origin rather than falling back to "*", which
+      // `credentials: true` forbids anyway.
+      origin: allowedOrigins,
     });
   }
 
@@ -124,7 +128,7 @@ async function bootstrap() {
   logger.log(`==========================================================`);
   logger.log(
     `🚦 Accepting request only from: ${chalk.green(
-      `${configService.get("app.allowedOrigins", { infer: true }).toString()}`,
+      `${configService.get("app.allowedOrigins", { infer: true })?.join(", ") || "no origins"}`,
     )}`,
   );
 
