@@ -13,16 +13,22 @@ describe("AuthGuard errorCode", () => {
       switchToHttp: () => ({ getRequest: () => ({ headers: { authorization } }) }),
     });
 
-  it("reports a missing authorization header", () => {
-    expect(() => guard.canActivate(contextWithHeader(undefined))).toThrow(UnauthorizedException);
-
+  const thrownBy = (fn: () => unknown) => {
     try {
-      guard.canActivate(contextWithHeader(undefined));
+      fn();
     } catch (error) {
-      expect((error as UnauthorizedException).getResponse()).toMatchObject({
-        errorCode: ERROR_CODES.AUTH_TOKEN_MISSING,
-      });
+      return error;
     }
+    throw new Error("expected function to throw");
+  };
+
+  it("reports a missing authorization header", () => {
+    const error = thrownBy(() => guard.canActivate(contextWithHeader(undefined)));
+
+    expect(error).toBeInstanceOf(UnauthorizedException);
+    expect((error as UnauthorizedException).getResponse()).toMatchObject({
+      errorCode: ERROR_CODES.AUTH_TOKEN_MISSING,
+    });
   });
 
   it("reports a malformed token", () => {
@@ -30,16 +36,11 @@ describe("AuthGuard errorCode", () => {
       throw new Error("jwt malformed");
     });
 
-    expect(() => guard.canActivate(contextWithHeader("Bearer nope"))).toThrow(
-      UnauthorizedException,
-    );
+    const error = thrownBy(() => guard.canActivate(contextWithHeader("Bearer nope")));
 
-    try {
-      guard.canActivate(contextWithHeader("Bearer nope"));
-    } catch (error) {
-      expect((error as UnauthorizedException).getResponse()).toMatchObject({
-        errorCode: ERROR_CODES.TOKEN_MALFORMED,
-      });
-    }
+    expect(error).toBeInstanceOf(UnauthorizedException);
+    expect((error as UnauthorizedException).getResponse()).toMatchObject({
+      errorCode: ERROR_CODES.TOKEN_MALFORMED,
+    });
   });
 });

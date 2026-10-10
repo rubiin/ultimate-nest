@@ -278,8 +278,8 @@ describe("baseRepository", () => {
 
   describe("exists", () => {
     const stubQueryBuilder = (count: number) => {
-      const getCount = vi.fn().mockResolvedValue(count);
-      const where = vi.fn().mockReturnValue({ getCount });
+      const getCount = vi.fn<() => Promise<number>>().mockResolvedValue(count);
+      const where = vi.fn<() => { getCount: typeof getCount }>().mockReturnValue({ getCount });
       const qb = vi.spyOn(userRepo, "qb").mockReturnValue({ where } as never);
 
       return { getCount, qb, where };
@@ -344,16 +344,16 @@ describe("baseRepository", () => {
     // which is the inverse of the filter's enabled state.
     const stubQueryBuilder = () => {
       const qb = {
-        andWhere: vi.fn(),
-        applyFilters: vi.fn().mockResolvedValue(undefined),
-        getResultAndCount: vi.fn().mockResolvedValue([[], 0]),
-        leftJoinAndSelect: vi.fn(),
-        limit: vi.fn(),
+        andWhere: vi.fn<() => unknown>(),
+        applyFilters: vi.fn<() => Promise<void>>().mockResolvedValue(undefined),
+        getResultAndCount: vi.fn<() => Promise<[unknown[], number]>>().mockResolvedValue([[], 0]),
+        leftJoinAndSelect: vi.fn<() => unknown>(),
+        limit: vi.fn<() => unknown>(),
         mainAlias: { meta: { properties: properties } },
-        offset: vi.fn(),
-        orderBy: vi.fn(),
-        select: vi.fn(),
-        where: vi.fn(),
+        offset: vi.fn<() => unknown>(),
+        orderBy: vi.fn<() => unknown>(),
+        select: vi.fn<() => unknown>(),
+        where: vi.fn<() => unknown>(),
       };
 
       qb.select.mockReturnValue(qb);

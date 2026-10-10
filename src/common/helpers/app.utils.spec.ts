@@ -9,7 +9,8 @@ class Account {
 }
 
 describe("AppUtils.gracefulShutdown", () => {
-  const stubApp = () => ({ close: vi.fn().mockResolvedValue(undefined) }) as never;
+  const stubApp = () =>
+    ({ close: vi.fn<() => Promise<void>>().mockResolvedValue(undefined) }) as never;
 
   beforeEach(() => {
     AppUtils.isShuttingDown = false;
@@ -26,7 +27,7 @@ describe("AppUtils.gracefulShutdown", () => {
   // Regression: `enableShutdownHooks()` and `killAppWithGrace()` both registered SIGINT/SIGTERM
   // listeners, so one signal closed the app twice.
   it("should register exactly one listener per signal", () => {
-    const app = { close: vi.fn().mockResolvedValue(undefined) };
+    const app = { close: vi.fn<() => Promise<void>>().mockResolvedValue(undefined) };
 
     AppUtils.killAppWithGrace(app as never);
 
@@ -51,7 +52,7 @@ describe("AppUtils.gracefulShutdown", () => {
 
   // Regression: a second signal arriving mid-close started a second `app.close()`.
   it("should ignore a repeat signal while a close is in flight", async () => {
-    const close = vi.fn().mockResolvedValue(undefined);
+    const close = vi.fn<() => Promise<void>>().mockResolvedValue(undefined);
 
     await Promise.all([
       AppUtils.gracefulShutdown({ close } as never, "SIGINT"),
@@ -73,7 +74,9 @@ describe("AppUtils.gracefulShutdown", () => {
   });
 
   it("should exit with a failure code when the close rejects", async () => {
-    const app = { close: vi.fn().mockRejectedValue(new Error("boom")) } as never;
+    const app = {
+      close: vi.fn<() => Promise<void>>().mockRejectedValue(new Error("boom")),
+    } as never;
 
     await AppUtils.gracefulShutdown(app, "SIGTERM");
 
@@ -81,7 +84,9 @@ describe("AppUtils.gracefulShutdown", () => {
   });
 
   it("should force-exit when the close never settles", async () => {
-    const app = { close: vi.fn().mockReturnValue(new Promise(() => undefined)) } as never;
+    const app = {
+      close: vi.fn<() => Promise<void>>().mockReturnValue(new Promise(() => undefined)),
+    } as never;
 
     void AppUtils.gracefulShutdown(app, "SIGTERM");
     vi.advanceTimersByTime(AppUtils.shutdownTimeoutMs);

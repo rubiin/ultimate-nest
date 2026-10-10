@@ -24,7 +24,7 @@ describe("clearCacheMiddleware", () => {
     it("should clear cache", async () => {
       mockCacheService.resetCache.mockReturnValue(Promise.resolve(true));
 
-      const mockNext = vi.fn();
+      const mockNext = vi.fn<() => void>();
 
       await middleware.use(mockRequest, mockResponse, mockNext);
 

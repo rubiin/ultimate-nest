@@ -22,8 +22,8 @@ describe("chatGateway", () => {
 
   const buildClient = () =>
     createMock<Socket>({
-      disconnect: vi.fn(),
-      emit: vi.fn(),
+      disconnect: vi.fn<Socket["disconnect"]>(),
+      emit: vi.fn<Socket["emit"]>(),
       handshake: { headers: { authorization: "some-token" } },
       id: "socket-1",
     });

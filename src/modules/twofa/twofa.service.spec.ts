@@ -17,7 +17,7 @@ import { TwoFactorService } from "./twofa.service";
 // namespace object is not enough - the module itself has to be replaced. Like the real one, the
 // mock returns nothing: it writes into the stream.
 vi.mock("qrcode", () => {
-  const toFileStream = vi.fn();
+  const toFileStream = vi.fn<() => void>();
 
   return { default: { toFileStream }, toFileStream };
 });

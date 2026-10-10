@@ -20,7 +20,7 @@ interface PostData {
 const recordingEm = () => {
   const em = createMock<EntityManager>();
   em.create.mockImplementation(((entity: unknown, data: object) =>
-    entity === User ? { ...data, posts: { set: vi.fn() } } : data) as never);
+    entity === User ? { ...data, posts: { set: vi.fn<() => void>() } } : data) as never);
   em.flush.mockResolvedValue(undefined);
 
   return em;

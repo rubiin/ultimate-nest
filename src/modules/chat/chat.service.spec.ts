@@ -19,7 +19,7 @@ describe("chatService", () => {
   const existingConversation = {
     chatName: "alice, bob",
     id: 10,
-    messages: { add: vi.fn() },
+    messages: { add: vi.fn<() => void>() },
   };
 
   beforeEach(async () => {
@@ -133,10 +133,12 @@ describe("chatService", () => {
 
   describe("getConversationForUser", () => {
     it("should execute the conversation query for the user", async () => {
-      const execute = vi.fn().mockResolvedValue([existingConversation]);
-      const where = vi.fn().mockReturnValue({ execute });
-      const leftJoinAndSelect = vi.fn().mockReturnValue({ where });
-      const select = vi.fn().mockReturnValue({ leftJoinAndSelect });
+      const execute = vi.fn<() => Promise<unknown[]>>().mockResolvedValue([existingConversation]);
+      const where = vi.fn<() => { execute: typeof execute }>().mockReturnValue({ execute });
+      const leftJoinAndSelect = vi.fn<() => { where: typeof where }>().mockReturnValue({ where });
+      const select = vi
+        .fn<() => { leftJoinAndSelect: typeof leftJoinAndSelect }>()
+        .mockReturnValue({ leftJoinAndSelect });
       mockConversationRepo.qb.mockReturnValue({ select } as never);
 
       const result = await service.getConversationForUser(alice);

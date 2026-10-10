@@ -176,7 +176,7 @@ describe("AuditSubscriber", () => {
   // a pivot change set only appears when a pivot entity is persisted directly.
   it("does not record pivot table rows", () => {
     const pivot = [...orm.getMetadata().getAll().values()].find((meta) => meta.pivotTable)!;
-    const computeChangeSet = vi.fn();
+    const computeChangeSet = vi.fn<() => void>();
 
     new AuditSubscriber().onFlush({
       em: orm.em.fork(),

@@ -288,7 +288,9 @@ describe("authService", () => {
     };
 
     mockUserRepo.findOne.mockImplementation(async () => Promise.resolve(loggedInUser));
-    HelperService.verifyHash = vi.fn().mockImplementation(() => of(true));
+    HelperService.verifyHash = vi
+      .fn<typeof HelperService.verifyHash>()
+      .mockImplementation(() => of(true));
 
     const result = await lastValueFrom(service.changePassword(dto, loggedInUser));
 
@@ -381,7 +383,7 @@ describe("authService", () => {
     it("should redirect an oauth login of a 2fa-enabled user with only the partial token", async () => {
       const user = buildUser(true);
       mockUserRepo.findOne.mockResolvedValue(user as never);
-      const response = { redirect: vi.fn() } as unknown as NestifyResponse;
+      const response = { redirect: vi.fn<() => void>() } as unknown as NestifyResponse;
 
       await lastValueFrom(
         service.OauthHandler({

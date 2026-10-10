@@ -8,7 +8,7 @@ import { PoliciesGuard } from "./policies.guard";
 describe("policiesGuard", () => {
   const mockReflector = createMock<Reflector>();
   const mockExecutionContext = createMock<ExecutionContext>({
-    getHandler: vi.fn(),
+    getHandler: vi.fn<ExecutionContext["getHandler"]>(),
   });
   const caslFactory = new CaslAbilityFactory();
 
