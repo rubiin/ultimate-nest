@@ -5,7 +5,7 @@ import { registerAs } from "@nestjs/config";
 import { isValidTimeZone } from "helper-fns";
 import { z } from "zod";
 
-import { envPort, envString, oneOf } from "./schema.helpers";
+import { envNumber, envPort, envString, oneOf } from "./schema.helpers";
 
 // validation schema
 export const appConfigValidationSchema = z.object({
@@ -16,6 +16,9 @@ export const appConfigValidationSchema = z.object({
   APP_NAME: envString(),
   CLIENT_URL: z.url(),
   ALLOWED_HOSTS: envString().optional(),
+  // Number of reverse proxies in front of the app. `request.ips[0]` is taken from
+  // client-supplied X-Forwarded-For unless the chain length is known.
+  APP_TRUST_PROXY_HOPS: envNumber(z.number().int().min(0)).default(0),
   // `allowedOrigins` reads this, so it is what the config must validate.
   ALLOWED_ORIGINS: envString().optional(),
   SWAGGER_USER: envString(),
@@ -41,6 +44,7 @@ export const app = registerAs("app", () => ({
   // which browsers reject and which would otherwise allow any origin.
   allowedOrigins: process.env?.ALLOWED_ORIGINS?.split(",").filter(Boolean),
   maxBodySize: process.env.APP_MAX_BODY_SIZE ?? "1mb",
+  trustProxyHops: +(process.env.APP_TRUST_PROXY_HOPS ?? 0),
   swagger: {
     username: process.env.SWAGGER_USER,
     password: process.env.SWAGGER_PASSWORD,

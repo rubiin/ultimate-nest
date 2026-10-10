@@ -57,7 +57,9 @@ async function bootstrap() {
   // security and middlewares
   // ======================================================
 
-  app.enable("trust proxy");
+  // Trusting every hop makes `request.ips[0]` attacker-controlled, and the throttler keys
+  // on it. 0 means "no proxy in front", so the socket address is used.
+  app.set("trust proxy", configService.get("app.trustProxyHops", { infer: true }));
   // `weak` revalidates with a stat/mtime instead of hashing every response body.
   app.set("etag", "weak");
   const maxBodySize = configService.get("app.maxBodySize", { infer: true });

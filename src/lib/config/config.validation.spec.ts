@@ -76,6 +76,17 @@ describe("appConfigValidationSchema", () => {
     expect(issuesFor(appConfigValidationSchema, { ...validAppEnv, ...override })).not.toEqual([]);
   });
 
+  it("defaults APP_TRUST_PROXY_HOPS to 0 so the client IP is not spoofable", () => {
+    expect(appConfigValidationSchema.parse(validAppEnv).APP_TRUST_PROXY_HOPS).toBe(0);
+    expect(
+      appConfigValidationSchema.parse({ ...validAppEnv, APP_TRUST_PROXY_HOPS: "2" })
+        .APP_TRUST_PROXY_HOPS,
+    ).toBe(2);
+    expect(
+      issuesFor(appConfigValidationSchema, { ...validAppEnv, APP_TRUST_PROXY_HOPS: "-1" }),
+    ).toEqual(["APP_TRUST_PROXY_HOPS"]);
+  });
+
   it("defaults APP_MAX_BODY_SIZE to 1mb and rejects a unitless value", () => {
     expect(appConfigValidationSchema.parse(validAppEnv).APP_MAX_BODY_SIZE).toBe("1mb");
     expect(
