@@ -14,7 +14,7 @@ import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Body, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
 
-import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
+import { CreateCommentDto, CreatePostDto, EditPostDto, SearchPostsDto } from "./dtos";
 import { PostService } from "./post.service";
 
 @GenericController("posts")
@@ -25,6 +25,12 @@ export class PostController {
   @ApiPaginatedResponse(PostEntity)
   findAll(@Query() dto: CursorPaginationDto): Observable<PaginationResponse<PostEntity>> {
     return this.postService.findAll(dto);
+  }
+
+  @Get("search")
+  @ApiPaginatedResponse(PostEntity)
+  search(@Query() dto: SearchPostsDto): Observable<PaginationResponse<PostEntity>> {
+    return this.postService.search(dto);
   }
 
   @Get(":slug")

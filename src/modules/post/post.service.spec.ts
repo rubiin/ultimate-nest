@@ -16,6 +16,7 @@ import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";
 
+import { SearchPostsDto } from "./dtos";
 import { PostService } from "./post.service";
 
 describe("postService", () => {
@@ -66,6 +67,51 @@ describe("postService", () => {
 
   it("should be defined", () => {
     expect(service).toBeDefined();
+  });
+
+  describe("search", () => {
+    const dto = (overrides: Partial<SearchPostsDto> = {}) =>
+      Object.assign(new SearchPostsDto(), { limit: 5, page: 2, search: "nest", ...overrides });
+
+    it("should page published matches and report offset meta", async () => {
+      mockPostRepo.findAndCount.mockResolvedValue([[mockedPost], 11] as never);
+
+      const result = await lastValueFrom(service.search(dto()));
+
+      expect(result.data).toStrictEqual([mockedPost]);
+      expect(result.meta).toMatchObject({ hasNextPage: true, itemCount: 11, limit: 5, page: 2 });
+
+      const [where, options] = mockPostRepo.findAndCount.mock.calls[0] as [
+        Record<string, unknown>,
+        { limit: number; offset: number; orderBy: unknown[] },
+      ];
+
+      expect(where).toMatchObject({ published: true });
+      expect(options).toMatchObject({ limit: 5, offset: 5 });
+      // Relevance first, primary key as the tie-breaker.
+      expect(options.orderBy).toHaveLength(2);
+    });
+
+    it("should only add the filters that were given", async () => {
+      mockPostRepo.findAndCount.mockResolvedValue([[], 0] as never);
+
+      await lastValueFrom(service.search(dto()));
+      await lastValueFrom(service.search(dto({ author: "a", category: "c", tag: "t" })));
+
+      const [plain, filtered] = mockPostRepo.findAndCount.mock.calls.map(([where]) => where) as [
+        Record<string, unknown>,
+        Record<string, unknown>,
+      ];
+
+      expect(plain).not.toHaveProperty("tags");
+      expect(plain).not.toHaveProperty("categories");
+      expect(plain).not.toHaveProperty("author");
+      expect(filtered).toMatchObject({
+        author: { idx: "a" },
+        categories: { idx: "c" },
+        tags: { idx: "t" },
+      });
+    });
   });
 
   it("should findOne", async () => {
