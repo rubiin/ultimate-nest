@@ -17,7 +17,7 @@ describe("realIpMiddleware", () => {
     it("should return real ip", () => {
       vi.spyOn(realIp, "getClientIp").mockReturnValue("192.168.1.1");
 
-      const mockNext = vi.fn();
+      const mockNext = vi.fn<() => void>();
 
       middleware.use(mockRequest, mockResponse, mockNext);
 

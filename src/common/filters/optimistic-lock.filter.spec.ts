@@ -9,7 +9,7 @@ import { OptimisticLockFilter } from "./optimistic-lock.filter";
 describe("optimisticLockFilter", () => {
   it("should map OptimisticLockError to 409", () => {
     const response = createMock<NestifyResponse>();
-    const json = vi.fn();
+    const json = vi.fn<(body: unknown) => void>();
     response.status.mockReturnValue({ json } as never);
     const host = createMock({ switchToHttp: () => ({ getResponse: () => response }) });
 

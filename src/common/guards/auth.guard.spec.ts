@@ -33,16 +33,12 @@ describe("authenticatedGuard", () => {
       expect(authenticatedGuard.canActivate(mockContext)).toBe(true);
     });
 
-    it.skip("should throw error when invalid token", () => {
+    it("should throw error when invalid token", () => {
       mockJwtService.verify.mockImplementationOnce(() => {
         throw new Error("Invalid token");
       });
 
-      try {
-        authenticatedGuard.canActivate(mockContext);
-      } catch (error) {
-        expect(error).toBeInstanceOf(HttpException);
-      }
+      expect(() => authenticatedGuard.canActivate(mockContext)).toThrow(HttpException);
     });
   });
 });

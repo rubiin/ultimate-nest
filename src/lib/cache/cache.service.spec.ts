@@ -6,7 +6,7 @@ import { Test } from "@nestjs/testing";
 describe("cacheService", () => {
   let service: CacheService;
 
-  const cacheManager = { clear: vi.fn() };
+  const cacheManager = { clear: vi.fn<() => Promise<boolean>>() };
 
   beforeEach(async () => {
     vi.clearAllMocks();

@@ -13,7 +13,7 @@ describe("queryFailedFilter", () => {
 
   const buildHost = () => {
     const response = createMock<NestifyResponse>();
-    const json = vi.fn();
+    const json = vi.fn<(body: unknown) => void>();
     response.status.mockReturnValue({ json } as never);
 
     return {

@@ -17,7 +17,11 @@ describe("customThrottlerGuard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    guard = new CustomThrottlerGuard({ get: vi.fn() } as never, {} as never, {} as never);
+    guard = new CustomThrottlerGuard(
+      { get: vi.fn<() => unknown>() } as never,
+      {} as never,
+      {} as never,
+    );
   });
 
   it("should be defined", () => {
