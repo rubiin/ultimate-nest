@@ -20,7 +20,6 @@ export const jwtConfigValidationSchema = z.object({
   JWT_ALGORITHM: envString().optional(),
   JWT_REFRESH_EXPIRY: z.string().regex(JWT_EXPIRY_REGEX),
   JWT_SECRET: z.string().min(8),
-  MAGIC_LINK_EXPIRY: z.string().regex(JWT_EXPIRY_REGEX),
 });
 
 export const jwt = registerAs("jwt", () => ({
@@ -28,9 +27,6 @@ export const jwt = registerAs("jwt", () => ({
     ? +process.env.JWT_ACCESS_EXPIRY
     : process.env.JWT_ACCESS_EXPIRY,
   algorithm: process.env?.JWT_ALGORITHM ?? "HS256",
-  magicLinkExpiry: isNumber(process.env.MAGIC_LINK_EXPIRY)
-    ? +process.env.MAGIC_LINK_EXPIRY
-    : process.env.MAGIC_LINK_EXPIRY,
   refreshExpiry: isNumber(process.env.JWT_REFRESH_EXPIRY)
     ? +process.env.JWT_REFRESH_EXPIRY
     : process.env.JWT_REFRESH_EXPIRY,

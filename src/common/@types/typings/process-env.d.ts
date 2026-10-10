@@ -38,7 +38,6 @@ declare global {
 
       JWT_ACCESS_EXPIRY: string;
       JWT_REFRESH_EXPIRY: string;
-      MAGIC_LINK_EXPIRY: string;
       JWT_SECRET: string;
 
       MAIL_HOST: string;
@@ -47,7 +46,6 @@ declare global {
       MAIL_PORT: number;
       MAIL_SERVER: string;
       MAIL_PREVIEW_EMAIL: boolean;
-      MAIL_BCC_LIST?: string;
       MAIL_SENDER_EMAIL: string;
       MAIL_TEMPLATE_DIR: string;
 
@@ -56,7 +54,6 @@ declare global {
       CLOUDINARY_API_SECRET: string;
 
       REDIS_TTL: number;
-      REDIS_URI: string;
       REDIS_HOST: string;
       REDIS_PASSWORD: string;
       REDIS_USERNAME: string;

@@ -93,7 +93,7 @@ Scanning every dependency in `package.json` against `src/`:
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | `url-minify`           | No import anywhere.                                                                                                             |
 | `@nestjs/mapped-types` | No import anywhere, and pinned to `"*"` — also an unpinned-version smell.                                                       |
-| `passport-magic-login` | No import anywhere. `MAGIC_LINK_EXPIRY` is configured in `jwt.config.ts` but no strategy exists.                                |
+| `passport-magic-login` | No import anywhere, and no strategy exists.                                                                                     |
 | `cache-manager`        | Used only for `import type { Cache }` at `src/lib/cache/cache.service.ts:3`. `@nestjs/cache-manager` re-exports that interface. |
 
 Genuine false positives, keep them: `keyv` (required peer of `@keyv/redis`), `@mikro-orm/decorators`

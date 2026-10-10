@@ -15,7 +15,6 @@ export const appConfigValidationSchema = z.object({
   APP_PREFIX: z.string().regex(/^v\d+$/, VERSION_VALIDATION_MESSAGE),
   APP_NAME: envString(),
   CLIENT_URL: z.url(),
-  ALLOWED_HOSTS: envString().optional(),
   // Number of reverse proxies in front of the app. `request.ips[0]` is taken from
   // client-supplied X-Forwarded-For unless the chain length is known.
   APP_TRUST_PROXY_HOPS: envNumber(z.number().int().min(0)).default(0),
@@ -36,7 +35,6 @@ export const appConfigValidationSchema = z.object({
 export const app = registerAs("app", () => ({
   port: process.env.APP_PORT,
   prefix: process.env.APP_PREFIX,
-  env: process.env.NODE_ENV,
   url: process.env.API_URL,
   name: process.env.APP_NAME,
   clientUrl: process.env.CLIENT_URL,

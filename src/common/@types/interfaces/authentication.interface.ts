@@ -10,7 +10,7 @@ export interface OauthResponse {
  * must check this claim before trusting a token. A "2fa" token proves only the first factor
  * (password or OAuth) and can only be exchanged at `POST /2fa/authenticate`.
  */
-export type TokenType = "access" | "refresh" | "2fa";
+export type TokenType = "access" | "refresh" | "2fa" | "unsubscribe";
 
 export interface JwtPayload {
   jti?: number;
