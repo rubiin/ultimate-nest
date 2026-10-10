@@ -208,6 +208,10 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     // soft-delete filter has to be toggled explicitly to honour `withDeleted`.
     await qb.applyFilters({ softDelete: !withDeleted });
 
+    // `select` replaces the field list while `leftJoinAndSelect` appends to it, so the
+    // requested columns have to be applied first or the joins are dropped from the result.
+    qb.select(selectedFields as EntityKey<T>[]);
+
     if (search) {
       qb.andWhere({
         [searchField]: {
@@ -242,7 +246,6 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
     qb.orderBy(this.getOrderBy(sort as keyof T, order))
       .limit(limit)
-      .select(selectedFields as EntityKey<T>[])
       .offset(offset);
 
     const [results, itemCount] = await qb.getResultAndCount();

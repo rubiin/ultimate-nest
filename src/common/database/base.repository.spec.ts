@@ -361,6 +361,22 @@ describe("baseRepository", () => {
 
       expect(qb.applyFilters).toHaveBeenCalledWith({ softDelete: false });
     });
+
+    // Regression: `select()` replaces the field list while `joinAndSelect` appends to it, so
+    // calling `select()` last wiped every joined relation from the result.
+    it("should select the requested fields before joining so relations survive", async () => {
+      const qb = stubQueryBuilder();
+
+      await userRepo.qbOffsetPagination({
+        pageOptionsDto: { ...baseOptions, fields: ["firstName"], relations: ["posts"] },
+        qb: qb as never,
+      });
+
+      expect(qb.select).toHaveBeenCalledWith(["firstName", "id"]);
+      expect(qb.select.mock.invocationCallOrder[0]).toBeLessThan(
+        qb.leftJoinAndSelect.mock.invocationCallOrder[0],
+      );
+    });
   });
 
   describe("getEntityName", () => {
