@@ -1,14 +1,15 @@
-import { Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { NestMinioModule } from "nestjs-minio";
 
+
+@Global()
 @Module({
   exports: [NestMinioModule],
   imports: [
     NestMinioModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      isGlobal: true,
       useFactory: async (configService: ConfigService<Configs, true>) =>
         configService.getOrThrow("minio", { infer: true }),
     }),

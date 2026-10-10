@@ -1,3 +1,4 @@
+import { OtpPurpose } from "@common/@types";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { ResetPasswordMail } from "@lib/mail";
@@ -18,7 +19,7 @@ import {
   trackMockTransaction,
 } from "@mocks";
 import { TokensService } from "@modules/token/tokens.service";
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
@@ -94,20 +95,43 @@ describe("authService", () => {
     });
   });
 
-  it("should reset password", async () => {
-    mockOtpLogRepo.findOne.mockImplementation(async () =>
-      Promise.resolve({
-        ...mockedOtpLog,
-        user: { getEntity: () => loggedInUser },
-      }),
-    );
+  it("should reset password and consume the otp", async () => {
+    const otp = {
+      ...mockedOtpLog,
+      expiresIn: new Date(Date.now() + 60_000),
+      user: { getEntity: () => loggedInUser },
+    };
+    mockOtpLogRepo.findOne.mockResolvedValue(otp as never);
 
     const result = await lastValueFrom(service.resetPassword(mockResetPasswordDto));
 
     expect(result).toStrictEqual(loggedInUser);
     expect(mockOtpLogRepo.findOne).toHaveBeenCalledWith(
-      { otpCode: mockResetPasswordDto.otpCode },
+      { isUsed: false, otpCode: mockResetPasswordDto.otpCode, purpose: OtpPurpose.RESET_PASSWORD },
       { populate: ["user"] },
+    );
+    expect(mockOtpLogRepo.assign).toHaveBeenCalledWith(otp, { isUsed: true });
+  });
+
+  // Regression: reset accepted expired codes and never marked them used, so one code worked forever.
+  it("should reject an expired reset otp without changing the password", async () => {
+    mockOtpLogRepo.findOne.mockResolvedValue({
+      ...mockedOtpLog,
+      expiresIn: new Date(Date.now() - 60_000),
+      user: { getEntity: () => loggedInUser },
+    } as never);
+
+    await expect(lastValueFrom(service.resetPassword(mockResetPasswordDto))).rejects.toBeInstanceOf(
+      BadRequestException,
+    );
+    expect(mockUserRepo.assign).not.toHaveBeenCalled();
+  });
+
+  it("should reject a reset code that is unknown, used or issued for another purpose", async () => {
+    mockOtpLogRepo.findOne.mockResolvedValue(null as never);
+
+    await expect(lastValueFrom(service.resetPassword(mockResetPasswordDto))).rejects.toBeInstanceOf(
+      NotFoundException,
     );
   });
 
@@ -228,6 +252,19 @@ describe("authService", () => {
       ["nativeUpdate", true],
       ["flush", true],
     ]);
+  });
+
+  // Regression: a consumed code stayed valid until it expired.
+  it("should only look up unused verify-email OTP codes", async () => {
+    mockOtpLogRepo.findOne.mockResolvedValue(null as never);
+
+    await expect(
+      lastValueFrom(service.verifyOtp({ otpCode: mockedOtpLog.otpCode })),
+    ).rejects.toBeInstanceOf(NotFoundException);
+    expect(mockOtpLogRepo.findOne).toHaveBeenCalledWith(
+      { isUsed: false, otpCode: mockedOtpLog.otpCode, purpose: OtpPurpose.VERIFY_EMAIL },
+      { populate: ["user"] },
+    );
   });
 
   // Regression: Promise.allSettled swallowed a failed write, so the transaction committed with the

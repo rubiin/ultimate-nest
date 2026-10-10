@@ -1,4 +1,6 @@
-import { Referral, User } from "@entities";
+import { OtpPurpose } from "@common/@types";
+import { OtpLog, Protocol, Referral, User } from "@entities";
+import { VerifyEmailMail } from "@lib/mail";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { EntityManager, TransactionPropagation } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
@@ -10,6 +12,7 @@ import {
   mockEm,
   mockFile,
   mockMailService,
+  mockProtocolRepo,
   mockReferralRepo,
   mockUserRepo,
   mockedUser,
@@ -56,6 +59,10 @@ describe("userService", () => {
           provide: getRepositoryToken(Referral),
           useValue: mockReferralRepo,
         },
+        {
+          provide: getRepositoryToken(Protocol),
+          useValue: mockProtocolRepo,
+        },
         { provide: ConfigService, useValue: mockConfigService },
         { provide: AmqpConnection, useValue: mockAmqConnection },
         { provide: CloudinaryService, useValue: mockCloudinaryService },
@@ -97,6 +104,41 @@ describe("userService", () => {
     });
     expect(mockUserRepo.create).toHaveBeenCalledWith({ ...mockedUser, avatar: "" });
     expect(mockEm.transactional).toHaveBeenCalled();
+  });
+
+  it("should persist a verification OTP and email it on sign-up", async () => {
+    mockUserRepo.create.mockImplementation(((dto: Record<string, unknown>) => ({
+      ...dto,
+    })) as never);
+
+    await lastValueFrom(service.create({ ...mockedUser, files: mockFile } as never));
+
+    const [persisted] = mockEm.persist.mock.calls[0] as [unknown[]];
+    const otp = persisted.find((entity) => entity instanceof OtpLog) as OtpLog;
+
+    expect(otp.otpCode).toHaveLength(6);
+    expect(otp.purpose).toBe(OtpPurpose.VERIFY_EMAIL);
+    expect(otp.expiresIn.getTime()).toBeGreaterThan(Date.now());
+    expect(mockMailService.send).toHaveBeenCalledWith(VerifyEmailMail, {
+      to: mockedUser.email,
+      data: { firstName: expect.any(String), otp: otp.otpCode },
+    });
+  });
+
+  it("should expire the verification OTP using the active protocol", async () => {
+    mockUserRepo.create.mockImplementation(((dto: Record<string, unknown>) => ({
+      ...dto,
+    })) as never);
+    mockProtocolRepo.findOne.mockResolvedValue({ otpExpiryInMinutes: 30 } as never);
+    const before = Date.now();
+
+    await lastValueFrom(service.create({ ...mockedUser, files: mockFile } as never));
+
+    const [persisted] = mockEm.persist.mock.calls[0] as [unknown[]];
+    const otp = persisted.find((entity) => entity instanceof OtpLog) as OtpLog;
+
+    expect(mockProtocolRepo.findOne).toHaveBeenCalledWith({ isActive: true });
+    expect(otp.expiresIn.getTime()).toBeGreaterThanOrEqual(before + 30 * 60_000);
   });
 
   it("should upload, persist and publish inside a REQUIRED transaction", async () => {
