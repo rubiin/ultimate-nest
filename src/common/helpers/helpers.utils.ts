@@ -1,6 +1,4 @@
 import { Buffer } from "node:buffer";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import process from "node:process";
 
 import { AuthenticationResponse } from "@common/@types";
@@ -47,18 +45,6 @@ This function is used to determine if the application is running in a production
 `orm.config.ts` evaluates it at import time, so an unset NODE_ENV must not throw here. */
   isProd(): boolean {
     return process.env.NODE_ENV?.startsWith("prod") ?? false;
-  },
-
-  /* The `getAppRootDir()` function is used to determine the root directory of the application. It starts
-by setting the `currentDirectory` variable to the value of `__dirname`, which represents the current
-directory of the module. */
-  getAppRootDir() {
-    let currentDirectory = __dirname;
-
-    while (!existsSync(join(currentDirectory, "resources")))
-      currentDirectory = join(currentDirectory, "..");
-
-    return process.env.NODE_ENV === "prod" ? join(currentDirectory, "dist") : currentDirectory;
   },
 
   /* The `hashString` function is used to hash a user's password using the Argon2 algorithm. It takes a
