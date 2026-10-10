@@ -1,13 +1,12 @@
 import process from "node:process";
 
 import { AuthenticationResponse, OauthResponse } from "@common/@types";
-import { EmailSubject, EmailTemplate } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { ERROR_CODES } from "@common/constant";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import { MailerService } from "@lib/mailer/mailer.service";
+import { ResetPasswordMail } from "@lib/mail";
 import { EntityManager } from "@mikro-orm/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -21,11 +20,12 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { Mailer } from "@nestjs/mail";
 import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
 import { Observable } from "rxjs";
-import { firstValueFrom, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
+import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
 import {
   ChangePasswordDto,
@@ -46,7 +46,7 @@ export class AuthService {
     private readonly otpRepository: BaseRepository<OtpLog>,
     private readonly tokenService: TokensService,
     private readonly configService: ConfigService<Configs, true>,
-    private readonly mailService: MailerService,
+    private readonly mailer: Mailer,
     private readonly em: EntityManager<PostgreSqlDriver>,
   ) {}
 
@@ -236,21 +236,14 @@ export class AuthService {
   private async saveOtpAndSendMail(otp: OtpLog, user: User, otpNumber: string) {
     await this.em.persist(otp).flush();
 
-    return firstValueFrom(
-      this.mailService.sendMail({
-        from: this.configService.get("mail.senderEmail", {
-          infer: true,
-        }),
-        replacements: {
-          firstName: capitalize(user.firstName),
-          lastName: capitalize(user.lastName),
-          otp: otpNumber,
-        },
-        subject: EmailSubject.RESET_PASSWORD,
-        template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
-        to: user.email,
-      }),
-    );
+    return this.mailer.send(ResetPasswordMail, {
+      to: user.email,
+      data: {
+        firstName: capitalize(user.firstName),
+        lastName: capitalize(user.lastName),
+        otp: otpNumber,
+      },
+    });
   }
 
   /**

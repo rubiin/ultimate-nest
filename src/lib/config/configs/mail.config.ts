@@ -46,7 +46,8 @@ export const mail = registerAs("mail", () => ({
   // unset MAIL_PORT produced NaN instead of staying absent.
   port: process.env.MAIL_PORT ? +process.env.MAIL_PORT : undefined,
   type: process.env.MAIL_SERVER,
-  previewEmail: process.env.MAIL_PREVIEW_EMAIL,
+  // The raw env value is a string, and "false" is truthy, so it has to be parsed.
+  previewEmail: z.stringbool().catch(false).parse(process.env.MAIL_PREVIEW_EMAIL),
   bccList: process.env?.MAIL_BCC_LIST?.split(",") ?? [],
   templateDir: process.env.MAIL_TEMPLATE_DIR,
   senderEmail: process.env.MAIL_SENDER_EMAIL,

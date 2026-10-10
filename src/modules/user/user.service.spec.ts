@@ -3,7 +3,6 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { EntityManager, TransactionPropagation } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { MailerService } from "@lib/mailer/mailer.service";
 import {
   mockAmqConnection,
   mockCloudinaryService,
@@ -20,6 +19,7 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
+import { Mailer } from "@nestjs/mail";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { lastValueFrom, of } from "rxjs";
 
@@ -59,7 +59,7 @@ describe("userService", () => {
         { provide: ConfigService, useValue: mockConfigService },
         { provide: AmqpConnection, useValue: mockAmqConnection },
         { provide: CloudinaryService, useValue: mockCloudinaryService },
-        { provide: MailerService, useValue: mockMailService },
+        { provide: Mailer, useValue: mockMailService },
         {
           provide: EntityManager<PostgreSqlDriver>,
           useValue: mockEm as unknown as EntityManager<PostgreSqlDriver>,

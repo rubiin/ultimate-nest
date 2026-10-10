@@ -1,9 +1,0 @@
-<%~ include("./partials/base_head.eta") %>
-
-    <p>Hello!</p>
-    <p>We received a request to reset your password. Use the following one-time code to reset it:</p>
-    <p><strong><%= it.otp %></strong></p>
-    <p>If you did not request a password reset, you can ignore this email.</p>
-
-
-<%~ include("./partials/base_tail.eta") %>

@@ -9,7 +9,7 @@ export * from "./firebase-admin";
 export * from "./http.module";
 export * from "./i18n/i18n.module";
 export * from "./jwt.module";
-export * from "./mailer";
+export * from "./mail";
 export * from "./minio.module";
 export * from "./orm.module";
 export * from "./pino/pino.module";
