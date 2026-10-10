@@ -30,6 +30,9 @@ declare global {
       DB_PASSWORD: string;
       DB_DATABASE: string;
 
+      // Seeding credential, passed on the command line (see justfile), never logged.
+      USER_PASSWORD: string;
+
       ENC_IV: string;
       ENC_KEY: string;
 

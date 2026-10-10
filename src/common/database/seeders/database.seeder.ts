@@ -1,5 +1,3 @@
-import process from "node:process";
-
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Seeder } from "@mikro-orm/seeder";
 import { Logger } from "@nestjs/common";
@@ -21,8 +19,6 @@ export class DatabaseSeeder extends Seeder {
     this.logger.log(
       `Seeding database with seeders: ${chalk.green(seeders.map((s) => s.name).join(", "))}`,
     );
-
-    this.logger.log(`User password is set as : ${chalk.green(process.env.USER_PASSWORD)}`);
 
     return this.call(em, seeders);
   }
