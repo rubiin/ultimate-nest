@@ -4,8 +4,10 @@ import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
+import { translate } from "@lib/i18n";
 import {
   Body,
+  BadRequestException,
   DefaultValuePipe,
   Get,
   ParseBoolPipe,
@@ -151,8 +153,15 @@ export class AuthController {
     @Body()
     refreshToken?: RefreshTokenDto,
   ): Observable<User> {
-    return fromAll
-      ? this.authService.logoutFromAll(user)
-      : this.authService.logout(user, refreshToken!.refreshToken);
+    if (fromAll) return this.authService.logoutFromAll(user);
+
+    // `refreshToken` is absent when the caller posts no body, so the non-null assertion
+    // turned a missing field into a 500 rather than a 400.
+    if (!refreshToken?.refreshToken)
+      throw new BadRequestException(
+        translate("validation.isNotEmpty", { args: { property: "refreshToken" } }),
+      );
+
+    return this.authService.logout(user, refreshToken.refreshToken);
   }
 }

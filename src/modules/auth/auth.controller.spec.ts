@@ -1,6 +1,7 @@
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
 import { TokensService } from "@modules/token/tokens.service";
+import { BadRequestException } from "@nestjs/common";
 import { lastValueFrom, of } from "rxjs";
 
 import { AuthController } from "./auth.controller";
@@ -35,6 +36,34 @@ describe("AuthController", () => {
       accessToken: "new-access",
       refresh_token: "new-refresh",
       user: { id: 1, idx: "some-idx" },
+    });
+  });
+
+  describe("logout", () => {
+    const user = new User({ id: 1, idx: "some-idx" });
+
+    it("should revoke every token when fromAll is set", () => {
+      authService.logoutFromAll.mockReturnValue(of(user as never));
+
+      controller.logout(user, true);
+
+      expect(authService.logoutFromAll).toHaveBeenCalledWith(user);
+    });
+
+    it("should revoke the given refresh token", () => {
+      authService.logout.mockReturnValue(of(user as never));
+
+      controller.logout(user, false, { refreshToken: "a-token" } as never);
+
+      expect(authService.logout).toHaveBeenCalledWith(user, "a-token");
+    });
+
+    // Regression: the body was dereferenced with `!`, so posting no body produced a 500
+    // instead of a 400.
+    it("should reject a missing body with a bad request", () => {
+      expect(() => controller.logout(user, false)).toThrow(BadRequestException);
+      expect(() => controller.logout(user, false, {} as never)).toThrow(BadRequestException);
+      expect(authService.logout).not.toHaveBeenCalled();
     });
   });
 });
