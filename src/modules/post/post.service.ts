@@ -1,11 +1,11 @@
-import { PaginationResponse } from "@common/@types";
+import { OffsetMeta, OffsetPaginationResponse, PaginationResponse } from "@common/@types";
 import { QueryOrder } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { AutoPath, EntityKey } from "@mikro-orm/core";
-import { EntityManager } from "@mikro-orm/core";
+import { EntityManager, raw } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver, ref } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException } from "@nestjs/common";
@@ -13,7 +13,7 @@ import { omit } from "helper-fns";
 import { Observable } from "rxjs";
 import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
-import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
+import { CreateCommentDto, CreatePostDto, EditPostDto, SearchPostsDto } from "./dtos";
 
 @Injectable()
 export class PostService {
@@ -46,6 +46,44 @@ export class PostService {
         searchField: "title",
         ...dto,
       }),
+    );
+  }
+
+  /**
+   * Full-text search over published posts, ranked by relevance, optionally narrowed by tag,
+   * category and author.
+   * @param dto - search words, filters and offset pagination options.
+   * @returns An observable of one page of matching posts.
+   */
+  search(dto: SearchPostsDto): Observable<OffsetPaginationResponse<Post>> {
+    const { author, category, tag } = dto;
+    const query = raw(`websearch_to_tsquery('english', ?)`, [dto.search]);
+
+    return from(
+      this.postRepository.findAndCount(
+        {
+          published: true,
+          // Parenthesised because the ORM appends `= true` to a raw key.
+          [raw(`(search_vector @@ ?)`, [query])]: true,
+          ...(author && { author: { idx: author } }),
+          ...(category && { categories: { idx: category } }),
+          ...(tag && { tags: { idx: tag } }),
+        },
+        {
+          limit: dto.limit,
+          offset: dto.offset,
+          // Raw and field keys can't share one object, and `id` keeps the page order stable.
+          orderBy: [
+            { [raw(`ts_rank(search_vector, ?)`, [query])]: QueryOrder.DESC },
+            { id: QueryOrder.ASC },
+          ],
+        },
+      ),
+    ).pipe(
+      map(
+        ([posts, itemCount]) =>
+          new OffsetPaginationResponse(posts, new OffsetMeta({ itemCount, pageOptionsDto: dto })),
+      ),
     );
   }
 
