@@ -64,11 +64,13 @@ describe("softDelete filter on populated relations", () => {
   });
 
   it("should exclude soft-deleted comments when only isActive is given", async () => {
-    await orm.em.fork().findOne(
-      Post,
-      { slug: "s" },
-      { populate: ["comments"], populateWhere: { comments: { isActive: true } } },
-    );
+    await orm.em
+      .fork()
+      .findOne(
+        Post,
+        { slug: "s" },
+        { populate: ["comments"], populateWhere: { comments: { isActive: true } } },
+      );
 
     expect(queries.at(-1)).toMatch(/from "comment" as "c0".*"c0"\."is_deleted" = \?/);
   });
