@@ -7,12 +7,14 @@ const logger = new Logger("Stripe");
 
 @Global()
 @Module({
+  exports: [StripeModule],
   imports: [
     StripeModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({
         apiKey: configService.get("stripe.apiKey", { infer: true }),
+        decorators: [SkipThrottle()],
         logger,
         webhookConfig: {
           stripeSecrets: {
@@ -20,10 +22,8 @@ const logger = new Logger("Stripe");
             connect: configService.get("stripe.connect", { infer: true }),
           },
         },
-        decorators: [SkipThrottle()],
       }),
     }),
   ],
-  exports: [StripeModule],
 })
 export class NestStripeModule {}

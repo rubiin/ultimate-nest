@@ -4,12 +4,9 @@ import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
 
 @Module({
+  exports: [ServeStaticModule],
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, "resources"),
-      serveStaticOptions: {
-        maxAge: 86_400, // 1 day,
-      },
       exclude: [
         "/api/(.*path)",
         "/v1/(.*path)",
@@ -18,8 +15,11 @@ import { ServeStaticModule } from "@nestjs/serve-static";
         "/health/(.*path)",
         "/swagger/(.*path)",
       ],
+      rootPath: join(__dirname, "resources"),
+      serveStaticOptions: {
+        maxAge: 86_400, // 1 day,
+      },
     }),
   ],
-  exports: [ServeStaticModule],
 })
 export class NestServeStaticModule {}

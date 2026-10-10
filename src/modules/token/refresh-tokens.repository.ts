@@ -30,25 +30,37 @@ export class RefreshTokensRepository {
     expiration.setTime(expiration.getTime() + ttlSeconds);
 
     const token = this.refreshTokenRepository.create({
-      user: user.id,
       expiresIn: expiration,
+      user: user.id,
     });
 
     return from(this.em.persist(token).flush()).pipe(map(() => token));
   }
 
   /**
-   * It finds a refresh token by its id and returns it as an observable
+   * It finds a non-revoked refresh token by its id and returns it as an observable
    * @param id - The id of the token to be found.
-   * @returns Observable<RefreshToken>
+   * @returns Observable<RefreshToken | null> - null when the token is revoked or missing
    */
-  findTokenById(id: number): Observable<RefreshToken> {
+  findTokenById(id: number): Observable<RefreshToken | null> {
     return from(
-      this.refreshTokenRepository.findOneOrFail({
+      this.refreshTokenRepository.findOne({
         id,
         isRevoked: false,
       }),
     );
+  }
+
+  /**
+   * Revokes a still-active refresh token. The `isRevoked: false` filter makes this a
+   * compare-and-set, so of two concurrent rotations of the same token only one wins.
+   * @param id - The id of the token to revoke.
+   * @returns true when this call revoked the token, false when it was already revoked or missing
+   */
+  revokeToken(id: number): Observable<boolean> {
+    return from(
+      this.refreshTokenRepository.nativeUpdate({ id, isRevoked: false }, { isRevoked: true }),
+    ).pipe(map((affected) => affected === 1));
   }
 
   /**
@@ -70,7 +82,7 @@ export class RefreshTokensRepository {
    */
   deleteToken(user: User, tokenId: number): Observable<boolean> {
     return from(
-      this.refreshTokenRepository.nativeUpdate({ user, id: tokenId }, { isRevoked: true }),
+      this.refreshTokenRepository.nativeUpdate({ id: tokenId, user }, { isRevoked: true }),
     ).pipe(map(() => true));
   }
 }

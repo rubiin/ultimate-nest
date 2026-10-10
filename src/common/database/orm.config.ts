@@ -1,6 +1,5 @@
 import { HelperService } from "@common/helpers";
 import { LoadStrategy } from "@mikro-orm/postgresql";
-import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { Logger, NotFoundException } from "@nestjs/common";
 
@@ -15,8 +14,9 @@ export const baseOptions = {
     return new NotFoundException(`${entityName} not found for ${key}`);
   },
   migrations: {
+    // The CLI passes `undefined` for an unnamed migration, not `null`.
     fileName: (timestamp: string, name?: string) => {
-      if (name === null) return `Migration${timestamp}`;
+      if (!name) return `Migration${timestamp}`;
 
       return `Migration${timestamp}_${name}`;
     },
@@ -29,18 +29,23 @@ export const baseOptions = {
     snapshot: true, // save snapshot when creating new migrations
   },
   seeder: {
-    path: "./seeders", // path to the folder with seeders
-    pathTs: undefined, // path to the folder with TS seeders (if used, we should put path to compiled files in `path`)
     defaultSeeder: "DatabaseSeeder", // default seeder class name
     glob: "!(*.d).{js,ts}", // how to match seeder files (all .js and .ts files, but not .d.ts)
+    path: "./src/common/database/seeders", // TS-only: excluded from the build, run via the tsx CLI loader
+    pathTs: undefined, // path to the folder with TS seeders (if used, we should put path to compiled files in `path`)
   },
   logger: logger.log.bind(logger),
-  metadataProvider: TsMorphMetadataProvider,
+  // Metadata resolution belongs in the CLI config only (TsMorphMetadataProvider re-builds
+  // the whole TS program on every boot). The runtime app uses MikroORM's default
+  // IndexedPrimaryKeyProvider, which reflects off the compiled entities.
+  metadataCache: { enabled: true },
   highlighter: new SqlHighlighter(),
   debug: !HelperService.isProd(),
   loadStrategy: LoadStrategy.BALANCED,
   entityRepository: BaseRepository,
-  forceUtcTimezone: true,
   registerRequestContext: true,
-  pool: { min: 2, max: 10 },
+  pool: {
+    max: +(process.env.DB_POOL_MAX ?? 10),
+    min: +(process.env.DB_POOL_MIN ?? 2),
+  },
 };

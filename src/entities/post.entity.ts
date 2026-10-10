@@ -9,6 +9,7 @@ import {
   BeforeCreate,
   BeforeUpdate,
   BeforeUpsert,
+  Check,
   Enum,
 } from "@mikro-orm/decorators/legacy";
 import type { EventArgs } from "@mikro-orm/postgresql";
@@ -35,6 +36,7 @@ export class Post extends BaseEntity {
   content!: string;
 
   @Property()
+  @Check({ expression: "reading_time >= 0" })
   readingTime: number & Opt = 0;
 
   @Property()
@@ -43,8 +45,16 @@ export class Post extends BaseEntity {
   @Property({ index: true })
   published: boolean & Opt = false;
 
+  // Enforced in the database because the application-level guard in
+  // `PostService.unFavorite` cannot stop a concurrent write from going negative.
   @Property()
+  @Check({ expression: "favorites_count >= 0" })
   favoritesCount: number & Opt = 0;
+
+  // Guards the read-modify-write of `favoritesCount`: a concurrent change makes
+  // the flush match zero rows and throw `OptimisticLockError`.
+  @Property({ version: true })
+  version: number & Opt = 1;
 
   @ManyToOne({
     index: true,

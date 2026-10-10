@@ -1,10 +1,13 @@
 import type { OauthResponse } from "@common/@types";
 import { AuthenticationResponse } from "@common/@types";
 import { Auth, GenericController, LoggedInUser, SwaggerResponse } from "@common/decorators";
+import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { TokensService } from "@modules/token/tokens.service";
+import { translate } from "@lib/i18n";
 import {
   Body,
+  BadRequestException,
   DefaultValuePipe,
   Get,
   ParseBoolPipe,
@@ -16,7 +19,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ApiOperation } from "@nestjs/swagger";
+import { ApiOkResponse, ApiOperation } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { map } from "rxjs";
 
@@ -39,15 +42,22 @@ export class AuthController {
 
   @Post("login")
   @ApiOperation({ summary: "User Login" })
+  @ApiOkResponse({
+    description:
+      "Full token pair. If the account has 2FA enabled, the response is instead " +
+      "`{ user, accessToken, twoFactorRequired: true }` with no refresh token: `accessToken` is a " +
+      "partial token valid for 5 minutes, accepted only by `POST /2fa/authenticate`.",
+    type: AuthenticationResponse,
+  })
   login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {
-    return this.authService.login(loginDto);
+    return this.authService.login(loginDto, true);
   }
 
   @Post("reset-password")
   @SwaggerResponse({
-    operation: "Reset password",
-    notFound: "Otp doesn't exist.",
     badRequest: "Otp is expired.",
+    notFound: "Otp doesn't exist.",
+    operation: "Reset password",
   })
   resetUserPassword(@Body() dto: ResetPasswordDto): Observable<User> {
     return this.authService.resetPassword(dto);
@@ -56,8 +66,8 @@ export class AuthController {
   @Auth()
   @Patch("forgot-password")
   @SwaggerResponse({
-    operation: "Forgot password",
     notFound: "Account doesn't exist.",
+    operation: "Forgot password",
   })
   forgotPassword(@Body() dto: SendOtpDto): Observable<{ message: string }> {
     return this.authService.forgotPassword(dto);
@@ -103,9 +113,9 @@ export class AuthController {
 
   @Post("verify-otp")
   @SwaggerResponse({
-    operation: "Verify otp",
-    notFound: "Otp doesn't exist.",
     badRequest: "Otp is expired.",
+    notFound: "Otp doesn't exist.",
+    operation: "Verify otp",
   })
   verifyOtp(@Body() dto: OtpVerifyDto): Observable<User> {
     return this.authService.verifyOtp(dto);
@@ -114,8 +124,8 @@ export class AuthController {
   @Auth()
   @Post("change-password")
   @SwaggerResponse({
-    operation: "Change password",
     badRequest: "Username and password provided does not match.",
+    operation: "Change password",
   })
   changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User): Observable<User> {
     return this.authService.changePassword(dto, user);
@@ -123,10 +133,14 @@ export class AuthController {
 
   @ApiOperation({ summary: "Refresh token" })
   @Post("token/refresh")
-  refresh(@Body() body: RefreshTokenDto): Observable<any> {
+  refresh(@Body() body: RefreshTokenDto): Observable<AuthenticationResponse> {
     return this.tokenService
-      .createAccessTokenFromRefreshToken(body.refreshToken)
-      .pipe(map((token) => ({ token })));
+      .rotateRefreshToken(body.refreshToken)
+      .pipe(
+        map(({ user, accessToken, refreshToken }) =>
+          HelperService.buildPayloadResponse(user, accessToken, refreshToken),
+        ),
+      );
   }
 
   @Auth()
@@ -139,8 +153,15 @@ export class AuthController {
     @Body()
     refreshToken?: RefreshTokenDto,
   ): Observable<User> {
-    return fromAll
-      ? this.authService.logoutFromAll(user)
-      : this.authService.logout(user, refreshToken!.refreshToken);
+    if (fromAll) return this.authService.logoutFromAll(user);
+
+    // `refreshToken` is absent when the caller posts no body, so the non-null assertion
+    // turned a missing field into a 500 rather than a 400.
+    if (!refreshToken?.refreshToken)
+      throw new BadRequestException(
+        translate("validation.isNotEmpty", { args: { property: "refreshToken" } }),
+      );
+
+    return this.authService.logout(user, refreshToken.refreshToken);
   }
 }

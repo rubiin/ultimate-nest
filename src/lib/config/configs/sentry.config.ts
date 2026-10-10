@@ -5,9 +5,10 @@ import { z } from "zod";
 
 import { envString } from "./schema.helpers";
 
-export const sentryConfigurationValidationSchema = z.object({
-  SENTRY_DSN: envString(),
-  SENTRY_ENVIRONMENT: envString(),
+// Optional integration: absent is valid, empty is not.
+export const sentryConfigValidationSchema = z.object({
+  SENTRY_DSN: envString().optional(),
+  SENTRY_ENVIRONMENT: envString().optional(),
 });
 
 export const sentry = registerAs("sentry", () => ({

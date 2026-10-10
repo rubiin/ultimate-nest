@@ -10,12 +10,17 @@ export const MULTER_IMAGE_FILTER = "Only image files are allowed!.";
 export const API_UNAUTHORISED_RESPONSE = "No auth token in request.";
 
 // swagger constants
-const packageJson = getPackageJson();
+// Read on demand rather than at import: `@common/constant` loads on every boot, but the
+// only consumer is `setupSwagger`, which never runs in production.
+export const swaggerMetadata = () => {
+  const { description, name, version } = getPackageJson();
 
-export const APP_NAME = packageJson.name;
-export const SWAGGER_API_CURRENT_VERSION = packageJson.version;
-export const SWAGGER_DESCRIPTION = packageJson.description!;
-export const SWAGGER_TITLE = `${capitalize(APP_NAME)} API Documentation`;
+  return {
+    description: description!,
+    title: `${capitalize(name)} API Documentation`,
+    version,
+  };
+};
 
 export const SWAGGER_API_ENDPOINT = "doc";
 

@@ -17,18 +17,18 @@ export function IsUUIDField(options_?: UUIDFieldOptions) {
 
   const decoratorsToApply = [
     IsUUID("4", {
+      each: options.each,
       message: validationI18nMessage("validation.isDataType", {
         type: "uuid",
       }),
-      each: options.each,
     }),
   ];
 
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
+        message: validationI18nMessage("validation.isNotEmpty"),
       }),
     );
 

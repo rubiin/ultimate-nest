@@ -4,7 +4,7 @@ import { ConfigurableModuleClass } from "./twilio.module-definition";
 import { TwilioService } from "./twilio.service";
 
 @Module({
-  providers: [TwilioService],
   exports: [TwilioService],
+  providers: [TwilioService],
 })
 export class TwilioModule extends ConfigurableModuleClass {}

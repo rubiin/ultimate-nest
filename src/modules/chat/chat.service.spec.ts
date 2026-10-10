@@ -82,6 +82,26 @@ describe("chatService", () => {
       expect(mockConversationRepo.create).not.toHaveBeenCalled();
     });
 
+    // Regression: two concurrent flushes raced on one EntityManager and allSettled
+    // swallowed the rejection, so a failure still returned 200.
+    it("should surface a flush failure instead of swallowing it", async () => {
+      mockConversationRepo.findOne.mockResolvedValue(null as never);
+      mockEm.flush.mockRejectedValueOnce(new Error("deadlock"));
+
+      await expect(service.sendMessage({ message: "first", users: [alice, bob] })).rejects.toThrow(
+        "deadlock",
+      );
+    });
+
+    it("should flush once for the new-conversation path", async () => {
+      mockConversationRepo.findOne.mockResolvedValue(null as never);
+      mockEm.flush.mockClear();
+
+      await service.sendMessage({ message: "first", users: [alice, bob] });
+
+      expect(mockEm.flush).toHaveBeenCalledTimes(1);
+    });
+
     it("should create a conversation when none exists", async () => {
       mockConversationRepo.findOne.mockResolvedValue(null as never);
 
@@ -91,8 +111,11 @@ describe("chatService", () => {
         chatName: "alice, bob",
         users: [alice, bob],
       });
-      // Both the message and its new conversation are persisted.
-      expect(mockEm.persist).toHaveBeenCalledTimes(2);
+      // Both the message and its new conversation are persisted together.
+      expect(mockEm.persist).toHaveBeenCalledWith([
+        expect.objectContaining({ body: "first" }),
+        expect.anything(),
+      ]);
       expect(mockMessageRepo.create).toHaveBeenCalledWith(
         expect.objectContaining({ body: "first", sender: alice }),
       );

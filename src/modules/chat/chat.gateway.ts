@@ -42,6 +42,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayInit, OnGatewa
       const payload: JwtPayload = await this.jwtService.verify(
         client.handshake.headers.authorization!,
       );
+
+      // Refresh and partial 2FA tokens verify against the same secret; only access tokens count.
+      if (payload.type !== "access") return this.handleDisconnect(client);
+
       const user = await this.authService.findUser(payload.sub);
 
       if (user === null) return this.handleDisconnect(client);

@@ -14,10 +14,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     };
 
     message = I18nContext.current()!.t(message.key, {
-      lang: host.switchToHttp().getRequest<NestifyRequest>().i18nLang,
       args: message.args,
+      lang: host.switchToHttp().getRequest<NestifyRequest>().i18nLang,
     });
 
-    response.status(statusCode).json({ statusCode, message });
+    response.status(statusCode).json({ message, statusCode });
   }
 }

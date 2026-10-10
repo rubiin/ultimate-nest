@@ -1,4 +1,4 @@
-import { BaseRepository } from "@common/database";
+import { AuditSubscriber, BaseRepository } from "@common/database";
 import { baseOptions } from "@common/database/orm.config";
 import * as Entities from "@entities";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Global()
 @Module({
+  exports: [MikroOrmModule],
   imports: [
     MikroOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -17,12 +18,12 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
           ...baseOptions,
           ...configService.getOrThrow("database", { infer: true }),
           entityRepository: BaseRepository,
+          subscribers: [new AuditSubscriber()],
         }),
     }),
     MikroOrmModule.forFeature({
       entities: Object.values(Entities),
     }),
   ],
-  exports: [MikroOrmModule],
 })
 export class OrmModule {}

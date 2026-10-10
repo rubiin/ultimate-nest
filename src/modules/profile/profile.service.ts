@@ -39,10 +39,10 @@ export class ProfileService {
         {
           populate,
           populateWhere: {
-            favorites: { isActive: true, isDeleted: false },
-            followers: { isActive: true, isDeleted: false },
-            followed: { isActive: true, isDeleted: false },
-            posts: { isActive: true, isDeleted: false },
+            favorites: { isActive: true },
+            followed: { isActive: true },
+            followers: { isActive: true },
+            posts: { isActive: true },
           },
         },
       ),
@@ -79,7 +79,7 @@ export class ProfileService {
       return throwError(() => new BadRequestException(translate("exception.usernameRequired")));
     }
 
-    return this.getProfileByUsername(usernameToFollow, ["followers"]).pipe(
+    return this.getProfileByUsername(usernameToFollow).pipe(
       switchMap((followingUser) => {
         if (loggedInUser.username === usernameToFollow) {
           return throwError(
@@ -87,15 +87,23 @@ export class ProfileService {
           );
         }
 
-        followingUser.followers.add(loggedInUser);
-
         const profile: ProfileData = {
-          following: true,
           avatar: followingUser.avatar,
+          following: true,
           username: followingUser.username,
         };
 
-        return from(this.em.flush()).pipe(map(() => profile));
+        // `followers` is left unpopulated, so the relation goes straight into the pivot.
+        // That pivot is keyed on (follower, following), so re-following would now raise a
+        // unique violation instead of silently no-opping; this bounded check keeps the
+        // idempotency without loading every follower row.
+        return this.userRepository.exists({ followers: loggedInUser, id: followingUser.id }).pipe(
+          switchMap((alreadyFollowing) => {
+            if (!alreadyFollowing) followingUser.followers.add(loggedInUser);
+
+            return from(this.em.flush()).pipe(map(() => profile));
+          }),
+        );
       }),
     );
   }
@@ -124,8 +132,8 @@ export class ProfileService {
         followingUser.followers.remove(followerUser);
 
         const profile: ProfileData = {
-          following: false,
           avatar: followingUser.avatar,
+          following: false,
           username: followingUser.username,
         };
 

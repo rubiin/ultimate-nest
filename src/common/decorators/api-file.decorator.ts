@@ -30,14 +30,14 @@ export function ApiFile(options_?: ApiFileOptions) {
     ApiConsumes("multipart/form-data"),
     ApiBody({
       schema: {
-        type: "object",
-        required: options.required ? [options.fieldName] : [],
         properties: {
           [options.fieldName]: {
-            type: "string",
             format: "binary",
+            type: "string",
           },
         },
+        required: options.required ? [options.fieldName] : [],
+        type: "object",
       },
     }),
   );
@@ -52,8 +52,8 @@ export function ApiFile(options_?: ApiFileOptions) {
 export function ApiFiles(options_?: ApiFilesOptions) {
   const options = {
     fieldName: "files",
-    required: false,
     maxCount: 10,
+    required: false,
     ...options_,
   } satisfies ApiFilesOptions;
 
@@ -62,17 +62,17 @@ export function ApiFiles(options_?: ApiFilesOptions) {
     ApiConsumes("multipart/form-data"),
     ApiBody({
       schema: {
-        type: "object",
-        required: options.required ? [options.fieldName] : [],
         properties: {
           [options.fieldName]: {
-            type: "array",
             items: {
-              type: "string",
               format: "binary",
+              type: "string",
             },
+            type: "array",
           },
         },
+        required: options.required ? [options.fieldName] : [],
+        type: "object",
       },
     }),
   );
@@ -93,7 +93,7 @@ export function ApiFileFields(
   const bodyProperties = Object.assign(
     {},
     ...options.map((field) => {
-      return { [field.name]: { type: "string", format: "binary" } };
+      return { [field.name]: { format: "binary", type: "string" } };
     }),
   );
 
@@ -102,9 +102,9 @@ export function ApiFileFields(
     ApiConsumes("multipart/form-data"),
     ApiBody({
       schema: {
-        type: "object",
         properties: bodyProperties,
         required: options.filter((f) => f.required).map((f) => f.name),
+        type: "object",
       },
     }),
   );
@@ -114,8 +114,8 @@ export function ApiFileResponse(...mimeTypes: string[]) {
   return applyDecorators(
     ApiOkResponse({
       schema: {
-        type: "string",
         format: "binary",
+        type: "string",
       },
     }),
     ApiProduces(...mimeTypes),

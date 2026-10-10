@@ -4,6 +4,10 @@ import { Roles } from "@common/@types";
 import { randEmail, randFirstName, randLastName } from "@ngneat/falso";
 
 export const user: Record<string, { email: string; password: string }> = {
+  NonExistentUser: {
+    email: "unknown@someone.com",
+    password: process.env.USER_PASSWORD!,
+  },
   admin: {
     email: "roobin.bhandari@gmail.com",
     password: process.env.USER_PASSWORD!,
@@ -12,17 +16,13 @@ export const user: Record<string, { email: string; password: string }> = {
     email: "user@gmail.com",
     password: process.env.USER_PASSWORD!,
   },
-  NonExistentUser: {
-    email: "unknown@someone.com",
-    password: process.env.USER_PASSWORD!,
-  },
 };
 
 export const userDto = {
+  email: randEmail(),
   firstName: randFirstName(),
   lastName: randLastName(),
-  email: randEmail(),
-  username: "username",
-  roles: [Roles.AUTHOR],
   password: process.env.USER_PASSWORD!,
+  roles: [Roles.AUTHOR],
+  username: "username",
 };

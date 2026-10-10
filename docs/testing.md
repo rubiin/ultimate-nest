@@ -79,7 +79,7 @@ Return values that need a resolved promise are cast, since `createMock` types re
 synchronously:
 
 ```ts
-mockUserRepo.qbCursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
+mockUserRepo.cursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
 ```
 
 MicroORM's entity manager is chained (`persist().flush()`), so `mockEm.persist` has to return

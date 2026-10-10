@@ -1,4 +1,5 @@
-import { resolve } from "node:path";
+import { relative, resolve } from "node:path";
+import process from "node:process";
 
 import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
 import { Server } from "@common/@types";
@@ -36,27 +37,27 @@ export class MailerService {
     if (this.options.credentials.type === Server.SES) {
       const sesClient = new SESv2Client({
         apiVersion: "2010-12-01",
-        region: this.options.credentials.sesRegion,
         credentials: {
           accessKeyId: this.options.credentials.sesKey,
           secretAccessKey: this.options.credentials.sesAccessKey,
         },
+        region: this.options.credentials.sesRegion,
       });
 
       this.transporter = createTransport({
-        SES: { sesClient, SendEmailCommand },
+        SES: { SendEmailCommand, sesClient },
       });
     } else {
       this.transporter = createTransport({
-        pool: true,
-        maxConnections: 5,
+        auth: {
+          pass: this.options.credentials.password,
+          user: this.options.credentials.username,
+        },
         host: this.options.credentials.host,
+        maxConnections: 5,
+        pool: true,
         port: this.options.credentials.port,
         secure: true,
-        auth: {
-          user: this.options.credentials.username,
-          pass: this.options.credentials.password,
-        },
         tls: {
           // do not fail on invalid certs
           rejectUnauthorized: false,
@@ -71,7 +72,12 @@ export class MailerService {
    * @returns A promise that resolves to a boolean.
    */
   sendMail(mailOptions: MailOptions) {
-    const templatePath = resolve("}");
+    // consolidate's eta engine resolves templates against `views: "."`, so the path has to be
+    // relative to the working directory.
+    const templatePath = relative(
+      process.cwd(),
+      resolve(this.options.templateDir, `${mailOptions.template}.${this.options.templateEngine}`),
+    );
 
     return from(this.adapter.compile(templatePath, mailOptions.replacements)).pipe(
       switchMap((html) => {

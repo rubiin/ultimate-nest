@@ -30,6 +30,9 @@ declare global {
       DB_PASSWORD: string;
       DB_DATABASE: string;
 
+      // Seeding credential, passed on the command line (see justfile), never logged.
+      USER_PASSWORD: string;
+
       ENC_IV: string;
       ENC_KEY: string;
 
@@ -65,6 +68,20 @@ declare global {
       SENTRY_DSN: string;
       SENTRY_ENVIRONMENT: string;
 
+      STRIPE_API_KEY: string;
+      STRIPE_ACCOUNT: string;
+      STRIPE_CONNECT: string;
+
+      TWILIO_ACCOUNT_SID: string;
+      TWILIO_AUTH_TOKEN: string;
+      TWILIO_FROM: string;
+
+      MINIO_HOST: string;
+      MINIO_PORT: string;
+      MINIO_ACCESS_KEY: string;
+      MINIO_SECRET_KEY: string;
+      MINIO_USE_SSL: string;
+
       GOOGLE_CLIENT_ID: string;
       GOOGLE_CLIENT_SECRET: string;
       GOOGLE_CALLBACK_URL: string;
@@ -75,6 +92,10 @@ declare global {
 
       THROTTLE_LIMIT: string;
       THROTTLE_TTL: number;
+
+      // Optional token that must accompany ?clearCache=true in production so an anonymous
+      // request cannot wipe the whole cache (audit item #1).
+      CACHE_CLEAR_TOKEN?: string;
     }
   }
 }

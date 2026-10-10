@@ -4,13 +4,13 @@ import { translate } from "@lib/i18n";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { generateTOTP } from "@otplib/uri";
 import { OTP } from "otplib";
 import { toFileStream } from "qrcode";
 import { Observable } from "rxjs";
-import { from, map, throwError } from "rxjs";
+import { from, map, of, switchMap, throwError } from "rxjs";
 
 @Injectable()
 export class TwoFactorService {
@@ -33,6 +33,18 @@ export class TwoFactorService {
    */
 
   generateTwoFactorSecret(user: User): Observable<{ secret: string; otpAuthUrl: string }> {
+    // Replacing the secret of an enabled factor would lock the user out of (or hand over) 2FA.
+    if (user.isTwoFactorEnabled) {
+      return throwError(
+        () =>
+          new ConflictException(
+            translate("exception.itemExists", {
+              args: { item: "Two factor authentication", property: "this account" },
+            }),
+          ),
+      );
+    }
+
     const secret = this.otp.generateSecret();
 
     const otpAuthUrl = generateTOTP({
@@ -45,7 +57,7 @@ export class TwoFactorService {
 
     return from(this.em.flush()).pipe(
       map(() => {
-        return { secret, otpAuthUrl };
+        return { otpAuthUrl, secret };
       }),
     );
   }
@@ -58,7 +70,11 @@ export class TwoFactorService {
    * @returns Observable<unknown>
    */
   pipeQrCodeStream(stream: NestifyResponse, otpAuthUrl: string): Observable<unknown> {
-    return from(toFileStream(stream, otpAuthUrl));
+    stream.type("png");
+    // `toFileStream` writes the PNG into the response and ends it; it returns nothing.
+    toFileStream(stream, otpAuthUrl);
+
+    return of(undefined);
   }
 
   /**
@@ -70,8 +86,8 @@ export class TwoFactorService {
   isTwoFactorCodeValid(twoFactorAuthenticationCode: string, user: User): Observable<boolean> {
     return from(
       this.otp.verify({
-        token: twoFactorAuthenticationCode,
         secret: user.twoFactorSecret!,
+        token: twoFactorAuthenticationCode,
       }),
     ).pipe(map((result) => result.valid));
   }
@@ -84,18 +100,14 @@ export class TwoFactorService {
    * @returns Observable<User>
    */
   turnOnTwoFactorAuthentication(twoFactorAuthenticationCode: string, user: User): Observable<User> {
-    const isCodeValid = this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user);
+    return this.isTwoFactorCodeValid(twoFactorAuthenticationCode, user).pipe(
+      switchMap((isCodeValid) => {
+        if (!isCodeValid) return throwError(() => new UnauthorizedException());
 
-    if (!isCodeValid) {
-      return throwError(() =>
-        translate("exception.refreshToken", {
-          args: { error: "malformed" },
-        }),
-      );
-    }
+        this.userRepository.assign(user, { isTwoFactorEnabled: true });
 
-    this.userRepository.assign(user, { isTwoFactorEnabled: true });
-
-    return from(this.em.flush()).pipe(map(() => user));
+        return from(this.em.flush()).pipe(map(() => user));
+      }),
+    );
   }
 }

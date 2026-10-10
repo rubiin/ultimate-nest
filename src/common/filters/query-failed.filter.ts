@@ -19,8 +19,8 @@ export class QueryFailedFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     response.status(status).json({
-      statusCode: status,
       error: STATUS_CODES[status],
+      statusCode: status,
     });
   }
 }

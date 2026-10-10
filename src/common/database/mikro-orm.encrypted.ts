@@ -12,13 +12,13 @@ export class EncryptedType extends Type {
     if (value && !isString(value.valueOf()))
       throw ValidationError.invalidType(EncryptedType, value, "JS");
 
-    return encrypt({ text: value.toString(), config: { key: this.encKey, iv: this.encIV } });
+    return encrypt({ config: { iv: this.encIV, key: this.encKey }, text: value.toString() });
   }
 
   convertToJSValue(value: string, _platform: Platform): string {
     if (!value) return value;
 
-    return decrypt({ text: value, config: { key: this.encKey, iv: this.encIV } });
+    return decrypt({ config: { iv: this.encIV, key: this.encKey }, text: value });
   }
 
   getColumnType(property: EntityProperty, _platform: Platform) {

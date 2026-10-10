@@ -15,8 +15,8 @@ import { Post } from "./post.entity";
 @Entity()
 export class Tag extends BaseEntity {
   @Property({
-    length: 50,
     index: true,
+    length: 50,
     unique: true,
   })
   title!: string;

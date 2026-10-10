@@ -4,6 +4,7 @@ import { Migrator } from "@mikro-orm/migrations";
 import { Options } from "@mikro-orm/postgresql";
 import { defineConfig } from "@mikro-orm/postgresql";
 import { SeedManager } from "@mikro-orm/seeder";
+import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { Logger } from "@nestjs/common";
 import { config as environmentConfig } from "dotenv";
 import dotEnvExpand from "dotenv-expand";
@@ -30,12 +31,13 @@ logger.log(`🛠️ Using env ${process.cwd()}/env/.env.${process.env.NODE_ENV}\
 
 const config: Options = defineConfig({
   ...baseOptions,
+  metadataProvider: TsMorphMetadataProvider,
   dbName: process.env.DB_DATABASE,
+  extensions: [Migrator, SeedManager],
+  host: process.env.DB_HOST,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
   user: process.env.DB_USERNAME,
-  host: process.env.DB_HOST,
-  extensions: [Migrator, SeedManager],
 });
 
 export default config;

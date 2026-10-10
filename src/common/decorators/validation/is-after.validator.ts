@@ -31,10 +31,10 @@ export function IsAfterField<T = any>(
 ): PropertyDecorator {
   return function (object: Record<string, any>, propertyName: string | symbol) {
     registerDecorator({
-      target: object.constructor,
-      propertyName: propertyName as string,
-      options: validationOptions,
       constraints: [property],
+      options: validationOptions,
+      propertyName: propertyName as string,
+      target: object.constructor,
       validator: IsAfterConstraint,
     });
   };

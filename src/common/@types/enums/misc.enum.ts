@@ -10,15 +10,15 @@ export enum EmailTemplate {
 }
 
 export const EmailSubject: Record<TEmailSubject, string> = {
-  RESET_PASSWORD: "Reset your password",
-  WELCOME: "Welcome to the app",
   MAGIC_LOGIN: "Login to the app",
   NEWSLETTER: "Newsletter",
+  RESET_PASSWORD: "Reset your password",
+  WELCOME: "Welcome to the app",
 };
 
 export const FileSize = {
-  IMAGE: 5 * BYTE_TO_MB, // 5MB
   DOC: 10 * BYTE_TO_MB, // 10MB
+  IMAGE: 5 * BYTE_TO_MB, // 5MB
 };
 
 export enum PostStateEnum {
@@ -38,8 +38,8 @@ export enum TemplateEngine {
 }
 
 export const FileType: Record<keyof typeof FileSize, string[]> = {
-  IMAGE: ["jpg", "jpeg", "png", "svg", "webp", "gif", "svg"],
   DOC: ["pdf", "doc", "txt", "key", "csv", "docx", "xls", "xlsx", "ppt", "pptx"],
+  IMAGE: ["jpg", "jpeg", "png", "svg", "webp", "gif", "svg"],
 };
 
 export const ThreadFunctions = {
@@ -52,22 +52,11 @@ export const RoutingKey = {
 };
 
 export const Queues = {
-  MAIL: "mail",
   HTTP: "http",
+  MAIL: "mail",
 };
 
 // database enums
-
-export enum CursorType {
-  DATE = "DATE",
-  STRING = "STRING",
-  NUMBER = "NUMBER",
-}
-
-export enum QueryCursor {
-  DATE = "DATE",
-  ALPHA = "ALPHA",
-}
 
 export enum QueryOrder {
   ASC = "ASC",
@@ -82,4 +71,10 @@ export enum ReferralStatus {
 export enum PaginationType {
   OFFSET = "OFFSET",
   CURSOR = "CURSOR",
+}
+
+export enum AuditAction {
+  CREATE = "create",
+  UPDATE = "update",
+  DELETE = "delete",
 }

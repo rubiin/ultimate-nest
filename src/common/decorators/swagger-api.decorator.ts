@@ -21,10 +21,10 @@ export function SwaggerResponse(options_: SwaggerResponseOptions) {
   }
 
   if (options?.badRequest)
-    decsToApply.push(ApiResponse({ status: 400, description: options.badRequest }));
+    decsToApply.push(ApiResponse({ description: options.badRequest, status: 400 }));
 
   if (options?.notFound)
-    decsToApply.push(ApiResponse({ status: 404, description: options.notFound }));
+    decsToApply.push(ApiResponse({ description: options.notFound, status: 404 }));
 
   if (options?.body) decsToApply.push(ApiBody({ type: options.body }));
 

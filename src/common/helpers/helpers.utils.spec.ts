@@ -66,7 +66,8 @@ describe("helperService", () => {
     const original = process.env.NODE_ENV;
 
     afterEach(() => {
-      process.env.NODE_ENV = original;
+      if (original === undefined) delete process.env.NODE_ENV;
+      else process.env.NODE_ENV = original;
     });
 
     // Both "prod" and "production" match, since the check is a prefix match.
@@ -82,6 +83,15 @@ describe("helperService", () => {
       process.env.NODE_ENV = "development";
 
       expect(HelperService.isProd()).toBe(false);
+    });
+
+    // Regression: orm.config.ts evaluates isProd() at import time, so an unset NODE_ENV
+    // threw a TypeError before the app could boot.
+    it("should be false when NODE_ENV is unset instead of throwing", () => {
+      delete process.env.NODE_ENV;
+
+      expect(HelperService.isProd()).toBe(false);
+      expect(HelperService.isDev()).toBe(false);
     });
   });
 

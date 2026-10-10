@@ -80,8 +80,8 @@ export function ControllerFactory<
 
     @Get(":idx")
     @SwaggerResponse({
-      operation: "Find item",
       badRequest: "Item does not exist.",
+      operation: "Find item",
       params: ["idx"],
     })
     findOne(@Param("idx") index: string): Observable<T> {
@@ -96,9 +96,9 @@ export function ControllerFactory<
     }
 
     @SwaggerResponse({
-      operation: "Create item",
       badRequest: "Item already exists.",
       body: createDto,
+      operation: "Create item",
       response: updateDto,
     })
     @UsePipes(createPipe)
@@ -108,10 +108,10 @@ export function ControllerFactory<
     }
 
     @SwaggerResponse({
-      operation: "Item update",
       badRequest: "Item does not exist.",
-      params: ["idx"],
       body: updateDto,
+      operation: "Item update",
+      params: ["idx"],
       response: updateDto,
     })
     @UsePipes(updatePipe)
@@ -121,8 +121,8 @@ export function ControllerFactory<
     }
 
     @SwaggerResponse({
-      operation: "Item delete",
       badRequest: "Item does not exist.",
+      operation: "Item delete",
       params: ["idx"],
       response: updateDto,
     })

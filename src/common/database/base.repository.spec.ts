@@ -1,12 +1,10 @@
-import { Buffer } from "node:buffer";
-
-import { CursorType, QueryOrder } from "@common/@types";
+import { QueryOrder } from "@common/@types";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
-import { EntityManager } from "@mikro-orm/core";
+import { Cursor, CursorError, EntityManager, ReferenceKind } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { loggedInUser } from "@mocks";
-import { NotFoundException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { lastValueFrom } from "rxjs";
 
 import { BaseRepository } from "./base.repository";
@@ -14,6 +12,19 @@ import { BaseRepository } from "./base.repository";
 describe("baseRepository", () => {
   const mockEm = createMock<EntityManager<PostgreSqlDriver>>();
   const userRepo = new BaseRepository(mockEm as never, User);
+
+  // Mirrors the User metadata: `hidden` marks serialization-hidden columns, `persist: false`
+  // marks the computed getter that has no column of its own, and `kind` separates scalars
+  // from relations.
+  const properties = {
+    avatar: { hidden: true, kind: ReferenceKind.SCALAR },
+    avatarUrl: { kind: ReferenceKind.SCALAR, persist: false },
+    firstName: { kind: ReferenceKind.SCALAR },
+    password: { hidden: true, kind: ReferenceKind.SCALAR },
+    posts: { kind: ReferenceKind.ONE_TO_MANY },
+    social: { kind: ReferenceKind.EMBEDDED },
+    twoFactorSecret: { hidden: true, kind: ReferenceKind.SCALAR },
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -39,43 +50,219 @@ describe("baseRepository", () => {
     expect(loggedInUser.isDeleted).toEqual(true);
   });
 
-  describe("cursor encoding", () => {
-    it("should round trip a string cursor", () => {
-      const encoded = userRepo.encodeCursor("some-id");
+  describe("cursorPagination", () => {
+    // A real `Cursor`, so overfetch trimming and cursor encoding come from MikroORM itself.
+    const meta = { properties: { username: { kind: ReferenceKind.SCALAR, name: "username" } } };
+    const stubPage = (usernames: string[], options: object) => {
+      const page = new Cursor(
+        usernames.map((username) => ({ username })) as never,
+        undefined,
+        { first: 2, orderBy: { username: "ASC" }, overfetch: true, ...options } as never,
+        meta as never,
+      );
 
-      expect(userRepo.decodeCursor(encoded)).toEqual("some-id");
+      mockEm.findByCursor.mockResolvedValue(page as never);
+    };
+    const options = {
+      cursor: "username" as const,
+      fields: [],
+      first: 2,
+      order: QueryOrder.ASC,
+      relations: [],
+      searchField: "firstName" as const,
+      withDeleted: false,
+    };
+
+    beforeEach(() => {
+      mockEm.getMetadata.mockReturnValue({
+        properties,
+        relations: [{ name: "posts" }],
+      } as never);
     });
 
-    it("should round trip a number cursor", () => {
-      const encoded = userRepo.encodeCursor(42);
+    it("should fetch the first page ordered by the cursor field without a count", async () => {
+      stubPage(["a", "b", "c"], {});
 
-      expect(userRepo.decodeCursor(encoded, CursorType.NUMBER)).toEqual(42);
+      const result = await userRepo.cursorPagination(options);
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({
+          after: undefined,
+          filters: { softDelete: true },
+          first: 2,
+          includeCount: false,
+          orderBy: { id: QueryOrder.ASC, username: QueryOrder.ASC },
+          where: {},
+        }),
+      );
+      expect(result).toEqual({
+        data: [{ username: "a" }, { username: "b" }],
+        meta: {
+          hasNextPage: true,
+          hasPreviousPage: false,
+          nextCursor: Cursor.encode(["b"]),
+          search: "",
+        },
+      });
     });
 
-    it("should round trip a date cursor", () => {
-      const date = new Date("2020-06-07T14:34:08.000Z");
-      const decoded = userRepo.decodeCursor(userRepo.encodeCursor(date), CursorType.DATE);
+    it("should fetch the page after the given cursor", async () => {
+      const after = Cursor.encode(["b"]);
 
-      expect(decoded).toBeInstanceOf(Date);
-      expect((decoded as Date).getTime()).toEqual(date.getTime());
+      stubPage(["c"], { after });
+
+      const result = await userRepo.cursorPagination({ ...options, after });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(User, expect.objectContaining({ after }));
+      expect(result.meta).toEqual({
+        hasNextPage: false,
+        hasPreviousPage: true,
+        nextCursor: Cursor.encode(["c"]),
+        search: "",
+      });
     });
 
-    it("should encode as base64", () => {
-      expect(userRepo.encodeCursor("some-id")).toEqual(
-        Buffer.from("some-id", "utf8").toString("base64"),
+    it("should return an empty cursor for an empty page", async () => {
+      stubPage([], {});
+
+      const result = await userRepo.cursorPagination(options);
+
+      expect(result.meta.nextCursor).toEqual("");
+    });
+
+    it("should search the search field and bound the creation date", async () => {
+      const from = new Date("2020-01-01T00:00:00.000Z");
+      const to = new Date("2021-01-01T00:00:00.000Z");
+
+      stubPage([], {});
+
+      const result = await userRepo.cursorPagination({ ...options, from, search: "jo", to });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({
+          where: { createdAt: { $gte: from, $lte: to }, firstName: { $ilike: "%jo%" } },
+        }),
+      );
+      expect(result.meta.search).toEqual("jo");
+    });
+
+    it("should disable the softDelete filter when withDeleted is set", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, withDeleted: true });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ filters: { softDelete: false } }),
       );
     });
 
-    it("should throw on a non-numeric number cursor", () => {
-      const encoded = userRepo.encodeCursor("not-a-number");
+    it("should always select the id and cursor fields alongside requested fields", async () => {
+      stubPage([], {});
 
-      expect(() => userRepo.decodeCursor(encoded, CursorType.NUMBER)).toThrow();
+      await userRepo.cursorPagination({ ...options, fields: ["firstName"] });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ fields: ["firstName", "id", "username"] }),
+      );
     });
 
-    it("should throw on a non-numeric date cursor", () => {
-      const encoded = userRepo.encodeCursor("not-a-date");
+    it("should load all columns when no fields are requested", async () => {
+      stubPage([], {});
 
-      expect(() => userRepo.decodeCursor(encoded, CursorType.DATE)).toThrow();
+      await userRepo.cursorPagination({ ...options, fields: [] });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ fields: undefined }),
+      );
+    });
+
+    // Regression: a single-field order is not total, so rows sharing the cursor value were
+    // skipped across pages. The primary key breaks the tie in the same direction.
+    it("should tie-break the cursor field with the primary key", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, order: QueryOrder.DESC });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ orderBy: { id: QueryOrder.DESC, username: QueryOrder.DESC } }),
+      );
+    });
+
+    it("should not duplicate the order when the cursor is the primary key", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, cursor: "id" });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ orderBy: { id: QueryOrder.ASC } }),
+      );
+    });
+
+    it("should populate an allowed relation", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, relations: ["posts"] });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ populate: ["posts"] }),
+      );
+    });
+
+    // Regression: client-supplied `relations` reached `populate` unfiltered, so `*` and nested
+    // paths like `author.posts` shaped the join tree.
+    it.each([["*"], ["posts.title"], ["password"]])(
+      "should reject the relation %s with a bad request",
+      async (relation) => {
+        stubPage([], {});
+
+        await expect(
+          userRepo.cursorPagination({ ...options, relations: [relation] }),
+        ).rejects.toBeInstanceOf(BadRequestException);
+        expect(mockEm.findByCursor).not.toHaveBeenCalled();
+      },
+    );
+
+    it("should accept a selectable field", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, fields: ["firstName"] });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ fields: ["firstName", "id", "username"] }),
+      );
+    });
+
+    // Regression: `fields` reached `findByCursor` unfiltered, so `?fields=twoFactorSecret`
+    // returned the 2FA secret.
+    it.each([["twoFactorSecret"], ["password"], ["posts"], ["*"], ["nope"]])(
+      "should reject the field %s with a bad request",
+      async (field) => {
+        stubPage([], {});
+
+        await expect(
+          userRepo.cursorPagination({ ...options, fields: [field] }),
+        ).rejects.toBeInstanceOf(BadRequestException);
+        expect(mockEm.findByCursor).not.toHaveBeenCalled();
+      },
+    );
+
+    it("should reject a malformed cursor as a bad request", async () => {
+      mockEm.findByCursor.mockRejectedValue(
+        CursorError.invalidCursor("User", new SyntaxError("Unexpected token")),
+      );
+
+      await expect(
+        userRepo.cursorPagination({ ...options, after: "bm90LWpzb24" }),
+      ).rejects.toBeInstanceOf(BadRequestException);
     });
   });
 
@@ -151,7 +338,7 @@ describe("baseRepository", () => {
     });
   });
 
-  describe("soft-delete filtering", () => {
+  describe("qbOffsetPagination", () => {
     // QueryBuilder never applies entity filters on its own, so the repository has to
     // toggle `softDelete` explicitly. `withDeleted` means "also include deleted rows",
     // which is the inverse of the filter's enabled state.
@@ -162,6 +349,7 @@ describe("baseRepository", () => {
         getResultAndCount: vi.fn().mockResolvedValue([[], 0]),
         leftJoinAndSelect: vi.fn(),
         limit: vi.fn(),
+        mainAlias: { meta: { properties: properties } },
         offset: vi.fn(),
         orderBy: vi.fn(),
         select: vi.fn(),
@@ -180,10 +368,7 @@ describe("baseRepository", () => {
 
     const baseOptions = {
       alias: "u",
-      cursor: "id",
-      cursorType: CursorType.NUMBER,
       fields: [],
-      first: 10,
       from: undefined,
       limit: 10,
       offset: 0,
@@ -194,28 +379,6 @@ describe("baseRepository", () => {
       sort: "createdAt",
       to: undefined,
     };
-
-    it("should enable the softDelete filter for cursor pagination by default", async () => {
-      const qb = stubQueryBuilder();
-
-      await userRepo.qbCursorPagination({
-        pageOptionsDto: { ...baseOptions, withDeleted: false },
-        qb: qb as never,
-      });
-
-      expect(qb.applyFilters).toHaveBeenCalledWith({ softDelete: true });
-    });
-
-    it("should disable the softDelete filter when withDeleted is set", async () => {
-      const qb = stubQueryBuilder();
-
-      await userRepo.qbCursorPagination({
-        pageOptionsDto: { ...baseOptions, withDeleted: true },
-        qb: qb as never,
-      });
-
-      expect(qb.applyFilters).toHaveBeenCalledWith({ softDelete: false });
-    });
 
     it("should enable the softDelete filter for offset pagination by default", async () => {
       const qb = stubQueryBuilder();
@@ -237,6 +400,55 @@ describe("baseRepository", () => {
       });
 
       expect(qb.applyFilters).toHaveBeenCalledWith({ softDelete: false });
+    });
+
+    // Regression: `select()` replaces the field list while `joinAndSelect` appends to it, so
+    // calling `select()` last wiped every joined relation from the result.
+    it("should select the requested fields before joining so relations survive", async () => {
+      const qb = stubQueryBuilder();
+
+      await userRepo.qbOffsetPagination({
+        pageOptionsDto: { ...baseOptions, fields: ["firstName"], relations: ["posts"] },
+        qb: qb as never,
+      });
+
+      expect(qb.select).toHaveBeenCalledWith(["firstName", "id"]);
+      expect(qb.select.mock.invocationCallOrder[0]).toBeLessThan(
+        qb.leftJoinAndSelect.mock.invocationCallOrder[0],
+      );
+    });
+
+    it("should accept an embedded field", async () => {
+      const qb = stubQueryBuilder();
+
+      await userRepo.qbOffsetPagination({
+        pageOptionsDto: { ...baseOptions, fields: ["social"] },
+        qb: qb as never,
+      });
+
+      expect(qb.select).toHaveBeenCalledWith(["social", "id"]);
+    });
+
+    // Regression: `fields` went straight into `.select()`, so `?fields=twoFactorSecret`
+    // returned the 2FA secret.
+    it.each([
+      ["twoFactorSecret"],
+      ["password"],
+      ["avatar"],
+      ["avatarUrl"],
+      ["posts"],
+      ["*"],
+      ["social.twitter"],
+    ])("should reject the field %s with a bad request", async (field) => {
+      const qb = stubQueryBuilder();
+
+      await expect(
+        userRepo.qbOffsetPagination({
+          pageOptionsDto: { ...baseOptions, fields: [field] },
+          qb: qb as never,
+        }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(qb.getResultAndCount).not.toHaveBeenCalled();
     });
   });
 

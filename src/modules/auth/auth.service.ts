@@ -9,6 +9,7 @@ import { OtpLog, Protocol, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager } from "@mikro-orm/core";
+import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { TokensService } from "@modules/token/tokens.service";
@@ -24,7 +25,7 @@ import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
 import { Observable } from "rxjs";
-import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
+import { firstValueFrom, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
 import {
   ChangePasswordDto,
@@ -60,9 +61,13 @@ export class AuthService {
 
   validateUser(isPasswordLogin: boolean, email: string, pass?: string): Observable<any> {
     return from(
-      this.userRepository.findOne({
-        email,
-      }),
+      this.userRepository.findOne(
+        {
+          email,
+        },
+        // `password` is lazy, so it has to be asked for to be compared.
+        isPasswordLogin ? { populate: ["password"] } : {},
+      ),
     ).pipe(
       switchMap((user) => {
         if (!user) {
@@ -81,9 +86,9 @@ export class AuthService {
         }
 
         return user && isPasswordLogin
-          ? HelperService.verifyHash(user.password, pass!).pipe(
-              map((isValid) => {
-                if (isValid) return omit(user, ["password"]);
+          ? HelperService.verifyHash(pass!, user.password).pipe(
+              switchMap((isValid) => {
+                if (isValid) return of(omit(user, ["password"]));
 
                 return throwError(
                   () => new BadRequestException(translate("exception.invalidCredentials")),
@@ -103,7 +108,7 @@ export class AuthService {
    * @returns An observable of type IAuthenticationResponse
    */
 
-  login(loginDto: UserLoginDto, isPasswordLogin = false): Observable<AuthenticationResponse> {
+  login(loginDto: UserLoginDto, isPasswordLogin: boolean): Observable<AuthenticationResponse> {
     return this.validateUser(isPasswordLogin, loginDto.email, loginDto.password).pipe(
       switchMap((user: User) => {
         if (user === null) {
@@ -112,26 +117,39 @@ export class AuthService {
           );
         }
 
+        // The first factor alone must not grant access: hand out a partial token that can only be
+        // exchanged for the full pair at `POST /2fa/authenticate`.
         if (user.isTwoFactorEnabled) {
-          return this.tokenService.generateAccessToken(user).pipe(
-            map((accessToken) => {
-              return HelperService.buildPayloadResponse(user, accessToken);
-            }),
+          return this.tokenService.generateTwoFactorToken(user).pipe(
+            map((twoFactorToken) => ({
+              ...HelperService.buildPayloadResponse(user, twoFactorToken),
+              twoFactorRequired: true,
+            })),
           );
         }
 
-        return zip(
-          this.userRepository.nativeUpdate({ id: user.id }, { lastLogin: new Date() }),
-          this.tokenService.generateAccessToken(user),
-          this.tokenService.generateRefreshToken(
-            user,
-            this.configService.get("jwt.refreshExpiry", { infer: true }),
-          ),
-        ).pipe(
-          map(([_, accessToken, refreshToken]) => {
-            return HelperService.buildPayloadResponse(user, accessToken, refreshToken);
-          }),
-        );
+        return this.issueTokens(user);
+      }),
+    );
+  }
+
+  /**
+   * Issues the full access/refresh pair for a user whose authentication is complete (password or
+   * OAuth without 2FA, or a verified 2FA code) and records the login.
+   * @param user - The authenticated user.
+   * @returns An observable of type AuthenticationResponse
+   */
+  issueTokens(user: User): Observable<AuthenticationResponse> {
+    return zip(
+      this.userRepository.nativeUpdate({ id: user.id }, { lastLogin: new Date() }),
+      this.tokenService.generateAccessToken(user),
+      this.tokenService.generateRefreshToken(
+        user,
+        this.configService.get("jwt.refreshExpiry", { infer: true }),
+      ),
+    ).pipe(
+      map(([_, accessToken, refreshToken]) => {
+        return HelperService.buildPayloadResponse(user, accessToken, refreshToken);
       }),
     );
   }
@@ -193,32 +211,44 @@ export class AuthService {
             const otpNumber = init({ length: 6 })(); // random six digit otp
 
             const otp = this.otpRepository.create({
-              user: userExists,
+              expiresIn: new Date(
+                Date.now() + (protocol?.otpExpiryInMinutes ?? 5) * 60_000, // prettier-ignore
+              ),
               otpCode: otpNumber,
-              expiresIn: new Date(Date.now() + (protocol?.otpExpiryInMinutes ?? 5 * 60_000)), // prettier-ignore
+              user: userExists,
             });
 
-            return from(
-              this.em.transactional(async (em) => {
-                await em.persist(otp).flush();
-
-                return this.mailService.sendMail({
-                  template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
-                  replacements: {
-                    firstName: capitalize(userExists.firstName),
-                    lastName: capitalize(userExists.lastName),
-                    otp: otpNumber,
-                  },
-                  to: userExists.email,
-                  subject: EmailSubject.RESET_PASSWORD,
-                  from: this.configService.get("mail.senderEmail", {
-                    infer: true,
-                  }),
-                });
-              }),
-            ).pipe(map(() => ({ message: "Otp sent successfully" })));
+            return from(this.saveOtpAndSendMail(otp, userExists, otpNumber)).pipe(
+              map(() => ({ message: "Otp sent successfully" })),
+            );
           }),
         );
+      }),
+    );
+  }
+
+  /**
+   * Persists the OTP and sends the reset mail inside one transaction. `this.em` resolves to the
+   * transaction's fork here: `@Transactional()` runs the body inside a `TransactionContext`, which
+   * `EntityManager.getContext()` prefers.
+   */
+  @Transactional()
+  private async saveOtpAndSendMail(otp: OtpLog, user: User, otpNumber: string) {
+    await this.em.persist(otp).flush();
+
+    return firstValueFrom(
+      this.mailService.sendMail({
+        from: this.configService.get("mail.senderEmail", {
+          infer: true,
+        }),
+        replacements: {
+          firstName: capitalize(user.firstName),
+          lastName: capitalize(user.lastName),
+          otp: otpNumber,
+        },
+        subject: EmailSubject.RESET_PASSWORD,
+        template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
+        to: user.email,
       }),
     );
   }
@@ -310,22 +340,29 @@ export class AuthService {
           isUsed: true,
         });
 
-        return from(
-          this.em.transactional(async (em) => {
-            await Promise.allSettled([
-              em.nativeUpdate(
-                User,
-                {
-                  id: codeDetails.user.id,
-                },
-                { isVerified: true },
-              ),
-              em.flush(),
-            ]);
-          }),
-        ).pipe(map(() => codeDetails.user.getEntity()));
+        return from(this.markUserVerified(codeDetails.user.id)).pipe(
+          map(() => codeDetails.user.getEntity()),
+        );
       }),
     );
+  }
+
+  /**
+   * Marks the user verified and flushes the consumed OTP inside one transaction (`this.em` is the
+   * transaction's fork, see `saveOtpAndSendMail`).
+   */
+  @Transactional()
+  private async markUserVerified(userId: number) {
+    // Sequential, not allSettled: a rejected write must propagate so the transaction rolls back
+    // instead of committing a half-verified state.
+    await this.em.nativeUpdate(
+      User,
+      {
+        id: userId,
+      },
+      { isVerified: true },
+    );
+    await this.em.flush();
   }
 
   /**
@@ -340,9 +377,12 @@ export class AuthService {
     const { password, oldPassword } = dto;
 
     return from(
-      this.userRepository.findOne({
-        id: user.id,
-      }),
+      this.userRepository.findOne(
+        {
+          id: user.id,
+        },
+        { populate: ["password"] },
+      ),
     ).pipe(
       switchMap((userDetails) => {
         if (!userDetails) {
@@ -356,7 +396,7 @@ export class AuthService {
           );
         }
 
-        return HelperService.verifyHash(userDetails.password, oldPassword).pipe(
+        return HelperService.verifyHash(oldPassword, userDetails.password).pipe(
           switchMap((isValid) => {
             if (!isValid) {
               return throwError(
@@ -398,9 +438,11 @@ export class AuthService {
   OauthHandler({ response, user }: { response: NestifyResponse; user: OauthResponse }) {
     return this.login({ email: user.email }, false).pipe(
       map((data) => {
-        // client url
+        // client url; a 2FA-enabled user gets the partial token and must call /2fa/authenticate
+        const twoFactor = data.twoFactorRequired ? "&twoFactorRequired=true" : "";
+
         return response.redirect(
-          `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}`,
+          `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}${twoFactor}`,
         );
       }),
     );

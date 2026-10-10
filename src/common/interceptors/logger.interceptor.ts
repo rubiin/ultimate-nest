@@ -36,21 +36,21 @@ export class LoggingInterceptor implements NestInterceptor {
 
     this.logger.log(
       {
-        message,
-        method,
         body,
         headers,
+        message,
+        method,
       },
       logContext,
     );
 
     return call$.handle().pipe(
       tap({
-        next: (value: unknown) => {
-          this.logNext(value, context);
-        },
         error: (error: Error) => {
           this.logError(error, context);
+        },
+        next: (value: unknown) => {
+          this.logNext(value, context);
         },
       }),
     );
@@ -71,8 +71,8 @@ export class LoggingInterceptor implements NestInterceptor {
 
     this.logger.log(
       {
-        message,
         body,
+        message,
       },
       logContext,
     );
@@ -96,11 +96,11 @@ export class LoggingInterceptor implements NestInterceptor {
       if (statusCode >= HttpStatus.INTERNAL_SERVER_ERROR) {
         this.logger.error(
           {
+            body,
+            error,
+            message,
             method,
             url,
-            body,
-            message,
-            error,
           },
           error.stack,
           logContext,
@@ -108,11 +108,11 @@ export class LoggingInterceptor implements NestInterceptor {
       } else {
         this.logger.warn(
           {
+            body,
+            error,
+            message,
             method,
             url,
-            error,
-            body,
-            message,
           },
           logContext,
         );

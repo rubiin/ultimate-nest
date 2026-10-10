@@ -3,7 +3,8 @@ import { z } from "zod";
 
 import { configValidationSchema } from "./config.validation";
 import { appConfigValidationSchema } from "./configs/app.config";
-import { mailConfigValidationSchema } from "./configs/mail.config";
+import { databaseConfigValidationSchema } from "./configs/database.config";
+import { mail, mailConfigValidationSchema } from "./configs/mail.config";
 
 const validAppEnv = {
   API_URL: "http://localhost:3000/api",
@@ -75,6 +76,35 @@ describe("appConfigValidationSchema", () => {
     expect(issuesFor(appConfigValidationSchema, { ...validAppEnv, ...override })).not.toEqual([]);
   });
 
+  it("defaults APP_TRUST_PROXY_HOPS to 0 so the client IP is not spoofable", () => {
+    expect(appConfigValidationSchema.parse(validAppEnv).APP_TRUST_PROXY_HOPS).toBe(0);
+    expect(
+      appConfigValidationSchema.parse({ ...validAppEnv, APP_TRUST_PROXY_HOPS: "2" })
+        .APP_TRUST_PROXY_HOPS,
+    ).toBe(2);
+    expect(
+      issuesFor(appConfigValidationSchema, { ...validAppEnv, APP_TRUST_PROXY_HOPS: "-1" }),
+    ).toEqual(["APP_TRUST_PROXY_HOPS"]);
+  });
+
+  it("defaults APP_MAX_BODY_SIZE to 1mb and rejects a unitless value", () => {
+    expect(appConfigValidationSchema.parse(validAppEnv).APP_MAX_BODY_SIZE).toBe("1mb");
+    expect(
+      appConfigValidationSchema.parse({ ...validAppEnv, APP_MAX_BODY_SIZE: "5mb" })
+        .APP_MAX_BODY_SIZE,
+    ).toBe("5mb");
+    expect(
+      issuesFor(appConfigValidationSchema, { ...validAppEnv, APP_MAX_BODY_SIZE: "10" }),
+    ).toEqual(["APP_MAX_BODY_SIZE"]);
+  });
+
+  it("validates ALLOWED_ORIGINS, the variable the config actually reads", () => {
+    expect(
+      appConfigValidationSchema.safeParse({ ...validAppEnv, ALLOWED_ORIGINS: "http://a.test" })
+        .success,
+    ).toBe(true);
+  });
+
   it("reports the shared version message for a bad APP_PREFIX", () => {
     const result = appConfigValidationSchema.safeParse({ ...validAppEnv, APP_PREFIX: "1" });
 
@@ -141,6 +171,55 @@ describe("mailConfigValidationSchema", () => {
   it("rejects an empty credential instead of treating it as unset", () => {
     expect(issuesFor(mailConfigValidationSchema, { ...smtpEnv, MAIL_PASSWORD: "" })).toEqual([
       "MAIL_PASSWORD",
+    ]);
+  });
+});
+
+describe("mail config factory", () => {
+  const originalEnv = process.env.MAIL_PORT;
+
+  afterEach(() => {
+    if (originalEnv === undefined) delete process.env.MAIL_PORT;
+    else process.env.MAIL_PORT = originalEnv;
+  });
+
+  it("coerces a set MAIL_PORT to a number", () => {
+    process.env.MAIL_PORT = "465";
+
+    expect(mail()).toMatchObject({ port: 465 });
+  });
+
+  // Regression: `process.env.MAIL_PORT ?? +process.env.MAIL_PORT` never fell through —
+  // `+"undefined"` is `NaN`, so an unset port reached the mailer as `NaN` rather than absent.
+  it("leaves the port undefined when MAIL_PORT is unset instead of yielding NaN", () => {
+    delete process.env.MAIL_PORT;
+
+    const { port } = mail();
+
+    expect(port).toBeUndefined();
+  });
+});
+
+describe("databaseConfigValidationSchema", () => {
+  const validDbEnv = {
+    DB_DATABASE: "ultimate_nest",
+    DB_HOST: "localhost",
+    DB_PASSWORD: "db-password",
+    DB_PORT: "5432",
+    DB_USERNAME: "db-user",
+  };
+
+  it("accepts the documented database env", () => {
+    expect(databaseConfigValidationSchema.safeParse(validDbEnv).success).toBe(true);
+  });
+
+  it("validates the per-process pool bounds", () => {
+    expect(databaseConfigValidationSchema.parse(validDbEnv).DB_POOL_MAX).toBe(10);
+    expect(
+      databaseConfigValidationSchema.parse({ ...validDbEnv, DB_POOL_MAX: "25" }).DB_POOL_MAX,
+    ).toBe(25);
+    expect(issuesFor(databaseConfigValidationSchema, { ...validDbEnv, DB_POOL_MAX: "0" })).toEqual([
+      "DB_POOL_MAX",
     ]);
   });
 });
@@ -216,5 +295,31 @@ describe("configValidationSchema", () => {
         THROTTLE_LIMIT: "many",
       }).sort(),
     ).toEqual(["REDIS_TTL", "THROTTLE_LIMIT"]);
+  });
+
+  describe("optional integrations (stripe/sentry/twilio/minio)", () => {
+    it("accepts an env where none of the four integrations are configured", () => {
+      expect(configValidationSchema.safeParse(validEnv).success).toBe(true);
+    });
+
+    it("rejects an empty value when an optional integration is partially set", () => {
+      expect(issuesFor(configValidationSchema, { ...validEnv, STRIPE_API_KEY: "" })).toEqual([
+        "STRIPE_API_KEY",
+      ]);
+      expect(issuesFor(configValidationSchema, { ...validEnv, TWILIO_ACCOUNT_SID: "" })).toEqual([
+        "TWILIO_ACCOUNT_SID",
+      ]);
+    });
+
+    it("still type-checks the fields when the values are present", () => {
+      expect(
+        issuesFor(configValidationSchema, {
+          ...validEnv,
+          MINIO_PORT: "not-a-port",
+          MINIO_USE_SSL: "maybe",
+          SENTRY_DSN: "",
+        }).sort(),
+      ).toEqual(["MINIO_PORT", "MINIO_USE_SSL", "SENTRY_DSN"]);
+    });
   });
 });
