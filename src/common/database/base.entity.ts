@@ -19,6 +19,9 @@ export abstract class BaseEntity {
    *  The unique id of the entity
    */
   @Property({ index: true })
+  // Left in the initializer rather than a @BeforeCreate hook: audit.subscriber reads
+  // `entity.idx` from its own beforeCreate, and hook ordering between the two is not
+  // guaranteed, so the audit row could capture an undefined entityId.
   idx?: string = randomUUID();
 
   /**
@@ -52,5 +55,7 @@ export abstract class BaseEntity {
     onUpdate: () => HelperService.getTimeInUtc(new Date()),
     hidden: true,
   })
-  updatedAt? = HelperService.getTimeInUtc(new Date());
+  // Initializers run in declaration order, so this reuses the timestamp built above
+  // instead of constructing a second `@date-fns/utc` object per entity.
+  updatedAt? = this.createdAt;
 }
