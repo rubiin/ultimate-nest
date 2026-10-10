@@ -21,6 +21,11 @@ import { HelperService } from "./helpers.utils";
 const logger = new Logger("App:Utils");
 
 export const AppUtils = {
+  /** Force-exit budget for a graceful close that never settles. */
+  shutdownTimeoutMs: 5000,
+  /** Set once a close starts so repeat signals are ignored. */
+  isShuttingDown: false,
+
   validationPipeOptions(): ValidationPipeOptions {
     return {
       whitelist: true,
@@ -34,12 +39,22 @@ export const AppUtils = {
   },
 
   async gracefulShutdown(app: INestApplication, code: string) {
-    setTimeout(() => process.exit(1), 5000);
+    // A second signal while the close is in flight must not start a second one: `app.close()`
+    // is not re-entrant and a double close tears down hooks twice.
+    if (AppUtils.isShuttingDown) return;
+
+    AppUtils.isShuttingDown = true;
+
+    const forceExit = setTimeout(() => process.exit(1), AppUtils.shutdownTimeoutMs);
+
     logger.verbose(`Signal received with code ${code} ⚡.`);
     logger.log("❗Closing http server with grace.");
 
     try {
       await app.close();
+      // Cleared on the success path so a healthy shutdown does not leave the timer holding
+      // the event loop open.
+      clearTimeout(forceExit);
       logger.log("✅ Http server closed.");
       process.exit(0);
     } catch (error: any) {
@@ -49,13 +64,11 @@ export const AppUtils = {
   },
 
   killAppWithGrace(app: INestApplication) {
-    process.on("SIGINT", async () => {
-      await AppUtils.gracefulShutdown(app, "SIGINT");
-    });
+    // The only shutdown path. `app.enableShutdownHooks()` must not be called alongside this:
+    // it registers a second SIGINT/SIGTERM pair, so one signal closed the app twice.
+    process.on("SIGINT", () => AppUtils.gracefulShutdown(app, "SIGINT"));
 
-    process.on("SIGTERM", async () => {
-      await AppUtils.gracefulShutdown(app, "SIGTERM");
-    });
+    process.on("SIGTERM", () => AppUtils.gracefulShutdown(app, "SIGTERM"));
   },
 
   setupSwagger(app: INestApplication, configService: ConfigService<Configs, true>) {
