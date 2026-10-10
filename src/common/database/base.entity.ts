@@ -55,7 +55,5 @@ export abstract class BaseEntity {
     onUpdate: () => HelperService.getTimeInUtc(new Date()),
     hidden: true,
   })
-  // Initializers run in declaration order, so this reuses the timestamp built above
-  // instead of constructing a second `@date-fns/utc` object per entity.
   updatedAt? = this.createdAt;
 }

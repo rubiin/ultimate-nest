@@ -19,8 +19,7 @@ export class SocketConnectionService implements OnModuleDestroy {
     return this.socketConnections.set(connection.socketId, connection.connectedUser);
   }
 
-  // The scan had no `break`, so it returned the *last* match: a user with several tabs
-  // resolved to whichever socket connected most recently.
+  // Returns on the first match: scanning the whole map yields the last one instead.
   findByUserId(id: number) {
     for (const user of this.socketConnections.values()) {
       if (user.id === id) return user;
