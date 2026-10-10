@@ -27,175 +27,125 @@ read [here](https://betterprogramming.pub/observables-vs-promises-which-one-shou
 
 ## Table of Contents
 
-- [Whats included](#Whats-included)
+- [What's included](#whats-included)
 - [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Available Scripts](#available-scripts)
-- [Setup](#setup)
-- [File Structure](#file-structure)
+- [Getting started](#getting-started)
+- [Scripts](#scripts)
+- [Configuration](#configuration)
+- [Project structure](#project-structure)
 - [Authentication](#authentication)
 - [Deployment](#deployment)
+- [Documentation](#documentation)
 
-## Whats included
+## What's included
 
-- 🌐 [**I18n**](https://en.wikipedia.org/wiki/Internationalization_and_localization) - Internationalization
-- 🧵 [**Stats**](https://github.com/slanatech/swagger-stats/) - Swagger stats for common server metrics
-- 🧵 [**Poolifier**](https://github.com/poolifier/poolifier) - Threads for CPU extensive tasks
-- 💬 [**Twilio**](https://github.com/twilio/twilio-node) - SMS support
-- 📱 [**NestJS**](https://docs.nestjs.com) — Latest version
-- 🎉 [**TypeScript**](https://www.typescriptlang.org/) - Type checking
-- ⚙️ [**Dotenv**](https://github.com/motdotla/dotenv) - Supports environment variables
-- 🗝 [**Authentication**](https://jwt.io/), [RSA256](https://tools.ietf.org/html/rfc7518#section-6.3), [OAuth]([https://oauth.net/](https://docs.nestjs.com/security/authentication) - JWT, RSA256, OAuth
-- 🏬 [**Authorization**](https://github.com/stalniy/casl) - RBAC with casl
-- 🏪 [**MikroORM**](https://mikro-orm.io/) - Database ORM
-- 🏪 [**PostgreSQL**](https://www.postgresql.org/) - Open-Source Relational Database
-- 🧠 [**Configuration**](https://docs.nestjs.com/techniques/configuration) - Single config for all
-- 📃 [**Swagger**](https://swagger.io/) - API Documentation
-- 🐳 [**Docker Compose**](https://docs.docker.com/compose/) - Container Orchestration
-- 🔐 [**Helmet**](https://helmetjs.github.io/) - Secure HTTP headers
-- 📏 [**Oxlint**](https://oxc.rs/docs/guide/usage/linter.html/) —50~100x faster than ESLint 500+ rules and growing
-- ✅ [**Commitlint**](https://commitlint.js.org/) — Checks if your commit messages meet the conventional commit format.
-- 🐺 [**Husky**](https://github.com/typicode/husky) — Helps you create Git hooks easily.
+- 📱 [**NestJS**](https://docs.nestjs.com) and 🎉 [**TypeScript**](https://www.typescriptlang.org/)
+- 🏪 [**MikroORM**](https://mikro-orm.io/) on 🐘 [**PostgreSQL**](https://www.postgresql.org/), with migrations and seeders
+- 🗝 **Authentication** with JWT access and refresh tokens, OAuth (Google, Facebook), 2FA (TOTP), email verification and session management
+- 🏬 [**Authorization**](https://github.com/stalniy/casl) - RBAC with CASL
+- 🐇 **RabbitMQ** for background jobs and 🧠 **Redis** for caching
+- 📧 **Mail** with templates (SMTP or SES), 💬 [**Twilio**](https://github.com/twilio/twilio-node) and Firebase config, Cloudinary and Minio uploads, Stripe webhooks
+- 🌐 **I18n**, 📃 [**Swagger**](https://swagger.io/) API docs and 🧵 [**swagger-stats**](https://github.com/slanatech/swagger-stats/) metrics
+- ⚙️ **Config** validated at startup with Zod, one file per integration
+- 📏 [**Oxlint**](https://oxc.rs/docs/guide/usage/linter.html) and **Oxfmt**, 🧪 **Vitest**, 🐺 [**Husky**](https://github.com/typicode/husky) git hooks
+- 🐳 [**Docker Compose**](https://docs.docker.com/compose/) for deployment
 
 ## Prerequisites
 
-NodeJS
-https://nodejs.org/en/
-
-Typescript
-https://www.typescriptlang.org/
-
-PostgresQL
-https://www.postgresql.org/
-
-Redis
-https://redis.io/
-
-RabbitMQ
-https://www.rabbitmq.com
+- [Node.js](https://nodejs.org/) `24.21.0` or newer (see `.nvmrc`)
+- [pnpm](https://pnpm.io), the repo uses `pnpm-lock.yaml` so npm and yarn are not supported
+- [Docker](https://www.docker.com/), for local PostgreSQL, Redis, RabbitMQ and a mail catcher
+- Optional: [just](https://github.com/casey/just) for the shortcuts in `justfile`
 
 ## Getting started
 
 ```sh
-
-# 1. Clone the repository or click on "Use this template" button.
-npx degit rubiin/ultimate-nest my-nest-app
-
-# 2. Enter your newly-cloned folder.
-cd ultimate-nest
-
-# 3. Create Environment variables file.
-cp env/.env.sample env/.env.dev
-
-# 4. Install dependencies (preferred: pnpm)
- pnpm install
- npm install
- yarn install
+npx degit rubiin/ultimate-nest my-nest-app   # or use the "Use this template" button
+cd my-nest-app
+pnpm install
+cp env/.env.dev.sample env/.env.dev
 ```
 
-> [!NOTE]
-> If you face any issues with dependencies when using yarn or npm, stick to pnpm for now
+Then start the backing services, run migrations, seed and start the app. The full walkthrough is in
+[docs/getting-started.md](docs/getting-started.md).
 
-> [!NOTE]
-> Env files are kept in env folder. The config validation allows 4 environment ['dev', 'prod', 'test','stage'].
-> The env file name should be of format .env.[environment] Ex. (.env.dev). The env to use should be provided while running any script as
-> NODE_ENV=dev npm run dev
+Once running, Swagger is at `http://localhost:3000/doc` and the metrics dashboard at
+`http://localhost:3000/stats`, which asks for `SWAGGER_USER` and `SWAGGER_PASSWORD` from the env file.
 
-## Available Scripts
+## Scripts
 
-- `npm run start` - Start application
-- `npm run start:dev` - Start application in watch mode
-- `npm run start:prod` - Start built application
-- `npm run start:hmr` - Start application with hot module replacement
-- `npm run lint` - Uses oxlint to lint all the files inside src with config provided in `.oxlintrx.json`
-- `npm run orm migration:create` - Uses Mikroorm to create a migration file
-- `npm run orm migration:up` - This command is used to run availablexisting migration files.
-- `npm run orm migration:down` - This command is used to rollback migration.
-- `npm run orm seeder:run` - This command is used to run existing seeders in `src/common/database`.
+Every script needs `NODE_ENV` (`dev`, `prod`, `test` or `stage`), which selects `env/.env.<NODE_ENV>`.
 
-All the scripts require `NODE_ENV` flag
+| Command                           | What                                             |
+| --------------------------------- | ------------------------------------------------ |
+| `pnpm start:dev`                  | Start in watch mode                              |
+| `pnpm build` / `pnpm start:prod`  | Compile to `dist/`, run the build                |
+| `pnpm start:hmr`                  | Start with hot module replacement                |
+| `pnpm test` / `pnpm test:cov`     | Unit specs, with coverage                        |
+| `pnpm test:e2e`                   | E2E specs in `test/`, needs the services running |
+| `pnpm lint` / `pnpm format:check` | oxlint and oxfmt                                 |
+| `pnpm orm migration:create`       | Generate a migration from entity changes         |
+| `pnpm orm migration:up` / `:down` | Apply or roll back migrations                    |
+| `pnpm orm seeder:run`             | Run the seeders in `src/common/database/seeders` |
 
-Additionally, you can also see the scripts in `justfile` which is a cross platform task runner. You can use it by
-installing [just](https://github.com/casey/just#packages) and then running `just <script>`. Ex. `just build`
+The ORM CLI reads compiled entities from `dist/`, so run `pnpm build` first. `justfile` wraps these, for
+example `just migrate`, `just seed` and `just encryption`. Run `just` to list them.
 
----
+## Configuration
 
-## Setup
+Each integration has its own file in `src/lib/config/configs` with a Zod schema and a `registerAs` block, and
+`src/lib/config/config.module.ts` loads them. Every variable is validated at startup, and the app refuses to
+boot on a missing or malformed one. `env/.env.sample` lists every variable, and `env/.env.dev.sample` is a
+working local setup.
 
-- First if you don't want to use any libs from like redis, mailer etc. replace them from the config.module.ts
-  - You will also need to remove the config from `validate.config.ts` from line ` load: []`
-  - Also remove the unwanted config variables from the env file
+To drop an integration you do not need (for example Redis or Twilio), remove its config from
+`config.module.ts`, its schema from `config.validation.ts`, and its variables from your env file. See
+[docs/config.md](docs/config.md).
 
-## Migration and seeding(optional)
-
-Migrations are used to update the database schema. The migration files are stored in `migrations` directory.
-
-```sh
-NODE_ENV=dev npm run orm migration:up # applies migration for dev env
-```
-
-Seeding is used to insert data into the database. The seeding files are stored in `common/database/seeders` directory.
-
-```sh
-USER_PASSWORD=Test@1234 NODE_ENV=dev npm run orm seeder:run   # seeds data for dev env with all user password set as Test@1234
-```
-
-Seeding is optional
-
-## Start application
-
-- `NODE_ENV=dev npm run start`
-- View automatically generated swagger api docs by browsing to `http://localhost:[port]/docs`
-- View automatically generated swagger stats dashboard by browsing to `http://localhost:[port]/stats`. The username and
-  password is the values set in the env file under `SWAGGER_USERNAME` and `SWAGGER_PASS` respectively
-
-## File structure
+## Project structure
 
 ```text
 ultimate-nest
-├── env                                           * Contains all configuration files
-│   └── .env.example                              * Sample configuration file.
-│   └── .env.dev                                  * Configuration file for development environment.
-│   └── .env.prod                                 * Configuration file for production environment.
-│   └── .env.test                                 * Configuration file for test environment.
-├── coverage                                      * Coverage reports after running `npm run test:cov` command.
-├── dist                                          * Optimized code for production after `npm run build` is run.
+├── env                 Env files: .env.sample (template), .env.dev.sample (local), .env.<NODE_ENV> (yours)
+├── migrations          MikroORM migrations
+├── docs                Guides, start with getting-started.md
+├── test                End to end specs
 ├── src
-    └── modules                                   * Folder where specific modules all files are stored
-          └── <module>
-      │       └── dto                             * Data Transfer Objects.
-      │       └── <module>.controller.ts          * Controller file.
-      │       └── <module>.module.ts              * root module file for module.
-      │       └── <module>.service.ts             * Service file for <module>.
-      │       └── <module>.service.spec.ts        * Test file for service.
-      │       └── <module>.repository.ts          * Repository file for <module>.
-      │       └── <module>.repository.spec.ts     * Test file for repository.
-│   └── common                                    * Common helpers function, dto, entity,guards, custom validators,types, exception, decorators etc.
-│   └── __mocks__                                 * Fixtures for unit tests.
-│   └── libs                                      * Resusable pre configured libraries
-│   └── resources                                 * Contains all static resources like ssl, i18n,email templates etc.
-│   └── app.module.ts                             * Root module of the application.
-│   └── main.ts                                   * The entry file of the application which uses the core function NestFactory to create a Nest application instance.
-├── test                                          * End to end test files for the application.
-
+│   ├── main.ts         Entry point
+│   ├── common          Shared code: database base classes, decorators, guards, pipes, DTOs, types
+│   ├── entities        MikroORM entities
+│   ├── lib             Standalone modules: config, mail, i18n, jwt, cache, casl, rabbit, ...
+│   ├── modules         Feature modules: auth, user, post, newsletter, chat, ...
+│   ├── resources       Static files: i18n, mail templates
+│   └── _mocks_         Shared mocks for unit tests
+└── dist                Build output
 ```
 
-# Authentication
+A feature module in `src/modules/<name>` holds its controller, service, module, `dto` folder and colocated
+`*.spec.ts` files.
 
-This applications uses JSON Web Token (JWT) to handle authentication. The token is passed with each request using
-the `Authorization` header with `Token` scheme. The JWT authentication middleware handles the validation and
-authentication of the token.
+## Authentication
 
-# Deployment
+The API uses JSON Web Tokens. Send the access token on each request in the header
+`Authorization: Bearer <token>`. Refresh tokens are single-use and rotated on `POST /v1/auth/token/refresh`,
+and `GET /v1/auth/sessions` lists the devices a user is logged in on.
 
-You need to have `docker` and `docker-compose` installed. The image environment variable values can be found at the compose file
+## Deployment
+
+You need `docker` and `docker-compose`. The variables the compose file reads are defined in
+`docker-compose.yml`.
 
 ```sh
-ENV=dev sh ./scripts/deploy.sh   # deploys dev environment (.env.dev used)
-ENV=prod sh ./scripts/deploy.sh   # deploys prod environment (.env.prod used)
+ENV=dev sh ./scripts/deploy.sh    # deploys the dev environment (env/.env.dev)
+ENV=prod sh ./scripts/deploy.sh   # deploys the prod environment (env/.env.prod)
 ```
 
-More docs found at `docs` folder
+## Documentation
+
+More guides are in [`docs/`](docs): [getting started](docs/getting-started.md), [config](docs/config.md),
+[database](docs/database.md), [testing](docs/testing.md), [logging](docs/logging.md),
+[decorators](docs/decorators.md), [linting](docs/linting.md), [timezone](docs/timezone.md) and
+[naming](docs/naming-cheatsheet.md).
 
 <h2 align="center">Do you use this template?<br/>Don't be shy to give it a star! ★</h2>
 
@@ -224,7 +174,7 @@ Platform config manager for nestjs. It supports multiple config files and enviro
 [nestjs-minio](https://github.com/rubiin/nestjs-minio)
 
 [![GitHub stars](https://img.shields.io/github/stars/rubiin/nestjs-minio?style=flat-square)](https://github.com/NestCrafts/nestjs-minio)
-[![npm](https://img.shields.io/npm/dm/nestjs-minio?style=flat-square)](https://www.npmjs.com/package/nestjs-sessminioion)
+[![npm](https://img.shields.io/npm/dm/nestjs-minio?style=flat-square)](https://www.npmjs.com/package/nestjs-minio)
 
 This is a minio module for Nest.
 
