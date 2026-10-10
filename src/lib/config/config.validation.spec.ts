@@ -75,6 +75,17 @@ describe("appConfigValidationSchema", () => {
     expect(issuesFor(appConfigValidationSchema, { ...validAppEnv, ...override })).not.toEqual([]);
   });
 
+  it("defaults APP_MAX_BODY_SIZE to 1mb and rejects a unitless value", () => {
+    expect(appConfigValidationSchema.parse(validAppEnv).APP_MAX_BODY_SIZE).toBe("1mb");
+    expect(
+      appConfigValidationSchema.parse({ ...validAppEnv, APP_MAX_BODY_SIZE: "5mb" })
+        .APP_MAX_BODY_SIZE,
+    ).toBe("5mb");
+    expect(
+      issuesFor(appConfigValidationSchema, { ...validAppEnv, APP_MAX_BODY_SIZE: "10" }),
+    ).toEqual(["APP_MAX_BODY_SIZE"]);
+  });
+
   it("validates ALLOWED_ORIGINS, the variable the config actually reads", () => {
     expect(
       appConfigValidationSchema.safeParse({ ...validAppEnv, ALLOWED_ORIGINS: "http://a.test" })

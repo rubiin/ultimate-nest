@@ -60,8 +60,10 @@ async function bootstrap() {
   app.enable("trust proxy");
   // `weak` revalidates with a stat/mtime instead of hashing every response body.
   app.set("etag", "weak");
-  app.useBodyParser("json", { limit: "10mb" });
-  app.useBodyParser("urlencoded", { limit: "10mb", extended: true });
+  const maxBodySize = configService.get("app.maxBodySize", { infer: true });
+
+  app.useBodyParser("json", { limit: maxBodySize });
+  app.useBodyParser("urlencoded", { limit: maxBodySize, extended: true });
 
   if (!HelperService.isProd()) {
     app.use(compression());
