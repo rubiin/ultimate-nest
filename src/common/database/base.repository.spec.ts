@@ -13,6 +13,19 @@ describe("baseRepository", () => {
   const mockEm = createMock<EntityManager<PostgreSqlDriver>>();
   const userRepo = new BaseRepository(mockEm as never, User);
 
+  // Mirrors the User metadata: `hidden` marks serialization-hidden columns, `persist: false`
+  // marks the computed getter that has no column of its own, and `kind` separates scalars
+  // from relations.
+  const properties = {
+    avatar: { hidden: true, kind: ReferenceKind.SCALAR },
+    avatarUrl: { kind: ReferenceKind.SCALAR, persist: false },
+    firstName: { kind: ReferenceKind.SCALAR },
+    password: { hidden: true, kind: ReferenceKind.SCALAR },
+    posts: { kind: ReferenceKind.ONE_TO_MANY },
+    social: { kind: ReferenceKind.EMBEDDED },
+    twoFactorSecret: { hidden: true, kind: ReferenceKind.SCALAR },
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -62,6 +75,7 @@ describe("baseRepository", () => {
 
     beforeEach(() => {
       mockEm.getMetadata.mockReturnValue({
+        properties,
         relations: [{ name: "posts" }],
       } as never);
     });
@@ -216,6 +230,31 @@ describe("baseRepository", () => {
       },
     );
 
+    it("should accept a selectable field", async () => {
+      stubPage([], {});
+
+      await userRepo.cursorPagination({ ...options, fields: ["firstName"] });
+
+      expect(mockEm.findByCursor).toHaveBeenCalledWith(
+        User,
+        expect.objectContaining({ fields: ["firstName", "id", "username"] }),
+      );
+    });
+
+    // Regression: `fields` reached `findByCursor` unfiltered, so `?fields=twoFactorSecret`
+    // returned the 2FA secret.
+    it.each([["twoFactorSecret"], ["password"], ["posts"], ["*"], ["nope"]])(
+      "should reject the field %s with a bad request",
+      async (field) => {
+        stubPage([], {});
+
+        await expect(
+          userRepo.cursorPagination({ ...options, fields: [field] }),
+        ).rejects.toBeInstanceOf(BadRequestException);
+        expect(mockEm.findByCursor).not.toHaveBeenCalled();
+      },
+    );
+
     it("should reject a malformed cursor as a bad request", async () => {
       mockEm.findByCursor.mockRejectedValue(
         CursorError.invalidCursor("User", new SyntaxError("Unexpected token")),
@@ -299,7 +338,7 @@ describe("baseRepository", () => {
     });
   });
 
-  describe("soft-delete filtering", () => {
+  describe("qbOffsetPagination", () => {
     // QueryBuilder never applies entity filters on its own, so the repository has to
     // toggle `softDelete` explicitly. `withDeleted` means "also include deleted rows",
     // which is the inverse of the filter's enabled state.
@@ -310,6 +349,7 @@ describe("baseRepository", () => {
         getResultAndCount: vi.fn().mockResolvedValue([[], 0]),
         leftJoinAndSelect: vi.fn(),
         limit: vi.fn(),
+        mainAlias: { meta: { properties: properties } },
         offset: vi.fn(),
         orderBy: vi.fn(),
         select: vi.fn(),
@@ -376,6 +416,39 @@ describe("baseRepository", () => {
       expect(qb.select.mock.invocationCallOrder[0]).toBeLessThan(
         qb.leftJoinAndSelect.mock.invocationCallOrder[0],
       );
+    });
+
+    it("should accept an embedded field", async () => {
+      const qb = stubQueryBuilder();
+
+      await userRepo.qbOffsetPagination({
+        pageOptionsDto: { ...baseOptions, fields: ["social"] },
+        qb: qb as never,
+      });
+
+      expect(qb.select).toHaveBeenCalledWith(["social", "id"]);
+    });
+
+    // Regression: `fields` went straight into `.select()`, so `?fields=twoFactorSecret`
+    // returned the 2FA secret.
+    it.each([
+      ["twoFactorSecret"],
+      ["password"],
+      ["avatar"],
+      ["avatarUrl"],
+      ["posts"],
+      ["*"],
+      ["social.twitter"],
+    ])("should reject the field %s with a bad request", async (field) => {
+      const qb = stubQueryBuilder();
+
+      await expect(
+        userRepo.qbOffsetPagination({
+          pageOptionsDto: { ...baseOptions, fields: [field] },
+          qb: qb as never,
+        }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(qb.getResultAndCount).not.toHaveBeenCalled();
     });
   });
 

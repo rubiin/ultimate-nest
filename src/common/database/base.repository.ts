@@ -24,6 +24,7 @@ import {
   QBField,
   QBFilterQuery,
   QueryOrderMap,
+  ReferenceKind,
 } from "@mikro-orm/postgresql";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { formatSearch } from "helper-fns";
@@ -31,6 +32,9 @@ import { Observable } from "rxjs";
 import { from, map, of, switchMap, throwError } from "rxjs";
 
 import { BaseEntity } from "./base.entity";
+
+/** The subset of `EntityProperty` that decides whether a client may select a field. */
+type SelectableProperty = { hidden?: boolean; persist?: boolean; kind: ReferenceKind };
 
 export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   /**
@@ -179,6 +183,36 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
   }
 
   /**
+   * Client-supplied `fields` reach the ORM verbatim, so anything that is not a selectable
+   * column of the entity is rejected. Otherwise `?fields=twoFactorSecret` or a relation path
+   * selects the hidden property straight into the response.
+   * @param properties - The entity properties keyed by name.
+   * @param fields - The field names taken from the request.
+   */
+  private assertSelectableFields(
+    properties: Dictionary<SelectableProperty>,
+    fields: string[],
+  ): void {
+    if (fields.length === 0) return;
+
+    const rejected = fields.filter((field) => {
+      const property = properties[field];
+
+      return (
+        !property ||
+        property.hidden === true ||
+        property.persist === false ||
+        (property.kind !== ReferenceKind.SCALAR && property.kind !== ReferenceKind.EMBEDDED)
+      );
+    });
+
+    if (rejected.length > 0)
+      throw new BadRequestException(
+        translate("exception.invalidField", { args: { fields: rejected.join(", ") } }),
+      );
+  }
+
+  /**
    * Performs offset pagination on a query builder.
    * @param dto - The query builder plus the validated pagination options.
    * @returns The paginated results together with their offset page metadata.
@@ -203,6 +237,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       withDeleted,
     } = pageOptionsDto;
     const selectedFields = [...new Set([...fields, "id"])];
+    const metadata = qb.mainAlias.meta;
+
+    this.assertSelectableFields(metadata.properties as Dictionary<SelectableProperty>, fields);
 
     // QueryBuilder bypasses the entity filters `em.find()` applies, so the
     // soft-delete filter has to be toggled explicitly to honour `withDeleted`.
@@ -276,15 +313,14 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       searchField,
     } = options;
     const where: Dictionary = {};
+    const metadata = this.em.getMetadata(this.entityName);
 
     // Only the entity's own top-level relations may be populated: `*` and nested paths like
     // `a.b` would let the client shape the join tree. Unknown names are rejected rather than
     // dropped, so a client asking for data it cannot get finds out instead of silently
     // receiving less.
     if (relations.length > 0) {
-      const allowed = new Set<string>(
-        this.em.getMetadata(this.entityName).relations.map((property) => property.name),
-      );
+      const allowed = new Set<string>(metadata.relations.map((property) => property.name));
       const rejected = relations.filter((relation) => !allowed.has(relation));
 
       if (rejected.length > 0)
@@ -292,6 +328,8 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
           translate("exception.itemDoesNotExist", { args: { item: rejected.join(", ") } }),
         );
     }
+
+    this.assertSelectableFields(metadata.properties as Dictionary<SelectableProperty>, fields);
 
     if (search && searchField) where[searchField as string] = { $ilike: formatSearch(search) };
 

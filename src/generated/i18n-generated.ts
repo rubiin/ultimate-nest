@@ -32,6 +32,7 @@ export type I18nTranslations = {
         "token": string;
         "tooManyRequests": string;
         "invalidCursor": string;
+        "invalidField": string;
         "cursorInvalidDate": string;
         "cursorInvalidNumber": string;
         "apiUnauthorizedResponse": string;
