@@ -11,6 +11,11 @@ export enum PostStateEnum {
   PUBLISHED = "PUBLISHED",
 }
 
+export enum OtpPurpose {
+  RESET_PASSWORD = "RESET_PASSWORD",
+  VERIFY_EMAIL = "VERIFY_EMAIL",
+}
+
 export const FileType: Record<keyof typeof FileSize, string[]> = {
   DOC: ["pdf", "doc", "txt", "key", "csv", "docx", "xls", "xlsx", "ppt", "pptx"],
   IMAGE: ["jpg", "jpeg", "png", "svg", "webp", "gif", "svg"],

@@ -1,6 +1,6 @@
 import process from "node:process";
 
-import { AuthenticationResponse, OauthResponse } from "@common/@types";
+import { AuthenticationResponse, OauthResponse, OtpPurpose } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import {
   DEFAULT_OTP_EXPIRY_MINUTES,
@@ -221,6 +221,7 @@ export class AuthService {
                   (protocol?.otpExpiryInMinutes ?? DEFAULT_OTP_EXPIRY_MINUTES) * MS_PER_MINUTE,
               ),
               otpCode: otpNumber,
+              purpose: OtpPurpose.RESET_PASSWORD,
               user: userExists,
             });
 
@@ -262,27 +263,10 @@ export class AuthService {
   resetPassword(resetPassword: ResetPasswordDto): Observable<User> {
     const { password, otpCode } = resetPassword;
 
-    return from(
-      this.otpRepository.findOne(
-        {
-          otpCode,
-        },
-        { populate: ["user"] },
-      ),
-    ).pipe(
+    return this.findActiveOtp(otpCode, OtpPurpose.RESET_PASSWORD).pipe(
       switchMap((details) => {
-        if (!details) {
-          return throwError(
-            () =>
-              new NotFoundException(
-                translate(itemDoesNotExistKey, {
-                  args: { item: "Otp" },
-                }),
-              ),
-          );
-        }
-
         const user = details.user.getEntity();
+        this.otpRepository.assign(details, { isUsed: true });
         this.userRepository.assign(user, { password });
 
         return from(this.em.flush()).pipe(map(() => user));
@@ -291,25 +275,12 @@ export class AuthService {
   }
 
   /**
-   * This function verifies an OTP code and updates the user's verification status if the code is valid
-   * and not expired.
-   * @param otpDto - The `otpDto` parameter is an object of type `OtpVerifyDto` which
-   * contains the OTP code that needs to be verified.
-   * @returns The `verifyOtp` function returns an Observable of type `User`.
+   * Finds an unused, unexpired OTP issued for `purpose`, with its user populated.
+   * Throws NotFound for unknown, used or wrong-purpose codes and BadRequest for expired ones.
    */
-
-  verifyOtp(otpDto: OtpVerifyDto): Observable<User> {
-    const { otpCode } = otpDto;
-
+  private findActiveOtp(otpCode: string, purpose: OtpPurpose): Observable<OtpLog> {
     return from(
-      this.otpRepository.findOne(
-        {
-          otpCode,
-        },
-        {
-          populate: ["user"],
-        },
-      ),
+      this.otpRepository.findOne({ isUsed: false, otpCode, purpose }, { populate: ["user"] }),
     ).pipe(
       switchMap((codeDetails) => {
         if (!codeDetails) {
@@ -323,9 +294,7 @@ export class AuthService {
           );
         }
 
-        const isExpired = isAfter(new Date(), new Date(codeDetails.expiresIn));
-
-        if (isExpired) {
+        if (isAfter(new Date(), new Date(codeDetails.expiresIn))) {
           return throwError(
             () =>
               new BadRequestException(
@@ -335,6 +304,23 @@ export class AuthService {
               ),
           );
         }
+
+        return of(codeDetails);
+      }),
+    );
+  }
+
+  /**
+   * This function verifies an OTP code and updates the user's verification status if the code is valid
+   * and not expired.
+   * @param otpDto - The `otpDto` parameter is an object of type `OtpVerifyDto` which
+   * contains the OTP code that needs to be verified.
+   * @returns The `verifyOtp` function returns an Observable of type `User`.
+   */
+
+  verifyOtp(otpDto: OtpVerifyDto): Observable<User> {
+    return this.findActiveOtp(otpDto.otpCode, OtpPurpose.VERIFY_EMAIL).pipe(
+      switchMap((codeDetails) => {
         this.otpRepository.assign(codeDetails, {
           isUsed: true,
         });

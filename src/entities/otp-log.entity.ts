@@ -1,5 +1,6 @@
+import { OtpPurpose } from "@common/@types";
 import { BaseEntity } from "@common/database";
-import { Entity, ManyToOne, Property } from "@mikro-orm/decorators/legacy";
+import { Entity, Enum, ManyToOne, Property } from "@mikro-orm/decorators/legacy";
 import type { Rel } from "@mikro-orm/postgresql";
 import { Opt, Ref } from "@mikro-orm/postgresql";
 
@@ -21,6 +22,10 @@ export class OtpLog extends BaseEntity {
     index: true,
   })
   user!: Rel<Ref<User>>;
+
+  // Keeps a code issued for one flow from being redeemed in the other.
+  @Enum({ items: () => OtpPurpose })
+  purpose: OtpPurpose & Opt = OtpPurpose.RESET_PASSWORD;
 
   @Property()
   isUsed: boolean & Opt = false;

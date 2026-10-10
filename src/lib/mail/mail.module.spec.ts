@@ -13,7 +13,7 @@ import {
 import { Test } from "@nestjs/testing";
 
 import { mailTransport } from "./mail.module";
-import { ResetPasswordMail, WelcomeMail } from "./mails";
+import { ResetPasswordMail, VerifyEmailMail, WelcomeMail } from "./mails";
 
 const configWith = (values: Record<string, unknown>) =>
   ({ get: (key: string) => values[key] }) as unknown as ConfigService<Configs, true>;
@@ -34,7 +34,7 @@ describe("mails", () => {
           from: "Nestify <no-reply@example.com>",
         }),
       ],
-      providers: [ResetPasswordMail, WelcomeMail],
+      providers: [ResetPasswordMail, VerifyEmailMail, WelcomeMail],
     }).compile();
 
     await module.init();
@@ -53,6 +53,22 @@ describe("mails", () => {
 
     expect(mail.html).toContain("<strong>123456</strong>");
     expect(mail.html).toContain("Best regards");
+    expect(mail.html).not.toContain("{{");
+  });
+
+  it("renders the verify mail with the name and one-time code", async () => {
+    await mailer.send(VerifyEmailMail, {
+      to: "ada@example.com",
+      data: { firstName: "Ada", otp: "654321" },
+    });
+
+    const mail = mailbox.assertSent({
+      to: "ada@example.com",
+      subject: "Verify your email address",
+    });
+
+    expect(mail.html).toContain("Hello Ada!");
+    expect(mail.html).toContain("<strong>654321</strong>");
     expect(mail.html).not.toContain("{{");
   });
 
