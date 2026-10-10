@@ -53,7 +53,6 @@
     "test:e2e": "vitest run --config ./vitest.config.e2e.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1148.0",
     "@aws-sdk/client-sesv2": "^3.1148.0",
     "@casl/ability": "^6.8.1",
     "@date-fns/utc": "^2.1.1",
@@ -74,12 +73,14 @@
     "@nestjs/common": "^12.1.2",
     "@nestjs/config": "^12.0.1",
     "@nestjs/core": "^12.1.2",
+    "@nestjs/i18n": "^0.0.1",
     "@nestjs/jwt": "^12.0.2",
     "@nestjs/passport": "^12.0.0",
     "@nestjs/platform-express": "^12.1.2",
     "@nestjs/platform-socket.io": "^12.1.2",
     "@nestjs/schedule": "^12.0.2",
     "@nestjs/serve-static": "^12.0.0",
+    "@nestjs/storage": "^0.0.2",
     "@nestjs/swagger": "^12.0.2",
     "@nestjs/terminus": "^12.1.0",
     "@nestjs/throttler": "^6.7.1",

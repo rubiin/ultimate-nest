@@ -10,6 +10,7 @@ import {
   rabbitmqConfigValidationSchema,
   redisConfigValidationSchema,
   sentryConfigValidationSchema,
+  storageConfigValidationSchema,
   stripeConfigValidationSchema,
   throttleConfigValidationSchema,
   twilioConfigValidationSchema,
@@ -32,4 +33,5 @@ export const configValidationSchema = mailConfigValidationSchema
   .extend(stripeConfigValidationSchema.shape)
   .extend(sentryConfigValidationSchema.shape)
   .extend(twilioConfigValidationSchema.shape)
-  .extend(minioConfigValidationSchema.shape);
+  .extend(minioConfigValidationSchema.shape)
+  .extend(storageConfigValidationSchema.shape);
