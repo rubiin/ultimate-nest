@@ -41,13 +41,13 @@ export class ChatService {
     if (conversationExists) {
       const messageNew = this.messageRepository.create({
         body: data.message,
-        sender: sender!,
         conversation: ref(conversationExists),
+        sender: sender!,
       });
 
       conversationExists.messages.add(messageNew);
 
-      await Promise.allSettled([this.em.persist(messageNew).flush(), this.em.flush()]);
+      await this.em.flush();
     } else {
       // `Message.conversation` is required, so the conversation has to exist
       // before the message. The owning side is enough for the ORM to fill the
@@ -59,14 +59,12 @@ export class ChatService {
 
       const messageNew = this.messageRepository.create({
         body: data.message,
-        sender: sender!,
         conversation: ref(conversationNew),
+        sender: sender!,
       });
 
-      await Promise.allSettled([
-        this.em.persist(messageNew).flush(),
-        this.em.persist(conversationNew).flush(),
-      ]);
+      this.em.persist([messageNew, conversationNew]);
+      await this.em.flush();
     }
   }
 

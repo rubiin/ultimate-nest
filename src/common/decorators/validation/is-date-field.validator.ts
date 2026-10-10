@@ -19,12 +19,12 @@ import {
 
 export function IsDateField(options_?: DateFieldOptions) {
   const options: DateFieldOptions = {
-    each: false,
-    required: true,
-    arrayMinSize: 0,
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
-    lessThan: false,
+    arrayMinSize: 0,
+    each: false,
     greaterThan: false,
+    lessThan: false,
+    required: true,
     ...options_,
   } satisfies DateFieldOptions;
 
@@ -32,10 +32,10 @@ export function IsDateField(options_?: DateFieldOptions) {
     IsDateString(
       { strict: true },
       {
+        each: options.each,
         message: validationI18nMessage("validation.isDataType", {
           type: "date",
         }),
-        each: options.each,
       },
     ),
   ];
@@ -43,8 +43,8 @@ export function IsDateField(options_?: DateFieldOptions) {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
+        message: validationI18nMessage("validation.isNotEmpty"),
       }),
     );
 

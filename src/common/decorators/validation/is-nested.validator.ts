@@ -21,10 +21,10 @@ import { i18nValidationMessage } from "nestjs-i18n";
 
 export function IsNestedField(entity: Class, ops?: IsNestedFieldOptions) {
   const options: IsNestedFieldOptions = {
-    required: true,
-    each: false,
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
     arrayMinSize: 0,
+    each: false,
+    required: true,
     ...ops,
   };
   const decoratorsToApply = [
@@ -37,8 +37,8 @@ export function IsNestedField(entity: Class, ops?: IsNestedFieldOptions) {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: i18nValidationMessage("validation.isNotEmpty"),
         each: options.each,
+        message: i18nValidationMessage("validation.isNotEmpty"),
       }),
     );
 

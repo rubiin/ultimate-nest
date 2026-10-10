@@ -1,5 +1,5 @@
 import { PaginationResponse } from "@common/@types";
-import { CursorType, QueryOrder } from "@common/@types";
+import { QueryOrder } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Category, Comment, Post, Tag, User } from "@entities";
@@ -17,8 +17,6 @@ import { CreateCommentDto, CreatePostDto, EditPostDto } from "./dtos";
 
 @Injectable()
 export class PostService {
-  private readonly queryName = "p";
-
   constructor(
     private readonly em: EntityManager<PostgreSqlDriver>,
     @InjectRepository(Post)
@@ -41,19 +39,12 @@ export class PostService {
    * @returns An observable of a pagination object.
    */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<Post>> {
-    const qb = this.postRepository.createQueryBuilder(this.queryName);
-
     return from(
-      this.postRepository.qbCursorPagination({
-        qb,
-        pageOptionsDto: {
-          alias: this.queryName,
-          cursor: "title",
-          cursorType: CursorType.STRING,
-          order: QueryOrder.ASC,
-          searchField: "title",
-          ...dto,
-        },
+      this.postRepository.cursorPagination({
+        cursor: "title",
+        order: QueryOrder.ASC,
+        searchField: "title",
+        ...dto,
       }),
     );
   }
@@ -105,8 +96,8 @@ export class PostService {
           ...omit(dto, ["tags", "categories"]),
           author,
           categories,
-          tags,
           published: dto.published ?? false,
+          tags,
         });
 
         return from(this.em.persist(post).flush()).pipe(map(() => post));
@@ -175,7 +166,7 @@ export class PostService {
         {
           populate: ["favorites"],
           populateWhere: {
-            favorites: { isActive: true, isDeleted: false },
+            favorites: { isActive: true },
           },
         },
       ),
@@ -213,7 +204,7 @@ export class PostService {
         {
           populate: ["favorites"],
           populateWhere: {
-            favorites: { isActive: true, isDeleted: false },
+            favorites: { isActive: true },
           },
         },
       ),
@@ -221,7 +212,7 @@ export class PostService {
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
-        if (!user.favorites.contains(post)) {
+        if (user.favorites.contains(post)) {
           user.favorites.remove(post);
           post.favoritesCount = (post.favoritesCount ?? 0) - 1;
         }
@@ -243,7 +234,7 @@ export class PostService {
         {
           populate: ["comments"],
           populateWhere: {
-            comments: { isActive: true, isDeleted: false },
+            comments: { isActive: true },
           },
         },
       ),
@@ -277,7 +268,7 @@ export class PostService {
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
-        const comment = new Comment({ body: dto.body, author: ref(user) });
+        const comment = new Comment({ author: ref(user), body: dto.body });
 
         post.comments.add(comment);
 
@@ -324,7 +315,8 @@ export class PostService {
 
         if (post.comments.contains(commentReference)) {
           post.comments.remove(commentReference);
-          from(this.em.remove(commentReference).flush()).pipe(map(() => post));
+
+          return from(this.em.remove(commentReference).flush()).pipe(map(() => post));
         }
 
         return of(post);

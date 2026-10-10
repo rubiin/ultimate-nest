@@ -12,10 +12,10 @@ import { i18nValidationMessage } from "nestjs-i18n";
  */
 export function IsEnumField(entity: Record<string, string>, options_?: EnumFieldOptions) {
   const options: EnumFieldOptions = {
+    arrayMaxSize: Number.MAX_SAFE_INTEGER,
+    arrayMinSize: 0,
     each: false,
     required: true,
-    arrayMinSize: 0,
-    arrayMaxSize: Number.MAX_SAFE_INTEGER,
     ...options_,
   };
   const decoratorsToApply = [
@@ -28,8 +28,8 @@ export function IsEnumField(entity: Record<string, string>, options_?: EnumField
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: i18nValidationMessage("validation.isNotEmpty"),
         each: options.each,
+        message: i18nValidationMessage("validation.isNotEmpty"),
       }),
     );
 

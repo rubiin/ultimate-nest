@@ -26,8 +26,8 @@ export class UserController {
 
   @Post("refer")
   @SwaggerResponse({
-    operation: "User Refer",
     badRequest: "User already registered with email.",
+    operation: "User Refer",
   })
   referUser(@Body() dto: ReferUserDto, @LoggedInUser() user: User) {
     return this.userService.referUser(dto, user);
@@ -43,8 +43,8 @@ export class UserController {
   @Public()
   @Post("register")
   @SwaggerResponse({
-    operation: "Create user",
     badRequest: "User already registered with email.",
+    operation: "Create user",
   })
   @ApiFile({ fieldName: "avatar", required: true }) // fix this
   publicRegistration(
@@ -54,15 +54,15 @@ export class UserController {
   ): Observable<User> {
     return this.userService.create({
       ...dto,
-      roles: [Roles.AUTHOR],
       files: image,
+      roles: [Roles.AUTHOR],
     });
   }
 
   @Get(":idx")
   @SwaggerResponse({
-    operation: "User fetch",
     notFound: "User does not exist.",
+    operation: "User fetch",
     params: ["idx"],
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Read))
@@ -72,8 +72,8 @@ export class UserController {
 
   @Post()
   @SwaggerResponse({
-    operation: "User create",
     badRequest: "User already registered with email.",
+    operation: "User create",
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Create))
   @ApiFile({ fieldName: "avatar", required: true })
@@ -87,9 +87,9 @@ export class UserController {
 
   @Patch(":idx")
   @SwaggerResponse({
-    operation: "User edit",
     badRequest: "User already registered with email.",
     notFound: "User does not exist.",
+    operation: "User edit",
     params: ["idx"],
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Update))
@@ -105,8 +105,8 @@ export class UserController {
 
   @Delete(":idx")
   @SwaggerResponse({
-    operation: "User delete",
     notFound: "User does not exist.",
+    operation: "User delete",
     params: ["idx"],
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Delete))

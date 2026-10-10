@@ -46,10 +46,10 @@ export function IsDateInFormat(
 ): PropertyDecorator {
   return function (object: Record<string, any>, propertyName: string | symbol) {
     registerDecorator({
-      target: object.constructor,
-      propertyName: propertyName as string,
-      options: validationOptions,
       constraints: [format],
+      options: validationOptions,
+      propertyName: propertyName as string,
+      target: object.constructor,
       validator: IsDateInFormatConstraint,
     });
   };

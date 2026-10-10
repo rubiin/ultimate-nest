@@ -5,8 +5,8 @@ import { ConfigurableModuleClass } from "./mail.module-definition";
 import { MailerService } from "./mailer.service";
 
 @Module({
-  providers: [MailerService],
   exports: [MailerService],
+  providers: [MailerService],
 })
 export class MailModule extends ConfigurableModuleClass implements OnModuleInit {
   constructor(private readonly mailService: MailerService) {

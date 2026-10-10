@@ -4,21 +4,26 @@ import { LoggerModule } from "nestjs-pino";
 // Fields to redact from logs
 const redactFields = ["req.headers.authorization", "req.body.password", "req.body.confirmPassword"];
 const basePinoOptions = {
-  translateTime: true,
   ignore: "pid,hostname",
-  singleLine: true,
   redact: redactFields,
+  singleLine: true,
+  translateTime: true,
 };
 
 @Module({
+  exports: [LoggerModule],
   imports: [
     LoggerModule.forRoot({
+      exclude: [{ method: RequestMethod.ALL, path: "doc" }],
       pinoHttp: {
-        timestamp: () => `,"timestamp":"${new Date(Date.now()).toISOString()}"`,
-        name: "ultimate-nest",
         customProps: () => ({
           context: "HTTP",
         }),
+        name: "ultimate-nest",
+        redact: {
+          censor: "**GDPR COMPLIANT**",
+          paths: redactFields,
+        },
         serializers: {
           req(request: {
             body: Record<string, any>;
@@ -31,10 +36,7 @@ const basePinoOptions = {
             return request;
           },
         },
-        redact: {
-          paths: redactFields,
-          censor: "**GDPR COMPLIANT**",
-        },
+        timestamp: () => `,"timestamp":"${new Date(Date.now()).toISOString()}"`,
         transport:
           process.env.NODE_ENV === "production"
             ? {
@@ -94,9 +96,7 @@ const basePinoOptions = {
                 ],
               },
       },
-      exclude: [{ method: RequestMethod.ALL, path: "doc" }],
     }),
   ],
-  exports: [LoggerModule],
 })
 export class NestPinoModule {}

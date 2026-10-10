@@ -5,10 +5,11 @@ import { z } from "zod";
 
 import { envString } from "./schema.helpers";
 
+// Optional integration: absent is valid, empty is not.
 export const twilioConfigValidationSchema = z.object({
-  TWILIO_ACCOUNT_SID: envString(),
-  TWILIO_AUTH_TOKEN: envString(),
-  TWILIO_FROM: envString(),
+  TWILIO_ACCOUNT_SID: envString().optional(),
+  TWILIO_AUTH_TOKEN: envString().optional(),
+  TWILIO_FROM: envString().optional(),
 });
 
 export const twilio = registerAs("twilio", () => ({

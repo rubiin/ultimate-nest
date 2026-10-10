@@ -6,7 +6,7 @@ checked against this repository, not assumed from the release notes.
 Legend: **Done** · **Verified N/A** (checked, does not apply) · **Open** (not adopted) ·
 **Broken** (started, not working)
 
-Progress: **9 Done · 9 Verified N/A · 4 Open · 0 Broken**
+Progress: **9 Done · 10 Verified N/A · 3 Open · 0 Broken**
 
 | #   | Guide item                                                                                                                                    | Status       |
 | --- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
@@ -28,7 +28,7 @@ Progress: **9 Done · 9 Verified N/A · 4 Open · 0 Broken**
 | 16  | GraphQL: `subscriptions-transport-ws` removed                                                                                                 | Verified N/A |
 | 17  | NATS v3 → `@nats-io/transport-node`                                                                                                           | Verified N/A |
 | 18  | Route decorator `schema` option                                                                                                               | Open         |
-| 19  | `StandardSchemaSerializerInterceptor`                                                                                                         | Open         |
+| 19  | `StandardSchemaSerializerInterceptor`                                                                                                         | Verified N/A |
 | 20  | `HttpExceptionOptions.errorCode`                                                                                                              | Done         |
 | 21  | `@nestjs/observe`                                                                                                                             | Open         |
 | 22  | New CLI commands/flags (`deploy`, `--rspackPath`, `--emit-declarations`, `--no-type-check`, `--silent`, `--parallel`, `includeLibraryAssets`) | Open         |
@@ -177,8 +177,14 @@ custom validators in `src/common/decorators/validation/`, `BaseService` generics
 coupling. There is also no `createZodDto` in `@nestjs/common` v12, so there is no drop-in DTO base
 class. The upside is that the same schemas feed OpenAPI generation.
 
-**19. `StandardSchemaSerializerInterceptor`.** Currently no `ClassSerializerInterceptor` anywhere in
-`src/`, so this is net-new capability rather than a swap.
+**19. `StandardSchemaSerializerInterceptor`.** Verified N/A: evaluated, not adopted. The interceptor only runs the
+response through a schema's `~standard.validate()` (set via `@SerializeOptions({ schema })`), so it
+validates or strips a whole response per route. It cannot express a per-entity computed field, and it
+never sees a `User` nested inside a `Post` or profile response. The one piece of presentation logic
+in `src/`, the default-avatar fallback in `User.toJSON()`, moved into the entity's serialization
+metadata instead: the stored `avatar` column is `hidden` and a `persist: false` `avatarUrl` getter is
+serialized as `avatar` (`serializedName`), so direct and nested users serialize as before. Pinned by
+`user.entity.spec.ts`.
 
 **20. `errorCode`.** Added. `ERROR_CODES` in
 `src/common/constant/error-code.constants.ts` holds the stable identifiers (also exported as an
@@ -222,10 +228,34 @@ Carried over from the audit, unrelated to the guide:
 
 - Re-run `pnpm test:e2e` against a live database. It has never been run, so `useSecurityHeaders()`,
   the 10mb body limit and the route conflict policy are only compile- and unit-checked.
-- Register `minio`, `sentry`, `stripe` and `twilio` in `configValidationSchema`. Those four schemas
-  are exported but never composed in, so they are dead validation.
+- ~~Register `minio`, `sentry`, `stripe` and `twilio` in `configValidationSchema`~~ — done; all
+  four are registered in `load` and composed in with optional fields, so unset integrations boot
+  while empty values are rejected.
 - Decide on `CrudController` (`src/lib/crud/crud.controller.ts:73`) — exported, never extended.
 - Guard `AppUtils.killAppWithGrace` (`src/common/helpers/app.utils.ts:50`) against a second signal
   re-entering `app.close()`, and reconsider the hard 5s `process.exit(1)` that truncates teardowns.
 - Revisit `supercharge/request-ip` — no Nest 12 built-in exists, but `app.enable("trust proxy")` is
   already set, so `request.ip` is viable.
+
+## `LazyModuleLoader` for optional integrations — not applicable
+
+Audit candidates: minio, stripe, twilio, sentry. None is eligible, so no code was changed.
+
+- **minio** (`src/lib/minio.module.ts`), **stripe** (`src/lib/stripe.module.ts`), **sentry**
+  (`src/lib/sentry.module.ts`) are exported from `src/lib/index.ts` but imported by no module:
+  `SharedModule` (`src/modules/shared/shared.module.ts:20-36`) does not list them, and no service
+  injects `NestMinioService`, `Stripe` or `Sentry`. They are not in the eager graph, so there is
+  nothing to defer.
+- **twilio** (`src/lib/twilio/twilio.module.ts`) is not imported anywhere, and `TwilioService` has no
+  consumer outside `src/lib/twilio`. It also needs `forRoot`/`forRootAsync` options, so it is not a
+  plain lazy-loadable module.
+- **stripe** is additionally route-bearing: `@golevelup/nestjs-stripe` registers the webhook
+  controller, and `src/modules/app.module.ts:9,19` wires raw-body handling for `stripe/webhook`.
+  `NestStripeModule` is `@Global()` and adds a `SkipThrottle` decorator, so it must stay eager if
+  ever enabled.
+- **sentry** is `@Global()` and must stay eager to capture boot and early errors.
+- **minio** is registered with `isGlobal: true`, so lazy loading would not make it visible to
+  already-built consumers.
+
+Revisit when a service actually consumes one of these: a non-route, non-global module with a single
+consumer (twilio is the best fit) can then be loaded via `LazyModuleLoader.load(() => import(...))`.

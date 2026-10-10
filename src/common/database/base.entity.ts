@@ -9,7 +9,7 @@ import { ApiHideProperty } from "@nestjs/swagger";
 @Entity({ abstract: true })
 // Soft deletes are enforced by the ORM rather than by repeating `isDeleted: false`
 // in every query. Declared here so that all subclasses inherit it.
-@Filter({ name: "softDelete", cond: { isDeleted: false }, default: true })
+@Filter({ cond: { isDeleted: false }, default: true, name: "softDelete" })
 export abstract class BaseEntity {
   @ApiHideProperty()
   @PrimaryKey({ hidden: true })
@@ -19,6 +19,9 @@ export abstract class BaseEntity {
    *  The unique id of the entity
    */
   @Property({ index: true })
+  // Left in the initializer rather than a @BeforeCreate hook: audit.subscriber reads
+  // `entity.idx` from its own beforeCreate, and hook ordering between the two is not
+  // guaranteed, so the audit row could capture an undefined entityId.
   idx?: string = randomUUID();
 
   /**
@@ -49,8 +52,8 @@ export abstract class BaseEntity {
    *  The date that the entity was last updated
    */
   @Property({
-    onUpdate: () => HelperService.getTimeInUtc(new Date()),
     hidden: true,
+    onUpdate: () => HelperService.getTimeInUtc(new Date()),
   })
-  updatedAt? = HelperService.getTimeInUtc(new Date());
+  updatedAt? = this.createdAt;
 }

@@ -10,7 +10,7 @@ describe("isProfane", () => {
     text!: string;
   }
 
-  it("it should pass if text doesn't profane words", async () => {
+  it("should pass if text doesn't profane words", async () => {
     const model = new MyClass();
 
     model.text = "clean text";
@@ -19,7 +19,7 @@ describe("isProfane", () => {
     expect(errors.length).toEqual(0);
   });
 
-  it("it should fail if text has profane words", async () => {
+  it("should fail if text has profane words", async () => {
     const model = new MyClass();
 
     model.text = "Don't be an ash0le";

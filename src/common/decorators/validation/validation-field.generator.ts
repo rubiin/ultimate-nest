@@ -39,10 +39,10 @@ export class ValidatorFieldBuilder {
   string() {
     this.decoratorsToApply.push(
       IsString({
+        each: this.options.each,
         message: validationI18nMessage("validation.isDataType", {
           type: "string",
         }),
-        each: this.options.each,
       }),
     );
 
@@ -75,9 +75,9 @@ export class ValidatorFieldBuilder {
   addMinMaxLength() {
     if (this.options?.minLength && this.options?.maxLength) {
       MinMaxLength({
-        minLength: this.options.minLength,
-        maxLength: this.options.maxLength,
         each: this.options.each,
+        maxLength: this.options.maxLength,
+        minLength: this.options.minLength,
       });
     }
 
@@ -88,8 +88,8 @@ export class ValidatorFieldBuilder {
     if (this.options.required) {
       this.decoratorsToApply.push(
         IsNotEmpty({
-          message: i18nValidationMessage("validation.isNotEmpty"),
           each: this.options.each,
+          message: i18nValidationMessage("validation.isNotEmpty"),
         }),
       );
     } else {

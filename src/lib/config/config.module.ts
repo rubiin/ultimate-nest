@@ -11,16 +11,25 @@ import {
   googleOauth,
   jwt,
   mail,
+  minio,
   rabbitmq,
   redis,
+  sentry,
+  storage,
+  stripe,
   throttle,
+  twilio,
 } from "./configs";
 import { configValidationSchema } from "./config.validation";
 
 @Module({
+  exports: [ConfigService],
   imports: [
     ConfigModule.forRoot({
+      cache: true,
       envFilePath: [`${process.cwd()}/env/.env.${process.env.NODE_ENV}`],
+      expandVariables: true,
+      isGlobal: true,
       load: [
         app,
         jwt,
@@ -32,14 +41,15 @@ import { configValidationSchema } from "./config.validation";
         throttle,
         googleOauth,
         facebookOauth,
+        stripe,
+        sentry,
+        twilio,
+        minio,
+        storage,
       ],
-      cache: true,
-      isGlobal: true,
-      expandVariables: true,
       validationSchema: configValidationSchema,
     }),
   ],
   providers: [ConfigService],
-  exports: [ConfigService],
 })
 export class NestConfigModule {}

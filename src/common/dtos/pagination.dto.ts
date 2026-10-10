@@ -22,7 +22,7 @@ export abstract class PaginationDto {
   /**
    *  The search query
    */
-  @IsStringField({ required: false, minLength: 1, maxLength: 100 })
+  @IsStringField({ maxLength: 100, minLength: 1, required: false })
   search?: string;
 
   /**
@@ -44,7 +44,7 @@ export abstract class PaginationDto {
    * entities should be included in the query
    * results.
    */
-  @IsStringField({ required: false, each: true })
+  @IsStringField({ each: true, required: false })
   relations: string[] = [];
 
   /**
@@ -52,6 +52,6 @@ export abstract class PaginationDto {
    * entities field should be included in the query
    * results.
    */
-  @IsStringField({ required: false, each: true })
+  @IsStringField({ each: true, required: false })
   fields: string[] = [];
 }

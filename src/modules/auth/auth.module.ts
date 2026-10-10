@@ -9,8 +9,9 @@ import { AuthService } from "./auth.service";
 import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies";
 
 @Module({
-  imports: [PassportModule, UserModule],
   controllers: [AuthController],
+  exports: [AuthService, JwtStrategy, TokensService, RefreshTokensRepository],
+  imports: [PassportModule, UserModule],
   providers: [
     AuthService,
     TokensService,
@@ -19,6 +20,5 @@ import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies";
     GoogleStrategy,
     FacebookStrategy,
   ],
-  exports: [AuthService, JwtStrategy, TokensService, RefreshTokensRepository],
 })
 export class AuthModule {}

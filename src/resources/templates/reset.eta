@@ -1,11 +1,9 @@
-<%~ includeFile("partials/base_head.eta") %>
+<%~ include("./partials/base_head.eta") %>
 
     <p>Hello!</p>
-    <p>We received a request to reset your password. Please follow the instructions below to reset your password:</p>
-    <ol>
-      <li>Click on the following link to reset your password: <a href="<%= it.link %>"><%= it.link %></a></li>
-      <li>Once you click on the link, you will be prompted to enter a new password. Please choose a strong and unique password to ensure the security of your account.</li>
-    </ol>
+    <p>We received a request to reset your password. Use the following one-time code to reset it:</p>
+    <p><strong><%= it.otp %></strong></p>
+    <p>If you did not request a password reset, you can ignore this email.</p>
 
 
-<%~ includeFile("partials/base_tail.eta") %>
+<%~ include("./partials/base_tail.eta") %>

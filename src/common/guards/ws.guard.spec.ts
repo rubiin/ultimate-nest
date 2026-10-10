@@ -24,7 +24,7 @@ describe("wsJwtGuard", () => {
 
     guard = new WsJwtGuard(mockJwtService as unknown as JwtService, mockUserRepo);
 
-    mockJwtService.verify.mockResolvedValue({ sub: 1 } as never);
+    mockJwtService.verify.mockResolvedValue({ sub: 1, type: "access" } as never);
     mockUserRepo.findOne.mockResolvedValue(new User({ id: 1 }) as never);
   });
 
@@ -38,6 +38,20 @@ describe("wsJwtGuard", () => {
     expect(mockJwtService.verify).toHaveBeenCalledWith("valid-token");
     expect(mockUserRepo.findOne).toHaveBeenCalledWith({ id: 1 });
   });
+
+  // Regression: any token signed with the secret (a refresh token, a partial 2fa token)
+  // authenticated a WebSocket connection.
+  it.each([["refresh"], ["2fa"], [undefined]])(
+    "should reject a token typed %s without looking up the user",
+    async (type) => {
+      mockJwtService.verify.mockResolvedValue({ sub: 1, type } as never);
+
+      await expect(guard.canActivate(buildContext("some-token"))).rejects.toBeInstanceOf(
+        WsException,
+      );
+      expect(mockUserRepo.findOne).not.toHaveBeenCalled();
+    },
+  );
 
   it("should throw when the authorization header is missing", async () => {
     await expect(guard.canActivate(buildContext(undefined))).rejects.toBeInstanceOf(WsException);

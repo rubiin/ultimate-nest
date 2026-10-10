@@ -23,13 +23,13 @@ export default defineConfig({
     ],
   },
   test: {
-    globals: true,
-    root: "./",
-    include: ["src/**/*.spec.ts"],
-    testTimeout: 30_000,
     coverage: {
       directory: "./coverage",
       reporter: ["text", "html"],
     },
+    globals: true,
+    include: ["src/**/*.spec.ts"],
+    root: "./",
+    testTimeout: 30_000,
   },
 });

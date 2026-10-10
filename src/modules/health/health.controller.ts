@@ -1,4 +1,5 @@
 import { GenericController } from "@common/decorators";
+import { HelperService } from "@common/helpers";
 import { Get } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import {
@@ -8,7 +9,7 @@ import {
   MemoryHealthIndicator,
   MikroOrmHealthIndicator,
 } from "@nestjs/terminus";
-import { HealthCheck } from "@nestjs/terminus";
+import { HealthCheck, type HealthIndicatorFunction } from "@nestjs/terminus";
 
 @GenericController("health", false)
 export class HealthController {
@@ -29,38 +30,33 @@ export class HealthController {
   @Get()
   @HealthCheck()
   async check() {
-    return this.health.check([
-      async () =>
-        this.http.pingCheck(
-          "swagger",
-          `${this.configService.get("app.url", {
-            infer: true,
-          })}:${this.configService.get("app.port", { infer: true })}/doc`,
-        ),
+    const base = `${this.configService.get("app.url", { infer: true })}:${this.configService.get(
+      "app.port",
+      { infer: true },
+    )}`;
+
+    const indicators: HealthIndicatorFunction[] = [
       async () =>
         this.http.pingCheck(
           "routes",
-          `${this.configService.get("app.url", {
-            infer: true,
-          })}:${this.configService.get("app.port", {
-            infer: true,
-          })}/${this.configService.get("app.prefix", { infer: true })}/health/test`,
+          `${base}/${this.configService.get("app.prefix", { infer: true })}/health/test`,
         ),
       async () => this.databaseHealth.pingCheck("mikroOrm"),
       async () => this.memory.checkHeap("memory_heap", 200 * 1024 * 1024),
       async () => this.memory.checkRSS("memory_rss", 3000 * 1024 * 1024),
-      // The used disk storage should not exceed 50% of the full disk size
       async () =>
-        this.disk.checkStorage("disk health", {
-          thresholdPercent: 0.5,
+        this.disk.checkStorage("disk usage percent", { path: "/", thresholdPercent: 0.5 }),
+      async () =>
+        this.disk.checkStorage("disk usage bytes", {
           path: "/",
-        }),
-      // The used disk storage should not exceed 250 GB
-      async () =>
-        this.disk.checkStorage("disk health", {
           threshold: 250 * 1024 * 1024 * 1024,
-          path: "/",
         }),
-    ]);
+    ];
+
+    // /doc is only mounted outside production, so pinging it there would always fail.
+    if (!HelperService.isProd())
+      indicators.unshift(async () => this.http.pingCheck("swagger", `${base}/doc`));
+
+    return this.health.check(indicators);
   }
 }

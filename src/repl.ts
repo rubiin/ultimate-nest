@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
+import process from "node:process";
 
 import { Logger } from "@nestjs/common";
 import { repl } from "@nestjs/core";
@@ -24,8 +25,8 @@ async function bootstrap() {
   });
 }
 
-try {
-  (async () => bootstrap())();
-} catch (error) {
+// `.catch()` rather than `try/catch` around an un-awaited IIFE, which lets the rejection escape.
+bootstrap().catch((error) => {
   logger.error(error);
-}
+  process.exit(1);
+});

@@ -23,7 +23,8 @@ export class CaslAbilityFactory {
 
     // user specific permissions
     can(Action.Update, User, { id: user.id });
-    cannot(Action.Delete, User);
+    // Admins manage everything, so the delete ban must not be re-applied on top of it.
+    if (!user.roles!.includes(Roles.ADMIN)) cannot(Action.Delete, User);
 
     // post specific permissions
     can([Action.Delete, Action.Update], Post, { author: user });

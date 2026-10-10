@@ -35,6 +35,24 @@ describe("socketConnectionService", () => {
     expect(service.findByUserId(2)).toBe(bob);
   });
 
+  // Regression: the scan had no `break`, so it kept walking and returned the *last*
+  // match rather than the first.
+  it("should return the first socket matching a user with several tabs open", () => {
+    const firstTab = { ...alice } as typeof alice;
+    service.saveConnection({ connectedUser: firstTab, socketId: "socket-1" });
+    service.saveConnection({ connectedUser: alice, socketId: "socket-2" });
+
+    expect(service.findByUserId(1)).toBe(firstTab);
+  });
+
+  it("should drop retained users on module destroy", () => {
+    service.saveConnection({ connectedUser: alice, socketId: "socket-1" });
+
+    service.onModuleDestroy();
+
+    expect(service.getAllOnlineUSers()).toEqual([]);
+  });
+
   it("should overwrite the entry when the same socket reconnects", () => {
     service.saveConnection({ connectedUser: alice, socketId: "socket-1" });
     service.saveConnection({ connectedUser: bob, socketId: "socket-1" });

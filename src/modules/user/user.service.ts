@@ -2,14 +2,7 @@ import process from "node:process";
 
 import type { MailPayload } from "@common/@types";
 import { PaginationResponse, RecordWithFile } from "@common/@types";
-import {
-  CursorType,
-  EmailSubject,
-  EmailTemplate,
-  QueryOrder,
-  Queues,
-  RoutingKey,
-} from "@common/@types";
+import { EmailSubject, EmailTemplate, QueryOrder, Queues, RoutingKey } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Referral, User } from "@entities";
@@ -17,7 +10,8 @@ import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { MailerService } from "@lib/mailer/mailer.service";
-import { MikroORM } from "@mikro-orm/core";
+import { EntityManager } from "@mikro-orm/core";
+import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
@@ -33,8 +27,6 @@ import { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
 
 @Injectable()
 export class UserService {
-  private readonly queryName = "u";
-
   constructor(
     @InjectRepository(User)
     private userRepository: BaseRepository<User>,
@@ -44,22 +36,22 @@ export class UserService {
     private readonly amqpConnection: AmqpConnection,
     private readonly cloudinaryService: CloudinaryService,
     private readonly mailService: MailerService,
-    private readonly orm: MikroORM<PostgreSqlDriver>,
+    private readonly em: EntityManager<PostgreSqlDriver>,
   ) {}
 
   @RabbitSubscribe({
-    routingKey: RoutingKey.SEND_MAIL,
     exchange: process.env.RABBITMQ_EXCHANGE,
     queue: Queues.MAIL,
+    routingKey: RoutingKey.SEND_MAIL,
   })
   sendMail(payload: MailPayload) {
     return from(
       this.mailService.sendMail({
-        template: payload.template,
-        replacements: payload.replacements,
-        to: payload.to,
-        subject: payload.subject,
         from: payload.from,
+        replacements: payload.replacements,
+        subject: payload.subject,
+        template: payload.template,
+        to: payload.to,
       }),
     ).pipe(tap(() => Logger.log(`✅ Sent mail to ${payload.to}`)));
   }
@@ -77,8 +69,8 @@ export class UserService {
   referUser(dto: ReferUserDto, user: User): Observable<Referral> {
     const userExists$ = from(
       this.userRepository.count({
-        mobileNumber: dto.mobileNumber,
         isActive: true,
+        mobileNumber: dto.mobileNumber,
       }),
     );
 
@@ -109,19 +101,12 @@ export class UserService {
    * @returns The method is returning an Observable of type PaginationResponse<User>.
    */
   findAll(dto: CursorPaginationDto): Observable<PaginationResponse<User>> {
-    const qb = this.userRepository.createQueryBuilder(this.queryName);
-
     return from(
-      this.userRepository.qbCursorPagination({
-        qb,
-        pageOptionsDto: {
-          alias: this.queryName,
-          cursor: "username",
-          cursorType: CursorType.STRING,
-          order: QueryOrder.ASC,
-          searchField: "firstName",
-          ...dto,
-        },
+      this.userRepository.cursorPagination({
+        cursor: "username",
+        order: QueryOrder.ASC,
+        searchField: "firstName",
+        ...dto,
       }),
     );
   }
@@ -167,33 +152,39 @@ export class UserService {
       avatar: "",
     });
 
-    return from(
-      this.orm.em.transactional(async (em) => {
-        const response = await this.cloudinaryService.uploadFile(files);
+    return from(this.saveUserAndSendWelcome(user, files)).pipe(map(() => user));
+  }
 
-        // cloudinary gives a url key on response that is the full url to file
+  /**
+   * Uploads the avatar, persists the user and queues the welcome mail inside one transaction.
+   * `this.em` resolves to the transaction's fork here: `@Transactional()` runs the body inside a
+   * `TransactionContext`, which `EntityManager.getContext()` prefers.
+   */
+  @Transactional()
+  private async saveUserAndSendWelcome(user: User, files: RecordWithFile<CreateUserDto>["files"]) {
+    const response = await this.cloudinaryService.uploadFile(files);
 
-        user.avatar = response.url as string;
+    // cloudinary gives a url key on response that is the full url to file
 
-        await em.persist(user).flush();
-        const link = this.configService.get("app.clientUrl", { infer: true });
+    user.avatar = response.url as string;
 
-        await this.amqpConnection.publish(
-          this.configService.get("rabbitmq.exchange", { infer: true }),
-          RoutingKey.SEND_MAIL,
-          {
-            template: EmailTemplate.WELCOME_TEMPLATE,
-            replacements: {
-              firstName: capitalize(user.firstName),
-              link,
-            },
-            to: user.email,
-            subject: EmailSubject.WELCOME,
-            from: this.configService.get("mail.senderEmail", { infer: true }),
-          },
-        );
-      }),
-    ).pipe(map(() => user));
+    await this.em.persist(user).flush();
+    const link = this.configService.get("app.clientUrl", { infer: true });
+
+    await this.amqpConnection.publish(
+      this.configService.get("rabbitmq.exchange", { infer: true }),
+      RoutingKey.SEND_MAIL,
+      {
+        from: this.configService.get("mail.senderEmail", { infer: true }),
+        replacements: {
+          firstName: capitalize(user.firstName),
+          link,
+        },
+        subject: EmailSubject.WELCOME,
+        template: EmailTemplate.WELCOME_TEMPLATE,
+        to: user.email,
+      },
+    );
   }
 
   /**
@@ -207,18 +198,13 @@ export class UserService {
    * @returns Observable<User>
    */
   update(index: string, dto: EditUserDto, image?: IFile): Observable<User> {
-    let uploadImage$: Observable<string>;
-
     return this.findOne(index).pipe(
       switchMap((user) => {
-        if (image) {
-          uploadImage$ = from(this.cloudinaryService.uploadFile(image)).pipe(
-            switchMap(({ url }) => {
-              const stringUrl = url as string;
-              return of(stringUrl);
-            }),
-          );
-        }
+        // `image` is optional, so the no-file path needs to fall through to a
+        // flush rather than to an undefined observable.
+        const uploadImage$: Observable<string | null> = image
+          ? from(this.cloudinaryService.uploadFile(image)).pipe(map(({ url }) => url as string))
+          : of(null);
 
         this.userRepository.assign(user, dto);
 
@@ -226,11 +212,7 @@ export class UserService {
           switchMap((url) => {
             if (url) user.avatar = url;
 
-            return from(this.userRepository.getEntityManager().flush()).pipe(
-              switchMap(() => {
-                return of(user);
-              }),
-            );
+            return from(this.userRepository.getEntityManager().flush()).pipe(map(() => user));
           }),
         );
       }),

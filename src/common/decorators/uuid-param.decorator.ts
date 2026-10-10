@@ -20,5 +20,5 @@ export function UUIDParam(
   property: string,
   ...pipes: (Type<PipeTransform> | PipeTransform)[]
 ): ParameterDecorator {
-  return Param(property, new ParseUUIDPipe({ version: "4", exceptionFactory }), ...pipes);
+  return Param(property, new ParseUUIDPipe({ exceptionFactory, version: "4" }), ...pipes);
 }

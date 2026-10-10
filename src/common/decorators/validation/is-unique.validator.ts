@@ -45,9 +45,9 @@ export function IsUnique<Entity>(
   return ({ constructor: target }: object, propertyName: string) =>
     registerDecorator({
       constraints: [entityType, field],
-      target,
       options,
       propertyName,
+      target,
       validator: IsUniqueConstraint,
     });
 }

@@ -6,6 +6,7 @@ import {
   BeforeCreate,
   BeforeUpdate,
   BeforeUpsert,
+  Check,
   Embeddable,
   Embedded,
   Entity,
@@ -15,7 +16,7 @@ import {
   Property,
 } from "@mikro-orm/decorators/legacy";
 import type { EventArgs } from "@mikro-orm/postgresql";
-import { Collection, wrap } from "@mikro-orm/postgresql";
+import { Collection, type Opt } from "@mikro-orm/postgresql";
 @Embeddable()
 export class Social {
   @Property()
@@ -48,19 +49,33 @@ export class User extends BaseEntity {
   @Property({ columnType: "text" })
   bio!: string;
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", hidden: true })
   avatar!: string;
 
-  @Property({ hidden: true, columnType: "text", lazy: true })
+  /**
+   * Serialized as `avatar`: the stored avatar, or a generated ui-avatars URL when none is set.
+   * The persisted column is hidden so the response carries a single `avatar` key.
+   */
+  @Property({ persist: false, serializedName: "avatar" })
+  get avatarUrl(): string & Opt {
+    return (
+      this.avatar ??
+      `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`
+    );
+  }
+
+  @Property({ columnType: "text", hidden: true, lazy: true })
   password!: string;
 
-  @Property()
+  @Property({ hidden: true })
   twoFactorSecret?: string;
 
   @Property()
   isTwoFactorEnabled? = false;
 
-  @Enum({ items: () => Roles, array: true, index: true })
+  @Enum({ array: true, index: true, items: () => Roles })
+  // Named explicitly: the default "user_roles_check" is already taken by the enum-array check.
+  @Check({ expression: "cardinality(roles) > 0", name: "user_roles_not_empty_check" })
   roles?: Roles[] = [Roles.AUTHOR];
 
   @Property({ index: true, unique: true })
@@ -80,17 +95,17 @@ export class User extends BaseEntity {
   @ManyToMany({ hidden: true })
   favorites = new Collection<Post>(this);
 
-  @Embedded(() => Social, { object: true, nullable: true })
+  @Embedded(() => Social, { nullable: true, object: true })
   social?: Social;
 
   @ManyToMany({
     entity: () => User,
+    hidden: true,
+    inverseJoinColumn: "following",
     inversedBy: (u) => u.followed,
+    joinColumn: "follower",
     owner: true,
     pivotTable: "user_to_follower",
-    joinColumn: "follower",
-    inverseJoinColumn: "following",
-    hidden: true,
   })
   followers = new Collection<User>(this);
 
@@ -103,16 +118,6 @@ export class User extends BaseEntity {
   constructor(data?: Pick<User, "idx">) {
     super();
     Object.assign(this, data);
-  }
-
-  toJSON() {
-    const o = wrap<User>(this).toObject();
-
-    o.avatar =
-      this.avatar ??
-      `https://ui-avatars.com/api/?name=${this.firstName}+${this.lastName}&background=0D8ABC&color=fff`;
-
-    return o;
   }
 
   @BeforeCreate()

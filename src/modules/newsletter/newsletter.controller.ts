@@ -22,8 +22,8 @@ export class NewsLetterController extends ControllerFactory<
 
   @Post("subscribe")
   @SwaggerResponse({
-    operation: "Subscribe to newsletter",
     badRequest: "Subscription already exist.",
+    operation: "Subscribe to newsletter",
   })
   subscribeNewsLetter(@Body() dto: SubscribeNewsletterDto): Observable<Subscriber> {
     return this.service.subscribeNewsLetter(dto);
@@ -31,8 +31,8 @@ export class NewsLetterController extends ControllerFactory<
 
   @Delete("unsubscribe")
   @SwaggerResponse({
-    operation: "Subscribe to newsletter",
     notFound: "Subscription does not exist.",
+    operation: "Subscribe to newsletter",
   })
   unSubscribeNewsLetter(@Body() dto: SubscribeNewsletterDto): Observable<Subscriber> {
     return this.service.unSubscribeNewsLetter(dto);

@@ -19,7 +19,7 @@ export class OffsetPaginationDto extends PaginationDto {
   /**
    * Number of results per page
    */
-  @IsNumberField({ required: false, max: 50 })
+  @IsNumberField({ max: 50, required: false })
   readonly limit = 10;
 
   /**
@@ -31,7 +31,7 @@ export class OffsetPaginationDto extends PaginationDto {
   /**
    * Sorting criteria
    */
-  @IsStringField({ required: false, maxLength: 50 })
+  @IsStringField({ maxLength: 50, required: false })
   readonly sort = "createdAt";
 
   get offset(): number {

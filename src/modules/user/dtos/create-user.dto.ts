@@ -61,7 +61,7 @@ export class CreateUserDto {
    * @example d
    */
 
-  @IsStringField({ required: false, maxLength: 50 })
+  @IsStringField({ maxLength: 50, required: false })
   middleName?: string;
 
   /**

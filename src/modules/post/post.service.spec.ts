@@ -28,8 +28,10 @@ describe("postService", () => {
     // looks posts up by slug and expects the entity itself.
     mockPostRepo.findOne.mockImplementation((async (options: { slug?: string }) =>
       Promise.resolve({ ...mockedPost, slug: options.slug })) as never);
+    mockPostRepo.findOneOrFail.mockImplementation((async (options: { idx?: string }) =>
+      Promise.resolve({ ...mockedPost, favoritesCount: 0, slug: options.idx })) as never);
     mockEm.flush.mockResolvedValue(undefined);
-    mockPostRepo.qbCursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
+    mockPostRepo.cursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -88,6 +90,103 @@ describe("postService", () => {
     expect(result).toMatchObject({ ...mockedPost, isDeleted: true, slug: "post-slug" });
     expect(mockPostRepo.findOne).toHaveBeenCalledWith({ slug: "post-slug" }, { populate: [] });
     expect(mockPostRepo.softRemoveAndFlush).toHaveBeenCalled();
+  });
+
+  it("should decrement and remove only when the post is already favorited", async () => {
+    const post = { ...mockedPost, favoritesCount: 2, slug: "post-slug" } as unknown as Post;
+    const favorites = new Set<Post>([post]);
+
+    mockPostRepo.findOneOrFail.mockImplementation((async () => Promise.resolve(post)) as never);
+    mockUserRepo.findOneOrFail.mockImplementation((async () =>
+      Promise.resolve({
+        favorites: {
+          contains: (p: Post) => favorites.has(p),
+          remove: (p: Post) => favorites.delete(p),
+        },
+        id: 1,
+      })) as never);
+
+    const result = await lastValueFrom(service.unFavorite(1, "post-slug"));
+
+    expect(result.favoritesCount).toBe(1);
+    expect(favorites.size).toBe(0);
+  });
+
+  it("should not decrement when the post was never favorited", async () => {
+    const post = { ...mockedPost, favoritesCount: 2, slug: "post-slug" } as unknown as Post;
+    const favorites = new Set<Post>();
+
+    mockPostRepo.findOneOrFail.mockImplementation((async () => Promise.resolve(post)) as never);
+    mockUserRepo.findOneOrFail.mockImplementation((async () =>
+      Promise.resolve({
+        favorites: {
+          contains: (p: Post) => favorites.has(p),
+          remove: (p: Post) => favorites.delete(p),
+        },
+        id: 1,
+      })) as never);
+
+    const result = await lastValueFrom(service.unFavorite(1, "post-slug"));
+
+    expect(result.favoritesCount).toBe(2);
+  });
+
+  it("should delete a comment and flush the removal", async () => {
+    const comment = { id: 7, idx: "comment-idx" };
+    const comments = new Set<unknown>([comment]);
+
+    const post = {
+      ...mockedPost,
+      comments: {
+        contains: (c: unknown) => comments.has(c),
+        remove: (c: unknown) => comments.delete(c),
+      },
+      slug: "post-slug",
+    };
+
+    mockPostRepo.findOne.mockImplementation((async () => Promise.resolve(post)) as never);
+    mockCommentRepo.findOneOrFail.mockImplementation((async () =>
+      Promise.resolve(comment)) as never);
+    mockCommentRepo.getReference.mockImplementation((() => comment) as never);
+    mockEm.remove.mockImplementation(((entity: unknown) => {
+      comments.delete(entity);
+
+      return mockEm;
+    }) as never);
+    mockEm.flush.mockResolvedValue(undefined as never);
+
+    await lastValueFrom(service.deleteComment("post-slug", "comment-idx"));
+
+    expect(mockEm.remove).toHaveBeenCalled();
+    expect(mockEm.flush).toHaveBeenCalled();
+    expect(comments.size).toBe(0);
+  });
+
+  it("should surface a flush failure instead of silently reporting success", async () => {
+    const comment = { id: 7, idx: "comment-idx" };
+    const comments = new Set<unknown>([comment]);
+
+    const post = {
+      ...mockedPost,
+      comments: {
+        contains: (c: unknown) => comments.has(c),
+        remove: (c: unknown) => comments.delete(c),
+      },
+      slug: "post-slug",
+    };
+
+    mockPostRepo.findOne.mockImplementation((async () => Promise.resolve(post)) as never);
+    mockCommentRepo.findOneOrFail.mockImplementation((async () =>
+      Promise.resolve(comment)) as never);
+    mockCommentRepo.getReference.mockImplementation((() => comment) as never);
+    mockEm.remove.mockReturnValue(mockEm as never);
+    mockEm.flush.mockRejectedValue(new Error("constraint violation") as never);
+
+    // Building the flush observable without returning it means the caller gets
+    // `of(post)` back and the rejection is dropped on the floor.
+    await expect(lastValueFrom(service.deleteComment("post-slug", "comment-idx"))).rejects.toThrow(
+      "constraint violation",
+    );
   });
 
   it("should edit post", async () => {

@@ -29,8 +29,8 @@ export class PostController {
 
   @Get(":slug")
   @SwaggerResponse({
-    operation: "Post fetch",
     notFound: "Post doesn't exist.",
+    operation: "Post fetch",
     params: ["slug"],
   })
   getById(@Param("slug") slug: string): Observable<PostEntity> {
@@ -39,8 +39,8 @@ export class PostController {
 
   @Get(":slug/comments")
   @SwaggerResponse({
-    operation: "Post comment fetch",
     notFound: "Post doesn't exist.",
+    operation: "Post comment fetch",
     params: ["slug"],
   })
   findComments(@Param("slug") slug: string): Observable<Comment[]> {
@@ -56,8 +56,8 @@ export class PostController {
 
   @Patch(":slug")
   @SwaggerResponse({
-    operation: "Post update",
     notFound: "Post doesn't exist.",
+    operation: "Post update",
     params: ["slug"],
   })
   @CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Update))
@@ -67,8 +67,8 @@ export class PostController {
 
   @Delete(":slug")
   @SwaggerResponse({
-    operation: "Post delete",
     notFound: "Post doesn't exist.",
+    operation: "Post delete",
     params: ["slug"],
   })
   @CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Delete))
@@ -78,8 +78,8 @@ export class PostController {
 
   @Post(":slug/comments")
   @SwaggerResponse({
-    operation: "Post comment create",
     notFound: "Post doesn't exist.",
+    operation: "Post comment create",
     params: ["slug"],
   })
   @CheckPolicies(new GenericPolicyHandler(Comment, Action.Create))
@@ -95,8 +95,8 @@ export class PostController {
 
   @Patch(":slug/comments/:commentIdx")
   @SwaggerResponse({
-    operation: "Post comment edit",
     notFound: "Post doesn't exist.",
+    operation: "Post comment edit",
     params: ["slug", "commentIdx"],
   })
   @CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
@@ -112,8 +112,8 @@ export class PostController {
 
   @Delete(":slug/comments/:commentIdx")
   @SwaggerResponse({
-    operation: "Post comment delete",
     notFound: "Post doesn't exist.",
+    operation: "Post comment delete",
     params: ["slug", "commentIdx"],
   })
   @CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
@@ -123,8 +123,8 @@ export class PostController {
 
   @Post(":slug/favorite")
   @SwaggerResponse({
-    operation: "Post favorite",
     notFound: "Post doesn't exist.",
+    operation: "Post favorite",
     params: ["slug"],
   })
   favorite(@LoggedInUser("id") userId: number, @UUIDParam("slug") slug: string) {
@@ -133,8 +133,8 @@ export class PostController {
 
   @Delete(":slug/favorite")
   @SwaggerResponse({
-    operation: "Post unfavorite",
     notFound: "Post doesn't exist.",
+    operation: "Post unfavorite",
     params: ["slug"],
   })
   unFavorite(@LoggedInUser("id") userId: number, @Param("slug") slug: string) {

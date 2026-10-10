@@ -23,13 +23,9 @@ function CaseInsensitiveFilterPlugin() {
 /* The `swaggerOptions` object is being exported as a constant. It contains various configuration
 options for a Swagger API documentation. */
 export const swaggerOptions = {
+  displayOperationId: true,
   docExpansion: "list",
   filter: true,
-  showRequestDuration: true,
-  tryItOutEnabled: true,
-  displayOperationId: true,
-  persistAuthorization: true,
-  plugins: [CaseInsensitiveFilterPlugin],
   operationsSorter: (
     a: { get: (argument: string) => string },
     b: { get: (argument: string) => string },
@@ -41,4 +37,8 @@ export const swaggerOptions = {
 
     return result;
   },
+  persistAuthorization: true,
+  plugins: [CaseInsensitiveFilterPlugin],
+  showRequestDuration: true,
+  tryItOutEnabled: true,
 };

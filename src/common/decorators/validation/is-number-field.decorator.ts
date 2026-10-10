@@ -22,36 +22,36 @@ import {
 
 export function IsNumberField(options_?: NumberFieldOptions) {
   const options = {
-    min: 1,
-    required: true,
-    each: false,
-    max: Number.MAX_SAFE_INTEGER,
-    arrayMinSize: 0,
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
+    arrayMinSize: 0,
+    each: false,
     int: true,
+    max: Number.MAX_SAFE_INTEGER,
+    min: 1,
     positive: true,
+    required: true,
     ...options_,
   } satisfies NumberFieldOptions;
 
   const decoratorsToApply = [
     Type(() => Number),
     Min(options.min, {
-      message: validationI18nMessage("validation.min"),
       each: options.each,
+      message: validationI18nMessage("validation.min"),
     }),
     Max(options.max, {
-      message: validationI18nMessage("validation.max"),
       each: options.each,
+      message: validationI18nMessage("validation.max"),
     }),
   ];
 
   if (options.int) {
     decoratorsToApply.push(
       IsInt({
+        each: options.each,
         message: validationI18nMessage("validation.isDataType", {
           type: "integer number",
         }),
-        each: options.each,
       }),
     );
   } else {
@@ -59,10 +59,10 @@ export function IsNumberField(options_?: NumberFieldOptions) {
       IsNumber(
         {},
         {
+          each: options.each,
           message: validationI18nMessage("validation.isDataType", {
             type: "number",
           }),
-          each: options.each,
         },
       ),
     );
@@ -71,10 +71,10 @@ export function IsNumberField(options_?: NumberFieldOptions) {
   if (options.positive) {
     decoratorsToApply.push(
       IsPositive({
+        each: options.each,
         message: validationI18nMessage("validation.isDataType", {
           type: "positive number",
         }),
-        each: options.each,
       }),
     );
   }
@@ -82,8 +82,8 @@ export function IsNumberField(options_?: NumberFieldOptions) {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
+        message: validationI18nMessage("validation.isNotEmpty"),
       }),
     );
 

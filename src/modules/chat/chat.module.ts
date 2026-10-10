@@ -9,8 +9,8 @@ import { ChatService } from "./chat.service";
 import { SocketConnectionService } from "./socket-connection.service";
 
 @Module({
+  controllers: [ChatController],
   imports: [NestJwtModule, AuthModule],
   providers: [ChatGateway, ChatService, WsJwtGuard, SocketConnectionService],
-  controllers: [ChatController],
 })
 export class ChatModule {}

@@ -1,13 +1,17 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["import", "typescript", "unicorn"],
+  "plugins": ["import", "typescript", "unicorn", "oxc", "vitest", "node"],
   "env": {
     "node": true
   },
   "globals": {
     "foo": "readonly"
   },
-  "settings": {},
+  "settings": {
+    "vitest": {
+      "typecheck": true
+    }
+  },
   "rules": {
     "@typescript-eslint/no-floating-promises": "warn",
     "no-unused-vars": [
@@ -24,8 +28,7 @@
     {
       "files": ["*.test.ts", "*.spec.ts"],
       "rules": {
-        "@typescript-eslint/no-explicit-any": "off",
-        "sort-keys": "error"
+        "@typescript-eslint/no-explicit-any": "off"
       }
     }
   ]

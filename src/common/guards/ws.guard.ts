@@ -25,6 +25,11 @@ export class WsJwtGuard implements CanActivate {
     const token = client.headers.authorization;
 
     const payload: JwtPayload = await this.jwtService.verify(token);
+
+    // Refresh and partial 2FA tokens verify against the same secret; only access tokens count.
+    if (payload.type !== "access")
+      throw new WsException(translate("exception.apiUnauthorizedResponse"));
+
     const user = await this.userRepository.findOne({ id: payload.sub });
 
     if (!user) throw new WsException(translate("exception.apiUnauthorizedResponse"));

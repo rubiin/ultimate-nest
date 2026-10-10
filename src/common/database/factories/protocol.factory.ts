@@ -7,9 +7,6 @@ export class ProtocolFactory extends Factory<Protocol> {
 
   definition(): Partial<Protocol> {
     return {
-      loginAttemptnumbererval: 10,
-      loginnumberervalUnit: "m",
-      loginMaxRetry: 10,
       otpExpiryInMinutes: 5,
     };
   }

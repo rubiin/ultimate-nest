@@ -37,10 +37,10 @@ class IsUsernameConstraint implements ValidatorConstraintInterface {
 export function IsUsername(validationOptions?: ValidationOptions): PropertyDecorator {
   return function (object: Record<string, any>, propertyName: string | symbol) {
     registerDecorator({
-      target: object.constructor,
-      propertyName: propertyName as string,
-      options: validationOptions,
       constraints: [],
+      options: validationOptions,
+      propertyName: propertyName as string,
+      target: object.constructor,
       validator: IsUsernameConstraint,
     });
   };
@@ -54,8 +54,8 @@ export function IsUsernameField(
       message: validationI18nMessage("validation.isNotEmpty"),
     }),
     MinMaxLength({
-      minLength: validationOptions?.minLength ?? 5,
       maxLength: validationOptions?.maxLength ?? 50,
+      minLength: validationOptions?.minLength ?? 5,
     }),
     IsUsername(validationOptions),
   );

@@ -15,10 +15,10 @@ export function IsBooleanField(options_?: IsBooleanValidator) {
   };
   const decoratorsToApply = [
     IsBoolean({
+      each: options.each,
       message: i18nValidationMessage("validation.isDataType", {
         type: "boolean",
       }),
-      each: options.each,
     }),
     ToBoolean(),
   ];
@@ -26,8 +26,8 @@ export function IsBooleanField(options_?: IsBooleanValidator) {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: i18nValidationMessage("validation.isNotEmpty"),
         each: options.each,
+        message: i18nValidationMessage("validation.isNotEmpty"),
       }),
     );
 

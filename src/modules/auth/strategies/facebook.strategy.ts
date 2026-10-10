@@ -28,11 +28,11 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
     @InjectRepository(User) private readonly userRepo: BaseRepository<User>,
   ) {
     super({
+      callbackURL: configService.get("facebookOauth.callbackUrl", { infer: true }),
       clientID: configService.get("facebookOauth.clientId", { infer: true }),
       clientSecret: configService.get("facebookOauth.secret", { infer: true }),
-      callbackURL: configService.get("facebookOauth.callbackUrl", { infer: true }),
-      scope: "email",
       profileFields: ["emails", "name"],
+      scope: "email",
     });
   }
 
@@ -44,10 +44,10 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
   ): Promise<any> {
     const { name, emails, username, photos } = profile;
     const user: OauthResponse = {
+      accessToken,
       email: emails![0]!.value,
       firstName: name?.givenName ?? randFirstName(),
       lastName: name?.familyName ?? randAnimal(),
-      accessToken,
     };
     // Check if the user already exists in your database
     const existingUser = await this.userRepo.findOne({
@@ -62,9 +62,9 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
       const newUser = this.userRepo.create({
         ...omit(user, ["accessToken"]),
         avatar: photos?.[0]?.value ?? randomAvatar(),
-        username: username ?? emails![0]!.value,
         bio: randCatchPhrase(),
-        password: randomString({ length: 10, symbols: true, numbers: true }),
+        password: randomString({ length: 10, numbers: true, symbols: true }),
+        username: username ?? emails![0]!.value,
       });
 
       done(undefined, newUser);

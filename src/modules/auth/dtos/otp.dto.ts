@@ -7,8 +7,8 @@ export class OtpVerifyDto {
    * @example 986579
    */
   @IsStringField({
-    minLength: 6,
     maxLength: 6,
+    minLength: 6,
   })
   otpCode!: string;
 

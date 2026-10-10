@@ -1,5 +1,6 @@
 import process from "node:process";
 
+import { OptimisticLockFilter, QueryFailedFilter } from "@common/filters";
 import { AppUtils, HelperService } from "@common/helpers";
 import { InternalDisabledLogger } from "@lib/pino/internal.logger";
 import { Logger, ValidationPipe } from "@nestjs/common";
@@ -40,6 +41,10 @@ async function bootstrap() {
 
   app.set("query parser", "extended");
 
+  // `InternalDisabledLogger` is only the bootstrap logger; without this, every service
+  // `Logger.log` kept writing to stdout while requests went to the Pino files.
+  app.useLogger(app.get(Logger));
+
   const configService = app.get(ConfigService<Configs, true>);
 
   // =========================================================
@@ -52,19 +57,28 @@ async function bootstrap() {
   // security and middlewares
   // ======================================================
 
-  app.enable("trust proxy");
-  app.set("etag", "strong");
-  app.useBodyParser("json", { limit: "10mb" });
-  app.useBodyParser("urlencoded", { limit: "10mb", extended: true });
+  // Trusting every hop makes `request.ips[0]` attacker-controlled, and the throttler keys
+  // on it. 0 means "no proxy in front", so the socket address is used.
+  app.set("trust proxy", configService.get("app.trustProxyHops", { infer: true }));
+  // `weak` revalidates with a stat/mtime instead of hashing every response body.
+  app.set("etag", "weak");
+  const maxBodySize = configService.get("app.maxBodySize", { infer: true });
+
+  app.useBodyParser("json", { limit: maxBodySize });
+  app.useBodyParser("urlencoded", { extended: true, limit: maxBodySize });
 
   if (!HelperService.isProd()) {
     app.use(compression());
     app.useSecurityHeaders();
+    const allowedOrigins = configService.get("app.allowedOrigins", { infer: true }) ?? [];
+
     app.enableCors({
       credentials: true,
       methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
       maxAge: 3600,
-      origin: configService.get("app.allowedOrigins", { infer: true }),
+      // An unset list blocks cross-origin rather than falling back to "*", which
+      // `credentials: true` forbids anyway.
+      origin: allowedOrigins,
     });
   }
 
@@ -78,7 +92,11 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe(AppUtils.validationPipeOptions()));
 
-  app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: false }));
+  app.useGlobalFilters(
+    new I18nValidationExceptionFilter({ detailedErrors: false }),
+    new QueryFailedFilter(),
+    new OptimisticLockFilter(),
+  );
 
   app.useGlobalInterceptors(new LoggerErrorInterceptor());
 
@@ -95,8 +113,8 @@ async function bootstrap() {
   // configure shutdown hooks
   // =========================================================
 
-  app.enableShutdownHooks();
-
+  // `AppUtils.killAppWithGrace` owns the signal handling. Enabling Nest's hooks as well
+  // would register a second listener pair and close the app twice per signal.
   AppUtils.killAppWithGrace(app);
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
@@ -118,7 +136,7 @@ async function bootstrap() {
   logger.log(`==========================================================`);
   logger.log(
     `🚦 Accepting request only from: ${chalk.green(
-      `${configService.get("app.allowedOrigins", { infer: true }).toString()}`,
+      `${configService.get("app.allowedOrigins", { infer: true })?.join(", ") || "no origins"}`,
     )}`,
   );
 
@@ -129,8 +147,8 @@ async function bootstrap() {
   }
 }
 
-try {
-  (async () => bootstrap())();
-} catch (error) {
+// `.catch()` rather than `try/catch` around an un-awaited IIFE, which lets the rejection escape.
+bootstrap().catch((error) => {
   logger.error(error);
-}
+  process.exit(1);
+});

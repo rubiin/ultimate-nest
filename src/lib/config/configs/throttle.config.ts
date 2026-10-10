@@ -6,8 +6,8 @@ import { z } from "zod";
 import { envNumber } from "./schema.helpers";
 
 export const throttleConfigValidationSchema = z.object({
-  THROTTLE_TTL: envNumber(z.number().min(1)),
   THROTTLE_LIMIT: envNumber(),
+  THROTTLE_TTL: envNumber(z.number().min(1)),
 });
 
 export const throttle = registerAs("throttle", () => ({

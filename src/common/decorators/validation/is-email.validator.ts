@@ -19,10 +19,10 @@ export function IsEmailField(options_?: EmailFieldOptions) {
     IsEmail(
       {},
       {
+        each: options.each,
         message: validationI18nMessage("validation.isDataType", {
           type: "email address",
         }),
-        each: options.each,
       },
     ),
   ];
@@ -30,8 +30,8 @@ export function IsEmailField(options_?: EmailFieldOptions) {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
+        message: validationI18nMessage("validation.isNotEmpty"),
       }),
     );
 
