@@ -6,8 +6,8 @@ import { TwoFactorController } from "./twofa.controller";
 import { TwoFactorService } from "./twofa.service";
 
 @Module({
-  imports: [AuthModule],
   controllers: [TwoFactorController],
+  imports: [AuthModule],
   providers: [TwoFactorService, JwtTwofaStrategy],
 })
 export class TwoFactorModule {}

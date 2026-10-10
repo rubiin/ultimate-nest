@@ -17,7 +17,7 @@ export class Referral extends BaseEntity {
   })
   mobileNumber!: string;
 
-  @Enum({ items: () => ReferralStatus, index: true })
+  @Enum({ index: true, items: () => ReferralStatus })
   status: ReferralStatus & Opt = ReferralStatus.PENDING;
 
   constructor(partial?: Partial<Referral>) {

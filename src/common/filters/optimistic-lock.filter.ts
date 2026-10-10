@@ -14,8 +14,8 @@ export class OptimisticLockFilter implements ExceptionFilter {
     const status = HttpStatus.CONFLICT;
 
     response.status(status).json({
-      statusCode: status,
       error: STATUS_CODES[status],
+      statusCode: status,
     });
   }
 }

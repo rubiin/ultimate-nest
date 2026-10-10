@@ -13,18 +13,18 @@ const requiredCredentials = {
 
 export const mailConfigValidationSchema = z
   .object({
-    MAIL_SERVER: z.enum(["SMTP", "SES"]),
-    MAIL_USERNAME: envString().optional(),
-    MAIL_PASSWORD: envString().optional(),
+    MAIL_BCC_LIST: envString().optional(),
     MAIL_HOST: envString().optional(),
+    MAIL_PASSWORD: envString().optional(),
     MAIL_PORT: envPort().optional(),
     MAIL_PREVIEW_EMAIL: z.stringbool().default(false),
-    MAIL_BCC_LIST: envString().optional(),
-    MAIL_TEMPLATE_DIR: envString(),
     MAIL_SENDER_EMAIL: envString(),
-    MAIL_SES_KEY: envString().optional(),
+    MAIL_SERVER: z.enum(["SMTP", "SES"]),
     MAIL_SES_ACCESS_KEY: envString().optional(),
+    MAIL_SES_KEY: envString().optional(),
     MAIL_SES_REGION: oneOf(SES_REGIONS).optional(),
+    MAIL_TEMPLATE_DIR: envString(),
+    MAIL_USERNAME: envString().optional(),
   })
   .superRefine((env, ctx) => {
     for (const key of requiredCredentials[env.MAIL_SERVER]) {

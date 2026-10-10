@@ -46,7 +46,7 @@ export const app = registerAs("app", () => ({
   maxBodySize: process.env.APP_MAX_BODY_SIZE ?? "1mb",
   trustProxyHops: +(process.env.APP_TRUST_PROXY_HOPS ?? 0),
   swagger: {
-    username: process.env.SWAGGER_USER,
     password: process.env.SWAGGER_PASSWORD,
+    username: process.env.SWAGGER_USER,
   },
 }));

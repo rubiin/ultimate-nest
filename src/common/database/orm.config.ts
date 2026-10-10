@@ -30,10 +30,10 @@ export const baseOptions = {
     snapshot: true, // save snapshot when creating new migrations
   },
   seeder: {
-    path: "./src/common/database/seeders", // TS-only: excluded from the build, run via the tsx CLI loader
-    pathTs: undefined, // path to the folder with TS seeders (if used, we should put path to compiled files in `path`)
     defaultSeeder: "DatabaseSeeder", // default seeder class name
     glob: "!(*.d).{js,ts}", // how to match seeder files (all .js and .ts files, but not .d.ts)
+    path: "./src/common/database/seeders", // TS-only: excluded from the build, run via the tsx CLI loader
+    pathTs: undefined, // path to the folder with TS seeders (if used, we should put path to compiled files in `path`)
   },
   logger: logger.log.bind(logger),
   metadataProvider: TsMorphMetadataProvider,
@@ -45,7 +45,7 @@ export const baseOptions = {
   entityRepository: BaseRepository,
   registerRequestContext: true,
   pool: {
-    min: +(process.env.DB_POOL_MIN ?? 2),
     max: +(process.env.DB_POOL_MAX ?? 10),
+    min: +(process.env.DB_POOL_MIN ?? 2),
   },
 };

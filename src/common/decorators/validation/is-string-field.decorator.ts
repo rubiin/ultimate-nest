@@ -23,28 +23,28 @@ import { Sanitize, Trim } from "./transform.decorator";
 
 export function IsStringField(options_?: StringFieldOptions) {
   const options = {
-    required: true,
+    arrayMaxSize: Number.MAX_SAFE_INTEGER,
+    arrayMinSize: 0,
     each: false,
+    maxLength: Number.MAX_SAFE_INTEGER,
+    minLength: 2,
+    required: true,
     sanitize: true,
     trim: true,
-    minLength: 2,
-    maxLength: Number.MAX_SAFE_INTEGER,
-    arrayMinSize: 0,
-    arrayMaxSize: Number.MAX_SAFE_INTEGER,
     ...options_,
   } satisfies StringFieldOptions;
 
   const decoratorsToApply = [
     IsString({
+      each: options.each,
       message: validationI18nMessage("validation.isDataType", {
         type: "string",
       }),
-      each: options.each,
     }),
     MinMaxLength({
-      minLength: options.minLength,
-      maxLength: options.maxLength,
       each: options.each,
+      maxLength: options.maxLength,
+      minLength: options.minLength,
     }),
   ];
 
@@ -57,8 +57,8 @@ export function IsStringField(options_?: StringFieldOptions) {
   if (options.required) {
     decoratorsToApply.push(
       IsNotEmpty({
-        message: validationI18nMessage("validation.isNotEmpty"),
         each: options.each,
+        message: validationI18nMessage("validation.isNotEmpty"),
       }),
     );
 

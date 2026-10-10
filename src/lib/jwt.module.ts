@@ -4,6 +4,7 @@ import { JwtModule } from "@nestjs/jwt";
 
 @Global()
 @Module({
+  exports: [JwtModule],
   imports: [
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -13,12 +14,11 @@ import { JwtModule } from "@nestjs/jwt";
       useFactory: async (configService: ConfigService<Configs, true>) => ({
         secret: configService.get("jwt.secret", { infer: true }),
         signOptions: {
-          expiresIn: configService.get("jwt.accessExpiry", { infer: true }),
           algorithm: configService.get("jwt.algorithm", { infer: true }),
+          expiresIn: configService.get("jwt.accessExpiry", { infer: true }),
         },
       }),
     }),
   ],
-  exports: [JwtModule],
 })
 export class NestJwtModule {}

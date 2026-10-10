@@ -67,8 +67,8 @@ export abstract class BaseService<
         pageOptionsDto: {
           ...dto,
           alias: this.queryName,
-          order: QueryOrder.ASC,
           offset: dto.offset,
+          order: QueryOrder.ASC,
           searchField: this.searchField,
         },
         qb,

@@ -96,8 +96,8 @@ export class PostService {
           ...omit(dto, ["tags", "categories"]),
           author,
           categories,
-          tags,
           published: dto.published ?? false,
+          tags,
         });
 
         return from(this.em.persist(post).flush()).pipe(map(() => post));
@@ -268,7 +268,7 @@ export class PostService {
 
     return forkJoin([post$, user$]).pipe(
       switchMap(([post, user]) => {
-        const comment = new Comment({ body: dto.body, author: ref(user) });
+        const comment = new Comment({ author: ref(user), body: dto.body });
 
         post.comments.add(comment);
 

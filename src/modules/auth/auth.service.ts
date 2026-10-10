@@ -211,11 +211,11 @@ export class AuthService {
             const otpNumber = init({ length: 6 })(); // random six digit otp
 
             const otp = this.otpRepository.create({
-              user: userExists,
-              otpCode: otpNumber,
               expiresIn: new Date(
                 Date.now() + (protocol?.otpExpiryInMinutes ?? 5) * 60_000, // prettier-ignore
               ),
+              otpCode: otpNumber,
+              user: userExists,
             });
 
             return from(this.saveOtpAndSendMail(otp, userExists, otpNumber)).pipe(
@@ -238,17 +238,17 @@ export class AuthService {
 
     return firstValueFrom(
       this.mailService.sendMail({
-        template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
+        from: this.configService.get("mail.senderEmail", {
+          infer: true,
+        }),
         replacements: {
           firstName: capitalize(user.firstName),
           lastName: capitalize(user.lastName),
           otp: otpNumber,
         },
-        to: user.email,
         subject: EmailSubject.RESET_PASSWORD,
-        from: this.configService.get("mail.senderEmail", {
-          infer: true,
-        }),
+        template: EmailTemplate.RESET_PASSWORD_TEMPLATE,
+        to: user.email,
       }),
     );
   }

@@ -28,7 +28,7 @@ export class AuditLog {
   /**
    * `{ field: { old, new } }` for updates, the inserted payload for creates, `null` for deletes.
    */
-  @Property({ type: "json", nullable: true })
+  @Property({ nullable: true, type: "json" })
   changes: Record<string, unknown> | null = null;
 
   @Property({ nullable: true })

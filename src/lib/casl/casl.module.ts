@@ -4,7 +4,7 @@ import { CaslAbilityFactory } from "./casl-ability.factory";
 
 @Global()
 @Module({
-  providers: [CaslAbilityFactory],
   exports: [CaslAbilityFactory],
+  providers: [CaslAbilityFactory],
 })
 export class NestCaslModule {}

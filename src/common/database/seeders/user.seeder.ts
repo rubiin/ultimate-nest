@@ -24,22 +24,22 @@ export class UserSeeder extends Seeder {
             author: user,
             comments: [
               {
-                body: randCatchPhrase(),
                 author: user,
+                body: randCatchPhrase(),
               },
               {
-                body: randCatchPhrase(),
                 author: user,
+                body: randCatchPhrase(),
               },
             ],
             tags: [
               {
-                title: uniqueTitle(randAmericanFootballTeam()),
                 description: randCatchPhrase(),
+                title: uniqueTitle(randAmericanFootballTeam()),
               },
               {
-                title: uniqueTitle(randAddress().street),
                 description: randCatchPhrase(),
+                title: uniqueTitle(randAddress().street),
               },
             ],
           }),

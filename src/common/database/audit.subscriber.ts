@@ -48,9 +48,9 @@ export class AuditSubscriber implements EventSubscriber {
         AuditLog,
         {
           action,
-          entityName: changeSet.meta.className,
-          entityId: entityIdOf(changeSet),
           changes,
+          entityId: entityIdOf(changeSet),
+          entityName: changeSet.meta.className,
           ...actor,
         },
         { persist: false },
@@ -89,7 +89,7 @@ function describeChanges(
     const old = originalEntity?.[key as keyof typeof originalEntity] ?? null;
 
     changes[key] =
-      action === AuditAction.CREATE ? mask(value) : { old: mask(old), new: mask(value) };
+      action === AuditAction.CREATE ? mask(value) : { new: mask(value), old: mask(old) };
   }
 
   return changes;

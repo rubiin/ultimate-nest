@@ -41,8 +41,8 @@ export class ChatService {
     if (conversationExists) {
       const messageNew = this.messageRepository.create({
         body: data.message,
-        sender: sender!,
         conversation: ref(conversationExists),
+        sender: sender!,
       });
 
       conversationExists.messages.add(messageNew);
@@ -59,8 +59,8 @@ export class ChatService {
 
       const messageNew = this.messageRepository.create({
         body: data.message,
-        sender: sender!,
         conversation: ref(conversationNew),
+        sender: sender!,
       });
 
       this.em.persist([messageNew, conversationNew]);

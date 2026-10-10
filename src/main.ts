@@ -65,7 +65,7 @@ async function bootstrap() {
   const maxBodySize = configService.get("app.maxBodySize", { infer: true });
 
   app.useBodyParser("json", { limit: maxBodySize });
-  app.useBodyParser("urlencoded", { limit: maxBodySize, extended: true });
+  app.useBodyParser("urlencoded", { extended: true, limit: maxBodySize });
 
   if (!HelperService.isProd()) {
     app.use(compression());

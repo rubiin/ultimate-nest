@@ -20,8 +20,8 @@ const TWO_FACTOR_TOKEN_EXPIRY = "5m";
 @Injectable()
 export class TokensService {
   private readonly BASE_OPTIONS: JwtSignOptions = {
-    issuer: "nestify",
     audience: "nestify",
+    issuer: "nestify",
   };
 
   constructor(
@@ -79,8 +79,8 @@ export class TokensService {
         const options: JwtSignOptions = {
           ...this.BASE_OPTIONS,
           expiresIn,
-          subject: String(user.id),
           jwtid: String(token.id),
+          subject: String(user.id),
         };
 
         return from(this.jwt.signAsync({ type: "refresh" satisfies TokenType }, options));
@@ -134,7 +134,7 @@ export class TokensService {
                   );
                 }
 
-                return of({ user, token });
+                return of({ token, user });
               }),
             );
           }),
@@ -174,7 +174,7 @@ export class TokensService {
                 user,
                 this.configService.get("jwt.refreshExpiry", { infer: true }),
               ),
-            ).pipe(map(([accessToken, refreshToken]) => ({ user, accessToken, refreshToken })));
+            ).pipe(map(([accessToken, refreshToken]) => ({ accessToken, refreshToken, user })));
           }),
         ),
       ),

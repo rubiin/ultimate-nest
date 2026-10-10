@@ -20,21 +20,21 @@ export class UserFactory extends Factory<User> {
 
   definition(): Partial<User> {
     return {
-      firstName: randFirstName(),
-      middleName: randFirstName(),
-      lastName: randLastName(),
-      bio: randCatchPhrase(),
-      username: randUserName(),
       avatar: randomAvatar(),
+      bio: randCatchPhrase(),
       email: randEmail(),
-      roles: [Roles.AUTHOR],
-      password: process.env.USER_PASSWORD,
+      firstName: randFirstName(),
       lastLogin: randFutureDate({ years: 1 }),
+      lastName: randLastName(),
+      middleName: randFirstName(),
+      password: process.env.USER_PASSWORD,
+      roles: [Roles.AUTHOR],
       social: {
-        twitter: randUrl(),
         facebook: randUrl(),
         linkedin: randUrl(),
+        twitter: randUrl(),
       },
+      username: randUserName(),
     };
   }
 }

@@ -3,18 +3,18 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
+  exports: [ThrottlerModule],
   imports: [
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({
-        ttl: configService.get("throttle.ttl", { infer: true }),
-        limit: configService.get("throttle.limit", { infer: true }),
         ignoreUserAgents: [/nestify/i],
+        limit: configService.get("throttle.limit", { infer: true }),
         throttlers: [],
+        ttl: configService.get("throttle.ttl", { infer: true }),
       }),
     }),
   ],
-  exports: [ThrottlerModule],
 })
 export class NestThrottlerModule {}

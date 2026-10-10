@@ -81,12 +81,12 @@ export class AwsS3Service {
 
             const mime = this.getMime(filename);
             return {
+              baseUrl: this.baseUrl,
+              completedUrl: `${this.baseUrl}/${value.Key}`,
+              filename,
+              mime,
               path,
               pathWithFilename: value.Key,
-              filename,
-              completedUrl: `${this.baseUrl}/${value.Key}`,
-              baseUrl: this.baseUrl,
-              mime,
             };
           }).filter((value) => isEmpty(value)) as AwsS3[];
         }
@@ -175,20 +175,20 @@ export class AwsS3Service {
     return from(
       this.s3Client.send(
         new PutObjectCommand({
-          Bucket: this.bucket,
-          Key: key,
           Body: content,
+          Bucket: this.bucket,
           ContentType: mime,
+          Key: key,
         }),
       ),
     ).pipe(
       map((_response) => ({
+        baseUrl: this.baseUrl,
+        completedUrl: `${this.baseUrl}/${key}`,
+        filename,
+        mime,
         path,
         pathWithFilename: key,
-        filename,
-        completedUrl: `${this.baseUrl}/${key}`,
-        baseUrl: this.baseUrl,
-        mime,
       })),
     );
   }
@@ -299,20 +299,20 @@ export class AwsS3Service {
     return from(
       this.s3Client.send(
         new CreateMultipartUploadCommand({
+          ACL: acl,
           Bucket: this.bucket,
           Key: key,
-          ACL: acl,
         }),
       ),
     ).pipe(
       map((response) => ({
-        uploadId: response?.UploadId ?? "",
+        baseUrl: this.baseUrl,
+        completedUrl: `${this.baseUrl}/${key}`,
+        filename,
+        mime,
         path,
         pathWithFilename: key,
-        filename,
-        completedUrl: `${this.baseUrl}/${key}`,
-        baseUrl: this.baseUrl,
-        mime,
+        uploadId: response?.UploadId ?? "",
       })),
     );
   }
@@ -335,7 +335,7 @@ export class AwsS3Service {
     const key = path ? `${path}/${fileName}` : fileName;
     const mime = this.getMime(fileName);
 
-    return { key, mime, path, acl };
+    return { acl, key, mime, path };
   }
 
   /**
@@ -372,9 +372,9 @@ export class AwsS3Service {
     return from(
       this.s3Client.send(
         new UploadPartCommand({
+          Body: content,
           Bucket: this.bucket,
           Key: key,
-          Body: content,
           PartNumber: partNumber,
           UploadId: uploadId,
         }),

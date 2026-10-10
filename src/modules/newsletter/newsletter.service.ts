@@ -47,10 +47,10 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
           this.configService.get("rabbitmq.exchange", { infer: true }),
           RoutingKey.SEND_NEWSLETTER,
           {
+            from: this.configService.get("mail.senderEmail", { infer: true }),
+            subject: EmailSubject.WELCOME,
             template: EmailTemplate.WELCOME_TEMPLATE,
             to: subscriber.email,
-            subject: EmailSubject.WELCOME,
-            from: this.configService.get("mail.senderEmail", { infer: true }),
           },
         ),
       );

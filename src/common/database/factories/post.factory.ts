@@ -9,12 +9,12 @@ export class PostFactory extends Factory<Post> {
 
   definition(): Partial<Post> {
     return {
-      title: randAwsRequestId(),
       content: randProductDescription(),
       description: randProductDescription(),
-      readingTime: randomNumber(10, 100),
       favoritesCount: randomNumber(1, 100),
       readCount: randomNumber(10, 100),
+      readingTime: randomNumber(10, 100),
+      title: randAwsRequestId(),
     };
   }
 }

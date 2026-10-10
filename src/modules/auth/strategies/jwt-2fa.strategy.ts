@@ -13,9 +13,9 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
     config: ConfigService<Configs, true>,
   ) {
     super({
+      ignoreExpiration: false,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: config.get("jwt.secret", { infer: true }),
-      ignoreExpiration: false,
     });
   }
 

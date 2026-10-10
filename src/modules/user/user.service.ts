@@ -40,18 +40,18 @@ export class UserService {
   ) {}
 
   @RabbitSubscribe({
-    routingKey: RoutingKey.SEND_MAIL,
     exchange: process.env.RABBITMQ_EXCHANGE,
     queue: Queues.MAIL,
+    routingKey: RoutingKey.SEND_MAIL,
   })
   sendMail(payload: MailPayload) {
     return from(
       this.mailService.sendMail({
-        template: payload.template,
-        replacements: payload.replacements,
-        to: payload.to,
-        subject: payload.subject,
         from: payload.from,
+        replacements: payload.replacements,
+        subject: payload.subject,
+        template: payload.template,
+        to: payload.to,
       }),
     ).pipe(tap(() => Logger.log(`✅ Sent mail to ${payload.to}`)));
   }
@@ -69,8 +69,8 @@ export class UserService {
   referUser(dto: ReferUserDto, user: User): Observable<Referral> {
     const userExists$ = from(
       this.userRepository.count({
-        mobileNumber: dto.mobileNumber,
         isActive: true,
+        mobileNumber: dto.mobileNumber,
       }),
     );
 
@@ -175,14 +175,14 @@ export class UserService {
       this.configService.get("rabbitmq.exchange", { infer: true }),
       RoutingKey.SEND_MAIL,
       {
-        template: EmailTemplate.WELCOME_TEMPLATE,
+        from: this.configService.get("mail.senderEmail", { infer: true }),
         replacements: {
           firstName: capitalize(user.firstName),
           link,
         },
-        to: user.email,
         subject: EmailSubject.WELCOME,
-        from: this.configService.get("mail.senderEmail", { infer: true }),
+        template: EmailTemplate.WELCOME_TEMPLATE,
+        to: user.email,
       },
     );
   }

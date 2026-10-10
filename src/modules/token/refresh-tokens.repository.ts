@@ -30,8 +30,8 @@ export class RefreshTokensRepository {
     expiration.setTime(expiration.getTime() + ttlSeconds);
 
     const token = this.refreshTokenRepository.create({
-      user: user.id,
       expiresIn: expiration,
+      user: user.id,
     });
 
     return from(this.em.persist(token).flush()).pipe(map(() => token));
@@ -82,7 +82,7 @@ export class RefreshTokensRepository {
    */
   deleteToken(user: User, tokenId: number): Observable<boolean> {
     return from(
-      this.refreshTokenRepository.nativeUpdate({ user, id: tokenId }, { isRevoked: true }),
+      this.refreshTokenRepository.nativeUpdate({ id: tokenId, user }, { isRevoked: true }),
     ).pipe(map(() => true));
   }
 }

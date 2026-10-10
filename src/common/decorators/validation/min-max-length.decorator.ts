@@ -9,16 +9,16 @@ import { MaxLength, MinLength } from "class-validator";
  * @returns A function that takes in a target, propertyKey, and descriptor
  */
 export function MinMaxLength(options_?: MinMaxLengthOptions) {
-  const options = { minLength: 2, maxLength: 500, each: false, ...options_ };
+  const options = { each: false, maxLength: 500, minLength: 2, ...options_ };
 
   return applyDecorators(
     MinLength(options.minLength, {
-      message: validationI18nMessage("validation.minLength"),
       each: options.each,
+      message: validationI18nMessage("validation.minLength"),
     }),
     MaxLength(options.maxLength, {
-      message: validationI18nMessage("validation.maxLength"),
       each: options.each,
+      message: validationI18nMessage("validation.maxLength"),
     }),
   );
 }

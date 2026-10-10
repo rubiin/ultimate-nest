@@ -7,17 +7,17 @@ import { CacheService } from "./cache.service";
 
 @Global()
 @Module({
+  exports: [CacheModule, CacheService],
   imports: [
     CacheModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
+      isGlobal: true,
       useFactory: async (configService: ConfigService<Configs, true>) => ({
         store: createKeyv(configService.getOrThrow("redis", { infer: true })),
       }),
-      isGlobal: true,
     }),
   ],
-  exports: [CacheModule, CacheService],
   providers: [CacheService],
 })
 export class NestCacheModule {}

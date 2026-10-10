@@ -27,9 +27,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
     @InjectRepository(User) private readonly userRepo: BaseRepository<User>,
   ) {
     super({
+      callbackURL: configService.get("googleOauth.callbackUrl", { infer: true }),
       clientID: configService.get("googleOauth.clientId", { infer: true }),
       clientSecret: configService.get("googleOauth.secret", { infer: true }),
-      callbackURL: configService.get("googleOauth.callbackUrl", { infer: true }),
       scope: ["email", "profile"],
     });
   }
@@ -42,10 +42,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
   ): Promise<any> {
     const { name, emails, photos, username } = profile;
     const user: OauthResponse = {
+      accessToken,
       email: emails![0]!.value,
       firstName: name?.givenName ?? randFirstName(),
       lastName: name?.familyName ?? randAnimal(),
-      accessToken,
     };
 
     // Check if the user already exists in your database
@@ -61,9 +61,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
       const newUser = this.userRepo.create({
         ...omit(user, ["accessToken"]),
         avatar: photos?.[0]?.value ?? randomAvatar(),
-        username: username ?? emails![0]!.value,
         bio: randCatchPhrase(),
-        password: randomString({ length: 10, symbols: true, numbers: true }),
+        password: randomString({ length: 10, numbers: true, symbols: true }),
+        username: username ?? emails![0]!.value,
       });
 
       done(undefined, newUser);

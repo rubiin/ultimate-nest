@@ -64,7 +64,7 @@ export class User extends BaseEntity {
     );
   }
 
-  @Property({ hidden: true, columnType: "text", lazy: true })
+  @Property({ columnType: "text", hidden: true, lazy: true })
   password!: string;
 
   @Property({ hidden: true })
@@ -73,9 +73,9 @@ export class User extends BaseEntity {
   @Property()
   isTwoFactorEnabled? = false;
 
-  @Enum({ items: () => Roles, array: true, index: true })
+  @Enum({ array: true, index: true, items: () => Roles })
   // Named explicitly: the default "user_roles_check" is already taken by the enum-array check.
-  @Check({ name: "user_roles_not_empty_check", expression: "cardinality(roles) > 0" })
+  @Check({ expression: "cardinality(roles) > 0", name: "user_roles_not_empty_check" })
   roles?: Roles[] = [Roles.AUTHOR];
 
   @Property({ index: true, unique: true })
@@ -95,17 +95,17 @@ export class User extends BaseEntity {
   @ManyToMany({ hidden: true })
   favorites = new Collection<Post>(this);
 
-  @Embedded(() => Social, { object: true, nullable: true })
+  @Embedded(() => Social, { nullable: true, object: true })
   social?: Social;
 
   @ManyToMany({
     entity: () => User,
+    hidden: true,
+    inverseJoinColumn: "following",
     inversedBy: (u) => u.followed,
+    joinColumn: "follower",
     owner: true,
     pivotTable: "user_to_follower",
-    joinColumn: "follower",
-    inverseJoinColumn: "following",
-    hidden: true,
   })
   followers = new Collection<User>(this);
 

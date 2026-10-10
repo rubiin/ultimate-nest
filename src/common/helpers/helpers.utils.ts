@@ -11,10 +11,10 @@ import { from } from "rxjs";
 import sharp from "sharp";
 
 const argon2Options: HashOptions & { raw?: false } = {
-  type: argon2id,
   hashLength: 50,
-  timeCost: 4,
   raw: false,
+  timeCost: 4,
+  type: argon2id,
 };
 
 export const HelperService = {
@@ -24,10 +24,10 @@ export const HelperService = {
     refreshToken?: string,
   ): AuthenticationResponse {
     return {
+      accessToken,
       user: {
         ...pick(user, ["id", "idx"]),
       },
-      accessToken,
       ...(refreshToken ? { refresh_token: refreshToken } : {}),
     };
   },

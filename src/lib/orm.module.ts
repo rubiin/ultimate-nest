@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Global()
 @Module({
+  exports: [MikroOrmModule],
   imports: [
     MikroOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -24,6 +25,5 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
       entities: Object.values(Entities),
     }),
   ],
-  exports: [MikroOrmModule],
 })
 export class OrmModule {}

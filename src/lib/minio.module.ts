@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { NestMinioModule } from "nestjs-minio";
 
 @Module({
+  exports: [NestMinioModule],
   imports: [
     NestMinioModule.registerAsync({
       imports: [ConfigModule],
@@ -12,6 +13,5 @@ import { NestMinioModule } from "nestjs-minio";
         configService.getOrThrow("minio", { infer: true }),
     }),
   ],
-  exports: [NestMinioModule],
 })
 export class MinioModule {}

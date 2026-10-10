@@ -92,7 +92,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     options?: FindOptions<T, Populate> & { using?: Using | Using[] },
   ): Observable<{ total: number; results: Loaded<T, Populate>[] }> {
     return from(this.findAndCount<Populate, never, never, Using>(where, options)).pipe(
-      map(([results, total]) => ({ total, results })),
+      map(([results, total]) => ({ results, total })),
     );
   }
 
@@ -286,7 +286,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       .offset(offset);
 
     const [results, itemCount] = await qb.getResultAndCount();
-    const pageMetaDto = new OffsetMeta({ pageOptionsDto, itemCount });
+    const pageMetaDto = new OffsetMeta({ itemCount, pageOptionsDto });
 
     return new OffsetPaginationResponse(results, pageMetaDto);
   }
@@ -365,9 +365,9 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     return {
       data: page.items,
       meta: {
-        nextCursor: page.endCursor ?? "",
         hasNextPage: page.hasNextPage,
         hasPreviousPage: page.hasPrevPage,
+        nextCursor: page.endCursor ?? "",
         search: search ?? "",
       },
     };

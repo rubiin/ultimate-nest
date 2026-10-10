@@ -57,7 +57,7 @@ export class TwoFactorService {
 
     return from(this.em.flush()).pipe(
       map(() => {
-        return { secret, otpAuthUrl };
+        return { otpAuthUrl, secret };
       }),
     );
   }
@@ -86,8 +86,8 @@ export class TwoFactorService {
   isTwoFactorCodeValid(twoFactorAuthenticationCode: string, user: User): Observable<boolean> {
     return from(
       this.otp.verify({
-        token: twoFactorAuthenticationCode,
         secret: user.twoFactorSecret!,
+        token: twoFactorAuthenticationCode,
       }),
     ).pipe(map((result) => result.valid));
   }

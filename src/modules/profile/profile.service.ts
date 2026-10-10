@@ -40,8 +40,8 @@ export class ProfileService {
           populate,
           populateWhere: {
             favorites: { isActive: true },
-            followers: { isActive: true },
             followed: { isActive: true },
+            followers: { isActive: true },
             posts: { isActive: true },
           },
         },
@@ -88,8 +88,8 @@ export class ProfileService {
         }
 
         const profile: ProfileData = {
-          following: true,
           avatar: followingUser.avatar,
+          following: true,
           username: followingUser.username,
         };
 
@@ -97,7 +97,7 @@ export class ProfileService {
         // That pivot is keyed on (follower, following), so re-following would now raise a
         // unique violation instead of silently no-opping; this bounded check keeps the
         // idempotency without loading every follower row.
-        return this.userRepository.exists({ id: followingUser.id, followers: loggedInUser }).pipe(
+        return this.userRepository.exists({ followers: loggedInUser, id: followingUser.id }).pipe(
           switchMap((alreadyFollowing) => {
             if (!alreadyFollowing) followingUser.followers.add(loggedInUser);
 
@@ -132,8 +132,8 @@ export class ProfileService {
         followingUser.followers.remove(followerUser);
 
         const profile: ProfileData = {
-          following: false,
           avatar: followingUser.avatar,
+          following: false,
           username: followingUser.username,
         };
 

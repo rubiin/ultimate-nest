@@ -43,11 +43,11 @@ export class AuthController {
   @Post("login")
   @ApiOperation({ summary: "User Login" })
   @ApiOkResponse({
-    type: AuthenticationResponse,
     description:
       "Full token pair. If the account has 2FA enabled, the response is instead " +
       "`{ user, accessToken, twoFactorRequired: true }` with no refresh token: `accessToken` is a " +
       "partial token valid for 5 minutes, accepted only by `POST /2fa/authenticate`.",
+    type: AuthenticationResponse,
   })
   login(@Body() loginDto: UserLoginDto): Observable<AuthenticationResponse> {
     return this.authService.login(loginDto, true);
@@ -55,9 +55,9 @@ export class AuthController {
 
   @Post("reset-password")
   @SwaggerResponse({
-    operation: "Reset password",
-    notFound: "Otp doesn't exist.",
     badRequest: "Otp is expired.",
+    notFound: "Otp doesn't exist.",
+    operation: "Reset password",
   })
   resetUserPassword(@Body() dto: ResetPasswordDto): Observable<User> {
     return this.authService.resetPassword(dto);
@@ -66,8 +66,8 @@ export class AuthController {
   @Auth()
   @Patch("forgot-password")
   @SwaggerResponse({
-    operation: "Forgot password",
     notFound: "Account doesn't exist.",
+    operation: "Forgot password",
   })
   forgotPassword(@Body() dto: SendOtpDto): Observable<{ message: string }> {
     return this.authService.forgotPassword(dto);
@@ -113,9 +113,9 @@ export class AuthController {
 
   @Post("verify-otp")
   @SwaggerResponse({
-    operation: "Verify otp",
-    notFound: "Otp doesn't exist.",
     badRequest: "Otp is expired.",
+    notFound: "Otp doesn't exist.",
+    operation: "Verify otp",
   })
   verifyOtp(@Body() dto: OtpVerifyDto): Observable<User> {
     return this.authService.verifyOtp(dto);
@@ -124,8 +124,8 @@ export class AuthController {
   @Auth()
   @Post("change-password")
   @SwaggerResponse({
-    operation: "Change password",
     badRequest: "Username and password provided does not match.",
+    operation: "Change password",
   })
   changePassword(@Body() dto: ChangePasswordDto, @LoggedInUser() user: User): Observable<User> {
     return this.authService.changePassword(dto, user);

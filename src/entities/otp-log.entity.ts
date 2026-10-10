@@ -11,9 +11,9 @@ export class OtpLog extends BaseEntity {
   expiresIn!: Date;
 
   @Property({
-    length: 20,
-    index: true,
     hidden: true,
+    index: true,
+    length: 20,
   })
   otpCode?: string;
 

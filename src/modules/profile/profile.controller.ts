@@ -18,8 +18,8 @@ export class ProfileController {
   @ApplyCustomCache()
   @Get()
   @SwaggerResponse({
-    operation: "Profile fetch",
     notFound: "Profile does not exist.",
+    operation: "Profile fetch",
   })
   profile(@LoggedInUser("username") username: string): Observable<User> {
     return this.profileService.getProfileByUsername(username, ["followers", "followed"]);
@@ -27,8 +27,8 @@ export class ProfileController {
 
   @Post(":username/follow")
   @SwaggerResponse({
-    operation: "Profile follow",
     notFound: "Profile does not exist.",
+    operation: "Profile follow",
     params: ["username"],
   })
   follow(
@@ -41,8 +41,8 @@ export class ProfileController {
 
   @Delete(":username/unfollow")
   @SwaggerResponse({
-    operation: "Profile unfollow",
     notFound: "Profile does not exist.",
+    operation: "Profile unfollow",
     params: ["username"],
   })
   unFollow(

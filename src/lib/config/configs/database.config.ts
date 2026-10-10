@@ -18,13 +18,13 @@ export const databaseConfigValidationSchema = z.object({
 });
 
 export const database = registerAs("database", () => ({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  password: process.env.DB_PASSWORD,
-  user: process.env.DB_USERNAME,
   dbName: process.env.DB_DATABASE,
+  host: process.env.DB_HOST,
+  password: process.env.DB_PASSWORD,
   pool: {
-    min: +(process.env.DB_POOL_MIN ?? 2),
     max: +(process.env.DB_POOL_MAX ?? 10),
+    min: +(process.env.DB_POOL_MIN ?? 2),
   },
+  port: process.env.DB_PORT,
+  user: process.env.DB_USERNAME,
 }));
