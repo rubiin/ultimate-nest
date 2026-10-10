@@ -1,12 +1,6 @@
 import process from "node:process";
 
-import {
-  IS_PUBLIC_KEY_META,
-  SWAGGER_API_CURRENT_VERSION,
-  SWAGGER_API_ENDPOINT,
-  SWAGGER_DESCRIPTION,
-  SWAGGER_TITLE,
-} from "@common/constant";
+import { IS_PUBLIC_KEY_META, SWAGGER_API_ENDPOINT, swaggerMetadata } from "@common/constant";
 import { swaggerOptions } from "@common/swagger/swagger.plugin";
 import { INestApplication, ValidationPipeOptions } from "@nestjs/common";
 import { Logger } from "@nestjs/common";
@@ -76,13 +70,14 @@ export const AppUtils = {
       infer: true,
     });
     const appName = configService.get("app.name", { infer: true });
+    const { description, title, version } = swaggerMetadata();
 
     const options = new DocumentBuilder()
-      .setTitle(SWAGGER_TITLE)
+      .setTitle(title)
       .addBearerAuth()
       .setLicense("MIT", "https://opensource.org/licenses/MIT")
-      .setDescription(SWAGGER_DESCRIPTION)
-      .setVersion(SWAGGER_API_CURRENT_VERSION)
+      .setDescription(description)
+      .setVersion(version)
       .addBearerAuth({ type: "http", scheme: "bearer", bearerFormat: "JWT" }, "accessToken")
       .addBearerAuth({ type: "http", scheme: "bearer", bearerFormat: "JWT" }, "refreshToken")
       .addApiKey({ type: "apiKey", in: "header", name: "x-api-key" }, "apiKey")
