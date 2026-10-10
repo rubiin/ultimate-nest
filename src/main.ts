@@ -54,7 +54,8 @@ async function bootstrap() {
   // ======================================================
 
   app.enable("trust proxy");
-  app.set("etag", "strong");
+  // `weak` revalidates with a stat/mtime instead of hashing every response body.
+  app.set("etag", "weak");
   app.useBodyParser("json", { limit: "10mb" });
   app.useBodyParser("urlencoded", { limit: "10mb", extended: true });
 
