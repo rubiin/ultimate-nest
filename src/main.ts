@@ -100,8 +100,8 @@ async function bootstrap() {
   // configure shutdown hooks
   // =========================================================
 
-  app.enableShutdownHooks();
-
+  // `AppUtils.killAppWithGrace` owns the signal handling. Enabling Nest's hooks as well
+  // would register a second listener pair and close the app twice per signal.
   AppUtils.killAppWithGrace(app);
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
@@ -134,8 +134,8 @@ async function bootstrap() {
   }
 }
 
-try {
-  (async () => bootstrap())();
-} catch (error) {
+// `.catch()` rather than `try/catch` around an un-awaited IIFE, which lets the rejection escape.
+bootstrap().catch((error) => {
   logger.error(error);
-}
+  process.exit(1);
+});
