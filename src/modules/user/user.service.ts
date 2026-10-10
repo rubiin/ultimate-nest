@@ -1,15 +1,14 @@
 import process from "node:process";
 
-import type { MailPayload } from "@common/@types";
 import { PaginationResponse, RecordWithFile } from "@common/@types";
-import { EmailSubject, EmailTemplate, QueryOrder, Queues, RoutingKey } from "@common/@types";
+import { QueryOrder, Queues, RoutingKey } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Referral, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import { MailerService } from "@lib/mailer/mailer.service";
+import { WelcomeMail, type WelcomeMailData } from "@lib/mail";
 import { EntityManager } from "@mikro-orm/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -17,6 +16,7 @@ import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { Mailer } from "@nestjs/mail";
 import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService, IFile } from "nestjs-cloudinary";
@@ -35,7 +35,7 @@ export class UserService {
     private readonly configService: ConfigService<Configs, true>,
     private readonly amqpConnection: AmqpConnection,
     private readonly cloudinaryService: CloudinaryService,
-    private readonly mailService: MailerService,
+    private readonly mailer: Mailer,
     private readonly em: EntityManager<PostgreSqlDriver>,
   ) {}
 
@@ -44,16 +44,10 @@ export class UserService {
     queue: Queues.MAIL,
     routingKey: RoutingKey.SEND_MAIL,
   })
-  sendMail(payload: MailPayload) {
-    return from(
-      this.mailService.sendMail({
-        from: payload.from,
-        replacements: payload.replacements,
-        subject: payload.subject,
-        template: payload.template,
-        to: payload.to,
-      }),
-    ).pipe(tap(() => Logger.log(`✅ Sent mail to ${payload.to}`)));
+  sendMail(payload: { to: string; data: WelcomeMailData }) {
+    return from(this.mailer.send(WelcomeMail, { to: payload.to, data: payload.data })).pipe(
+      tap(() => Logger.log(`✅ Sent mail to ${payload.to}`)),
+    );
   }
 
   /**
@@ -175,14 +169,8 @@ export class UserService {
       this.configService.get("rabbitmq.exchange", { infer: true }),
       RoutingKey.SEND_MAIL,
       {
-        from: this.configService.get("mail.senderEmail", { infer: true }),
-        replacements: {
-          firstName: capitalize(user.firstName),
-          link,
-        },
-        subject: EmailSubject.WELCOME,
-        template: EmailTemplate.WELCOME_TEMPLATE,
         to: user.email,
+        data: { firstName: capitalize(user.firstName), link },
       },
     );
   }

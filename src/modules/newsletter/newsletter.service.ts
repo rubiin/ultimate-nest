@@ -1,4 +1,4 @@
-import { EmailSubject, EmailTemplate, RoutingKey } from "@common/@types";
+import { RoutingKey } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { NewsLetter, Subscriber } from "@entities";
@@ -14,6 +14,7 @@ import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
 import { SubscribeNewsletterDto } from "./dto";
+import { capitalize } from "helper-fns";
 
 @Injectable()
 export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationDto> {
@@ -39,6 +40,7 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
 
   private async publishNewsLetter() {
     const subscribers = await this.subscriberRepository.findAll({});
+    const link = this.configService.get("app.clientUrl", { infer: true });
     const promises = [];
 
     for (const subscriber of subscribers) {
@@ -47,10 +49,8 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
           this.configService.get("rabbitmq.exchange", { infer: true }),
           RoutingKey.SEND_NEWSLETTER,
           {
-            from: this.configService.get("mail.senderEmail", { infer: true }),
-            subject: EmailSubject.WELCOME,
-            template: EmailTemplate.WELCOME_TEMPLATE,
             to: subscriber.email,
+            data: { firstName: capitalize(subscriber.email), link },
           },
         ),
       );

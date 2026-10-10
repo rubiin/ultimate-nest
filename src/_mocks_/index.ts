@@ -10,7 +10,6 @@ import { NewsLetter, Protocol, Referral, RefreshToken, Subscriber, User } from "
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-vitest";
 import { CacheService } from "@lib/cache/cache.service";
-import { MailerService } from "@lib/mailer/mailer.service";
 import { EntityManager, MikroORM } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
@@ -18,6 +17,7 @@ import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repositor
 import { TokensService } from "@modules/token/tokens.service";
 import { CallHandler, ExecutionContext } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { Mailer } from "@nestjs/mail";
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import { CloudinaryService } from "nestjs-cloudinary";
@@ -158,7 +158,7 @@ export const mockPostRepo = createMock<BaseRepository<Post>>();
 export const mockCommentRepo = createMock<BaseRepository<Comment>>();
 export const mockTagsRepo = createMock<BaseRepository<Tag>>();
 export const mockCategoryRepo = createMock<BaseRepository<Category>>();
-export const mockMailService = createMock<MailerService>();
+export const mockMailService = createMock<Mailer>();
 export const mockTokenService = createMock<TokensService>();
 export const mockConversationRepo = createMock<BaseRepository<Conversation>>();
 export const mockMessageRepo = createMock<BaseRepository<Message>>();

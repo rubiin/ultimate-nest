@@ -198,6 +198,22 @@ describe("mail config factory", () => {
 
     expect(port).toBeUndefined();
   });
+
+  // Regression: the raw string "false" is truthy, so a disabled preview still took the preview path.
+  it.each([
+    ["true", true],
+    ["false", false],
+    [undefined, false],
+  ])("parses MAIL_PREVIEW_EMAIL=%s as %s", (raw, expected) => {
+    const original = process.env.MAIL_PREVIEW_EMAIL;
+    if (raw === undefined) delete process.env.MAIL_PREVIEW_EMAIL;
+    else process.env.MAIL_PREVIEW_EMAIL = raw;
+
+    expect(mail().previewEmail).toBe(expected);
+
+    if (original === undefined) delete process.env.MAIL_PREVIEW_EMAIL;
+    else process.env.MAIL_PREVIEW_EMAIL = original;
+  });
 });
 
 describe("databaseConfigValidationSchema", () => {

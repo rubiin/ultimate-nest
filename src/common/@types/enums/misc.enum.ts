@@ -1,20 +1,4 @@
-import { TEmailSubject } from "../interfaces";
-
 export const BYTE_TO_MB = 1024 * 1024;
-
-export enum EmailTemplate {
-  RESET_PASSWORD_TEMPLATE = "reset",
-  WELCOME_TEMPLATE = "welcome",
-  MAGIC_LOGIN_TEMPLATE = "magiclogin",
-  NEWSLETTER_TEMPLATE = "newsletter",
-}
-
-export const EmailSubject: Record<TEmailSubject, string> = {
-  MAGIC_LOGIN: "Login to the app",
-  NEWSLETTER: "Newsletter",
-  RESET_PASSWORD: "Reset your password",
-  WELCOME: "Welcome to the app",
-};
 
 export const FileSize = {
   DOC: 10 * BYTE_TO_MB, // 10MB
@@ -24,17 +8,6 @@ export const FileSize = {
 export enum PostStateEnum {
   DRAFT = "DRAFT",
   PUBLISHED = "PUBLISHED",
-}
-
-export enum Server {
-  SES = "SES",
-  SMTP = "SMTP",
-}
-
-export enum TemplateEngine {
-  ETA = "eta",
-  PUG = "pug",
-  HANDLEBARS = "handlebars",
 }
 
 export const FileType: Record<keyof typeof FileSize, string[]> = {

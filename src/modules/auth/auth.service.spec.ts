@@ -1,6 +1,6 @@
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
-import { MailerService } from "@lib/mailer/mailer.service";
+import { ResetPasswordMail } from "@lib/mail";
 import { EntityManager, TransactionPropagation } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
@@ -22,7 +22,8 @@ import { BadRequestException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import { defer, lastValueFrom, of } from "rxjs";
+import { Mailer } from "@nestjs/mail";
+import { lastValueFrom, of } from "rxjs";
 
 import { AuthService } from "./auth.service";
 
@@ -50,7 +51,7 @@ describe("authService", () => {
           useValue: mockProtocolRepo,
         },
         { provide: ConfigService, useValue: mockConfigService },
-        { provide: MailerService, useValue: mockMailService },
+        { provide: Mailer, useValue: mockMailService },
         { provide: TokensService, useValue: mockTokenService },
         { provide: EntityManager<PostgreSqlDriver>, useValue: mockEm },
       ],
@@ -118,7 +119,7 @@ describe("authService", () => {
     mockProtocolRepo.findOne.mockImplementation((async () =>
       Promise.resolve({ otpExpiryInMinutes: 5 })) as never);
     mockOtpLogRepo.create.mockImplementation(((data: object) => data) as never);
-    mockMailService.sendMail.mockReturnValue(of(undefined) as never);
+    mockMailService.send.mockResolvedValue(undefined as never);
     mockEm.transactional.mockImplementation((async (cb: (em: unknown) => Promise<unknown>) =>
       cb(mockEm)) as never);
 
@@ -140,7 +141,7 @@ describe("authService", () => {
     mockUserRepo.findOne.mockImplementation((async () => Promise.resolve(loggedInUser)) as never);
     mockProtocolRepo.findOne.mockImplementation((async () => Promise.resolve(null)) as never);
     mockOtpLogRepo.create.mockImplementation(((data: object) => data) as never);
-    mockMailService.sendMail.mockReturnValue(of(undefined) as never);
+    mockMailService.send.mockResolvedValue(undefined as never);
     mockEm.transactional.mockImplementation((async (cb: (em: unknown) => Promise<unknown>) =>
       cb(mockEm)) as never);
 
@@ -156,7 +157,7 @@ describe("authService", () => {
     mockUserRepo.findOne.mockImplementation((async () => Promise.resolve(loggedInUser)) as never);
     mockProtocolRepo.findOne.mockImplementation((async () => Promise.resolve(null)) as never);
     mockOtpLogRepo.create.mockImplementation(((data: object) => data) as never);
-    mockMailService.sendMail.mockReturnValue(of(undefined) as never);
+    mockMailService.send.mockResolvedValue(undefined as never);
     const inTransaction = trackMockTransaction();
     const flushedInTransaction: boolean[] = [];
     mockEm.persist.mockReturnValue(mockEm);
@@ -173,25 +174,25 @@ describe("authService", () => {
     expect(flushedInTransaction).toStrictEqual([true]);
   });
 
-  // Regression: the transactional body returned `sendMail()`'s cold observable without subscribing,
-  // so no reset mail was ever sent while the endpoint still answered "Otp sent successfully".
+  // Regression: the transactional body used to return a cold observable without subscribing, so no
+  // reset mail was ever sent while the endpoint still answered "Otp sent successfully".
   it("should send the reset mail inside the transaction", async () => {
     mockUserRepo.findOne.mockImplementation((async () => Promise.resolve(loggedInUser)) as never);
     mockProtocolRepo.findOne.mockImplementation((async () => Promise.resolve(null)) as never);
     mockOtpLogRepo.create.mockImplementation(((data: object) => data) as never);
     const inTransaction = trackMockTransaction();
     const sentInTransaction: boolean[] = [];
-    mockMailService.sendMail.mockReturnValue(
-      defer(() => {
-        sentInTransaction.push(inTransaction());
-
-        return of(undefined);
-      }) as never,
-    );
+    mockMailService.send.mockImplementation((async () => {
+      sentInTransaction.push(inTransaction());
+    }) as never);
 
     await lastValueFrom(service.forgotPassword({ email: "test@example.com" }));
 
     expect(sentInTransaction).toStrictEqual([true]);
+    expect(mockMailService.send).toHaveBeenCalledWith(
+      ResetPasswordMail,
+      expect.objectContaining({ to: loggedInUser.email }),
+    );
   });
 
   it("should verify the user inside a REQUIRED transaction", async () => {
