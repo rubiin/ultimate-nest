@@ -1,10 +1,12 @@
 import { JwtPayload } from "@common/@types";
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 import { AuthService } from "../auth.service";
+
+import { assertTokenType } from "./assert-token-type";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -27,9 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    */
 
   async validate(payload: JwtPayload) {
-    // Refresh tokens (and untyped tokens issued before the claim existed) verify against the same
-    // secret, so the signature alone does not make a token a bearer credential.
-    if (payload.type !== "access") throw new UnauthorizedException();
+    assertTokenType(payload, "access");
 
     const { sub: id } = payload;
 
