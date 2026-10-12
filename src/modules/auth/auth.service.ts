@@ -2,14 +2,9 @@ import process from "node:process";
 
 import { AuthenticationResponse, ClientInfo, OauthResponse, OtpPurpose } from "@common/@types";
 import { BaseRepository } from "@common/database";
-import {
-  DEFAULT_OTP_EXPIRY_MINUTES,
-  ERROR_CODES,
-  MS_PER_MINUTE,
-  OTP_LENGTH,
-} from "@common/constant";
+import { ERROR_CODES } from "@common/constant";
 import { HelperService } from "@common/helpers";
-import { OtpLog, Protocol, User } from "@entities";
+import { OtpLog, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { ResetPasswordMail } from "@lib/mail";
 import { EntityManager } from "@mikro-orm/core";
@@ -26,9 +21,9 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Mailer } from "@nestjs/mail";
-import { init } from "@paralleldrive/cuid2";
 import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
+import { OtpService } from "@modules/otp";
 import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
@@ -45,10 +40,9 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: BaseRepository<User>,
-    @InjectRepository(Protocol)
-    private readonly protocolRepository: BaseRepository<Protocol>,
     @InjectRepository(OtpLog)
     private readonly otpRepository: BaseRepository<OtpLog>,
+    private readonly otpService: OtpService,
     private readonly tokenService: TokensService,
     private readonly configService: ConfigService<Configs, true>,
     private readonly mailer: Mailer,
@@ -214,28 +208,12 @@ export class AuthService {
           );
         }
 
-        return from(
-          this.protocolRepository.findOne({
-            isActive: true,
-          }),
-        ).pipe(
-          switchMap((protocol) => {
-            const otpNumber = init({ length: OTP_LENGTH })();
-
-            const otp = this.otpRepository.create({
-              expiresIn: new Date(
-                Date.now() +
-                  (protocol?.otpExpiryInMinutes ?? DEFAULT_OTP_EXPIRY_MINUTES) * MS_PER_MINUTE,
-              ),
-              otpCode: otpNumber,
-              purpose: OtpPurpose.RESET_PASSWORD,
-              user: userExists,
-            });
-
-            return from(this.saveOtpAndSendMail(otp, userExists, otpNumber)).pipe(
+        return from(this.otpService.create(userExists, OtpPurpose.RESET_PASSWORD)).pipe(
+          switchMap(({ otp, otpCode }) =>
+            from(this.saveOtpAndSendMail(otp, userExists, otpCode)).pipe(
               map(() => ({ message: "Otp sent successfully" })),
-            );
-          }),
+            ),
+          ),
         );
       }),
     );
