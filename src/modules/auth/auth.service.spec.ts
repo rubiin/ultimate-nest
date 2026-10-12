@@ -18,6 +18,7 @@ import {
   mockedOtpLog,
   trackMockTransaction,
 } from "@mocks";
+import { OtpService } from "@modules/otp";
 import { TokensService } from "@modules/token/tokens.service";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -38,6 +39,7 @@ describe("authService", () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,
+        OtpService,
 
         {
           provide: getRepositoryToken(User),

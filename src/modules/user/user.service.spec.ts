@@ -12,6 +12,7 @@ import {
   mockEm,
   mockFile,
   mockMailService,
+  mockOtpLogRepo,
   mockProtocolRepo,
   mockReferralRepo,
   mockUserRepo,
@@ -19,6 +20,7 @@ import {
   queryDto,
   trackMockTransaction,
 } from "@mocks";
+import { OtpService } from "@modules/otp";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
@@ -46,11 +48,17 @@ describe("userService", () => {
     mockCloudinaryService.uploadFile.mockResolvedValue({ url: "https://cdn/avatar.png" } as never);
     mockAmqConnection.publish.mockResolvedValue(undefined as never);
     mockUserRepo.getEntityManager.mockReturnValue(mockEm as never);
+    // OtpService issues through the repository now, so the entity has to be a real OtpLog for
+    // the `instanceof` assertions below.
+    mockOtpLogRepo.create.mockImplementation(
+      ((data: Partial<OtpLog>) => new OtpLog(data)) as never,
+    );
     mockUserRepo.cursorPagination.mockReturnValue(of({ data: [], meta: { total: 0 } }) as never);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
+        OtpService,
         {
           provide: getRepositoryToken(User),
           useValue: mockUserRepo,
@@ -58,6 +66,10 @@ describe("userService", () => {
         {
           provide: getRepositoryToken(Referral),
           useValue: mockReferralRepo,
+        },
+        {
+          provide: getRepositoryToken(OtpLog),
+          useValue: mockOtpLogRepo,
         },
         {
           provide: getRepositoryToken(Protocol),

@@ -1,3 +1,4 @@
+import { OtpModule } from "@modules/otp";
 import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
 import { TokensService } from "@modules/token/tokens.service";
 import { UserModule } from "@modules/user/user.module";
@@ -11,7 +12,7 @@ import { FacebookStrategy, GoogleStrategy, JwtStrategy } from "./strategies";
 @Module({
   controllers: [AuthController],
   exports: [AuthService, JwtStrategy, TokensService, RefreshTokensRepository],
-  imports: [PassportModule, UserModule],
+  imports: [OtpModule, PassportModule, UserModule],
   providers: [
     AuthService,
     TokensService,

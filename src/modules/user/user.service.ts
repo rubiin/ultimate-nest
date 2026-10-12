@@ -2,10 +2,9 @@ import process from "node:process";
 
 import { PaginationResponse, RecordWithFile } from "@common/@types";
 import { OtpPurpose, QueryOrder, Queues, RoutingKey } from "@common/@types";
-import { DEFAULT_OTP_EXPIRY_MINUTES, MS_PER_MINUTE, OTP_LENGTH } from "@common/constant";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
-import { OtpLog, Protocol, Referral, User } from "@entities";
+import { Referral, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
@@ -18,11 +17,13 @@ import { ref } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Mailer } from "@nestjs/mail";
-import { createId, init } from "@paralleldrive/cuid2";
+import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService, IFile } from "nestjs-cloudinary";
 import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, tap, throwError } from "rxjs";
+
+import { OtpService } from "@modules/otp";
 
 import { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
 
@@ -33,8 +34,7 @@ export class UserService {
     private userRepository: BaseRepository<User>,
     @InjectRepository(Referral)
     private referralRepository: BaseRepository<Referral>,
-    @InjectRepository(Protocol)
-    private protocolRepository: BaseRepository<Protocol>,
+    private readonly otpService: OtpService,
     private readonly configService: ConfigService<Configs, true>,
     private readonly amqpConnection: AmqpConnection,
     private readonly cloudinaryService: CloudinaryService,
@@ -166,15 +166,7 @@ export class UserService {
 
     user.avatar = response.url as string;
 
-    const protocol = await this.protocolRepository.findOne({ isActive: true });
-    const expiryMinutes = protocol?.otpExpiryInMinutes ?? DEFAULT_OTP_EXPIRY_MINUTES;
-    const otpCode = init({ length: OTP_LENGTH })();
-    const otp = new OtpLog({
-      expiresIn: new Date(Date.now() + expiryMinutes * MS_PER_MINUTE),
-      otpCode,
-      purpose: OtpPurpose.VERIFY_EMAIL,
-      user: ref(user),
-    });
+    const { otp, otpCode } = await this.otpService.create(user, OtpPurpose.VERIFY_EMAIL);
 
     await this.em.persist([user, otp]).flush();
     await this.mailer.send(VerifyEmailMail, {
