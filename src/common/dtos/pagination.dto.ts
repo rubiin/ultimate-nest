@@ -1,6 +1,5 @@
-import { IsDateField, IsStringField, ToBoolean } from "@common/decorators";
-import { IsBoolean, IsOptional } from "class-validator";
-import { i18nValidationMessage } from "@nestjs/i18n";
+import { IsBooleanField, IsDateField, IsStringField } from "@common/decorators";
+import { IsOptional } from "class-validator";
 
 export abstract class PaginationDto {
   /**
@@ -30,13 +29,7 @@ export abstract class PaginationDto {
    * indicates whether to include deleted items in the
    * results or not.
    */
-  @IsOptional()
-  @ToBoolean()
-  @IsBoolean({
-    message: i18nValidationMessage("validation.isDataType", {
-      type: "boolean",
-    }),
-  })
+  @IsBooleanField({ required: false })
   withDeleted = false;
 
   /**

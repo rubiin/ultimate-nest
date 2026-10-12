@@ -2,6 +2,7 @@ import { Roles } from "@common/@types";
 import {
   IsEmailField,
   IsEnumField,
+  IsNestedField,
   IsPasswordField,
   IsStringField,
   IsUnique,
@@ -9,8 +10,7 @@ import {
 } from "@common/decorators";
 import { User } from "@entities";
 import { validationI18nMessage } from "@lib/i18n";
-import { Type } from "class-transformer";
-import { IsNotEmpty, IsUrl, ValidateNested } from "class-validator";
+import { IsNotEmpty, IsUrl } from "class-validator";
 
 export class SocialDto {
   /**
@@ -107,7 +107,6 @@ export class CreateUserDto {
    * Social handles of user
    * @example { twitter: "https://twitter.com/rubiin", facebook: "https://facebook.com/rubiin", linkedin: "https://linkedin.com/in/rubiin" }
    */
-  @ValidateNested()
-  @Type(() => SocialDto)
+  @IsNestedField(SocialDto, { required: false })
   social?: SocialDto;
 }

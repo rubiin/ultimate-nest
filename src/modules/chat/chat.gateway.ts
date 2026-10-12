@@ -1,7 +1,7 @@
 import { JwtPayload } from "@common/@types";
 import { LoggedInUser } from "@common/decorators";
 import { WsJwtGuard } from "@common/guards";
-import { WsValidationPipe } from "@common/pipes/ws-validation.pipe";
+import { WsValidationPipe } from "@common/pipes";
 import { User } from "@entities";
 import { AuthService } from "@modules/auth/auth.service";
 import { Logger, UnauthorizedException, UseGuards, UsePipes } from "@nestjs/common";
