@@ -325,7 +325,7 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
       if (rejected.length > 0)
         throw new BadRequestException(
-          translate("exception.itemDoesNotExist", { args: { item: rejected.join(", ") } }),
+          translate(itemDoesNotExistKey, { args: { item: rejected.join(", ") } }),
         );
     }
 
