@@ -20,7 +20,9 @@ import { i18nValidationMessage } from "@nestjs/i18n";
  */
 
 export function IsNestedField(entity: Class, ops?: IsNestedFieldOptions) {
-  const options: IsNestedFieldOptions = {
+  const options: Required<
+    Pick<IsNestedFieldOptions, "arrayMaxSize" | "arrayMinSize" | "each" | "required">
+  > = {
     arrayMaxSize: Number.MAX_SAFE_INTEGER,
     arrayMinSize: 0,
     each: false,

@@ -2,6 +2,7 @@
 
 export * from "./file-format.validator";
 export * from "./is-after.validator";
+export * from "./is-boolean-field.decorator";
 export * from "./is-date-field.validator";
 export * from "./is-date-format.validator";
 export * from "./is-email.validator";
@@ -18,4 +19,3 @@ export * from "./is-username.validator";
 export * from "./is-uuid.validator";
 export * from "./min-max-length.decorator";
 export * from "./transform.decorator";
-export * from "./validation-field.generator";

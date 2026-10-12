@@ -1,7 +1,5 @@
 import { PostStateEnum } from "@common/@types";
-import { IsEnumField, IsStringField, IsUUIDField, ToBoolean } from "@common/decorators";
-import { validationI18nMessage } from "@lib/i18n";
-import { IsBoolean } from "class-validator";
+import { IsBooleanField, IsEnumField, IsStringField, IsUUIDField } from "@common/decorators";
 
 export class CreatePostDto {
   /**
@@ -56,11 +54,8 @@ export class CreatePostDto {
    * Published status of post
    * @example true
    */
-  @ToBoolean()
-  @IsBoolean({
-    message: validationI18nMessage("validation.isDataType", {
-      type: "boolean",
-    }),
+  @IsBooleanField({
+    required: false,
   })
   published?: boolean;
 }

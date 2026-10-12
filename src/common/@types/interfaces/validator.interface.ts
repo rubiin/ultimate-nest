@@ -42,7 +42,4 @@ export type EnumFieldOptions = BaseValidator & BaseArrayValidator;
 export type EmailFieldOptions = EnumFieldOptions;
 export type UUIDFieldOptions = EnumFieldOptions;
 
-export interface IsNestedFieldOptions extends Omit<BaseValidator, "message">, BaseArrayValidator {
-  arrayMinSize: number;
-  arrayMaxSize: number;
-}
+export interface IsNestedFieldOptions extends Omit<BaseValidator, "message">, BaseArrayValidator {}
