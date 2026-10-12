@@ -17,6 +17,14 @@ import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
 const TWO_FACTOR_TOKEN_EXPIRY = `${TWO_FACTOR_TOKEN_EXPIRY_MINUTES}m` as const;
 
+/** Every refresh-token failure shares this shape; only the `error` arg varies. */
+const refreshTokenError = (error: string) =>
+  new UnauthorizedException(
+    translate("exception.refreshToken", {
+      args: { error },
+    }),
+  );
+
 @Injectable()
 export class TokensService {
   private readonly BASE_OPTIONS: JwtSignOptions = {
@@ -101,38 +109,17 @@ export class TokensService {
         return this.getStoredTokenFromRefreshTokenPayload(payload).pipe(
           switchMap((token) => {
             if (!token) {
-              return throwError(
-                () =>
-                  new UnauthorizedException(
-                    translate("exception.refreshToken", {
-                      args: { error: "not found" },
-                    }),
-                  ),
-              );
+              return throwError(() => refreshTokenError("not found"));
             }
 
             if (token.isRevoked) {
-              return throwError(
-                () =>
-                  new UnauthorizedException(
-                    translate("exception.refreshToken", {
-                      args: { error: "revoked" },
-                    }),
-                  ),
-              );
+              return throwError(() => refreshTokenError("revoked"));
             }
 
             return this.getUserFromRefreshTokenPayload(payload).pipe(
               mergeMap((user) => {
                 if (user === null || user === undefined) {
-                  return throwError(
-                    () =>
-                      new UnauthorizedException(
-                        translate("exception.refreshToken", {
-                          args: { error: "malformed" },
-                        }),
-                      ),
-                  );
+                  return throwError(() => refreshTokenError("malformed"));
                 }
 
                 return of({ token, user });
@@ -161,14 +148,7 @@ export class TokensService {
           switchMap((revoked) => {
             // Lost a race with a concurrent rotation (or logout) of the same token.
             if (!revoked) {
-              return throwError(
-                () =>
-                  new UnauthorizedException(
-                    translate("exception.refreshToken", {
-                      args: { error: "revoked" },
-                    }),
-                  ),
-              );
+              return throwError(() => refreshTokenError("revoked"));
             }
 
             return zip(
@@ -202,16 +182,8 @@ export class TokensService {
       }),
       catchError((error_) => {
         throw error_ instanceof TokenExpiredError
-          ? new UnauthorizedException(
-              translate("exception.refreshToken", {
-                args: { error: "expired" },
-              }),
-            )
-          : new UnauthorizedException(
-              translate("exception.refreshToken", {
-                args: { error: "malformed" },
-              }),
-            );
+          ? refreshTokenError("expired")
+          : refreshTokenError("malformed");
       }),
     );
   }
@@ -264,14 +236,7 @@ export class TokensService {
     const tokenId = payload.jti;
 
     if (tokenId === null || tokenId === undefined) {
-      return throwError(
-        () =>
-          new UnauthorizedException(
-            translate("exception.refreshToken", {
-              args: { error: "malformed" },
-            }),
-          ),
-      );
+      return throwError(() => refreshTokenError("malformed"));
     }
 
     return this.refreshTokenRepo.deleteToken(user, tokenId).pipe(
@@ -291,14 +256,7 @@ export class TokensService {
     const subId = payload.sub;
 
     if (!subId) {
-      return throwError(
-        () =>
-          new UnauthorizedException(
-            translate("exception.refreshToken", {
-              args: { error: "malformed" },
-            }),
-          ),
-      );
+      return throwError(() => refreshTokenError("malformed"));
     }
 
     return from(
@@ -318,14 +276,7 @@ export class TokensService {
     const tokenId = payload.jti;
 
     if (tokenId === null || tokenId === undefined) {
-      return throwError(
-        () =>
-          new UnauthorizedException(
-            translate("exception.refreshToken", {
-              args: { error: "malformed" },
-            }),
-          ),
-      );
+      return throwError(() => refreshTokenError("malformed"));
     }
 
     return this.refreshTokenRepo.findTokenById(tokenId);

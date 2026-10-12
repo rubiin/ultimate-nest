@@ -20,13 +20,16 @@ import { Observable } from "rxjs";
 import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
 import { UserService } from "./user.service";
 
+const USER_NOT_FOUND = "User does not exist.";
+const EMAIL_ALREADY_REGISTERED = "User already registered with email.";
+
 @GenericController("users")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post("refer")
   @SwaggerResponse({
-    badRequest: "User already registered with email.",
+    badRequest: EMAIL_ALREADY_REGISTERED,
     operation: "User Refer",
   })
   referUser(@Body() dto: ReferUserDto, @LoggedInUser() user: User) {
@@ -43,7 +46,7 @@ export class UserController {
   @Public()
   @Post("register")
   @SwaggerResponse({
-    badRequest: "User already registered with email.",
+    badRequest: EMAIL_ALREADY_REGISTERED,
     operation: "Create user",
   })
   @ApiFile({ fieldName: "avatar", required: true }) // fix this
@@ -61,7 +64,7 @@ export class UserController {
 
   @Get(":idx")
   @SwaggerResponse({
-    notFound: "User does not exist.",
+    notFound: USER_NOT_FOUND,
     operation: "User fetch",
     params: ["idx"],
   })
@@ -72,7 +75,7 @@ export class UserController {
 
   @Post()
   @SwaggerResponse({
-    badRequest: "User already registered with email.",
+    badRequest: EMAIL_ALREADY_REGISTERED,
     operation: "User create",
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Create))
@@ -87,8 +90,7 @@ export class UserController {
 
   @Patch(":idx")
   @SwaggerResponse({
-    badRequest: "User already registered with email.",
-    notFound: "User does not exist.",
+    notFound: USER_NOT_FOUND,
     operation: "User edit",
     params: ["idx"],
   })
@@ -105,7 +107,7 @@ export class UserController {
 
   @Delete(":idx")
   @SwaggerResponse({
-    notFound: "User does not exist.",
+    notFound: USER_NOT_FOUND,
     operation: "User delete",
     params: ["idx"],
   })
