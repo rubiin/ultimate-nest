@@ -11,6 +11,8 @@ import { Observable } from "rxjs";
 
 import { ProfileService } from "./profile.service";
 
+const PROFILE_NOT_FOUND = "Profile does not exist.";
+
 @GenericController("profile")
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
@@ -18,7 +20,7 @@ export class ProfileController {
   @ApplyCustomCache()
   @Get()
   @SwaggerResponse({
-    notFound: "Profile does not exist.",
+    notFound: PROFILE_NOT_FOUND,
     operation: "Profile fetch",
   })
   profile(@LoggedInUser("username") username: string): Observable<User> {
@@ -27,7 +29,7 @@ export class ProfileController {
 
   @Post(":username/follow")
   @SwaggerResponse({
-    notFound: "Profile does not exist.",
+    notFound: PROFILE_NOT_FOUND,
     operation: "Profile follow",
     params: ["username"],
   })
@@ -41,7 +43,7 @@ export class ProfileController {
 
   @Delete(":username/unfollow")
   @SwaggerResponse({
-    notFound: "Profile does not exist.",
+    notFound: PROFILE_NOT_FOUND,
     operation: "Profile unfollow",
     params: ["username"],
   })

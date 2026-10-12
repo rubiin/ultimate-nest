@@ -17,6 +17,8 @@ import { Observable } from "rxjs";
 import { CreateCommentDto, CreatePostDto, EditPostDto, SearchPostsDto } from "./dtos";
 import { PostService } from "./post.service";
 
+const POST_NOT_FOUND = "Post doesn't exist.";
+
 @GenericController("posts")
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -35,7 +37,7 @@ export class PostController {
 
   @Get(":slug")
   @SwaggerResponse({
-    notFound: "Post doesn't exist.",
+    notFound: POST_NOT_FOUND,
     operation: "Post fetch",
     params: ["slug"],
   })
@@ -45,7 +47,7 @@ export class PostController {
 
   @Get(":slug/comments")
   @SwaggerResponse({
-    notFound: "Post doesn't exist.",
+    notFound: POST_NOT_FOUND,
     operation: "Post comment fetch",
     params: ["slug"],
   })
@@ -62,7 +64,7 @@ export class PostController {
 
   @Patch(":slug")
   @SwaggerResponse({
-    notFound: "Post doesn't exist.",
+    notFound: POST_NOT_FOUND,
     operation: "Post update",
     params: ["slug"],
   })
@@ -73,7 +75,7 @@ export class PostController {
 
   @Delete(":slug")
   @SwaggerResponse({
-    notFound: "Post doesn't exist.",
+    notFound: POST_NOT_FOUND,
     operation: "Post delete",
     params: ["slug"],
   })
@@ -84,7 +86,7 @@ export class PostController {
 
   @Post(":slug/comments")
   @SwaggerResponse({
-    notFound: "Post doesn't exist.",
+    notFound: POST_NOT_FOUND,
     operation: "Post comment create",
     params: ["slug"],
   })
@@ -101,7 +103,7 @@ export class PostController {
 
   @Patch(":slug/comments/:commentIdx")
   @SwaggerResponse({
-    notFound: "Post doesn't exist.",
+    notFound: POST_NOT_FOUND,
     operation: "Post comment edit",
     params: ["slug", "commentIdx"],
   })
@@ -118,7 +120,7 @@ export class PostController {
 
   @Delete(":slug/comments/:commentIdx")
   @SwaggerResponse({
-    notFound: "Post doesn't exist.",
+    notFound: POST_NOT_FOUND,
     operation: "Post comment delete",
     params: ["slug", "commentIdx"],
   })
@@ -129,7 +131,7 @@ export class PostController {
 
   @Post(":slug/favorite")
   @SwaggerResponse({
-    notFound: "Post doesn't exist.",
+    notFound: POST_NOT_FOUND,
     operation: "Post favorite",
     params: ["slug"],
   })
@@ -139,7 +141,7 @@ export class PostController {
 
   @Delete(":slug/favorite")
   @SwaggerResponse({
-    notFound: "Post doesn't exist.",
+    notFound: POST_NOT_FOUND,
     operation: "Post unfavorite",
     params: ["slug"],
   })

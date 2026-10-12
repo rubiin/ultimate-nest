@@ -80,7 +80,7 @@ export function ControllerFactory<
 
     @Get(":idx")
     @SwaggerResponse({
-      badRequest: "Item does not exist.",
+      notFound: "Item does not exist.",
       operation: "Find item",
       params: ["idx"],
     })
@@ -108,7 +108,7 @@ export function ControllerFactory<
     }
 
     @SwaggerResponse({
-      badRequest: "Item does not exist.",
+      notFound: "Item does not exist.",
       body: updateDto,
       operation: "Item update",
       params: ["idx"],
@@ -121,7 +121,7 @@ export function ControllerFactory<
     }
 
     @SwaggerResponse({
-      badRequest: "Item does not exist.",
+      notFound: "Item does not exist.",
       operation: "Item delete",
       params: ["idx"],
       response: updateDto,
