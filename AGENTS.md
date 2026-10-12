@@ -268,3 +268,51 @@ passed.
 - Never append a footer to a commit message:
   - No `Co-Authored-By`, no `Signed-off-by` unless requested, no "Generated with", no AI tool or model names, no attribution lines of any kind.
 - The same rule applies to all generated text: PR descriptions, issue reports, docs, and replies must not carry footers, signatures, or AI attribution.
+
+## Rule: Codebase Analysis, File Creation, and Task Tracking
+
+### Search, Analysis, and Improvement Tasks
+
+Whenever I ask you to search for, explore, investigate, audit, or identify potential improvements in a project, you must follow this rule.
+
+This includes, but is not limited to:
+- Code optimization and performance improvements
+- Refactoring opportunities and code quality
+- Security vulnerabilities and best practices
+- Architecture and design improvements
+- Potential features and enhancements
+- Dependency updates and alternatives
+- Bug investigation and troubleshooting
+- General codebase analysis and recommendations
+
+#### Requirements
+1. Perform the requested investigation or analysis before presenting your findings.
+2. Before finishing, explicitly ask whether I want the findings saved to a file.
+3. If I confirm, create an appropriate file in the project using a descriptive name, such as `OPTIMIZATION.md`, `IMPROVEMENTS.md`, `AUDIT.md`, or `RECOMMENDATIONS.md`.
+4. Include actionable findings, relevant file paths, explanations, priorities, and implementation suggestions where applicable.
+5. Organize findings into clear sections when multiple categories are involved.
+6. Do not create a findings file without my confirmation unless I explicitly requested one.
+7. Do not ask again if I have already explicitly requested file creation or confirmed it.
+8. Apply this rule even to casual requests such as "look for optimizations," "find ways to improve this," or "explore possible enhancements."
+
+**Default question:** "Would you like me to save these findings to a Markdown file in the project?"
+
+### Automatic Task Tracking and Documentation Updates
+
+Whenever you work on a task, check the project's documentation for relevant task lists, checkboxes, and implementation plans.
+
+Relevant files may include `TODO.md`, `TASKS.md`, `PLAN.md`, `ROADMAP.md`, `AGENTS.md`, or checklists within other Markdown files.
+
+#### Requirements
+1. **Identify existing tasks:** Before starting implementation, locate relevant documented tasks and understand their requirements.
+2. **Update status as work progresses:** When you complete a documented task, update its checkbox from `- [ ]` to `- [x]` as soon as the task is finished and verified.
+3. **Verify completion:** Run relevant tests, builds, linting, or other checks where practical before marking a task complete.
+4. **Handle partial completion honestly:** Leave partially completed tasks unchecked and add a progress note when useful. Never claim completion without sufficient evidence.
+5. **Update subtasks and parent tasks:** Mark subtasks complete individually. Mark a parent task complete only when all its requirements are satisfied.
+6. **Keep documentation synchronized:** If the scope, implementation, or status of a task changes, update the relevant documentation to reflect the actual state.
+7. **Respect existing structure:** Preserve the documentation's formatting and avoid modifying unrelated content.
+8. **Handle missing checklists:** If a task involves multiple steps and no suitable checklist exists, ask whether I want one created. Do not create one without confirmation unless I explicitly requested it.
+9. **Report changes:** In your final response, summarize completed tasks, verification performed, documentation files updated, and any remaining incomplete work.
+10. **Do not wait for an explicit reminder:** If a documented task is completed during implementation, update its status even if I did not specifically ask you to modify the documentation.
+
+
