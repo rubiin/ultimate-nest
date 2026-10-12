@@ -1,15 +1,14 @@
-import { OauthResponse } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { User } from "@entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
-import { randAnimal, randCatchPhrase, randFirstName } from "@ngneat/falso";
-import { omit, randomAvatar, randomString } from "helper-fns";
 import { Profile } from "passport-facebook";
 import { Strategy } from "passport-facebook";
 import { VerifyCallback } from "passport-google-oauth20";
+
+import { resolveOauthUser } from "./oauth-user";
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
@@ -37,37 +36,22 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
   }
 
   async validate(
-    accessToken: string,
+    _accessToken: string,
     _refreshToken: string,
     profile: Profile,
     done: VerifyCallback,
   ): Promise<any> {
     const { name, emails, username, photos } = profile;
-    const user: OauthResponse = {
-      accessToken,
-      email: emails![0]!.value,
-      firstName: name?.givenName ?? randFirstName(),
-      lastName: name?.familyName ?? randAnimal(),
-    };
-    // Check if the user already exists in your database
-    const existingUser = await this.userRepo.findOne({
-      email: emails![0]!.value,
-    });
 
-    if (existingUser) {
-      // If the user exists, return the user object
-      done(undefined, existingUser);
-    } else {
-      // If the user doesn't exist, create a new user
-      const newUser = this.userRepo.create({
-        ...omit(user, ["accessToken"]),
-        avatar: photos?.[0]?.value ?? randomAvatar(),
-        bio: randCatchPhrase(),
-        password: randomString({ length: 10, numbers: true, symbols: true }),
-        username: username ?? emails![0]!.value,
-      });
-
-      done(undefined, newUser);
-    }
+    done(
+      undefined,
+      await resolveOauthUser(this.userRepo, {
+        avatar: photos?.[0]?.value,
+        email: emails![0]!.value,
+        firstName: name?.givenName,
+        lastName: name?.familyName,
+        username,
+      }),
+    );
   }
 }

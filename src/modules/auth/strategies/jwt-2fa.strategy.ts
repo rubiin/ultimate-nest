@@ -1,10 +1,12 @@
 import { JwtPayload } from "@common/@types";
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 import { AuthService } from "../auth.service";
+
+import { assertTokenType } from "./assert-token-type";
 
 @Injectable()
 export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
@@ -29,7 +31,7 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
   async validate(payload: JwtPayload) {
     // Only the partial token issued after the first factor. A full access token has nothing left to
     // prove here, and a refresh token is never a bearer credential.
-    if (payload.type !== "2fa") throw new UnauthorizedException();
+    assertTokenType(payload, "2fa");
 
     const { sub: id } = payload;
 
