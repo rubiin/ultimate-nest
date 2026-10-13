@@ -1,4 +1,5 @@
 import { OtpPurpose } from "@common/@types";
+import { ERROR_CODES } from "@common/constant";
 import { HelperService } from "@common/helpers";
 import { OtpLog, Protocol, User } from "@entities";
 import { ResetPasswordMail } from "@lib/mail";
@@ -20,7 +21,12 @@ import {
 } from "@mocks";
 import { OtpService } from "@modules/otp";
 import { TokensService } from "@modules/token/tokens.service";
-import { BadRequestException, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpStatus,
+  NotFoundException,
+} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
@@ -439,6 +445,136 @@ describe("authService", () => {
       );
       expect(mockTokenService.generateAccessToken).not.toHaveBeenCalled();
       expect(mockTokenService.generateRefreshToken).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("validateUser without a password", () => {
+    it("should reject an unknown account", async () => {
+      mockUserRepo.findOne.mockResolvedValue(null as never);
+
+      await expect(
+        lastValueFrom(service.validateUser(false, "ghost@example.com")),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+    });
+
+    it("should reject a deactivated account", async () => {
+      mockUserRepo.findOne.mockResolvedValue({
+        email: "a@example.com",
+        isActive: false,
+      } as never);
+
+      await expect(
+        lastValueFrom(service.validateUser(false, "a@example.com")),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+    });
+
+    it("should return the account as-is for an oauth login", async () => {
+      mockUserRepo.findOne.mockResolvedValue({
+        email: "a@example.com",
+        isActive: true,
+      } as never);
+
+      await expect(lastValueFrom(service.validateUser(false, "a@example.com"))).resolves.toEqual({
+        email: "a@example.com",
+        isActive: true,
+      });
+      // No populate needed when there is no password to compare.
+      expect(mockUserRepo.findOne).toHaveBeenCalledWith({ email: "a@example.com" }, {});
+    });
+  });
+
+  describe("login", () => {
+    it("should turn a missing account into invalid credentials", async () => {
+      vi.spyOn(service, "validateUser").mockReturnValue(of(null as never));
+
+      await expect(
+        lastValueFrom(service.login({ email: "a@example.com" }, false)),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+  });
+
+  describe("forgotPassword", () => {
+    it("should reject an unknown account with a 404", async () => {
+      mockUserRepo.findOne.mockResolvedValue(null as never);
+
+      await expect(
+        lastValueFrom(service.forgotPassword({ email: "ghost@example.com" })),
+      ).rejects.toBeInstanceOf(NotFoundException);
+    });
+  });
+
+  describe("changePassword", () => {
+    it("should reject when the account disappeared between the checks", async () => {
+      mockUserRepo.findOne.mockResolvedValue(null as never);
+
+      await expect(
+        lastValueFrom(
+          service.changePassword(
+            { newPassword: "n", oldPassword: "o", password: "n" } as never,
+            loggedInUser,
+          ),
+        ),
+      ).rejects.toBeInstanceOf(NotFoundException);
+    });
+
+    it("should reject a wrong old password without writing anything", async () => {
+      mockUserRepo.findOne.mockResolvedValue({
+        ...loggedInUser,
+        password: "stored-hash",
+      } as never);
+      vi.spyOn(HelperService, "verifyHash").mockReturnValue(of(false));
+
+      await expect(
+        lastValueFrom(
+          service.changePassword(
+            { newPassword: "n", oldPassword: "wrong", password: "n" } as never,
+            loggedInUser,
+          ),
+        ),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(mockEm.flush).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("findUser", () => {
+    it("should return the matching user", async () => {
+      mockUserRepo.findOne.mockResolvedValue(loggedInUser as never);
+
+      await expect(service.findUser({ email: loggedInUser.email })).resolves.toBe(loggedInUser);
+    });
+
+    it("should reject with the USER_NOT_FOUND error code when nothing matches", async () => {
+      mockUserRepo.findOne.mockResolvedValue(null as never);
+
+      await expect(service.findUser({ email: "ghost@example.com" })).rejects.toMatchObject({
+        response: { errorCode: ERROR_CODES.USER_NOT_FOUND },
+        status: HttpStatus.UNAUTHORIZED,
+      });
+    });
+  });
+
+  describe("OauthHandler", () => {
+    it("should redirect a plain oauth login with the full access token", async () => {
+      const user = new User({
+        email: "oauth@example.com",
+        id: 7,
+        idx: "user-7",
+        isActive: true,
+      });
+      mockUserRepo.findOne.mockResolvedValue(user as never);
+      mockUserRepo.nativeUpdate.mockResolvedValue(1 as never);
+      const response = { redirect: vi.fn<() => void>() } as unknown as NestifyResponse;
+
+      await lastValueFrom(
+        service.OauthHandler({
+          response,
+          user: { email: user.email, firstName: "a", lastName: "b" },
+        }),
+      );
+
+      expect(response.redirect).toHaveBeenCalledWith(
+        expect.stringMatching(/\?token=access-token$/),
+      );
     });
   });
 });

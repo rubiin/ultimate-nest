@@ -30,4 +30,28 @@ describe("isProfane", () => {
       IsProfaneConstraint: "text has profane words",
     });
   });
+
+  it("should fail when any value of an array is profane", async () => {
+    class ManyTexts {
+      @IsProfane()
+      texts!: string[];
+    }
+
+    const model = new ManyTexts();
+    model.texts = ["Don't be an ash0le", "clean text"];
+
+    expect(await validator.validate(model)).toHaveLength(1);
+  });
+
+  it("should pass when every value of an array is clean", async () => {
+    class ManyTexts {
+      @IsProfane()
+      texts!: string[];
+    }
+
+    const model = new ManyTexts();
+    model.texts = ["clean text", "also fine"];
+
+    expect(await validator.validate(model)).toHaveLength(0);
+  });
 });

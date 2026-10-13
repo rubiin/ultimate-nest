@@ -31,6 +31,7 @@ export const resolveOauthUser = async (
 
   return userRepo.create({
     avatar: avatar ?? randomAvatar(),
+
     bio: randCatchPhrase(),
     email,
     firstName: firstName ?? randFirstName(),

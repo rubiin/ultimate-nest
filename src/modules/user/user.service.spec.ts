@@ -1,6 +1,6 @@
 import { OtpPurpose } from "@common/@types";
 import { OtpLog, Protocol, Referral, User } from "@entities";
-import { VerifyEmailMail } from "@lib/mail";
+import { VerifyEmailMail, WelcomeMail } from "@lib/mail";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { EntityManager, TransactionPropagation } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
@@ -21,6 +21,7 @@ import {
   trackMockTransaction,
 } from "@mocks";
 import { OtpService } from "@modules/otp";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
@@ -227,5 +228,81 @@ describe("userService", () => {
       idx: "userId",
     });
     expect(mockUserRepo.softRemoveAndFlush).toHaveBeenCalled();
+  });
+
+  it("should 404 when the user to remove no longer exists", async () => {
+    mockUserRepo.findOne.mockResolvedValue(null as never);
+
+    await expect(lastValueFrom(service.remove("ghost"))).rejects.toBeInstanceOf(NotFoundException);
+  });
+
+  it("should 404 for an unknown idx on findOne", async () => {
+    mockUserRepo.findOne.mockResolvedValue(null as never);
+
+    await expect(lastValueFrom(service.findOne("ghost", []))).rejects.toBeInstanceOf(
+      NotFoundException,
+    );
+  });
+
+  describe("sendMail", () => {
+    it("should hand the welcome mail to the mailer", async () => {
+      mockMailService.send.mockResolvedValue(undefined as never);
+
+      await lastValueFrom(
+        service.sendMail({ data: { email: "a@example.com" }, to: "a@example.com" }),
+      );
+
+      expect(mockMailService.send).toHaveBeenCalledWith(WelcomeMail, {
+        data: { email: "a@example.com" },
+        to: "a@example.com",
+      });
+    });
+  });
+
+  describe("referUser", () => {
+    it("should reject a mobile number that is already registered", async () => {
+      mockUserRepo.count.mockResolvedValue(1 as never);
+
+      await expect(
+        lastValueFrom(service.referUser({ mobileNumber: "9800000000" } as never, mockedUser)),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(mockReferralRepo.create).not.toHaveBeenCalled();
+    });
+
+    it("should create the referral for a fresh mobile number", async () => {
+      mockUserRepo.count.mockResolvedValue(0 as never);
+      mockReferralRepo.create.mockImplementation(((data: object) => ({ ...data })) as never);
+
+      const referral = await lastValueFrom(
+        service.referUser({ mobileNumber: "9800000000" } as never, mockedUser),
+      );
+
+      expect(mockUserRepo.count).toHaveBeenCalledWith({
+        isActive: true,
+        mobileNumber: "9800000000",
+      });
+      expect(referral).toMatchObject({ mobileNumber: "9800000000" });
+    });
+  });
+
+  describe("generateUsername", () => {
+    it("should use the slug as-is when it is free", async () => {
+      mockUserRepo.count.mockResolvedValue(0 as never);
+
+      const username = await lastValueFrom(service.generateUsername("Ada Lovelace"));
+
+      expect(username).toMatch(/^ada-lovelace-[a-z0-9]{6}$/);
+    });
+
+    it("should suffix the slug with the collision count", async () => {
+      mockUserRepo.count.mockResolvedValue(3 as never);
+
+      const username = await lastValueFrom(service.generateUsername("Ada Lovelace"));
+
+      expect(username).toMatch(/^ada-lovelace-[a-z0-9]{6}3$/);
+      expect(mockUserRepo.count).toHaveBeenCalledWith({
+        username: { $like: `${username.replace(/3$/, "")}%` },
+      });
+    });
   });
 });

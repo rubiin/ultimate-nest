@@ -1,4 +1,5 @@
 import { Category, Comment, Post, Tag, User } from "@entities";
+import { NotFoundException } from "@nestjs/common";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
@@ -247,5 +248,251 @@ describe("postService", () => {
       slug: "post-slug",
     });
     expect(mockPostRepo.findOne).toHaveBeenCalledWith({ slug: "post-slug" }, { populate: [] });
+  });
+
+  it("should resolve the given tags before assigning them", async () => {
+    const tag = { idx: "tag-idx" };
+    mockPostRepo.assign.mockImplementation(((entity: Record<string, unknown>, data: object) =>
+      Object.assign(entity, data)) as never);
+    mockTagsRepo.find.mockResolvedValue([tag] as never);
+
+    const result = await lastValueFrom(service.update("post-slug", { tags: ["tag-idx"] }));
+
+    expect(mockTagsRepo.find).toHaveBeenCalledWith({ idx: ["tag-idx"] });
+    expect(result).toMatchObject({ tags: [tag] });
+  });
+
+  it("should throw when the post to update does not exist", async () => {
+    mockPostRepo.findOne.mockResolvedValue(null as never);
+
+    await expect(
+      lastValueFrom(service.update("missing", { content: "new content" })),
+    ).rejects.toBeInstanceOf(NotFoundException);
+  });
+
+  describe("findOne", () => {
+    it("should throw a 404 when the slug is unknown", async () => {
+      mockPostRepo.findOne.mockResolvedValue(null as never);
+
+      await expect(lastValueFrom(service.findOne("missing"))).rejects.toBeInstanceOf(
+        NotFoundException,
+      );
+    });
+
+    it("should forward the requested populate paths", async () => {
+      await lastValueFrom(service.findOne("post-slug", ["comments"]));
+
+      expect(mockPostRepo.findOne).toHaveBeenCalledWith(
+        { slug: "post-slug" },
+        { populate: ["comments"] },
+      );
+    });
+  });
+
+  describe("create", () => {
+    const author = { id: 1 } as User;
+
+    it("should resolve tags and categories, then persist and flush the post", async () => {
+      const tag = { idx: "tag-idx" };
+      const category = { idx: "category-idx" };
+      mockTagsRepo.find.mockResolvedValue([tag] as never);
+      mockCategoryRepo.find.mockResolvedValue([category] as never);
+      mockPostRepo.create.mockImplementation(((data: object) => ({ ...data })) as never);
+      mockEm.persist.mockReturnValue(mockEm as never);
+
+      const result = await lastValueFrom(
+        service.create(
+          {
+            categories: ["category-idx"],
+            content: "content",
+            published: true,
+            tags: ["tag-idx"],
+            title: "title",
+          } as never,
+          author,
+        ),
+      );
+
+      expect(mockPostRepo.create).toHaveBeenCalledWith({
+        author,
+        categories: [category],
+        content: "content",
+        published: true,
+        tags: [tag],
+        title: "title",
+      });
+      expect(mockEm.persist).toHaveBeenCalled();
+      expect(mockEm.flush).toHaveBeenCalled();
+      expect(result).toMatchObject({ tags: [tag], title: "title" });
+    });
+
+    it("should default published to false", async () => {
+      mockTagsRepo.find.mockResolvedValue([] as never);
+      mockCategoryRepo.find.mockResolvedValue([] as never);
+      mockPostRepo.create.mockImplementation(((data: object) => ({ ...data })) as never);
+      mockEm.persist.mockReturnValue(mockEm as never);
+
+      await lastValueFrom(
+        service.create({ content: "content", tags: [], categories: [] } as never, author),
+      );
+
+      expect(mockPostRepo.create).toHaveBeenCalledWith(
+        expect.objectContaining({ published: false }),
+      );
+    });
+  });
+
+  describe("favorite", () => {
+    const build = (favorites: Set<Post>, post: Post) => {
+      mockPostRepo.findOneOrFail.mockImplementation((async () => Promise.resolve(post)) as never);
+      mockUserRepo.findOneOrFail.mockImplementation((async () =>
+        Promise.resolve({
+          favorites: {
+            add: (p: Post) => favorites.add(p),
+            contains: (p: Post) => favorites.has(p),
+          },
+          id: 1,
+        })) as never);
+    };
+
+    it("should add the post to the user's favorites and bump the counter", async () => {
+      const post = { ...mockedPost, favoritesCount: 2 } as unknown as Post;
+      const favorites = new Set<Post>();
+      build(favorites, post);
+
+      const result = await lastValueFrom(service.favorite(1, "post-slug"));
+
+      expect(favorites.has(post)).toBe(true);
+      expect(result.favoritesCount).toBe(3);
+      expect(mockEm.flush).toHaveBeenCalled();
+    });
+
+    it("should be idempotent when the post is already favorited", async () => {
+      const post = { ...mockedPost, favoritesCount: 2 } as unknown as Post;
+      const favorites = new Set<Post>([post]);
+      build(favorites, post);
+
+      const result = await lastValueFrom(service.favorite(1, "post-slug"));
+
+      expect(favorites.size).toBe(1);
+      expect(result.favoritesCount).toBe(2);
+    });
+
+    it("should count from zero when the post has never been favorited", async () => {
+      const post = { ...mockedPost, favoritesCount: undefined } as unknown as Post;
+      const favorites = new Set<Post>();
+      build(favorites, post);
+
+      const result = await lastValueFrom(service.favorite(1, "post-slug"));
+
+      expect(result.favoritesCount).toBe(1);
+    });
+
+    it("should only load active favorites for the user", async () => {
+      const post = { ...mockedPost } as unknown as Post;
+      build(new Set<Post>(), post);
+
+      await lastValueFrom(service.favorite(1, "post-slug"));
+
+      expect(mockUserRepo.findOneOrFail).toHaveBeenCalledWith(
+        { id: 1 },
+        { populate: ["favorites"], populateWhere: { favorites: { isActive: true } } },
+      );
+    });
+  });
+
+  describe("findComments", () => {
+    it("should return only the active comments", async () => {
+      const comments = [{ id: 1 }, { id: 2 }];
+      mockPostRepo.findOne.mockImplementation((async () =>
+        Promise.resolve({ ...mockedPost, comments: { getItems: () => comments } })) as never);
+
+      await expect(lastValueFrom(service.findComments("post-slug"))).resolves.toEqual(comments);
+      expect(mockPostRepo.findOne).toHaveBeenCalledWith(
+        { slug: "post-slug" },
+        { populate: ["comments"], populateWhere: { comments: { isActive: true } } },
+      );
+    });
+
+    it("should throw a 404 when the post does not exist", async () => {
+      mockPostRepo.findOne.mockResolvedValue(null as never);
+
+      await expect(lastValueFrom(service.findComments("missing"))).rejects.toBeInstanceOf(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe("addComment", () => {
+    it("should attach the new comment to the post and flush", async () => {
+      const added: unknown[] = [];
+      mockPostRepo.findOne.mockImplementation((async () =>
+        Promise.resolve({
+          ...mockedPost,
+          comments: { add: (c: unknown) => added.push(c) },
+          slug: "post-slug",
+        })) as never);
+      mockUserRepo.findOneOrFail.mockImplementation((async () =>
+        Promise.resolve({ id: 7 })) as never);
+
+      const result = await lastValueFrom(service.addComment(7, "post-slug", { body: "nice post" }));
+
+      expect(added).toHaveLength(1);
+      expect(added[0]).toMatchObject({ body: "nice post" });
+      expect(result).toMatchObject({ slug: "post-slug" });
+      expect(mockEm.flush).toHaveBeenCalled();
+    });
+
+    it("should propagate a missing post as a 404", async () => {
+      mockPostRepo.findOne.mockResolvedValue(null as never);
+      mockUserRepo.findOneOrFail.mockImplementation((async () =>
+        Promise.resolve({ id: 7 })) as never);
+
+      await expect(
+        lastValueFrom(service.addComment(7, "missing", { body: "nice post" })),
+      ).rejects.toBeInstanceOf(NotFoundException);
+    });
+  });
+
+  describe("editComment", () => {
+    it("should assign the new comment data and return the post", async () => {
+      const comment = { id: 7 };
+      mockPostRepo.findOne.mockImplementation((async () =>
+        Promise.resolve({ ...mockedPost, comments: {}, slug: "post-slug" })) as never);
+      mockCommentRepo.findOneOrFail.mockImplementation((async () =>
+        Promise.resolve(comment)) as never);
+      mockCommentRepo.assign.mockImplementation(((entity: Record<string, unknown>, data: object) =>
+        Object.assign(entity, data)) as never);
+
+      const result = await lastValueFrom(
+        service.editComment("post-slug", "comment-idx", { body: "edited" }),
+      );
+
+      expect(mockPostRepo.findOne).toHaveBeenCalledWith(
+        { slug: "post-slug" },
+        { populate: ["comments"] },
+      );
+      expect(comment).toMatchObject({ body: "edited" });
+      expect(result).toMatchObject({ slug: "post-slug" });
+      expect(mockEm.flush).toHaveBeenCalled();
+    });
+  });
+
+  it("should return the post untouched when the comment is not attached", async () => {
+    const comment = { id: 7 };
+    mockPostRepo.findOne.mockImplementation((async () =>
+      Promise.resolve({
+        ...mockedPost,
+        comments: { contains: () => false, remove: vi.fn<() => void>() },
+        slug: "post-slug",
+      })) as never);
+    mockCommentRepo.findOneOrFail.mockImplementation((async () =>
+      Promise.resolve(comment)) as never);
+    mockCommentRepo.getReference.mockImplementation((() => comment) as never);
+
+    const result = await lastValueFrom(service.deleteComment("post-slug", "comment-idx"));
+
+    expect(mockEm.remove).not.toHaveBeenCalled();
+    expect(result).toMatchObject({ slug: "post-slug" });
   });
 });

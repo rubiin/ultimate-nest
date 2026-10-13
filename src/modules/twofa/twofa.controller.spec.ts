@@ -66,4 +66,31 @@ describe("twoFactorController", () => {
 
     expect(guards).toStrictEqual([AuthGuard("jwt2fa")]);
   });
+
+  describe("register", () => {
+    it("should stream the QR code for the generated otpauth url", async () => {
+      const response = {} as NestifyResponse;
+      const streamed = of("png-bytes");
+      twoFactorService.generateTwoFactorSecret.mockReturnValue(
+        of({ otpAuthUrl: "otpauth://totp/x" }) as never,
+      );
+      twoFactorService.pipeQrCodeStream.mockReturnValue(streamed);
+
+      await expect(lastValueFrom(controller.register(response, user))).resolves.toBe("png-bytes");
+      expect(twoFactorService.generateTwoFactorSecret).toHaveBeenCalledWith(user);
+      expect(twoFactorService.pipeQrCodeStream).toHaveBeenCalledWith(response, "otpauth://totp/x");
+    });
+  });
+
+  describe("turnOnTwoFactorAuthentication", () => {
+    it("should delegate to the service with the submitted code", async () => {
+      const updated = new User({ id: 1, isTwoFactorEnabled: true });
+      twoFactorService.turnOnTwoFactorAuthentication.mockReturnValue(of(updated));
+
+      await expect(
+        lastValueFrom(controller.turnOnTwoFactorAuthentication(user, { code: "123456" })),
+      ).resolves.toBe(updated);
+      expect(twoFactorService.turnOnTwoFactorAuthentication).toHaveBeenCalledWith("123456", user);
+    });
+  });
 });

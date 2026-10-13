@@ -12,7 +12,9 @@ class IsProfaneConstraint implements ValidatorConstraintInterface {
   async validate(value: string | string[]) {
     const isProfane = new Unprofane({ lang: "all" });
 
-    if (isArray(value)) return value.some((v) => isProfane.check(v));
+    // Every element must be clean; `some(check)` returned true when a profane word was
+    // present, which is the inverse of the scalar branch below.
+    if (isArray(value)) return value.every((v) => !isProfane.check(v));
 
     return !isProfane.check(value);
   }

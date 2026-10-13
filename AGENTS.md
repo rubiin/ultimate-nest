@@ -276,6 +276,7 @@ passed.
 Whenever I ask you to search for, explore, investigate, audit, or identify potential improvements in a project, you must follow this rule.
 
 This includes, but is not limited to:
+
 - Code optimization and performance improvements
 - Refactoring opportunities and code quality
 - Security vulnerabilities and best practices
@@ -286,6 +287,7 @@ This includes, but is not limited to:
 - General codebase analysis and recommendations
 
 #### Requirements
+
 1. Perform the requested investigation or analysis before presenting your findings.
 2. Before finishing, explicitly ask whether I want the findings saved to a file.
 3. If I confirm, create an appropriate file in the project using a descriptive name, such as `OPTIMIZATION.md`, `IMPROVEMENTS.md`, `AUDIT.md`, or `RECOMMENDATIONS.md`.
@@ -304,6 +306,7 @@ Whenever you work on a task, check the project's documentation for relevant task
 Relevant files may include `TODO.md`, `TASKS.md`, `PLAN.md`, `ROADMAP.md`, `AGENTS.md`, or checklists within other Markdown files.
 
 #### Requirements
+
 1. **Identify existing tasks:** Before starting implementation, locate relevant documented tasks and understand their requirements.
 2. **Update status as work progresses:** When you complete a documented task, update its checkbox from `- [ ]` to `- [x]` as soon as the task is finished and verified.
 3. **Verify completion:** Run relevant tests, builds, linting, or other checks where practical before marking a task complete.
@@ -314,5 +317,3 @@ Relevant files may include `TODO.md`, `TASKS.md`, `PLAN.md`, `ROADMAP.md`, `AGEN
 8. **Handle missing checklists:** If a task involves multiple steps and no suitable checklist exists, ask whether I want one created. Do not create one without confirmation unless I explicitly requested it.
 9. **Report changes:** In your final response, summarize completed tasks, verification performed, documentation files updated, and any remaining incomplete work.
 10. **Do not wait for an explicit reminder:** If a documented task is completed during implementation, update its status even if I did not specifically ask you to modify the documentation.
-
-

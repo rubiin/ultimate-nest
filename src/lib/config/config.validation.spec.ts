@@ -5,6 +5,7 @@ import { configValidationSchema } from "./config.validation";
 import { appConfigValidationSchema } from "./configs/app.config";
 import { databaseConfigValidationSchema } from "./configs/database.config";
 import { mail, mailConfigValidationSchema } from "./configs/mail.config";
+import { storageConfigValidationSchema } from "./configs/storage.config";
 
 const validAppEnv = {
   API_URL: "http://localhost:3000/api",
@@ -237,6 +238,43 @@ describe("databaseConfigValidationSchema", () => {
     expect(issuesFor(databaseConfigValidationSchema, { ...validDbEnv, DB_POOL_MAX: "0" })).toEqual([
       "DB_POOL_MAX",
     ]);
+  });
+});
+
+describe("storageConfigValidationSchema", () => {
+  const s3Env = {
+    S3_ACCESS_KEY_ID: "id",
+    S3_ENDPOINT: "https://s3.test",
+    S3_PRIVATE_BUCKET: "private",
+    S3_PRIVATE_CDN_URL: "https://cdn.test/private",
+    S3_PUBLIC_BUCKET: "public",
+    S3_PUBLIC_CDN_URL: "https://cdn.test/public",
+    S3_REGION: "eu-central-1",
+    S3_SECRET_ACCESS_KEY: "secret",
+    STORAGE_DRIVER: "s3",
+  };
+
+  it("accepts the local driver without any S3 configuration", () => {
+    expect(storageConfigValidationSchema.safeParse({}).success).toBe(true);
+    expect(storageConfigValidationSchema.safeParse({ STORAGE_DRIVER: "local" }).success).toBe(true);
+  });
+
+  it("rejects an unknown driver", () => {
+    expect(issuesFor(storageConfigValidationSchema, { STORAGE_DRIVER: "gcs" })).toEqual([
+      "STORAGE_DRIVER",
+    ]);
+  });
+
+  it("reports one path per missing s3 group", () => {
+    expect(issuesFor(storageConfigValidationSchema, { STORAGE_DRIVER: "s3" }).sort()).toEqual([
+      "S3_ENDPOINT",
+      "S3_PUBLIC_BUCKET",
+      "S3_PUBLIC_CDN_URL",
+    ]);
+  });
+
+  it("accepts a complete s3 env", () => {
+    expect(storageConfigValidationSchema.safeParse(s3Env).success).toBe(true);
   });
 });
 

@@ -12,7 +12,6 @@ export function IsEmailField(options_?: EmailFieldOptions) {
     ...options_,
   };
   const decoratorsToApply = [
-    Transform(({ value }: { value: string }) => value.toLowerCase(), { toClassOnly: true }),
     Transform(({ value }): string => (typeof value === "string" ? normalizeEmail(value) : value), {
       toClassOnly: true,
     }),

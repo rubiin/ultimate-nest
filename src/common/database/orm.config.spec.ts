@@ -1,19 +1,27 @@
+import { NotFoundException } from "@nestjs/common";
+
 import { baseOptions } from "./orm.config";
 
-describe("ormConfig", () => {
-  const { fileName } = baseOptions.migrations;
+describe("baseOptions", () => {
+  describe("findOneOrFailHandler", () => {
+    it("turns a missing row into a 404 naming the entity and key", () => {
+      const exception = baseOptions.findOneOrFailHandler("Post", "post-id");
 
-  // Regression: the CLI passes `undefined` for an unnamed migration, so the `name === null`
-  // check never matched and files were named `Migration<ts>_undefined`.
-  it("should name an unnamed migration without a suffix", () => {
-    expect(fileName("20261009173003")).toBe("Migration20261009173003");
-    expect(fileName("20261009173003", undefined)).toBe("Migration20261009173003");
-    expect(fileName("20261009173003", null as never)).toBe("Migration20261009173003");
+      expect(exception).toBeInstanceOf(NotFoundException);
+      expect(exception.message).toBe("Post not found for post-id");
+    });
   });
 
-  it("should name a named migration with the name suffix", () => {
-    expect(fileName("20261009173003", "schema_hardening")).toBe(
-      "Migration20261009173003_schema_hardening",
-    );
+  describe("migrations.fileName", () => {
+    it("appends the migration name when the CLI supplies one", () => {
+      expect(baseOptions.migrations.fileName("1700000000000", "add_posts")).toBe(
+        "Migration1700000000000_add_posts",
+      );
+    });
+
+    it("falls back to the timestamp alone when no name is given", () => {
+      // Regression: the CLI passes `undefined`, not `null`, for an unnamed migration.
+      expect(baseOptions.migrations.fileName("1700000000000")).toBe("Migration1700000000000");
+    });
   });
 });

@@ -94,4 +94,60 @@ describe("clearCacheInterceptor", () => {
       ),
     ).rejects.toThrow("redis went away");
   });
+
+  // A handler that emits a lazy body (e.g. a file stream) has to be unwrapped before the
+  // clear runs, otherwise the cache is wiped before the body has even been sent.
+  it("should defer the clear until an emitted stream has completed", async () => {
+    const streamed = of({ streamed: true });
+
+    await lastValueFrom(
+      interceptor.intercept(buildContext("POST", 201) as never, { handle: () => of(streamed) }),
+    );
+
+    expect(mockCacheService.resetCache).toHaveBeenCalledTimes(1);
+  });
+
+  it("should defer the clear for an emitted promise body", async () => {
+    await lastValueFrom(
+      interceptor.intercept(buildContext("POST", 201) as never, {
+        handle: () => of(Promise.resolve({ streamed: true })),
+      }),
+    );
+
+    expect(mockCacheService.resetCache).toHaveBeenCalledTimes(1);
+  });
+
+  it("should not clear the cache for a streamed GET", async () => {
+    await lastValueFrom(
+      interceptor.intercept(buildContext("GET", 200) as never, {
+        handle: () => of(of({ streamed: true })),
+      }),
+    );
+
+    expect(mockCacheService.resetCache).not.toHaveBeenCalled();
+  });
+
+  // Regression: a stream failure used to be swallowed and the raw Observable itself returned
+  // as the response body.
+  it("should not clear the cache when a streamed body fails", async () => {
+    await lastValueFrom(
+      interceptor.intercept(buildContext("POST", 201) as never, {
+        handle: () => of(throwError(() => new Error("stream blew up"))),
+      }),
+    );
+
+    expect(mockCacheService.resetCache).not.toHaveBeenCalled();
+  });
+
+  it("should not reset the cache when the handler errors", async () => {
+    await expect(
+      lastValueFrom(
+        interceptor.intercept(buildContext("POST", 201) as never, {
+          handle: () => throwError(() => new Error("handler blew up")),
+        }),
+      ),
+    ).rejects.toThrow("handler blew up");
+
+    expect(mockCacheService.resetCache).not.toHaveBeenCalled();
+  });
 });

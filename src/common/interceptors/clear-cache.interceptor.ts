@@ -1,7 +1,7 @@
 import { CacheService } from "@lib/cache";
 import { CallHandler, ExecutionContext, HttpStatus, NestInterceptor } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
-import { concat, from, Observable, of } from "rxjs";
+import { concat, concatWith, from, Observable, of } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
 
 /**
@@ -27,10 +27,15 @@ export class ClearCacheInterceptor implements NestInterceptor {
           (result !== null && typeof result === "object" && "subscribe" in result)
         ) {
           // The handler returned a lazy Observable/Promise (e.g. a streaming response). Defer the
-          // cache clear until the body has actually been sent, and mirror whatever it emits/rejects.
-          return (result as Observable<unknown>).pipe(
+          // cache clear until the body has actually been sent. `concat` keeps the body as the
+          // final emission, so a non-mutation (where the clear emits nothing) cannot complete
+          // the outer sequence empty and drop the response.
+          // `from` rather than `result.pipe`: the guard above also accepts a raw Promise, which has
+          // no `pipe`, so a promised body threw instead of being streamed.
+          return from(result as Observable<unknown> | Promise<unknown>).pipe(
             switchMap(() => this.clearIfMutation(context, response)),
-            catchError(() => of(result)),
+            catchError(() => of(undefined)),
+            concatWith(of(result)),
           );
         }
 

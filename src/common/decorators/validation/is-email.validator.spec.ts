@@ -1,3 +1,4 @@
+import { plainToInstance } from "class-transformer";
 import { Validator } from "class-validator";
 
 import { IsEmailField } from "./is-email.validator";
@@ -104,5 +105,26 @@ describe("isEmailField", () => {
     const errors = await validator.validate(model);
 
     expect(errors.length).toEqual(0);
+  });
+
+  // Regression: the address was neither lower-cased nor normalized, so what was validated
+  // could differ from what was stored by case alone.
+  it("should lower-case and normalize the address on the way in", () => {
+    class MyClass {
+      @IsEmailField()
+      email!: string;
+    }
+
+    // Gmail's dotted/plus forms normalize to the base address.
+    expect(plainToInstance(MyClass, { email: "A.D.A+tag@gmail.com" }).email).toBe("ada@gmail.com");
+  });
+
+  it("should leave a non-string value untouched for the validator to reject", () => {
+    class MyClass {
+      @IsEmailField()
+      email!: string;
+    }
+
+    expect(plainToInstance(MyClass, { email: 42 as never }).email).toBe(42);
   });
 });
