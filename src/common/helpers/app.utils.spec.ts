@@ -1,8 +1,31 @@
 import process from "node:process";
 
+import type { INestApplication } from "@nestjs/common";
+import { IS_PUBLIC_KEY_META, SWAGGER_API_ENDPOINT } from "@common/constant";
+import { swaggerOptions } from "@common/swagger/swagger.plugin";
 import { ValidationPipe } from "@nestjs/common";
+import type { ConfigService } from "@nestjs/config";
 
 import { AppUtils } from "./app.utils";
+import { HelperService } from "./helpers.utils";
+
+const { createDocument, setup } = vi.hoisted(() => ({
+  createDocument: vi.fn<() => unknown>(),
+  setup: vi.fn<() => void>(),
+}));
+
+vi.mock("@nestjs/swagger", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@nestjs/swagger")>()),
+  SwaggerModule: { createDocument, setup },
+}));
+
+// `getMiddleware` registers process-wide prom-client metrics on first call and throws on the
+// second, so it is stubbed and the auth check is asserted through the captured options.
+const { getMiddleware } = vi.hoisted(() => ({
+  getMiddleware: vi.fn<(options: unknown) => () => void>(() => () => undefined),
+}));
+
+vi.mock("swagger-stats", () => ({ getMiddleware }));
 
 class Account {
   self?: Account;
@@ -107,5 +130,96 @@ describe("AppUtils.validationPipeOptions", () => {
     await expect(pipe.transform(account, { metatype: Account, type: "custom" })).resolves.toBe(
       account,
     );
+  });
+
+  it("strips unknown properties and only enables debug messages in dev", () => {
+    vi.spyOn(HelperService, "isDev").mockReturnValue(true);
+
+    expect(AppUtils.validationPipeOptions()).toEqual({
+      enableDebugMessages: true,
+      forbidUnknownValues: false,
+      transform: true,
+      validateCustomDecorators: false,
+      whitelist: true,
+    });
+
+    vi.spyOn(HelperService, "isDev").mockReturnValue(false);
+    expect(AppUtils.validationPipeOptions().enableDebugMessages).toBe(false);
+  });
+});
+
+describe("AppUtils.setupSwagger", () => {
+  const app = () => ({ use: vi.fn<() => void>() }) as unknown as INestApplication;
+
+  const configService = () =>
+    ({
+      get: (key: string) =>
+        key === "app.swagger"
+          ? { password: "swagger-password", username: "swagger-user" }
+          : "ultimate-nest",
+    }) as unknown as ConfigService<Configs, true>;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setup.mockReturnValue(undefined);
+    createDocument.mockReturnValue({
+      paths: {
+        "/posts": {
+          get: { security: [{ [IS_PUBLIC_KEY_META]: [] }] },
+          post: { security: [{ accessToken: [] }] },
+        },
+        "/health": { get: {} },
+      },
+    } as never);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("strips the internal public marker from every documented operation", () => {
+    AppUtils.setupSwagger(app(), configService());
+
+    const document = createDocument.mock.results[0]?.value as {
+      paths: Record<string, Record<string, { security?: unknown[] }>>;
+    };
+
+    expect(document.paths["/posts"]?.get?.security).toEqual([]);
+    expect(document.paths["/posts"]?.post?.security).toEqual([{ accessToken: [] }]);
+    expect(document.paths["/health"]?.get?.security).toBeUndefined();
+  });
+
+  it("serves the explorer and registers the auth-gated stats middleware", () => {
+    const target = app();
+
+    AppUtils.setupSwagger(target, configService());
+
+    expect(setup).toHaveBeenCalledWith(
+      SWAGGER_API_ENDPOINT,
+      target,
+      expect.anything(),
+      expect.objectContaining({ explorer: true, swaggerOptions }),
+    );
+    expect(target.use).toHaveBeenCalledWith(expect.any(Function));
+  });
+
+  it("authenticates the stats middleware with the configured swagger credentials", () => {
+    AppUtils.setupSwagger(app(), configService());
+
+    const options = getMiddleware.mock.calls[0]?.[0] as {
+      authentication: boolean;
+      hostname: string;
+      onAuthenticate: (request: unknown, username: string, password: string) => boolean;
+      uriPath: string;
+    };
+
+    expect(options).toMatchObject({
+      authentication: true,
+      hostname: "ultimate-nest",
+      uriPath: "/stats",
+    });
+    expect(options.onAuthenticate({}, "swagger-user", "swagger-password")).toBe(true);
+    expect(options.onAuthenticate({}, "swagger-user", "wrong")).toBe(false);
+    expect(options.onAuthenticate({}, "someone-else", "swagger-password")).toBe(false);
   });
 });

@@ -5,7 +5,7 @@ import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { mockEm, mockUserRepo, mockedUser } from "@mocks";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { lastValueFrom, of } from "rxjs";
 
 import { ProfileService } from "./profile.service";
@@ -122,6 +122,101 @@ describe("profileService", () => {
       await expect(
         lastValueFrom(service.follow({ username: "target" } as User, "target")),
       ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it("should reject an empty target username before hitting the database", async () => {
+      await expect(
+        lastValueFrom(service.follow({ username: "actor" } as User, "")),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(mockUserRepo.findOne).not.toHaveBeenCalled();
+    });
+
+    it("should surface an unknown username as a 404", async () => {
+      mockUserRepo.findOne.mockResolvedValue(null as never);
+
+      await expect(
+        lastValueFrom(service.follow({ username: "actor" } as User, "ghost")),
+      ).rejects.toBeInstanceOf(NotFoundException);
+    });
+  });
+
+  describe("getProfileByUsername", () => {
+    it("should reject an unknown username with a 404", async () => {
+      mockUserRepo.findOne.mockResolvedValue(null as never);
+
+      await expect(lastValueFrom(service.getProfileByUsername("ghost"))).rejects.toBeInstanceOf(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe("unFollow", () => {
+    // Stands in for the populated `followers` collection: `remove` records the removal so the
+    // test can assert the relation was unwritten without loading every follower row.
+    const stubTarget = () => {
+      const removed: unknown[] = [];
+      const target = {
+        ...mockedUser,
+        followers: { remove: (user: unknown) => removed.push(user) },
+        id: 7,
+        username: "target",
+      };
+
+      return { removed, target };
+    };
+
+    beforeEach(() => {
+      mockEm.flush.mockResolvedValue(undefined);
+    });
+
+    it("should remove the follower and flush", async () => {
+      const { removed, target } = stubTarget();
+      mockUserRepo.findOne.mockResolvedValue(target as never);
+      mockUserRepo.getReference.mockImplementation(((id: number) => ({ id })) as never);
+      const actor = { id: 9, username: "actor" } as User;
+
+      const profile = await lastValueFrom(service.unFollow(actor, "target"));
+
+      expect(removed).toEqual([{ id: 9 }]);
+      expect(mockEm.flush).toHaveBeenCalled();
+      expect(profile).toEqual({ avatar: mockedUser.avatar, following: false, username: "target" });
+    });
+
+    it("should load the followers collection so the removal is written to the pivot", async () => {
+      const { target } = stubTarget();
+      mockUserRepo.findOne.mockResolvedValue(target as never);
+
+      await lastValueFrom(service.unFollow({ id: 9, username: "actor" } as User, "target"));
+
+      expect(mockUserRepo.findOne).toHaveBeenCalledWith(
+        { username: "target" },
+        expect.objectContaining({ populate: ["followers"] }),
+      );
+    });
+
+    it("should reject unfollowing yourself", async () => {
+      const { target } = stubTarget();
+      mockUserRepo.findOne.mockResolvedValue(target as never);
+
+      await expect(
+        lastValueFrom(service.unFollow({ id: 7, username: "target" } as User, "target")),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(mockEm.flush).not.toHaveBeenCalled();
+    });
+
+    it("should reject an empty username before hitting the database", async () => {
+      await expect(
+        lastValueFrom(service.unFollow({ id: 9, username: "actor" } as User, "")),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(mockUserRepo.findOne).not.toHaveBeenCalled();
+    });
+
+    it("should surface an unknown username as a 404", async () => {
+      mockUserRepo.findOne.mockResolvedValue(null as never);
+
+      await expect(
+        lastValueFrom(service.unFollow({ id: 9, username: "actor" } as User, "ghost")),
+      ).rejects.toBeInstanceOf(NotFoundException);
     });
   });
 });

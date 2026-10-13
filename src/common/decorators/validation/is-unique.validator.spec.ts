@@ -46,4 +46,8 @@ describe("isUnique", () => {
     expect(result).toBeFalsy();
     expect(mockEm.count).toHaveBeenCalledWith(User, { username });
   });
+
+  it("should name the offending field in the default message", () => {
+    expect(isUnique.defaultMessage(validatorArguments)).toBe("username must be unique");
+  });
 });

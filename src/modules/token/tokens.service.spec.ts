@@ -18,6 +18,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { lastValueFrom, of } from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
@@ -109,6 +110,15 @@ describe("tokensService", () => {
   });
 
   describe("sessions", () => {
+    it("should list the user's active sessions", async () => {
+      mockRefreshTokenRepo.findActiveTokensForUser.mockReturnValue(of([refreshToken]) as never);
+
+      await expect(lastValueFrom(service.listSessions(loggedInUser))).resolves.toEqual([
+        refreshToken,
+      ]);
+      expect(mockRefreshTokenRepo.findActiveTokensForUser).toHaveBeenCalledWith(loggedInUser);
+    });
+
     it("should revoke a session of the user", async () => {
       mockRefreshTokenRepo.revokeUserToken.mockReturnValue(of(true));
 
@@ -256,6 +266,108 @@ describe("tokensService", () => {
       const access = await lastValueFrom(tokens.generateAccessToken(loggedInUser));
 
       await expect(lastValueFrom(tokens.rotateRefreshToken(access))).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+  });
+
+  describe("payload guards", () => {
+    // Regression: a payload with no `jti` used to reach the repository, so a forged
+    // `sub`-only token deleted an arbitrary user's sessions.
+    it("rejects a stored-token lookup with no jti", async () => {
+      await expect(
+        lastValueFrom(service.getStoredTokenFromRefreshTokenPayload({ sub: 1 } as never)),
+      ).rejects.toThrow(UnauthorizedException);
+      expect(mockRefreshTokenRepo.findTokenById).not.toHaveBeenCalled();
+    });
+
+    it("rejects a user lookup with no sub", async () => {
+      await expect(
+        lastValueFrom(service.getUserFromRefreshTokenPayload({ jti: 1 } as never)),
+      ).rejects.toThrow(UnauthorizedException);
+      expect(mockUserRepo.findOneOrFail).not.toHaveBeenCalled();
+    });
+
+    it("rejects a delete with no jti", async () => {
+      await expect(
+        lastValueFrom(service.deleteRefreshToken(loggedInUser, { sub: 1 } as never)),
+      ).rejects.toThrow(UnauthorizedException);
+      expect(mockRefreshTokenRepo.deleteToken).not.toHaveBeenCalled();
+    });
+
+    it("deletes the session and returns the user when jti is present", async () => {
+      mockRefreshTokenRepo.deleteToken.mockReturnValue(of(true) as never);
+
+      await expect(
+        lastValueFrom(service.deleteRefreshToken(loggedInUser, refreshTokenPayload)),
+      ).resolves.toBe(loggedInUser);
+      expect(mockRefreshTokenRepo.deleteToken).toHaveBeenCalledWith(
+        loggedInUser,
+        refreshTokenPayload.jti,
+      );
+    });
+  });
+
+  describe("resolveRefreshToken", () => {
+    beforeEach(() => {
+      mockJwtService.verifyAsync.mockResolvedValue({
+        ...refreshTokenPayload,
+        type: "refresh",
+      });
+    });
+
+    it("resolves the stored token and its owner", async () => {
+      mockRefreshTokenRepo.findTokenById.mockReturnValue(of(refreshToken) as never);
+      mockUserRepo.findOneOrFail.mockReturnValue(of(loggedInUser) as never);
+
+      await expect(lastValueFrom(service.resolveRefreshToken("token"))).resolves.toEqual({
+        token: refreshToken,
+        user: loggedInUser,
+      });
+    });
+
+    it("rejects when the token row is gone", async () => {
+      mockRefreshTokenRepo.findTokenById.mockReturnValue(of(null) as never);
+
+      await expect(lastValueFrom(service.resolveRefreshToken("token"))).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+
+    it("rejects an already-revoked token", async () => {
+      mockRefreshTokenRepo.findTokenById.mockReturnValue(
+        of({ ...refreshToken, isRevoked: true }) as never,
+      );
+
+      await expect(lastValueFrom(service.resolveRefreshToken("token"))).rejects.toThrow(
+        UnauthorizedException,
+      );
+      expect(mockUserRepo.findOneOrFail).not.toHaveBeenCalled();
+    });
+
+    it("rejects when the token owner no longer exists", async () => {
+      mockRefreshTokenRepo.findTokenById.mockReturnValue(of(refreshToken) as never);
+      mockUserRepo.findOneOrFail.mockReturnValue(of(null) as never);
+
+      await expect(lastValueFrom(service.resolveRefreshToken("token"))).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+  });
+
+  describe("decodeRefreshToken", () => {
+    it("maps an expired token to an unauthorized error", async () => {
+      mockJwtService.verifyAsync.mockRejectedValue(new TokenExpiredError("jwt expired"));
+
+      await expect(lastValueFrom(service.decodeRefreshToken("token"))).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+
+    it("maps a malformed token to an unauthorized error", async () => {
+      mockJwtService.verifyAsync.mockRejectedValue(new JsonWebTokenError("jwt malformed"));
+
+      await expect(lastValueFrom(service.decodeRefreshToken("token"))).rejects.toThrow(
         UnauthorizedException,
       );
     });

@@ -42,7 +42,9 @@ export class AbstractValidationPipe extends ValidationPipe {
   async transform(value: any, metadata: ArgumentMetadata) {
     const targetType = this.targetTypes[metadata.type] as Type<any>;
 
-    if (targetType === null) return super.transform(value, metadata);
+    // An unregistered argument kind resolves to `undefined`, so the guard has to accept it.
+    // Overwriting `metatype` with `undefined` skipped validation entirely.
+    if (!targetType) return super.transform(value, metadata);
 
     return super.transform(value, { ...metadata, metatype: targetType });
   }

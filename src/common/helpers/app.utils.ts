@@ -70,10 +70,15 @@ export const AppUtils = {
     const paths = Object.values(document.paths);
 
     for (const path of paths) {
-      const methods = Object.values(path) as { security: string[] }[];
+      const methods = Object.values(path) as { security: Record<string, unknown>[] }[];
 
       for (const method of methods) {
-        if (isArray(method.security) && method.security.includes(IS_PUBLIC_KEY_META)) {
+        // `security` holds scheme objects, so the marker is matched on a key. Comparing the
+        // string against the array itself never matched and leaked `isPublic` into the document.
+        if (
+          isArray(method.security) &&
+          method.security.some((scheme) => IS_PUBLIC_KEY_META in scheme)
+        ) {
           method.security = [];
         }
       }

@@ -62,4 +62,89 @@ describe("chatGateway", () => {
       expect(connectionService.saveConnection).not.toHaveBeenCalled();
     },
   );
+
+  it("should disconnect when the token cannot be verified", async () => {
+    jwtService.verify.mockImplementation(() => {
+      throw new Error("invalid signature");
+    });
+    const client = buildClient();
+
+    await gateway.handleConnection(client);
+
+    expect(client.disconnect).toHaveBeenCalled();
+    expect(connectionService.deleteBySocketId).toHaveBeenCalledWith("socket-1");
+  });
+
+  it("should disconnect when the token owner no longer exists", async () => {
+    jwtService.verify.mockReturnValue({ sub: 1, type: "access" } as never);
+    authService.findUser.mockResolvedValue(null as never);
+    const client = buildClient();
+
+    await gateway.handleConnection(client);
+
+    expect(client.disconnect).toHaveBeenCalled();
+    expect(connectionService.saveConnection).not.toHaveBeenCalled();
+  });
+
+  it("should announce the online users once connected", async () => {
+    jwtService.verify.mockReturnValue({ sub: 1, type: "access" } as never);
+    authService.findUser.mockResolvedValue(new User({ firstName: "a", id: 1 }));
+    connectionService.getAllOnlineUSers.mockReturnValue(["a"] as never);
+
+    await gateway.handleConnection(buildClient());
+
+    expect(gateway.server.emit).toHaveBeenCalledWith("onlineUsers", ["a"]);
+  });
+
+  it("should log the namespace on init", () => {
+    gateway.afterInit();
+
+    expect(gateway.server.name).toBeDefined();
+  });
+
+  describe("create", () => {
+    it("should persist the message and emit it to the receiver room", async () => {
+      const chatService = createMock<ChatService>();
+      const subject = new ChatGateway(connectionService, chatService, authService, jwtService);
+      subject.server = createMock<Namespace>();
+
+      const sender = new User({ id: 1 });
+      const receiver = new User({ id: 2 });
+      connectionService.findBySocketId.mockReturnValue(receiver);
+      const client = createMock<Socket>({ id: "socket-1" });
+      const emit = vi.fn<Socket["emit"]>();
+      (client as unknown as { to: unknown }).to = vi.fn<() => unknown>(() => ({ emit }));
+
+      const result = await subject.create(
+        { message: "hi", to: "socket-2" } as never,
+        client,
+        sender,
+      );
+
+      expect(chatService.sendMessage).toHaveBeenCalledWith({
+        message: "hi",
+        users: [sender, receiver],
+      });
+      expect(emit).toHaveBeenCalledWith("receive", "hi");
+      expect(result).toEqual({ message: "hi", to: "socket-2" });
+    });
+  });
+
+  describe("markAsSeen", () => {
+    it("should mark the messages between the two sockets as seen", async () => {
+      const chatService = createMock<ChatService>();
+      const subject = new ChatGateway(connectionService, chatService, authService, jwtService);
+      subject.server = createMock<Namespace>();
+
+      connectionService.findBySocketId.mockReturnValueOnce({ id: 1 } as never);
+      connectionService.findBySocketId.mockReturnValueOnce({ id: 2 } as never);
+
+      await subject.markAsSeen(
+        { receiver: "socket-2" } as never,
+        createMock<Socket>({ id: "socket-1" }),
+      );
+
+      expect(chatService.markMessagesAsSeen).toHaveBeenCalledWith(1, 2);
+    });
+  });
 });

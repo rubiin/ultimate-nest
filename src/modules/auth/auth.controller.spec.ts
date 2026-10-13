@@ -115,4 +115,73 @@ describe("AuthController", () => {
       expect(authService.logout).not.toHaveBeenCalled();
     });
   });
+
+  describe("password reset", () => {
+    it("should reset the password from an otp", () => {
+      const dto = { otp: "123456", password: "New@1234" } as never;
+      authService.resetPassword.mockReturnValue(of({} as never));
+
+      controller.resetUserPassword(dto);
+
+      expect(authService.resetPassword).toHaveBeenCalledWith(dto);
+    });
+
+    it("should send a reset otp", () => {
+      const dto = { email: "a@example.com" } as never;
+      authService.forgotPassword.mockReturnValue(of({ message: "sent" }));
+
+      controller.forgotPassword(dto);
+
+      expect(authService.forgotPassword).toHaveBeenCalledWith(dto);
+    });
+
+    it("should verify a signup otp", () => {
+      const dto = { code: "123456" } as never;
+      authService.verifyOtp.mockReturnValue(of({} as never));
+
+      controller.verifyOtp(dto);
+
+      expect(authService.verifyOtp).toHaveBeenCalledWith(dto);
+    });
+
+    it("should change the password of the logged-in user", () => {
+      const dto = { newPassword: "n", oldPassword: "o", password: "n" } as never;
+      const user = new User({ id: 1 });
+      authService.changePassword.mockReturnValue(of({} as never));
+
+      controller.changePassword(dto, user);
+
+      expect(authService.changePassword).toHaveBeenCalledWith(dto, user);
+    });
+  });
+
+  describe("oauth", () => {
+    it.each(["googleAuthRedirect", "facebookAuthRedirect"] as const)(
+      "should hand the oauth profile to the service from %s",
+      (handler) => {
+        const response = { redirect: vi.fn<() => void>() } as unknown as NestifyResponse;
+        const user = { email: "a@example.com" } as never;
+        authService.OauthHandler.mockReturnValue(of(undefined as never));
+
+        controller[handler](user, response, client);
+
+        expect(authService.OauthHandler).toHaveBeenCalledWith({ client, response, user });
+      },
+    );
+
+    it.each(["googleAuth", "facebookAuth"] as const)(
+      "%s is a no-op because passport handles the redirect",
+      (handler) => {
+        expect(controller[handler]({} as never)).toBeUndefined();
+      },
+    );
+
+    // Stands in for the frontend callback route the oauth redirect points at.
+    it("should echo the token for the mock oauth callback", () => {
+      expect(controller.oauthMock({ token: "a-token" })).toEqual({
+        message: "successfully logged",
+        token: "a-token",
+      });
+    });
+  });
 });

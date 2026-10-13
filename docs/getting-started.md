@@ -28,22 +28,15 @@ OAuth login fail until you put real credentials in.
 
 ## 2. Start the backing services
 
-The values below match `env/.env.dev.sample`.
+`docker-compose.dev.yml` holds them, with credentials matching `env/.env.dev.sample`. It publishes every port,
+because the app runs on the host while the services run in containers.
 
 ```sh
-docker run -d --name nestify-db -p 5432:5432 \
-  -e POSTGRES_USER=nestify -e POSTGRES_PASSWORD=nestify -e POSTGRES_DB=nestify \
-  postgres:15.3-alpine
-
-docker run -d --name nestify-redis -p 6379:6379 \
-  redis:7.0.11-alpine redis-server --requirepass redis
-
-docker run -d --name nestify-rabbit -p 5672:5672 -p 15672:15672 \
-  -e RABBITMQ_DEFAULT_USER=nestify -e RABBITMQ_DEFAULT_PASS=secret \
-  rabbitmq:3.12.0-management-alpine
-
-docker run -d --name nestify-mail -p 1025:1025 -p 8025:8025 axllent/mailpit
+docker compose -f docker-compose.dev.yml up -d --wait
 ```
+
+`--wait` blocks until Postgres, Redis and RabbitMQ report healthy, so the migration in step 3 cannot race an
+unready database.
 
 | Service  | Port           | Notes                                                        |
 | -------- | -------------- | ------------------------------------------------------------ |
@@ -101,7 +94,7 @@ encrypted columns unreadable.
 ## Stopping
 
 ```sh
-docker rm -f nestify-db nestify-redis nestify-rabbit nestify-mail
+docker compose -f docker-compose.dev.yml down
 ```
 
 ## More

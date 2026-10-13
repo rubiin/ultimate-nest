@@ -1,0 +1,78 @@
+# Backing services for local development, as described in docs/getting-started.md.
+#
+#   cp env/.env.dev.sample env/.env.dev
+#   docker compose -f docker-compose.dev.yml up -d --wait
+#
+# These credentials are the throwaway values from env/.env.dev.sample. The app
+# itself runs on the host (`NODE_ENV=dev pnpm start:dev`), so every port is
+# published and DB_HOST/REDIS_HOST/RABBITMQ_URI/MAIL_HOST stay `localhost`.
+#
+# For the production-style stack (Traefik, TLS, pgAdmin) see docker-compose.yml.
+
+services:
+  database:
+    image: postgres:15.3-alpine
+    container_name: nestify-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nestify
+      POSTGRES_PASSWORD: nestify
+      POSTGRES_DB: nestify
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nestify -d nestify"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7.0.11-alpine
+    container_name: nestify-redis
+    restart: unless-stopped
+    # `requirepass` provisions the built-in `default` ACL user, so the username
+    # in REDIS_USERNAME is literally "default".
+    command: redis-server --requirepass redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a redis ping | grep PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3.12.0-management-alpine
+    container_name: nestify-rabbit
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: nestify
+      RABBITMQ_DEFAULT_PASS: secret
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq/mnesia/
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: nestify-mail
+    restart: unless-stopped
+    ports:
+      # 1025 SMTP, 8025 web UI
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  postgres-data:
+  redis-data:
+  rabbitmq-data:
