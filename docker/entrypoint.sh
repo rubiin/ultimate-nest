@@ -82,9 +82,13 @@ is_fresh_database() {
 #
 # The ORM CLI resolves entities from `dist/`, so the build has to precede the migration or the
 # CLI sees no entities at all.
+#
+# `build:swc` transpiles with SWC and then emits declarations with tsc. SWC cannot do the
+# declaration pass itself, and MikroORM needs those .d.ts files to map compiled entities back
+# to their TypeScript sources. It does not type check; CI runs `pnpm build` (tsc) for that.
 
 log "building"
-pnpm build
+pnpm build:swc
 
 # --- 3. migrate ------------------------------------------------------------------------
 

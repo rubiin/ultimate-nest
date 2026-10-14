@@ -102,6 +102,7 @@ own `${PASSWORD}` variable, so it does not share the local sample values above.
 | `just test-e2e`                          | E2E specs, needs the services above running       |
 | `pnpm lint` / `pnpm format:check`        | oxlint and oxfmt                                  |
 | `pnpm build`                             | Type check and compile to `dist/`                 |
+| `pnpm build:swc`                         | SWC transpile, no type check — [docs](swc.md)     |
 | `NODE_ENV=dev pnpm orm migration:create` | Generate a migration from entity changes          |
 | `NODE_ENV=dev pnpm orm migration:down`   | Roll back the last migration                      |
 | `just encryption`                        | Generate `ENC_KEY` and `ENC_IV`                   |
@@ -119,4 +120,4 @@ docker compose -f docker-compose.dev.yml down
 ## More
 
 - [Config](config.md), [database](database.md), [testing](testing.md), [logging](logging.md)
-- [Decorators](decorators.md), [naming](naming-cheatsheet.md), [linting](linting.md), [timezone](timezone.md)
+- [Decorators](decorators.md), [naming](naming-cheatsheet.md), [linting](linting.md), [timezone](timezone.md), [SWC builds](swc.md)
