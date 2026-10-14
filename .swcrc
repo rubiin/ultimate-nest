@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "sourceMaps": true,
+  "module": {
+    "type": "commonjs"
+  },
+  "jsc": {
+    "target": "es2023",
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      // Nest's DI and MikroORM's legacy decorators both read `design:paramtypes` /
+      // `design:type`. Without this the container cannot resolve any provider.
+      "decoratorMetadata": true
+    },
+    "keepClassNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@common/*": ["./src/common/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@entities": ["./src/entities"],
+      "@mocks": ["./src/_mocks_"],
+      "@generated": ["./src/generated"]
+    }
+  },
+  "minify": false
+}

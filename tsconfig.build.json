@@ -1,5 +1,13 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // `nest build` deletes `dist/` before compiling. The shared base tsconfig sets
+    // `incremental: true`, which puts the build cache next to the config file rather than
+    // in `outDir` — so the cache survived the wipe, tsc considered everything up to date,
+    // and a second consecutive build emitted nothing at all (an empty `dist/`).
+    // Keeping the cache inside `dist/` makes it self-cleaning.
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
+  },
   "exclude": [
     "**/*spec.ts",
     "./src/common/database/factories/*",

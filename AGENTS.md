@@ -98,15 +98,16 @@ What is and is not enforced — this is the part most worth internalising.
 NestJS 12 + MikroORM 7 (PostgreSQL) boilerplate. This file reflects the current
 repo state; if a command below fails, trust `package.json` over this document.
 
-| Concern         | Tool                                                              |
-| --------------- | ----------------------------------------------------------------- |
-| Package manager | **pnpm** (`pnpm-lock.yaml` committed) — do not use npm/yarn       |
-| Language        | TypeScript 6, CommonJS output, path aliases in `tsconfig.json`    |
-| Test runner     | **Vitest** (`vitest run`) — not Jest, despite `docs/testing.md`   |
-| Lint            | oxlint (`.oxlintrc.json`)                                         |
-| Format          | oxfmt (`.oxfmtrc.json`), 100 cols, double quotes, trailing commas |
-| Pre-commit      | husky + lint-staged → `oxlint` on staged `.ts`/`.tsx`             |
-| Node            | pinned in `.nvmrc` to `24.21.0`; `engines` requires `>=24.21.0`   |
+| Concern         | Tool                                                                      |
+| --------------- | ------------------------------------------------------------------------- |
+| Package manager | **pnpm** (`pnpm-lock.yaml` committed) — do not use npm/yarn               |
+| Language        | TypeScript 6, CommonJS output, path aliases in `tsconfig.json`            |
+| Transpiler      | SWC (`.swcrc`) for `build:swc`; tsc remains the type gate (`docs/swc.md`) |
+| Test runner     | **Vitest** (`vitest run`) — not Jest, despite `docs/testing.md`           |
+| Lint            | oxlint (`.oxlintrc.json`)                                                 |
+| Format          | oxfmt (`.oxfmtrc.json`), 100 cols, double quotes, trailing commas         |
+| Pre-commit      | husky + lint-staged → `oxlint` on staged `.ts`/`.tsx`                     |
+| Node            | pinned in `.nvmrc` to `24.21.0`; `engines` requires `>=24.21.0`           |
 
 ## Commands
 
@@ -114,7 +115,9 @@ Run through pnpm (`pnpm build`, or `pnpm run build` where a script name collides
 with a pnpm builtin).
 
 ```
-pnpm build          # nest build -> dist/
+pnpm build          # nest build -> dist/ (tsc, type checks)
+pnpm build:swc      # SWC transpile + tsc declarations -> dist/ (no type check)
+pnpm start:swc      # build:swc, then node dist/main
 pnpm start:dev      # watch mode
 pnpm start:prod     # node dist/main
 pnpm test           # vitest run (unit, src/**/*.spec.ts)
