@@ -23,7 +23,11 @@ export async function createLogger(): Promise<Logger> {
     abortOnError: false,
   });
 
+  // Resolve before closing: `close()` tears the container down, after which
+  // `get(Logger)` fails with "could not find Logger element".
+  const logger = temporaryApp.get(Logger);
+
   await temporaryApp.close();
 
-  return temporaryApp.get(Logger); // retrieve the created instance
+  return logger;
 }

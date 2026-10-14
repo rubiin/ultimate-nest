@@ -165,8 +165,9 @@ describe("AppUtils.setupSwagger", () => {
     createDocument.mockReturnValue({
       paths: {
         "/posts": {
-          get: { security: [{ [IS_PUBLIC_KEY_META]: [] }] },
-          post: { security: [{ accessToken: [] }] },
+          // Swagger v12 records `security` entries as plain scheme names, not objects.
+          get: { security: [IS_PUBLIC_KEY_META] },
+          post: { security: ["accessToken"] },
         },
         "/health": { get: {} },
       },
@@ -185,7 +186,7 @@ describe("AppUtils.setupSwagger", () => {
     };
 
     expect(document.paths["/posts"]?.get?.security).toEqual([]);
-    expect(document.paths["/posts"]?.post?.security).toEqual([{ accessToken: [] }]);
+    expect(document.paths["/posts"]?.post?.security).toEqual(["accessToken"]);
     expect(document.paths["/health"]?.get?.security).toBeUndefined();
   });
 

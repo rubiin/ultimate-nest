@@ -1,15 +1,56 @@
-# Backing services for local development, as described in docs/getting-started.md.
+# Local development stack, as described in docs/getting-started.md.
 #
 #   cp env/.env.dev.sample env/.env.dev
-#   docker compose -f docker-compose.dev.yml up -d --wait
+#   docker compose -f docker-compose.dev.yml up --build
 #
-# These credentials are the throwaway values from env/.env.dev.sample. The app
-# itself runs on the host (`NODE_ENV=dev pnpm start:dev`), so every port is
-# published and DB_HOST/REDIS_HOST/RABBITMQ_URI/MAIL_HOST stay `localhost`.
+# The `app` service builds, waits for Postgres, migrates, seeds and then serves, so one
+# command replaces steps 3 and 4 of the guide. `SEED_ON_START=auto` seeds only on the boot
+# that first migrates the database, because the seeders are not idempotent.
+#
+# Every port is still published and the sample credentials still match, so you can keep
+# running the app on the host (`NODE_ENV=dev pnpm start:dev`) instead by starting only the
+# backing services:
+#
+#   docker compose -f docker-compose.dev.yml up -d --wait database redis rabbitmq mailpit
 #
 # For the production-style stack (Traefik, TLS, pgAdmin) see docker-compose.yml.
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/dev.Dockerfile
+    container_name: nestify-app
+    restart: unless-stopped
+    # Inside the compose network the app reaches the services by service name, not localhost.
+    environment:
+      NODE_ENV: dev
+      DB_HOST: database
+      REDIS_HOST: redis
+      RABBITMQ_URI: amqp://nestify:secret@rabbitmq:5672
+      MAIL_HOST: mailpit
+      USER_PASSWORD: ${USER_PASSWORD:-Test@1234}
+      # `auto` seeds only on the boot that first migrates the database. The seeders are not
+      # idempotent, so a forced `always` on a populated database fails on a duplicate email.
+      SEED_ON_START: ${SEED_ON_START:-auto}
+    env_file:
+      - env/.env.${ENV:-dev}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      # env/ holds the generated, gitignored env files the config module reads at boot.
+      - ./env:/usr/src/app/env
+      # Keep the image's node_modules; an anonymous volume hides the host's Linux-incompatible ones.
+      - /usr/src/app/node_modules
+    entrypoint: ["/bin/sh", "docker/entrypoint.sh"]
+
   database:
     image: postgres:15.3-alpine
     container_name: nestify-db

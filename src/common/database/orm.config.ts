@@ -1,5 +1,6 @@
 import { HelperService } from "@common/helpers";
 import { LoadStrategy } from "@mikro-orm/postgresql";
+import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { Logger, NotFoundException } from "@nestjs/common";
 
@@ -10,6 +11,11 @@ const logger = new Logger("MikroORM");
 export const baseOptions = {
   entities: ["dist/entities/*.entity.js"],
   entitiesTs: ["src/entities/*.entity.ts"],
+  // The entities use the legacy decorators and rely on the TypeScript types (`Rel<Ref<Post>>`,
+  // `Collection<Post>`) to name their relations, which MikroORM's default metadata provider
+  // cannot see at runtime. TsMorphMetadataProvider reads those from the TS sources instead, the
+  // same provider the ORM CLI already uses for migrations and seeders.
+  metadataProvider: TsMorphMetadataProvider,
   findOneOrFailHandler: (entityName: string, key: any) => {
     return new NotFoundException(`${entityName} not found for ${key}`);
   },
