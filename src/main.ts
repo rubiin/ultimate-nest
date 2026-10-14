@@ -3,7 +3,7 @@ import process from "node:process";
 import { OptimisticLockFilter, QueryFailedFilter } from "@common/filters";
 import { AppUtils, HelperService } from "@common/helpers";
 import { InternalDisabledLogger } from "@lib/pino/internal.logger";
-import { Logger } from "@nestjs/common";
+import { Logger as NestLogger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
@@ -11,7 +11,7 @@ import { ExpressAdapter } from "@nestjs/platform-express";
 import chalk from "chalk";
 import { useContainer } from "class-validator";
 import compression from "compression";
-import { LoggerErrorInterceptor } from "nestjs-pino";
+import { Logger, LoggerErrorInterceptor } from "nestjs-pino";
 
 import { AppModule } from "./modules/app.module";
 import { SocketIOAdapter } from "./socket-io.adapter";
@@ -21,7 +21,9 @@ declare const module: {
   hot: { accept: () => void; dispose: (argument: () => Promise<void>) => void };
 };
 
-const logger = new Logger("Bootstrap");
+// Nest's own logger: nestjs-pino's `Logger` is container-provided and cannot be constructed
+// directly, so the module-level bootstrap logger has to come from `@nestjs/common`.
+const logger = new NestLogger("Bootstrap");
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
