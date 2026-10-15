@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { IoAdapter } from "@nestjs/platform-socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { Redis } from "ioredis";
-import { Namespace, Server, ServerOptions } from "socket.io";
+import { Namespace, ServerOptions } from "socket.io";
 import { Adapter } from "socket.io-adapter";
 
 export class SocketIOAdapter extends IoAdapter {
@@ -37,23 +37,14 @@ export class SocketIOAdapter extends IoAdapter {
    * additional configuration options for the server. It is of type `ServerOptions`.
    * @returns a server object.
    */
-  // socket.io's ServerOptions marks fields like `parser`, `path`, `serveClient` and
-  // `adapter` as required even though it defaults every one of them at runtime, so a
-  // spread of the optional `options` argument cannot satisfy the type on its own.
-  // socket.io resolves the remaining fields itself.
   createIOServer(port: number, options?: ServerOptions) {
     const cors = {
       origin: this.configService.get("app.allowedOrigins", { infer: true }),
     };
 
-    const optionsWithCORS = {
-      ...options,
-      cors,
-    } as ServerOptions;
+    const server = super.createIOServer(port, Object.assign({ cors }, options));
 
-    const server = super.createIOServer(port, optionsWithCORS) as Server;
-
-    server.adapter(this.adapterConstructor as any);
+    server.adapter(this.adapterConstructor);
 
     return server;
   }

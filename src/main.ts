@@ -68,6 +68,7 @@ async function bootstrap() {
   app.useBodyParser("json", { limit: maxBodySize });
   app.useBodyParser("urlencoded", { extended: true, limit: maxBodySize });
 
+  // In production the reverse proxy owns compression, security headers and CORS.
   if (!HelperService.isProd()) {
     app.use(compression());
     app.useSecurityHeaders();
