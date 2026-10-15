@@ -3,18 +3,17 @@
  * `opsFilter` method, which filters an array of tagged operations based on a case-insensitive phrase.
  * @returns An object with a `fn` property that contains an `opsFilter` method.
  */
+interface TaggedOps {
+  filter: (argument: (_tagObject: unknown, tag: string) => boolean) => TaggedOps;
+}
+
 function CaseInsensitiveFilterPlugin() {
   return {
     fn: {
-      opsFilter: (
-        taggedOps: { filter: (argument: (_tagObject: unknown, tag: string) => boolean) => any },
-        phrase: string,
-      ) => {
+      opsFilter: (taggedOps: TaggedOps, phrase: string): TaggedOps => {
         return taggedOps.filter((_tagObject: unknown, tag: string): boolean =>
           tag.toLowerCase().includes(phrase.toLowerCase()),
-        ) as unknown as {
-          filter: (argument: (_tagObject: unknown, tag: string) => boolean) => any;
-        };
+        );
       },
     },
   };
