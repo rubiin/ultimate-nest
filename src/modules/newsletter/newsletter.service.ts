@@ -8,8 +8,9 @@ import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { JwtService } from "@nestjs/jwt";
 import { MikroORM, RequestContext } from "@mikro-orm/core";
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { CircuitOpenError, type ResiliencePolicy, ResilienceService } from "@nestjs/resilience";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { Observable } from "rxjs";
 import { catchError, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
@@ -19,10 +20,22 @@ import type { NewsLetterMessage } from "./newsletter.message";
 
 const UNSUBSCRIBE_LINK_EXPIRY = "365d";
 
+const isCircuitOpen = (result: PromiseSettledResult<unknown>) =>
+  result.status === "rejected" && result.reason instanceof CircuitOpenError;
+
 @Injectable()
 export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationDto> {
   protected readonly queryName = "t"; // the name of the query used in the pagination
   protected readonly searchField = "name"; // the field to search for when searching for tags
+  private readonly logger = new Logger(NewsLetterService.name);
+
+  /**
+   * The `rabbitmq` preset as a policy. A cron job is not an entrypoint, so
+   * decorators would not reach it; the breaker it shares with the routes is
+   * what stops this from retrying a broker that is already down.
+   */
+  private readonly rabbitPolicy: ResiliencePolicy;
+
   constructor(
     @InjectRepository(NewsLetter) private newsLetterRepository: BaseRepository<NewsLetter>,
     @InjectRepository(Subscriber) private subscriberRepository: BaseRepository<Subscriber>,
@@ -30,8 +43,10 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
     private readonly configService: ConfigService<Configs, true>,
     private readonly orm: MikroORM,
     private readonly jwtService: JwtService,
+    resilience: ResilienceService,
   ) {
     super(newsLetterRepository);
+    this.rabbitPolicy = resilience.preset("rabbitmq");
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
@@ -57,22 +72,40 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
 
     for (const newsLetter of newsLetters) {
       const results = await Promise.allSettled(
-        subscribers.map(async (subscriber) =>
-          this.amqpConnection.publish(
-            this.configService.get("rabbitmq.exchange", { infer: true }),
-            RoutingKey.SEND_NEWSLETTER,
-            {
-              newsLetterIdx: newsLetter.idx!,
-              subscriberIdx: subscriber.idx!,
-            } satisfies NewsLetterMessage,
-          ),
-        ),
+        subscribers.map((subscriber) => this.publishToSubscriber(newsLetter, subscriber)),
       );
 
-      if (results.every((result) => result.status === "fulfilled")) newsLetter.sentAt = new Date();
+      if (results.every((result) => result.status === "fulfilled")) {
+        newsLetter.sentAt = new Date();
+        continue;
+      }
+
+      // An open breaker sheds every remaining publish, so stop here rather than
+      // rejecting one message per subscriber until the next nightly run.
+      if (results.some(isCircuitOpen)) {
+        this.logger.warn(
+          "Broker is unavailable; skipping the remaining newsletters until it recovers",
+        );
+        break;
+      }
     }
 
     await this.newsLetterRepository.getEntityManager().flush();
+  }
+
+  private async publishToSubscriber(newsLetter: NewsLetter, subscriber: Subscriber) {
+    return this.rabbitPolicy.execute(
+      () =>
+        this.amqpConnection.publish(
+          this.configService.get("rabbitmq.exchange", { infer: true }),
+          RoutingKey.SEND_NEWSLETTER,
+          {
+            newsLetterIdx: newsLetter.idx!,
+            subscriberIdx: subscriber.idx!,
+          } satisfies NewsLetterMessage,
+        ),
+      { source: "NewsLetterService.publishNewsLetter" },
+    );
   }
 
   /**

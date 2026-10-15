@@ -14,6 +14,7 @@ export * from "./minio.module";
 export * from "./orm.module";
 export * from "./pino/pino.module";
 export * from "./rabbit/index";
+export * from "./resilience/index";
 export * from "./sentry.module";
 export * from "./serve-static.module";
 export * from "./throttle.module";

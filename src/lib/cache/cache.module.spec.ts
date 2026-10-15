@@ -1,3 +1,4 @@
+import type { Keyv } from "keyv";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
 import { NestCacheModule } from "./cache.module";
@@ -6,7 +7,9 @@ type Registration = {
   imports: unknown[];
   inject: unknown[];
   isGlobal: boolean;
-  useFactory: (configService: ConfigService<Configs, true>) => Promise<{ ttl: number }>;
+  useFactory: (
+    configService: ConfigService<Configs, true>,
+  ) => Promise<{ ttl: number; store: Keyv }>;
 };
 
 // The decorator options only exist at import time, so capture them as the module is defined
@@ -27,11 +30,17 @@ vi.mock("@nestjs/cache-manager", async (importOriginal) => ({
 describe("NestCacheModule", () => {
   const options = () => registration.current as Registration;
 
-  const configService = (url: string) =>
-    ({ getOrThrow: vi.fn<(key: string) => string>(() => url) }) as unknown as ConfigService<
-      Configs,
-      true
-    >;
+  const configService = (namespace: string) =>
+    ({
+      getOrThrow: vi.fn<(key: string) => Configs["redis"]>(() => ({
+        host: "localhost",
+        namespace,
+        password: "pass",
+        port: 6379,
+        ttl: 3600,
+        username: "user",
+      })),
+    }) as unknown as ConfigService<Configs, true>;
 
   it("registers a global cache module that reads the redis config", () => {
     expect(NestCacheModule).toBeDefined();
@@ -43,11 +52,20 @@ describe("NestCacheModule", () => {
   // Regression: without a TTL entries lived until the next wipe, so a replayed route could
   // return a stale body indefinitely.
   it("expires entries after five minutes instead of living until the next wipe", async () => {
-    const service = configService("redis://localhost:6379");
+    const service = configService("ultimate-nest");
 
     const { ttl } = await options().useFactory(service);
 
     expect(ttl).toBe(300_000);
     expect(service.getOrThrow).toHaveBeenCalledWith("redis", { infer: true });
+  });
+
+  // The namespace is what scopes a clear to this app; without it every key is un-prefixed.
+  it("scopes stored keys to the configured redis namespace", async () => {
+    const service = configService("tenant-a");
+
+    const { store } = await options().useFactory(service);
+
+    expect(store.namespace).toBe("tenant-a");
   });
 });

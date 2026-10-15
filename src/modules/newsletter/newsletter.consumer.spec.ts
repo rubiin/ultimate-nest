@@ -9,10 +9,12 @@ import {
   mockEm,
   mockMailService,
   mockMikroORM,
+  mockResilienceService,
   mockNewsLetterRepo,
   mockSubscriberRepo,
 } from "@mocks";
 import { Mailer } from "@nestjs/mail";
+import { ResilienceService } from "@nestjs/resilience";
 import { Test } from "@nestjs/testing";
 
 import { NewsLetterConsumer } from "./newsletter.consumer";
@@ -46,6 +48,7 @@ describe("newsLetterConsumer", () => {
         { provide: NewsLetterService, useValue: mockService },
         { provide: Mailer, useValue: mockMailService },
         { provide: MikroORM, useValue: mockMikroORM },
+        { provide: ResilienceService, useValue: mockResilienceService },
       ],
     }).compile();
 

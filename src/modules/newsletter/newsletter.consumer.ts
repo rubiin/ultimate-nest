@@ -10,6 +10,7 @@ import { InjectRepository } from "@mikro-orm/nestjs";
 import { ref } from "@mikro-orm/postgresql";
 import { Injectable, Logger } from "@nestjs/common";
 import { Mailer } from "@nestjs/mail";
+import { type ResiliencePolicy, ResilienceService } from "@nestjs/resilience";
 
 import type { NewsLetterMessage } from "./newsletter.message";
 import { NewsLetterService } from "./newsletter.service";
@@ -17,6 +18,12 @@ import { NewsLetterService } from "./newsletter.service";
 @Injectable()
 export class NewsLetterConsumer {
   private readonly logger = new Logger(NewsLetterConsumer.name);
+
+  /**
+   * The `mail` preset as a policy: a broker callback is not an entrypoint
+   * either, and this shares the mail breaker with `PATCH /auth/forgot-password`.
+   */
+  private readonly mailPolicy: ResiliencePolicy;
 
   constructor(
     @InjectRepository(NewsLetter) private readonly newsLetterRepository: BaseRepository<NewsLetter>,
@@ -27,7 +34,10 @@ export class NewsLetterConsumer {
     private readonly newsLetterService: NewsLetterService,
     private readonly mailer: Mailer,
     private readonly orm: MikroORM,
-  ) {}
+    resilience: ResilienceService,
+  ) {
+    this.mailPolicy = resilience.preset("mail");
+  }
 
   @RabbitSubscribe({
     exchange: process.env.RABBITMQ_EXCHANGE,
@@ -66,14 +76,18 @@ export class NewsLetterConsumer {
       });
 
     try {
-      await this.mailer.send(NewsletterMail, {
-        to: subscriber.email,
-        data: {
-          content: newsLetter.content,
-          subject: newsLetter.name,
-          unsubscribeUrl: await this.newsLetterService.unsubscribeUrl(subscriber),
-        },
-      });
+      await this.mailPolicy.execute(
+        async () =>
+          this.mailer.send(NewsletterMail, {
+            to: subscriber.email,
+            data: {
+              content: newsLetter.content,
+              subject: newsLetter.name,
+              unsubscribeUrl: await this.newsLetterService.unsubscribeUrl(subscriber),
+            },
+          }),
+        { source: "NewsLetterConsumer.deliver" },
+      );
       log.status = NewsLetterLogStatus.SENT;
       log.error = undefined;
     } catch (error) {

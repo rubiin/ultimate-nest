@@ -9,6 +9,7 @@ import {
   minioConfigValidationSchema,
   rabbitmqConfigValidationSchema,
   redisConfigValidationSchema,
+  resilienceConfigValidationSchema,
   sentryConfigValidationSchema,
   storageConfigValidationSchema,
   stripeConfigValidationSchema,
@@ -26,6 +27,7 @@ export const configValidationSchema = mailConfigValidationSchema
   .extend(cloudinaryConfigValidationSchema.shape)
   .extend(rabbitmqConfigValidationSchema.shape)
   .extend(throttleConfigValidationSchema.shape)
+  .extend(resilienceConfigValidationSchema.shape)
   .extend(googleOauthConfigValidationSchema.shape)
   .extend(facebookOauthConfigValidationSchema.shape)
   // Optional integrations: registered so `getOrThrow("minio")` resolves, but their

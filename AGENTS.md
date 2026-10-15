@@ -255,7 +255,7 @@ reporting done.
 - **Config changes are consistent.** If you touched `src/lib/config/configs`, the matching
   `.env` sample is updated in the same change.
 - **Migrations** are generated via `pnpm orm migration:create`, never hand-written into
-  `migrations/`, and a schema change ships with its migration.
+  `migrations/`, and a schema change ships witoh its migration.
 - **Docs updated** when behaviour or config changed.
 
 **Reporting.** State what changed, then what you ran and the result. Distinguish verified

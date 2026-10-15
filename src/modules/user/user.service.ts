@@ -17,6 +17,7 @@ import { ref } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Mailer } from "@nestjs/mail";
+import { type ResiliencePolicy, ResilienceService } from "@nestjs/resilience";
 import { createId } from "@paralleldrive/cuid2";
 import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService, IFile } from "nestjs-cloudinary";
@@ -29,6 +30,16 @@ import { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
 
 @Injectable()
 export class UserService {
+  /**
+   * Both presets as policies. The route that reaches `sendMail` is a broker
+   * callback, which decorators never reach, and the one that reaches
+   * `saveUserAndSendWelcome` is a write that must not be re-run - so either way
+   * the bound and the breaker are applied here, shared with every other caller
+   * of the same dependency.
+   */
+  private readonly mailPolicy: ResiliencePolicy;
+  private readonly rabbitPolicy: ResiliencePolicy;
+
   constructor(
     @InjectRepository(User)
     private userRepository: BaseRepository<User>,
@@ -40,7 +51,11 @@ export class UserService {
     private readonly cloudinaryService: CloudinaryService,
     private readonly mailer: Mailer,
     private readonly em: EntityManager<PostgreSqlDriver>,
-  ) {}
+    resilience: ResilienceService,
+  ) {
+    this.mailPolicy = resilience.preset("mail");
+    this.rabbitPolicy = resilience.preset("rabbitmq");
+  }
 
   @RabbitSubscribe({
     exchange: process.env.RABBITMQ_EXCHANGE,
@@ -48,9 +63,12 @@ export class UserService {
     routingKey: RoutingKey.SEND_MAIL,
   })
   sendMail(payload: { to: string; data: WelcomeMailData }) {
-    return from(this.mailer.send(WelcomeMail, { to: payload.to, data: payload.data })).pipe(
-      tap(() => Logger.log(`✅ Sent mail to ${payload.to}`)),
-    );
+    return from(
+      this.mailPolicy.execute(
+        () => this.mailer.send(WelcomeMail, { to: payload.to, data: payload.data }),
+        { source: "UserService.sendMail" },
+      ),
+    ).pipe(tap(() => Logger.log(`✅ Sent mail to ${payload.to}`)));
   }
 
   /**
@@ -169,19 +187,27 @@ export class UserService {
     const { otp, otpCode } = await this.otpService.create(user, OtpPurpose.VERIFY_EMAIL);
 
     await this.em.persist([user, otp]).flush();
-    await this.mailer.send(VerifyEmailMail, {
-      to: user.email,
-      data: { firstName: capitalize(user.firstName), otp: otpCode },
-    });
+    await this.mailPolicy.execute(
+      () =>
+        this.mailer.send(VerifyEmailMail, {
+          to: user.email,
+          data: { firstName: capitalize(user.firstName), otp: otpCode },
+        }),
+      { source: "UserService.saveUserAndSendWelcome" },
+    );
     const link = this.configService.get("app.clientUrl", { infer: true });
 
-    await this.amqpConnection.publish(
-      this.configService.get("rabbitmq.exchange", { infer: true }),
-      RoutingKey.SEND_MAIL,
-      {
-        to: user.email,
-        data: { firstName: capitalize(user.firstName), link },
-      },
+    await this.rabbitPolicy.execute(
+      () =>
+        this.amqpConnection.publish(
+          this.configService.get("rabbitmq.exchange", { infer: true }),
+          RoutingKey.SEND_MAIL,
+          {
+            to: user.email,
+            data: { firstName: capitalize(user.firstName), link },
+          },
+        ),
+      { source: "UserService.saveUserAndSendWelcome" },
     );
   }
 

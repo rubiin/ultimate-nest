@@ -90,9 +90,17 @@ declare global {
       THROTTLE_LIMIT: string;
       THROTTLE_TTL: number;
 
-      // Optional token that must accompany ?clearCache=true in production so an anonymous
-      // request cannot wipe the whole cache (audit item #1).
-      CACHE_CLEAR_TOKEN?: string;
+      RESILIENCE_TIMEOUT_MS: number;
+      RESILIENCE_RETRY_ATTEMPTS: number;
+      RESILIENCE_BREAKER_FAILURE_RATE: number;
+      RESILIENCE_BREAKER_MINIMUM_CALLS: number;
+      RESILIENCE_BREAKER_OPEN_MS: number;
+      RESILIENCE_UPLOAD_MAX_CONCURRENT: number;
+      RESILIENCE_UPLOAD_MAX_QUEUE: number;
+
+      // Prefix applied to every cache key as `<namespace>::<key>`, so clearing the cache is
+      // scoped to this app instead of the whole redis database.
+      REDIS_NAMESPACE?: string;
     }
   }
 }

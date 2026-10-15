@@ -15,6 +15,7 @@ import {
   mockOtpLogRepo,
   mockProtocolRepo,
   mockReferralRepo,
+  mockResilienceService,
   mockUserRepo,
   mockedUser,
   queryDto,
@@ -26,6 +27,7 @@ import { ConfigService } from "@nestjs/config";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { Mailer } from "@nestjs/mail";
+import { ResilienceService } from "@nestjs/resilience";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { lastValueFrom, of } from "rxjs";
 
@@ -84,6 +86,7 @@ describe("userService", () => {
           provide: EntityManager<PostgreSqlDriver>,
           useValue: mockEm as unknown as EntityManager<PostgreSqlDriver>,
         },
+        { provide: ResilienceService, useValue: mockResilienceService },
       ],
     }).compile();
 

@@ -45,6 +45,7 @@ read [here](https://betterprogramming.pub/observables-vs-promises-which-one-shou
 - 🏬 [**Authorization**](https://github.com/stalniy/casl) - RBAC with CASL
 - 🐇 **RabbitMQ** for background jobs and 🧠 **Redis** for caching
 - 📧 **Mail** with templates (SMTP or SES), 💬 [**Twilio**](https://github.com/twilio/twilio-node) and Firebase config, Cloudinary and Minio uploads, Stripe webhooks
+- 🛡️ [**Resilience**](https://docs.nestjs.com/reliability/resilience) — timeouts, circuit breakers, bulkheads and fallbacks around Cloudinary, mail and RabbitMQ
 - 🌐 **I18n**, 📃 [**Swagger**](https://swagger.io/) API docs and 🧵 [**swagger-stats**](https://github.com/slanatech/swagger-stats/) metrics
 - ⚙️ **Config** validated at startup with Zod, one file per integration
 - 📏 [**Oxlint**](https://oxc.rs/docs/guide/usage/linter.html) and **Oxfmt**, 🧪 **Vitest**, 🐺 [**Husky**](https://github.com/typicode/husky) git hooks
@@ -144,8 +145,8 @@ ENV=prod sh ./scripts/deploy.sh   # deploys the prod environment (env/.env.prod)
 
 More guides are in [`docs/`](docs): [getting started](docs/getting-started.md), [config](docs/config.md),
 [database](docs/database.md), [testing](docs/testing.md), [logging](docs/logging.md),
-[decorators](docs/decorators.md), [linting](docs/linting.md), [timezone](docs/timezone.md) and
-[naming](docs/naming-cheatsheet.md).
+[resilience](docs/resilience.md), [decorators](docs/decorators.md), [linting](docs/linting.md),
+[timezone](docs/timezone.md) and [naming](docs/naming-cheatsheet.md).
 
 <h2 align="center">Do you use this template?<br/>Don't be shy to give it a star! ★</h2>
 

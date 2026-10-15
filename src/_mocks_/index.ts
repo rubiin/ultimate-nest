@@ -20,6 +20,7 @@ import { ConfigService } from "@nestjs/config";
 import { Mailer } from "@nestjs/mail";
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
+import { type ResiliencePolicy, ResilienceService } from "@nestjs/resilience";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { of } from "rxjs";
 
@@ -168,6 +169,18 @@ export const mockOtpLogRepo = createMock<BaseRepository<OtpLog>>();
 export const mockProtocolRepo = createMock<BaseRepository<Protocol>>();
 export const mockContext = createMock<ExecutionContext>({});
 export const mockReflector = createMock<Reflector>();
+
+// `ResiliencePolicy` is an abstract class, so `createMock` cannot stand in for it
+// directly. A pass-through `execute` keeps these unit tests exercising the
+// service's own logic; tests that care about a breaker trip `mockPolicy.execute`
+// to reject with `CircuitOpenError`.
+export const mockPolicy = {
+  execute: vi.fn((fn: () => unknown) => Promise.resolve().then(fn)),
+} as unknown as ResiliencePolicy;
+
+export const mockResilienceService = createMock<ResilienceService>({
+  preset: vi.fn(() => mockPolicy),
+});
 
 // `RequestContext.create` drives real `AsyncLocalStorage`, so a bare
 // `createMock<MikroORM>()` would never invoke the wrapped callback. Stand in a

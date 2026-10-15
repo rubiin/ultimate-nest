@@ -10,10 +10,13 @@ import {
   mockJwtService,
   mockMikroORM,
   mockNewsLetterRepo,
+  mockPolicy,
+  mockResilienceService,
   mockSubscriberRepo,
 } from "@mocks";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
+import { CircuitOpenError, ResilienceService } from "@nestjs/resilience";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
@@ -45,6 +48,7 @@ describe("newsLetterService", () => {
         { provide: ConfigService, useValue: mockConfigService },
         { provide: MikroORM, useValue: mockMikroORM },
         { provide: JwtService, useValue: mockJwtService },
+        { provide: ResilienceService, useValue: mockResilienceService },
       ],
     }).compile();
 
@@ -175,6 +179,24 @@ describe("newsLetterService", () => {
       await expect(service.sendNewsLetter()).resolves.toBeUndefined();
 
       expect(newsLetter.sentAt).toBeUndefined();
+    });
+
+    // Without this the cron walks every remaining newsletter against a breaker
+    // that is already open, rejecting one message per subscriber for nothing.
+    it("should stop after the first open breaker instead of shedding every publish", async () => {
+      const following = new NewsLetter({ idx: "news-2", name: "November", content: "Hi" });
+      mockNewsLetterRepo.find.mockResolvedValue([newsLetter, following] as never);
+      // Once only, so the second subscriber of the first round still goes
+      // through and the assertion below is about the loop, not the mock.
+      mockPolicy.execute.mockImplementationOnce(() =>
+        Promise.reject(new CircuitOpenError("rabbitmq", 30000)),
+      );
+
+      await expect(service.sendNewsLetter()).resolves.toBeUndefined();
+
+      // Two subscribers, one round: without the break this would be four.
+      expect(mockPolicy.execute).toHaveBeenCalledTimes(2);
+      expect(following.sentAt).toBeUndefined();
     });
 
     it("should run the queries inside a request context", async () => {
