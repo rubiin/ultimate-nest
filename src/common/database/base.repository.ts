@@ -266,19 +266,15 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
     }
 
     if (fromDate) {
-      qb.andWhere({
-        createdAt: {
-          $gte: fromDate,
-        },
-      } as unknown as QBFilterQuery<T>);
+      const createdFrom: Dictionary = { createdAt: { $gte: fromDate } };
+
+      qb.andWhere(createdFrom as QBFilterQuery<T>);
     }
 
     if (to) {
-      qb.andWhere({
-        createdAt: {
-          $lte: to,
-        },
-      } as unknown as QBFilterQuery<T>);
+      const createdTo: Dictionary = { createdAt: { $lte: to } };
+
+      qb.andWhere(createdTo as QBFilterQuery<T>);
     }
 
     qb.orderBy(this.getOrderBy(sort as keyof T, order))
