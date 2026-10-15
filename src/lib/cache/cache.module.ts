@@ -13,12 +13,18 @@ import { CacheService } from "./cache.service";
       imports: [ConfigModule],
       inject: [ConfigService],
       isGlobal: true,
-      useFactory: async (configService: ConfigService<Configs, true>) => ({
-        // Entries expire instead of living until the next wipe. A short default keeps
-        // per-user replay exposure bounded even when a route forgets @CacheTTL.
-        ttl: 5 * 60 * 1000,
-        store: createKeyv(configService.getOrThrow("redis", { infer: true })),
-      }),
+      useFactory: async (configService: ConfigService<Configs, true>) => {
+        const redisConfig = configService.getOrThrow("redis", { infer: true });
+
+        return {
+          // Entries expire instead of living until the next wipe. A short default keeps
+          // per-user replay exposure bounded even when a route forgets @CacheTTL.
+          ttl: 5 * 60 * 1000,
+          // The namespace scopes every key to `<namespace>::<key>`, so `resetCache()` only
+          // deletes this app's entries and never another tenant's keys in the same database.
+          store: createKeyv(redisConfig, { namespace: redisConfig.namespace }),
+        };
+      },
     }),
   ],
   providers: [CacheService],

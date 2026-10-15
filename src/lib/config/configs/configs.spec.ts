@@ -15,6 +15,7 @@ import {
   stripe,
   throttle,
   twilio,
+  resilience,
 } from "./index";
 
 const env = (values: Record<string, string | undefined>) => {
@@ -215,6 +216,7 @@ describe("config factories", () => {
     it("coerces the numeric settings", () => {
       env({
         REDIS_HOST: "localhost",
+        REDIS_NAMESPACE: "app",
         REDIS_PASSWORD: "pass",
         REDIS_PORT: "6379",
         REDIS_TTL: "60",
@@ -223,10 +225,46 @@ describe("config factories", () => {
 
       expect(redis()).toEqual({
         host: "localhost",
+        namespace: "app",
         password: "pass",
         port: 6379,
         ttl: 60,
         username: "user",
+      });
+    });
+
+    // Without a namespace every key is un-prefixed and a clear can no longer be confined
+    // to this app, so the value falls back rather than resolving to undefined.
+    it("falls back to a default namespace when the variable is unset", () => {
+      env({
+        REDIS_HOST: "localhost",
+        REDIS_PASSWORD: "pass",
+        REDIS_PORT: "6379",
+        REDIS_TTL: "60",
+        REDIS_USERNAME: "user",
+      });
+
+      expect(redis().namespace).toBe("ultimate-nest");
+    });
+  });
+
+  describe("resilience", () => {
+    it("coerces the breaker, retry, timeout and upload-bulkhead settings to numbers", () => {
+      env({
+        RESILIENCE_TIMEOUT_MS: "10000",
+        RESILIENCE_RETRY_ATTEMPTS: "3",
+        RESILIENCE_BREAKER_FAILURE_RATE: "50",
+        RESILIENCE_BREAKER_MINIMUM_CALLS: "10",
+        RESILIENCE_BREAKER_OPEN_MS: "30000",
+        RESILIENCE_UPLOAD_MAX_CONCURRENT: "5",
+        RESILIENCE_UPLOAD_MAX_QUEUE: "10",
+      });
+
+      expect(resilience()).toEqual({
+        breaker: { failureRateThreshold: 50, minimumCalls: 10, openDuration: 30000 },
+        retry: { attempts: 3 },
+        timeout: 10000,
+        upload: { maxConcurrent: 5, maxQueue: 10 },
       });
     });
   });

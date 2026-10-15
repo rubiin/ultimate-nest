@@ -12,6 +12,7 @@ import {
   NestMailModule,
   NestPinoModule,
   NestRabbitModule,
+  NestResilienceModule,
   NestThrottlerModule,
   OrmModule,
 } from "@lib/index";
@@ -28,7 +29,13 @@ import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
+    // Config first: every other module below reads its options from it.
     NestConfigModule,
+    // Registers one app-wide interceptor. Early in the list so it wraps the
+    // cache interceptors below; ordering is not load-bearing here, since the
+    // only retries are on GETs and those interceptors split GET (cache) from
+    // non-GET (clear).
+    NestResilienceModule,
     NestMailModule,
     NestPinoModule,
     NestI18nModule,

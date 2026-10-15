@@ -15,6 +15,7 @@ import { fileValidatorPipe } from "@common/misc";
 import { User } from "@entities";
 import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
 import { Body, Delete, Get, Put as Patch, Post, Query, UploadedFile } from "@nestjs/common";
+import { Resilience } from "@nestjs/resilience";
 import { Observable } from "rxjs";
 
 import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
@@ -49,6 +50,10 @@ export class UserController {
     badRequest: EMAIL_ALREADY_REGISTERED,
     operation: "Create user",
   })
+  // No `@Retry()`: this writes a user and an OTP, so a second attempt inside one
+  // request would duplicate rows. The timeout and breaker still apply, which is
+  // what matters here - a stalled upload must not hold the request open.
+  @Resilience("cloudinary")
   @ApiFile({ fieldName: "avatar", required: true }) // fix this
   publicRegistration(
     @Body() dto: UserRegistrationDto,
@@ -79,6 +84,7 @@ export class UserController {
     operation: "User create",
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Create))
+  @Resilience("cloudinary")
   @ApiFile({ fieldName: "avatar", required: true })
   create(
     @Body() dto: CreateUserDto,
@@ -95,6 +101,7 @@ export class UserController {
     params: ["idx"],
   })
   @CheckPolicies(new GenericPolicyHandler(User, Action.Update))
+  @Resilience("cloudinary")
   update(
     @UUIDParam("idx") index: string,
     @Body()

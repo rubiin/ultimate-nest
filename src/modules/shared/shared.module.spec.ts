@@ -22,6 +22,7 @@ vi.mock("@lib/index", () => {
     NestMailModule: stub,
     NestPinoModule: stub,
     NestRabbitModule: stub,
+    NestResilienceModule: stub,
     NestThrottlerModule: stub,
     OrmModule: stub,
   };

@@ -22,6 +22,7 @@ import {
   mail,
   rabbitmq,
   redis,
+  resilience,
   throttle,
 } from "./configs";
 import { configValidationSchema } from "./config.validation";
@@ -41,6 +42,7 @@ import { configValidationSchema } from "./config.validation";
         googleOauth,
         facebookOauth,
         throttle,
+        resilience,
       ],
       cache: true,
       isGlobal: true,
@@ -81,6 +83,7 @@ export const appConfigValidationSchema = z.object({
 - googleOauth: Configuration for Google OAuth settings.
 - facebookOauth: Configuration for Facebook OAuth settings.
 - throttle: Configuration for throttling settings.
+- resilience: Configuration for the timeouts, circuit breakers and bulkheads in `docs/resilience.md`.
 - Each configuration setting has its own validation schema and options to customize its behavior.
 
 1. Customize the environment file path and configuration loading behavior in the ConfigModule.forRoot() options. In the

@@ -11,6 +11,7 @@ import {
   minio,
   rabbitmq,
   redis,
+  resilience,
   sentry,
   stripe,
   throttle,
@@ -28,6 +29,7 @@ export interface Config {
   redis: ConfigType<typeof redis>;
   mail: ConfigType<typeof mail>;
   rabbitmq: ConfigType<typeof rabbitmq>;
+  resilience: ConfigType<typeof resilience>;
   stripe: ConfigType<typeof stripe>;
   sentry: ConfigType<typeof sentry>;
   throttle: ConfigType<typeof throttle>;

@@ -29,6 +29,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { Resilience } from "@nestjs/resilience";
 import { ApiOkResponse, ApiOperation } from "@nestjs/swagger";
 import { Observable } from "rxjs";
 import { map } from "rxjs";
@@ -84,6 +85,10 @@ export class AuthController {
     notFound: "Account doesn't exist.",
     operation: "Forgot password",
   })
+  // Bounded because the whole handler is one mail send inside a transaction: a
+  // stalled SMTP server must roll the OTP back rather than hang the caller.
+  // Not retried - a second attempt would persist a second OTP.
+  @Resilience("mail")
   forgotPassword(@Body() dto: SendOtpDto): Observable<{ message: string }> {
     return this.authService.forgotPassword(dto);
   }
