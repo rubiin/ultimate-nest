@@ -107,7 +107,7 @@ repo state; if a command below fails, trust `package.json` over this document.
 | Lint            | oxlint (`.oxlintrc.json`)                                                 |
 | Format          | oxfmt (`.oxfmtrc.json`), 100 cols, double quotes, trailing commas         |
 | Pre-commit      | husky + lint-staged → `oxlint` on staged `.ts`/`.tsx`                     |
-| Node            | pinned in `.nvmrc` to `24`; `engines` requires `>=24`           |
+| Node            | pinned in `.nvmrc` to `24.22.0`; `engines` requires `>=24`                |
 
 ## Commands
 
@@ -135,7 +135,9 @@ Single test: `pnpm test -- -t "name"` or `pnpm test src/modules/user/user.servic
 Migration / seeder / e2e tasks need a live database and env vars. The repo ships
 `justfile` recipes (`just migrate`, `just quick-migrate`, `just seed`, `just test-e2e`)
 that set `NODE_ENV` and seed credentials — prefer those over invoking pnpm directly.
-Env files are **generated, not committed**: `pnpm sample` writes them into `env/`.
+Env files are **not committed**: `env/.env.sample` is the committed template (every variable, with a
+working local value) and `pnpm sample` copies it to `env/.env.<NODE_ENV>`. Never run a generator that writes
+back to `.env.sample` — it is tracked, and the config schema lives in `src/lib/config/configs`.
 
 ## Project Structure
 

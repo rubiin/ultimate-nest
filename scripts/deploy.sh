@@ -78,11 +78,7 @@ docker compose version >/dev/null 2>&1 ||
 if [ ! -f "env/.env.${DEPLOY_ENV}" ]; then
   case "$command" in
     up | build)
-      if [ -f "env/.env.${DEPLOY_ENV}.sample" ]; then
-        echo "env/.env.${DEPLOY_ENV} is missing; run: cp env/.env.${DEPLOY_ENV}.sample env/.env.${DEPLOY_ENV}" >&2
-      else
-        echo "env/.env.${DEPLOY_ENV} is missing; 'pnpm sample' generates one for dev" >&2
-      fi
+      echo "env/.env.${DEPLOY_ENV} is missing; run: cp env/.env.sample env/.env.${DEPLOY_ENV}" >&2
       exit 1
       ;;
     *)
