@@ -61,21 +61,21 @@ for [PostgreSQL](https://www.postgresql.org/), but you can use any database.
 2. Next, generate migration file:
 
    ```sh
-   NODE_ENV=dev npm run orm migration:create
+   NODE_ENV=dev pnpm orm migration:create
    ```
 
-3. Apply this migration to database via [npm run run orm migration:up](#run-migration).
+3. Apply this migration to database via [pnpm orm migration:up](#run-migration).
 
 ### Run migration
 
 ```bash
-NODE_ENV=dev npm run orm migration:up
+NODE_ENV=dev pnpm orm migration:up
 ```
 
 ### Revert migration
 
 ```bash
-NODE_ENV=dev npm run orm migration:down
+NODE_ENV=dev pnpm orm migration:down
 ```
 
 More info for the migrations can be found at: https://mikro-orm.io/docs/migrations
@@ -83,13 +83,13 @@ More info for the migrations can be found at: https://mikro-orm.io/docs/migratio
 ### Drop the database and migrate up to the latest version
 
 ```bash
-NODE_ENV=dev npm run orm migration:fresh
+NODE_ENV=dev pnpm orm migration:fresh
 ```
 
 # Generate Seeds
 
 ```bash
-NODE_ENV=dev npm run orm seeder:create AuthorSeeder  # generates the class AuthorSeeder under src/common/database/seeders
+NODE_ENV=dev pnpm orm seeder:create AuthorSeeder  # generates the class AuthorSeeder under src/common/database/seeders
 ```
 
 ```bash
@@ -112,7 +112,7 @@ export class AuthorSeeder extends Seeder {
 To run the generated seeder:
 
 ```bash
-NODE_ENV=dev npm run orm seeder:run AuthorSeeder  # runs the authorseeder
+NODE_ENV=dev pnpm orm seeder:run --class=AuthorSeeder  # runs the authorseeder
 ```
 
 ## More info for the seeding can be found at: https://mikro-orm.io/docs/seeding

@@ -1,8 +1,7 @@
-version: 3.9
 services:
   nestify:
     container_name: nestify
-    env_file: env/.env.${ENV}
+    env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     build:
       context: .
       dockerfile: ./docker/dev.Dockerfile
@@ -89,7 +88,7 @@ services:
   redis:
     container_name: redis
     image: redis:7.0.11-alpine
-    env_file: env/.env.${ENV}
+    env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     restart: always
     depends_on:
       - traefik
@@ -104,7 +103,7 @@ services:
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3.12.0-management-alpine
-    env_file: env/.env.${ENV}
+    env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     networks:
       - nestify-network
     depends_on:
@@ -122,7 +121,7 @@ services:
     container_name: database
     image: postgres:15.3-alpine
     restart: unless-stopped
-    env_file: env/.env.${ENV}
+    env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     depends_on:
@@ -139,7 +138,7 @@ services:
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4:7.3
-    env_file: env/.env.${ENV}
+    env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     restart: unless-stopped
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com

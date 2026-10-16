@@ -34,7 +34,7 @@ typings
 Thumbs.db
 .env
 scripts
-docker
+# docker/ must stay: the compose app service runs docker/entrypoint.sh from the image
 docs
 .gitignore
 .gitattributes
