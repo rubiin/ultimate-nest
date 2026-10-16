@@ -64,7 +64,7 @@ read [here](https://betterprogramming.pub/observables-vs-promises-which-one-shou
 npx degit rubiin/ultimate-nest my-nest-app   # or use the "Use this template" button
 cd my-nest-app
 pnpm install
-cp env/.env.dev.sample env/.env.dev
+cp env/.env.sample env/.env.dev
 ```
 
 Then start the backing services, run migrations, seed and start the app. The full walkthrough is in
@@ -96,8 +96,10 @@ example `just migrate`, `just seed` and `just encryption`. Run `just` to list th
 
 Each integration has its own file in `src/lib/config/configs` with a Zod schema and a `registerAs` block, and
 `src/lib/config/config.module.ts` loads them. Every variable is validated at startup, and the app refuses to
-boot on a missing or malformed one. `env/.env.sample` lists every variable, and `env/.env.dev.sample` is a
-working local setup.
+boot on a missing or malformed one. `env/.env.sample` lists every variable with a working local value, and
+`env/.env.<NODE_ENV>` is the copy you run against. A blank value is not the same as an absent one: optional
+integrations (Stripe, Sentry, Twilio, Minio, S3) reject a blank so a half-configured integration fails loudly
+instead of silently doing nothing.
 
 To drop an integration you do not need (for example Redis or Twilio), remove its config from
 `config.module.ts`, its schema from `config.validation.ts`, and its variables from your env file. See
@@ -107,7 +109,7 @@ To drop an integration you do not need (for example Redis or Twilio), remove its
 
 ```text
 ultimate-nest
-├── env                 Env files: .env.sample (template), .env.dev.sample (local), .env.<NODE_ENV> (yours)
+├── env                 Env files: .env.sample (committed template), .env.<NODE_ENV> (yours, copy of it)
 ├── migrations          MikroORM migrations
 ├── docs                Guides, start with getting-started.md
 ├── test                End to end specs
