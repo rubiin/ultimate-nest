@@ -23,12 +23,12 @@ There are a few different contexts in which the linters run.
 
 ```bash
 # Lint all files without auto-fixing
-npm run  lint
+pnpm lint
 ```
 
 ```bash
 # Lint all files, fixing many violations automatically
-npm run lint:fix
+pnpm lint:fix
 ```
 
 See `package.json` to update.

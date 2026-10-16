@@ -34,7 +34,7 @@ services:
       # idempotent, so a forced `always` on a populated database fails on a duplicate email.
       SEED_ON_START: ${SEED_ON_START:-auto}
     env_file:
-      - env/.env.${ENV:-dev}
+      - env/.env.${DEPLOY_ENV:-dev}
     ports:
       - "${APP_PORT:-3000}:3000"
     depends_on:

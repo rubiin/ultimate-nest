@@ -35,7 +35,7 @@ Progress: **9 Done · 10 Verified N/A · 3 Open · 0 Broken**
 
 ## Done
 
-**2. Node.js.** Pinned to `24.21.0` in `.nvmrc`, with `engines.node: ">=24.21.0"`. Clears both the
+**2. Node.js.** Pinned to `24.22.0` in `.nvmrc`, with `engines.node: ">=24.22.0"`. Clears both the
 runtime floor (v20.19+/v22.12+) and the higher `@nestjs/schematics` floor (v24.15+) that `nest
 generate` / `nest upgrade` need. Not on the unsupported 21.x line.
 

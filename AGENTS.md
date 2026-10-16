@@ -107,7 +107,7 @@ repo state; if a command below fails, trust `package.json` over this document.
 | Lint            | oxlint (`.oxlintrc.json`)                                                 |
 | Format          | oxfmt (`.oxfmtrc.json`), 100 cols, double quotes, trailing commas         |
 | Pre-commit      | husky + lint-staged → `oxlint` on staged `.ts`/`.tsx`                     |
-| Node            | pinned in `.nvmrc` to `24.21.0`; `engines` requires `>=24.21.0`           |
+| Node            | pinned in `.nvmrc` to `24`; `engines` requires `>=24`           |
 
 ## Commands
 

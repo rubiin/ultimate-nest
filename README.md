@@ -53,7 +53,7 @@ read [here](https://betterprogramming.pub/observables-vs-promises-which-one-shou
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) `24.21.0` or newer (see `.nvmrc`)
+- [Node.js](https://nodejs.org/) `24.22.0` or newer (see `.nvmrc`)
 - [pnpm](https://pnpm.io), the repo uses `pnpm-lock.yaml` so npm and yarn are not supported
 - [Docker](https://www.docker.com/), for local PostgreSQL, Redis, RabbitMQ and a mail catcher
 - Optional: [just](https://github.com/casey/just) for the shortcuts in `justfile`
@@ -133,13 +133,22 @@ and `GET /v1/auth/sessions` lists the devices a user is logged in on.
 
 ## Deployment
 
-You need `docker` and `docker-compose`. The variables the compose file reads are defined in
-`docker-compose.yml`.
+`scripts/deploy.sh` drives the local stack in `docker-compose.dev.yml`: the app plus Postgres, Redis,
+RabbitMQ and Mailpit. The app container builds, migrates and seeds itself on boot. `ENV` picks the env
+file, `dev` by default.
 
 ```sh
-ENV=dev sh ./scripts/deploy.sh    # deploys the dev environment (env/.env.dev)
-ENV=prod sh ./scripts/deploy.sh   # deploys the prod environment (env/.env.prod)
+./scripts/deploy.sh            # start the stack, reusing the image already built
+./scripts/deploy.sh build      # rebuild the image, then start the stack detached
+./scripts/deploy.sh logs       # follow the build, migrate and seed output
+./scripts/deploy.sh down       # stop the stack, keeping the volumes
 ```
+
+The source is baked into the image rather than mounted, so a code change needs `build`.
+`./scripts/deploy.sh services` starts only the backing services, for running the app on the host.
+
+`docker-compose.yml` is the production-style stack (Traefik, TLS, pgAdmin). It runs the dev image with
+the source mounted and no migrate step, so it is not production ready.
 
 ## Documentation
 

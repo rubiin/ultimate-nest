@@ -5,7 +5,7 @@ ships natively, v12 features worth adopting, and breaking changes that were asse
 not applicable.
 
 Versions these notes were verified against: `@nestjs/common` 12.1.2, `@nestjs/core` 12.1.2,
-`@nestjs/platform-express` 12.1.2, `@nestjs/config` 12.0.1, `@nestjs/cli` 12.0.8, Node 24.21.0.
+`@nestjs/platform-express` 12.1.2, `@nestjs/config` 12.0.1, `@nestjs/cli` 12.0.8, Node 24.22.0.
 Everything below was read out of `node_modules/@nestjs/*` and the v12.0.0 / v12.1.x release notes,
 not from memory.
 
@@ -190,7 +190,7 @@ need porting.
 
 | Item                                                    | Why it does not apply here                                                                          |
 | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Packages ship as ESM                                    | Repo is CommonJS; `require(esm)` keeps it working. Node 24.21.0 clears the v20.19+/v22.12+ floor.   |
+| Packages ship as ESM                                    | Repo is CommonJS; `require(esm)` keeps it working. Node 24.22.0 clears the v20.19+/v22.12+ floor.   |
 | NATS v3 (`nats` → `@nats-io/transport-node`)            | No NATS dependency.                                                                                 |
 | GraphQL subscriptions / GraphiQL rename                 | No `@nestjs/graphql` dependency.                                                                    |
 | `angular` schematic removed                             | No schematic usage.                                                                                 |
