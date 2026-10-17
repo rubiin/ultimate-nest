@@ -132,7 +132,7 @@ examples.
 
 ## Lint and typing
 
-`@typescript-eslint/no-explicit-any` is disabled for `*.spec.ts` in `.oxlintrc.json` — casts
+`@typescript-eslint/no-explicit-any` is disabled for `*.spec.ts` in `oxlint.config.mts` — casts
 such as `as never` in mock setups are expected. That exemption does not apply to production
 code, and note that oxlint does not otherwise enforce `no-explicit-any`, so it will not warn
 you in either case.

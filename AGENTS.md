@@ -24,7 +24,7 @@ What is and is not enforced — this is the part most worth internalising.
 | Lint   | `pnpm lint`                   | **Partially.** oxlint, warnings only, tiny rule set                                                                  |
 | Tests  | `pnpm test`                   | Only what you run; nothing blocks a commit                                                                           |
 
-- **`no-explicit-any` is not enforced anywhere.** It appears in `.oxlintrc.json` only as an
+- **`no-explicit-any` is not enforced anywhere.** It appears in `oxlint.config.mts` only as an
   `off` override for spec files, and the base ruleset never enables it. A new `as any` in
   production code will not be flagged. `noUnusedLocals` _is_ enforced, so a cast left behind
   after deleting code will fail the build.
@@ -104,7 +104,7 @@ repo state; if a command below fails, trust `package.json` over this document.
 | Language        | TypeScript 6, CommonJS output, path aliases in `tsconfig.json`            |
 | Transpiler      | SWC (`.swcrc`) for `build:swc`; tsc remains the type gate (`docs/swc.md`) |
 | Test runner     | **Vitest** (`vitest run`) — not Jest, despite `docs/testing.md`           |
-| Lint            | oxlint (`.oxlintrc.json`)                                                 |
+| Lint            | oxlint (`oxlint.config.mts`)                                              |
 | Format          | oxfmt (`.oxfmtrc.json`), 100 cols, double quotes, trailing commas         |
 | Pre-commit      | husky + lint-staged → `oxlint` on staged `.ts`/`.tsx`                     |
 | Node            | pinned in `.nvmrc` to `24.22.0`; `engines` requires `>=24`                |

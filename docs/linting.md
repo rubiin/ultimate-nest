@@ -47,7 +47,7 @@ This boilerplate ships with opinionated defaults, but you can edit each tools co
 files:
 
 - [Oxlint](https://oxc.rs/docs/guide/usage/linter/config.html)
-  - `.oxlintrc.json`
+  - `oxlint.config.mts`
 
 Note: This uses oxlint flat config, which is the recommended way to configure oxlint.
 
