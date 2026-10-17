@@ -1,5 +1,11 @@
 import { PostStateEnum } from "@common/@types";
-import { IsBooleanField, IsEnumField, IsStringField, IsUUIDField } from "@common/decorators";
+import {
+  IsBooleanField,
+  IsDateField,
+  IsEnumField,
+  IsStringField,
+  IsUUIDField,
+} from "@common/decorators";
 
 export class CreatePostDto {
   /**
@@ -49,6 +55,14 @@ export class CreatePostDto {
 
   @IsEnumField(PostStateEnum, { required: false })
   state?: PostStateEnum;
+
+  /**
+   * Moment a `SCHEDULED` post goes live, picked up by the publishing cron
+   * @example 2020-06-07T14:34:08.700Z
+   */
+
+  @IsDateField({ required: false })
+  publishAt?: Date;
 
   /**
    * Published status of post

@@ -1,14 +1,15 @@
 import { OffsetMeta, OffsetPaginationResponse, PaginationResponse } from "@common/@types";
-import { QueryOrder } from "@common/@types";
+import { PostStateEnum, QueryOrder } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { AutoPath, EntityKey } from "@mikro-orm/core";
-import { EntityManager, raw } from "@mikro-orm/core";
+import { EntityManager, raw, RequestContext } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver, ref } from "@mikro-orm/postgresql";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { omit } from "helper-fns";
 import { Observable } from "rxjs";
 import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
@@ -121,6 +122,8 @@ export class PostService {
    * @returns The post object
    */
   create(dto: CreatePostDto, author: User): Observable<Post> {
+    this.assertSchedule(dto);
+
     return zip(
       this.tagRepository.find({
         idx: dto.tags,
@@ -144,6 +147,26 @@ export class PostService {
   }
 
   /**
+   * A `SCHEDULED` post only goes live through the cron, which needs a `publishAt` still in the
+   * future, so the pair is rejected here rather than left as a post that never publishes. A
+   * request that mentions neither field is not policed: an untouched post may already carry a
+   * moment the cron has consumed.
+   * @param dto - The submitted fields.
+   * @param post - The stored post, on an edit; absent on a create.
+   * @throws BadRequestException when the state and `publishAt` cannot become a publishable post.
+   */
+  private assertSchedule(dto: CreatePostDto | EditPostDto, post?: Post): void {
+    if (dto.state === undefined && dto.publishAt === undefined) return;
+    if ((dto.state ?? post?.state) !== PostStateEnum.SCHEDULED) return;
+
+    const publishAt = dto.publishAt ?? post?.publishAt;
+
+    if (!publishAt) throw new BadRequestException(translate("exception.publishAtRequired"));
+    if (new Date(publishAt).getTime() <= Date.now())
+      throw new BadRequestException(translate("exception.publishAtInPast"));
+  }
+
+  /**
    * It gets a post by its slug, assigns the new values to it, and then flushes the changes to the
    * database
    * @param slug - string - the slug of the post to edit
@@ -153,6 +176,8 @@ export class PostService {
   update(slug: string, dto: EditPostDto): Observable<Post> {
     return this.findOne(slug).pipe(
       switchMap((post) => {
+        this.assertSchedule(dto, post);
+
         if (dto.tags) {
           return from(
             this.tagRepository.find({
@@ -174,6 +199,36 @@ export class PostService {
         return from(this.em.flush()).pipe(map(() => post));
       }),
     );
+  }
+
+  /**
+   * Goes live every post whose `publishAt` has passed, one minute at a time.
+   */
+  @Cron(CronExpression.EVERY_MINUTE)
+  async publishScheduledPosts(): Promise<void> {
+    // A cron job runs outside any HTTP request, so there is no request context to
+    // fork from. Without this, the repository call runs on the global identity map.
+    return RequestContext.create(this.em, async () => this.publishDuePosts());
+  }
+
+  /**
+   * Promotes every `SCHEDULED` post that is due to `PUBLISHED`. Posts scheduled for a later
+   * moment, or already published, are left alone.
+   */
+  private async publishDuePosts(): Promise<void> {
+    const posts = await this.postRepository.find({
+      publishAt: { $lte: new Date() },
+      state: PostStateEnum.SCHEDULED,
+    });
+
+    if (posts.length === 0) return;
+
+    for (const post of posts) {
+      post.state = PostStateEnum.PUBLISHED;
+      post.published = true;
+    }
+
+    await this.em.flush();
   }
 
   /**

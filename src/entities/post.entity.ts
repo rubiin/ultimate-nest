@@ -87,6 +87,10 @@ export class Post extends BaseEntity {
   @Enum({ items: () => PostStateEnum })
   state: PostStateEnum & Opt = PostStateEnum.DRAFT;
 
+  // Indexed because the publishing cron scans for the `SCHEDULED` posts whose moment has passed.
+  @Property({ index: true })
+  publishAt?: Date;
+
   constructor(partial?: Partial<Post>) {
     super();
     Object.assign(this, partial);

@@ -2152,6 +2152,23 @@
           "enumItems": [],
           "mappedType": "boolean"
         },
+        "publish_at": {
+          "name": "publish_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
         "published": {
           "name": "published",
           "type": "boolean",
@@ -2218,7 +2235,7 @@
           "comment": null,
           "collation": null,
           "enumItems": [],
-          "generated": "((setweight(to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::\"char\") || setweight(to_tsvector('english'::regconfig, COALESCE(description, ''::text)), 'B'::\"char\")) || setweight(to_tsvector('english'::regconfig, COALESCE(content, ''::text)), 'C'::\"char\")) stored"
+          "generated": "(setweight(to_tsvector('english', coalesce(title, '')), 'A') || setweight(to_tsvector('english', coalesce(description, '')), 'B') || setweight(to_tsvector('english', coalesce(content, '')), 'C')) stored"
         },
         "slug": {
           "name": "slug",
@@ -2253,6 +2270,7 @@
           "collation": null,
           "enumItems": [
             "DRAFT",
+            "SCHEDULED",
             "PUBLISHED"
           ],
           "mappedType": "enum"
@@ -2352,6 +2370,16 @@
         },
         {
           "columnNames": [
+            "publish_at"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "post_publish_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
             "published"
           ],
           "composite": false,
@@ -2396,19 +2424,19 @@
         {
           "name": "post_favorites_count_check",
           "expression": "favorites_count >= 0",
-          "definition": "CHECK ((favorites_count >= 0))",
+          "definition": "check (favorites_count >= 0)",
           "columnName": "favorites_count"
         },
         {
           "name": "post_reading_time_check",
           "expression": "reading_time >= 0",
-          "definition": "CHECK ((reading_time >= 0))",
+          "definition": "check (reading_time >= 0)",
           "columnName": "reading_time"
         },
         {
           "name": "post_state_check",
-          "expression": "\"state\" in ('DRAFT', 'PUBLISHED')",
-          "definition": "check (\"state\" in ('DRAFT', 'PUBLISHED'))",
+          "expression": "\"state\" in ('DRAFT', 'SCHEDULED', 'PUBLISHED')",
+          "definition": "check (\"state\" in ('DRAFT', 'SCHEDULED', 'PUBLISHED'))",
           "columnName": "state"
         }
       ],
@@ -4063,7 +4091,10 @@
           "default": null,
           "comment": null,
           "collation": null,
-          "enumItems": [],
+          "enumItems": [
+            "ADMIN",
+            "AUTHOR"
+          ],
           "mappedType": "array"
         },
         "social": {
@@ -4240,14 +4271,14 @@
       "checks": [
         {
           "name": "user_roles_check",
-          "expression": "roles <@ ARRAY['ADMIN'::text, 'AUTHOR'::text]",
-          "definition": "CHECK ((roles <@ ARRAY['ADMIN'::text, 'AUTHOR'::text]))",
+          "expression": "\"roles\" <@ array['ADMIN'::text, 'AUTHOR'::text]",
+          "definition": "check (\"roles\" <@ array['ADMIN'::text, 'AUTHOR'::text])",
           "columnName": "roles"
         },
         {
           "name": "user_roles_not_empty_check",
           "expression": "cardinality(roles) > 0",
-          "definition": "CHECK ((cardinality(roles) > 0))",
+          "definition": "check (cardinality(roles) > 0)",
           "columnName": "roles"
         }
       ],
