@@ -14,6 +14,7 @@ import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
+import { OtpService } from "@modules/otp";
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Mailer } from "@nestjs/mail";
@@ -23,8 +24,6 @@ import { capitalize, slugify } from "helper-fns";
 import { CloudinaryService, IFile } from "nestjs-cloudinary";
 import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, tap, throwError } from "rxjs";
-
-import { OtpService } from "@modules/otp";
 
 import { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
 

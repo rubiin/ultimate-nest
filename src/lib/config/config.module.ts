@@ -3,6 +3,7 @@ import process from "node:process";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
+import { configValidationSchema } from "./config.validation";
 import {
   app,
   cloudinary,
@@ -21,7 +22,6 @@ import {
   throttle,
   twilio,
 } from "./configs";
-import { configValidationSchema } from "./config.validation";
 
 @Module({
   exports: [ConfigService],

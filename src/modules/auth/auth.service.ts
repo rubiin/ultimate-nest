@@ -1,8 +1,8 @@
 import process from "node:process";
 
 import { AuthenticationResponse, ClientInfo, OauthResponse, OtpPurpose } from "@common/@types";
-import { BaseRepository } from "@common/database";
 import { ERROR_CODES } from "@common/constant";
+import { BaseRepository } from "@common/database";
 import { HelperService } from "@common/helpers";
 import { OtpLog, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
@@ -11,6 +11,7 @@ import { EntityManager } from "@mikro-orm/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql";
+import { OtpService } from "@modules/otp";
 import { TokensService } from "@modules/token/tokens.service";
 import {
   BadRequestException,
@@ -23,7 +24,6 @@ import { ConfigService } from "@nestjs/config";
 import { Mailer } from "@nestjs/mail";
 import { isAfter } from "date-fns";
 import { capitalize, omit } from "helper-fns";
-import { OtpService } from "@modules/otp";
 import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 

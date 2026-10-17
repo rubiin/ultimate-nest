@@ -1,9 +1,9 @@
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
+import { mockJwtService, mockUserRepo } from "@mocks";
 import { ExecutionContext } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { WsException } from "@nestjs/websockets";
-import { mockJwtService, mockUserRepo } from "@mocks";
 
 import { WsJwtGuard } from "./ws.guard";
 

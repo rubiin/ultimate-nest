@@ -37,6 +37,7 @@ with dependencies replaced by mocks.
 
 ```ts
 import { Test } from "@nestjs/testing";
+
 import { UserService } from "./user.service";
 
 describe("userService", () => {
@@ -101,6 +102,7 @@ another. Reusable payloads and helpers live in `test/fixtures/` (`user.ts`, `pos
 
 ```ts
 import request from "supertest";
+
 import { APP_URL } from "../fixtures";
 
 const app = APP_URL;

@@ -1,9 +1,9 @@
 import { Category } from "@entities";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { mockCategoryRepo, mockEm } from "@mocks";
+import { NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import { NotFoundException } from "@nestjs/common";
 import { lastValueFrom, of } from "rxjs";
 
 import { CategoryService } from "./category.service";

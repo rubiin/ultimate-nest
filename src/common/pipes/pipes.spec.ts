@@ -1,9 +1,9 @@
 import path from "node:path";
 
-import { IsString } from "class-validator";
-import { WsException } from "@nestjs/websockets";
-
 import { fileValidatorPipe } from "@common/misc/file";
+import { WsException } from "@nestjs/websockets";
+import { IsString } from "class-validator";
+
 import { SharpPipe } from "./sharp.pipe";
 import { WsValidationPipe } from "./ws-validation.pipe";
 

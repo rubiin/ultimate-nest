@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-import { createMock } from "@golevelup/ts-vitest";
 import { Post, Protocol, User } from "@entities";
+import { createMock } from "@golevelup/ts-vitest";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { normalizeEmail } from "helper-fns";
 

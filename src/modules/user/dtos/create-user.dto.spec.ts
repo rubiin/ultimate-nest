@@ -1,12 +1,11 @@
+import { IsNestedField } from "@common/decorators";
+import { IsUniqueConstraint } from "@common/decorators/validation/is-unique.validator";
 import { createMock } from "@golevelup/ts-vitest";
 import { EntityManager } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Test } from "@nestjs/testing";
 import { Type } from "class-transformer";
 import { useContainer, validate, ValidateNested } from "class-validator";
-
-import { IsNestedField } from "@common/decorators";
-import { IsUniqueConstraint } from "@common/decorators/validation/is-unique.validator";
 
 import { CreateUserDto, SocialDto } from "./create-user.dto";
 

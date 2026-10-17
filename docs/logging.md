@@ -46,6 +46,7 @@ export class NestPinoModule {}
 
 ```ts
 import { Module } from "@nestjs/common";
+
 import { NestPinoModule } from "./nest-pino.module";
 
 @Module({

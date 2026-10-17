@@ -1,8 +1,8 @@
 import { createMock } from "@golevelup/ts-vitest";
 import { of } from "rxjs";
 
-import { TagsService } from "./tags.service";
 import { TagsController } from "./tags.controller";
+import { TagsService } from "./tags.service";
 
 describe("TagsController", () => {
   it("wires the injected service into the generated CRUD routes", () => {

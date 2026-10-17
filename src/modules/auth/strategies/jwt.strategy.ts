@@ -5,7 +5,6 @@ import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 import { AuthService } from "../auth.service";
-
 import { assertTokenType } from "./assert-token-type";
 
 @Injectable()

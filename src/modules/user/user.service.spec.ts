@@ -1,7 +1,7 @@
 import { OtpPurpose } from "@common/@types";
 import { OtpLog, Protocol, Referral, User } from "@entities";
-import { VerifyEmailMail, WelcomeMail } from "@lib/mail";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
+import { VerifyEmailMail, WelcomeMail } from "@lib/mail";
 import { EntityManager, TransactionPropagation } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
@@ -24,10 +24,10 @@ import {
 import { OtpService } from "@modules/otp";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { TestingModule } from "@nestjs/testing";
-import { Test } from "@nestjs/testing";
 import { Mailer } from "@nestjs/mail";
 import { ResilienceService } from "@nestjs/resilience";
+import { TestingModule } from "@nestjs/testing";
+import { Test } from "@nestjs/testing";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { lastValueFrom, of } from "rxjs";
 

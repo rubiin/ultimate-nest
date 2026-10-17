@@ -12,6 +12,7 @@ To use this module, follow the instructions below:
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
+import { configValidationSchema } from "./config.validation";
 import {
   app,
   cloudinary,
@@ -25,7 +26,6 @@ import {
   resilience,
   throttle,
 } from "./configs";
-import { configValidationSchema } from "./config.validation";
 
 @Module({
   imports: [

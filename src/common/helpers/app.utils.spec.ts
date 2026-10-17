@@ -1,8 +1,8 @@
 import process from "node:process";
 
-import type { INestApplication } from "@nestjs/common";
 import { IS_PUBLIC_KEY_META, SWAGGER_API_ENDPOINT } from "@common/constant";
 import { swaggerOptions } from "@common/swagger/swagger.plugin";
+import type { INestApplication } from "@nestjs/common";
 import { ValidationPipe } from "@nestjs/common";
 import type { ConfigService } from "@nestjs/config";
 

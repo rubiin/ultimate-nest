@@ -1,5 +1,6 @@
 import { IsNestedFieldOptions } from "@common/@types";
 import { applyDecorators } from "@nestjs/common";
+import { i18nValidationMessage } from "@nestjs/i18n";
 import { Type } from "class-transformer";
 import {
   ArrayMaxSize,
@@ -11,7 +12,6 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Class } from "helper-fns";
-import { i18nValidationMessage } from "@nestjs/i18n";
 
 /**
  * It's a decorator that validates a string field

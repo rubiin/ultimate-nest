@@ -1,5 +1,5 @@
-import { OffsetPaginationDto } from "@common/dtos";
 import { IsStringField, IsUUIDField } from "@common/decorators";
+import { OffsetPaginationDto } from "@common/dtos";
 
 /**
  * Full-text search over title, description and content. `search` is required here and results

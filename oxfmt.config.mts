@@ -1,14 +1,16 @@
-{
-  "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "printWidth": 100,
-  "singleQuote": false,
-  "semi": true,
-  "tabWidth": 2,
-  "trailingComma": "all",
-  "arrowParens": "always",
-  "bracketSpacing": true,
-  "endOfLine": "lf",
-  "ignorePatterns": [
+import { defineConfig } from "oxfmt";
+
+export default defineConfig({
+  printWidth: 100,
+  singleQuote: false,
+  semi: true,
+  tabWidth: 2,
+  trailingComma: "all",
+  arrowParens: "always",
+  bracketSpacing: true,
+  endOfLine: "lf",
+  sortImports: true,
+  ignorePatterns: [
     "node_modules/**",
     ".output/**",
     ".nitro/**",
@@ -23,6 +25,6 @@
     "LICENSE*",
     "dist",
     "migrations/**",
-    "out"
-  ]
-}
+    "out",
+  ],
+});

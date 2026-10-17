@@ -2,8 +2,8 @@ import { BaseEntity } from "@common/database";
 import { IsString } from "class-validator";
 import { of } from "rxjs";
 
-import { BaseService } from "./crud.service";
 import { AbstractValidationPipe, ControllerFactory } from "./crud.controller";
+import { BaseService } from "./crud.service";
 
 class Item extends BaseEntity {
   title!: string;
