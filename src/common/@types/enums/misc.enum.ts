@@ -8,6 +8,7 @@ export const FileSize = {
 
 export enum PostStateEnum {
   DRAFT = "DRAFT",
+  SCHEDULED = "SCHEDULED",
   PUBLISHED = "PUBLISHED",
 }
 

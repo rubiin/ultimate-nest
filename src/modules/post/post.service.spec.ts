@@ -1,6 +1,7 @@
+import { PostStateEnum } from "@common/@types";
 import { Category, Comment, Post, Tag, User } from "@entities";
-import { NotFoundException } from "@nestjs/common";
-import { EntityManager } from "@mikro-orm/core";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
+import { EntityManager, RequestContext } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import {
@@ -339,6 +340,146 @@ describe("postService", () => {
       expect(mockPostRepo.create).toHaveBeenCalledWith(
         expect.objectContaining({ published: false }),
       );
+    });
+  });
+
+  describe("schedule", () => {
+    const author = { id: 1 } as User;
+    const inAnHour = () => new Date(Date.now() + 3_600_000);
+
+    it("should reject a scheduled post with no publish date, which the cron could never run", () => {
+      expect(() =>
+        service.create({ content: "content", state: PostStateEnum.SCHEDULED } as never, author),
+      ).toThrow(BadRequestException);
+      expect(mockPostRepo.create).not.toHaveBeenCalled();
+    });
+
+    it("should reject a publish date that has already passed", () => {
+      expect(() =>
+        service.create(
+          {
+            content: "content",
+            publishAt: new Date(Date.now() - 1000),
+            state: PostStateEnum.SCHEDULED,
+          } as never,
+          author,
+        ),
+      ).toThrow(BadRequestException);
+    });
+
+    it("should persist a scheduled post that has a publish date ahead of it", async () => {
+      const publishAt = inAnHour();
+      mockTagsRepo.find.mockResolvedValue([] as never);
+      mockCategoryRepo.find.mockResolvedValue([] as never);
+      mockPostRepo.create.mockImplementation(((data: object) => ({ ...data })) as never);
+      mockEm.persist.mockReturnValue(mockEm as never);
+
+      await lastValueFrom(
+        service.create(
+          { content: "content", publishAt, state: PostStateEnum.SCHEDULED, tags: [] } as never,
+          author,
+        ),
+      );
+
+      expect(mockPostRepo.create).toHaveBeenCalledWith(
+        expect.objectContaining({ publishAt, state: PostStateEnum.SCHEDULED }),
+      );
+    });
+
+    it("should let a draft carry a publish date without being scheduled", async () => {
+      mockTagsRepo.find.mockResolvedValue([] as never);
+      mockCategoryRepo.find.mockResolvedValue([] as never);
+      mockPostRepo.create.mockImplementation(((data: object) => ({ ...data })) as never);
+      mockEm.persist.mockReturnValue(mockEm as never);
+
+      await lastValueFrom(
+        service.create({ content: "content", publishAt: inAnHour() } as never, author),
+      );
+
+      expect(mockPostRepo.create).toHaveBeenCalled();
+    });
+
+    it("should reject switching a post to scheduled without a publish date", async () => {
+      mockPostRepo.findOne.mockImplementation((async () =>
+        Promise.resolve({ ...mockedPost, state: PostStateEnum.DRAFT })) as never);
+
+      await expect(
+        lastValueFrom(service.update("post-slug", { state: PostStateEnum.SCHEDULED })),
+      ).rejects.toThrow(BadRequestException);
+      expect(mockPostRepo.assign).not.toHaveBeenCalled();
+    });
+
+    it("should reject scheduling on a date that has already passed", async () => {
+      mockPostRepo.findOne.mockImplementation((async () =>
+        Promise.resolve({ ...mockedPost, state: PostStateEnum.DRAFT })) as never);
+
+      await expect(
+        lastValueFrom(
+          service.update("post-slug", {
+            publishAt: new Date(Date.now() - 1000),
+            state: PostStateEnum.SCHEDULED,
+          }),
+        ),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    // The cron consumes `publishAt`, so an edit that says nothing about the schedule must not
+    // be refused over the stale date it leaves behind.
+    it("should not police an edit that leaves the schedule alone", async () => {
+      const post = {
+        ...mockedPost,
+        publishAt: new Date(Date.now() - 1000),
+        state: PostStateEnum.SCHEDULED,
+      };
+      mockPostRepo.findOne.mockImplementation((async () => Promise.resolve(post)) as never);
+      mockPostRepo.assign.mockImplementation(((entity: Record<string, unknown>, data: object) =>
+        Object.assign(entity, data)) as never);
+
+      await lastValueFrom(service.update("post-slug", { content: "new content" }));
+
+      expect(mockPostRepo.assign).toHaveBeenCalled();
+    });
+  });
+
+  describe("publishScheduledPosts", () => {
+    const duePost = () =>
+      ({ ...mockedPost, published: false, state: PostStateEnum.SCHEDULED }) as unknown as Post;
+
+    it("should publish every post whose moment has passed", async () => {
+      const post = duePost();
+      mockPostRepo.find.mockResolvedValue([post] as never);
+
+      await service.publishScheduledPosts();
+
+      expect(mockPostRepo.find).toHaveBeenCalledWith({
+        publishAt: { $lte: expect.any(Date) },
+        state: PostStateEnum.SCHEDULED,
+      });
+      expect(post).toMatchObject({ published: true, state: PostStateEnum.PUBLISHED });
+      expect(mockEm.flush).toHaveBeenCalled();
+    });
+
+    it("should not flush when nothing is due", async () => {
+      mockPostRepo.find.mockResolvedValue([] as never);
+
+      await service.publishScheduledPosts();
+
+      expect(mockEm.flush).not.toHaveBeenCalled();
+    });
+
+    // Without this the cron would read and write through the global identity map.
+    it("should run the query inside a request context", async () => {
+      let hadContext = false;
+      mockPostRepo.find.mockImplementation((async () => {
+        hadContext = RequestContext.currentRequestContext() !== undefined;
+
+        return Promise.resolve([]);
+      }) as never);
+
+      await service.publishScheduledPosts();
+
+      expect(mockEm.fork).toHaveBeenCalled();
+      expect(hadContext).toBe(true);
     });
   });
 
