@@ -28,9 +28,9 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { Mailer } from "@nestjs/mail";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import { Mailer } from "@nestjs/mail";
 import { lastValueFrom, of } from "rxjs";
 
 import { AuthService } from "./auth.service";

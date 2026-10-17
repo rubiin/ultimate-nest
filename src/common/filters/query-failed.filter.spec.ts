@@ -1,10 +1,10 @@
 import { STATUS_CODES } from "node:http";
 
 import { createMock } from "@golevelup/ts-vitest";
-import { HttpStatus } from "@nestjs/common";
 import { ForeignKeyConstraintViolationException } from "@mikro-orm/postgresql";
 import { ServerException } from "@mikro-orm/postgresql";
 import { UniqueConstraintViolationException } from "@mikro-orm/postgresql";
+import { HttpStatus } from "@nestjs/common";
 
 import { QueryFailedFilter } from "./query-failed.filter";
 

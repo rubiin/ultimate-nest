@@ -1,5 +1,5 @@
-import type { Keyv } from "keyv";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import type { Keyv } from "keyv";
 
 import { NestCacheModule } from "./cache.module";
 

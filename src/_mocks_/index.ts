@@ -17,9 +17,9 @@ import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repositor
 import { TokensService } from "@modules/token/tokens.service";
 import { CallHandler, ExecutionContext } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Mailer } from "@nestjs/mail";
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
+import { Mailer } from "@nestjs/mail";
 import { type ResiliencePolicy, ResilienceService } from "@nestjs/resilience";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { of } from "rxjs";

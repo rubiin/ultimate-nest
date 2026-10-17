@@ -14,10 +14,10 @@ import {
   mockResilienceService,
   mockSubscriberRepo,
 } from "@mocks";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { CircuitOpenError, ResilienceService } from "@nestjs/resilience";
-import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";

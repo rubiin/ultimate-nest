@@ -12,8 +12,8 @@ import {
 } from "@common/decorators";
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
-import { TokensService } from "@modules/token/tokens.service";
 import { translate } from "@lib/i18n";
+import { TokensService } from "@modules/token/tokens.service";
 import {
   Body,
   BadRequestException,

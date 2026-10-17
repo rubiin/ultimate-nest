@@ -3,9 +3,9 @@ import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { mockEm, mockUserRepo, mockedUser } from "@mocks";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { lastValueFrom, of } from "rxjs";
 
 import { ProfileService } from "./profile.service";

@@ -2,8 +2,8 @@ import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
 import { of } from "rxjs";
 
-import { ProfileService } from "./profile.service";
 import { ProfileController } from "./profile.controller";
+import { ProfileService } from "./profile.service";
 
 describe("ProfileController", () => {
   const service = createMock<ProfileService>();

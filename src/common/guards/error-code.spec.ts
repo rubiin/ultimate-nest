@@ -1,6 +1,6 @@
+import { ERROR_CODES } from "@common/constant";
 import { createMock } from "@golevelup/ts-vitest";
 import { mockJwtService } from "@mocks";
-import { ERROR_CODES } from "@common/constant";
 import { ExecutionContext, UnauthorizedException } from "@nestjs/common";
 
 import { AuthGuard } from "./auth.guard";

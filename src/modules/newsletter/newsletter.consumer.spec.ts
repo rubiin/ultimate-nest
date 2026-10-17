@@ -1,10 +1,10 @@
 import { NewsLetterLogStatus } from "@common/@types";
+import { BaseRepository } from "@common/database";
 import { NewsLetter, NewsLetterLog, Subscriber } from "@entities";
+import { createMock } from "@golevelup/ts-vitest";
+import { NewsletterMail } from "@lib/mail";
 import { MikroORM } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
-import { createMock } from "@golevelup/ts-vitest";
-import { BaseRepository } from "@common/database";
-import { NewsletterMail } from "@lib/mail";
 import {
   mockEm,
   mockMailService,
