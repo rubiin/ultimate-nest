@@ -16,6 +16,8 @@ jobs:
 
       - run: pnpm install --shamefully-hoist
       - run: pnpm build
+      # Without this a green CI only proved the code type-checks: 96 spec files, none of them run.
+      - run: pnpm test
 
   release:
     if: ${{ github.ref == 'refs/heads/master' }}
