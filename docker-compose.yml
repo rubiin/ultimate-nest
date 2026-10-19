@@ -39,7 +39,7 @@ services:
       - /usr/src/app/node_modules
 
   traefik:
-    image: traefik:v2.10.1
+    image: traefik:v2.11.59
     container_name: traefik
     command:
       # Enable Docker in Traefik, so that it reads labels from Docker services
@@ -87,7 +87,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:7.0.11-alpine
+    image: redis:7.4.11-alpine
     env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     restart: always
     depends_on:
@@ -102,7 +102,7 @@ services:
 
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:3.12.0-management-alpine
+    image: rabbitmq:3.13.7-management-alpine
     env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     networks:
       - nestify-network
@@ -119,7 +119,7 @@ services:
 
   database:
     container_name: database
-    image: postgres:15.3-alpine
+    image: postgres:15.19-alpine
     restart: unless-stopped
     env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     volumes:
@@ -137,7 +137,7 @@ services:
 
   pgadmin:
     container_name: pgadmin4_container
-    image: dpage/pgadmin4:7.3
+    image: dpage/pgadmin4:7.8
     env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     restart: unless-stopped
     environment:
