@@ -137,7 +137,7 @@ services:
 
   pgadmin:
     container_name: pgadmin4_container
-    image: dpage/pgadmin4:7.3
+    image: dpage/pgadmin4:9.18
     env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     restart: unless-stopped
     environment:
