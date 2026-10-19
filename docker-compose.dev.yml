@@ -52,7 +52,7 @@ services:
     entrypoint: ["/bin/sh", "docker/entrypoint.sh"]
 
   database:
-    image: postgres:15.3-alpine
+    image: postgres:15.19-alpine
     container_name: nestify-db
     restart: unless-stopped
     environment:
@@ -70,7 +70,7 @@ services:
       retries: 10
 
   redis:
-    image: redis:7.0.11-alpine
+    image: redis:7.4.11-alpine
     container_name: nestify-redis
     restart: unless-stopped
     # `requirepass` provisions the built-in `default` ACL user, so the username
@@ -87,7 +87,7 @@ services:
       retries: 10
 
   rabbitmq:
-    image: rabbitmq:3.12.0-management-alpine
+    image: rabbitmq:3.13.7-management-alpine
     container_name: nestify-rabbit
     restart: unless-stopped
     environment:
