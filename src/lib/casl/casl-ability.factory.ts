@@ -1,4 +1,4 @@
-import { ExtractSubjectType, InferSubjects, MongoAbility } from "@casl/ability";
+import { ExtractSubjectType, InferSubjects, MongoAbility, MongoQuery } from "@casl/ability";
 import { AbilityBuilder, createMongoAbility } from "@casl/ability";
 import { Action, Roles } from "@common/@types";
 import { Tag } from "@entities";
@@ -27,10 +27,19 @@ export class CaslAbilityFactory {
     if (!user.roles!.includes(Roles.ADMIN)) cannot(Action.Delete, User);
 
     // post specific permissions
-    can([Action.Delete, Action.Update], Post, { author: user });
+    // Key on the author's id. A whole-entity { author: user } - and the nested
+    // { author: { id } }, which Mongo semantics read as exact-document equality -
+    // can never match a row loaded from the database, whose author is a different
+    // instance. Only the dotted path matches a field, but CASL's MongoQuery type is
+    // closed to dotted keys, so the condition is asserted to the library's query type.
+    can([Action.Delete, Action.Update], Post, {
+      "author.id": user.id,
+    } as unknown as MongoQuery<Post>);
 
     // comment specific permissions
-    can([Action.Update, Action.Delete], Comment, { author: user });
+    can([Action.Update, Action.Delete], Comment, {
+      "author.id": user.id,
+    } as unknown as MongoQuery<Comment>);
 
     return build({
       detectSubjectType: (item) => item.constructor as ExtractSubjectType<Subjects>,

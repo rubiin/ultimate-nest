@@ -1,6 +1,7 @@
 import { Roles } from "@common/@types";
 import { CHECK_POLICIES_KEY_META } from "@common/constant";
 import { createMock } from "@golevelup/ts-vitest";
+import { EntityManager } from "@mikro-orm/core";
 import { ExecutionContext } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 
@@ -13,8 +14,9 @@ describe("policiesGuard", () => {
     getHandler: vi.fn<ExecutionContext["getHandler"]>(),
   });
   const caslFactory = new CaslAbilityFactory();
+  const mockEm = createMock<EntityManager>();
 
-  const policiesGuard = new PoliciesGuard(mockReflector, caslFactory);
+  const policiesGuard = new PoliciesGuard(mockReflector, caslFactory, mockEm);
 
   it("should be defined", () => {
     expect(policiesGuard).toBeDefined();
@@ -76,5 +78,21 @@ describe("policiesGuard", () => {
     } as never);
 
     await expect(policiesGuard.canActivate(mockExecutionContext)).resolves.toBe(false);
+  });
+
+  // A Delete handler loads its row and so resolves asynchronously. every() over a
+  // pending promise is truthy, which would read that denial as a pass.
+  it("should treat an async policy rejection as a denial", async () => {
+    const deny = vi.fn<() => Promise<boolean>>().mockResolvedValue(false);
+    mockReflector.get.mockImplementation((key: unknown) =>
+      key === CHECK_POLICIES_KEY_META ? [{ handle: deny }] : undefined,
+    );
+    vi.mocked(mockExecutionContext.switchToHttp().getRequest).mockReturnValue({
+      params: {},
+      user: { id: "user-id", roles: [Roles.USER] },
+    } as never);
+
+    await expect(policiesGuard.canActivate(mockExecutionContext)).resolves.toBe(false);
+    expect(deny).toHaveBeenCalledTimes(1);
   });
 });
