@@ -1,24 +1,42 @@
 import { Action } from "@common/@types";
 
-import { AppAbility } from "./casl-ability.factory";
-import { PoliciesHandler } from "./policy.interface";
+import { AppAbility, Subjects } from "./casl-ability.factory";
+import { PoliciesHandler, SubjectLookup, SubjectResolver } from "./policy.interface";
 
 export class GenericPolicyHandler implements PoliciesHandler {
   constructor(
     private readonly ClassType: any,
     private readonly action: Action = Action.Read,
+    private readonly lookup?: SubjectLookup,
   ) {}
 
-  handle(request: NestifyRequest, ability: AppAbility) {
-    /* Checking if the action is Create, Read, or Delete. If it is, it will return the
-            ability.can(this.action, this.type) method. If it is not, it will return the
-            ability.can(Action.Update, new this.type({ id })) method. */
+  /* `Create`/`Read` rules are unconditional, so a class subject cannot widen access.
+     `Delete` must never be answered from the class: CASL treats a class as type-only
+     and drops its conditions, which let any author delete any row (C1). */
+  async handle(request: NestifyRequest, ability: AppAbility, resolve?: SubjectResolver) {
+    if (this.action === Action.Delete) {
+      // A `Delete` wired without a lookup denies rather than falling back to the class.
+      if (!this.lookup || !resolve) return false;
 
-    if ([Action.Create, Action.Read, Action.Delete].includes(this.action))
-      return ability.can(this.action, this.ClassType);
+      const value = request.params[this.lookup.param];
 
-    const id = request.params.id;
+      // Route params can be `string | string[]`; only a scalar identifier can name a row.
+      if (typeof value !== "string" || !value) return false;
 
-    return ability.can(Action.Update, new this.ClassType({ id }));
+      // A missing row is denied: there is nothing to authorize the delete against.
+      const document = await resolve(this.ClassType, value, this.lookup.field);
+
+      if (!document) return false;
+
+      return ability.can(this.action, document as Subjects);
+    }
+
+    if (this.action === Action.Update) {
+      const id = request.params.id;
+
+      return ability.can(Action.Update, new this.ClassType({ id }));
+    }
+
+    return ability.can(this.action, this.ClassType);
   }
 }
