@@ -1,17 +1,18 @@
 import { CHECK_POLICIES_KEY_META, IS_PUBLIC_KEY_META } from "@common/constant";
 import { User } from "@entities";
-import { CanActivate, ExecutionContext } from "@nestjs/common";
-import { Injectable } from "@nestjs/common";
+import { EntityManager, FilterQuery } from "@mikro-orm/core";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 
 import { AppAbility, CaslAbilityFactory } from "./casl-ability.factory";
-import { PolicyHandler } from "./policy.interface";
+import { PolicyHandler, SubjectResolver } from "./policy.interface";
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private caslAbilityFactory: CaslAbilityFactory,
+    private em: EntityManager,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -29,12 +30,24 @@ export class PoliciesGuard implements CanActivate {
 
     const ability = this.caslAbilityFactory.createForUser(user as User);
 
-    return policyHandlers.every((handler) => this.execPolicyHandler(handler, request, ability));
+    // A handler may load a row and so resolve to a promise; `.every` over a pending
+    // promise is truthy and would read every denial as a pass. Await each and stop
+    // at the first rejection.
+    for (const handler of policyHandlers) {
+      if (!(await this.execPolicyHandler(handler, request, ability))) return false;
+    }
+
+    return true;
   }
 
   private execPolicyHandler(handler: PolicyHandler, request: NestifyRequest, ability: AppAbility) {
-    if (typeof handler === "function") return handler(request, ability);
+    // Loads the row a `Delete` is checked against. The filter is keyed at runtime from
+    // the handler's lookup, so it is cast to the library's query shape, not to `any`.
+    const resolve: SubjectResolver = (subject, value, field) =>
+      this.em.findOne<object>(subject, { [field]: value } as FilterQuery<object>);
 
-    return handler.handle(request, ability);
+    if (typeof handler === "function") return handler(request, ability, resolve);
+
+    return handler.handle(request, ability, resolve);
   }
 }
