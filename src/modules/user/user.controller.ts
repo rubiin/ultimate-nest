@@ -118,7 +118,7 @@ export class UserController {
     operation: "User delete",
     params: ["idx"],
   })
-  @CheckPolicies(new GenericPolicyHandler(User, Action.Delete))
+  @CheckPolicies(new GenericPolicyHandler(User, Action.Delete, { param: "idx", field: "idx" }))
   remove(@UUIDParam("idx") index: string): Observable<User> {
     return this.userService.remove(index);
   }

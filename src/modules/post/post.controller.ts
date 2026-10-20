@@ -79,7 +79,9 @@ export class PostController {
     operation: "Post delete",
     params: ["slug"],
   })
-  @CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Delete))
+  @CheckPolicies(
+    new GenericPolicyHandler(PostEntity, Action.Delete, { param: "slug", field: "slug" }),
+  )
   remove(@Param("slug") slug: string): Observable<PostEntity> {
     return this.postService.remove(slug);
   }
@@ -107,7 +109,9 @@ export class PostController {
     operation: "Post comment edit",
     params: ["slug", "commentIdx"],
   })
-  @CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
+  @CheckPolicies(
+    new GenericPolicyHandler(Comment, Action.Delete, { param: "commentIdx", field: "idx" }),
+  )
   editComment(
     @Param("slug") slug: string,
     @UUIDParam("commentIdx")
@@ -124,7 +128,9 @@ export class PostController {
     operation: "Post comment delete",
     params: ["slug", "commentIdx"],
   })
-  @CheckPolicies(new GenericPolicyHandler(Comment, Action.Delete))
+  @CheckPolicies(
+    new GenericPolicyHandler(Comment, Action.Delete, { param: "commentIdx", field: "idx" }),
+  )
   deleteComment(@Param("slug") slug: string, @UUIDParam("commentIdx") commentIndex: string) {
     return this.postService.deleteComment(slug, commentIndex);
   }
