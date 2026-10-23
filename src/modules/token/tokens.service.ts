@@ -172,7 +172,13 @@ export class TokensService {
    * @returns The payload of the token.
    */
   decodeRefreshToken(token: string): Observable<JwtPayload> {
-    return from(this.jwt.verifyAsync<JwtPayload>(token)).pipe(
+    return from(
+      this.jwt.verifyAsync<JwtPayload>(token, {
+        algorithms: [this.configService.get("jwt.algorithm", { infer: true })],
+        audience: "nestify",
+        issuer: "nestify",
+      }),
+    ).pipe(
       map((payload) => {
         // Access tokens share the secret; only a token typed "refresh" may be redeemed. Thrown
         // here so `catchError` reports it as malformed.
