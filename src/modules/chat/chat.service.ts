@@ -73,12 +73,13 @@ export class ChatService {
   }
 
   async getConversationForUser(user: User) {
-    return this.conversationRepository
+    const qb = this.conversationRepository
       .qb("c")
       .select("c.*")
       .leftJoinAndSelect("c.messages", "m")
-      .where("uc.user_id = ?", [user.id])
-      .execute();
+      .where("uc.user_id = ?", [user.id]);
+    await qb.applyFilters({ softDelete: true });
+    return qb.execute();
   }
 
   async markMessagesAsSeen(sender: number, receiver: number): Promise<Conversation> {
