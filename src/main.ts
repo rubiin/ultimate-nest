@@ -148,3 +148,15 @@ bootstrap().catch((error) => {
   logger.error(error);
   process.exit(1);
 });
+
+// Errors that escape the bootstrap path would otherwise terminate the process with only a
+// stack trace on stderr; route them through the configured logger before exiting.
+process.on("unhandledRejection", (reason) => {
+  logger.error(reason);
+  process.exit(1);
+});
+
+process.on("uncaughtException", (error) => {
+  logger.error(error);
+  process.exit(1);
+});

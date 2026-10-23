@@ -2,7 +2,12 @@ import { Module, RequestMethod } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
 
 // Fields to redact from logs
-const redactFields = ["req.headers.authorization", "req.body.password", "req.body.confirmPassword"];
+const redactFields = [
+  "req.headers.authorization",
+  "req.body.password",
+  "req.body.confirmPassword",
+  "req.body.refreshToken",
+];
 const basePinoOptions = {
   ignore: "pid,hostname",
   redact: redactFields,

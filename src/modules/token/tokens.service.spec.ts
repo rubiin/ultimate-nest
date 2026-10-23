@@ -187,7 +187,10 @@ describe("tokensService", () => {
         type: "refresh",
       });
       expect(mockJwtService.verifyAsync).toHaveBeenCalledTimes(1);
-      expect(mockJwtService.verifyAsync).toHaveBeenCalledWith("refreshTokenPayload");
+      expect(mockJwtService.verifyAsync).toHaveBeenCalledWith(
+        "refreshTokenPayload",
+        expect.objectContaining({ audience: "nestify", issuer: "nestify" }),
+      );
     });
   });
 
@@ -229,7 +232,7 @@ describe("tokensService", () => {
         },
       };
       const userRepo = { findOneOrFail: async () => loggedInUser };
-      const config = { get: () => 3600 };
+      const config = { get: (key: string) => (key === "jwt.algorithm" ? "HS256" : 3600) };
 
       tokens = new TokensService(
         userRepo as never,
