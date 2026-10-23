@@ -31,6 +31,6 @@ export class CursorPaginationDto extends PaginationDto {
   /**
    * Results page you want to retrieve (0..N)
    */
-  @IsNumberField({ required: false })
+  @IsNumberField({ max: 50, required: false })
   first = 10;
 }
