@@ -27,6 +27,9 @@ export class CaslAbilityFactory {
     if (!user.roles!.includes(Roles.ADMIN)) cannot(Action.Delete, User);
 
     // post specific permissions
+    // Any authenticated user may create a post; ownership conditions apply to
+    // update/delete only.
+    can(Action.Create, Post);
     // Key on the author's id. A whole-entity { author: user } - and the nested
     // { author: { id } }, which Mongo semantics read as exact-document equality -
     // can never match a row loaded from the database, whose author is a different
