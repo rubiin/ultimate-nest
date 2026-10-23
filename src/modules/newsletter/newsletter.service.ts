@@ -20,6 +20,8 @@ import type { NewsLetterMessage } from "./newsletter.message";
 
 const UNSUBSCRIBE_LINK_EXPIRY = "365d";
 
+const SUBSCRIBER_BATCH_SIZE = 500;
+
 const isCircuitOpen = (result: PromiseSettledResult<unknown>) =>
   result.status === "rejected" && result.reason instanceof CircuitOpenError;
 
@@ -66,23 +68,45 @@ export class NewsLetterService extends BaseService<NewsLetter, CursorPaginationD
 
     if (newsLetters.length === 0) return;
 
-    const subscribers = await this.subscriberRepository.findAll({});
-
-    if (subscribers.length === 0) return;
-
     for (const newsLetter of newsLetters) {
-      const results = await Promise.allSettled(
-        subscribers.map((subscriber) => this.publishToSubscriber(newsLetter, subscriber)),
-      );
+      let offset = 0;
+      let allFulfilled = true;
+      let circuitOpen = false;
+      let processed = 0;
 
-      if (results.every((result) => result.status === "fulfilled")) {
-        newsLetter.sentAt = new Date();
-        continue;
+      // Page the subscriber table instead of loading it whole; a large list is not
+      // materialised in memory in one go.
+      while (true) {
+        const subscribers = await this.subscriberRepository.find(
+          {},
+          { limit: SUBSCRIBER_BATCH_SIZE, offset, orderBy: { id: "asc" } },
+        );
+
+        if (subscribers.length === 0) break;
+
+        processed += subscribers.length;
+
+        const results = await Promise.allSettled(
+          subscribers.map((subscriber) => this.publishToSubscriber(newsLetter, subscriber)),
+        );
+
+        if (results.some((result) => result.status === "rejected")) allFulfilled = false;
+
+        // An open breaker sheds every remaining publish, so stop here rather than
+        // rejecting one message per subscriber until the next nightly run.
+        if (results.some(isCircuitOpen)) {
+          circuitOpen = true;
+          break;
+        }
+
+        if (subscribers.length < SUBSCRIBER_BATCH_SIZE) break;
+        offset += SUBSCRIBER_BATCH_SIZE;
       }
 
-      // An open breaker sheds every remaining publish, so stop here rather than
-      // rejecting one message per subscriber until the next nightly run.
-      if (results.some(isCircuitOpen)) {
+      // An empty subscriber list means nothing was dispatched, so leave it for the next run.
+      if (allFulfilled && processed > 0) newsLetter.sentAt = new Date();
+
+      if (circuitOpen) {
         this.logger.warn(
           "Broker is unavailable; skipping the remaining newsletters until it recovers",
         );

@@ -132,7 +132,7 @@ describe("newsLetterService", () => {
       newsLetter.sentAt = undefined;
       mockNewsLetterRepo.getEntityManager.mockReturnValue(mockEm as never);
       mockNewsLetterRepo.find.mockResolvedValue([newsLetter] as never);
-      mockSubscriberRepo.findAll.mockResolvedValue([subscriber, second] as never);
+      mockSubscriberRepo.find.mockResolvedValue([subscriber, second] as never);
       mockAmqConnection.publish.mockResolvedValue(undefined as never);
       mockConfigService.get.mockReturnValue("some-value" as never);
     });
@@ -165,7 +165,7 @@ describe("newsLetterService", () => {
     });
 
     it("should leave the newsletter unsent when there are no subscribers", async () => {
-      mockSubscriberRepo.findAll.mockResolvedValue([] as never);
+      mockSubscriberRepo.find.mockResolvedValue([] as never);
 
       await service.sendNewsLetter();
 
