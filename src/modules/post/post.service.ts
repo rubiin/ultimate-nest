@@ -5,16 +5,18 @@ import { CursorPaginationDto } from "@common/dtos";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { AutoPath, EntityKey } from "@mikro-orm/core";
-import { EntityManager, raw, RequestContext } from "@mikro-orm/core";
+import { EntityManager, raw } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { PostgreSqlDriver, ref } from "@mikro-orm/postgresql";
+import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { Cron, CronExpression } from "@nestjs/schedule";
 import { omit } from "helper-fns";
 import { Observable } from "rxjs";
-import { forkJoin, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
+import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
+import { CommentService } from "./comment.service";
 import { CreateCommentDto, CreatePostDto, EditPostDto, SearchPostsDto } from "./dtos";
+import { FavoriteService } from "./favorite.service";
+import { PostPublisherService } from "./post-publisher.service";
 
 @Injectable()
 export class PostService {
@@ -22,14 +24,13 @@ export class PostService {
     private readonly em: EntityManager<PostgreSqlDriver>,
     @InjectRepository(Post)
     private readonly postRepository: BaseRepository<Post>,
-    @InjectRepository(User)
-    private readonly userRepository: BaseRepository<User>,
-    @InjectRepository(Comment)
-    private readonly commentRepository: BaseRepository<Comment>,
     @InjectRepository(Tag)
     private readonly tagRepository: BaseRepository<Tag>,
     @InjectRepository(Category)
     private readonly categoryRepository: BaseRepository<Category>,
+    private readonly favoriteService: FavoriteService,
+    private readonly commentService: CommentService,
+    private readonly publisherService: PostPublisherService,
   ) {}
 
   /**
@@ -202,33 +203,11 @@ export class PostService {
   }
 
   /**
-   * Goes live every post whose `publishAt` has passed, one minute at a time.
+   * Exposes the publishing sweep for callers that already own a request/transaction context.
+   * The `@Cron` entrypoint itself lives in `PostPublisherService`.
    */
-  @Cron(CronExpression.EVERY_MINUTE)
-  async publishScheduledPosts(): Promise<void> {
-    // A cron job runs outside any HTTP request, so there is no request context to
-    // fork from. Without this, the repository call runs on the global identity map.
-    return RequestContext.create(this.em, async () => this.publishDuePosts());
-  }
-
-  /**
-   * Promotes every `SCHEDULED` post that is due to `PUBLISHED`. Posts scheduled for a later
-   * moment, or already published, are left alone.
-   */
-  private async publishDuePosts(): Promise<void> {
-    const posts = await this.postRepository.find({
-      publishAt: { $lte: new Date() },
-      state: PostStateEnum.SCHEDULED,
-    });
-
-    if (posts.length === 0) return;
-
-    for (const post of posts) {
-      post.state = PostStateEnum.PUBLISHED;
-      post.published = true;
-    }
-
-    await this.em.flush();
+  publishScheduledPosts(): Promise<void> {
+    return this.publisherService.publishScheduledPosts();
   }
 
   /**
@@ -244,176 +223,33 @@ export class PostService {
     );
   }
 
-  /**
-   * "Find the post and user, add the post to the user's favorites, and increment the post's favorites
-   * count."
-   * @param userId - number - The id of the user who favorite the post.
-   * @param slug - The slug of the post to be favorited.
-   * @returns A post object
-   */
+  /** Adds the post to the user's favourites, keeping the counter in sync. */
   favorite(userId: number, slug: string): Observable<Post> {
-    const post$ = from(this.postRepository.findOneOrFail({ idx: slug }));
-    const user$ = from(
-      this.userRepository.findOneOrFail(
-        { id: userId },
-        {
-          populate: ["favorites"],
-          populateWhere: {
-            favorites: { isActive: true },
-          },
-        },
-      ),
-    );
-
-    return forkJoin([post$, user$]).pipe(
-      switchMap(([post, user]) => {
-        if (!user.favorites.contains(post)) {
-          user.favorites.add(post);
-          post.favoritesCount = (post.favoritesCount ?? 0) + 1;
-        }
-
-        return from(this.em.flush()).pipe(map(() => post));
-      }),
-    );
+    return this.favoriteService.favorite(userId, slug);
   }
 
-  /**
-   * It finds a post and a user, checks if the user has favorited the post, if so, it removes the post
-   * from the user's favorites and decrements the post's favorites count, then it saves the changes to
-   * the database and returns the post
-   * @param userId - number - The id of the user who favorite the post.
-   * @param slug - The slug of the post to be favorited.
-   * @returns A post object
-   */
+  /** Removes the post from the user's favourites, keeping the counter in sync. */
   unFavorite(userId: number, slug: string): Observable<Post> {
-    const post$ = from(
-      this.postRepository.findOneOrFail({
-        idx: slug,
-      }),
-    );
-    const user$ = from(
-      this.userRepository.findOneOrFail(
-        { id: userId },
-        {
-          populate: ["favorites"],
-          populateWhere: {
-            favorites: { isActive: true },
-          },
-        },
-      ),
-    );
-
-    return forkJoin([post$, user$]).pipe(
-      switchMap(([post, user]) => {
-        if (user.favorites.contains(post)) {
-          user.favorites.remove(post);
-          post.favoritesCount = (post.favoritesCount ?? 0) - 1;
-        }
-
-        return from(this.em.flush()).pipe(map(() => post));
-      }),
-    );
+    return this.favoriteService.unFavorite(userId, slug);
   }
 
-  /**
-   * It finds a post by slug, and then returns the comments of that post
-   * @param slug - string - The slug of the post to find comments for.
-   * @returns An array of comments
-   */
+  /** Returns the post's active comments. */
   findComments(slug: string): Observable<Comment[]> {
-    return from(
-      this.postRepository.findOne(
-        { slug },
-        {
-          populate: ["comments"],
-          populateWhere: {
-            comments: { isActive: true },
-          },
-        },
-      ),
-    ).pipe(
-      switchMap((post) => {
-        if (!post) {
-          return throwError(
-            () =>
-              new NotFoundException(
-                translate(itemDoesNotExistKey, {
-                  args: { item: "Post" },
-                }),
-              ),
-          );
-        }
-        return of(post.comments.getItems());
-      }),
-    );
+    return this.commentService.findComments(slug);
   }
 
-  /**
-   * It takes a userId, a post slug, and a DTO, and returns an observable of a post
-   * @param userId - number,
-   * @param slug - string - the slug of the post to add the comment to
-   * @param dto - CreateCommentDto
-   * @returns Post
-   */
+  /** Adds a comment authored by the user to the post. */
   addComment(userId: number, slug: string, dto: CreateCommentDto): Observable<Post> {
-    const post$ = this.findOne(slug);
-    const user$ = from(this.userRepository.findOneOrFail(userId));
-
-    return forkJoin([post$, user$]).pipe(
-      switchMap(([post, user]) => {
-        const comment = new Comment({ author: ref(user), body: dto.body });
-
-        post.comments.add(comment);
-
-        return from(this.em.flush()).pipe(map(() => post));
-      }),
-    );
+    return this.commentService.addComment(userId, slug, dto);
   }
 
-  /**
-   * This function edits a comment on a post using data from a DTO and returns the updated post.
-   * @param slug - A string representing the slug of the post to which the comment belongs.
-   * @param commentIndex - commentIndex is a string parameter that represents the unique
-   * @param commentData - commentData is an object of type CreateCommentDto
-   * @returns The `editComment` method is returning an Observable that emits the updated post data after
-   * editing the comment specified by `commentIndex` in the post specified by `slug`.
-   */
-  editComment(slug: string, commentIndex: string, commentData: CreateCommentDto) {
-    return this.findOne(slug, ["comments"]).pipe(
-      switchMap((_post) => {
-        return from(this.commentRepository.findOneOrFail({ idx: commentIndex })).pipe(
-          switchMap((comment) => {
-            this.commentRepository.assign(comment, commentData);
-
-            return from(this.em.flush()).pipe(map(() => _post));
-          }),
-        );
-      }),
-    );
+  /** Updates a comment belonging to the post. */
+  editComment(slug: string, commentIndex: string, commentData: CreateCommentDto): Observable<Post> {
+    return this.commentService.editComment(slug, commentIndex, commentData);
   }
 
-  /**
-   * It finds a post and a comment, removes the comment from the post, and then deletes the comment
-   * @param slug - string - The id of the post
-   * @param commentIndex - The id of the comment to be deleted
-   * @returns A post with the comment removed.
-   */
+  /** Deletes a comment belonging to the post. */
   deleteComment(slug: string, commentIndex: string): Observable<Post> {
-    return forkJoin([
-      this.findOne(slug),
-      from(this.commentRepository.findOneOrFail({ idx: commentIndex })),
-    ]).pipe(
-      switchMap(([post, comment]) => {
-        const commentReference = this.commentRepository.getReference(comment.id);
-
-        if (post.comments.contains(commentReference)) {
-          post.comments.remove(commentReference);
-
-          return from(this.em.remove(commentReference).flush()).pipe(map(() => post));
-        }
-
-        return of(post);
-      }),
-    );
+    return this.commentService.deleteComment(slug, commentIndex);
   }
 }
