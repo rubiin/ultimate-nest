@@ -249,14 +249,22 @@ export class AuthService {
     const { password, otpCode } = resetPassword;
 
     return this.findActiveOtp(otpCode, OtpPurpose.RESET_PASSWORD).pipe(
-      switchMap((details) => {
-        const user = details.user.getEntity();
-        this.otpRepository.assign(details, { isUsed: true });
-        this.userRepository.assign(user, { password });
-
-        return from(this.em.flush()).pipe(map(() => user));
-      }),
+      switchMap((details) => from(this.resetPasswordInTransaction(details, password))),
     );
+  }
+
+  /**
+   * Consumes the OTP and replaces the password in one transaction, so a failed write
+   * cannot leave the code burned while the password stayed unchanged.
+   */
+  @Transactional()
+  private async resetPasswordInTransaction(details: OtpLog, password: string): Promise<User> {
+    const user = details.user.getEntity();
+    this.em.assign(details, { isUsed: true });
+    this.em.assign(user, { password });
+    await this.em.flush();
+
+    return user;
   }
 
   /**
@@ -305,34 +313,29 @@ export class AuthService {
 
   verifyOtp(otpDto: OtpVerifyDto): Observable<User> {
     return this.findActiveOtp(otpDto.otpCode, OtpPurpose.VERIFY_EMAIL).pipe(
-      switchMap((codeDetails) => {
-        this.otpRepository.assign(codeDetails, {
-          isUsed: true,
-        });
-
-        return from(this.markUserVerified(codeDetails.user.id)).pipe(
-          map(() => codeDetails.user.getEntity()),
-        );
-      }),
+      switchMap((codeDetails) => from(this.verifyOtpInTransaction(codeDetails))),
     );
   }
 
   /**
-   * Marks the user verified and flushes the consumed OTP inside one transaction (`this.em` is the
-   * transaction's fork, see `saveOtpAndSendMail`).
+   * Consumes the OTP and marks the user verified in one transaction, so the code is not
+   * burned if the user update fails.
    */
   @Transactional()
-  private async markUserVerified(userId: number) {
+  private async verifyOtpInTransaction(codeDetails: OtpLog): Promise<User> {
+    this.em.assign(codeDetails, { isUsed: true });
     // Sequential, not allSettled: a rejected write must propagate so the transaction rolls back
     // instead of committing a half-verified state.
     await this.em.nativeUpdate(
       User,
       {
-        id: userId,
+        id: codeDetails.user.id,
       },
       { isVerified: true },
     );
     await this.em.flush();
+
+    return codeDetails.user.getEntity();
   }
 
   /**
@@ -377,7 +380,11 @@ export class AuthService {
               password,
             });
 
-            return from(this.em.flush()).pipe(map(() => userDetails));
+            // A password change invalidates every existing session.
+            return from(this.em.flush()).pipe(
+              switchMap(() => this.tokenService.deleteRefreshTokenForUser(userDetails)),
+              map(() => userDetails),
+            );
           }),
         );
       }),
@@ -395,7 +402,7 @@ export class AuthService {
   async findUser(condition: FilterQuery<User>): Promise<User> {
     const user = await this.userRepository.findOne(condition);
 
-    if (!user)
+    if (!user || !user.isActive)
       throw new UnauthorizedException(undefined, { errorCode: ERROR_CODES.USER_NOT_FOUND });
     return user;
   }
