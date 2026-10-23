@@ -9,6 +9,24 @@ import { Injectable } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { from, map } from "rxjs";
 
+const UNIT_MS: Record<string, number> = {
+  ms: 1,
+  s: MS_PER_SECOND,
+  m: 60 * MS_PER_SECOND,
+  h: 60 * 60 * MS_PER_SECOND,
+  d: 24 * 60 * 60 * MS_PER_SECOND,
+};
+
+/** JWT_REFRESH_EXPIRY arrives as a duration string (`7d`) from the config, not seconds. */
+function ttlToMilliseconds(ttl: number | string): number {
+  if (typeof ttl === "number") return ttl * MS_PER_SECOND;
+
+  const match = /^(\d+)\s*(ms|[smhd])?$/.exec(ttl);
+  if (!match) throw new Error(`Invalid refresh token TTL: ${ttl}`);
+
+  return Number(match[1]) * UNIT_MS[match[2] ?? "s"];
+}
+
 @Injectable()
 export class RefreshTokensRepository {
   constructor(
@@ -20,16 +38,18 @@ export class RefreshTokensRepository {
   /**
    * It creates a new refresh token for the given user and expiration time
    * @param user - The user that the token is being created for.
-   * @param ttl - number - the time to live of the token in seconds
+   * @param ttl - Time to live: seconds when numeric, or a duration like `7d`
    * @param client - IP address and user agent of the caller, shown in the session list
    * @returns A refresh token
    */
-  createRefreshToken(user: User, ttl: number, client?: ClientInfo): Observable<RefreshToken> {
+  createRefreshToken(
+    user: User,
+    ttl: number | string,
+    client?: ClientInfo,
+  ): Observable<RefreshToken> {
     const expiration = new Date();
 
-    const ttlMs = ttl * MS_PER_SECOND;
-
-    expiration.setTime(expiration.getTime() + ttlMs);
+    expiration.setTime(expiration.getTime() + ttlToMilliseconds(ttl));
 
     const token = this.refreshTokenRepository.create({
       expiresIn: expiration,
