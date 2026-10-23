@@ -134,7 +134,11 @@ describe("chatService", () => {
   describe("getConversationForUser", () => {
     it("should execute the conversation query for the user", async () => {
       const execute = vi.fn<() => Promise<unknown[]>>().mockResolvedValue([existingConversation]);
-      const where = vi.fn<() => { execute: typeof execute }>().mockReturnValue({ execute });
+      const query = {
+        applyFilters: vi.fn<() => Promise<void>>().mockResolvedValue(undefined),
+        execute,
+      };
+      const where = vi.fn<() => typeof query>().mockReturnValue(query);
       const leftJoinAndSelect = vi.fn<() => { where: typeof where }>().mockReturnValue({ where });
       const select = vi
         .fn<() => { leftJoinAndSelect: typeof leftJoinAndSelect }>()
@@ -147,6 +151,7 @@ describe("chatService", () => {
       expect(select).toHaveBeenCalledWith("c.*");
       expect(leftJoinAndSelect).toHaveBeenCalledWith("c.messages", "m");
       expect(where).toHaveBeenCalledWith("uc.user_id = ?", [alice.id]);
+      expect(query.applyFilters).toHaveBeenCalledWith({ softDelete: true });
       expect(result).toEqual([existingConversation]);
     });
   });
