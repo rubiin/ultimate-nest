@@ -101,7 +101,7 @@ export class PostController {
     slug: string,
     @Body()
     commentData: CreateCommentDto,
-  ) {
+  ): Observable<PostEntity> {
     return this.postService.addComment(user, slug, commentData);
   }
 

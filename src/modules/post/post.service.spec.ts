@@ -18,7 +18,10 @@ import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";
 
+import { CommentService } from "./comment.service";
 import { SearchPostsDto } from "./dtos";
+import { FavoriteService } from "./favorite.service";
+import { PostPublisherService } from "./post-publisher.service";
 import { PostService } from "./post.service";
 
 describe("postService", () => {
@@ -39,6 +42,9 @@ describe("postService", () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PostService,
+        CommentService,
+        FavoriteService,
+        PostPublisherService,
         { provide: EntityManager<PostgreSqlDriver>, useValue: mockEm },
 
         {
@@ -451,10 +457,13 @@ describe("postService", () => {
 
       await service.publishScheduledPosts();
 
-      expect(mockPostRepo.find).toHaveBeenCalledWith({
-        publishAt: { $lte: expect.any(Date) },
-        state: PostStateEnum.SCHEDULED,
-      });
+      expect(mockPostRepo.find).toHaveBeenCalledWith(
+        {
+          publishAt: { $lte: expect.any(Date) },
+          state: PostStateEnum.SCHEDULED,
+        },
+        { limit: 500 },
+      );
       expect(post).toMatchObject({ published: true, state: PostStateEnum.PUBLISHED });
       expect(mockEm.flush).toHaveBeenCalled();
     });
