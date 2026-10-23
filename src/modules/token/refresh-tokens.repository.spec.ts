@@ -1,3 +1,4 @@
+import { MS_PER_SECOND } from "@common/constant";
 import { RefreshToken } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
@@ -52,6 +53,19 @@ describe("refreshTokensRepository", () => {
       expect(result).toEqual(refreshToken);
       expect(mockEm.persist).toHaveBeenCalledTimes(1);
     });
+  });
+
+  // Regression: the config hands `JWT_REFRESH_EXPIRY` through as `7d`, which multiplied to NaN.
+  it("should accept a duration string for the ttl", async () => {
+    mockRefreshRepo.create.mockImplementation(((data: { expiresIn: Date }) => data) as never);
+    mockEm.persist.mockReturnValue(mockEm);
+    mockEm.flush.mockResolvedValue(undefined);
+
+    const before = Date.now();
+    const result = await lastValueFrom(service.createRefreshToken(loggedInUser, "7d"));
+
+    expect(result.expiresIn.getTime() - before).toBe(7 * 24 * 60 * 60 * MS_PER_SECOND);
+    expect(Number.isNaN(result.expiresIn.getTime())).toBe(false);
   });
 
   it("should record the caller's ip and a truncated user agent on the token", async () => {
