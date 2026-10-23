@@ -104,6 +104,8 @@ describe("authService", () => {
   });
 
   it("should reset password and consume the otp", async () => {
+    mockEm.transactional.mockImplementation((async (cb: (em: unknown) => Promise<unknown>) =>
+      cb(mockEm)) as never);
     const otp = {
       ...mockedOtpLog,
       expiresIn: new Date(Date.now() + 60_000),
@@ -118,7 +120,7 @@ describe("authService", () => {
       { isUsed: false, otpCode: mockResetPasswordDto.otpCode, purpose: OtpPurpose.RESET_PASSWORD },
       { populate: ["user"] },
     );
-    expect(mockOtpLogRepo.assign).toHaveBeenCalledWith(otp, { isUsed: true });
+    expect(mockEm.assign).toHaveBeenCalledWith(otp, { isUsed: true });
   });
 
   // Regression: reset accepted expired codes and never marked them used, so one code worked forever.
