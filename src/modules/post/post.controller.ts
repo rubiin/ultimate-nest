@@ -68,7 +68,9 @@ export class PostController {
     operation: "Post update",
     params: ["slug"],
   })
-  @CheckPolicies(new GenericPolicyHandler(PostEntity, Action.Update))
+  @CheckPolicies(
+    new GenericPolicyHandler(PostEntity, Action.Update, { param: "slug", field: "slug" }),
+  )
   update(@Param("slug") slug: string, @Body() dto: EditPostDto): Observable<PostEntity> {
     return this.postService.update(slug, dto);
   }

@@ -32,6 +32,20 @@ export class GenericPolicyHandler implements PoliciesHandler {
     }
 
     if (this.action === Action.Update) {
+      // Use the same instance lookup as `Delete` when the route named one, so the
+      // ownership condition is evaluated against real fields instead of `{ id }`.
+      if (this.lookup && resolve) {
+        const value = request.params[this.lookup.param];
+
+        if (typeof value !== "string" || !value) return false;
+
+        const document = await resolve(this.ClassType, value, this.lookup.field);
+
+        if (!document) return false;
+
+        return ability.can(this.action, document as Subjects);
+      }
+
       const id = request.params.id;
 
       return ability.can(Action.Update, new this.ClassType({ id }));

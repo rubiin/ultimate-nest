@@ -100,7 +100,7 @@ export class UserController {
     operation: "User edit",
     params: ["idx"],
   })
-  @CheckPolicies(new GenericPolicyHandler(User, Action.Update))
+  @CheckPolicies(new GenericPolicyHandler(User, Action.Update, { param: "idx", field: "idx" }))
   @Resilience("cloudinary")
   update(
     @UUIDParam("idx") index: string,
