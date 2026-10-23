@@ -236,7 +236,6 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
       alias,
       withDeleted,
     } = pageOptionsDto;
-    const selectedFields = [...new Set([...fields, "id"])];
     const metadata = qb.mainAlias.meta;
 
     this.assertSelectableFields(metadata.properties as Dictionary<SelectableProperty>, fields);
@@ -247,7 +246,12 @@ export class BaseRepository<T extends BaseEntity> extends EntityRepository<T> {
 
     // `select` replaces the field list while `leftJoinAndSelect` appends to it, so the
     // requested columns have to be applied first or the joins are dropped from the result.
-    qb.select(selectedFields as EntityKey<T>[]);
+    // Mirror the cursor branch: only project when fields were explicitly requested,
+    // otherwise load the full row.
+    if (fields.length > 0) {
+      const selectedFields = [...new Set([...fields, "id"])];
+      qb.select(selectedFields as EntityKey<T>[]);
+    }
 
     if (search) {
       qb.andWhere({
