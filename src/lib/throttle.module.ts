@@ -9,7 +9,7 @@ import { ThrottlerModule } from "@nestjs/throttler";
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService<Configs, true>) => ({
-        ignoreUserAgents: [/nestify/i],
+        ignoreUserAgents: [],
         limit: configService.get("throttle.limit", { infer: true }),
         throttlers: [],
         ttl: configService.get("throttle.ttl", { infer: true }),

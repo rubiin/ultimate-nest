@@ -1,12 +1,10 @@
-import process from "node:process";
-
 import { PaginationResponse, RecordWithFile } from "@common/@types";
 import { OtpPurpose, QueryOrder, Queues, RoutingKey } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { CursorPaginationDto } from "@common/dtos";
 import { Referral, User } from "@entities";
-import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
+import { AmqpConnection, RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
+import { rabbitmq } from "@lib/config/configs";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
 import { VerifyEmailMail, WelcomeMail, type WelcomeMailData } from "@lib/mail";
 import { EntityManager } from "@mikro-orm/core";
@@ -57,7 +55,7 @@ export class UserService {
   }
 
   @RabbitSubscribe({
-    exchange: process.env.RABBITMQ_EXCHANGE,
+    exchange: rabbitmq().exchange,
     queue: Queues.MAIL,
     routingKey: RoutingKey.SEND_MAIL,
   })

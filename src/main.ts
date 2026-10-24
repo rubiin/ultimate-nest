@@ -91,6 +91,8 @@ async function bootstrap() {
   const globalPrefix = configService.get("app.prefix", { infer: true });
 
   app.setGlobalPrefix(globalPrefix);
+  // Prefix versioning is configured globally; breaking changes should bump APP_PREFIX and
+  // announce deprecation on the old prefix via release notes. No per-route URI versioning here.
 
   app.useGlobalFilters(new QueryFailedFilter(), new OptimisticLockFilter());
 
