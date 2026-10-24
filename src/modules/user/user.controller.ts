@@ -37,9 +37,9 @@ export class UserController {
     return this.userService.referUser(dto, user);
   }
 
-  @Public()
   @ApiPaginatedResponse(User)
   @Get()
+  @CheckPolicies(new GenericPolicyHandler(User, Action.Read))
   findAll(@Query() PaginationDto: CursorPaginationDto): Observable<PaginationResponse<User>> {
     return this.userService.findAll(PaginationDto);
   }
