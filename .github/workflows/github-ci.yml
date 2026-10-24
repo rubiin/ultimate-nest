@@ -33,16 +33,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-      redis:
-        image: redis:7
-        options: >-
-          --requirepass redis
-          --health-cmd "redis-cli -a redis ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 6379:6379
       rabbitmq:
         image: rabbitmq:3-management
         env:
@@ -68,6 +58,17 @@ jobs:
       # The e2e suite talks to a running app on APP_URL, so point it at 8000.
       - run: cp env/.env.sample env/.env.test
       - run: sed -i "s|^APP_PORT=.*|APP_PORT=8000|" env/.env.test
+      - name: Start Redis
+        run: |
+          docker run --detach --rm --name redis -p 6379:6379 redis:7 redis-server --requirepass redis
+          for attempt in $(seq 1 30); do
+            if docker exec redis redis-cli -a redis ping 2>/dev/null | grep -q PONG; then
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs redis
+          exit 1
       - run: NODE_ENV=test pnpm orm migration:up
       - run: NODE_ENV=test USER_PASSWORD=Test@1234 pnpm orm seeder:run
       - run: NODE_ENV=test node dist/main &
