@@ -34,6 +34,7 @@ export const AppUtils = {
       logger.log("✅ Http server closed.");
       process.exit(0);
     } catch (error: any) {
+      clearTimeout(forceExit);
       logger.error(`❌ Http server closed with error: ${error}`);
       process.exit(1);
     }
