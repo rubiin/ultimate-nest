@@ -28,6 +28,7 @@ describe("tokensService", () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    mockEm.transactional.mockImplementation((async (cb: () => Promise<unknown>) => cb()) as never);
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TokensService,
@@ -213,6 +214,8 @@ describe("tokensService", () => {
 
     beforeEach(() => {
       store = new Map();
+      mockEm.transactional.mockImplementation((async (cb: () => Promise<unknown>) =>
+        cb()) as never);
       const repo = {
         createRefreshToken: () => {
           const token = { id: store.size + 1, isRevoked: false };
@@ -239,6 +242,7 @@ describe("tokensService", () => {
         repo as never,
         new JwtService({ secret: "test-secret" }),
         config as never,
+        mockEm,
       );
     });
 

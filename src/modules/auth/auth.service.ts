@@ -210,7 +210,17 @@ export class AuthService {
 
         return from(this.otpService.create(userExists, OtpPurpose.RESET_PASSWORD)).pipe(
           switchMap(({ otp, otpCode }) =>
-            from(this.saveOtpAndSendMail(otp, userExists, otpCode)).pipe(
+            from(this.persistOtp(otp)).pipe(
+              switchMap(() =>
+                this.mailer.send(ResetPasswordMail, {
+                  to: userExists.email,
+                  data: {
+                    firstName: capitalize(userExists.firstName),
+                    lastName: capitalize(userExists.lastName),
+                    otp: otpCode,
+                  },
+                }),
+              ),
               map(() => ({ message: "Otp sent successfully" })),
             ),
           ),
@@ -220,22 +230,12 @@ export class AuthService {
   }
 
   /**
-   * Persists the OTP and sends the reset mail inside one transaction. `this.em` resolves to the
-   * transaction's fork here: `@Transactional()` runs the body inside a `TransactionContext`, which
-   * `EntityManager.getContext()` prefers.
+   * Persists the OTP inside one transaction. Mail is sent outside so the side effect cannot roll
+   * back or keep a connection open for the network call.
    */
   @Transactional()
-  private async saveOtpAndSendMail(otp: OtpLog, user: User, otpNumber: string) {
+  private async persistOtp(otp: OtpLog): Promise<void> {
     await this.em.persist(otp).flush();
-
-    return this.mailer.send(ResetPasswordMail, {
-      to: user.email,
-      data: {
-        firstName: capitalize(user.firstName),
-        lastName: capitalize(user.lastName),
-        otp: otpNumber,
-      },
-    });
   }
 
   /**

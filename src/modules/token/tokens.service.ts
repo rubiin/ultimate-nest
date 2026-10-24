@@ -1,17 +1,30 @@
-import { ClientInfo, JwtPayload, TokenType } from "@common/@types";
+import type { ClientInfo } from "@common/@types";
+import { JwtPayload, TokenType } from "@common/@types";
 import { TWO_FACTOR_TOKEN_EXPIRY_MINUTES } from "@common/constant";
 import { RefreshToken } from "@entities";
 import { User } from "@entities";
 import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { EntityManager } from "@mikro-orm/core";
+import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
-import { EntityRepository } from "@mikro-orm/postgresql";
+import { EntityRepository, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService, JwtSignOptions } from "@nestjs/jwt";
 import { pick } from "helper-fns";
 import { TokenExpiredError } from "jsonwebtoken";
 import { Observable } from "rxjs";
-import { catchError, from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
+import {
+  catchError,
+  from,
+  lastValueFrom,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  throwError,
+  zip,
+} from "rxjs";
 
 import { RefreshTokensRepository } from "./refresh-tokens.repository";
 
@@ -38,6 +51,7 @@ export class TokensService {
     private readonly refreshTokenRepo: RefreshTokensRepository,
     private readonly jwt: JwtService,
     private readonly configService: ConfigService<Configs, true>,
+    private readonly em: EntityManager<PostgreSqlDriver>,
   ) {}
 
   /**
@@ -82,12 +96,17 @@ export class TokensService {
    * @param client - IP address and user agent of the caller.
    * @returns A string
    */
-  generateRefreshToken(user: User, expiresIn: number, client?: ClientInfo): Observable<string> {
-    return this.refreshTokenRepo.createRefreshToken(user, expiresIn, client).pipe(
+  generateRefreshToken(
+    user: User,
+    expiresIn: number | string,
+    client?: ClientInfo,
+    em?: EntityManager<PostgreSqlDriver>,
+  ): Observable<string> {
+    return this.refreshTokenRepo.createRefreshToken(user, expiresIn, client, em).pipe(
       switchMap((token) => {
         const options: JwtSignOptions = {
           ...this.BASE_OPTIONS,
-          expiresIn,
+          expiresIn: expiresIn as JwtSignOptions["expiresIn"],
           jwtid: String(token.id),
           subject: String(user.id),
         };
@@ -142,27 +161,37 @@ export class TokensService {
     refresh: string,
     client?: ClientInfo,
   ): Observable<{ user: User; accessToken: string; refreshToken: string }> {
-    return this.resolveRefreshToken(refresh).pipe(
-      switchMap(({ user, token }) =>
-        this.refreshTokenRepo.revokeToken(token.id).pipe(
-          switchMap((revoked) => {
-            // Lost a race with a concurrent rotation (or logout) of the same token.
-            if (!revoked) {
-              return throwError(() => refreshTokenError("revoked"));
-            }
+    return from(this.rotateInTransaction(refresh, client));
+  }
 
-            return zip(
-              this.generateAccessToken(user),
-              this.generateRefreshToken(
-                user,
-                this.configService.get("jwt.refreshExpiry", { infer: true }),
-                client,
-              ),
-            ).pipe(map(([accessToken, refreshToken]) => ({ accessToken, refreshToken, user })));
-          }),
+  /**
+   * Revokes the presented token and issues the replacement in one transaction, so a failed insert
+   * cannot leave the old token revoked with no successor.
+   */
+  @Transactional()
+  private async rotateInTransaction(
+    refresh: string,
+    client?: ClientInfo,
+  ): Promise<{ user: User; accessToken: string; refreshToken: string }> {
+    const { user, token } = await lastValueFrom(this.resolveRefreshToken(refresh));
+    const revoked = await lastValueFrom(this.refreshTokenRepo.revokeToken(token.id, this.em));
+
+    // Lost a race with a concurrent rotation (or logout) of the same token.
+    if (!revoked) throw refreshTokenError("revoked");
+
+    const [accessToken, refreshToken] = await lastValueFrom(
+      zip(
+        this.generateAccessToken(user),
+        this.generateRefreshToken(
+          user,
+          this.configService.get("jwt.refreshExpiry", { infer: true }),
+          client,
+          this.em,
         ),
       ),
     );
+
+    return { user, accessToken, refreshToken };
   }
 
   /**

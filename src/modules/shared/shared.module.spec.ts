@@ -29,11 +29,14 @@ vi.mock("@lib/index", () => {
 });
 
 describe("SharedModule", () => {
-  // Regression: these feature modules were dropped from the import list, so their routes were
-  // never registered and every /auth, /posts, /profiles and /2fa request was a 404.
-  it.each([AuthModule, PostModule, ProfileModule, TwoFactorModule])("imports %o", (feature) => {
-    const imports: unknown[] = Reflect.getMetadata(MODULE_METADATA.IMPORTS, SharedModule);
+  // Regression: feature modules belonged here, which is how four of them went unregistered.
+  // They now live in AppModule; this asserts they do not creep back in.
+  it.each([AuthModule, PostModule, ProfileModule, TwoFactorModule])(
+    "does not import %o",
+    (feature) => {
+      const imports: unknown[] = Reflect.getMetadata(MODULE_METADATA.IMPORTS, SharedModule);
 
-    expect(imports).toContain(feature);
-  });
+      expect(imports).not.toContain(feature);
+    },
+  );
 });

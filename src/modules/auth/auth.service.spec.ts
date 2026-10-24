@@ -208,9 +208,7 @@ describe("authService", () => {
     expect(flushedInTransaction).toStrictEqual([true]);
   });
 
-  // Regression: the transactional body used to return a cold observable without subscribing, so no
-  // reset mail was ever sent while the endpoint still answered "Otp sent successfully".
-  it("should send the reset mail inside the transaction", async () => {
+  it("should send the reset mail outside the transaction", async () => {
     mockUserRepo.findOne.mockImplementation((async () => Promise.resolve(loggedInUser)) as never);
     mockProtocolRepo.findOne.mockImplementation((async () => Promise.resolve(null)) as never);
     mockOtpLogRepo.create.mockImplementation(((data: object) => data) as never);
@@ -222,7 +220,7 @@ describe("authService", () => {
 
     await lastValueFrom(service.forgotPassword({ email: "test@example.com" }));
 
-    expect(sentInTransaction).toStrictEqual([true]);
+    expect(sentInTransaction).toStrictEqual([false]);
     expect(mockMailService.send).toHaveBeenCalledWith(
       ResetPasswordMail,
       expect.objectContaining({ to: loggedInUser.email }),
