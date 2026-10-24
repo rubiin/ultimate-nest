@@ -1,9 +1,8 @@
-import process from "node:process";
-
 import { NewsLetterLogStatus, Queues, RoutingKey } from "@common/@types";
 import { BaseRepository } from "@common/database";
 import { NewsLetter, NewsLetterLog, Subscriber } from "@entities";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
+import { rabbitmq } from "@lib/config/configs";
 import { NewsletterMail } from "@lib/mail";
 import { MikroORM, RequestContext } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -40,7 +39,7 @@ export class NewsLetterConsumer {
   }
 
   @RabbitSubscribe({
-    exchange: process.env.RABBITMQ_EXCHANGE,
+    exchange: rabbitmq().exchange,
     queue: Queues.NEWSLETTER,
     routingKey: RoutingKey.SEND_NEWSLETTER,
   })
