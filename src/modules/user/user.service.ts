@@ -166,48 +166,58 @@ export class UserService {
       avatar: "",
     });
 
-    return from(this.saveUserAndSendWelcome(user, files)).pipe(map(() => user));
+    return from(this.cloudinaryService.uploadFile(files)).pipe(
+      switchMap((response) => {
+        user.avatar = response.url as string;
+
+        return from(this.persistUser(user)).pipe(
+          switchMap((otpCode) => this.sendWelcomeMail(user, otpCode)),
+          map(() => user),
+        );
+      }),
+    );
   }
 
   /**
-   * Uploads the avatar, persists the user with a verification OTP, sends the verify mail and queues
-   * the welcome mail inside one transaction.
-   * `this.em` resolves to the transaction's fork here: `@Transactional()` runs the body inside a
-   * `TransactionContext`, which `EntityManager.getContext()` prefers.
+   * Persists the user with a verification OTP inside one transaction.
    */
   @Transactional()
-  private async saveUserAndSendWelcome(user: User, files: RecordWithFile<CreateUserDto>["files"]) {
-    const response = await this.cloudinaryService.uploadFile(files);
-
-    // cloudinary gives a url key on response that is the full url to file
-
-    user.avatar = response.url as string;
-
+  private async persistUser(user: User): Promise<string> {
     const { otp, otpCode } = await this.otpService.create(user, OtpPurpose.VERIFY_EMAIL);
-
     await this.em.persist([user, otp]).flush();
-    await this.mailPolicy.execute(
-      () =>
-        this.mailer.send(VerifyEmailMail, {
-          to: user.email,
-          data: { firstName: capitalize(user.firstName), otp: otpCode },
-        }),
-      { source: "UserService.saveUserAndSendWelcome" },
+
+    return otpCode;
+  }
+
+  private sendWelcomeMail(user: User, otpCode: string): Observable<unknown> {
+    const welcomeMail$ = from(
+      this.mailPolicy.execute(
+        () =>
+          this.mailer.send(VerifyEmailMail, {
+            to: user.email,
+            data: { firstName: capitalize(user.firstName), otp: otpCode },
+          }),
+        { source: "UserService.create" },
+      ),
     );
     const link = this.configService.get("app.clientUrl", { infer: true });
 
-    await this.rabbitPolicy.execute(
-      () =>
-        this.amqpConnection.publish(
-          this.configService.get("rabbitmq.exchange", { infer: true }),
-          RoutingKey.SEND_MAIL,
-          {
-            to: user.email,
-            data: { firstName: capitalize(user.firstName), link },
-          },
-        ),
-      { source: "UserService.saveUserAndSendWelcome" },
+    const publish$ = from(
+      this.rabbitPolicy.execute(
+        () =>
+          this.amqpConnection.publish(
+            this.configService.get("rabbitmq.exchange", { infer: true }),
+            RoutingKey.SEND_MAIL,
+            {
+              to: user.email,
+              data: { firstName: capitalize(user.firstName), link },
+            },
+          ),
+        { source: "UserService.create" },
+      ),
     );
+
+    return welcomeMail$.pipe(switchMap(() => publish$));
   }
 
   /**

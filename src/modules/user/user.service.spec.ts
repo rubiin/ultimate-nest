@@ -157,7 +157,7 @@ describe("userService", () => {
     expect(otp.expiresIn.getTime()).toBeGreaterThanOrEqual(before + 30 * 60_000);
   });
 
-  it("should upload, persist and publish inside a REQUIRED transaction", async () => {
+  it("should upload outside the transaction, persist inside, and publish outside", async () => {
     mockUserRepo.create.mockImplementation(((dto: Record<string, unknown>) => ({
       ...dto,
     })) as never);
@@ -177,13 +177,10 @@ describe("userService", () => {
     await lastValueFrom(service.create({ ...mockedUser, files: mockFile } as never));
 
     expect(mockEm.transactional).toHaveBeenCalledTimes(1);
-    expect(mockEm.transactional).toHaveBeenCalledWith(expect.any(Function), {
-      propagation: TransactionPropagation.REQUIRED,
-    });
     expect(calls).toStrictEqual([
-      ["uploadFile", true],
+      ["uploadFile", false],
       ["flush", true],
-      ["publish", true],
+      ["publish", false],
     ]);
   });
 

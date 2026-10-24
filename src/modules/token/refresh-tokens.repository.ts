@@ -46,6 +46,7 @@ export class RefreshTokensRepository {
     user: User,
     ttl: number | string,
     client?: ClientInfo,
+    em: EntityManager<PostgreSqlDriver> = this.em,
   ): Observable<RefreshToken> {
     const expiration = new Date();
 
@@ -59,7 +60,7 @@ export class RefreshTokensRepository {
       user: user.id,
     });
 
-    return from(this.em.persist(token).flush()).pipe(map(() => token));
+    return from(em.persist(token).flush()).pipe(map(() => token));
   }
 
   /**
@@ -108,10 +109,10 @@ export class RefreshTokensRepository {
    * @param id - The id of the token to revoke.
    * @returns true when this call revoked the token, false when it was already revoked or missing
    */
-  revokeToken(id: number): Observable<boolean> {
-    return from(
-      this.refreshTokenRepository.nativeUpdate({ id, isRevoked: false }, { isRevoked: true }),
-    ).pipe(map((affected) => affected === 1));
+  revokeToken(id: number, em: EntityManager<PostgreSqlDriver> = this.em): Observable<boolean> {
+    return from(em.nativeUpdate(RefreshToken, { id, isRevoked: false }, { isRevoked: true })).pipe(
+      map((affected) => affected === 1),
+    );
   }
 
   /**
