@@ -72,6 +72,7 @@ jobs:
       # The e2e suite talks to a running app on APP_URL, so point it at 8000.
       - run: cp env/.env.sample env/.env.test
       - run: sed -i "s|^APP_PORT=.*|APP_PORT=8000|" env/.env.test
+      - run: sed -i "s|^API_URL=.*|API_URL=http://localhost:8000|" env/.env.test
       - run: NODE_ENV=test pnpm orm migration:up
       - run: NODE_ENV=test USER_PASSWORD=Test@1234 pnpm orm seeder:run
       - run: NODE_ENV=test node dist/main &
