@@ -39,7 +39,7 @@ services:
       - /usr/src/app/node_modules
 
   traefik:
-    image: traefik:v2.11.59
+    image: traefik:v2.11.60
     container_name: traefik
     command:
       # Enable Docker in Traefik, so that it reads labels from Docker services
