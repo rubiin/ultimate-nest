@@ -15,6 +15,9 @@ import { CacheService } from "./cache.service";
       isGlobal: true,
       useFactory: async (configService: ConfigService<Configs, true>) => {
         const redisConfig = configService.getOrThrow("redis", { infer: true });
+        const redisStore = createKeyv(redisConfig, { namespace: redisConfig.namespace });
+        redisStore.on('error', (err) => console.error('Redis error:', err));
+
 
         return {
           // Entries expire instead of living until the next wipe. A short default keeps
@@ -22,7 +25,7 @@ import { CacheService } from "./cache.service";
           ttl: 5 * 60 * 1000,
           // The namespace scopes every key to `<namespace>::<key>`, so `resetCache()` only
           // deletes this app's entries and never another tenant's keys in the same database.
-          store: createKeyv(redisConfig, { namespace: redisConfig.namespace }),
+          store: redisStore,
         };
       },
     }),
