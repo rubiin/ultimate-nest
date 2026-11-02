@@ -58,7 +58,7 @@ describe("genericPolicyHandler", () => {
     it("checks the ability against the resolved row, never the class", async () => {
       const mockAbility = ability();
       const document = new Post({ id: "post-slug" });
-      const resolve = vi.fn().mockResolvedValue(document);
+      const resolve = vi.fn<() => Promise<Post>>().mockResolvedValue(document);
       const handler = new GenericPolicyHandler(Post, Action.Delete, lookup);
 
       await expect(handler.handle(slugRequest, mockAbility, resolve)).resolves.toBe(true);
@@ -69,7 +69,7 @@ describe("genericPolicyHandler", () => {
 
     it("denies when the row cannot be loaded", async () => {
       const mockAbility = ability();
-      const resolve = vi.fn().mockResolvedValue(null);
+      const resolve = vi.fn<() => Promise<boolean>>().mockResolvedValue(null);
       const handler = new GenericPolicyHandler(Post, Action.Delete, lookup);
 
       await expect(handler.handle(slugRequest, mockAbility, resolve)).resolves.toBe(false);
@@ -78,7 +78,7 @@ describe("genericPolicyHandler", () => {
 
     it("denies when the route param is absent without touching the database", async () => {
       const mockAbility = ability();
-      const resolve = vi.fn();
+      const resolve = vi.fn<() => Promise<boolean>>()
       const handler = new GenericPolicyHandler(Post, Action.Delete, lookup);
 
       // `request` only carries an `id` param, so the lookup param is missing.

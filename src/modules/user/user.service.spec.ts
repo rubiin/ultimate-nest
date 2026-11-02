@@ -2,7 +2,7 @@ import { OtpPurpose } from "@common/@types";
 import { OtpLog, Protocol, Referral, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { VerifyEmailMail, WelcomeMail } from "@lib/mail";
-import { EntityManager, TransactionPropagation } from "@mikro-orm/core";
+import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import {
