@@ -39,7 +39,7 @@ services:
       - /usr/src/app/node_modules
 
   traefik:
-    image: traefik:v2.11.59
+    image: traefik:v2.11.61
     container_name: traefik
     command:
       # Enable Docker in Traefik, so that it reads labels from Docker services
@@ -87,7 +87,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:7.4.11-alpine
+    image: redis:7.4.12-alpine
     env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     restart: always
     depends_on:
@@ -137,7 +137,7 @@ services:
 
   pgadmin:
     container_name: pgadmin4_container
-    image: dpage/pgadmin4:9.18
+    image: dpage/pgadmin4:9.19
     env_file: env/.env.${DEPLOY_ENV:-${ENV}}
     restart: unless-stopped
     environment:

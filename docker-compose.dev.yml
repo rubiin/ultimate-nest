@@ -70,7 +70,7 @@ services:
       retries: 10
 
   redis:
-    image: redis:7.4.11-alpine
+    image: redis:7.4.12-alpine
     container_name: nestify-redis
     restart: unless-stopped
     # `requirepass` provisions the built-in `default` ACL user, so the username
