@@ -19,7 +19,12 @@ export const jwtConfigValidationSchema = z.object({
   JWT_ACCESS_EXPIRY: z.string().regex(JWT_EXPIRY_REGEX),
   JWT_ALGORITHM: envString().optional(),
   JWT_REFRESH_EXPIRY: z.string().regex(JWT_EXPIRY_REGEX),
-  JWT_SECRET: z.string().min(8),
+  JWT_SECRET: z
+    .string()
+    .min(32)
+    .refine((value) => value !== "change-me-in-production-please", {
+      message: "JWT_SECRET must be changed from the sample value",
+    }),
 });
 
 export const jwt = registerAs("jwt", () => ({

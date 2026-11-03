@@ -34,6 +34,12 @@ import {
   SendOtpDto,
   UserLoginDto,
 } from "./dtos";
+import {
+  ACCESS_TOKEN_COOKIE,
+  REFRESH_TOKEN_COOKIE,
+  TWO_FACTOR_TOKEN_COOKIE,
+  authCookieOptions,
+} from "./strategies/cookie-token.extractor";
 
 @Injectable()
 export class AuthService {
@@ -71,12 +77,7 @@ export class AuthService {
       switchMap((user) => {
         if (!user) {
           return throwError(
-            () =>
-              new ForbiddenException(
-                translate(itemDoesNotExistKey, {
-                  args: { item: "Account" },
-                }),
-              ),
+            () => new BadRequestException(translate("exception.invalidCredentials")),
           );
         }
 
@@ -198,14 +199,8 @@ export class AuthService {
     ).pipe(
       mergeMap((userExists) => {
         if (!userExists) {
-          return throwError(
-            () =>
-              new NotFoundException(
-                translate(itemDoesNotExistKey, {
-                  args: { item: "Account" },
-                }),
-              ),
-          );
+          // Do not reveal whether the email is registered.
+          return of({ message: "If an account exists, an OTP has been sent." });
         }
 
         return from(this.otpService.create(userExists, OtpPurpose.RESET_PASSWORD)).pipe(
@@ -221,7 +216,7 @@ export class AuthService {
                   },
                 }),
               ),
-              map(() => ({ message: "Otp sent successfully" })),
+              map(() => ({ message: "If an account exists, an OTP has been sent." })),
             ),
           ),
         );
@@ -423,12 +418,21 @@ export class AuthService {
   }) {
     return this.login({ email: user.email }, false, client).pipe(
       map((data) => {
-        // client url; a 2FA-enabled user gets the partial token and must call /2fa/authenticate
-        const twoFactor = data.twoFactorRequired ? "&twoFactorRequired=true" : "";
+        const cookieOptions = authCookieOptions();
 
-        return response.redirect(
-          `${process.env.API_URL}/${process.env.APP_PORT}/v1/auth/oauth/login?token=${data.accessToken}${twoFactor}`,
-        );
+        // Bearer tokens never go in the redirect URL: URLs leak into browser history,
+        // Referer headers and proxy logs. The browser sends these cookies instead.
+        if (data.twoFactorRequired) {
+          response.cookie(TWO_FACTOR_TOKEN_COOKIE, data.accessToken, cookieOptions);
+        } else {
+          response.cookie(ACCESS_TOKEN_COOKIE, data.accessToken, cookieOptions);
+          if (data.refreshToken)
+            response.cookie(REFRESH_TOKEN_COOKIE, data.refreshToken, cookieOptions);
+        }
+
+        const twoFactor = data.twoFactorRequired ? "?twoFactorRequired=true" : "";
+
+        return response.redirect(`${process.env.CLIENT_URL}/auth/oauth/callback${twoFactor}`);
       }),
     );
   }

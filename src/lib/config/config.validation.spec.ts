@@ -298,7 +298,7 @@ describe("configValidationSchema", () => {
     GOOGLE_CLIENT_SECRET: "google-secret",
     JWT_ACCESS_EXPIRY: "15m",
     JWT_REFRESH_EXPIRY: "7d",
-    JWT_SECRET: "jwt-secret",
+    JWT_SECRET: "jwt-secret-with-enough-entropy-for-validation",
     RABBITMQ_DEFAULT_PREFETCH: "10",
     RABBITMQ_EXCHANGE: "ultimate-nest",
     RABBITMQ_URI: "amqp://user:pass@localhost:5672",

@@ -6,6 +6,7 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 
 import { AuthService } from "../auth.service";
 import { assertTokenType } from "./assert-token-type";
+import { TWO_FACTOR_TOKEN_COOKIE, extractCookie } from "./cookie-token.extractor";
 
 @Injectable()
 export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
@@ -15,7 +16,11 @@ export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {
   ) {
     super({
       ignoreExpiration: false,
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+        (request: Parameters<typeof extractCookie>[0]) =>
+          extractCookie(request, TWO_FACTOR_TOKEN_COOKIE),
+      ]),
       secretOrKey: config.get("jwt.secret", { infer: true }),
     });
   }

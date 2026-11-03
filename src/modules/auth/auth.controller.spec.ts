@@ -175,13 +175,5 @@ describe("AuthController", () => {
         expect(controller[handler]({} as never)).toBeUndefined();
       },
     );
-
-    // Stands in for the frontend callback route the oauth redirect points at.
-    it("should echo the token for the mock oauth callback", () => {
-      expect(controller.oauthMock({ token: "a-token" })).toEqual({
-        message: "successfully logged",
-        token: "a-token",
-      });
-    });
   });
 });

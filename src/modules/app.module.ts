@@ -1,9 +1,5 @@
 import { SWAGGER_API_ENDPOINT } from "@common/constant";
-import {
-  AuditContextMiddleware,
-  ClearCacheMiddleware,
-  RealIpMiddleware,
-} from "@common/middlewares";
+import { AuditContextMiddleware, RealIpMiddleware } from "@common/middlewares";
 import { applyRawBodyOnlyTo } from "@golevelup/nestjs-webhooks";
 import { AppController } from "@modules/app.controller";
 import { AuthModule } from "@modules/auth/auth.module";
@@ -39,7 +35,7 @@ export class AppModule implements NestModule {
       path: stripeWebhookPath,
     });
     consumer
-      .apply(RealIpMiddleware, AuditContextMiddleware, ClearCacheMiddleware)
+      .apply(RealIpMiddleware, AuditContextMiddleware)
       .exclude(
         ...excludedPaths.map((path) => ({
           method: RequestMethod.ALL,

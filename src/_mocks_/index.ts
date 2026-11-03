@@ -140,7 +140,6 @@ export const mockRequest = createMock<NestifyRequest>({
   },
   params: payload,
   query: {
-    clearCache: "true",
     ...payload,
   },
 });

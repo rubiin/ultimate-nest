@@ -431,7 +431,11 @@ describe("authService", () => {
     it("should redirect an oauth login of a 2fa-enabled user with only the partial token", async () => {
       const user = buildUser(true);
       mockUserRepo.findOne.mockResolvedValue(user as never);
-      const response = { redirect: vi.fn<() => void>() } as unknown as NestifyResponse;
+      const response = {
+        cookie: vi.fn<(...args: unknown[]) => void>(),
+        redirect: vi.fn<() => void>(),
+      } as unknown as NestifyResponse;
+      vi.stubEnv("CLIENT_URL", "http://client.test");
 
       await lastValueFrom(
         service.OauthHandler({
@@ -440,9 +444,16 @@ describe("authService", () => {
         }),
       );
 
-      expect(response.redirect).toHaveBeenCalledWith(
-        expect.stringMatching(/\?token=partial-token&twoFactorRequired=true$/),
+      expect(response.cookie).toHaveBeenCalledWith(
+        "two_factor_token",
+        "partial-token",
+        expect.objectContaining({ httpOnly: true }),
       );
+      expect(response.redirect).toHaveBeenCalledWith(
+        "http://client.test/auth/oauth/callback?twoFactorRequired=true",
+      );
+      expect(vi.mocked(response.redirect).mock.calls[0][0]).not.toContain("partial-token");
+      vi.unstubAllEnvs();
       expect(mockTokenService.generateAccessToken).not.toHaveBeenCalled();
       expect(mockTokenService.generateRefreshToken).not.toHaveBeenCalled();
     });
@@ -454,7 +465,7 @@ describe("authService", () => {
 
       await expect(
         lastValueFrom(service.validateUser(false, "ghost@example.com")),
-      ).rejects.toBeInstanceOf(ForbiddenException);
+      ).rejects.toBeInstanceOf(BadRequestException);
     });
 
     it("should reject a deactivated account", async () => {
@@ -494,12 +505,13 @@ describe("authService", () => {
   });
 
   describe("forgotPassword", () => {
-    it("should reject an unknown account with a 404", async () => {
+    it("should not reveal whether an account exists", async () => {
       mockUserRepo.findOne.mockResolvedValue(null as never);
 
       await expect(
         lastValueFrom(service.forgotPassword({ email: "ghost@example.com" })),
-      ).rejects.toBeInstanceOf(NotFoundException);
+      ).resolves.toEqual({ message: "If an account exists, an OTP has been sent." });
+      expect(mockMailService.send).not.toHaveBeenCalled();
     });
   });
 
@@ -563,7 +575,11 @@ describe("authService", () => {
       });
       mockUserRepo.findOne.mockResolvedValue(user as never);
       mockUserRepo.nativeUpdate.mockResolvedValue(1 as never);
-      const response = { redirect: vi.fn<() => void>() } as unknown as NestifyResponse;
+      const response = {
+        cookie: vi.fn<(...args: unknown[]) => void>(),
+        redirect: vi.fn<() => void>(),
+      } as unknown as NestifyResponse;
+      vi.stubEnv("CLIENT_URL", "http://client.test");
 
       await lastValueFrom(
         service.OauthHandler({
@@ -572,9 +588,14 @@ describe("authService", () => {
         }),
       );
 
-      expect(response.redirect).toHaveBeenCalledWith(
-        expect.stringMatching(/\?token=access-token$/),
+      expect(response.cookie).toHaveBeenCalledWith(
+        "access_token",
+        "access-token",
+        expect.objectContaining({ httpOnly: true }),
       );
+      expect(response.redirect).toHaveBeenCalledWith("http://client.test/auth/oauth/callback");
+      expect(vi.mocked(response.redirect).mock.calls[0][0]).not.toContain("access-token");
+      vi.unstubAllEnvs();
     });
   });
 });

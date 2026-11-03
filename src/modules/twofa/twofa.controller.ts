@@ -4,6 +4,12 @@ import { Auth, Client, GenericController, LoggedInUser } from "@common/decorator
 import { User } from "@entities";
 import { translate } from "@lib/i18n";
 import { AuthService } from "@modules/auth/auth.service";
+import {
+  ACCESS_TOKEN_COOKIE,
+  REFRESH_TOKEN_COOKIE,
+  TWO_FACTOR_TOKEN_COOKIE,
+  authCookieOptions,
+} from "@modules/auth/strategies/cookie-token.extractor";
 import { Body, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import {
@@ -13,8 +19,9 @@ import {
   ApiOperation,
   ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
+import { Throttle } from "@nestjs/throttler";
 import { Observable } from "rxjs";
-import { switchMap, throwError } from "rxjs";
+import { switchMap, tap, throwError } from "rxjs";
 
 import { TwofaDto } from "./dtos/twofa.dto";
 import { TwoFactorService } from "./twofa.service";
@@ -42,6 +49,7 @@ export class TwoFactorController {
 
   @ApiBearerAuth()
   @Post("authenticate")
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @UseGuards(AuthGuard("jwt2fa"))
   @ApiOperation({
     summary: "Exchange the partial token from login and a TOTP code for the full token pair",
@@ -55,6 +63,7 @@ export class TwoFactorController {
     @Body()
     twoFaAuthDto: TwofaDto,
     @Client() client: ClientInfo,
+    @Res({ passthrough: true }) response: NestifyResponse,
   ): Observable<AuthenticationResponse> {
     return this.twoFactorAuthenticationService.isTwoFactorCodeValid(twoFaAuthDto.code, user).pipe(
       switchMap((isCodeValid) => {
@@ -64,6 +73,14 @@ export class TwoFactorController {
           );
 
         return this.authService.issueTokens(user, client);
+      }),
+      tap((tokens) => {
+        const cookieOptions = authCookieOptions();
+
+        response.cookie(ACCESS_TOKEN_COOKIE, tokens.accessToken, cookieOptions);
+        if (tokens.refreshToken)
+          response.cookie(REFRESH_TOKEN_COOKIE, tokens.refreshToken, cookieOptions);
+        response.clearCookie(TWO_FACTOR_TOKEN_COOKIE, { path: "/" });
       }),
     );
   }

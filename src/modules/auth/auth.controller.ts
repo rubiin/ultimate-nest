@@ -13,6 +13,10 @@ import {
 import { HelperService } from "@common/helpers";
 import { User } from "@entities";
 import { translate } from "@lib/i18n";
+import {
+  REFRESH_TOKEN_COOKIE,
+  extractCookie,
+} from "@modules/auth/strategies/cookie-token.extractor";
 import { TokensService } from "@modules/token/tokens.service";
 import {
   Body,
@@ -31,6 +35,8 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { Resilience } from "@nestjs/resilience";
 import { ApiOkResponse, ApiOperation } from "@nestjs/swagger";
+import { Throttle } from "@nestjs/throttler";
+import type { Request } from "express";
 import { Observable } from "rxjs";
 import { map } from "rxjs";
 
@@ -53,6 +59,7 @@ export class AuthController {
   ) {}
 
   @Post("login")
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @ApiOperation({ summary: "User Login" })
   @ApiOkResponse({
     description:
@@ -70,6 +77,7 @@ export class AuthController {
   }
 
   @Post("reset-password")
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @SwaggerResponse({
     badRequest: "Otp is expired.",
     notFound: "Otp doesn't exist.",
@@ -81,6 +89,7 @@ export class AuthController {
 
   @Auth()
   @Patch("forgot-password")
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @SwaggerResponse({
     notFound: "Account doesn't exist.",
     operation: "Forgot password",
@@ -127,13 +136,8 @@ export class AuthController {
     return this.authService.OauthHandler({ client, response, user });
   }
 
-  // this simulates a frontend url for testing oauth login
-  @Get("oauth/login")
-  oauthMock(@Query() query: { token: string }) {
-    return { message: "successfully logged", token: query.token };
-  }
-
   @Post("verify-otp")
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @SwaggerResponse({
     badRequest: "Otp is expired.",
     notFound: "Otp doesn't exist.",
@@ -158,9 +162,17 @@ export class AuthController {
   refresh(
     @Body() body: RefreshTokenDto,
     @Client() client: ClientInfo,
+    @Req() request: Request,
   ): Observable<AuthenticationResponse> {
+    const refreshToken = body?.refreshToken ?? extractCookie(request, REFRESH_TOKEN_COOKIE);
+
+    if (!refreshToken)
+      throw new BadRequestException(
+        translate("validation.isNotEmpty", { args: { property: "refreshToken" } }),
+      );
+
     return this.tokenService
-      .rotateRefreshToken(body.refreshToken, client)
+      .rotateRefreshToken(refreshToken, client)
       .pipe(
         map(({ user, accessToken, refreshToken }) =>
           HelperService.buildPayloadResponse(user, accessToken, refreshToken),

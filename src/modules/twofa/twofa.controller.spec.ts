@@ -29,15 +29,30 @@ describe("twoFactorController", () => {
   it("should issue the full pair for a valid code without a password login", async () => {
     const pair = {
       accessToken: "access",
-      refresh_token: "refresh",
+      refreshToken: "refresh",
       user: { id: 1, idx: "user-1" },
     };
     twoFactorService.isTwoFactorCodeValid.mockReturnValue(of(true));
     authService.issueTokens.mockReturnValue(of(pair));
 
+    const response = {
+      clearCookie: vi.fn<(...args: unknown[]) => void>(),
+      cookie: vi.fn<(...args: unknown[]) => void>(),
+    } as unknown as NestifyResponse;
+
     await expect(
-      lastValueFrom(controller.authenticate(user, { code: "123456" }, client)),
+      lastValueFrom(controller.authenticate(user, { code: "123456" }, client, response)),
     ).resolves.toBe(pair);
+    expect(response.cookie).toHaveBeenCalledWith(
+      "access_token",
+      "access",
+      expect.objectContaining({ httpOnly: true }),
+    );
+    expect(response.cookie).toHaveBeenCalledWith(
+      "refresh_token",
+      "refresh",
+      expect.objectContaining({ httpOnly: true }),
+    );
     expect(twoFactorService.isTwoFactorCodeValid).toHaveBeenCalledWith("123456", user);
     expect(authService.issueTokens).toHaveBeenCalledWith(user, client);
     expect(authService.login).not.toHaveBeenCalled();
@@ -47,7 +62,12 @@ describe("twoFactorController", () => {
     twoFactorService.isTwoFactorCodeValid.mockReturnValue(of(false));
 
     await expect(
-      lastValueFrom(controller.authenticate(user, { code: "000000" })),
+      lastValueFrom(
+        controller.authenticate(user, { code: "000000" }, client, {
+          clearCookie: vi.fn<(...args: unknown[]) => void>(),
+          cookie: vi.fn<(...args: unknown[]) => void>(),
+        } as unknown as NestifyResponse),
+      ),
     ).rejects.toBeInstanceOf(UnauthorizedException);
     expect(authService.issueTokens).not.toHaveBeenCalled();
   });

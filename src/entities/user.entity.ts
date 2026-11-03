@@ -78,7 +78,7 @@ export class User extends BaseEntity {
   @Check({ expression: "cardinality(roles) > 0", name: "user_roles_not_empty_check" })
   roles?: Roles[] = [Roles.AUTHOR];
 
-  @Property({ index: true, unique: true })
+  @Property({ hidden: true, index: true, unique: true })
   mobileNumber?: string;
 
   @Property()

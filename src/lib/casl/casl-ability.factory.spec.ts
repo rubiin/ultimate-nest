@@ -1,5 +1,5 @@
 import { Action, Roles } from "@common/@types";
-import { Comment, Post, User } from "@entities";
+import { Comment, Post, Tag, User } from "@entities";
 
 import { CaslAbilityFactory } from "./casl-ability.factory";
 
@@ -27,6 +27,30 @@ describe("caslAbilityFactory", () => {
 
     expect(ability.can(Action.Delete, User)).toBe(false);
     expect(ability.can(Action.Delete, other)).toBe(false);
+  });
+
+  it("should not let an author read the user directory", () => {
+    const ability = factory.createForUser(author);
+
+    expect(ability.can(Action.Read, User)).toBe(false);
+    expect(ability.can(Action.Read, other)).toBe(false);
+  });
+
+  it("should let an admin manage tags", () => {
+    const ability = factory.createForUser(admin);
+
+    expect(ability.can(Action.Create, Tag)).toBe(true);
+    expect(ability.can(Action.Update, Tag)).toBe(true);
+    expect(ability.can(Action.Delete, Tag)).toBe(true);
+  });
+
+  it("should not let an author mutate tags", () => {
+    const ability = factory.createForUser(author);
+
+    expect(ability.can(Action.Create, Tag)).toBe(false);
+    expect(ability.can(Action.Update, Tag)).toBe(false);
+    expect(ability.can(Action.Delete, Tag)).toBe(false);
+    expect(ability.can(Action.Read, Tag)).toBe(true);
   });
 
   it("should leave the post and comment rules unchanged", () => {

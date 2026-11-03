@@ -19,7 +19,11 @@ export class CaslAbilityFactory {
     /* Giving the user the ability to read and write to everything if they are an admin. */
 
     if (user.roles!.includes(Roles.ADMIN)) can(Action.Manage, "all"); // read-write access to everything
-    else can(Action.Read, "all"); // read-only access to everything
+    else {
+      can(Action.Read, "all"); // read-only access to everything
+      // The user directory is not a public feature: do not let non-admins harvest PII.
+      cannot(Action.Read, User);
+    }
 
     // user specific permissions
     can(Action.Update, User, { id: user.id });
@@ -38,6 +42,13 @@ export class CaslAbilityFactory {
     can([Action.Delete, Action.Update], Post, {
       "author.id": user.id,
     } as unknown as MongoQuery<Post>);
+
+    // tag specific permissions
+    if (user.roles!.includes(Roles.ADMIN)) {
+      can([Action.Create, Action.Update, Action.Delete], Tag);
+    } else {
+      cannot([Action.Create, Action.Update, Action.Delete], Tag);
+    }
 
     // comment specific permissions
     can([Action.Update, Action.Delete], Comment, {
