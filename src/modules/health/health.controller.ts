@@ -1,6 +1,6 @@
-import { BYTE_TO_GB, BYTE_TO_MB } from "@common/@types";
-import { GenericController } from "@common/decorators";
-import { HelperService } from "@common/helpers";
+import { BYTE_TO_GB, BYTE_TO_MB } from "@common/@types/index.js";
+import { GenericController } from "@common/decorators/index.js";
+import { HelperService } from "@common/helpers/index.js";
 import { Get } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import {

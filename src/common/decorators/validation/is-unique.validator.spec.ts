@@ -4,8 +4,8 @@ import { EntityManager } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Test } from "@nestjs/testing";
 
-import { IsUniqueValidationContext } from "./is-unique.validator";
-import { IsUniqueConstraint } from "./is-unique.validator";
+import { IsUniqueValidationContext } from "./is-unique.validator.js";
+import { IsUniqueConstraint } from "./is-unique.validator.js";
 
 describe("isUnique", () => {
   let isUnique: IsUniqueConstraint;

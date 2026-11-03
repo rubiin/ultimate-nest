@@ -1,4 +1,4 @@
-import { QueryOrder } from "@common/@types";
+import { QueryOrder } from "@common/@types/index.js";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
 import { Cursor, CursorError, EntityManager, ReferenceKind } from "@mikro-orm/core";
@@ -7,7 +7,7 @@ import { loggedInUser } from "@mocks";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { lastValueFrom } from "rxjs";
 
-import { BaseRepository } from "./base.repository";
+import { BaseRepository } from "./base.repository.js";
 
 describe("baseRepository", () => {
   const mockEm = createMock<EntityManager<PostgreSqlDriver>>();

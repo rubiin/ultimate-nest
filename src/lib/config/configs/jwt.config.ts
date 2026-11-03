@@ -1,11 +1,11 @@
 import process from "node:process";
 
-import { JWT_EXPIRY_REGEX } from "@common/constant";
+import { JWT_EXPIRY_REGEX } from "@common/constant/index.js";
 import { registerAs } from "@nestjs/config";
 import { isNumber } from "helper-fns";
 import { z } from "zod";
 
-import { envString } from "./schema.helpers";
+import { envString } from "./schema.helpers.js";
 
 /**
  * NOTE:

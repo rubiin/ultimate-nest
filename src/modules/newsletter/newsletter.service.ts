@@ -1,10 +1,10 @@
-import { JwtPayload, RoutingKey } from "@common/@types";
-import { BaseRepository } from "@common/database";
-import { CursorPaginationDto } from "@common/dtos";
+import { JwtPayload, RoutingKey } from "@common/@types/index.js";
+import { BaseRepository } from "@common/database/index.js";
+import { CursorPaginationDto } from "@common/dtos/index.js";
 import { NewsLetter, Subscriber } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { BaseService } from "@lib/crud/crud.service";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { BaseService } from "@lib/crud/crud.service.js";
+import { itemDoesNotExistKey, translate } from "@lib/i18n/index.js";
 import { MikroORM, RequestContext } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
@@ -15,8 +15,8 @@ import { Cron, CronExpression } from "@nestjs/schedule";
 import { Observable } from "rxjs";
 import { catchError, from, map, mergeMap, of, switchMap, throwError } from "rxjs";
 
-import { SubscribeNewsletterDto } from "./dto";
-import type { NewsLetterMessage } from "./newsletter.message";
+import { SubscribeNewsletterDto } from "./dto/index.js";
+import type { NewsLetterMessage } from "./newsletter.message.js";
 
 const UNSUBSCRIBE_LINK_EXPIRY = "365d";
 

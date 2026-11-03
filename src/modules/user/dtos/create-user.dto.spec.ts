@@ -1,5 +1,5 @@
-import { IsNestedField } from "@common/decorators";
-import { IsUniqueConstraint } from "@common/decorators/validation/is-unique.validator";
+import { IsNestedField } from "@common/decorators/index.js";
+import { IsUniqueConstraint } from "@common/decorators/validation/is-unique.validator.js";
 import { createMock } from "@golevelup/ts-vitest";
 import { EntityManager } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
@@ -7,7 +7,7 @@ import { Test } from "@nestjs/testing";
 import { Type } from "class-transformer";
 import { useContainer, validate, ValidateNested } from "class-validator";
 
-import { CreateUserDto, SocialDto } from "./create-user.dto";
+import { CreateUserDto, SocialDto } from "./create-user.dto.js";
 
 // The inline stack `social` used before the refactor to IsNestedField.
 class InlineStack {

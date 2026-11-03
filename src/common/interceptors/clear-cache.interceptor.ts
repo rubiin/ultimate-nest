@@ -1,4 +1,4 @@
-import { CacheService } from "@lib/cache";
+import { CacheService } from "@lib/cache/index.js";
 import { CallHandler, ExecutionContext, HttpStatus, NestInterceptor } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
 import { concat, concatWith, from, Observable, of } from "rxjs";

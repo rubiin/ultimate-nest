@@ -1,7 +1,7 @@
-import { getAuditActor } from "@common/database/audit.context";
+import { getAuditActor } from "@common/database/audit.context.js";
 import { mockResponse } from "@mocks";
 
-import { AuditContextMiddleware } from "./audit-context.middleware";
+import { AuditContextMiddleware } from "./audit-context.middleware.js";
 
 describe("AuditContextMiddleware", () => {
   it("runs the rest of the request inside the audit context", async () => {

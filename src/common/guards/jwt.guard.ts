@@ -1,5 +1,5 @@
-import { ERROR_CODES, IS_PUBLIC_KEY_META } from "@common/constant";
-import { translate } from "@lib/i18n";
+import { ERROR_CODES, IS_PUBLIC_KEY_META } from "@common/constant/index.js";
+import { translate } from "@lib/i18n/index.js";
 import { ExecutionContext } from "@nestjs/common";
 import { ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";

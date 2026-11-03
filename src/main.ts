@@ -1,8 +1,8 @@
 import process from "node:process";
 
-import { OptimisticLockFilter, QueryFailedFilter } from "@common/filters";
-import { AppUtils, HelperService } from "@common/helpers";
-import { InternalDisabledLogger } from "@lib/pino/internal.logger";
+import { OptimisticLockFilter, QueryFailedFilter } from "@common/filters/index.js";
+import { AppUtils, HelperService } from "@common/helpers/index.js";
+import { InternalDisabledLogger } from "@lib/pino/internal.logger.js";
 import { Logger as NestLogger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
@@ -13,8 +13,8 @@ import { useContainer } from "class-validator";
 import compression from "compression";
 import { Logger, LoggerErrorInterceptor } from "nestjs-pino";
 
-import { AppModule } from "./modules/app.module";
-import { SocketIOAdapter } from "./socket-io.adapter";
+import { AppModule } from "./modules/app.module.js";
+import { SocketIOAdapter } from "./socket-io.adapter.js";
 import "@total-typescript/ts-reset";
 
 declare const module: {
@@ -117,7 +117,7 @@ async function bootstrap() {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
-  if (module?.hot) {
+  if (typeof module !== "undefined" && module.hot) {
     module.hot.accept();
     module.hot.dispose(async () => app.close());
   }

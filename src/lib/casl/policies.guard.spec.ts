@@ -1,12 +1,12 @@
-import { Roles } from "@common/@types";
-import { CHECK_POLICIES_KEY_META } from "@common/constant";
+import { Roles } from "@common/@types/index.js";
+import { CHECK_POLICIES_KEY_META } from "@common/constant/index.js";
 import { createMock } from "@golevelup/ts-vitest";
 import { EntityManager } from "@mikro-orm/core";
 import { ExecutionContext } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 
-import { CaslAbilityFactory } from "./casl-ability.factory";
-import { PoliciesGuard } from "./policies.guard";
+import { CaslAbilityFactory } from "./casl-ability.factory.js";
+import { PoliciesGuard } from "./policies.guard.js";
 
 describe("policiesGuard", () => {
   const mockReflector = createMock<Reflector>();

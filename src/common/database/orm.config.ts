@@ -1,10 +1,10 @@
-import { HelperService } from "@common/helpers";
+import { HelperService } from "@common/helpers/index.js";
 import { LoadStrategy } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 import { Logger, NotFoundException } from "@nestjs/common";
 
-import { BaseRepository } from "./base.repository";
+import { BaseRepository } from "./base.repository.js";
 
 const logger = new Logger("MikroORM");
 

@@ -1,6 +1,6 @@
-import { CustomThrottlerGuard } from "@common/guards";
-import { AppUtils } from "@common/helpers";
-import { ClearCacheInterceptor, HttpCacheInterceptor } from "@common/interceptors";
+import { CustomThrottlerGuard } from "@common/guards/index.js";
+import { AppUtils } from "@common/helpers/index.js";
+import { ClearCacheInterceptor, HttpCacheInterceptor } from "@common/interceptors/index.js";
 import {
   NestCacheModule,
   NestCaslModule,
@@ -15,7 +15,7 @@ import {
   NestResilienceModule,
   NestThrottlerModule,
   OrmModule,
-} from "@lib/index";
+} from "@lib/index.js";
 import { Module } from "@nestjs/common";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { I18nValidationPipe } from "@nestjs/i18n";

@@ -1,12 +1,12 @@
-import { BaseEntity } from "@common/database";
+import { BaseEntity } from "@common/database/index.js";
 import { User } from "@entities";
 import { Observable } from "rxjs";
 
-import { CreateEntityType, UpdateEntityType } from "../types/common.types";
+import { CreateEntityType, UpdateEntityType } from "../types/common.types.js";
 import {
   PaginationResponse,
   PaginationRequest as TPaginationRequest,
-} from "./pagination.interface";
+} from "./pagination.interface.js";
 
 /**
  * common interface that enforces common methods for controller and service

@@ -1,4 +1,4 @@
-import { IsNestedFieldOptions } from "@common/@types";
+import { IsNestedFieldOptions } from "@common/@types/index.js";
 import { applyDecorators } from "@nestjs/common";
 import { i18nValidationMessage } from "@nestjs/i18n";
 import { Type } from "class-transformer";

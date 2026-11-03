@@ -1,4 +1,4 @@
-import { HelperService } from "@common/helpers";
+import { HelperService } from "@common/helpers/index.js";
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import {
@@ -10,7 +10,7 @@ import {
   SmtpTransport,
 } from "@nestjs/mail";
 
-import { NewsletterMail, ResetPasswordMail, VerifyEmailMail, WelcomeMail } from "./mails";
+import { NewsletterMail, ResetPasswordMail, VerifyEmailMail, WelcomeMail } from "./mails/index.js";
 
 const mails = [NewsletterMail, ResetPasswordMail, VerifyEmailMail, WelcomeMail];
 

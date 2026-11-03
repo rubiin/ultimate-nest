@@ -1,4 +1,4 @@
-import { CacheService } from "@lib/cache/cache.service";
+import { CacheService } from "@lib/cache/cache.service.js";
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";

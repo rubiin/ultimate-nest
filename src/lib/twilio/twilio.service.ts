@@ -1,4 +1,4 @@
-import type { TwilioModuleOptions } from "@lib/twilio/twilio.options";
+import type { TwilioModuleOptions } from "@lib/twilio/twilio.options.js";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { omit } from "helper-fns";
 import { Observable } from "rxjs";
@@ -7,9 +7,9 @@ import twilio from "twilio";
 import {
   MessageInstance,
   MessageListInstanceCreateOptions,
-} from "twilio/lib/rest/api/v2010/account/message";
+} from "twilio/lib/rest/api/v2010/account/message.js";
 
-import { MODULE_OPTIONS_TOKEN } from "./twilio.module-definition";
+import { MODULE_OPTIONS_TOKEN } from "./twilio.module-definition.js";
 
 @Injectable()
 export class TwilioService {

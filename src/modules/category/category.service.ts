@@ -1,7 +1,7 @@
-import { BaseRepository } from "@common/database";
-import { OffsetPaginationDto } from "@common/dtos";
+import { BaseRepository } from "@common/database/index.js";
+import { OffsetPaginationDto } from "@common/dtos/index.js";
 import { Category } from "@entities";
-import { BaseService } from "@lib/crud/crud.service";
+import { BaseService } from "@lib/crud/crud.service.js";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
 

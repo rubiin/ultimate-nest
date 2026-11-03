@@ -1,5 +1,5 @@
-import type { ClientInfo } from "@common/@types";
-import { MS_PER_SECOND } from "@common/constant";
+import type { ClientInfo } from "@common/@types/index.js";
+import { MS_PER_SECOND } from "@common/constant/index.js";
 import { User } from "@entities";
 import { RefreshToken } from "@entities";
 import { EntityManager } from "@mikro-orm/core";

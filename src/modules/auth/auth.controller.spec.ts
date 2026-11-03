@@ -1,11 +1,11 @@
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
-import { TokensService } from "@modules/token/tokens.service";
+import { TokensService } from "@modules/token/tokens.service.js";
 import { BadRequestException } from "@nestjs/common";
 import { lastValueFrom, of } from "rxjs";
 
-import { AuthController } from "./auth.controller";
-import { AuthService } from "./auth.service";
+import { AuthController } from "./auth.controller.js";
+import { AuthService } from "./auth.service.js";
 
 describe("AuthController", () => {
   const client = { ipAddress: "203.0.113.7", userAgent: "Firefox" };

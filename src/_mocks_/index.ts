@@ -1,20 +1,20 @@
 import { Buffer } from "node:buffer";
 import path from "node:path";
 
-import { File } from "@common/@types";
-import { PaginationType, Roles } from "@common/@types";
-import { BaseRepository } from "@common/database";
-import { CursorPaginationDto } from "@common/dtos";
+import { File } from "@common/@types/index.js";
+import { PaginationType, Roles } from "@common/@types/index.js";
+import { BaseRepository } from "@common/database/index.js";
+import { CursorPaginationDto } from "@common/dtos/index.js";
 import { Category, Comment, Conversation, Message, OtpLog, Post, Tag } from "@entities";
 import { NewsLetter, Protocol, Referral, RefreshToken, Subscriber, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { createMock } from "@golevelup/ts-vitest";
-import { CacheService } from "@lib/cache/cache.service";
+import { CacheService } from "@lib/cache/cache.service.js";
 import { EntityManager, MikroORM } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
-import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository";
-import { TokensService } from "@modules/token/tokens.service";
+import { RefreshTokensRepository } from "@modules/token/refresh-tokens.repository.js";
+import { TokensService } from "@modules/token/tokens.service.js";
 import { CallHandler, ExecutionContext } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Reflector } from "@nestjs/core";
@@ -69,7 +69,7 @@ export const queryDto: CursorPaginationDto = {
 };
 
 export const mockFile = {
-  buffer: Buffer.from(path.join(__dirname, "/../../test/test.png"), "utf8"),
+  buffer: Buffer.from(path.join(import.meta.dirname, "/../../test/test.png"), "utf8"),
   fieldname: "file",
   mimetype: "text/png",
   originalname: "test.png",

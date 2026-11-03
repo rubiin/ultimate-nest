@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { IsGreaterThan } from "./is-greater-than.validator";
+import { IsGreaterThan } from "./is-greater-than.validator.js";
 
 const validator = new Validator();
 

@@ -1,9 +1,9 @@
-import { BaseEntity } from "@common/database";
+import { BaseEntity } from "@common/database/index.js";
 import { Entity, ManyToOne, Property } from "@mikro-orm/decorators/legacy";
 import type { Rel } from "@mikro-orm/postgresql";
 import { Opt, Ref } from "@mikro-orm/postgresql";
 
-import { User } from "./user.entity";
+import { User } from "./user.entity.js";
 
 @Entity()
 export class RefreshToken extends BaseEntity {

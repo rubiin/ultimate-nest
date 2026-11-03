@@ -12,7 +12,7 @@ import {
   refreshToken,
   refreshTokenPayload,
 } from "@mocks";
-import { TokensService } from "@modules/token/tokens.service";
+import { TokensService } from "@modules/token/tokens.service.js";
 import { NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
@@ -21,7 +21,7 @@ import { Test } from "@nestjs/testing";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { lastValueFrom, of } from "rxjs";
 
-import { RefreshTokensRepository } from "./refresh-tokens.repository";
+import { RefreshTokensRepository } from "./refresh-tokens.repository.js";
 
 describe("tokensService", () => {
   let service: TokensService;

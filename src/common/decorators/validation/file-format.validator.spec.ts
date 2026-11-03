@@ -1,4 +1,4 @@
-import { CustomUploadFileTypeValidator } from "./file-format.validator";
+import { CustomUploadFileTypeValidator } from "./file-format.validator.js";
 
 describe("customUploadFileTypeValidator", () => {
   const buildFile = (originalname: string) => ({ originalname }) as Express.Multer.File;

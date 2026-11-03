@@ -1,11 +1,11 @@
-import { JwtPayload } from "@common/@types";
+import { JwtPayload } from "@common/@types/index.js";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
 import { UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
-import { AuthService } from "../auth.service";
-import { JwtTwofaStrategy } from "./jwt-2fa.strategy";
+import { AuthService } from "../auth.service.js";
+import { JwtTwofaStrategy } from "./jwt-2fa.strategy.js";
 
 describe("jwtTwofaStrategy", () => {
   const authService = createMock<AuthService>();

@@ -6,7 +6,7 @@ import { mockConversationRepo, mockEm, mockMessageRepo } from "@mocks";
 import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 
-import { ChatService } from "./chat.service";
+import { ChatService } from "./chat.service.js";
 
 describe("chatService", () => {
   let service: ChatService;

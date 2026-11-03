@@ -2,7 +2,7 @@ import { createMock } from "@golevelup/ts-vitest";
 import { mockCacheService } from "@mocks";
 import { lastValueFrom, of, throwError } from "rxjs";
 
-import { ClearCacheInterceptor } from "./clear-cache.interceptor";
+import { ClearCacheInterceptor } from "./clear-cache.interceptor.js";
 
 describe("clearCacheInterceptor", () => {
   let interceptor: ClearCacheInterceptor;

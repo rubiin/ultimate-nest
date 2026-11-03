@@ -1,8 +1,8 @@
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 
-import * as entities from "../entities";
-import { User } from "../entities";
+import * as entities from "../entities/index.js";
+import { User } from "../entities/index.js";
 
 describe("user entity serialization", () => {
   let orm: MikroORM;

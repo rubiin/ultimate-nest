@@ -1,10 +1,10 @@
-import { MinMaxLength } from "@common/decorators/validation/min-max-length.decorator";
+import { MinMaxLength } from "@common/decorators/validation/min-max-length.decorator.js";
 import { Body, Controller, Get, INestApplication, Post } from "@nestjs/common";
 import { I18nValidationPipe } from "@nestjs/i18n";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
 
-import { NestI18nModule } from "./i18n.module";
+import { NestI18nModule } from "./i18n.module.js";
 
 class Dto {
   @MinMaxLength({ minLength: 5 })

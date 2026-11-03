@@ -3,7 +3,7 @@ import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import { z } from "zod";
 
-import { envNumber, envPort, envString } from "./schema.helpers";
+import { envNumber, envPort, envString } from "./schema.helpers.js";
 
 export const redisConfigValidationSchema = z.object({
   REDIS_HOST: envString(),

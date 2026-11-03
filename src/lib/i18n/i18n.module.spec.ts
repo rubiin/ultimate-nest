@@ -1,4 +1,4 @@
-import { i18nOptions } from "./i18n.module";
+import { i18nOptions } from "./i18n.module.js";
 
 describe("i18nOptions", () => {
   const originalNodeEnv = process.env.NODE_ENV;

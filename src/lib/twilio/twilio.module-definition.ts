@@ -1,6 +1,6 @@
 import { ConfigurableModuleBuilder } from "@nestjs/common";
 
-import { TwilioModuleOptions } from "./twilio.options";
+import { TwilioModuleOptions } from "./twilio.options.js";
 
 export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } =
   new ConfigurableModuleBuilder<TwilioModuleOptions>({

@@ -2,7 +2,7 @@ import { RabbitMQModule } from "@golevelup/nestjs-rabbitmq";
 import { Global, Logger, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
-import { RabbitMQHealthCheckService } from "./healthcheck";
+import { RabbitMQHealthCheckService } from "./healthcheck.js";
 
 const logger = new Logger("RabbitMQ");
 

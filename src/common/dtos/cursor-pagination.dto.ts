@@ -1,10 +1,10 @@
-import { PaginationType } from "@common/@types";
-import { IsNumberField, IsStringField } from "@common/decorators";
-import { validationI18nMessage } from "@lib/i18n";
+import { PaginationType } from "@common/@types/index.js";
+import { IsNumberField, IsStringField } from "@common/decorators/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { ApiHideProperty } from "@nestjs/swagger";
 import { Allow, IsBase64 } from "class-validator";
 
-import { PaginationDto } from "./pagination.dto";
+import { PaginationDto } from "./pagination.dto.js";
 
 // TODO: add filters
 

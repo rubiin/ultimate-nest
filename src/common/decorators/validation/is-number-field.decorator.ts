@@ -1,5 +1,5 @@
-import { NumberFieldOptions } from "@common/@types";
-import { validationI18nMessage } from "@lib/i18n";
+import { NumberFieldOptions } from "@common/@types/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { applyDecorators } from "@nestjs/common";
 import { Type } from "class-transformer";
 import {

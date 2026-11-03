@@ -1,19 +1,19 @@
-import { Action, PaginationResponse } from "@common/@types";
+import { Action, PaginationResponse } from "@common/@types/index.js";
 import {
   ApiPaginatedResponse,
   GenericController,
   LoggedInUser,
   SwaggerResponse,
-} from "@common/decorators";
-import { CursorPaginationDto } from "@common/dtos";
+} from "@common/decorators/index.js";
+import { CursorPaginationDto } from "@common/dtos/index.js";
 import { Tag, User } from "@entities";
-import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
-import { AbstractValidationPipe } from "@lib/crud/crud.controller";
+import { CheckPolicies, GenericPolicyHandler } from "@lib/casl/index.js";
+import { AbstractValidationPipe } from "@lib/crud/crud.controller.js";
 import { Body, Delete, Get, Param, Patch, Post, Query, UsePipes } from "@nestjs/common";
 import { Observable } from "rxjs";
 
-import { CreateTagDto, EditTagDto } from "./dto";
-import { TagsService } from "./tags.service";
+import { CreateTagDto, EditTagDto } from "./dto/index.js";
+import { TagsService } from "./tags.service.js";
 
 const ADMIN_ONLY = "Admin role required.";
 

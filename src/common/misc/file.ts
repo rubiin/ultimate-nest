@@ -1,6 +1,6 @@
-import { FileValidator } from "@common/@types";
-import { BYTE_TO_MB, FileSize, FileType } from "@common/@types";
-import { CustomUploadFileTypeValidator } from "@common/decorators";
+import { FileValidator } from "@common/@types/index.js";
+import { BYTE_TO_MB, FileSize, FileType } from "@common/@types/index.js";
+import { CustomUploadFileTypeValidator } from "@common/decorators/index.js";
 import { HttpStatus, ParseFilePipeBuilder } from "@nestjs/common";
 
 /**

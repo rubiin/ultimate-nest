@@ -8,7 +8,7 @@ import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";
 
-import { ProfileService } from "./profile.service";
+import { ProfileService } from "./profile.service.js";
 
 describe("profileService", () => {
   let service: ProfileService;

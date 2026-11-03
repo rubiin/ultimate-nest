@@ -1,10 +1,10 @@
 import process from "node:process";
 
-import { RABBIT_MQ_URI_REGEX } from "@common/constant";
+import { RABBIT_MQ_URI_REGEX } from "@common/constant/index.js";
 import { registerAs } from "@nestjs/config";
 import { z } from "zod";
 
-import { envNumber, envString } from "./schema.helpers";
+import { envNumber, envString } from "./schema.helpers.js";
 
 export const rabbitmqConfigValidationSchema = z.object({
   RABBITMQ_DEFAULT_PREFETCH: envNumber(),

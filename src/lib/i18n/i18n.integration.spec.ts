@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { MinMaxLength } from "@common/decorators/validation/min-max-length.decorator";
+import { MinMaxLength } from "@common/decorators/validation/min-max-length.decorator.js";
 import { BadRequestException } from "@nestjs/common";
 import { I18nContext, I18nModule, I18nValidationPipe, JsonI18nLoader, t } from "@nestjs/i18n";
 import { Test } from "@nestjs/testing";
@@ -19,7 +19,9 @@ describe("i18n integration", () => {
         I18nModule.forRoot({
           defaultLocale: "en",
           supportedLocales: ["en", "np"],
-          loader: new JsonI18nLoader({ path: path.join(__dirname, "../../resources/i18n/") }),
+          loader: new JsonI18nLoader({
+            path: path.join(import.meta.dirname, "../../resources/i18n/"),
+          }),
         }),
       ],
     }).compile();

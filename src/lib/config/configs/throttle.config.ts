@@ -3,7 +3,7 @@ import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import { z } from "zod";
 
-import { envNumber } from "./schema.helpers";
+import { envNumber } from "./schema.helpers.js";
 
 export const throttleConfigValidationSchema = z.object({
   THROTTLE_LIMIT: envNumber(),

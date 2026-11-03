@@ -3,7 +3,7 @@ import { CacheModule } from "@nestjs/cache-manager";
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
-import { CacheService } from "./cache.service";
+import { CacheService } from "./cache.service.js";
 
 @Global()
 @Module({
@@ -16,8 +16,7 @@ import { CacheService } from "./cache.service";
       useFactory: async (configService: ConfigService<Configs, true>) => {
         const redisConfig = configService.getOrThrow("redis", { infer: true });
         const redisStore = createKeyv(redisConfig, { namespace: redisConfig.namespace });
-        redisStore.on('error', (err) => console.error('Redis error:', err));
-
+        redisStore.on("error", (err) => console.error("Redis error:", err));
 
         return {
           // Entries expire instead of living until the next wipe. A short default keeps

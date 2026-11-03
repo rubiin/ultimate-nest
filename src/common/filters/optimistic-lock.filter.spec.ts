@@ -4,7 +4,7 @@ import { createMock } from "@golevelup/ts-vitest";
 import { OptimisticLockError } from "@mikro-orm/postgresql";
 import { HttpStatus } from "@nestjs/common";
 
-import { OptimisticLockFilter } from "./optimistic-lock.filter";
+import { OptimisticLockFilter } from "./optimistic-lock.filter.js";
 
 describe("optimisticLockFilter", () => {
   it("should map OptimisticLockError to 409", () => {

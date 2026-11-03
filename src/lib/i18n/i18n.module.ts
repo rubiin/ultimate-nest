@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { HelperService } from "@common/helpers";
+import { HelperService } from "@common/helpers/index.js";
 import { Module } from "@nestjs/common";
 import {
   AcceptLanguageLocaleResolver,
@@ -18,7 +18,7 @@ export const i18nOptions = () => ({
   fallbacks: { "en-US": "en", "en-GB": "en", "np-NP": "np" },
   missingKey: HelperService.isProd() ? ("fallback" as const) : ("throw" as const),
   loader: new JsonI18nLoader({
-    path: path.join(__dirname, "../../resources/i18n/"),
+    path: path.join(import.meta.dirname, "../../resources/i18n/"),
     watch: !HelperService.isProd(),
   }),
   resolvers: [

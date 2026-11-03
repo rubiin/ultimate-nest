@@ -1,6 +1,6 @@
 import { EntityName } from "@mikro-orm/core";
 
-import { AppAbility } from "./casl-ability.factory";
+import { AppAbility } from "./casl-ability.factory.js";
 
 /** Route param carrying the row identifier, and the entity field to load that row by. */
 export interface SubjectLookup {

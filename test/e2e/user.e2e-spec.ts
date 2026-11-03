@@ -1,13 +1,13 @@
 import path from "node:path";
 
-import { OffsetPaginationResponse } from "@common/@types";
-import { Roles } from "@common/@types";
+import { OffsetPaginationResponse } from "@common/@types/index.js";
+import { Roles } from "@common/@types/index.js";
 import { randEmail, randUserName } from "@ngneat/falso";
 import { pick } from "helper-fns";
 import request from "supertest";
 
-import { SuperTestBody } from "../fixtures";
-import { APP_URL, user, userDto } from "../fixtures";
+import { SuperTestBody } from "../fixtures/index.js";
+import { APP_URL, user, userDto } from "../fixtures/index.js";
 
 describe("UserController (e2e)", () => {
   let adminJwtToken: string;
@@ -36,7 +36,7 @@ describe("UserController (e2e)", () => {
         .field("password", userDto.password)
         .field("email", userDto.email)
         .field("roles[]", userDto.roles)
-        .attach("avatar", path.resolve(__dirname, "../test.png"))
+        .attach("avatar", path.resolve(import.meta.dirname, "../test.png"))
         .expect(({ body }: SuperTestBody<{ email: string; idx: string }>) => {
           expect(body).toBeDefined();
           expect(body.email).toStrictEqual(userDto.email);
@@ -84,7 +84,7 @@ describe("UserController (e2e)", () => {
         .field("password", userDto.password)
         .field("email", userDto.email)
         .field("roles[]", userDto.roles)
-        .attach("avatar", path.resolve(__dirname, "../test.png"))
+        .attach("avatar", path.resolve(import.meta.dirname, "../test.png"))
         .expect(({ body }: SuperTestBody) => {
           expect(body.errors).toContain("email must be unique");
         })

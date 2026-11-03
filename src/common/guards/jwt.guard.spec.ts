@@ -3,7 +3,7 @@ import { mockReflector } from "@mocks";
 import { ExecutionContext, ForbiddenException, UnauthorizedException } from "@nestjs/common";
 import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 
-import { JwtAuthGuard } from "./jwt.guard";
+import { JwtAuthGuard } from "./jwt.guard.js";
 
 describe("jwtAuthGuard", () => {
   const originalNodeEnv = process.env.NODE_ENV;

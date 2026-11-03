@@ -1,12 +1,12 @@
-import { WsJwtGuard } from "@common/guards";
-import { NestJwtModule } from "@lib/index";
-import { AuthModule } from "@modules/auth/auth.module";
+import { WsJwtGuard } from "@common/guards/index.js";
+import { NestJwtModule } from "@lib/index.js";
+import { AuthModule } from "@modules/auth/auth.module.js";
 import { Module } from "@nestjs/common";
 
-import { ChatController } from "./chat.controller";
-import { ChatGateway } from "./chat.gateway";
-import { ChatService } from "./chat.service";
-import { SocketConnectionService } from "./socket-connection.service";
+import { ChatController } from "./chat.controller.js";
+import { ChatGateway } from "./chat.gateway.js";
+import { ChatService } from "./chat.service.js";
+import { SocketConnectionService } from "./socket-connection.service.js";
 
 @Module({
   controllers: [ChatController],

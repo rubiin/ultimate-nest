@@ -17,7 +17,7 @@ import {
   throttle,
   twilio,
   storage,
-} from "./configs";
+} from "./configs/index.js";
 
 export interface Config {
   app: ConfigType<typeof app>;

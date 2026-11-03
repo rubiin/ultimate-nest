@@ -1,11 +1,11 @@
-import { QueryOrder } from "@common/@types";
+import { QueryOrder } from "@common/@types/index.js";
 import { LoadStrategy, MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 import { BadRequestException } from "@nestjs/common";
 
-import * as entities from "../../entities";
-import { User } from "../../entities";
-import { BaseRepository } from "./base.repository";
+import * as entities from "../../entities/index.js";
+import { User } from "../../entities/index.js";
+import { BaseRepository } from "./base.repository.js";
 
 /**
  * Probes the SQL `cursorPagination` issues. There is no live database here: the

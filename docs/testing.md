@@ -26,9 +26,10 @@ Both configs set `globals: true`, so `describe` / `it` / `expect` / `vi` need no
 
 The unit config pins `helper-fns` and `unprofane` to their **CommonJS** entry points. Both
 publish ESM builds that reference `module`, `__dirname`, and `require` inside their `.mjs`
-bundles, so they throw when Vitest loads them as real ES modules. The project compiles to
-CommonJS, so pinning the `require` condition is the correct resolution. Leave that `resolve.alias`
-block alone unless you are deliberately changing module format.
+bundles, so they throw when Vitest loads them as real ES modules. The app itself is ESM now,
+but these two dependencies' ESM builds are still broken, so pinning the `require` condition is
+the correct resolution. Leave that `resolve.alias`
+block alone unless those packages fix their ESM bundles.
 
 ## Unit tests
 

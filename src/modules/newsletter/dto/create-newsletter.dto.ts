@@ -1,4 +1,4 @@
-import { IsDateField, IsStringField } from "@common/decorators";
+import { IsDateField, IsStringField } from "@common/decorators/index.js";
 import { MinDate } from "class-validator";
 
 export class CreateNewsletterDto {

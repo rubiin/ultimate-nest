@@ -1,4 +1,4 @@
-import { IsEmailField, IsStringField } from "@common/decorators";
+import { IsEmailField, IsStringField } from "@common/decorators/index.js";
 import { PickType } from "@nestjs/swagger";
 
 export class OtpVerifyDto {

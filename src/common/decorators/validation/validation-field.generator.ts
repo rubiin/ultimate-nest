@@ -1,6 +1,6 @@
-import { NumberFieldOptions, StringFieldOptions } from "@common/@types";
-import { MinMaxLength } from "@common/decorators";
-import { validationI18nMessage } from "@lib/i18n";
+import { NumberFieldOptions, StringFieldOptions } from "@common/@types/index.js";
+import { MinMaxLength } from "@common/decorators/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { i18nValidationMessage } from "@nestjs/i18n";
 import { Type } from "class-transformer";
 import {
@@ -15,7 +15,7 @@ import {
 } from "class-validator";
 import { enumToString } from "helper-fns";
 
-import { Sanitize, Trim } from "./transform.decorator";
+import { Sanitize, Trim } from "./transform.decorator.js";
 
 export class ValidatorFieldBuilder {
   private decoratorsToApply!: PropertyDecorator[];

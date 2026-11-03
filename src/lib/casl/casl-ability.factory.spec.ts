@@ -1,7 +1,7 @@
-import { Action, Roles } from "@common/@types";
+import { Action, Roles } from "@common/@types/index.js";
 import { Comment, Post, Tag, User } from "@entities";
 
-import { CaslAbilityFactory } from "./casl-ability.factory";
+import { CaslAbilityFactory } from "./casl-ability.factory.js";
 
 describe("caslAbilityFactory", () => {
   const factory = new CaslAbilityFactory();

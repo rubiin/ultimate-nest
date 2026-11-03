@@ -4,11 +4,11 @@ import {
   PaginationRequest,
   PaginationResponse,
   UpdateEntityType,
-} from "@common/@types";
-import { PaginationType, QueryOrder } from "@common/@types";
-import { BaseEntity, BaseRepository } from "@common/database";
+} from "@common/@types/index.js";
+import { PaginationType, QueryOrder } from "@common/@types/index.js";
+import { BaseEntity, BaseRepository } from "@common/database/index.js";
 import { User } from "@entities";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n/index.js";
 import { EntityKey, FilterQuery } from "@mikro-orm/postgresql";
 import { NotFoundException } from "@nestjs/common";
 import { Observable } from "rxjs";

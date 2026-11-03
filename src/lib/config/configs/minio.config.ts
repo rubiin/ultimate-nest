@@ -3,7 +3,7 @@ import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import { z } from "zod";
 
-import { envPort, envString } from "./schema.helpers";
+import { envPort, envString } from "./schema.helpers.js";
 
 // Optional integration: absent is valid, empty is not.
 export const minioConfigValidationSchema = z.object({

@@ -1,8 +1,10 @@
-import { translate } from "@lib/i18n";
+import { translate } from "@lib/i18n/index.js";
 
-import { CustomThrottlerGuard } from "./throttle.guard";
+import { CustomThrottlerGuard } from "./throttle.guard.js";
 
-vi.mock("@lib/i18n", () => ({ translate: vi.fn<(key: string) => string>(() => "translated") }));
+vi.mock("@lib/i18n/index.js", () => ({
+  translate: vi.fn<(key: string) => string>(() => "translated"),
+}));
 
 describe("customThrottlerGuard", () => {
   let guard: CustomThrottlerGuard;

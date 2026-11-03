@@ -1,5 +1,5 @@
-import { StringFieldOptions } from "@common/@types";
-import { validationI18nMessage } from "@lib/i18n";
+import { StringFieldOptions } from "@common/@types/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { applyDecorators } from "@nestjs/common";
 import {
   ArrayMaxSize,
@@ -12,8 +12,8 @@ import {
   Matches,
 } from "class-validator";
 
-import { MinMaxLength } from "./min-max-length.decorator";
-import { Sanitize, Trim } from "./transform.decorator";
+import { MinMaxLength } from "./min-max-length.decorator.js";
+import { Sanitize, Trim } from "./transform.decorator.js";
 
 /**
  * It's a decorator that validates a string field

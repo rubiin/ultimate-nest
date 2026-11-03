@@ -1,8 +1,8 @@
-import { BaseEntity } from "@common/database";
+import { BaseEntity } from "@common/database/index.js";
 import { Entity, ManyToMany, OneToMany, Property } from "@mikro-orm/decorators/legacy";
 import { Collection } from "@mikro-orm/postgresql";
 
-import { Message, User } from "./index";
+import { Message, User } from "./index.js";
 
 @Entity()
 export class Conversation extends BaseEntity {

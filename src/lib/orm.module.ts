@@ -1,5 +1,5 @@
-import { AuditSubscriber, BaseRepository } from "@common/database";
-import { baseOptions } from "@common/database/orm.config";
+import { AuditSubscriber, BaseRepository } from "@common/database/index.js";
+import { baseOptions } from "@common/database/orm.config.js";
 import * as Entities from "@entities";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { defineConfig } from "@mikro-orm/postgresql";

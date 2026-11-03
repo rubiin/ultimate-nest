@@ -1,4 +1,4 @@
-import { BaseEntity } from "@common/database";
+import { BaseEntity } from "@common/database/index.js";
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -11,7 +11,7 @@ import type { EventArgs } from "@mikro-orm/postgresql";
 import { Collection } from "@mikro-orm/postgresql";
 import { slugify } from "helper-fns";
 
-import { Post } from "./post.entity";
+import { Post } from "./post.entity.js";
 @Entity()
 export class Tag extends BaseEntity {
   @Property({

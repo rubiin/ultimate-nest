@@ -1,7 +1,7 @@
 import { createMock } from "@golevelup/ts-vitest";
 import { ExecutionContext, Reflector } from "@nestjs/core";
 
-import { CacheKeyInterceptor, HttpCacheInterceptor } from "./cache.interceptor";
+import { CacheKeyInterceptor, HttpCacheInterceptor } from "./cache.interceptor.js";
 
 describe("CacheKeyInterceptor", () => {
   const reflector = createMock<Reflector>();

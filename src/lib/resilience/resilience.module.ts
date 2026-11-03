@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ResilienceModule } from "@nestjs/resilience";
 
-import { ResilienceLogger } from "./resilience.logger";
+import { ResilienceLogger } from "./resilience.logger.js";
 
 /**
  * Registered once, from `SharedModule`. It brings one app-wide interceptor,

@@ -1,5 +1,5 @@
-import { MinMaxLengthOptions } from "@common/@types";
-import { validationI18nMessage } from "@lib/i18n";
+import { MinMaxLengthOptions } from "@common/@types/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { applyDecorators } from "@nestjs/common";
 import { MaxLength, MinLength } from "class-validator";
 

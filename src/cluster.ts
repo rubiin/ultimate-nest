@@ -2,7 +2,7 @@ import cluster from "node:cluster";
 import os from "node:os";
 import process from "node:process";
 
-import { HelperService } from "@common/helpers";
+import { HelperService } from "@common/helpers/index.js";
 import { Logger } from "@nestjs/common";
 import { isUndefined } from "helper-fns";
 

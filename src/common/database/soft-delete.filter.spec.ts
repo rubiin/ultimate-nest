@@ -1,8 +1,8 @@
 import { LoadStrategy, MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 
-import * as entities from "../../entities";
-import { Post, User } from "../../entities";
+import * as entities from "../../entities/index.js";
+import { Post, User } from "../../entities/index.js";
 
 /**
  * The `populateWhere` clauses in the post and profile services no longer repeat

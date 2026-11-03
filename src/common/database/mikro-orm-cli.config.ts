@@ -8,7 +8,7 @@ import { Logger } from "@nestjs/common";
 import { config as environmentConfig } from "dotenv";
 import dotEnvExpand from "dotenv-expand";
 
-import { baseOptions } from "./orm.config";
+import { baseOptions } from "./orm.config.js";
 
 /**
  *

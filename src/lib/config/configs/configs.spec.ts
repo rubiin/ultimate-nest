@@ -16,7 +16,7 @@ import {
   throttle,
   twilio,
   resilience,
-} from "./index";
+} from "./index.js";
 
 const env = (values: Record<string, string | undefined>) => {
   for (const [key, value] of Object.entries(values)) {

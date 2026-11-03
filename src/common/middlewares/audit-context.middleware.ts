@@ -1,4 +1,4 @@
-import { auditContext } from "@common/database/audit.context";
+import { auditContext } from "@common/database/audit.context.js";
 import { Injectable, NestMiddleware } from "@nestjs/common";
 
 /**

@@ -1,14 +1,14 @@
-import { AuthModule } from "@modules/auth/auth.module";
-import { PostModule } from "@modules/post/post.module";
-import { ProfileModule } from "@modules/profile/profile.module";
-import { TwoFactorModule } from "@modules/twofa/twofa.module";
+import { AuthModule } from "@modules/auth/auth.module.js";
+import { PostModule } from "@modules/post/post.module.js";
+import { ProfileModule } from "@modules/profile/profile.module.js";
+import { TwoFactorModule } from "@modules/twofa/twofa.module.js";
 import { MODULE_METADATA } from "@nestjs/common/constants";
 
-import { SharedModule } from "./shared.module";
+import { SharedModule } from "./shared.module.js";
 
 // The real infrastructure modules validate the environment when they are imported; only the
 // feature-module wiring is under test here.
-vi.mock("@lib/index", () => {
+vi.mock("@lib/index.js", () => {
   const stub = class {};
 
   return {

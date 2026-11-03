@@ -1,9 +1,9 @@
-import { ERROR_CODES } from "@common/constant";
+import { ERROR_CODES } from "@common/constant/index.js";
 import { createMock } from "@golevelup/ts-vitest";
 import { mockJwtService } from "@mocks";
 import { ExecutionContext, UnauthorizedException } from "@nestjs/common";
 
-import { AuthGuard } from "./auth.guard";
+import { AuthGuard } from "./auth.guard.js";
 
 describe("AuthGuard errorCode", () => {
   const guard = new AuthGuard(mockJwtService);

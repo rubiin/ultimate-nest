@@ -1,6 +1,6 @@
 import { validate } from "class-validator";
 
-import { EditUserDto } from "./edit-user.dto";
+import { EditUserDto } from "./edit-user.dto.js";
 
 describe("EditUserDto", () => {
   it("rejects attempts to mass-assign roles", async () => {

@@ -1,8 +1,8 @@
-import { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database/index.js";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
 
-import { resolveOauthUser } from "./oauth-user";
+import { resolveOauthUser } from "./oauth-user.js";
 
 describe("resolveOauthUser", () => {
   let userRepo: BaseRepository<User>;

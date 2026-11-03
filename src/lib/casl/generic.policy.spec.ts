@@ -1,7 +1,7 @@
-import { Action } from "@common/@types";
+import { Action } from "@common/@types/index.js";
 import { createMock } from "@golevelup/ts-vitest";
 
-import { GenericPolicyHandler } from "./generic.policy";
+import { GenericPolicyHandler } from "./generic.policy.js";
 
 describe("genericPolicyHandler", () => {
   class Post {
@@ -78,7 +78,7 @@ describe("genericPolicyHandler", () => {
 
     it("denies when the route param is absent without touching the database", async () => {
       const mockAbility = ability();
-      const resolve = vi.fn<() => Promise<boolean>>()
+      const resolve = vi.fn<() => Promise<boolean>>();
       const handler = new GenericPolicyHandler(Post, Action.Delete, lookup);
 
       // `request` only carries an `id` param, so the lookup param is missing.

@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { IsDateInFormat } from "./is-date-format.validator";
+import { IsDateInFormat } from "./is-date-format.validator.js";
 
 const validator = new Validator();
 

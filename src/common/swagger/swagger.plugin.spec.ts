@@ -1,4 +1,4 @@
-import { swaggerOptions } from "./swagger.plugin";
+import { swaggerOptions } from "./swagger.plugin.js";
 
 type TagObject = { filter: (argument: (_tagObject: unknown, tag: string) => boolean) => unknown };
 

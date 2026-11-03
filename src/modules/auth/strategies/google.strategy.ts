@@ -1,4 +1,4 @@
-import { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database/index.js";
 import { User } from "@entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { Injectable } from "@nestjs/common";
@@ -7,7 +7,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Profile, VerifyCallback } from "passport-google-oauth20";
 import { Strategy } from "passport-google-oauth20";
 
-import { resolveOauthUser } from "./oauth-user";
+import { resolveOauthUser } from "./oauth-user.js";
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {

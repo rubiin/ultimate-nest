@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { File } from "@common/@types";
+import { File } from "@common/@types/index.js";
 import { PipeTransform } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
 import sharp from "sharp";

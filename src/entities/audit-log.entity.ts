@@ -1,4 +1,4 @@
-import { AuditAction } from "@common/@types";
+import { AuditAction } from "@common/@types/index.js";
 import { Entity, Enum, Index, PrimaryKey, Property } from "@mikro-orm/decorators/legacy";
 import { Opt } from "@mikro-orm/postgresql";
 

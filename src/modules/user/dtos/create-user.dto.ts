@@ -1,4 +1,4 @@
-import { Roles } from "@common/@types";
+import { Roles } from "@common/@types/index.js";
 import {
   IsEmailField,
   IsEnumField,
@@ -7,9 +7,9 @@ import {
   IsStringField,
   IsUnique,
   IsUsernameField,
-} from "@common/decorators";
+} from "@common/decorators/index.js";
 import { User } from "@entities";
-import { validationI18nMessage } from "@lib/i18n";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { IsNotEmpty, IsUrl } from "class-validator";
 
 export class SocialDto {

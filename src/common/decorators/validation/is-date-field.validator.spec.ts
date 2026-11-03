@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { IsDateField } from "./is-date-field.validator";
+import { IsDateField } from "./is-date-field.validator.js";
 
 const validator = new Validator();
 

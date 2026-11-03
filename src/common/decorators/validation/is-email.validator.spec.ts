@@ -1,7 +1,7 @@
 import { plainToInstance } from "class-transformer";
 import { Validator } from "class-validator";
 
-import { IsEmailField } from "./is-email.validator";
+import { IsEmailField } from "./is-email.validator.js";
 
 const validator = new Validator();
 

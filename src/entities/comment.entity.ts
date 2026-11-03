@@ -1,9 +1,9 @@
-import { BaseEntity } from "@common/database";
+import { BaseEntity } from "@common/database/index.js";
 import { Entity, Property, ManyToOne } from "@mikro-orm/decorators/legacy";
 import type { Rel } from "@mikro-orm/postgresql";
 import { Ref } from "@mikro-orm/postgresql";
 
-import { Post, User } from "./index";
+import { Post, User } from "./index.js";
 
 @Entity()
 export class Comment extends BaseEntity {

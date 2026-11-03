@@ -1,4 +1,4 @@
-import { EnumFieldOptions } from "@common/@types";
+import { EnumFieldOptions } from "@common/@types/index.js";
 import { applyDecorators } from "@nestjs/common";
 import { i18nValidationMessage } from "@nestjs/i18n";
 import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsOptional } from "class-validator";

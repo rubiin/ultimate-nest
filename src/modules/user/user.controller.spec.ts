@@ -1,10 +1,10 @@
-import { Roles } from "@common/@types";
+import { Roles } from "@common/@types/index.js";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
 import { of } from "rxjs";
 
-import { UserController } from "./user.controller";
-import { UserService } from "./user.service";
+import { UserController } from "./user.controller.js";
+import { UserService } from "./user.service.js";
 
 describe("UserController", () => {
   const service = createMock<UserService>();

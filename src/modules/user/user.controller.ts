@@ -1,6 +1,6 @@
-import type { File } from "@common/@types";
-import { PaginationResponse } from "@common/@types";
-import { Action, Roles } from "@common/@types";
+import type { File } from "@common/@types/index.js";
+import { PaginationResponse } from "@common/@types/index.js";
+import { Action, Roles } from "@common/@types/index.js";
 import {
   ApiFile,
   ApiPaginatedResponse,
@@ -9,17 +9,17 @@ import {
   Public,
   SwaggerResponse,
   UUIDParam,
-} from "@common/decorators";
-import { CursorPaginationDto } from "@common/dtos";
-import { fileValidatorPipe } from "@common/misc";
+} from "@common/decorators/index.js";
+import { CursorPaginationDto } from "@common/dtos/index.js";
+import { fileValidatorPipe } from "@common/misc/index.js";
 import { User } from "@entities";
-import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
+import { CheckPolicies, GenericPolicyHandler } from "@lib/casl/index.js";
 import { Body, Delete, Get, Put as Patch, Post, Query, UploadedFile } from "@nestjs/common";
 import { Resilience } from "@nestjs/resilience";
 import { Observable } from "rxjs";
 
-import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos";
-import { UserService } from "./user.service";
+import { CreateUserDto, EditUserDto, ReferUserDto, UserRegistrationDto } from "./dtos/index.js";
+import { UserService } from "./user.service.js";
 
 const USER_NOT_FOUND = "User does not exist.";
 const EMAIL_ALREADY_REGISTERED = "User already registered with email.";

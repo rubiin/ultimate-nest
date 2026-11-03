@@ -1,7 +1,7 @@
 import { plainToInstance } from "class-transformer";
 import { IsString, Validator } from "class-validator";
 
-import { IsNestedField } from "./is-nested.validator";
+import { IsNestedField } from "./is-nested.validator.js";
 
 // Matches `AppUtils.validationPipeOptions()`, which disables unknown-value checks.
 const validator = new Validator({ forbidUnknownValues: false });

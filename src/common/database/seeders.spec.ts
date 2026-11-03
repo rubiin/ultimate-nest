@@ -6,10 +6,10 @@ import { createMock } from "@golevelup/ts-vitest";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { normalizeEmail } from "helper-fns";
 
-import { baseOptions } from "./orm.config";
-import { AdminSeeder } from "./seeders/admin.seeder";
-import { FixtureSeeder } from "./seeders/fixture.seeder";
-import { UserSeeder } from "./seeders/user.seeder";
+import { baseOptions } from "./orm.config.js";
+import { AdminSeeder } from "./seeders/admin.seeder.js";
+import { FixtureSeeder } from "./seeders/fixture.seeder.js";
+import { UserSeeder } from "./seeders/user.seeder.js";
 
 interface PostData {
   comments: { author?: unknown }[];

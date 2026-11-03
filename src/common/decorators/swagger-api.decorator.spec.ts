@@ -1,6 +1,6 @@
 import { HttpStatus } from "@nestjs/common";
 
-import { SwaggerResponse } from "./swagger-api.decorator";
+import { SwaggerResponse } from "./swagger-api.decorator.js";
 
 type ResponseMetadata = Record<string, { description?: string }>;
 

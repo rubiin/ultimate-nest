@@ -1,5 +1,5 @@
-import { IsEqualToField, IsPasswordField, IsStringField } from "@common/decorators";
-import { validationI18nMessage } from "@lib/i18n";
+import { IsEqualToField, IsPasswordField, IsStringField } from "@common/decorators/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { PickType } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 

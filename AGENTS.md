@@ -98,16 +98,16 @@ What is and is not enforced — this is the part most worth internalising.
 NestJS 12 + MikroORM 7 (PostgreSQL) boilerplate. This file reflects the current
 repo state; if a command below fails, trust `package.json` over this document.
 
-| Concern         | Tool                                                                      |
-| --------------- | ------------------------------------------------------------------------- |
-| Package manager | **pnpm** (`pnpm-lock.yaml` committed) — do not use npm/yarn               |
-| Language        | TypeScript 6, CommonJS output, path aliases in `tsconfig.json`            |
-| Transpiler      | SWC (`.swcrc`) for `build:swc`; tsc remains the type gate (`docs/swc.md`) |
-| Test runner     | **Vitest** (`vitest run`) — not Jest, despite `docs/testing.md`           |
-| Lint            | oxlint (`oxlint.config.mts`)                                              |
-| Format          | oxfmt (`.oxfmtrc.json`), 100 cols, double quotes, trailing commas         |
-| Pre-commit      | husky + lint-staged → `oxlint` on staged `.ts`/`.tsx`                     |
-| Node            | pinned in `.nvmrc` to `24.22.0`; `engines` requires `>=24`                |
+| Concern         | Tool                                                                                                |
+| --------------- | --------------------------------------------------------------------------------------------------- |
+| Package manager | **pnpm** (`pnpm-lock.yaml` committed) — do not use npm/yarn                                         |
+| Language        | TypeScript 6, ESM output (`"type": "module"`, `module: NodeNext`), explicit `.js` import specifiers |
+| Transpiler      | SWC (`.swcrc`) for `build:swc`; tsc remains the type gate (`docs/swc.md`)                           |
+| Test runner     | **Vitest** (`vitest run`) — not Jest, despite `docs/testing.md`                                     |
+| Lint            | oxlint (`oxlint.config.mts`)                                                                        |
+| Format          | oxfmt (`.oxfmtrc.json`), 100 cols, double quotes, trailing commas                                   |
+| Pre-commit      | husky + lint-staged → `oxlint` on staged `.ts`/`.tsx`                                               |
+| Node            | pinned in `.nvmrc` to `24.22.0`; `engines` requires `>=24`                                          |
 
 ## Commands
 

@@ -1,7 +1,7 @@
-import { Action } from "@common/@types";
+import { Action } from "@common/@types/index.js";
 
-import { AppAbility, Subjects } from "./casl-ability.factory";
-import { PoliciesHandler, SubjectLookup, SubjectResolver } from "./policy.interface";
+import { AppAbility, Subjects } from "./casl-ability.factory.js";
+import { PoliciesHandler, SubjectLookup, SubjectResolver } from "./policy.interface.js";
 
 export class GenericPolicyHandler implements PoliciesHandler {
   constructor(

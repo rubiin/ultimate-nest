@@ -2,11 +2,11 @@ import { HttpStatus } from "@nestjs/common";
 import { ExecutionContext } from "@nestjs/common";
 import { ROUTE_ARGS_METADATA } from "@nestjs/common/constants";
 
-import { Client } from "./client-info.decorator";
-import { ClientTimezone } from "./client-timezone.decorator";
-import { Origin } from "./origin.decorator";
-import { LoggedInUser } from "./user.decorator";
-import { UUIDParam } from "./uuid-param.decorator";
+import { Client } from "./client-info.decorator.js";
+import { ClientTimezone } from "./client-timezone.decorator.js";
+import { Origin } from "./origin.decorator.js";
+import { LoggedInUser } from "./user.decorator.js";
+import { UUIDParam } from "./uuid-param.decorator.js";
 
 type RouteArg = { index: number; data?: string; factory?: unknown; pipes: unknown[] };
 

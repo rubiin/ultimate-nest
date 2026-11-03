@@ -1,6 +1,6 @@
 import { plainToInstance } from "class-transformer";
 
-import { Sanitize, ToBoolean, Trim } from "./transform.decorator";
+import { Sanitize, ToBoolean, Trim } from "./transform.decorator.js";
 
 describe("Trim", () => {
   class Dto {

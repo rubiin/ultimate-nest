@@ -1,11 +1,11 @@
-import { NewsLetterLogStatus } from "@common/@types";
-import { BaseEntity } from "@common/database";
+import { NewsLetterLogStatus } from "@common/@types/index.js";
+import { BaseEntity } from "@common/database/index.js";
 import { Entity, Enum, ManyToOne, Property, Unique } from "@mikro-orm/decorators/legacy";
 import type { Rel } from "@mikro-orm/postgresql";
 import { Ref } from "@mikro-orm/postgresql";
 
-import { NewsLetter } from "./news-letter.entity";
-import { Subscriber } from "./subscribers.entity";
+import { NewsLetter } from "./news-letter.entity.js";
+import { Subscriber } from "./subscribers.entity.js";
 
 /** One row per newsletter and subscriber: the outcome of the last delivery attempt. */
 @Entity()

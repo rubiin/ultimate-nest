@@ -1,6 +1,6 @@
 import { ExtractSubjectType, InferSubjects, MongoAbility, MongoQuery } from "@casl/ability";
 import { AbilityBuilder, createMongoAbility } from "@casl/ability";
-import { Action, Roles } from "@common/@types";
+import { Action, Roles } from "@common/@types/index.js";
 import { Tag } from "@entities";
 import { Comment, Post, User } from "@entities";
 import { Injectable } from "@nestjs/common";

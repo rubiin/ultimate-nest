@@ -3,7 +3,7 @@ import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import { z } from "zod";
 
-import { envString } from "./schema.helpers";
+import { envString } from "./schema.helpers.js";
 
 export const cloudinaryConfigValidationSchema = z.object({
   CLOUDINARY_API_KEY: envString(),

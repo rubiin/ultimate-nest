@@ -1,7 +1,7 @@
-import { ProfileData } from "@common/@types";
-import { BaseRepository } from "@common/database";
+import { ProfileData } from "@common/@types/index.js";
+import { BaseRepository } from "@common/database/index.js";
 import { User } from "@entities";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n/index.js";
 import { AutoPath, EntityKey } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";

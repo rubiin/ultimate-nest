@@ -1,4 +1,4 @@
-import { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database/index.js";
 import { User } from "@entities";
 import { randAnimal, randCatchPhrase, randFirstName } from "@ngneat/falso";
 import { randomAvatar, randomString } from "helper-fns";

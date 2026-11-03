@@ -1,6 +1,6 @@
-import { Roles } from "@common/@types";
-import { BaseEntity } from "@common/database";
-import { HelperService } from "@common/helpers";
+import { Roles } from "@common/@types/index.js";
+import { BaseEntity } from "@common/database/index.js";
+import { HelperService } from "@common/helpers/index.js";
 import { Conversation, Post } from "@entities";
 import {
   BeforeCreate,

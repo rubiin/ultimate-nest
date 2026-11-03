@@ -1,2 +1,2 @@
-export * from "./sharp.pipe";
-export * from "./ws-validation.pipe";
+export * from "./sharp.pipe.js";
+export * from "./ws-validation.pipe.js";

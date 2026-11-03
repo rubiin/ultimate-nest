@@ -1,6 +1,6 @@
-import { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database/index.js";
 import { User } from "@entities";
-import { translate } from "@lib/i18n";
+import { translate } from "@lib/i18n/index.js";
 import { EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";

@@ -1,4 +1,4 @@
-import { File } from "@common/@types";
+import { File } from "@common/@types/index.js";
 import { EntityDTO, FromEntityType, RequiredEntityData } from "@mikro-orm/postgresql";
 
 export type Optional<T> = T | undefined;

@@ -1,7 +1,7 @@
-import type { OauthResponse } from "@common/@types";
-import type { ClientInfo } from "@common/@types";
-import { AuthenticationResponse } from "@common/@types";
-import { TWO_FACTOR_TOKEN_EXPIRY_MINUTES } from "@common/constant";
+import type { OauthResponse } from "@common/@types/index.js";
+import type { ClientInfo } from "@common/@types/index.js";
+import { AuthenticationResponse } from "@common/@types/index.js";
+import { TWO_FACTOR_TOKEN_EXPIRY_MINUTES } from "@common/constant/index.js";
 import {
   Auth,
   Client,
@@ -9,15 +9,15 @@ import {
   LoggedInUser,
   SwaggerResponse,
   UUIDParam,
-} from "@common/decorators";
-import { HelperService } from "@common/helpers";
+} from "@common/decorators/index.js";
+import { HelperService } from "@common/helpers/index.js";
 import { User } from "@entities";
-import { translate } from "@lib/i18n";
+import { translate } from "@lib/i18n/index.js";
 import {
   REFRESH_TOKEN_COOKIE,
   extractCookie,
-} from "@modules/auth/strategies/cookie-token.extractor";
-import { TokensService } from "@modules/token/tokens.service";
+} from "@modules/auth/strategies/cookie-token.extractor.js";
+import { TokensService } from "@modules/token/tokens.service.js";
 import {
   Body,
   BadRequestException,
@@ -40,7 +40,7 @@ import type { Request } from "express";
 import { Observable } from "rxjs";
 import { map } from "rxjs";
 
-import { AuthService } from "./auth.service";
+import { AuthService } from "./auth.service.js";
 import {
   ChangePasswordDto,
   OtpVerifyDto,
@@ -49,7 +49,7 @@ import {
   SendOtpDto,
   SessionResponseDto,
   UserLoginDto,
-} from "./dtos";
+} from "./dtos/index.js";
 
 @GenericController("auth", false)
 export class AuthController {

@@ -3,7 +3,7 @@ import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import { z } from "zod";
 
-import { envString } from "./schema.helpers";
+import { envString } from "./schema.helpers.js";
 
 // Optional integration: absent is valid, empty is not.
 export const sentryConfigValidationSchema = z.object({

@@ -1,4 +1,4 @@
-import { MS_PER_SECOND } from "@common/constant";
+import { MS_PER_SECOND } from "@common/constant/index.js";
 import { RefreshToken } from "@entities";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
@@ -8,7 +8,7 @@ import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom } from "rxjs";
 
-import { RefreshTokensRepository } from "./refresh-tokens.repository";
+import { RefreshTokensRepository } from "./refresh-tokens.repository.js";
 
 describe("refreshTokensRepository", () => {
   let service: RefreshTokensRepository;

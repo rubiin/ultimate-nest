@@ -1,8 +1,8 @@
-import { GenericController, LoggedInUser } from "@common/decorators";
+import { GenericController, LoggedInUser } from "@common/decorators/index.js";
 import { User } from "@entities";
 import { Get } from "@nestjs/common";
 
-import { ChatService } from "./chat.service";
+import { ChatService } from "./chat.service.js";
 
 @GenericController("chat")
 export class ChatController {

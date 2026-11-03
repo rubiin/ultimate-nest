@@ -1,11 +1,11 @@
 import path from "node:path";
 
-import { fileValidatorPipe } from "@common/misc/file";
+import { fileValidatorPipe } from "@common/misc/file.js";
 import { WsException } from "@nestjs/websockets";
 import { IsString } from "class-validator";
 
-import { SharpPipe } from "./sharp.pipe";
-import { WsValidationPipe } from "./ws-validation.pipe";
+import { SharpPipe } from "./sharp.pipe.js";
+import { WsValidationPipe } from "./ws-validation.pipe.js";
 
 vi.mock("sharp", () => {
   const toFile = vi.fn<() => Promise<void>>(async () => undefined);

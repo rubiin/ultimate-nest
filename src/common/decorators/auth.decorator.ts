@@ -1,6 +1,6 @@
-import { API_UNAUTHORISED_RESPONSE } from "@common/constant";
-import { JwtAuthGuard } from "@common/guards";
-import { PoliciesGuard } from "@lib/casl/policies.guard";
+import { API_UNAUTHORISED_RESPONSE } from "@common/constant/index.js";
+import { JwtAuthGuard } from "@common/guards/index.js";
+import { PoliciesGuard } from "@lib/casl/policies.guard.js";
 import { CanActivate, Type } from "@nestjs/common";
 import { applyDecorators, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiUnauthorizedResponse } from "@nestjs/swagger";

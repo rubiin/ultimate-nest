@@ -1,14 +1,14 @@
-import { SWAGGER_API_ENDPOINT } from "@common/constant";
-import { AuditContextMiddleware, RealIpMiddleware } from "@common/middlewares";
+import { SWAGGER_API_ENDPOINT } from "@common/constant/index.js";
+import { AuditContextMiddleware, RealIpMiddleware } from "@common/middlewares/index.js";
 import { applyRawBodyOnlyTo } from "@golevelup/nestjs-webhooks";
-import { AppController } from "@modules/app.controller";
-import { AuthModule } from "@modules/auth/auth.module";
-import { PostModule } from "@modules/post/post.module";
-import { ProfileModule } from "@modules/profile/profile.module";
-import { SharedModule } from "@modules/shared/shared.module";
-import { TagsModule } from "@modules/tags/tags.module";
-import { TwoFactorModule } from "@modules/twofa/twofa.module";
-import { UserModule } from "@modules/user/user.module";
+import { AppController } from "@modules/app.controller.js";
+import { AuthModule } from "@modules/auth/auth.module.js";
+import { PostModule } from "@modules/post/post.module.js";
+import { ProfileModule } from "@modules/profile/profile.module.js";
+import { SharedModule } from "@modules/shared/shared.module.js";
+import { TagsModule } from "@modules/tags/tags.module.js";
+import { TwoFactorModule } from "@modules/twofa/twofa.module.js";
+import { UserModule } from "@modules/user/user.module.js";
 import { MiddlewareConsumer, NestModule } from "@nestjs/common";
 import { Module, RequestMethod } from "@nestjs/common";
 

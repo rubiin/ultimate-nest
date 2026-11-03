@@ -1,3 +1,3 @@
-export * from "./all-exception-translatable.filter";
-export * from "./query-failed.filter";
-export * from "./optimistic-lock.filter";
+export * from "./all-exception-translatable.filter.js";
+export * from "./query-failed.filter.js";
+export * from "./optimistic-lock.filter.js";

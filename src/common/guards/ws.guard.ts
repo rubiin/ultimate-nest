@@ -1,7 +1,7 @@
-import { JwtPayload } from "@common/@types";
-import { BaseRepository } from "@common/database";
+import { JwtPayload } from "@common/@types/index.js";
+import { BaseRepository } from "@common/database/index.js";
 import { User } from "@entities";
-import { translate } from "@lib/i18n";
+import { translate } from "@lib/i18n/index.js";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { CanActivate, ExecutionContext } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";

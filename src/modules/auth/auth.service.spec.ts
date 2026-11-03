@@ -1,8 +1,8 @@
-import { OtpPurpose } from "@common/@types";
-import { ERROR_CODES } from "@common/constant";
-import { HelperService } from "@common/helpers";
+import { OtpPurpose } from "@common/@types/index.js";
+import { ERROR_CODES } from "@common/constant/index.js";
+import { HelperService } from "@common/helpers/index.js";
 import { OtpLog, Protocol, User } from "@entities";
-import { ResetPasswordMail } from "@lib/mail";
+import { ResetPasswordMail } from "@lib/mail/index.js";
 import { EntityManager, TransactionPropagation } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
@@ -19,8 +19,8 @@ import {
   mockedOtpLog,
   trackMockTransaction,
 } from "@mocks";
-import { OtpService } from "@modules/otp";
-import { TokensService } from "@modules/token/tokens.service";
+import { OtpService } from "@modules/otp/index.js";
+import { TokensService } from "@modules/token/tokens.service.js";
 import {
   BadRequestException,
   ForbiddenException,
@@ -33,7 +33,7 @@ import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";
 
-import { AuthService } from "./auth.service";
+import { AuthService } from "./auth.service.js";
 
 describe("authService", () => {
   let service: AuthService;

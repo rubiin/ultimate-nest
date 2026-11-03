@@ -1,15 +1,15 @@
-import type { ClientInfo } from "@common/@types";
-import { AuthenticationResponse } from "@common/@types";
-import { Auth, Client, GenericController, LoggedInUser } from "@common/decorators";
+import type { ClientInfo } from "@common/@types/index.js";
+import { AuthenticationResponse } from "@common/@types/index.js";
+import { Auth, Client, GenericController, LoggedInUser } from "@common/decorators/index.js";
 import { User } from "@entities";
-import { translate } from "@lib/i18n";
-import { AuthService } from "@modules/auth/auth.service";
+import { translate } from "@lib/i18n/index.js";
+import { AuthService } from "@modules/auth/auth.service.js";
 import {
   ACCESS_TOKEN_COOKIE,
   REFRESH_TOKEN_COOKIE,
   TWO_FACTOR_TOKEN_COOKIE,
   authCookieOptions,
-} from "@modules/auth/strategies/cookie-token.extractor";
+} from "@modules/auth/strategies/cookie-token.extractor.js";
 import { Body, Post, Res, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import {
@@ -23,8 +23,8 @@ import { Throttle } from "@nestjs/throttler";
 import { Observable } from "rxjs";
 import { switchMap, tap, throwError } from "rxjs";
 
-import { TwofaDto } from "./dtos/twofa.dto";
-import { TwoFactorService } from "./twofa.service";
+import { TwofaDto } from "./dtos/twofa.dto.js";
+import { TwoFactorService } from "./twofa.service.js";
 
 @GenericController("2fa", false)
 export class TwoFactorController {

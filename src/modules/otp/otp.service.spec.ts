@@ -1,9 +1,9 @@
-import { OtpPurpose } from "@common/@types";
-import { DEFAULT_OTP_EXPIRY_MINUTES, MS_PER_MINUTE, OTP_LENGTH } from "@common/constant";
+import { OtpPurpose } from "@common/@types/index.js";
+import { DEFAULT_OTP_EXPIRY_MINUTES, MS_PER_MINUTE, OTP_LENGTH } from "@common/constant/index.js";
 import { OtpLog } from "@entities";
 import { mockOtpLogRepo, mockProtocolRepo, mockedUser } from "@mocks";
 
-import { OtpService } from "./otp.service";
+import { OtpService } from "./otp.service.js";
 
 describe("otpService", () => {
   let service: OtpService;

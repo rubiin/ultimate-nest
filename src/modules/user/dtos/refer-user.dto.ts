@@ -1,4 +1,4 @@
-import { IsStringField } from "@common/decorators";
+import { IsStringField } from "@common/decorators/index.js";
 
 export class ReferUserDto {
   @IsStringField()

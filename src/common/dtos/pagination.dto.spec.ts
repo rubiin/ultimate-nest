@@ -1,6 +1,6 @@
 import { validate } from "class-validator";
 
-import { PaginationDto } from "./pagination.dto";
+import { PaginationDto } from "./pagination.dto.js";
 
 describe("paginationDto", () => {
   const errorsFor = async (dto: object) => await validate(dto);

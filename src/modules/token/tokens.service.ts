@@ -1,9 +1,9 @@
-import type { ClientInfo } from "@common/@types";
-import { JwtPayload, TokenType } from "@common/@types";
-import { TWO_FACTOR_TOKEN_EXPIRY_MINUTES } from "@common/constant";
+import type { ClientInfo } from "@common/@types/index.js";
+import { JwtPayload, TokenType } from "@common/@types/index.js";
+import { TWO_FACTOR_TOKEN_EXPIRY_MINUTES } from "@common/constant/index.js";
 import { RefreshToken } from "@entities";
 import { User } from "@entities";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n/index.js";
 import { EntityManager } from "@mikro-orm/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -26,7 +26,7 @@ import {
   zip,
 } from "rxjs";
 
-import { RefreshTokensRepository } from "./refresh-tokens.repository";
+import { RefreshTokensRepository } from "./refresh-tokens.repository.js";
 
 const TWO_FACTOR_TOKEN_EXPIRY = `${TWO_FACTOR_TOKEN_EXPIRY_MINUTES}m` as const;
 

@@ -1,4 +1,4 @@
-import { BaseEntity } from "@common/database";
+import { BaseEntity } from "@common/database/index.js";
 import { Entity, Property } from "@mikro-orm/decorators/legacy";
 
 @Entity()

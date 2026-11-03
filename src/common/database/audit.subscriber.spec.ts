@@ -1,11 +1,11 @@
-import { AuditAction } from "@common/@types";
+import { AuditAction } from "@common/@types/index.js";
 import { ChangeSetType, MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
 
-import * as entities from "../../entities";
-import { AuditLog, OtpLog, RefreshToken, User } from "../../entities";
-import { auditContext } from "./audit.context";
-import { AuditSubscriber, REDACTED } from "./audit.subscriber";
+import * as entities from "../../entities/index.js";
+import { AuditLog, OtpLog, RefreshToken, User } from "../../entities/index.js";
+import { auditContext } from "./audit.context.js";
+import { AuditSubscriber, REDACTED } from "./audit.subscriber.js";
 
 /**
  * Real flushes against a stubbed connection: the SQL is recorded instead of run, and the

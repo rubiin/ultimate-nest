@@ -1,21 +1,21 @@
-import { PaginationResponse } from "@common/@types";
-import { Action } from "@common/@types";
+import { PaginationResponse } from "@common/@types/index.js";
+import { Action } from "@common/@types/index.js";
 import {
   ApiPaginatedResponse,
   GenericController,
   LoggedInUser,
   SwaggerResponse,
   UUIDParam,
-} from "@common/decorators";
-import { CursorPaginationDto } from "@common/dtos";
+} from "@common/decorators/index.js";
+import { CursorPaginationDto } from "@common/dtos/index.js";
 import { User } from "@entities";
 import { Comment, Post as PostEntity } from "@entities";
-import { CheckPolicies, GenericPolicyHandler } from "@lib/casl";
+import { CheckPolicies, GenericPolicyHandler } from "@lib/casl/index.js";
 import { Body, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { Observable } from "rxjs";
 
-import { CreateCommentDto, CreatePostDto, EditPostDto, SearchPostsDto } from "./dtos";
-import { PostService } from "./post.service";
+import { CreateCommentDto, CreatePostDto, EditPostDto, SearchPostsDto } from "./dtos/index.js";
+import { PostService } from "./post.service.js";
 
 const POST_NOT_FOUND = "Post doesn't exist.";
 

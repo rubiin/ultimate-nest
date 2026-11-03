@@ -1,8 +1,8 @@
-import { OffsetPaginationResponse } from "@common/@types";
+import { OffsetPaginationResponse } from "@common/@types/index.js";
 import request from "supertest";
 
-import { SuperTestBody } from "../fixtures";
-import { APP_URL, postDto, user, userDto } from "../fixtures";
+import { SuperTestBody } from "../fixtures/index.js";
+import { APP_URL, postDto, user, userDto } from "../fixtures/index.js";
 
 describe("PostController (e2e)", () => {
   let adminJwtToken: string;

@@ -1,5 +1,5 @@
-import { UUIDFieldOptions } from "@common/@types";
-import { validationI18nMessage } from "@lib/i18n";
+import { UUIDFieldOptions } from "@common/@types/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { applyDecorators } from "@nestjs/common";
 import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsUUID } from "class-validator";
 

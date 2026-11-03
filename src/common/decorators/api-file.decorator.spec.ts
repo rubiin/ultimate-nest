@@ -1,4 +1,4 @@
-import { ApiFile, ApiFileFields, ApiFileResponse, ApiFiles } from "./api-file.decorator";
+import { ApiFile, ApiFileFields, ApiFileResponse, ApiFiles } from "./api-file.decorator.js";
 
 type SwaggerSchema = {
   properties: Record<string, Record<string, unknown>>;

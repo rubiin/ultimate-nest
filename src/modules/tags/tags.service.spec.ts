@@ -1,4 +1,4 @@
-import { PaginationType } from "@common/@types";
+import { PaginationType } from "@common/@types/index.js";
 import { Tag } from "@entities";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { mockEm, mockTagsRepo, queryDto } from "@mocks";
@@ -7,7 +7,7 @@ import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";
 
-import { TagsService } from "./tags.service";
+import { TagsService } from "./tags.service.js";
 
 describe("tagsService", () => {
   let service: TagsService;

@@ -1,18 +1,23 @@
 import process from "node:process";
 
-import { AuthenticationResponse, ClientInfo, OauthResponse, OtpPurpose } from "@common/@types";
-import { ERROR_CODES } from "@common/constant";
-import { BaseRepository } from "@common/database";
-import { HelperService } from "@common/helpers";
+import {
+  AuthenticationResponse,
+  ClientInfo,
+  OauthResponse,
+  OtpPurpose,
+} from "@common/@types/index.js";
+import { ERROR_CODES } from "@common/constant/index.js";
+import { BaseRepository } from "@common/database/index.js";
+import { HelperService } from "@common/helpers/index.js";
 import { OtpLog, User } from "@entities";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import { ResetPasswordMail } from "@lib/mail";
+import { itemDoesNotExistKey, translate } from "@lib/i18n/index.js";
+import { ResetPasswordMail } from "@lib/mail/index.js";
 import { EntityManager } from "@mikro-orm/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { FilterQuery, PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { OtpService } from "@modules/otp";
-import { TokensService } from "@modules/token/tokens.service";
+import { OtpService } from "@modules/otp/index.js";
+import { TokensService } from "@modules/token/tokens.service.js";
 import {
   BadRequestException,
   ForbiddenException,
@@ -33,13 +38,13 @@ import {
   ResetPasswordDto,
   SendOtpDto,
   UserLoginDto,
-} from "./dtos";
+} from "./dtos/index.js";
 import {
   ACCESS_TOKEN_COOKIE,
   REFRESH_TOKEN_COOKIE,
   TWO_FACTOR_TOKEN_COOKIE,
   authCookieOptions,
-} from "./strategies/cookie-token.extractor";
+} from "./strategies/cookie-token.extractor.js";
 
 @Injectable()
 export class AuthService {

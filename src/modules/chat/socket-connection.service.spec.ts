@@ -1,7 +1,7 @@
 import { User } from "@entities";
 import { WsException } from "@nestjs/websockets";
 
-import { SocketConnectionService } from "./socket-connection.service";
+import { SocketConnectionService } from "./socket-connection.service.js";
 
 describe("socketConnectionService", () => {
   let service: SocketConnectionService;

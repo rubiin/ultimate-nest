@@ -1,5 +1,5 @@
-import { ERROR_CODES } from "@common/constant";
-import { translate } from "@lib/i18n";
+import { ERROR_CODES } from "@common/constant/index.js";
+import { translate } from "@lib/i18n/index.js";
 import { CanActivate, ExecutionContext } from "@nestjs/common";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";

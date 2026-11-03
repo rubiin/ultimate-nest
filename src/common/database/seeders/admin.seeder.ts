@@ -1,11 +1,11 @@
 import process from "node:process";
 
-import { Roles } from "@common/@types";
+import { Roles } from "@common/@types/index.js";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Seeder } from "@mikro-orm/seeder";
 import { normalizeEmail } from "helper-fns";
 
-import { UserFactory } from "../factories";
+import { UserFactory } from "../factories/index.js";
 
 /*
  * It creates a user with the email and password specified in the .env file, and gives them the admin role

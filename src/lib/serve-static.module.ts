@@ -15,7 +15,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
         "/health/(.*path)",
         "/swagger/(.*path)",
       ],
-      rootPath: join(__dirname, "resources"),
+      rootPath: join(import.meta.dirname, "resources"),
       serveStaticOptions: {
         maxAge: 86_400, // 1 day,
       },

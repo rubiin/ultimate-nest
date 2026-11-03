@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Validator } from "class-validator";
 
-import { CursorMeta, CursorPaginationResponse } from "./cursor.response";
+import { CursorMeta, CursorPaginationResponse } from "./cursor.response.js";
 
 type ApiPropertyOptions = { type?: unknown; isArray?: boolean };
 

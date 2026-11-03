@@ -1,4 +1,4 @@
-import type { ClientInfo } from "@common/@types";
+import type { ClientInfo } from "@common/@types/index.js";
 import { ExecutionContext } from "@nestjs/common";
 import { createParamDecorator } from "@nestjs/common";
 

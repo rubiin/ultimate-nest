@@ -1,6 +1,6 @@
-import { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database/index.js";
 import { Comment, Post, User } from "@entities";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n/index.js";
 import { AutoPath, EntityKey, EntityManager } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver, ref } from "@mikro-orm/postgresql";
@@ -8,7 +8,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { forkJoin, from, map, of, switchMap, throwError } from "rxjs";
 
-import { CreateCommentDto } from "./dtos";
+import { CreateCommentDto } from "./dtos/index.js";
 
 @Injectable()
 export class CommentService {

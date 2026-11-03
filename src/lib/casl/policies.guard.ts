@@ -1,11 +1,11 @@
-import { CHECK_POLICIES_KEY_META, IS_PUBLIC_KEY_META } from "@common/constant";
+import { CHECK_POLICIES_KEY_META, IS_PUBLIC_KEY_META } from "@common/constant/index.js";
 import { User } from "@entities";
 import { EntityManager, FilterQuery } from "@mikro-orm/core";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 
-import { AppAbility, CaslAbilityFactory } from "./casl-ability.factory";
-import { PolicyHandler, SubjectResolver } from "./policy.interface";
+import { AppAbility, CaslAbilityFactory } from "./casl-ability.factory.js";
+import { PolicyHandler, SubjectResolver } from "./policy.interface.js";
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {

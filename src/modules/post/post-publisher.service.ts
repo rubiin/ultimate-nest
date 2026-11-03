@@ -1,5 +1,5 @@
-import { PostStateEnum } from "@common/@types";
-import { BaseRepository } from "@common/database";
+import { PostStateEnum } from "@common/@types/index.js";
+import { BaseRepository } from "@common/database/index.js";
 import { Post } from "@entities";
 import { EntityManager, RequestContext } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";

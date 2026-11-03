@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, HttpException, HttpStatus, Logger } from "@nestjs/common";
 import { firstValueFrom, of, throwError } from "rxjs";
 
-import { LoggingInterceptor } from "./logger.interceptor";
+import { LoggingInterceptor } from "./logger.interceptor.js";
 
 const build = ({
   method = "GET",

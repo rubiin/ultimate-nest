@@ -1,7 +1,7 @@
 import { plainToInstance } from "class-transformer";
 import { Validator } from "class-validator";
 
-import { IsBooleanField } from "./is-boolean-field.decorator";
+import { IsBooleanField } from "./is-boolean-field.decorator.js";
 
 const validator = new Validator();
 

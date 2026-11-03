@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { IsEqualToField } from "./is-equal-to.validator";
+import { IsEqualToField } from "./is-equal-to.validator.js";
 
 const validator = new Validator();
 

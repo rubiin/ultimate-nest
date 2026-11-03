@@ -1,14 +1,14 @@
-import { JwtAuthGuard } from "@common/guards";
+import { JwtAuthGuard } from "@common/guards/index.js";
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
-import { AuthService } from "@modules/auth/auth.service";
+import { AuthService } from "@modules/auth/auth.service.js";
 import { UnauthorizedException } from "@nestjs/common";
 import { GUARDS_METADATA } from "@nestjs/common/constants";
 import { AuthGuard } from "@nestjs/passport";
 import { lastValueFrom, of } from "rxjs";
 
-import { TwoFactorController } from "./twofa.controller";
-import { TwoFactorService } from "./twofa.service";
+import { TwoFactorController } from "./twofa.controller.js";
+import { TwoFactorService } from "./twofa.service.js";
 
 describe("twoFactorController", () => {
   const twoFactorService = createMock<TwoFactorService>();

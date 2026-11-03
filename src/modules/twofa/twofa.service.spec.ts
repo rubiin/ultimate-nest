@@ -11,7 +11,7 @@ import { OTP } from "otplib";
 import qrCode from "qrcode";
 import { lastValueFrom, of } from "rxjs";
 
-import { TwoFactorService } from "./twofa.service";
+import { TwoFactorService } from "./twofa.service.js";
 
 // The service imports the named binding `toFileStream`, so spying on the module
 // namespace object is not enough - the module itself has to be replaced. Like the real one, the

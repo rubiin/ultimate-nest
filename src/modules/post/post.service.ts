@@ -1,9 +1,9 @@
-import { OffsetMeta, OffsetPaginationResponse, PaginationResponse } from "@common/@types";
-import { PostStateEnum, QueryOrder } from "@common/@types";
-import { BaseRepository } from "@common/database";
-import { CursorPaginationDto } from "@common/dtos";
+import { OffsetMeta, OffsetPaginationResponse, PaginationResponse } from "@common/@types/index.js";
+import { PostStateEnum, QueryOrder } from "@common/@types/index.js";
+import { BaseRepository } from "@common/database/index.js";
+import { CursorPaginationDto } from "@common/dtos/index.js";
 import { Category, Comment, Post, Tag, User } from "@entities";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
+import { itemDoesNotExistKey, translate } from "@lib/i18n/index.js";
 import { AutoPath, EntityKey } from "@mikro-orm/core";
 import { EntityManager, raw } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
@@ -13,10 +13,10 @@ import { omit } from "helper-fns";
 import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, throwError, zip } from "rxjs";
 
-import { CommentService } from "./comment.service";
-import { CreateCommentDto, CreatePostDto, EditPostDto, SearchPostsDto } from "./dtos";
-import { FavoriteService } from "./favorite.service";
-import { PostPublisherService } from "./post-publisher.service";
+import { CommentService } from "./comment.service.js";
+import { CreateCommentDto, CreatePostDto, EditPostDto, SearchPostsDto } from "./dtos/index.js";
+import { FavoriteService } from "./favorite.service.js";
+import { PostPublisherService } from "./post-publisher.service.js";
 
 @Injectable()
 export class PostService {

@@ -3,9 +3,9 @@ import { Seeder } from "@mikro-orm/seeder";
 import { Logger } from "@nestjs/common";
 import chalk from "chalk";
 
-import { AdminSeeder } from "./admin.seeder";
-import { FixtureSeeder } from "./fixture.seeder";
-import { UserSeeder } from "./user.seeder";
+import { AdminSeeder } from "./admin.seeder.js";
+import { FixtureSeeder } from "./fixture.seeder.js";
+import { UserSeeder } from "./user.seeder.js";
 
 /*
  * It calls the AdminSeeder, FixtureSeeder and UserSeeder classes

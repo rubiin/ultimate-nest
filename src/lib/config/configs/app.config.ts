@@ -1,11 +1,11 @@
 import process from "node:process";
 
-import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant";
+import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant/index.js";
 import { registerAs } from "@nestjs/config";
 import { isValidTimeZone } from "helper-fns";
 import { z } from "zod";
 
-import { envNumber, envPort, envString, oneOf } from "./schema.helpers";
+import { envNumber, envPort, envString, oneOf } from "./schema.helpers.js";
 
 // validation schema
 export const appConfigValidationSchema = z.object({

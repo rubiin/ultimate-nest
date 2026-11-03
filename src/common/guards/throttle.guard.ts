@@ -1,4 +1,4 @@
-import { translate } from "@lib/i18n";
+import { translate } from "@lib/i18n/index.js";
 import { Injectable } from "@nestjs/common";
 import { ThrottlerGuard } from "@nestjs/throttler";
 

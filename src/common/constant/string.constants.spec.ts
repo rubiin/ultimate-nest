@@ -1,6 +1,6 @@
 import { capitalize, getPackageJson } from "helper-fns";
 
-import { APP_ENVIRONMENTS, SES_REGIONS, swaggerMetadata } from "./string.constants";
+import { APP_ENVIRONMENTS, SES_REGIONS, swaggerMetadata } from "./string.constants.js";
 
 describe("swaggerMetadata", () => {
   it("titles the document after the package name and carries its version", () => {

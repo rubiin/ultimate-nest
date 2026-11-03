@@ -1,6 +1,6 @@
 import process from "node:process";
 
-import { Roles } from "@common/@types";
+import { Roles } from "@common/@types/index.js";
 import { User } from "@entities";
 import { Factory } from "@mikro-orm/seeder";
 import {

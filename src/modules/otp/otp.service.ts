@@ -1,6 +1,6 @@
-import { OtpPurpose } from "@common/@types";
-import { DEFAULT_OTP_EXPIRY_MINUTES, MS_PER_MINUTE, OTP_LENGTH } from "@common/constant";
-import { BaseRepository } from "@common/database";
+import { OtpPurpose } from "@common/@types/index.js";
+import { DEFAULT_OTP_EXPIRY_MINUTES, MS_PER_MINUTE, OTP_LENGTH } from "@common/constant/index.js";
+import { BaseRepository } from "@common/database/index.js";
 import { OtpLog, Protocol, User } from "@entities";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { ref } from "@mikro-orm/postgresql";

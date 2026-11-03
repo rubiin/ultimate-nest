@@ -1,13 +1,13 @@
 import process from "node:process";
 
-import { IS_PUBLIC_KEY_META, SWAGGER_API_ENDPOINT } from "@common/constant";
-import { swaggerOptions } from "@common/swagger/swagger.plugin";
+import { IS_PUBLIC_KEY_META, SWAGGER_API_ENDPOINT } from "@common/constant/index.js";
+import { swaggerOptions } from "@common/swagger/swagger.plugin.js";
 import type { INestApplication } from "@nestjs/common";
 import { ValidationPipe } from "@nestjs/common";
 import type { ConfigService } from "@nestjs/config";
 
-import { AppUtils } from "./app.utils";
-import { HelperService } from "./helpers.utils";
+import { AppUtils } from "./app.utils.js";
+import { HelperService } from "./helpers.utils.js";
 
 const { createDocument, setup } = vi.hoisted(() => ({
   createDocument: vi.fn<() => unknown>(),

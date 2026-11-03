@@ -1,11 +1,11 @@
-import { PostStateEnum } from "@common/@types";
+import { PostStateEnum } from "@common/@types/index.js";
 import {
   IsBooleanField,
   IsDateField,
   IsEnumField,
   IsStringField,
   IsUUIDField,
-} from "@common/decorators";
+} from "@common/decorators/index.js";
 
 export class CreatePostDto {
   /**

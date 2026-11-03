@@ -5,9 +5,9 @@ import {
   OffsetPaginationResponse,
   QBOffsetPaginationOptions,
   QueryOrder,
-} from "@common/@types";
-import { ERROR_CODES } from "@common/constant";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
+} from "@common/@types/index.js";
+import { ERROR_CODES } from "@common/constant/index.js";
+import { itemDoesNotExistKey, translate } from "@lib/i18n/index.js";
 import {
   Cursor,
   CursorError,
@@ -31,7 +31,7 @@ import { formatSearch } from "helper-fns";
 import { Observable } from "rxjs";
 import { from, map, of, switchMap, throwError } from "rxjs";
 
-import { BaseEntity } from "./base.entity";
+import { BaseEntity } from "./base.entity.js";
 
 /** The subset of `EntityProperty` that decides whether a client may select a field. */
 type SelectableProperty = { hidden?: boolean; persist?: boolean; kind: ReferenceKind };

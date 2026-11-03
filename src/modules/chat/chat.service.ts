@@ -1,4 +1,4 @@
-import { BaseRepository } from "@common/database";
+import { BaseRepository } from "@common/database/index.js";
 import { User } from "@entities";
 import { Conversation, Message } from "@entities";
 import { EntityManager } from "@mikro-orm/core";

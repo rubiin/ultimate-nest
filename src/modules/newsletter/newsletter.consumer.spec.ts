@@ -1,8 +1,8 @@
-import { NewsLetterLogStatus } from "@common/@types";
-import { BaseRepository } from "@common/database";
+import { NewsLetterLogStatus } from "@common/@types/index.js";
+import { BaseRepository } from "@common/database/index.js";
 import { NewsLetter, NewsLetterLog, Subscriber } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
-import { NewsletterMail } from "@lib/mail";
+import { NewsletterMail } from "@lib/mail/index.js";
 import { MikroORM } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import {
@@ -17,8 +17,8 @@ import { Mailer } from "@nestjs/mail";
 import { ResilienceService } from "@nestjs/resilience";
 import { Test } from "@nestjs/testing";
 
-import { NewsLetterConsumer } from "./newsletter.consumer";
-import { NewsLetterService } from "./newsletter.service";
+import { NewsLetterConsumer } from "./newsletter.consumer.js";
+import { NewsLetterService } from "./newsletter.service.js";
 
 describe("newsLetterConsumer", () => {
   const mockLogRepo = createMock<BaseRepository<NewsLetterLog>>();

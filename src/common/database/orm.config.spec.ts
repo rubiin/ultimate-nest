@@ -1,6 +1,6 @@
 import { NotFoundException } from "@nestjs/common";
 
-import { baseOptions } from "./orm.config";
+import { baseOptions } from "./orm.config.js";
 
 describe("baseOptions", () => {
   describe("findOneOrFailHandler", () => {

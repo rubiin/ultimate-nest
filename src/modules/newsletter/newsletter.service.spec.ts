@@ -1,4 +1,4 @@
-import { RoutingKey } from "@common/@types";
+import { RoutingKey } from "@common/@types/index.js";
 import { NewsLetter, Subscriber } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
 import { MikroORM, RequestContext } from "@mikro-orm/core";
@@ -22,7 +22,7 @@ import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";
 
-import { NewsLetterService } from "./newsletter.service";
+import { NewsLetterService } from "./newsletter.service.js";
 
 describe("newsLetterService", () => {
   let service: NewsLetterService;

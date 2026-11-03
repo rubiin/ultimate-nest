@@ -1,4 +1,4 @@
-import { validationI18nMessage } from "@lib/i18n";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { IsJWT, IsNotEmpty, IsOptional } from "class-validator";
 
 export class RefreshTokenDto {

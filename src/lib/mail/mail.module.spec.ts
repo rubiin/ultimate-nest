@@ -12,8 +12,8 @@ import {
 } from "@nestjs/mail";
 import { Test } from "@nestjs/testing";
 
-import { mailTransport } from "./mail.module";
-import { NewsletterMail, ResetPasswordMail, VerifyEmailMail, WelcomeMail } from "./mails";
+import { mailTransport } from "./mail.module.js";
+import { NewsletterMail, ResetPasswordMail, VerifyEmailMail, WelcomeMail } from "./mails/index.js";
 
 const configWith = (values: Record<string, unknown>) =>
   ({ get: (key: string) => values[key] }) as unknown as ConfigService<Configs, true>;
@@ -28,7 +28,7 @@ describe("mails", () => {
         MailModule.forRoot({
           transport: mailbox,
           templates: new FileTemplateEngine({
-            dir: path.join(__dirname, "../../resources/templates"),
+            dir: path.join(import.meta.dirname, "../../resources/templates"),
             layout: "layout",
           }),
           from: "Nestify <no-reply@example.com>",

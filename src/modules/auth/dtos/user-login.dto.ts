@@ -1,5 +1,5 @@
-import { IsEmailField } from "@common/decorators";
-import { validationI18nMessage } from "@lib/i18n";
+import { IsEmailField } from "@common/decorators/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { IsNotEmpty } from "class-validator";
 
 export class UserLoginDto {

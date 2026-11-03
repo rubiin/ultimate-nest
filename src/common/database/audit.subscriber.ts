@@ -1,4 +1,4 @@
-import { AuditAction } from "@common/@types";
+import { AuditAction } from "@common/@types/index.js";
 import { AuditLog, OtpLog, RefreshToken } from "@entities";
 import {
   ChangeSet,
@@ -8,8 +8,8 @@ import {
   FlushEventArgs,
 } from "@mikro-orm/postgresql";
 
-import { getAuditActor } from "./audit.context";
-import { EncryptedType } from "./mikro-orm.encrypted";
+import { getAuditActor } from "./audit.context.js";
+import { EncryptedType } from "./mikro-orm.encrypted.js";
 
 export const REDACTED = "[REDACTED]";
 

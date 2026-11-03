@@ -9,8 +9,8 @@
  *
  */
 
-import { USERNAME_REGEX } from "@common/constant";
-import { validationI18nMessage } from "@lib/i18n";
+import { USERNAME_REGEX } from "@common/constant/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { applyDecorators } from "@nestjs/common";
 import {
   ValidationArguments,
@@ -19,7 +19,7 @@ import {
 } from "class-validator";
 import { IsNotEmpty, registerDecorator, ValidatorConstraint } from "class-validator";
 
-import { MinMaxLength } from "./min-max-length.decorator";
+import { MinMaxLength } from "./min-max-length.decorator.js";
 
 @ValidatorConstraint({ async: true })
 class IsUsernameConstraint implements ValidatorConstraintInterface {

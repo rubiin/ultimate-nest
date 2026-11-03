@@ -2,7 +2,7 @@ import { Buffer } from "node:buffer";
 import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 import process from "node:process";
 
-import { AuthenticationResponse } from "@common/@types";
+import { AuthenticationResponse } from "@common/@types/index.js";
 import { UTCDate } from "@date-fns/utc";
 import { User } from "@entities";
 import { pick } from "helper-fns";

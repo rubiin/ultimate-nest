@@ -5,7 +5,7 @@ import { ExecutionContext } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { WsException } from "@nestjs/websockets";
 
-import { WsJwtGuard } from "./ws.guard";
+import { WsJwtGuard } from "./ws.guard.js";
 
 describe("wsJwtGuard", () => {
   const buildContext = (authorization?: string | null) =>

@@ -1,12 +1,12 @@
-import { JwtPayload } from "@common/@types";
+import { JwtPayload } from "@common/@types/index.js";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
-import { AuthService } from "../auth.service";
-import { assertTokenType } from "./assert-token-type";
-import { TWO_FACTOR_TOKEN_COOKIE, extractCookie } from "./cookie-token.extractor";
+import { AuthService } from "../auth.service.js";
+import { assertTokenType } from "./assert-token-type.js";
+import { TWO_FACTOR_TOKEN_COOKIE, extractCookie } from "./cookie-token.extractor.js";
 
 @Injectable()
 export class JwtTwofaStrategy extends PassportStrategy(Strategy, "jwt2fa") {

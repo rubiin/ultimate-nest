@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { IsStringField } from "./is-string-field.decorator";
+import { IsStringField } from "./is-string-field.decorator.js";
 
 const validator = new Validator();
 

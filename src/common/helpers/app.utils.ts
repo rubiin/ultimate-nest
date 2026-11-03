@@ -1,7 +1,11 @@
 import process from "node:process";
 
-import { IS_PUBLIC_KEY_META, SWAGGER_API_ENDPOINT, swaggerMetadata } from "@common/constant";
-import { swaggerOptions } from "@common/swagger/swagger.plugin";
+import {
+  IS_PUBLIC_KEY_META,
+  SWAGGER_API_ENDPOINT,
+  swaggerMetadata,
+} from "@common/constant/index.js";
+import { swaggerOptions } from "@common/swagger/swagger.plugin.js";
 import { INestApplication, ValidationPipeOptions } from "@nestjs/common";
 import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -9,7 +13,7 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { isArray } from "helper-fns";
 import { getMiddleware } from "swagger-stats";
 
-import { HelperService } from "./helpers.utils";
+import { HelperService } from "./helpers.utils.js";
 
 const logger = new Logger("App:Utils");
 

@@ -1,4 +1,4 @@
-import { IGNORE_CACHING_META } from "@common/constant";
+import { IGNORE_CACHING_META } from "@common/constant/index.js";
 import { CACHE_KEY_METADATA, CacheInterceptor } from "@nestjs/cache-manager";
 import { ExecutionContext } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";

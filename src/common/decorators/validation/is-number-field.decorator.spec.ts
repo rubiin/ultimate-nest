@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { IsNumberField } from "./is-number-field.decorator";
+import { IsNumberField } from "./is-number-field.decorator.js";
 
 const validator = new Validator();
 

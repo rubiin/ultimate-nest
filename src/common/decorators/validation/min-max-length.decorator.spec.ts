@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { MinMaxLength } from "./min-max-length.decorator";
+import { MinMaxLength } from "./min-max-length.decorator.js";
 
 const validator = new Validator();
 

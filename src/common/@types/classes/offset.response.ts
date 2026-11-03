@@ -1,8 +1,8 @@
-import { OffsetPaginationDto } from "@common/dtos/offset-pagination.dto";
+import { OffsetPaginationDto } from "@common/dtos/offset-pagination.dto.js";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray } from "class-validator";
 
-import { PaginationAbstractResponse } from "../interfaces";
+import { PaginationAbstractResponse } from "../interfaces/index.js";
 
 export class OffsetMeta {
   /**

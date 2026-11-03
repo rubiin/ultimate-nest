@@ -1,4 +1,4 @@
-import { JwtPayload } from "@common/@types";
+import { JwtPayload } from "@common/@types/index.js";
 import { UnauthorizedException } from "@nestjs/common";
 
 /**

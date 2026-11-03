@@ -1,5 +1,5 @@
-import { PostStateEnum } from "@common/@types";
-import { BaseEntity } from "@common/database";
+import { PostStateEnum } from "@common/@types/index.js";
+import { BaseEntity } from "@common/database/index.js";
 import {
   Entity,
   ManyToMany,
@@ -19,8 +19,8 @@ import { Opt, Ref } from "@mikro-orm/postgresql";
 import { Collection } from "@mikro-orm/postgresql";
 import { slugify } from "helper-fns";
 
-import { User } from "./index";
-import { Category, Comment, Tag } from "./index";
+import { User } from "./index.js";
+import { Category, Comment, Tag } from "./index.js";
 
 @Entity()
 @Index({ name: "post_search_vector_index", properties: ["searchVector"], type: "gin" })

@@ -1,15 +1,15 @@
-import { ProfileData } from "@common/@types";
+import { ProfileData } from "@common/@types/index.js";
 import {
   ApplyCustomCache,
   GenericController,
   LoggedInUser,
   SwaggerResponse,
-} from "@common/decorators";
+} from "@common/decorators/index.js";
 import { User } from "@entities";
 import { Delete, Get, Param, Post } from "@nestjs/common";
 import { Observable } from "rxjs";
 
-import { ProfileService } from "./profile.service";
+import { ProfileService } from "./profile.service.js";
 
 const PROFILE_NOT_FOUND = "Profile does not exist.";
 

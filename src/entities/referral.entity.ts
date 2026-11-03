@@ -1,10 +1,10 @@
-import { ReferralStatus } from "@common/@types";
-import { BaseEntity } from "@common/database";
+import { ReferralStatus } from "@common/@types/index.js";
+import { BaseEntity } from "@common/database/index.js";
 import { Entity, ManyToOne, Property, Enum } from "@mikro-orm/decorators/legacy";
 import type { Rel } from "@mikro-orm/postgresql";
 import { Opt, Ref } from "@mikro-orm/postgresql";
 
-import { User } from "./user.entity";
+import { User } from "./user.entity.js";
 @Entity()
 export class Referral extends BaseEntity {
   @ManyToOne({

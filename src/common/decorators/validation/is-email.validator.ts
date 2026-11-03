@@ -1,5 +1,5 @@
-import { EmailFieldOptions } from "@common/@types";
-import { validationI18nMessage } from "@lib/i18n";
+import { EmailFieldOptions } from "@common/@types/index.js";
+import { validationI18nMessage } from "@lib/i18n/index.js";
 import { applyDecorators } from "@nestjs/common";
 import { Transform } from "class-transformer";
 import { ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsOptional } from "class-validator";

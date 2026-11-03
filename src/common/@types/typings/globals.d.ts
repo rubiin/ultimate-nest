@@ -1,6 +1,6 @@
 import { User as UserEntity } from "@entities";
-import { Config as ConfigInterface } from "@lib/config/config.interface";
-import type { I18nTranslations } from "@lib/i18n/i18n.types";
+import { Config as ConfigInterface } from "@lib/config/config.interface.js";
+import type { I18nTranslations } from "@lib/i18n/i18n.types.js";
 import { NextFunction, Request, Response } from "express";
 /* The `export {};` statement is used to indicate that the file is a module and exports nothing. It is
 often used in TypeScript files that only contain type declarations or interfaces, without any actual

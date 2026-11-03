@@ -6,7 +6,7 @@ import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";
 
-import { CategoryService } from "./category.service";
+import { CategoryService } from "./category.service.js";
 
 describe("categoryService", () => {
   let service: CategoryService;

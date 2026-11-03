@@ -4,8 +4,8 @@ import path from "node:path";
 import { Inject, Injectable } from "@nestjs/common";
 import { initializeApp, App, cert } from "firebase-admin/app";
 
-import type { FirebaseModuleOptions } from "./fire-base.module.definition";
-import { MODULE_OPTIONS_TOKEN } from "./fire-base.module.definition";
+import type { FirebaseModuleOptions } from "./fire-base.module.definition.js";
+import { MODULE_OPTIONS_TOKEN } from "./fire-base.module.definition.js";
 
 interface NestFirebase {
   getFirebaseAdmin: () => App;

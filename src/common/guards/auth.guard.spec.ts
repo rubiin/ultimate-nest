@@ -3,7 +3,7 @@ import { mockJwtService } from "@mocks";
 import { ExecutionContext } from "@nestjs/common";
 import { HttpException } from "@nestjs/common";
 
-import { AuthGuard } from "./auth.guard";
+import { AuthGuard } from "./auth.guard.js";
 
 describe("authenticatedGuard", () => {
   let authenticatedGuard: AuthGuard;

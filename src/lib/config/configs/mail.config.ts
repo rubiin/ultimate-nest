@@ -1,10 +1,10 @@
 import process from "node:process";
 
-import { SES_REGIONS } from "@common/constant";
+import { SES_REGIONS } from "@common/constant/index.js";
 import { registerAs } from "@nestjs/config";
 import { z } from "zod";
 
-import { envPort, envString, oneOf } from "./schema.helpers";
+import { envPort, envString, oneOf } from "./schema.helpers.js";
 
 const requiredCredentials = {
   SES: ["MAIL_SES_ACCESS_KEY", "MAIL_SES_KEY", "MAIL_SES_REGION"],

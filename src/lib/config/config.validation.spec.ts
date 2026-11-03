@@ -1,11 +1,11 @@
-import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant";
+import { APP_ENVIRONMENTS, VERSION_VALIDATION_MESSAGE } from "@common/constant/index.js";
 import { z } from "zod";
 
-import { configValidationSchema } from "./config.validation";
-import { appConfigValidationSchema } from "./configs/app.config";
-import { databaseConfigValidationSchema } from "./configs/database.config";
-import { mail, mailConfigValidationSchema } from "./configs/mail.config";
-import { storageConfigValidationSchema } from "./configs/storage.config";
+import { configValidationSchema } from "./config.validation.js";
+import { appConfigValidationSchema } from "./configs/app.config.js";
+import { databaseConfigValidationSchema } from "./configs/database.config.js";
+import { mail, mailConfigValidationSchema } from "./configs/mail.config.js";
+import { storageConfigValidationSchema } from "./configs/storage.config.js";
 
 const validAppEnv = {
   API_URL: "http://localhost:3000/api",

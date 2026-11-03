@@ -1,9 +1,9 @@
-import { NewsLetterLogStatus, Queues, RoutingKey } from "@common/@types";
-import { BaseRepository } from "@common/database";
+import { NewsLetterLogStatus, Queues, RoutingKey } from "@common/@types/index.js";
+import { BaseRepository } from "@common/database/index.js";
 import { NewsLetter, NewsLetterLog, Subscriber } from "@entities";
 import { RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
-import { rabbitmq } from "@lib/config/configs";
-import { NewsletterMail } from "@lib/mail";
+import { rabbitmq } from "@lib/config/configs/index.js";
+import { NewsletterMail } from "@lib/mail/index.js";
 import { MikroORM, RequestContext } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { ref } from "@mikro-orm/postgresql";
@@ -11,8 +11,8 @@ import { Injectable, Logger } from "@nestjs/common";
 import { Mailer } from "@nestjs/mail";
 import { type ResiliencePolicy, ResilienceService } from "@nestjs/resilience";
 
-import type { NewsLetterMessage } from "./newsletter.message";
-import { NewsLetterService } from "./newsletter.service";
+import type { NewsLetterMessage } from "./newsletter.message.js";
+import { NewsLetterService } from "./newsletter.service.js";
 
 @Injectable()
 export class NewsLetterConsumer {

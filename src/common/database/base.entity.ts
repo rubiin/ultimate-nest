@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { HelperService } from "@common/helpers";
+import { HelperService } from "@common/helpers/index.js";
 import { Entity, Filter, PrimaryKey, Property } from "@mikro-orm/decorators/legacy";
 import { ApiHideProperty } from "@nestjs/swagger";
 /**

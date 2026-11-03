@@ -1,4 +1,4 @@
-import { PostStateEnum } from "@common/@types";
+import { PostStateEnum } from "@common/@types/index.js";
 import { Category, Comment, Post, Tag, User } from "@entities";
 import { EntityManager, RequestContext } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
@@ -18,11 +18,11 @@ import { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 import { lastValueFrom, of } from "rxjs";
 
-import { CommentService } from "./comment.service";
-import { SearchPostsDto } from "./dtos";
-import { FavoriteService } from "./favorite.service";
-import { PostPublisherService } from "./post-publisher.service";
-import { PostService } from "./post.service";
+import { CommentService } from "./comment.service.js";
+import { SearchPostsDto } from "./dtos/index.js";
+import { FavoriteService } from "./favorite.service.js";
+import { PostPublisherService } from "./post-publisher.service.js";
+import { PostService } from "./post.service.js";
 
 describe("postService", () => {
   let service: PostService;

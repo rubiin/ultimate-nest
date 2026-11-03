@@ -4,10 +4,10 @@ import {
   PaginationRequest,
   PaginationResponse,
   UpdateEntityType,
-} from "@common/@types";
-import { BaseEntity } from "@common/database";
-import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from "@common/decorators";
-import { AppUtils } from "@common/helpers";
+} from "@common/@types/index.js";
+import { BaseEntity } from "@common/database/index.js";
+import { ApiPaginatedResponse, LoggedInUser, SwaggerResponse } from "@common/decorators/index.js";
+import { AppUtils } from "@common/helpers/index.js";
 import { User } from "@entities";
 import { ArgumentMetadata, Type } from "@nestjs/common";
 import {
@@ -24,7 +24,7 @@ import {
 } from "@nestjs/common";
 import { Observable } from "rxjs";
 
-import { BaseService } from "./crud.service";
+import { BaseService } from "./crud.service.js";
 
 @Injectable()
 export class AbstractValidationPipe extends ValidationPipe {

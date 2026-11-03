@@ -1,18 +1,18 @@
-import { PaginationResponse, RecordWithFile } from "@common/@types";
-import { OtpPurpose, QueryOrder, Queues, RoutingKey } from "@common/@types";
-import { BaseRepository } from "@common/database";
-import { CursorPaginationDto } from "@common/dtos";
+import { PaginationResponse, RecordWithFile } from "@common/@types/index.js";
+import { OtpPurpose, QueryOrder, Queues, RoutingKey } from "@common/@types/index.js";
+import { BaseRepository } from "@common/database/index.js";
+import { CursorPaginationDto } from "@common/dtos/index.js";
 import { Referral, User } from "@entities";
 import { AmqpConnection, RabbitSubscribe } from "@golevelup/nestjs-rabbitmq";
-import { rabbitmq } from "@lib/config/configs";
-import { itemDoesNotExistKey, translate } from "@lib/i18n";
-import { VerifyEmailMail, WelcomeMail, type WelcomeMailData } from "@lib/mail";
+import { rabbitmq } from "@lib/config/configs/index.js";
+import { itemDoesNotExistKey, translate } from "@lib/i18n/index.js";
+import { VerifyEmailMail, WelcomeMail, type WelcomeMailData } from "@lib/mail/index.js";
 import { EntityManager } from "@mikro-orm/core";
 import { Transactional } from "@mikro-orm/decorators/legacy";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { ref } from "@mikro-orm/postgresql";
-import { OtpService } from "@modules/otp";
+import { OtpService } from "@modules/otp/index.js";
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Mailer } from "@nestjs/mail";
@@ -23,7 +23,7 @@ import { CloudinaryService, IFile } from "nestjs-cloudinary";
 import { Observable } from "rxjs";
 import { from, map, mergeMap, of, switchMap, tap, throwError } from "rxjs";
 
-import { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos";
+import { CreateUserDto, EditUserDto, ReferUserDto } from "./dtos/index.js";
 
 @Injectable()
 export class UserService {

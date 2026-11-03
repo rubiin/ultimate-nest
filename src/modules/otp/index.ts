@@ -1,2 +1,2 @@
-export * from "./otp.module";
-export * from "./otp.service";
+export * from "./otp.module.js";
+export * from "./otp.service.js";

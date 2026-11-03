@@ -2,7 +2,7 @@ import { Logger } from "@nestjs/common";
 import { type ResilienceEvent, ResilienceEvents } from "@nestjs/resilience";
 import { Subject } from "rxjs";
 
-import { ResilienceLogger } from "./resilience.logger";
+import { ResilienceLogger } from "./resilience.logger.js";
 
 describe("ResilienceLogger", () => {
   // A real Subject, so the spec exercises the subscription `onModuleInit` sets up

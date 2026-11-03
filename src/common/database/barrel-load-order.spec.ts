@@ -6,7 +6,7 @@ describe("@common/database barrel", () => {
   it("can be the first module loaded without breaking the entity import cycle", async () => {
     vi.resetModules();
 
-    const database = await import("@common/database");
+    const database = await import("@common/database/index.js");
     const entities = await import("@entities");
 
     expect(database.BaseEntity).toBeTypeOf("function");

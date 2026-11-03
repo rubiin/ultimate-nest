@@ -188,17 +188,17 @@ need porting.
 
 ## Assessed, not applicable
 
-| Item                                                    | Why it does not apply here                                                                          |
-| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Packages ship as ESM                                    | Repo is CommonJS; `require(esm)` keeps it working. Node 24.22.0 clears the v20.19+/v22.12+ floor.   |
-| NATS v3 (`nats` → `@nats-io/transport-node`)            | No NATS dependency.                                                                                 |
-| GraphQL subscriptions / GraphiQL rename                 | No `@nestjs/graphql` dependency.                                                                    |
-| `angular` schematic removed                             | No schematic usage.                                                                                 |
-| `ConsoleLogger` structured params on by default         | All 31 `logger.*` call sites pass a template string; none pass a plain object as a second argument. |
-| Built-in cookies (12.1.0)                               | Zero cookie usage.                                                                                  |
-| Array of global prefixes (12.1.0)                       | Single prefix, read from config.                                                                    |
-| File upload interceptors backed by `@fastify/multipart` | Express adapter, not Fastify.                                                                       |
-| Lifecycle hooks invoked by hierarchy level              | Reviewed, no change needed — see below.                                                             |
+| Item                                                    | Why it does not apply here                                                                                                                          |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Packages ship as ESM                                    | App migrated to ESM (`"type": "module"`, `module: NodeNext`); imports use explicit `.js` specifiers. Node 24.22.0 clears the v20.19+/v22.12+ floor. |
+| NATS v3 (`nats` → `@nats-io/transport-node`)            | No NATS dependency.                                                                                                                                 |
+| GraphQL subscriptions / GraphiQL rename                 | No `@nestjs/graphql` dependency.                                                                                                                    |
+| `angular` schematic removed                             | No schematic usage.                                                                                                                                 |
+| `ConsoleLogger` structured params on by default         | All 31 `logger.*` call sites pass a template string; none pass a plain object as a second argument.                                                 |
+| Built-in cookies (12.1.0)                               | Zero cookie usage.                                                                                                                                  |
+| Array of global prefixes (12.1.0)                       | Single prefix, read from config.                                                                                                                    |
+| File upload interceptors backed by `@fastify/multipart` | Express adapter, not Fastify.                                                                                                                       |
+| Lifecycle hooks invoked by hierarchy level              | Reviewed, no change needed — see below.                                                                                                             |
 
 ## Security
 

@@ -3,7 +3,7 @@ import { Seeder } from "@mikro-orm/seeder";
 import { randAddress, randAmericanFootballTeam, randCatchPhrase, randUuid } from "@ngneat/falso";
 import { randomNumber } from "helper-fns";
 
-import { PostFactory, UserFactory } from "../factories";
+import { PostFactory, UserFactory } from "../factories/index.js";
 
 /** Tag titles are unique, and the falso pools are small enough to collide across 50 users. */
 const uniqueTitle = (title: string) => `${title} ${randUuid().slice(0, 8)}`;

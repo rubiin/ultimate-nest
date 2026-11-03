@@ -1,4 +1,4 @@
-import { IsBooleanField, IsDateField, IsStringField } from "@common/decorators";
+import { IsBooleanField, IsDateField, IsStringField } from "@common/decorators/index.js";
 import { IsOptional } from "class-validator";
 
 export abstract class PaginationDto {

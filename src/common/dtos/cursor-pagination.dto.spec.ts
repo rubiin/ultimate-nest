@@ -1,7 +1,7 @@
 import { Cursor } from "@mikro-orm/core";
 import { validate } from "class-validator";
 
-import { CursorPaginationDto } from "./cursor-pagination.dto";
+import { CursorPaginationDto } from "./cursor-pagination.dto.js";
 
 describe("cursorPaginationDto", () => {
   const withAfter = (after: string) => Object.assign(new CursorPaginationDto(), { after });

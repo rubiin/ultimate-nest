@@ -1,7 +1,7 @@
 import { App } from "firebase-admin";
 
-import { FIREBASE_ADMIN_TOKEN } from "./firebase-admin.constant";
-import { NestFirebaseService } from "./firebase.service";
+import { FIREBASE_ADMIN_TOKEN } from "./firebase-admin.constant.js";
+import { NestFirebaseService } from "./firebase.service.js";
 
 export const connectionFactory = {
   inject: [NestFirebaseService],

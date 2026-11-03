@@ -1,4 +1,4 @@
-import { IGNORE_CACHING_META } from "@common/constant";
+import { IGNORE_CACHING_META } from "@common/constant/index.js";
 import { SetMetadata } from "@nestjs/common";
 
 /**

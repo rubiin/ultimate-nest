@@ -6,13 +6,13 @@ checked against this repository, not assumed from the release notes.
 Legend: **Done** · **Verified N/A** (checked, does not apply) · **Open** (not adopted) ·
 **Broken** (started, not working)
 
-Progress: **9 Done · 10 Verified N/A · 3 Open · 0 Broken**
+Progress: **10 Done · 9 Verified N/A · 3 Open · 0 Broken**
 
 | #   | Guide item                                                                                                                                    | Status       |
 | --- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
 | 1   | Upgrade `@nestjs/cli` / `@nestjs/schematics`, run `nest upgrade`                                                                              | Verified N/A |
 | 2   | Node.js `v20.19+` / `v22.12+` to run, `v24.15+` for the CLI                                                                                   | Done         |
-| 3   | ESM packages — CommonJS still works via `require(esm)`                                                                                        | Verified N/A |
+| 3   | ESM packages — app migrated to `"type": "module"` + `module: NodeNext`                                                                        | Done         |
 | 4   | New project defaults (CommonJS/ESM prompt)                                                                                                    | Verified N/A |
 | 5   | Testing stack — Vitest                                                                                                                        | Done         |
 | 6   | Linting defaults — oxlint                                                                                                                     | Done         |
@@ -38,6 +38,12 @@ Progress: **9 Done · 10 Verified N/A · 3 Open · 0 Broken**
 **2. Node.js.** Pinned to `24.22.0` in `.nvmrc`, with `engines.node: ">=24.22.0"`. Clears both the
 runtime floor (v20.19+/v22.12+) and the higher `@nestjs/schematics` floor (v24.15+) that `nest
 generate` / `nest upgrade` need. Not on the unsupported 21.x line.
+
+**3. ESM packages.** The app now ships as ESM: `"type": "module"` in `package.json`,
+`module`/`moduleResolution` stay on `NodeNext`, and source/test imports use explicit `.js`
+(or `/index.js`) specifiers. `.swcrc` emits `es6`, `dist/main.js` is executed directly by
+Node, and Vitest runs the ESM suite unchanged. `helper-fns` and `unprofane` still pin to
+their CJS entry points in tests because their `.mjs` bundles are broken.
 
 **5. Testing stack.** Already on Vitest 5 across `test`, `test:watch`, `test:cov` and `test:e2e`.
 Relevant because the guide warns Jest can only load the ESM-only v12 packages on Node v24.9+
@@ -93,9 +99,6 @@ Each of these was checked against the source, not skipped.
 `@nestjs/cli` 12.0.8). The upgrade command's mechanical steps — the Joi bump, the
 `@nestjs/config` validation-options move, the NATS swap, GraphQL renames — were done by hand instead.
 No `webpack`/`webpackConfigPath` block existed in `nest-cli.json` for it to rewrite.
-
-**3. ESM packages.** The project is CommonJS and stays that way, which the guide explicitly allows.
-`require(esm)` covers consumption of the ESM-only packages.
 
 **4. New project defaults.** Scaffolding behaviour only; affects `nest new`, not existing projects.
 

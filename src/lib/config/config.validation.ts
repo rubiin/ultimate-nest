@@ -15,7 +15,7 @@ import {
   stripeConfigValidationSchema,
   throttleConfigValidationSchema,
   twilioConfigValidationSchema,
-} from "./configs";
+} from "./configs/index.js";
 
 // Mail is the base on purpose: `ZodObject.extend` carries over the refinements of
 // the schema it is called on, but drops the ones of the shapes being merged in.

@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { IsEnumField } from "./is-enum-field.decorator";
+import { IsEnumField } from "./is-enum-field.decorator.js";
 
 const validator = new Validator();
 

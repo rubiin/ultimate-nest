@@ -3,7 +3,7 @@ import process from "node:process";
 import { registerAs } from "@nestjs/config";
 import { z } from "zod";
 
-import { envString, oneOf } from "./schema.helpers";
+import { envString, oneOf } from "./schema.helpers.js";
 
 export const storageConfigValidationSchema = z
   .object({

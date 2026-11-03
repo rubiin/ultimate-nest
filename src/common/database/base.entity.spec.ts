@@ -1,6 +1,6 @@
 import { MetadataStorage } from "@mikro-orm/core";
 
-import { BaseEntity } from "./base.entity";
+import { BaseEntity } from "./base.entity.js";
 
 describe("baseEntity", () => {
   // Read straight off the decorator metadata rather than the discovered metadata:

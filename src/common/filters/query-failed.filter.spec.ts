@@ -6,7 +6,7 @@ import { ServerException } from "@mikro-orm/postgresql";
 import { UniqueConstraintViolationException } from "@mikro-orm/postgresql";
 import { HttpStatus } from "@nestjs/common";
 
-import { QueryFailedFilter } from "./query-failed.filter";
+import { QueryFailedFilter } from "./query-failed.filter.js";
 
 describe("queryFailedFilter", () => {
   let filter: QueryFailedFilter;

@@ -3,8 +3,8 @@ import { ConfigService } from "@nestjs/config";
 import { Profile } from "passport-facebook";
 import { VerifyCallback } from "passport-google-oauth20";
 
-import { FacebookStrategy } from "./facebook.strategy";
-import { GoogleStrategy } from "./google.strategy";
+import { FacebookStrategy } from "./facebook.strategy.js";
+import { GoogleStrategy } from "./google.strategy.js";
 
 describe("oauth strategies", () => {
   const configService = mockConfigService as unknown as ConfigService<Configs, true>;

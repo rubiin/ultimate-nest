@@ -1,12 +1,12 @@
 import { User } from "@entities";
 import { createMock } from "@golevelup/ts-vitest";
-import { AuthService } from "@modules/auth/auth.service";
+import { AuthService } from "@modules/auth/auth.service.js";
 import { JwtService } from "@nestjs/jwt";
 import { Namespace, Socket } from "socket.io";
 
-import { ChatGateway } from "./chat.gateway";
-import { ChatService } from "./chat.service";
-import { SocketConnectionService } from "./socket-connection.service";
+import { ChatGateway } from "./chat.gateway.js";
+import { ChatService } from "./chat.service.js";
+import { SocketConnectionService } from "./socket-connection.service.js";
 
 describe("chatGateway", () => {
   const connectionService = createMock<SocketConnectionService>();

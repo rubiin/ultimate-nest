@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { IsUUIDField } from "./is-uuid.validator";
+import { IsUUIDField } from "./is-uuid.validator.js";
 
 const validator = new Validator();
 

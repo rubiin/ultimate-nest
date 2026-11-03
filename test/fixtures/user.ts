@@ -1,6 +1,6 @@
 import process from "node:process";
 
-import { Roles } from "@common/@types";
+import { Roles } from "@common/@types/index.js";
 import { randEmail, randFirstName, randLastName } from "@ngneat/falso";
 
 export const user: Record<string, { email: string; password: string }> = {

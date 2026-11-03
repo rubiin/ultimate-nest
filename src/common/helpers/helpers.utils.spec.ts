@@ -3,7 +3,7 @@ import { Buffer } from "node:buffer";
 import { User } from "@entities";
 import { lastValueFrom } from "rxjs";
 
-import { HelperService } from "./helpers.utils";
+import { HelperService } from "./helpers.utils.js";
 
 describe("helperService", () => {
   describe("buildPayloadResponse", () => {

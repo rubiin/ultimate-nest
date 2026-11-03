@@ -7,7 +7,7 @@ import {
 } from "@nestjs/resilience";
 import { Test } from "@nestjs/testing";
 
-import { NestResilienceModule } from "./resilience.module";
+import { NestResilienceModule } from "./resilience.module.js";
 
 // The values `resilience.config.ts` produces for a plausible production env.
 const config = {

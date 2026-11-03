@@ -1,8 +1,8 @@
-import { CursorPaginationDto, OffsetPaginationDto } from "@common/dtos";
+import { CursorPaginationDto, OffsetPaginationDto } from "@common/dtos/index.js";
 import { Dictionary, QueryBuilder } from "@mikro-orm/postgresql";
 
-import { CursorPaginationResponse, OffsetPaginationResponse } from "../classes";
-import { QueryOrder } from "../enums";
+import { CursorPaginationResponse, OffsetPaginationResponse } from "../classes/index.js";
+import { QueryOrder } from "../enums/index.js";
 
 export interface CursorPaginationOptions<T extends Dictionary> extends Omit<
   CursorPaginationDto,

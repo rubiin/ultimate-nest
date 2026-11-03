@@ -1,6 +1,6 @@
 import { Validator } from "class-validator";
 
-import { IsAfterField } from "./is-after.validator";
+import { IsAfterField } from "./is-after.validator.js";
 
 const validator = new Validator();
 

@@ -1,7 +1,7 @@
-import { OtpPurpose } from "@common/@types";
+import { OtpPurpose } from "@common/@types/index.js";
 import { OtpLog, Protocol, Referral, User } from "@entities";
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq";
-import { VerifyEmailMail, WelcomeMail } from "@lib/mail";
+import { VerifyEmailMail, WelcomeMail } from "@lib/mail/index.js";
 import { EntityManager } from "@mikro-orm/core";
 import { getRepositoryToken } from "@mikro-orm/nestjs";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
@@ -21,7 +21,7 @@ import {
   queryDto,
   trackMockTransaction,
 } from "@mocks";
-import { OtpService } from "@modules/otp";
+import { OtpService } from "@modules/otp/index.js";
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Mailer } from "@nestjs/mail";
@@ -31,7 +31,7 @@ import { Test } from "@nestjs/testing";
 import { CloudinaryService } from "nestjs-cloudinary";
 import { lastValueFrom, of } from "rxjs";
 
-import { UserService } from "./user.service";
+import { UserService } from "./user.service.js";
 
 describe("userService", () => {
   let service: UserService;
