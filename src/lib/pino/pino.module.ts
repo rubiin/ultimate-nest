@@ -1,12 +1,16 @@
 import { Module, RequestMethod } from "@nestjs/common";
 import { LoggerModule } from "nestjs-pino";
 
-// Fields to redact from logs
-const redactFields = [
+// Secret-bearing body fields (F-05). A body can carry any key, so this stays a denylist:
+// every credential, OTP or TOTP field added to a DTO must be listed here too.
+export const redactFields = [
   "req.headers.authorization",
   "req.body.password",
   "req.body.confirmPassword",
   "req.body.refreshToken",
+  "req.body.otpCode",
+  "req.body.code",
+  "req.body.oldPassword",
 ];
 const basePinoOptions = {
   ignore: "pid,hostname",
