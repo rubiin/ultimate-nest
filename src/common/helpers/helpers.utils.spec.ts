@@ -122,10 +122,14 @@ describe("helperService", () => {
   });
 
   describe("hashString", () => {
-    it("should return an argon2id phc string", async () => {
+    it("should return a self-describing scrypt hash", async () => {
       const hashed = await HelperService.hashString("Password@1234");
+      const [algorithm, n, r, p, salt, key] = hashed.split("$");
 
-      expect(hashed.startsWith("$argon2id$")).toBe(true);
+      expect(algorithm).toBe("scrypt");
+      expect([Number(n), Number(r), Number(p)]).toEqual([2 ** 15, 8, 1]);
+      expect(Buffer.from(salt, "base64")).toHaveLength(16);
+      expect(Buffer.from(key, "base64")).toHaveLength(32);
     });
 
     it("should produce a different hash for the same password each time", async () => {
@@ -147,6 +151,26 @@ describe("helperService", () => {
       const hashed = await HelperService.hashString("Password@1234");
 
       expect(await lastValueFrom(HelperService.verifyHash("wrong-password", hashed))).toBe(false);
+    });
+
+    // Regression: pre-migration rows are argon2; they must fail closed, not throw.
+    it("should reject a legacy argon2 hash instead of throwing", async () => {
+      const legacy = "$argon2id$v=19$m=65536,t=4,p=1$c29tZXNhbHQ$hash";
+
+      expect(await lastValueFrom(HelperService.verifyHash("Password@1234", legacy))).toBe(false);
+    });
+
+    it("should reject a tampered scrypt hash", async () => {
+      const hashed = await HelperService.hashString("Password@1234");
+      const tampered = `${hashed.slice(0, hashed.lastIndexOf("$") + 1)}${Buffer.alloc(32, "x").toString("base64")}`;
+
+      expect(await lastValueFrom(HelperService.verifyHash("Password@1234", tampered))).toBe(false);
+    });
+
+    it("should reject absurd cost params instead of allocating", async () => {
+      const malformed = `scrypt$${2 ** 40}$8$1$c2FsdA$a2V5`;
+
+      expect(await lastValueFrom(HelperService.verifyHash("Password@1234", malformed))).toBe(false);
     });
   });
 
