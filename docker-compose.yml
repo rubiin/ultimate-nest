@@ -71,7 +71,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:7.4.12-alpine
+    image: redis:8.10.3-alpine
     restart: unless-stopped
     command: redis-server --loglevel warning --requirepass ${REDIS_PASSWORD:?set REDIS_PASSWORD}
     networks:
