@@ -86,7 +86,7 @@ services:
 
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:3.13.7-management-alpine
+    image: rabbitmq:4.4.0-management-alpine
     networks:
       - nestify-network
     environment:

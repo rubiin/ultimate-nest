@@ -87,7 +87,7 @@ services:
       retries: 10
 
   rabbitmq:
-    image: rabbitmq:3.13.7-management-alpine
+    image: rabbitmq:4.4.0-management-alpine
     container_name: nestify-rabbit
     restart: unless-stopped
     environment:
