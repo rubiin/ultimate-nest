@@ -79,7 +79,8 @@ services:
     volumes:
       - redis-data:/data
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping | grep PONG"]
+      # The container has no REDIS_PASSWORD env, so interpolate it here like `command:` does.
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD} ping | grep PONG"]
       interval: 5s
       timeout: 5s
       retries: 10
