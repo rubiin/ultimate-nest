@@ -70,7 +70,7 @@ services:
       retries: 10
 
   redis:
-    image: redis:7.4.12-alpine
+    image: redis:8.10.3-alpine
     container_name: nestify-redis
     restart: unless-stopped
     # `requirepass` provisions the built-in `default` ACL user, so the username
@@ -87,7 +87,7 @@ services:
       retries: 10
 
   rabbitmq:
-    image: rabbitmq:3.13.7-management-alpine
+    image: rabbitmq:4.4.0-management-alpine
     container_name: nestify-rabbit
     restart: unless-stopped
     environment:

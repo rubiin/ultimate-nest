@@ -46,7 +46,7 @@ services:
       - nestify-network
 
   traefik:
-    image: traefik:v2.11.61
+    image: traefik:v3.7.17
     container_name: traefik
     command:
       - --providers.docker=true
@@ -71,7 +71,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis:7.4.12-alpine
+    image: redis:8.10.3-alpine
     restart: unless-stopped
     command: redis-server --loglevel warning --requirepass ${REDIS_PASSWORD:?set REDIS_PASSWORD}
     networks:
@@ -86,7 +86,7 @@ services:
 
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:3.13.7-management-alpine
+    image: rabbitmq:4.4.0-management-alpine
     networks:
       - nestify-network
     environment:
