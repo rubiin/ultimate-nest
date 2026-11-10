@@ -106,7 +106,9 @@ services:
     image: postgres:18.6-alpine
     restart: unless-stopped
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      # Postgres 18+ stores data in a major-version subdirectory (PGDATA=/var/lib/postgresql/18/docker)
+      # and refuses to start when a mount sits at /var/lib/postgresql/data.
+      - postgres_data:/var/lib/postgresql
     environment:
       - POSTGRES_USER=${DB_USERNAME:?set DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD:?set DB_PASSWORD}
