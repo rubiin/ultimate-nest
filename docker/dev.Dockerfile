@@ -1,4 +1,4 @@
-FROM node:26.13.0-slim
+FROM node:26.13.1-slim
 WORKDIR /usr/src/app
 
 # pnpm fetch does require only lockfile
