@@ -52,7 +52,7 @@ services:
     entrypoint: ["/bin/sh", "docker/entrypoint.sh"]
 
   database:
-    image: postgres:18.7-alpine
+    image: postgres:19.0-alpine
     container_name: nestify-db
     restart: unless-stopped
     environment:

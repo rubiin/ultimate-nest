@@ -103,7 +103,7 @@ services:
 
   database:
     container_name: database
-    image: postgres:18.7-alpine
+    image: postgres:19.0-alpine
     restart: unless-stopped
     volumes:
       # Postgres 18+ stores data in a major-version subdirectory (PGDATA=/var/lib/postgresql/18/docker)
